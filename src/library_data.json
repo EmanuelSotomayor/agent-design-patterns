@@ -1,0 +1,3717 @@
+{
+ "agentic_design": [
+  {
+   "slug": "prompt-chaining",
+   "name": "Prompt Chaining",
+   "desc": "Multi-step prompt orchestration patterns",
+   "techniques": [
+    {
+     "name": "Sequential Chaining",
+     "slug": "sequential-chaining",
+     "complexity": "low",
+     "desc": "A fundamental prompt engineering technique that breaks complex tasks into smaller, interconnected prompts where each output serves as input for the next step, creating a structured reasoning pipeline that significantly improves LLM performance on multi-step problems"
+    },
+    {
+     "name": "Parallel Chaining",
+     "slug": "parallel-chaining",
+     "complexity": "medium",
+     "desc": "Executes multiple independent prompts concurrently and intelligently combines their outputs, enabling faster processing and multi-perspective analysis that leverages parallel computation for complex tasks requiring diverse viewpoints or data sources"
+    },
+    {
+     "name": "Conditional Chaining",
+     "slug": "conditional-chaining",
+     "complexity": "high",
+     "desc": "Implements dynamic branching logic where prompt execution paths are determined by intermediate outputs, enabling adaptive workflows that respond intelligently to varying inputs and contexts - essential for personalization and decision trees"
+    },
+    {
+     "name": "Feedback Chaining",
+     "slug": "feedback-chaining",
+     "complexity": "medium",
+     "desc": "Implements iterative improvement cycles where outputs are evaluated and fed back as inputs until quality criteria are met, proven to enhance output quality through convergence-based refinement - particularly effective for creative and optimization tasks"
+    },
+    {
+     "name": "Hierarchical Chaining",
+     "slug": "hierarchical-chaining",
+     "complexity": "high",
+     "desc": "Structures prompts in multi-level parent-child relationships enabling complex task decomposition, where high-level goals are systematically broken down into manageable subtasks with context inheritance - ideal for project planning and system design"
+    },
+    {
+     "name": "Iterative Refinement",
+     "slug": "iterative-refinement",
+     "complexity": "medium",
+     "desc": "Employs systematic multi-pass refinement where each iteration focuses on specific quality improvements, where a few passes usually capture most of the gains before diminishing returns - essential for content polish and code optimization"
+    },
+    {
+     "name": "Parallel Synthesis",
+     "slug": "parallel-synthesis",
+     "complexity": "high",
+     "desc": "Advanced technique that orchestrates multiple parallel processing streams with intelligent conflict resolution and quality-weighted aggregation, enabling synthesis of diverse perspectives into coherent, comprehensive outputs - crucial for research and consensus-building"
+    }
+   ]
+  },
+  {
+   "slug": "routing",
+   "name": "Routing",
+   "desc": "Dynamic request routing and delegation patterns",
+   "techniques": [
+    {
+     "name": "LLM-based Routing(LBR)",
+     "slug": "llm-based-routing",
+     "complexity": "medium",
+     "desc": "An intelligent query distribution system that uses a specialized LLM router to analyze incoming requests and dynamically route them to the most appropriate model, API endpoint, or processing pipeline based on query characteristics, ensuring optimal resource utilization and response quality through intent classification and capability matching"
+    },
+    {
+     "name": "Embedding-based Routing(EBR)",
+     "slug": "embedding-based-routing",
+     "complexity": "medium",
+     "desc": "A semantic routing system that converts queries and route definitions into high-dimensional vector embeddings, using cosine similarity or other distance metrics to match incoming requests to the most semantically similar handler, enabling fuzzy matching, multi-lingual support, and context-aware routing beyond simple keyword matching"
+    },
+    {
+     "name": "Rule-based Routing(RBR)",
+     "slug": "rule-based-routing",
+     "complexity": "low",
+     "desc": "A deterministic routing system that uses predefined rules, conditions, and decision trees to direct queries to appropriate handlers, providing fast, predictable, and auditable routing decisions through if-else statements, switch cases, and pattern matching ideal for compliance-critical and latency-sensitive agentic AI systems"
+    },
+    {
+     "name": "Machine Learning Model-Based Routing(MLMR)",
+     "slug": "machine-learning-model-based-routing",
+     "complexity": "high",
+     "desc": "A specialized routing approach that employs discriminative models (classifiers) fine-tuned on labeled data to make routing decisions, encoding routing logic directly in model weights rather than prompts, enabling sub-10ms inference for high-volume agentic AI systems requiring deterministic and explainable routing decisions"
+    },
+    {
+     "name": "Content-Based Routing(CBR)",
+     "slug": "content-based-routing",
+     "complexity": "medium",
+     "desc": "Routes requests based on content analysis and classification"
+    },
+    {
+     "name": "Capability Routing",
+     "slug": "capability-routing",
+     "complexity": "high",
+     "desc": "Routes tasks to agents based on their specialized capabilities"
+    },
+    {
+     "name": "Load Balancing",
+     "slug": "load-balancing",
+     "complexity": "medium",
+     "desc": "Distributes workload evenly across available processing resources"
+    },
+    {
+     "name": "Geographic Routing",
+     "slug": "geographic-routing",
+     "complexity": "medium",
+     "desc": "Route requests based on geographic location and regional optimization"
+    },
+    {
+     "name": "Dynamic Routing",
+     "slug": "dynamic-routing",
+     "complexity": "high",
+     "desc": "Routes prompts based on real-time analysis and context evaluation"
+    }
+   ]
+  },
+  {
+   "slug": "parallelization",
+   "name": "Parallelization",
+   "desc": "Concurrent execution and parallel processing patterns for AI systems",
+   "techniques": [
+    {
+     "name": "Map-Reduce",
+     "slug": "map-reduce",
+     "complexity": "high",
+     "desc": "Distributes computation across multiple nodes using map and reduce operations"
+    },
+    {
+     "name": "Scatter-Gather",
+     "slug": "scatter-gather",
+     "complexity": "medium",
+     "desc": "Distributes requests to multiple services and collects responses"
+    },
+    {
+     "name": "Fork-Join",
+     "slug": "fork-join",
+     "complexity": "high",
+     "desc": "Forks tasks into parallel subtasks and joins results when complete"
+    },
+    {
+     "name": "Async-Await",
+     "slug": "async-await",
+     "complexity": "medium",
+     "desc": "Non-blocking asynchronous execution with promise-based coordination"
+    },
+    {
+     "name": "Speculative &amp; Parallel Tool Execution(STE)",
+     "slug": "speculative-tool-execution",
+     "complexity": "high",
+     "desc": "Predicts the likely next tool call from recurring agent trajectories and executes it speculatively while the LLM is still generating, keeping the speculative result isolated until the model confirms the call and discarding it on a misprediction. It also covers launching retrieval partway through a streaming user turn and returning partial or streamed tool results. Distinct from async-await, fork-join, scatter-gather, and map-reduce, which all fan out already-decided, known-independent calls; the novelty here is acting on an unconfirmed predicted call so tool latency overlaps generation instead of following it."
+    }
+   ]
+  },
+  {
+   "slug": "reflection",
+   "name": "Reflection",
+   "desc": "Self-evaluation and iterative improvement patterns",
+   "techniques": [
+    {
+     "name": "Self-Critique(SC)",
+     "slug": "self-critique",
+     "complexity": "medium",
+     "desc": "Agent evaluates its own outputs through systematic analysis and generates targeted improvements"
+    },
+    {
+     "name": "Producer-Critic Pattern(PC)",
+     "slug": "producer-critic",
+     "complexity": "medium",
+     "desc": "Architectural pattern where separate producer and critic agents collaborate for quality improvement"
+    },
+    {
+     "name": "LLM as Judge(LJ)",
+     "slug": "llm-as-judge",
+     "complexity": "low",
+     "desc": "Specific Producer-Critic implementation where an LLM acts as the critic to evaluate outputs"
+    },
+    {
+     "name": "Reflexion(RX)",
+     "slug": "reflexion-pattern",
+     "complexity": "high",
+     "desc": "Agents learn from experience through verbal self-reflection and episodic memory"
+    }
+   ]
+  },
+  {
+   "slug": "tool-use",
+   "name": "Tool Use",
+   "desc": "External tool integration and function calling patterns",
+   "techniques": [
+    {
+     "name": "Function Calling",
+     "slug": "function-calling",
+     "complexity": "medium",
+     "desc": "Structured interface for AI to invoke external functions and APIs"
+    },
+    {
+     "name": "Code Execution",
+     "slug": "code-execution",
+     "complexity": "high",
+     "desc": "Safely execute LLM-generated code in isolated environments for calculations and data processing"
+    },
+    {
+     "name": "Model Context Protocol(MCP)",
+     "slug": "model-context-protocol",
+     "complexity": "high",
+     "desc": "Standardized protocol for sharing context and capabilities between AI models and tools"
+    },
+    {
+     "name": "Control Plane as a Tool(CPT)",
+     "slug": "control-plane",
+     "complexity": "medium",
+     "desc": "Exposes a single unified tool interface to the agent while an internal control plane routes each request to the right tool, service, or model behind it. The agent prompt stays stable as the tool catalog evolves, and authentication, policy, rate limiting, and observability are enforced in one place."
+    },
+    {
+     "name": "Computer Use(CU)",
+     "slug": "computer-use",
+     "complexity": "high",
+     "desc": "Agents operate graphical user interfaces (desktop, browser, or mobile) the way a person does, by reading screenshots and issuing mouse and keyboard actions instead of calling APIs. The core challenge is GUI grounding: mapping an intent to exact pixel coordinates on the screen. The agent runs a loop of screenshot, reason, act, and observe until the task is complete."
+    },
+    {
+     "name": "Agent Skills(AS)",
+     "slug": "agent-skills",
+     "complexity": "medium",
+     "desc": "Capabilities packaged as self-contained folders. Each skill is a SKILL.md file with YAML frontmatter (name and description) plus optional scripts and resources. Agents discover skills by their metadata and load them through three levels of progressive disclosure: read name and description to judge relevance, load the full SKILL.md once activated, then execute bundled scripts and resources on demand. This keeps context small while exposing many capabilities, and the format is an open standard adopted across vendors."
+    },
+    {
+     "name": "Tool Retrieval (Tool RAG)(TR)",
+     "slug": "tool-retrieval",
+     "complexity": "medium",
+     "desc": "When an agent can reach hundreds or thousands of tools or MCP servers, loading every schema into the prompt is expensive and hurts selection accuracy. Tool retrieval indexes tool definitions and, for each query, retrieves only the semantically relevant ones (embedding search, active discovery, and reranking) before the model chooses. RAG-MCP reports tool-selection accuracy rising from about 13 percent to 43 percent while cutting prompt tokens by more than half."
+    },
+    {
+     "name": "Structured Outputs(SO)",
+     "slug": "structured-outputs",
+     "complexity": "medium",
+     "desc": "Guarantee that model output conforms to a schema by constraining decoding. A JSON Schema, regex, or grammar is compiled into a finite-state machine, and at every decode step the tokens that would violate the schema are masked out so only valid continuations can be sampled. In strict mode this makes malformed JSON and invalid tool arguments impossible. It is available natively at OpenAI, Google, and Anthropic and in open libraries such as Outlines and vLLM."
+    },
+    {
+     "name": "Code as Action (CodeAct)(CA)",
+     "slug": "code-as-action",
+     "complexity": "high",
+     "desc": "Instead of emitting one JSON tool call per turn, the agent&#x27;s action space is executable code that orchestrates tools with loops, conditionals, and variables. A single code block can call many tools, branch on results, and keep intermediate data in the runtime rather than passing every result back through the context window. Anthropic reports roughly a 98 percent token reduction on some multi-tool workflows when tools are called from code via MCP."
+    },
+    {
+     "name": "Structured Reflection (Think Tool)",
+     "slug": "structured-reflection-tool",
+     "complexity": "low",
+     "desc": "A dedicated no-op &quot;think&quot; tool (Anthropic) declared in the agent tool schema that the model calls mid-trajectory to append structured reasoning between a tool result and the next action. The call has no external effect and returns nothing useful: it simply gives the model a checkpoint to re-read policy, verify constraints, and plan before acting inside a long tool-call chain. Anthropic reports a 54% relative improvement on the tau-bench airline pass^1 metric (0.570 versus a 0.370 baseline) when the tool is paired with a prompt that shows how to use it. Distinct from `metacognitive-monitoring`: that entry is the general capability of monitoring one&#x27;s own reasoning, whereas the think tool is a concrete tool-schema mechanism for it, separate from extended or inference-time thinking that happens before the first response."
+    },
+    {
+     "name": "MCP Gateway (Tool Federation &amp; Governance)(MCPG)",
+     "slug": "mcp-tool-gateway",
+     "complexity": "high",
+     "desc": "A single governed MCP entrypoint that sits in front of many backend MCP servers as a reverse proxy, federating their tools into one curated, managed tool surface that the agent connects to. Every tool call routes through the gateway, which enforces centralized authentication, per-tool authorization that separates the caller&#x27;s identity from the downstream server&#x27;s permissions, policy checks, rate limiting, audit logging, and telemetry. This turns a sprawling pile of independently deployed servers into one controlled integration contract, so tools can be curated, versioned, and revoked without touching each agent. Distinct from `control-plane`: the control plane is the general pattern of exposing one interface while routing internally to any tool, service, or model, whereas the MCP gateway is the MCP-ecosystem-specific realization focused on federating many MCP servers and governing the shared tool-access surface."
+    }
+   ]
+  },
+  {
+   "slug": "planning-execution",
+   "name": "Planning",
+   "desc": "Advanced planning strategies for complex multi-step tasks and goal achievement",
+   "techniques": [
+    {
+     "name": "Meta-Reasoning(MR)",
+     "slug": "meta-reasoning",
+     "complexity": "high",
+     "desc": "Higher-order reasoning about reasoning processes, including strategy selection and monitoring"
+    },
+    {
+     "name": "Hierarchical Task Network (HTN) Planning(HTN)",
+     "slug": "hierarchical-task-network-planning",
+     "complexity": "high",
+     "desc": "Automated planning approach that decomposes complex tasks into hierarchically structured networks of simpler tasks using domain knowledge"
+    },
+    {
+     "name": "Task Management &amp; Orchestration(TMO)",
+     "slug": "task-management-orchestration",
+     "complexity": "medium",
+     "desc": "Systematic task decomposition, progress tracking, and adaptive workflow management for complex multi-step processes"
+    },
+    {
+     "name": "Intelligent Goal Decomposition(IGD)",
+     "slug": "goal-decomposition",
+     "complexity": "medium",
+     "desc": "Systematic breakdown of complex objectives into achievable, measurable sub-goals with clear success criteria"
+    },
+    {
+     "name": "Constraint Satisfaction Planning(CSP)",
+     "slug": "constraint-satisfaction",
+     "complexity": "high",
+     "desc": "Planning approach that simultaneously satisfies multiple constraints while optimizing objectives"
+    },
+    {
+     "name": "Scenario-Based Planning(SBP)",
+     "slug": "scenario-planning",
+     "complexity": "high",
+     "desc": "Multi-scenario planning that prepares for different possible futures and uncertain conditions"
+    },
+    {
+     "name": "Plan-Execute Decoupling (ReWOO/LLMCompiler)(PED)",
+     "slug": "plan-execute-decoupling",
+     "complexity": "high",
+     "desc": "Generates the full plan or tool-call graph up front, decoupled from tool observations, and only then executes it. ReWOO writes a variable-parameterized chain of tool calls before anything runs, cutting redundant model invocations; LLMCompiler builds a dependency DAG and dispatches independent tool calls in parallel. This differs from ReAct, which interleaves one thought and one action at a time and re-feeds every observation into the prompt."
+    },
+    {
+     "name": "Plan &amp; TODO Recitation(PTR)",
+     "slug": "plan-todo-recitation",
+     "complexity": "medium",
+     "desc": "The agent keeps an explicit, editable todo or plan artifact (for example a write_todos tool call or a todo.md file) and continually rewrites and recites it as work proceeds. Re-emitting the evolving plan at the end of the context window pushes the global objective back into the model recent attention on every step, which resists goal drift and lost-in-the-middle forgetting across long runs."
+    },
+    {
+     "name": "World-Model Simulation Planning(WMSP)",
+     "slug": "world-model-simulation-planning",
+     "complexity": "high",
+     "desc": "The agent maintains, or uses the LLM itself as, a world model that predicts the next state and consequence of each candidate action, then runs look-ahead rollouts (&quot;imagine before acting&quot;) to score and select an action before executing anything in the real environment. This extends model-based reinforcement learning to language agents and matters most where actions are irreversible and backtracking on a live website or GUI is impossible. Distinct from scenario-planning, which reasons across several strategic futures with no action-consequence simulator, and from reflective-mcts, which searches over reasoning traces rather than simulated environment states."
+    }
+   ]
+  },
+  {
+   "slug": "multi-agent",
+   "name": "Multi-Agent",
+   "desc": "Coordination and communication patterns for multiple AI agents",
+   "techniques": [
+    {
+     "name": "A2A Protocol (Agent2Agent)(A2A)",
+     "slug": "a2a-protocol",
+     "complexity": "high",
+     "desc": "Open standard for AI agent interoperability enabling seamless collaboration across platforms"
+    },
+    {
+     "name": "Agent Communication Protocols",
+     "slug": "agent-communication-protocols",
+     "complexity": "medium",
+     "desc": "Standardized communication mechanisms for agent interaction including message passing, publish-subscribe, and event-driven patterns"
+    },
+    {
+     "name": "Supervisor-Worker Pattern(SVW)",
+     "slug": "supervisor-worker-pattern",
+     "complexity": "high",
+     "desc": "Orchestrator-worker architecture where a lead agent coordinates specialized subagents for parallel task execution"
+    },
+    {
+     "name": "Shared Scratchpad Collaboration(SSC)",
+     "slug": "shared-scratchpad-collaboration",
+     "complexity": "medium",
+     "desc": "Multiple agents collaborate transparently on a common workspace with shared visibility of all work"
+    },
+    {
+     "name": "Sequential Pipeline Agents(SPA)",
+     "slug": "sequential-pipeline-agents",
+     "complexity": "medium",
+     "desc": "Specialized agents process tasks in a linear pipeline where each agent&#x27;s output becomes the next agent&#x27;s input"
+    },
+    {
+     "name": "Concurrent Orchestration(CO)",
+     "slug": "concurrent-orchestration",
+     "complexity": "medium",
+     "desc": "Multiple agents work simultaneously on the same task to provide diverse perspectives and parallel processing power"
+    },
+    {
+     "name": "Handoff Orchestration(HO)",
+     "slug": "handoff-orchestration",
+     "complexity": "medium",
+     "desc": "Dynamic delegation where agents intelligently transfer control based on context and specialized capabilities"
+    },
+    {
+     "name": "Peer Collaboration",
+     "slug": "peer-collaboration",
+     "complexity": "high",
+     "desc": "Decentralized collaboration between equal agents without central authority"
+    },
+    {
+     "name": "Hierarchical Coordination(HC)",
+     "slug": "hierarchical-coordination",
+     "complexity": "high",
+     "desc": "Multi-level agent coordination with supervisory relationships, centralized orchestration, and authority delegation"
+    },
+    {
+     "name": "Message Queuing(MQ)",
+     "slug": "message-queuing",
+     "complexity": "high",
+     "desc": "Asynchronous message passing system enabling decoupled communication between AI agents and services in distributed agentic systems"
+    },
+    {
+     "name": "Consensus Algorithms",
+     "slug": "consensus-algorithms",
+     "complexity": "high",
+     "desc": "Distributed agreement mechanisms for multi-agent decision making"
+    },
+    {
+     "name": "Chain of Debates(CoD)",
+     "slug": "cod",
+     "complexity": "high",
+     "desc": "Multiple AI models collaborate and debate to reach conclusions"
+    },
+    {
+     "name": "Mixture of Agents(MoA)",
+     "slug": "mixture-of-agents",
+     "complexity": "high",
+     "desc": "Layered ensemble in which multiple LLM proposer agents at each layer receive all responses from the previous layer as auxiliary context, iteratively refining their answers before a final aggregator synthesizes them. Because models produce better answers when shown peer responses, a stack of open-source proposers can outperform a single frontier model."
+    },
+    {
+     "name": "Ledger Orchestration (Magentic-One)(LO)",
+     "slug": "ledger-orchestration",
+     "complexity": "high",
+     "desc": "An orchestrator drives a team of specialized agents using two ledgers: a task ledger holding facts, educated guesses, and a plan, and a progress ledger where the orchestrator self-reflects each step on whether progress is being made, whether the team is stalled, and which agent should act next. When progress stalls, an outer loop updates the facts and revises the plan. Introduced in Microsoft Magentic-One."
+    },
+    {
+     "name": "Chain of Agents(CoA)",
+     "slug": "chain-of-agents",
+     "complexity": "medium",
+     "desc": "A training-free framework for long-context tasks that splits an oversized input into chunks, assigns each chunk to a worker agent that reads its chunk plus a running communication unit passed from the previous worker, then hands the final accumulated communication to a manager agent that produces the answer. The sequential read-and-summarize chain mitigates long-context focus loss and beats RAG and full-context baselines."
+    }
+   ]
+  },
+  {
+   "slug": "memory-management",
+   "name": "Memory Management",
+   "desc": "Context management and state persistence patterns",
+   "techniques": [
+    {
+     "name": "Parametric Memory(PM)",
+     "slug": "parametric-memory",
+     "complexity": "medium",
+     "desc": "Knowledge implicitly stored within model parameters, enabling fast context-free knowledge retrieval for multi-agent agentic AI systems"
+    },
+    {
+     "name": "Episodic Memory Systems(EMS)",
+     "slug": "episodic-memory-systems",
+     "complexity": "high",
+     "desc": "Time-indexed memory of specific experiences and events, storing autobiographical history of agent interactions for multi-agent agentic AI systems"
+    },
+    {
+     "name": "Semantic Memory Networks(SMN)",
+     "slug": "semantic-memory-networks",
+     "complexity": "high",
+     "desc": "General world knowledge systems divorced from specific acquisition context, supporting factual knowledge and concept relationships for multi-agent agentic AI systems"
+    },
+    {
+     "name": "Transactive Memory Systems(TMS)",
+     "slug": "transactive-memory-systems",
+     "complexity": "high",
+     "desc": "Shared system for storing and retrieving knowledge that expands multi-agent group capacity through distributed cognitive processing"
+    },
+    {
+     "name": "Memory Reading/Writing Operations(MRWO)",
+     "slug": "memory-reading-writing-operations",
+     "complexity": "medium",
+     "desc": "Systematic operations for reading, writing, and managing memory access patterns based on recency, relevance, and importance for multi-agent agentic AI systems"
+    },
+    {
+     "name": "Hierarchical Memory",
+     "slug": "hierarchical-memory",
+     "complexity": "high",
+     "desc": "Multi-level memory structure with different retention policies"
+    },
+    {
+     "name": "Contextual Structured Memory(CSM)",
+     "slug": "contextual-structured-memory",
+     "complexity": "high",
+     "desc": "Memory organized in predefined, interpretable formats supporting symbolic reasoning and precise querying for multi-agent agentic AI systems"
+    },
+    {
+     "name": "Contextual Unstructured Memory(CUM)",
+     "slug": "contextual-unstructured-memory",
+     "complexity": "high",
+     "desc": "Explicit, modality-general memory system storing information across heterogeneous inputs for multi-agent agentic AI systems"
+    },
+    {
+     "name": "Memory Consolidation",
+     "slug": "memory-consolidation",
+     "complexity": "high",
+     "desc": "Process of strengthening and organizing memories over time"
+    },
+    {
+     "name": "Working Memory Patterns(WMP)",
+     "slug": "working-memory-patterns",
+     "complexity": "medium",
+     "desc": "Short-term context management for active cognitive processing"
+    },
+    {
+     "name": "Distributed Memory Architectures(DMA)",
+     "slug": "distributed-memory-architectures",
+     "complexity": "high",
+     "desc": "Scalable memory systems distributed across multiple agents with coordinated access patterns and consistency mechanisms"
+    },
+    {
+     "name": "Attention Mechanisms",
+     "slug": "attention-mechanisms",
+     "complexity": "high",
+     "desc": "Selective focus on relevant information for current context"
+    },
+    {
+     "name": "Latent Memory Networks(LMN)",
+     "slug": "latent-memory-networks",
+     "complexity": "high",
+     "desc": "Store reasoning patterns and knowledge in continuous latent space representations for multi-agent agentic AI systems"
+    },
+    {
+     "name": "Generative Agents Memory(GAM)",
+     "slug": "generative-agents-memory",
+     "complexity": "high",
+     "desc": "Give an agent a memory stream of timestamped observations that is retrieved by a weighted score of recency, importance, and relevance rather than similarity alone. Periodically the agent reflects, synthesizing higher-level insights from recent memories and writing them back into the stream so they drive future planning. This is the design from the Stanford generative agents (Smallville) study."
+    },
+    {
+     "name": "Temporal Knowledge Graph Memory(TKG)",
+     "slug": "temporal-knowledge-graph-memory",
+     "complexity": "high",
+     "desc": "An agent memory substrate that stores facts as edges in a knowledge graph, each edge carrying explicit bi-temporal validity: valid time (when the fact was true in the world) and transaction time (when it was ingested). When new information contradicts an existing fact, the edge is invalidated by writing a t_invalid timestamp rather than deleted, so the graph can answer what was believed and when, and never serves a stale fact as current. This is the Zep and Graphiti design. Distinct from `semantic-memory-networks` and the static `knowledge-graph-construction` pattern in knowledge-representation, which model a graph with no time dimension or fact-supersession."
+    },
+    {
+     "name": "Memory Decay &amp; Forgetting Policies(MDF)",
+     "slug": "memory-forgetting-policies",
+     "complexity": "high",
+     "desc": "Explicit governance of what an agent drops rather than what it keeps: time-based expiry (TTL), usage and relevance decay (Ebbinghaus-style exponential decay that is boosted each time an item is accessed), staleness detection for facts that are still relevant but no longer true, and hard deletion for right-to-be-forgotten and GDPR Article 17 compliance. Unbounded memory measurably degrades agent performance, so forgetting is a first-class design axis. Distinct from `memory-consolidation` (which compresses and abstracts memories into schemas, the opposite operation) and from `generative-agents-memory` (which uses recency decay only as a retrieval score, not as an eviction or deletion policy)."
+    }
+   ]
+  },
+  {
+   "slug": "learning-adaptation",
+   "name": "Learning and Adaptation",
+   "desc": "Dynamic learning and behavioral adaptation patterns",
+   "techniques": [
+    {
+     "name": "Reinforcement Learning from Human Feedback(RLHF)",
+     "slug": "reinforcement-learning-from-human-feedback",
+     "complexity": "high",
+     "desc": "Fine-tuning a policy with reinforcement learning against a reward model learned from human preference judgments"
+    },
+    {
+     "name": "Direct Preference Optimization(DPO)",
+     "slug": "direct-preference-optimization",
+     "complexity": "high",
+     "desc": "Offline preference optimization with a classification loss over chosen and rejected responses, without training an explicit reward model"
+    },
+    {
+     "name": "In-Context Learning(ICL)",
+     "slug": "in-context-learning",
+     "complexity": "medium",
+     "desc": "Conditioning a model on instructions and demonstrations in the current context, without updating model parameters"
+    },
+    {
+     "name": "Meta-Learning Systems(MLS)",
+     "slug": "meta-learning",
+     "complexity": "high",
+     "desc": "Optimizing across a distribution of tasks so a model can adapt to a new related task from limited data"
+    },
+    {
+     "name": "Continual Learning(CL)",
+     "slug": "continual-learning",
+     "complexity": "high",
+     "desc": "Learning from a sequence of tasks or data distributions while measuring and mitigating loss of earlier capabilities"
+    },
+    {
+     "name": "Self-Improving Systems(SIS)",
+     "slug": "self-improving-systems",
+     "complexity": "high",
+     "desc": "Controlled systems that propose changes to prompts, tools, or policies and retain them only after independent evaluation and approval"
+    },
+    {
+     "name": "Constitutional AI(CAI)",
+     "slug": "constitutional-ai",
+     "complexity": "high",
+     "desc": "Using an explicit set of principles to guide self-critique, revision, and AI-generated preference feedback during training"
+    },
+    {
+     "name": "Reinforcement Learning from AI Feedback(RLAIF)",
+     "slug": "reinforcement-learning-from-ai-feedback",
+     "complexity": "high",
+     "desc": "Training a policy from preference judgments produced by an AI evaluator under human-defined criteria and oversight"
+    },
+    {
+     "name": "Test-Time Scaling(TTS)",
+     "slug": "test-time-scaling",
+     "complexity": "high",
+     "desc": "Allocating additional inference-time computation to candidate generation, search, verification, or refinement"
+    },
+    {
+     "name": "Odds Ratio Preference Optimization(ORPO)",
+     "slug": "odds-ratio-preference-optimization",
+     "complexity": "high",
+     "desc": "Reference-free preference alignment that adds an odds-ratio penalty for rejected responses to the chosen-response language-modeling objective"
+    },
+    {
+     "name": "Simple Preference Optimization(SimPO)",
+     "slug": "simple-preference-optimization",
+     "complexity": "high",
+     "desc": "Reference-free preference optimization using length-normalized sequence log-probability as an implicit reward with a target reward margin"
+    },
+    {
+     "name": "Supervised Learning for Agents(SLA)",
+     "slug": "supervised-learning-adaptation",
+     "complexity": "medium",
+     "desc": "Adapting an agent component from labeled input-output examples with explicit validation and fallback behavior"
+    },
+    {
+     "name": "Unsupervised Learning for Agents(ULA)",
+     "slug": "unsupervised-learning-adaptation",
+     "complexity": "high",
+     "desc": "Learning representations, clusters, or anomaly scores from data without task labels, followed by domain validation"
+    },
+    {
+     "name": "Online Learning for Agents(OLA)",
+     "slug": "online-learning-adaptation",
+     "complexity": "high",
+     "desc": "Incrementally updating a model from a data stream while controlling drift, feedback loops, and rollback risk"
+    },
+    {
+     "name": "Memory-Based Learning(MBL)",
+     "slug": "memory-based-learning",
+     "complexity": "medium",
+     "desc": "Improves agent behavior by retrieving and reusing stored experiences at decision time instead of updating model weights. Past interactions, outcomes, and user feedback are indexed as memories and recalled by similarity to shape new decisions, enabling continual personalization without retraining."
+    },
+    {
+     "name": "Automatic Prompt Optimization(APO)",
+     "slug": "prompt-optimization",
+     "complexity": "high",
+     "desc": "Treats the prompts and instructions inside an agent pipeline as learnable parameters that are optimized programmatically against a metric and a labeled dataset, instead of being hand tuned. Optimizers bootstrap few-shot demonstrations and search over instruction wordings, and reflective methods mutate prompts by reading execution traces of past failures."
+    },
+    {
+     "name": "RL from Verifiable Rewards (RLVR)(RLVR)",
+     "slug": "rl-verifiable-rewards",
+     "complexity": "high",
+     "desc": "Trains reasoning models with reinforcement learning against automatically checkable rewards, such as whether a math answer matches ground truth or code passes its tests, rather than against learned preference models. Because the reward only scores final correctness, long chains of thought with backtracking and self-verification emerge without supervised rationales. This is distinct from RLHF, RLAIF, and DPO, which optimize human or AI preferences."
+    },
+    {
+     "name": "Process Reward Models &amp; Verifier-Guided Search(PRM)",
+     "slug": "process-reward-models",
+     "complexity": "high",
+     "desc": "Uses a reward model that scores each intermediate reasoning step (process supervision) rather than only the final answer (outcome supervision). The per-step scores rank and prune candidate solutions during best-of-N sampling or tree search, concentrating test-time compute on the most promising branches and on harder problems."
+    },
+    {
+     "name": "Skill Library (Voyager)(SL)",
+     "slug": "skill-library",
+     "complexity": "high",
+     "desc": "An agent writes reusable, executable skills (programs) for behaviors it discovers, stores them in a library indexed by embeddings of their descriptions, and later retrieves and composes them into more complex skills. The library grows as a form of procedural memory, so capability compounds over time without gradient updates or catastrophic forgetting."
+    },
+    {
+     "name": "Agentic Context Engineering (Evolving Playbook)(ACE)",
+     "slug": "agentic-context-engineering",
+     "complexity": "high",
+     "desc": "Treats an agent&#x27;s context as an evolving playbook of concrete strategies that is improved by three roles: a Generator that produces reasoning traces on real tasks, a Reflector that extracts lessons from what succeeded or failed, and a Curator that merges those lessons into the playbook as compact structured delta updates. Because updates are incremental appends and edits rather than full rewrites, the playbook accumulates domain detail instead of suffering context collapse and brevity bias, where iterative rewriting erodes hard-won specifics. It needs no labeled supervision and applies both offline as an improved system prompt and online as agent memory, with the ICLR 2026 ACE paper reporting roughly +10.6% on agent tasks and +8.6% on finance. Distinct from `prompt-optimization`: DSPy and GEPA optimize a prompt artifact against a metric, whereas ACE grows a natural-language playbook through delta curation with an explicit anti-collapse mechanism spanning prompt and memory, and unlike `skill-library` (executable skills) or `self-improving-systems` (governed prompt and tool edits behind approval gates) the improving artifact is a curated natural-language playbook."
+    }
+   ]
+  },
+  {
+   "slug": "fault-tolerance-infrastructure",
+   "name": "Fault Tolerance Infrastructure",
+   "desc": "Infrastructure-level fault tolerance patterns for AI system reliability",
+   "techniques": [
+    {
+     "name": "LLM Checkpoint Recovery (Mnemosyne)(LCR)",
+     "slug": "llm-checkpoint-recovery",
+     "complexity": "high",
+     "desc": "Lightweight device proxy architecture for LLM fault recovery with just-in-time checkpointing and partial topology reconstruction"
+    },
+    {
+     "name": "Agent Context Preservation and Recovery(ACP)",
+     "slug": "agent-context-preservation",
+     "complexity": "medium",
+     "desc": "Systematic preservation and recovery of agent conversation context, memory state, and reasoning chains during failures"
+    },
+    {
+     "name": "Predictive Agent Fault Tolerance(PAF)",
+     "slug": "predictive-agent-fault-tolerance",
+     "complexity": "high",
+     "desc": "AI-driven predictive systems that anticipate agent failures before they occur and implement preemptive recovery measures"
+    },
+    {
+     "name": "Agent Communication Fault Tolerance(ACF)",
+     "slug": "agent-communication-fault-tolerance",
+     "complexity": "high",
+     "desc": "Comprehensive fault tolerance mechanisms for agent-to-agent communication failures, message routing recovery, and protocol-agnostic resilience"
+    },
+    {
+     "name": "Agentic SRE (Self-Healing Operations)(ASRE)",
+     "slug": "self-healing-operations-loop",
+     "complexity": "high",
+     "desc": "A closed-loop operations architecture in which agents keep an external system healthy: detect an anomaly, diagnose the probable root cause, execute a policy-bounded remediation, then verify recovery against reliability objectives before closing the loop. It is typically built as a role-specialized team (detector, diagnoser, remediator, verifier) running under human-on-the-loop governance, where engineers define policy, guardrails, and the set of allowed actions while the agents execute within those bounds and report. Least-privilege permissions and policy-as-code keep remediations inside a safe envelope, with higher-risk actions gated on human approval. Distinct from `predictive-agent-fault-tolerance`: that keeps the agent system itself alive, whereas this is agents performing reliability work on the external systems they operate."
+    }
+   ]
+  },
+  {
+   "slug": "knowledge-retrieval",
+   "name": "Knowledge Retrieval (RAG)",
+   "desc": "Information retrieval and augmented generation patterns",
+   "techniques": [
+    {
+     "name": "Naive RAG(NRAG)",
+     "slug": "naive-rag",
+     "complexity": "low",
+     "desc": "Foundational &quot;Retrieve-Read&quot; framework following traditional indexing, retrieval, and generation process"
+    },
+    {
+     "name": "Advanced RAG(ARAG)",
+     "slug": "advanced-rag",
+     "complexity": "medium",
+     "desc": "Enhanced RAG with pre-retrieval and post-retrieval optimizations including query expansion, reranking, and context curation"
+    },
+    {
+     "name": "Modular RAG(MRAG)",
+     "slug": "modular-rag",
+     "complexity": "high",
+     "desc": "Flexible RAG architecture with interchangeable modules supporting iterative, adaptive, and non-sequential retrieval patterns"
+    },
+    {
+     "name": "Self-RAG(SRAG)",
+     "slug": "self-rag",
+     "complexity": "high",
+     "desc": "Self-reflective RAG that adaptively determines retrieval necessity and evaluates retrieval quality through reflection tokens"
+    },
+    {
+     "name": "Corrective RAG (CRAG)(CRAG)",
+     "slug": "corrective-rag",
+     "complexity": "high",
+     "desc": "RAG system that automatically detects and corrects poor retrieval results through quality assessment and re-retrieval"
+    },
+    {
+     "name": "Graph RAG(GRAG)",
+     "slug": "graph-rag",
+     "complexity": "high",
+     "desc": "Knowledge graph-enhanced RAG using entity relationships and community detection for global sensemaking queries"
+    },
+    {
+     "name": "Multimodal RAG(MMRAG)",
+     "slug": "multimodal-rag",
+     "complexity": "high",
+     "desc": "Retrieval-augmented generation that handles and integrates text, images, audio, video, and structured data sources"
+    },
+    {
+     "name": "Agentic RAG(AgRAG)",
+     "slug": "agentic-rag-systems",
+     "complexity": "high",
+     "desc": "Autonomous retrieval-augmented generation systems with self-directed planning, retrieval, and reasoning capabilities"
+    },
+    {
+     "name": "Latent Knowledge Retrieval(LKR)",
+     "slug": "latent-knowledge-retrieval",
+     "complexity": "high",
+     "desc": "Retrieve information based on abstract reasoning patterns rather than explicit queries in multi-agent agentic AI systems"
+    },
+    {
+     "name": "Query Transformation Retrieval(QTR)",
+     "slug": "query-transformation-retrieval",
+     "complexity": "medium",
+     "desc": "Rewrite or expand the user query before retrieval so embeddings land near relevant documents. HyDE generates a hypothetical answer document and embeds that to find real neighbors, multi-query expansion issues several reformulations and fuses the results, and step-back prompting abstracts the question to retrieve underlying principles first. These transformations give large zero-shot retrieval gains without training the retriever."
+    },
+    {
+     "name": "Hierarchical Index Retrieval (RAPTOR)(HIR)",
+     "slug": "hierarchical-index-retrieval",
+     "complexity": "high",
+     "desc": "Build the retrieval index as a multi-level tree instead of a flat list of chunks. RAPTOR recursively embeds, clusters, and summarizes chunks so a query can retrieve from any abstraction level, returning big-picture synthesis or leaf detail as needed. Anthropic contextual retrieval prepends an LLM-written context blurb to each chunk before embedding so isolated chunks stay grounded in the whole document."
+    },
+    {
+     "name": "Deep Research Agent(DRA)",
+     "slug": "deep-research-agent",
+     "complexity": "high",
+     "desc": "A composite long-horizon research architecture that clarifies the user&#x27;s intent, drafts an explicit research plan, then runs an iterative search, read, and evaluate-gaps loop across many sources (often via parallel subagents) before synthesizing a single long-form report with inline citation attribution. This is the assembled archetype behind OpenAI Deep Research, Gemini Deep Research, and Anthropic Research, with its own survey literature. Distinct from `agentic-rag-systems`, which applies retrieval decisioning inside a single pipeline rather than running a multi-round, plan-driven report synthesis. Distinct from `supervisor-worker-pattern`, which is generic orchestration with no research-specific plan, gap-check, or citation pass."
+    },
+    {
+     "name": "Structure-Aware Codebase Retrieval (Repo Map)",
+     "slug": "codebase-structure-retrieval",
+     "complexity": "high",
+     "desc": "Retrieval specialized for code that exploits program structure instead of (or alongside) embeddings. The repo is parsed into ASTs and a symbol and dependency graph with tree-sitter; files and symbols are ranked by graph centrality (Aider&#x27;s PageRank-weighted tag map), graph-traversal tools walk call, definition, and import edges (AutoCodeRover and code-graph agents), and spectrum-based fault localization can narrow the search from failing tests. This lets a coding agent assemble a minimal, relevant context from a repository far larger than its context window. Distinct from `graph-rag`, whose graph is built from document entities rather than from code semantics."
+    }
+   ]
+  },
+  {
+   "slug": "reasoning-techniques",
+   "name": "Reasoning Techniques",
+   "desc": "Advanced reasoning and thinking techniques",
+   "techniques": [
+    {
+     "name": "Chain-of-Thought(CoT)",
+     "slug": "cot",
+     "complexity": "low",
+     "desc": "Breaks down complex problems into step-by-step intermediate reasoning steps"
+    },
+    {
+     "name": "Tree-of-Thought(ToT)",
+     "slug": "tot",
+     "complexity": "high",
+     "desc": "Explores multiple reasoning paths through branching and backtracking"
+    },
+    {
+     "name": "Graph-of-Thought(GoT)",
+     "slug": "got",
+     "complexity": "high",
+     "desc": "Non-linear reasoning with thoughts as nodes and dependencies as edges"
+    },
+    {
+     "name": "ReAct",
+     "slug": "react",
+     "complexity": "high",
+     "desc": "Combines reasoning with acting through external tool use"
+    },
+    {
+     "name": "Forest-of-Thoughts(FoT)",
+     "slug": "fot",
+     "complexity": "high",
+     "desc": "Generates multiple reasoning trees to enhance diversity and robustness"
+    },
+    {
+     "name": "Metacognitive Monitoring(MCM)",
+     "slug": "metacognitive-monitoring",
+     "complexity": "high",
+     "desc": "Self-awareness and monitoring of reasoning quality and confidence"
+    },
+    {
+     "name": "Test-Time Compute Scaling(TTC)",
+     "slug": "test-time-compute",
+     "complexity": "high",
+     "desc": "Dynamically allocates computational resources based on problem complexity"
+    },
+    {
+     "name": "Reflective Monte Carlo Tree Search(R-MCTS)",
+     "slug": "reflective-mcts",
+     "complexity": "high",
+     "desc": "Enhanced MCTS with contrastive reflection for improved exploration"
+    },
+    {
+     "name": "Least-to-Most Prompting(LtM)",
+     "slug": "least-to-most",
+     "complexity": "medium",
+     "desc": "Progressive problem decomposition from simple to complex components"
+    },
+    {
+     "name": "Analogical Reasoning(AR)",
+     "slug": "analogical-reasoning",
+     "complexity": "medium",
+     "desc": "Solves problems by finding and applying similar patterns from known domains"
+    },
+    {
+     "name": "Causal Reasoning(CR)",
+     "slug": "causal-reasoning",
+     "complexity": "high",
+     "desc": "Establishes and follows explicit cause-and-effect relationships"
+    },
+    {
+     "name": "Abductive Reasoning(ABR)",
+     "slug": "abductive-reasoning",
+     "complexity": "high",
+     "desc": "Infers the most likely explanation from incomplete observations"
+    },
+    {
+     "name": "Step-Back Prompting(SBP)",
+     "slug": "step-back-prompting",
+     "complexity": "medium",
+     "desc": "Abstracts to higher-level principles before tackling specific problems"
+    },
+    {
+     "name": "Buffer of Thoughts(BoT)",
+     "slug": "buffer-of-thoughts",
+     "complexity": "high",
+     "desc": "Maintains a dynamic buffer of reusable thought patterns for analogical reasoning"
+    },
+    {
+     "name": "Skeleton of Thoughts(SoT)",
+     "slug": "skeleton-of-thoughts",
+     "complexity": "medium",
+     "desc": "Generates a skeleton outline, then expands each point in parallel to cut latency while keeping structure"
+    },
+    {
+     "name": "Latent Recurrent Thinking(LRT)",
+     "slug": "lrt",
+     "complexity": "high",
+     "desc": "Iterative reasoning within continuous latent space without explicit token generation"
+    },
+    {
+     "name": "Self-Consistency(SC)",
+     "slug": "self-consistency",
+     "complexity": "medium",
+     "desc": "Samples multiple diverse chain-of-thought paths at nonzero temperature, then aggregates their final answers by majority or confidence-weighted vote. Because a correct answer tends to be reached by many different reasoning paths while individual mistakes scatter, the consensus answer is far more reliable than any single greedy decode."
+    },
+    {
+     "name": "Chain of Verification (CoVe)(CoVe)",
+     "slug": "chain-of-verification",
+     "complexity": "medium",
+     "desc": "Reduces hallucination by drafting a baseline answer, planning a set of verification questions about it, answering each of those questions independently so the checks are not biased by the draft, and then revising the final answer using only the verified facts. Factored verification, where checks run in separate contexts, outperforms letting the model re-check its own draft, which tends to repeat its own mistakes."
+    },
+    {
+     "name": "Proactive Clarification &amp; Active Disambiguation(PCAD)",
+     "slug": "proactive-clarification",
+     "complexity": "medium",
+     "desc": "Before planning or acting on an underspecified request, the agent first decides whether to ask at all (ambiguity detection), then generates the maximally informative clarifying question (framed as expected information gain over the plausible interpretations), and only then commits to a plan. Off-the-shelf LLMs recognize ambiguity when explicitly asked yet overwhelmingly default to a silent single-guess answer, so asking is an explicit trained or prompted behavior. Distinct from mixed-initiative-interface-patterns, which is about UI control-switching, and from human-in-the-loop, which approves an already-chosen action rather than disambiguating intent."
+    }
+   ]
+  },
+  {
+   "slug": "security-privacy",
+   "name": "Security &amp; Privacy Patterns",
+   "desc": "Comprehensive security, privacy, and ethical AI patterns for enterprise deployment",
+   "techniques": [
+    {
+     "name": "Layered Defense Pattern(LDP)",
+     "slug": "layered-defense-pattern",
+     "complexity": "high",
+     "desc": "Multi-layered security architecture implementing the Swiss Cheese Model for AI safety"
+    },
+    {
+     "name": "Contextual Guardrailing Pattern(CGP)",
+     "slug": "contextual-guardrailing-pattern",
+     "complexity": "high",
+     "desc": "Dynamic rule enforcement based on context, data flow requirements, and conditional patterns"
+    },
+    {
+     "name": "GuardAgent Pattern(GAP)",
+     "slug": "guard-agent-pattern",
+     "complexity": "high",
+     "desc": "Dedicated guardrail agent monitoring and protecting target agents through dynamic safety checks"
+    },
+    {
+     "name": "Intrinsic Alignment Pattern(IAP)",
+     "slug": "intrinsic-alignment-pattern",
+     "complexity": "high",
+     "desc": "Internal observation points that cannot be manipulated by the agent, preventing deep scheming"
+    },
+    {
+     "name": "Memory Poisoning Prevention Pattern(MPP)",
+     "slug": "memory-poisoning-prevention",
+     "complexity": "high",
+     "desc": "Protects agent memory systems from malicious manipulation and gradual corruption"
+    },
+    {
+     "name": "Tool Misuse Prevention Pattern(TMP)",
+     "slug": "tool-misuse-prevention",
+     "complexity": "high",
+     "desc": "Prevents agents from being manipulated into executing malicious actions through tools"
+    },
+    {
+     "name": "Privilege Compromise Mitigation Pattern(PCM)",
+     "slug": "privilege-compromise-mitigation",
+     "complexity": "high",
+     "desc": "Prevents privilege escalation and unauthorized operations through strict access control"
+    },
+    {
+     "name": "AGrail Adaptive Pattern(AAP)",
+     "slug": "agrail-adaptive-pattern",
+     "complexity": "high",
+     "desc": "Lifelong adaptive safety system that dynamically generates and refines safety checks"
+    },
+    {
+     "name": "MAESTRO Multi-Agent Security Pattern(MAS)",
+     "slug": "maestro-multi-agent-security",
+     "complexity": "high",
+     "desc": "Comprehensive threat modeling for multi-agent environments with security orchestration"
+    },
+    {
+     "name": "System Prompt Protection Pattern(SPP)",
+     "slug": "system-prompt-protection",
+     "complexity": "medium",
+     "desc": "Protects system prompts from extraction and manipulation attempts"
+    },
+    {
+     "name": "Differential Privacy Patterns(DPP)",
+     "slug": "differential-privacy-patterns",
+     "complexity": "high",
+     "desc": "Privacy-preserving data processing with mathematical privacy guarantees"
+    },
+    {
+     "name": "Zero-Trust Agent Architecture(ZTAA)",
+     "slug": "zero-trust-agent-architecture",
+     "complexity": "high",
+     "desc": "Never trust, always verify approach for agent security"
+    },
+    {
+     "name": "Secure Multi-Party Computation(SMPC)",
+     "slug": "secure-multi-party-computation",
+     "complexity": "high",
+     "desc": "Privacy-preserving collaboration between multiple agents without revealing private data"
+    },
+    {
+     "name": "Compliance Automation Patterns(CAP)",
+     "slug": "compliance-automation-patterns",
+     "complexity": "high",
+     "desc": "Automated GDPR, HIPAA, SOX, and regulatory compliance enforcement"
+    },
+    {
+     "name": "Threat Detection &amp; Response(TDR)",
+     "slug": "threat-detection-response",
+     "complexity": "high",
+     "desc": "Real-time security monitoring and automated threat response"
+    },
+    {
+     "name": "Identity &amp; Access Management(IAM)",
+     "slug": "identity-access-management",
+     "complexity": "high",
+     "desc": "Secure agent authentication, authorization, and identity verification"
+    },
+    {
+     "name": "Data Anonymization Patterns(DAP)",
+     "slug": "data-anonymization-patterns",
+     "complexity": "high",
+     "desc": "Comprehensive data anonymization techniques including K-anonymity, L-diversity, T-closeness, and synthetic data generation for agentic systems"
+    },
+    {
+     "name": "Confidential Computing Patterns(CCP)",
+     "slug": "confidential-computing-patterns",
+     "complexity": "high",
+     "desc": "Hardware-based trusted execution environments (TEEs) protecting AI agents and data processing in untrusted environments"
+    },
+    {
+     "name": "Hybrid Secret &amp; Cache Management Pattern(HSCM)",
+     "slug": "hybrid-secret-cache-management",
+     "complexity": "high",
+     "desc": "Multi-tier secure storage architecture combining local device vaults, distant server vaults, and encrypted caching for agentic AI systems"
+    },
+    {
+     "name": "Local-Distant Agent Data Protection Pattern(LDADP)",
+     "slug": "local-distant-agent-data-protection",
+     "complexity": "high",
+     "desc": "Distributed agentic architecture combining local processing agents with distant aggregation agents using advanced anonymization techniques for privacy-preserving AI"
+    },
+    {
+     "name": "Dual LLM &amp; Capability Security (CaMeL)(CaMeL)",
+     "slug": "dual-llm-capability-security",
+     "complexity": "high",
+     "desc": "Splits the agent into a privileged LLM that sees only trusted user instructions and plans control and data flow, and a quarantined LLM that processes untrusted content but can never influence control flow. A capability-tracking interpreter enforces explicit data-flow policies, so instructions injected into tool outputs can never trigger unauthorized actions. This is defense by design rather than probabilistic filtering."
+    },
+    {
+     "name": "Spotlighting &amp; Data Marking(SDM)",
+     "slug": "spotlighting-data-marking",
+     "complexity": "low",
+     "desc": "A family of low-cost transformations that make untrusted external text reliably distinguishable from trusted instructions. Delimiting wraps external content in unique boundaries, datamarking interleaves a special token through every whitespace of the untrusted span, and encoding such as base64 further separates it from the instruction channel. It is a cheap first line of defense against indirect prompt injection but degrades under adaptive attack, so it should be paired with layered defenses."
+    },
+    {
+     "name": "Agent Sandboxing(SBX)",
+     "slug": "agent-sandboxing",
+     "complexity": "medium",
+     "desc": "Runs agent-generated code, shell commands, and untrusted-content processing inside isolated environments with a scoped filesystem and a proxy-mediated network egress allow-list. Even a prompt-injected agent cannot read host secrets, touch files outside its scope, or exfiltrate data to an unapproved domain. Isolation is built from OS primitives such as Seatbelt and bubblewrap, from microVMs or containers, or from dedicated sandbox infrastructure such as E2B, Modal, and Docker."
+    },
+    {
+     "name": "Constitutional Classifiers(CC)",
+     "slug": "constitutional-classifiers",
+     "complexity": "medium",
+     "desc": "Lightweight input and output classifiers trained on synthetic data generated from a natural-language constitution that defines allowed and blocked content. They are cascaded so cheap screening covers all traffic while suspicious cases escalate, and the output classifier can halt a streaming generation the moment a violating token appears. This is distinct from Constitutional AI: Constitutional AI aligns the model during training, while Constitutional Classifiers are runtime guards trained from a constitution."
+    },
+    {
+     "name": "Authenticated Delegation &amp; Agent Identity(AD)",
+     "slug": "authenticated-delegation",
+     "complexity": "high",
+     "desc": "Gives agents a verifiable identity plus scoped, auditable authority to act on behalf of a user. Short-lived OAuth and OIDC tokens map to explicit capabilities, intent-bound delegation tokens encode what the agent is allowed to do, and verifiable credentials let agents establish trust across MCP and A2A hops. Every action carries a checkable claim, so authority can be constrained ahead of time and audited afterward, and out-of-scope requests are rejected at the resource server."
+    },
+    {
+     "name": "Blast-Radius Containment &amp; Autonomy Bounds(BRC)",
+     "slug": "blast-radius-containment",
+     "complexity": "high",
+     "desc": "Bounds the worst-case impact of a misfiring agent before it acts, rather than only detecting misuse after the fact. Tools are classified by reversibility and impact (read is free, write is validated, destructive is paused); authority is scoped least-privilege per task; autonomy is graduated (from assist, to propose-and-approve, to act-and-audit, to observe) and earned as reliability is proven; irreversible steps surface a dry-run or plan-preview so a human reviews the plan and not the aftermath; and a kill switch with state capture and quarantine can halt the agent mid-run. Distinct from human-in-the-loop: that is an oversight stance, while this bounds capability by reversibility. Distinct from agent-sandboxing: that isolates the execution environment, whereas this tiers per-tool reversibility and graduates autonomy. Distinct from tool-misuse-prevention: that defends against injection-driven misuse, not blast-radius classification."
+    }
+   ]
+  },
+  {
+   "slug": "evaluation-monitoring",
+   "name": "Evaluation and Monitoring",
+   "desc": "Performance assessment and system monitoring patterns",
+   "techniques": [
+    {
+     "name": "MLCommons AI Safety Benchmark v1.0(AILuminate)",
+     "slug": "mlcommons-ai-safety",
+     "complexity": "medium",
+     "desc": "Production-ready safety evaluation framework measuring AI system responses across 12 hazard categories with standardized testing protocols for deployment decisions."
+    },
+    {
+     "name": "AgentBench(AgentBench)",
+     "slug": "agentbench",
+     "complexity": "high",
+     "desc": "The original AgentBench study evaluated its published model roster across 8 diverse environments and multi-turn, open-ended settings."
+    },
+    {
+     "name": "TheAgentCompany Benchmark(TAC)",
+     "slug": "theagentcompany",
+     "complexity": "high",
+     "desc": "Benchmarks LLM agents on consequential real-world tasks that would typically be completed by multiple job roles in a software engineering company."
+    },
+    {
+     "name": "MLR-Bench(MLR-Bench)",
+     "slug": "mlr-bench",
+     "complexity": "high",
+     "desc": "Comprehensive benchmark for evaluating AI agents on open-ended machine learning research tasks from top ML conferences."
+    },
+    {
+     "name": "12-Factor Agent Methodology(12FA)",
+     "slug": "twelve-factor-agent",
+     "complexity": "high",
+     "desc": "Production-ready methodology adapting 12-factor app principles for scalable, maintainable agent systems with comprehensive monitoring and evaluation."
+    },
+    {
+     "name": "HELM Agent Evaluation Framework(HELM-AE)",
+     "slug": "helm-agent-eval",
+     "complexity": "high",
+     "desc": "Stanford CRFM&#x27;s Holistic Evaluation of Language Models extended for agent capabilities. The worked example is a dated benchmark snapshot, not a current model recommendation."
+    },
+    {
+     "name": "Human-in-the-Loop Agent (HULA)(HULA)",
+     "slug": "hula-framework",
+     "complexity": "high",
+     "desc": "Framework for human-in-the-loop evaluation and refinement of LLM-based agents, allowing engineers to guide and assess agent performance at each development stage."
+    },
+    {
+     "name": "CybersecEval 3(CSE3)",
+     "slug": "cyberseceval3",
+     "complexity": "high",
+     "desc": "Meta&#x27;s comprehensive cybersecurity benchmark for evaluating security risks of LLM agents in autonomous and multi-agent settings."
+    },
+    {
+     "name": "METR RE-Bench(RE-Bench)",
+     "slug": "metr-re-bench",
+     "complexity": "high",
+     "desc": "Benchmark for measuring performance of frontier model agents on ML research engineering tasks, comparing against human expert capabilities."
+    },
+    {
+     "name": "SWE-bench Suite(SWE-bench)",
+     "slug": "swe-bench-suite",
+     "complexity": "high",
+     "desc": "Software engineering benchmark suite including SWE-bench, SWE-bench Verified, and SWE-bench Live. Named comparison models in the example are historical baselines."
+    },
+    {
+     "name": "OSWorld(OSWorld)",
+     "slug": "osworld",
+     "complexity": "high",
+     "desc": "Executable desktop environments where an agent is scored on the state it leaves behind after doing real work across applications, files and the operating system."
+    },
+    {
+     "name": "Terminal-Bench(TB)",
+     "slug": "terminal-bench",
+     "complexity": "high",
+     "desc": "Hard command-line tasks in isolated environments, each with a human-written solution and tests that decide whether the agent actually finished."
+    },
+    {
+     "name": "SWE-bench Pro(SWE-Pro)",
+     "slug": "swe-bench-pro",
+     "complexity": "high",
+     "desc": "Software engineering tasks long enough to take a professional hours or days, drawn from repositories chosen so that memorising the answer is not an option."
+    },
+    {
+     "name": "GAIA: General AI Assistants Benchmark(GAIA)",
+     "slug": "gaia-benchmark",
+     "complexity": "high",
+     "desc": "The original GAIA benchmark tested reasoning, multimodality, browsing, and tool use. Its named model comparison is the paper&#x27;s historical baseline."
+    },
+    {
+     "name": "MMAU: Massive Multitask Agent Understanding(MMAU)",
+     "slug": "mmau-benchmark",
+     "complexity": "high",
+     "desc": "Holistic benchmark evaluating agents across five domains with 20 tasks and 3K+ prompts. The example preserves its published-era model roster."
+    },
+    {
+     "name": "WebArena Evaluation Suite(WebArena)",
+     "slug": "webarena-suite",
+     "complexity": "high",
+     "desc": "Comprehensive web agent evaluation including WebArena, VisualWebArena, and WorkArena for realistic web interaction testing in sandboxed environments."
+    },
+    {
+     "name": "EU AI Act Compliance Framework(EU-AIACT)",
+     "slug": "eu-ai-act-framework",
+     "complexity": "high",
+     "desc": "European Union regulatory framework for AI agent evaluation with risk-based classification, GPAI model requirements, and mandatory compliance for deployment in EU."
+    },
+    {
+     "name": "AISI Evaluation Framework(AISI-Eval)",
+     "slug": "aisi-evaluation-framework",
+     "complexity": "high",
+     "desc": "AI Safety Institute&#x27;s comprehensive evaluation framework for frontier AI systems, coordinated with NIST&#x27;s AI safety work for government-standard safety assessment."
+    },
+    {
+     "name": "MAPS: Multilingual Agent Performance &amp; Security(MAPS)",
+     "slug": "maps-benchmark",
+     "complexity": "high",
+     "desc": "Multilingual benchmark for agent performance and security across 12 languages. The example is a dated benchmark snapshot rather than a current model recommendation."
+    },
+    {
+     "name": "Constitutional AI Evaluation Framework(CAI-Eval)",
+     "slug": "constitutional-ai-evaluation",
+     "complexity": "high",
+     "desc": "Anthropic&#x27;s framework for evaluating AI safety through constitutional principles, including jailbreak resistance testing and harmlessness assessment."
+    },
+    {
+     "name": "Agent Observability &amp; Tracing(AOT)",
+     "slug": "agent-observability-tracing",
+     "complexity": "medium",
+     "desc": "Production step-level tracing that records every model call, tool call, workflow step, and sub-agent as a span in a single run tree, annotated with token, latency, and cost metrics. Standardized through OpenTelemetry GenAI semantic conventions (gen_ai.* attributes) and surfaced in platforms like LangSmith, Braintrust, and Datadog, it is the live signal for debugging non-deterministic failures in production, distinct from offline benchmarks that score behavior before deployment."
+    },
+    {
+     "name": "tau-bench (Tool-Agent-User)(TAU)",
+     "slug": "tau-bench",
+     "complexity": "high",
+     "desc": "Benchmark that places the agent between a simulated human user and a set of domain APIs (retail, airline) while it must obey a written policy document. Rather than checking a single response, it compares the final database state against a goal state after the full conversation. Its signature metric is pass^k, the probability of succeeding on all k independent trials of the same task, which exposes consistency failures that averaged pass@1 scores hide."
+    },
+    {
+     "name": "Eval-Driven Development (Agent CI)(EDD)",
+     "slug": "eval-driven-agent-development",
+     "complexity": "high",
+     "desc": "The development-lifecycle discipline of building agents and prompts against evals first. Curated golden datasets (roughly 50 to 500 cases weighted toward known failure modes) are version-controlled alongside the prompts, run as a regression suite on every pull request, and merge or promotion is gated on metric thresholds. The pipeline pins model and judge versions so a silent provider-side model update is detected as a regression instead of being quietly absorbed, and stages its checks as lint, then offline eval, then a cost gate before a change can merge. Distinct from agent-observability-tracing, which is runtime telemetry rather than pre-merge gating, and from fixed public benchmarks, which are not team-owned regression suites in CI."
+    },
+    {
+     "name": "Progressive Rollout &amp; Shadow Mode(PRS)",
+     "slug": "progressive-agent-rollout",
+     "complexity": "high",
+     "desc": "The deployment side of shipping an agent or prompt version safely. The candidate first runs in shadow mode, executing on real production traffic while its output is withheld from users and compared offline against the served version, then graduates to a canary on 1 to 5 percent of live traffic scored by online evals against a control, then a progressive ramp, with automatic rollback the moment a monitored metric regresses. Pairing online evals (scoring live traffic in flight) with offline evals catches the long-tail failures a static golden set cannot predict. Distinct from eval-driven-agent-development, which gates changes offline before merge, whereas this governs the online ramp after merge."
+    },
+    {
+     "name": "Synthetic User Simulation(SIM)",
+     "slug": "synthetic-user-simulation",
+     "complexity": "medium",
+     "desc": "An LLM-driven user simulator, parameterized by diverse personas such as confused, adversarial, impatient, or goal-shifting users, is used as a test harness that autonomously drives a conversational agent through many multi-turn dialogues. Running these simulated conversations at scale surfaces dropped context, policy violations, and hallucinations before real users encounter them, exploring branches of the dialogue tree that static single-turn golden cases cannot reach. It requires deliberate persona diversity and goal alignment to avoid the blind spot of a single cooperative simulator that behaves more agreeably than real users. Distinct from tau-bench, a fixed benchmark that embeds one user simulator, and from eval-driven-agent-development, whose goldens are static single-turn cases while this generates dynamic multi-turn traffic."
+    }
+   ]
+  },
+  {
+   "slug": "context-management",
+   "name": "Context Management",
+   "desc": "Strategic context window optimization and engineering patterns for AI agents",
+   "techniques": [
+    {
+     "name": "Context Processing Pipelines(CPP)",
+     "slug": "context-processing-pipelines",
+     "complexity": "high",
+     "desc": "Advanced multi-stage context transformation workflows with validation, quality assessment, and cross-modal integration"
+    },
+    {
+     "name": "Context Lifecycle Management(CLM)",
+     "slug": "context-lifecycle-management",
+     "complexity": "high",
+     "desc": "Enterprise-grade context versioning, audit trails, archival, and compliance management for production systems"
+    },
+    {
+     "name": "Hierarchical Context Architecture(HCA)",
+     "slug": "hierarchical-context-architecture",
+     "complexity": "high",
+     "desc": "Multi-level context organization with tree-structured hierarchies, inheritance, and scope isolation"
+    },
+    {
+     "name": "Context State Machines(CSM)",
+     "slug": "context-state-machines",
+     "complexity": "high",
+     "desc": "Dynamic context state management with finite state machines, validation, and recovery mechanisms"
+    },
+    {
+     "name": "Context Streaming Protocols(CTSP)",
+     "slug": "context-streaming-protocols",
+     "complexity": "high",
+     "desc": "Real-time context processing with continuous streams, buffering, flow control, and low-latency updates"
+    },
+    {
+     "name": "Context Write Patterns(CWP)",
+     "slug": "context-write-patterns",
+     "complexity": "medium",
+     "desc": "Systematic externalization of context through scratchpads, note-taking, and file system integration for unlimited persistent context"
+    },
+    {
+     "name": "Context Select Patterns(CSEL)",
+     "slug": "context-select-patterns",
+     "complexity": "high",
+     "desc": "Dynamic retrieval and assembly of relevant context through RAG, semantic search, and intelligent context curation"
+    },
+    {
+     "name": "Context Compress Patterns(CCP)",
+     "slug": "context-compress-patterns",
+     "complexity": "high",
+     "desc": "Semantic compression, summarization, and pruning techniques to maximize information density within context windows"
+    },
+    {
+     "name": "Context Isolate Patterns(CIP)",
+     "slug": "context-isolate-patterns",
+     "complexity": "medium",
+     "desc": "Strategic context partitioning across sub-agents and focused context windows for complex task decomposition"
+    },
+    {
+     "name": "Sliding Window Management(SWM)",
+     "slug": "sliding-window-management",
+     "complexity": "medium",
+     "desc": "Dynamic window management with recency bias, relevance scoring, and intelligent token retention strategies"
+    },
+    {
+     "name": "Semantic Context Compression(SCC)",
+     "slug": "semantic-context-compression",
+     "complexity": "high",
+     "desc": "AI-driven semantic compression using information lattice learning and lossy compression while preserving meaning"
+    },
+    {
+     "name": "Infini-Attention Architecture(IAA)",
+     "slug": "infini-attention-architecture",
+     "complexity": "high",
+     "desc": "Google&#x27;s breakthrough infinite context processing with bounded memory and compressive attention mechanisms"
+    },
+    {
+     "name": "Memory Block Architecture(MBA)",
+     "slug": "memory-block-architecture",
+     "complexity": "high",
+     "desc": "Structured context management through discrete, functional memory blocks with intelligent caching strategies"
+    },
+    {
+     "name": "KV Cache Optimization(KVO)",
+     "slug": "kv-cache-optimization",
+     "complexity": "high",
+     "desc": "Advanced Key-Value cache management, quantization, and distributed caching for production agent systems"
+    },
+    {
+     "name": "Context Engineering Frameworks(CEF)",
+     "slug": "context-engineering-frameworks",
+     "complexity": "high",
+     "desc": "Systematic context orchestration with XML-like structuring, dynamic assembly, and failure prevention"
+    },
+    {
+     "name": "Context Failure Prevention(CFP)",
+     "slug": "context-failure-prevention",
+     "complexity": "high",
+     "desc": "Protection against context poisoning, distraction, and degradation through monitoring and recovery mechanisms"
+    },
+    {
+     "name": "Multimodal Context Integration(MCI)",
+     "slug": "multimodal-context-integration",
+     "complexity": "high",
+     "desc": "Seamless integration and processing of text, image, audio, and structured data within unified context frameworks"
+    },
+    {
+     "name": "Filesystem as Context (Context Offloading)(FSC)",
+     "slug": "filesystem-as-context",
+     "complexity": "medium",
+     "desc": "Treat the agent&#x27;s own file tools plus the operating-system filesystem as unbounded, persistent, agent-operable external memory. Token-heavy tool outputs such as search results, page dumps, and large files are written to disk and replaced in the message history by a short reference (a path plus a one-line summary); the agent re-reads or greps the file on demand. This keeps the live context window small and the KV-cache prefix stable while preserving full recoverability, unlike lossy summarization. Distinct from `context-write-patterns` (which teaches memory abstractions like buffers and vector stores rather than the agent reading and writing its own scratch files) and from `plan-todo-recitation`, which is only the todo.md-recitation slice of this larger idea."
+    },
+    {
+     "name": "Context Editing &amp; Tool-Result Clearing(CETC)",
+     "slug": "context-editing-tool-clearing",
+     "complexity": "medium",
+     "desc": "A harness or API-level primitive that automatically evicts stale content from the live context window once it crosses a token threshold, most often by surgically replacing old tool_result blocks with short placeholders while keeping the matching tool_use record intact. Because file reads, search hits, and API dumps are re-fetchable, they are dropped at zero inference cost and re-pulled only if a later turn actually needs them, which keeps the KV-cache prefix stable and counters context rot on long loops. Anthropic ships this as clear_tool_uses_20250919 and compact_20260112, with a reported ~84% token reduction on a 100-turn web-search evaluation and a 29-39% performance lift. Distinct from `context-compress-patterns`: clearing losslessly evicts re-fetchable raw results rather than lossily summarizing them, unlike `filesystem-as-context` it needs no explicit write-to-disk offload step, and unlike `memory-forgetting-policies` it is not about decaying long-term memory but about pruning the working window."
+    }
+   ]
+  },
+  {
+   "slug": "ui-ux-patterns",
+   "name": "UI/UX &amp; Human-AI Interaction",
+   "desc": "Comprehensive user interface, experience, and human-AI collaboration patterns for agentic AI systems",
+   "techniques": [
+    {
+     "name": "Human-in-the-Loop(HITL)",
+     "slug": "human-in-the-loop",
+     "complexity": "medium",
+     "desc": "Strategic integration of human judgment at critical decision points in AI workflows"
+    },
+    {
+     "name": "Human On the Loop(HOTL)",
+     "slug": "human-on-the-loop",
+     "complexity": "high",
+     "desc": "Human supervisory oversight of autonomous AI systems with ability to monitor, intervene, or take control when necessary"
+    },
+    {
+     "name": "Progressive Disclosure UI Patterns(PDP)",
+     "slug": "progressive-disclosure-patterns",
+     "complexity": "high",
+     "desc": "Interface patterns for gradually revealing agent capabilities, reasoning, and complex information to prevent cognitive overload"
+    },
+    {
+     "name": "Confidence Visualization UI Patterns(CVP)",
+     "slug": "confidence-visualization-patterns",
+     "complexity": "high",
+     "desc": "Visual interface elements for displaying AI confidence levels, uncertainty, and prediction reliability in user-friendly formats"
+    },
+    {
+     "name": "Mixed-Initiative Interface Patterns(MIP)",
+     "slug": "mixed-initiative-interface-patterns",
+     "complexity": "high",
+     "desc": "UI patterns for seamless control switching between human and AI agents, enabling collaborative initiative-taking"
+    },
+    {
+     "name": "Agent Status &amp; Activity UI Patterns(ASP)",
+     "slug": "agent-status-activity-patterns",
+     "complexity": "medium",
+     "desc": "Interface elements showing real-time agent activities, thinking states, and operational status for user awareness"
+    },
+    {
+     "name": "Conversational Interface Patterns(CIP)",
+     "slug": "conversational-interface-patterns",
+     "complexity": "high",
+     "desc": "Advanced conversational UI/UX patterns that move beyond traditional chatbots to agent-driven, multimodal experiences"
+    },
+    {
+     "name": "Agent Collaboration UX(ACX)",
+     "slug": "agent-collaboration-ux",
+     "complexity": "high",
+     "desc": "User experience patterns for multi-agent coordination, handoffs, and collaborative workflows with transparent orchestration"
+    },
+    {
+     "name": "Trust and Transparency Patterns(TTP)",
+     "slug": "trust-transparency-patterns",
+     "complexity": "high",
+     "desc": "Design patterns for building user trust through explainable AI interfaces, decision transparency, and source attribution"
+    },
+    {
+     "name": "Adaptive Interface Patterns(AIP)",
+     "slug": "adaptive-interface-patterns",
+     "complexity": "high",
+     "desc": "Dynamic UI/UX adaptation and creation patterns that personalize agent interfaces based on user context, behavior, and preferences"
+    },
+    {
+     "name": "Context Window Management UI(CWM)",
+     "slug": "context-window-management-patterns",
+     "complexity": "medium",
+     "desc": "Visual patterns for managing LLM context limits, token usage, and context window optimization in agent interfaces"
+    },
+    {
+     "name": "Monitoring and Control Patterns(MON)",
+     "slug": "monitoring-control-patterns",
+     "complexity": "high",
+     "desc": "Mission-control style interfaces for real-time agent oversight, intervention capabilities, and system monitoring"
+    },
+    {
+     "name": "Error Handling and Recovery Patterns(ERP)",
+     "slug": "error-recovery-patterns",
+     "complexity": "medium",
+     "desc": "Comprehensive error communication and recovery interface patterns for graceful failure handling in agent systems"
+    },
+    {
+     "name": "Onboarding and Education Patterns(OEP)",
+     "slug": "onboarding-education-patterns",
+     "complexity": "medium",
+     "desc": "User education and onboarding patterns for introducing agent capabilities, building appropriate mental models, and fostering trust"
+    },
+    {
+     "name": "Privacy and Security UX(PSX)",
+     "slug": "privacy-security-ux",
+     "complexity": "high",
+     "desc": "Privacy-first design patterns for agent systems with transparent data handling, granular controls, and user empowerment"
+    },
+    {
+     "name": "Accessibility in Agent Design(AAD)",
+     "slug": "accessibility-agent-design",
+     "complexity": "high",
+     "desc": "Universal design patterns for accessible agent interfaces supporting diverse abilities and assistive technologies"
+    },
+    {
+     "name": "Ambient Agent Patterns(AAP)",
+     "slug": "ambient-agent-patterns",
+     "complexity": "high",
+     "desc": "Always-present, contextually-aware agent interfaces that operate seamlessly in the background while remaining accessible when needed"
+    },
+    {
+     "name": "Chat Interface Patterns(CHI)",
+     "slug": "chat-interface-patterns",
+     "complexity": "high",
+     "desc": "Specialized chat interface patterns optimized for agent interactions, including message threading, context management, and rich content display"
+    },
+    {
+     "name": "Cross-Platform Agent UX(CPX)",
+     "slug": "cross-platform-agent-ux",
+     "complexity": "high",
+     "desc": "Consistent agent experience patterns across devices and platforms with seamless synchronization and adaptation"
+    },
+    {
+     "name": "Visual Reasoning Patterns(VRP)",
+     "slug": "visual-reasoning-patterns",
+     "complexity": "high",
+     "desc": "Visual representation patterns for agent reasoning, decision-making processes, and cognitive transparency"
+    },
+    {
+     "name": "Multimodal Interaction Patterns(MMIP)",
+     "slug": "multimodal-interaction-patterns",
+     "complexity": "high",
+     "desc": "Advanced multimodal agent interaction patterns integrating voice, visual, gesture, and text communication seamlessly"
+    },
+    {
+     "name": "Privacy-by-Design Principles(PbD)",
+     "slug": "privacy-by-design-principles",
+     "complexity": "high",
+     "desc": "Foundational privacy principles embedded into agent system architecture from conception, ensuring proactive data protection, user empowerment, and regulatory compliance through design rather than afterthought implementation."
+    },
+    {
+     "name": "Granular Privacy Controls(GPC)",
+     "slug": "granular-privacy-controls",
+     "complexity": "medium",
+     "desc": "Fine-grained permission management enabling users to control specific data types, processing purposes, sharing contexts, and retention periods with contextual consent mechanisms and easy revocation controls."
+    },
+    {
+     "name": "Progressive Consent &amp; Communication(PCC)",
+     "slug": "progressive-consent-communication",
+     "complexity": "medium",
+     "desc": "Just-in-time permission flows with progressive disclosure, contextual consent, clear risk communication, and adaptive privacy notifications that respect user attention while ensuring informed decision-making."
+    },
+    {
+     "name": "Transparent Data Handling(TDH)",
+     "slug": "transparent-data-handling",
+     "complexity": "high",
+     "desc": "Real-time visualization of data flows, processing activities, storage locations, and third-party sharing in agent systems, giving users a clear understanding of their data lifecycle and enabling informed consent decisions."
+    },
+    {
+     "name": "User Empowerment Privacy Dashboard(UPD)",
+     "slug": "user-empowerment-privacy-dashboard",
+     "complexity": "high",
+     "desc": "Comprehensive self-sovereign data management interface providing users complete visibility and control over their personal data across agent systems, including privacy insights, data portability, and automated privacy rights enforcement."
+    },
+    {
+     "name": "Regulatory Compliance UX(RCX)",
+     "slug": "regulatory-compliance-ux",
+     "complexity": "high",
+     "desc": "User experience design for GDPR, CCPA, and emerging AI regulations including right-to-explanation interfaces, data subject rights automation, compliance dashboard visualization, and proactive regulatory adherence through design."
+    },
+    {
+     "name": "Advanced Privacy Technologies UX(APT)",
+     "slug": "advanced-privacy-technologies-ux",
+     "complexity": "high",
+     "desc": "UX design for privacy-preserving technologies including differential privacy, federated learning, homomorphic encryption, and zero-knowledge proofs, making complex cryptographic protections accessible and understandable to end users."
+    },
+    {
+     "name": "Realtime Voice Agents(RVA)",
+     "slug": "realtime-voice-agents",
+     "complexity": "high",
+     "desc": "Low-latency spoken agents built on speech-to-speech models over a single streaming session, replacing the traditional speech-to-text then LLM then text-to-speech pipeline. A single model reasons directly over audio, so responses arrive fast enough to feel like natural conversation, with turn detection, barge-in interruption, mid-conversation tool calls, guardrails, and handoffs handled inside the live session."
+    },
+    {
+     "name": "AG-UI Protocol (Agent-User Interaction)(AGUI)",
+     "slug": "ag-ui-protocol",
+     "complexity": "medium",
+     "desc": "Open, event-based protocol (originated by CopilotKit, 2025) that standardizes the last mile between an agent backend and any frontend. The backend streams roughly 16 structured event types (text and token deltas, tool-call start/args/result, state snapshots and deltas, run lifecycle, and cancellation) over SSE, WebSocket, or plain HTTP, so a frontend can render live agent activity and feed user actions back into the same execution loop, framework-agnostically. Native emitters exist for LangGraph, CrewAI, Mastra, and the Microsoft Agent Framework, among others. It is the agent-to-UI edge of the protocol triangle, sitting beside MCP (agent-to-tool) and A2A (agent-to-agent). Distinct from `chat-interface-patterns`: those are frontend rendering conventions, whereas AG-UI is the wire protocol that carries the underlying event stream."
+    },
+    {
+     "name": "Approval Queues &amp; Escalation Chains(AQE)",
+     "slug": "risk-tiered-approval-escalation",
+     "complexity": "high",
+     "desc": "First-class approval and escalation as an operational workflow rather than a single blocking gate. Actions are tiered by risk: reversible actions auto-approve, medium-risk actions go to asynchronous review where the agent persists its state, continues other work, and rehydrates when a decision arrives, and irreversible actions require synchronous approval before execution. Escalation is triggered by explicit signals including confidence breaches, an irreversibility flag, SLA-approach, and anomaly or injection detection, and routes the decision to a higher-authority adjudicator (a human, a more-privileged agent, or an external workflow). Distinct from `human-in-the-loop`: HITL is the generic synchronous stance, whereas this pattern adds risk tiering, asynchronous queueing with state rehydration, and adjudicator routing."
+    },
+    {
+     "name": "Generative UI (Agent-Rendered Interfaces)(GenUI)",
+     "slug": "generative-ui",
+     "complexity": "high",
+     "desc": "The agent generates, selects, and controls the interface itself at runtime, returning rich interactive components (forms, charts, dashboards, maps, multi-step widgets) instead of plain text, and deciding HOW to present a result from the content type and the user intent. A model tool call emits UI that the host renders in a sandboxed frame, for example MCP Apps serving bundled HTML through `ui://` resources, or portable specs like Google A2UI and Open-JSON-UI that the client paints natively. This crossed from experimental to production in 2026 as MCP Apps shipped across Claude, ChatGPT, VS Code, and Goose, alongside A2UI and CopilotKit/assistant-ui generative UI. Distinct from `ag-ui-protocol`, which streams agent EVENTS to a prebuilt frontend, and `adaptive-interface-patterns`, which personalizes an EXISTING interface: here the agent materializes the interface itself, choosing and constructing the components at response time."
+    }
+   ]
+  },
+  {
+   "slug": "workflow-orchestration",
+   "name": "Workflow Orchestration",
+   "desc": "Stateful, event-driven, and enterprise workflow coordination patterns",
+   "techniques": [
+    {
+     "name": "Event-Driven Orchestrator-Worker(EDOW)",
+     "slug": "event-driven-orchestrator-worker",
+     "complexity": "medium",
+     "desc": "Central orchestrator assigns tasks to worker agents through event streaming"
+    },
+    {
+     "name": "Event-Driven Hierarchical Agents(EDHA)",
+     "slug": "event-driven-hierarchical",
+     "complexity": "high",
+     "desc": "Multi-level agent hierarchy with event-based coordination"
+    },
+    {
+     "name": "Event-Driven Blackboard(EDB)",
+     "slug": "event-driven-blackboard",
+     "complexity": "medium",
+     "desc": "Shared knowledge base through event streaming for asynchronous collaboration"
+    },
+    {
+     "name": "Event-Driven Market-Based(EDMB)",
+     "slug": "event-driven-market-based",
+     "complexity": "high",
+     "desc": "Decentralized task allocation through bid/ask event marketplace"
+    },
+    {
+     "name": "Enterprise Orchestration",
+     "slug": "enterprise-orchestration",
+     "complexity": "high",
+     "desc": "Enterprise-grade coordination with governance, compliance, and audit capabilities"
+    },
+    {
+     "name": "Stateful Graph Workflows",
+     "slug": "stateful-graph-workflows",
+     "complexity": "high",
+     "desc": "Graph-based workflow management with persistent state across nodes"
+    },
+    {
+     "name": "Conversational Orchestration",
+     "slug": "conversational-orchestration",
+     "complexity": "high",
+     "desc": "Multi-agent coordination through structured conversation patterns"
+    },
+    {
+     "name": "Role-Based Teamwork",
+     "slug": "role-based-teamwork",
+     "complexity": "medium",
+     "desc": "Structured agent teams with defined roles and responsibilities"
+    },
+    {
+     "name": "Graph State Machines",
+     "slug": "graph-state-machines",
+     "complexity": "medium",
+     "desc": "Finite state machines implemented as graphs for workflow control"
+    },
+    {
+     "name": "Actor Model Coordination",
+     "slug": "actor-model-coordination",
+     "complexity": "high",
+     "desc": "Asynchronous message-passing coordination between independent actors"
+    },
+    {
+     "name": "Edge AI Optimization(EAO)",
+     "slug": "edge-ai-optimization",
+     "complexity": "high",
+     "desc": "Optimizes AI workflows for resource-constrained edge devices and mobile environments"
+    },
+    {
+     "name": "Federated Orchestration(FO)",
+     "slug": "federated-orchestration",
+     "complexity": "high",
+     "desc": "Coordinates AI processing across distributed edge devices while preserving data privacy"
+    },
+    {
+     "name": "Resource-Aware Scheduling(RAS)",
+     "slug": "resource-aware-scheduling",
+     "complexity": "high",
+     "desc": "Dynamically schedules AI tasks based on available computational resources and constraints"
+    },
+    {
+     "name": "Progressive Enhancement(PE)",
+     "slug": "progressive-enhancement",
+     "complexity": "medium",
+     "desc": "Incrementally improves AI output quality based on available resources and time"
+    },
+    {
+     "name": "Durable Execution &amp; Checkpointing(DE)",
+     "slug": "durable-execution",
+     "complexity": "high",
+     "desc": "Persists workflow and agent state at every step so long-running runs can crash-resume from the last checkpoint, replay deterministically without repeating completed work, pause and resume for human input, and time-travel by forking from an earlier checkpoint. Checkpointer-backed graph engines such as LangGraph and Temporal-style durable engines provide the substrate for reliable, long-lived, human-in-the-loop agents."
+    },
+    {
+     "name": "Reversible Actions &amp; Compensation (Agent Saga)(Saga)",
+     "slug": "reversible-action-compensation",
+     "complexity": "high",
+     "desc": "A pattern for making agent side effects safe to undo. Structure the trajectory as a saga: every forward action (book a flight, charge a card, create a record) is paired with a compensating action that reverses its business effect, and every tool is made idempotent with an idempotency key so a retry or a rollback produces the same end state instead of duplicating work. When a step fails partway through, the agent runs the compensations for the already-completed steps in reverse order rather than leaving the system half-applied. There is no automatic ACID rollback across services, so compensations are explicitly designed as the logical inverse of each action. Distinct from `durable-execution`: that persists and replays a run so it can continue to completion after a crash, whereas this defines how to semantically undo committed side effects when completion is no longer the right outcome."
+    }
+   ]
+  },
+  {
+   "slug": "interpretability",
+   "name": "Interpretability",
+   "desc": "Patterns for explaining, inspecting, and validating model and agent behavior",
+   "techniques": [
+    {
+     "name": "Latent Space Visualization(LSV)",
+     "slug": "latent-space-visualization",
+     "complexity": "high",
+     "desc": "Visualize and interpret AI reasoning processes in continuous latent spaces"
+    },
+    {
+     "name": "Contrastive Explanations(CE)",
+     "slug": "contrastive-explanations",
+     "complexity": "medium",
+     "desc": "Explain AI decisions by showing what would change the outcome"
+    },
+    {
+     "name": "Causal Reasoning Transparency(CRT)",
+     "slug": "causal-reasoning-transparency",
+     "complexity": "high",
+     "desc": "Make causal reasoning chains explicit and understandable"
+    },
+    {
+     "name": "Attention Flow Analysis(AFA)",
+     "slug": "attention-flow-analysis",
+     "complexity": "medium",
+     "desc": "Track and visualize where AI systems focus their attention during reasoning"
+    },
+    {
+     "name": "Uncertainty Quantification(UQ)",
+     "slug": "uncertainty-quantification",
+     "complexity": "high",
+     "desc": "Quantify and communicate AI confidence and uncertainty in predictions"
+    }
+   ]
+  },
+  {
+   "slug": "knowledge-representation",
+   "name": "Knowledge Representation",
+   "desc": "Structured knowledge, semantics, validation, and reasoning patterns",
+   "techniques": [
+    {
+     "name": "RDF Knowledge Modeling(RDF)",
+     "slug": "rdf-knowledge-modeling",
+     "complexity": "medium",
+     "desc": "Structured knowledge representation using Resource Description Framework for semantic data modeling and linking"
+    },
+    {
+     "name": "SHACL Constraint Validation(SHACL)",
+     "slug": "shacl-validation",
+     "complexity": "high",
+     "desc": "Shapes Constraint Language for validating RDF data against defined schemas and business rules"
+    },
+    {
+     "name": "OWL Ontological Reasoning(OWL)",
+     "slug": "owl-reasoning",
+     "complexity": "high",
+     "desc": "Web Ontology Language for defining complex semantic relationships and enabling automated logical reasoning"
+    },
+    {
+     "name": "Knowledge Graph Construction(KGC)",
+     "slug": "knowledge-graph-construction",
+     "complexity": "high",
+     "desc": "Systematic construction of knowledge graphs from structured and unstructured data sources"
+    },
+    {
+     "name": "Semantic Data Validation(SDV)",
+     "slug": "semantic-validation",
+     "complexity": "high",
+     "desc": "Multi-layered validation of semantic data using ontological constraints, business rules, and logical consistency checks"
+    }
+   ]
+  },
+  {
+   "slug": "resource-aware-optimization",
+   "name": "Resource-Aware Optimization",
+   "desc": "Cost, latency, energy, compute, and memory optimization patterns",
+   "techniques": [
+    {
+     "name": "Adaptive Compute Scaling(ACS)",
+     "slug": "adaptive-compute-scaling",
+     "complexity": "high",
+     "desc": "Dynamically adjusts computational resources based on workload demands and performance requirements"
+    },
+    {
+     "name": "Cost-Aware Model Selection(CAMS)",
+     "slug": "cost-aware-model-selection",
+     "complexity": "medium",
+     "desc": "Intelligently selects AI models based on cost-performance trade-offs for specific tasks"
+    },
+    {
+     "name": "Energy-Efficient Inference(EEI)",
+     "slug": "energy-efficient-inference",
+     "complexity": "high",
+     "desc": "Optimizes AI inference for minimal energy consumption while maintaining performance"
+    },
+    {
+     "name": "Memory Optimization(MO)",
+     "slug": "memory-optimization",
+     "complexity": "high",
+     "desc": "Efficiently manages memory usage through caching, compression, and garbage collection strategies"
+    },
+    {
+     "name": "Latency Optimization(LO)",
+     "slug": "latency-optimization",
+     "complexity": "medium",
+     "desc": "Minimizes response time through predictive loading, caching, and request optimization"
+    },
+    {
+     "name": "Sleep-Time Compute(STC)",
+     "slug": "sleep-time-compute",
+     "complexity": "medium",
+     "desc": "Use idle time between user interactions to do background reasoning instead of waiting for the next query. The agent reorganizes and compresses memory, precomputes likely-needed inferences, and pre-answers anticipated questions so work is shifted off the latency-critical path. At inference time the answer is largely ready, cutting test-time compute and latency."
+    },
+    {
+     "name": "Semantic Caching(SCA)",
+     "slug": "semantic-caching",
+     "complexity": "medium",
+     "desc": "Cache LLM or agent responses keyed by embedding similarity rather than exact string match, so semantically equivalent queries reuse a stored answer. A similarity threshold decides a hit, a freshness TTL bounds staleness, and an invalidation policy evicts entries when source data changes. This cuts cost and latency on high-volume traffic and is distinct from prompt-prefix or KV caching."
+    },
+    {
+     "name": "Budget-Guarded Autonomy(BGA)",
+     "slug": "budget-guarded-autonomy",
+     "complexity": "medium",
+     "desc": "Hard, enforced per-task and per-session budgets on tokens, dollars, wall-clock time, and tool-call count that are checked before each call and pause or terminate execution, rather than after-the-fact cost alerts. Mechanisms include pre-flight budget checks that raise a budget-exceeded stop before the next call reaches the provider, a token-velocity circuit breaker that trips on runaway loops, loop detectors that halt no-progress cycles, and delegated budget ceilings where a parent agent grants a child a spend cap the child cannot exceed. Distinct from `cost-aware-model-selection`, which routes to cheaper models to lower unit cost but does not enforce a ceiling or halt spend."
+    }
+   ]
+  },
+  {
+   "slug": "context-orchestration",
+   "name": "Context Orchestration",
+   "desc": "Patterns for selecting, routing, sizing, and combining context",
+   "techniques": [
+    {
+     "name": "Multi-Source Context Fusion(MSCF)",
+     "slug": "multi-source-context-fusion",
+     "complexity": "high",
+     "desc": "Intelligently combines contextual information from multiple sources with quality weighting and conflict resolution"
+    },
+    {
+     "name": "Intelligent Context Routing(ICR)",
+     "slug": "context-routing",
+     "complexity": "medium",
+     "desc": "Dynamic routing of contextual information to the most appropriate processing components based on capability matching"
+    },
+    {
+     "name": "Dynamic Context Assembly(DCA)",
+     "slug": "dynamic-context-assembly",
+     "complexity": "high",
+     "desc": "Intelligent, real-time composition of context from multiple sources based on query analysis and relevance scoring"
+    },
+    {
+     "name": "Adaptive Context Depth(ACD)",
+     "slug": "adaptive-context-depth",
+     "complexity": "high",
+     "desc": "Dynamically adjust memory depth and context complexity based on task requirements in multi-agent agentic AI systems"
+    }
+   ]
+  },
+  {
+   "slug": "exploration-discovery",
+   "name": "Exploration &amp; Discovery",
+   "desc": "Patterns for search, experimentation, adaptation, and solution discovery",
+   "techniques": [
+    {
+     "name": "Reinforcement Learning Exploration(RLE)",
+     "slug": "reinforcement-learning",
+     "complexity": "high",
+     "desc": "Learning optimal behavior through reward-based exploration and exploitation balance"
+    },
+    {
+     "name": "Curiosity-Driven Exploration(CDE)",
+     "slug": "curiosity-driven-search",
+     "complexity": "high",
+     "desc": "Intrinsic motivation-based exploration that drives discovery of novel and surprising information"
+    },
+    {
+     "name": "Multi-Armed Bandit Optimization(MAB)",
+     "slug": "multi-armed-bandits",
+     "complexity": "medium",
+     "desc": "Sequential decision-making under uncertainty with optimal exploration-exploitation trade-offs"
+    },
+    {
+     "name": "Evolutionary Discovery Algorithms(EDA)",
+     "slug": "evolutionary-algorithms",
+     "complexity": "high",
+     "desc": "Bio-inspired optimization that evolves solutions through selection, mutation, and crossover"
+    }
+   ]
+  },
+  {
+   "slug": "prioritization",
+   "name": "Prioritization",
+   "desc": "Transparent ranking, scheduling, and multi-criteria decision patterns",
+   "techniques": [
+    {
+     "name": "Multi-Criteria Weighted Scoring(MCWS)",
+     "slug": "weighted-scoring",
+     "complexity": "medium",
+     "desc": "Systematic prioritization using weighted scoring across multiple evaluation criteria"
+    },
+    {
+     "name": "Multi-Criteria Decision Analysis(MCDA)",
+     "slug": "multi-criteria-decision",
+     "complexity": "high",
+     "desc": "Advanced decision-making framework for complex choices with multiple competing objectives"
+    },
+    {
+     "name": "Dynamic Priority Queue Systems(DPQS)",
+     "slug": "priority-queues",
+     "complexity": "medium",
+     "desc": "Intelligent queue management with dynamic priority adjustment based on changing conditions"
+    },
+    {
+     "name": "Dynamic Content Ranking(DCR)",
+     "slug": "dynamic-ranking",
+     "complexity": "high",
+     "desc": "Real-time content and recommendation ranking that adapts to user behavior and context"
+    }
+   ]
+  },
+  {
+   "slug": "agent-economy",
+   "name": "Agent Economy &amp; Interop Protocols",
+   "desc": "Payments, commerce, discovery, identity, and web contracts for the agentic internet",
+   "techniques": [
+    {
+     "name": "Agent Payment Mandates (AP2)(AP2)",
+     "slug": "agent-payment-mandates",
+     "complexity": "high",
+     "desc": "Authorizes agent-initiated purchases through a chain of cryptographically signed, verifiable-credential mandates instead of handing an agent raw card details. An Intent Mandate captures the user&#x27;s up-front constraints (max price, allowed merchants, time-to-live) so the agent can buy while the user is not present; a Cart Mandate is merchant-signed and user-co-signed for the exact items and price, giving what-you-see-is-what-you-pay; and a Payment Mandate is shared with the payment network. The signed chain forms a non-repudiable audit trail that resolves authorization, authenticity, and accountability for autonomous spend, and it is rail-agnostic with an A2A-x402 profile for crypto rails. Distinct from authenticated-delegation: that pattern grants an agent scoped authority to act, whereas AP2 binds each specific purchase to a signed mandate chain a payment network can independently verify."
+    },
+    {
+     "name": "Agentic Commerce Protocol (ACP)(ACP)",
+     "slug": "agentic-commerce-protocol",
+     "complexity": "high",
+     "desc": "Open standard co-developed by Stripe and OpenAI (Apache-2.0, September 2025) for completing a purchase against a merchant that stays the merchant of record. The merchant exposes agent-facing REST or MCP endpoints (create, update, complete, and cancel checkout) over a product feed; the agent pays with a Stripe-issued Shared Payment Token scoped to a single merchant and cart total, so the agent never sees the buyer&#x27;s card credentials. It launched as the standard behind ChatGPT Instant Checkout with Etsy sellers and Shopify merchants. Distinct from `model-context-protocol`: MCP is a general tool-calling transport, whereas ACP is a specific checkout contract that can ride over MCP or plain REST."
+    },
+    {
+     "name": "HTTP-Native Micropayments (x402)(x402)",
+     "slug": "http-native-micropayments",
+     "complexity": "high",
+     "desc": "An open payment standard created by Coinbase in 2025 and now stewarded by the x402 Foundation under the Linux Foundation that revives the dormant HTTP 402 Payment Required status as a pay-per-request rail. A server replies 402 with machine-readable payment requirements; the client (human or agent) returns a signed stablecoin payment in an HTTP header; a facilitator verifies the payload and settles the transfer on-chain (EVM chains, Solana, and more), all inside a single request with no accounts, sessions, or API keys. It is a native rail for keyless, sub-cent agent-to-service micropayments and metered tool or data access, and is the crypto profile referenced by the AP2 A2A-x402 extension. Distinct from `agentic-commerce-protocol`: ACP is card-based retail checkout through a merchant of record, whereas x402 is a per-call machine payment settled on-chain."
+    },
+    {
+     "name": "Agent Registry &amp; Discovery(ARD)",
+     "slug": "agent-registry-discovery",
+     "complexity": "medium",
+     "desc": "The discovery layer that lets agents and tool servers find each other at runtime instead of through hard-coded configuration. Three converging mechanisms make this work: A2A Agent Cards, a self-describing JSON manifest served at /.well-known/agent-card.json (RFC 8615) advertising an agent&#x27;s skills, endpoints, auth schemes, and streaming capabilities; the official MCP Registry (preview September 2025), a federated public catalog and API for publishing and finding MCP servers that is extensible with private enterprise sub-registries; and decentralized naming proposals such as MIT Project NANDA, whose NANDA Index resolves cryptographically verifiable AgentFacts records to endpoints, positioned as DNS for agents. The common pattern is publish a signed capability record, then resolve it by well-known URI or registry query, validate the advertised auth schemes, and bind the agent dynamically. Distinct from `a2a-protocol`: that covers the message transport once a peer is known, while this covers finding and vetting the peer in the first place."
+    },
+    {
+     "name": "Agent-Readable Web (llms.txt / NLWeb)",
+     "slug": "agent-readable-web",
+     "complexity": "medium",
+     "desc": "Supply-side contracts that expose a site&#x27;s content to agents directly instead of forcing them to scrape rendered HTML. llms.txt (Jeremy Howard, 2024) is a curated Markdown index at /llms.txt plus .md shadow pages that give an LLM high-density, navigation-free content at inference time. Microsoft NLWeb (2025, led by Schema.org co-creator R.V. Guha) goes further with an /ask natural-language endpoint that returns structured JSON grounded in the site&#x27;s own Schema.org data, with every NLWeb instance doubling as an MCP server. Together they define the agent-readable site, the read-path counterpart to robots.txt for the agentic web."
+    },
+    {
+     "name": "Web Bot Auth (Signed Agents)(WBA)",
+     "slug": "web-bot-auth",
+     "complexity": "medium",
+     "desc": "An emerging IETF-draft standard (Cloudflare and Google) that lets an agent cryptographically prove its identity to a website using RFC 9421 HTTP Message Signatures. The agent signs each outbound request with an Ed25519 key, publishes its public keys as a JWKS key directory at /.well-known/http-message-signatures-directory, and points to it with a Signature-Agent header; the origin fetches the directory, verifies the signature, and decides whether to allow, deny, rate-limit, or price the traffic. It replaces brittle IP-range and User-Agent allowlists, and Cloudflare&#x27;s Signed Agents productizes it at the edge. Distinct from authenticated-delegation: that proves user-to-agent authority, whereas Web Bot Auth is the inverse, an agent proving its origin to a website."
+    },
+    {
+     "name": "Inter-Agent Trust &amp; Reputation(IATR)",
+     "slug": "inter-agent-trust-reputation",
+     "complexity": "high",
+     "desc": "Emerging, mostly draft-stage standards for how an agent prices counterparty risk against an unfamiliar agent without a central gatekeeper. The draft ERC-8004 &quot;Trustless Agents&quot; EIP defines three on-chain registries: Identity (an ERC-721 handle resolving to off-chain agent metadata), Reputation (signed feedback signals), and Validation (validator-contract attestations such as stake-secured re-execution or TEE oracles), deliberately keeping payments and app logic off-chain. A companion trust-model taxonomy classifies mechanisms as brief, claim, proof, stake, reputation, and constraint, arguing no single mechanism suffices and tiered combinations are needed. This is early and unsettled: ERC-8004 is a draft EIP and much of the tooling is nascent. Distinct from authenticated-delegation: that is delegated authority and identity, whereas this is reputational trust priced between economic peers."
+    }
+   ]
+  }
+ ],
+ "agentic_patterns_production": [
+  {
+   "title": "Agent SDK for Programmatic Control",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anthropic (Claude Agent SDK)"
+   ],
+   "category": "Tool Use & Environment",
+   "source": "https://github.com/anthropics/claude-agent-sdk-python",
+   "tags": [
+    "sdk",
+    "automation",
+    "ci/cd",
+    "programmatic access",
+    "scripting",
+    "api",
+    "headless agent"
+   ],
+   "slug": "agent-sdk-for-programmatic-control",
+   "id": "agent-sdk-for-programmatic-control",
+   "summary": "Exposes agent functions through an SDK and CLI so code can run the agent headless with set tools, permissions, and resource limits",
+   "signals": [
+    "Agent must run in CI/CD pipelines or scheduled jobs",
+    "Batch processing across many files or projects",
+    "Building custom apps or UIs on an agent backend"
+   ],
+   "anti_signals": [
+    "Microservices architecture that prefers REST or gRPC APIs",
+    "High-frequency calls or real-time streaming",
+    "Task needs conversational clarification"
+   ],
+   "related": [
+    "cli-native-agent-orchestration",
+    "surface-scoped-system-prompt",
+    "failover-aware-model-fallback",
+    "sandboxed-tool-authorization",
+    "llm-observability"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nInteractive terminal or chat interfaces are suitable for many agent tasks, but not for all. Integrating agent capabilities into automated workflows (e.g., CI/CD pipelines, scheduled jobs, batch processing) or building more complex applications on top of core agent functionalities requires a programmatic interface."
+  },
+  {
+   "title": "Agent-Assisted Scaffolding",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Lukas Möller (Cursor)"
+   ],
+   "category": "UX & Collaboration",
+   "source": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+   "tags": [
+    "code-generation",
+    "bootstrapping",
+    "scaffolding",
+    "feature-development",
+    "ide",
+    "initial-setup"
+   ],
+   "slug": "agent-assisted-scaffolding",
+   "id": "agent-assisted-scaffolding",
+   "summary": "Agent generates initial files, boilerplate, and directory structure from a high-level description so developers start on core logic",
+   "signals": [
+    "Starting a new feature, module, or greenfield project",
+    "Standardized framework with repetitive boilerplate"
+   ],
+   "anti_signals": [
+    "Integration with an old legacy codebase",
+    "Complex business logic that needs deep domain expertise",
+    "Highly regulated environment with strict compliance"
+   ],
+   "related": [
+    "specification-driven-agent-development",
+    "progressive-autonomy-with-model-evolution",
+    "skill-library-evolution",
+    "agent-friendly-workflow-design"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nStarting a new feature, module, or codebase often involves writing a significant amount of boilerplate or foundational code. This can be time-consuming and repetitive for developers."
+  },
+  {
+   "title": "Agent-Driven Research",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Danny Tarlow",
+    "Connie Fan",
+    "Justin Gage (Amplify Partners)",
+    "Colin Flaherty (Muse)"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://eu.36kr.com/en/p/3352908436796289",
+   "tags": [
+    "research",
+    "information retrieval",
+    "iterative process",
+    "autonomous search",
+    "web-search",
+    "parallel-agents",
+    "query-translation",
+    "grounding",
+    "citations"
+   ],
+   "slug": "agent-driven-research",
+   "id": "agent-driven-research",
+   "summary": "Agent plans its own queries, fans out parallel search workers across sources, reflects on evidence gaps, and iterates until it can write a sourced report",
+   "signals": [
+    "Open-ended research question needs multiple search rounds",
+    "Answer needs synthesis across many sources",
+    "Answers need source citations or information beyond the training cutoff"
+   ],
+   "anti_signals": [
+    "A single retrieval round or internal model knowledge answers the question",
+    "Token cost or latency budget is tight"
+   ],
+   "related": [
+    "sub-agent-spawning",
+    "inference-time-scaling",
+    "llm-map-reduce-pattern",
+    "context-minimization-pattern",
+    "output-verification-loop"
+   ],
+   "updated_at": "2026-11-23",
+   "excerpt": "\n## Problem\nTraditional research methods and static retrieval systems cannot adapt search strategy based on emerging results. Complex research tasks need multi-round investigation, cross-source synthesis, and dynamic strategy adjustment.\n\nThe same gap appears in question answering. A model with a training cutoff does not know recent facts, and simply connecting it to a search API is not enough. Something still has to:\n\n- Decide when searching is necessary versus using internal knowledge\n- Translate conversational context into effective search queries\n- Find diverse, long-tail results rather than only popular pages\n- Iterate and refine searches based on intermediate results\n- Cite sources properly to build user trust and reduce hallucination"
+  },
+  {
+   "title": "Agent-First Tooling and Logging",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Thorsten Ball (Sourcegraph)",
+    "Kenton Varda (Cloudflare)"
+   ],
+   "category": "Tool Use & Environment",
+   "source": "https://blog.cloudflare.com/code-mode/",
+   "tags": [
+    "tool-design",
+    "logging",
+    "machine-readable",
+    "observability",
+    "agent-environment",
+    "mcp",
+    "structured-output",
+    "diagnostics"
+   ],
+   "slug": "agent-first-tooling-and-logging",
+   "id": "agent-first-tooling-and-logging",
+   "summary": "Designs logs and tool output for agent consumption with one unified log stream, structured JSON, and agent-aware CLI flags",
+   "signals": [
+    "Agent parses human-oriented CLI or log output",
+    "Logs are split across client, server, and database streams",
+    "Agent wastes tokens interpreting ambiguous tool output"
+   ],
+   "anti_signals": [
+    "Humans are the main consumers of the tool output",
+    "Team cannot maintain separate human and agent interfaces"
+   ],
+   "related": [
+    "dual-use-tool-design",
+    "codebase-optimization-for-agents",
+    "llm-friendly-api-design",
+    "code-over-api-pattern",
+    "llm-observability"
+   ],
+   "updated_at": "2026-11-23",
+   "excerpt": "\n## Problem\nMost developer tools, CLIs, and application logs are designed for human consumption. They use color-coded, multi-line, or summarized outputs that are easy for a person to scan but can be difficult for an AI agent to parse reliably. This \"human-centric\" design creates noise and ambiguity, forcing the agent to waste tokens and effort on interpreting output rather than acting on it.\n\nThe same problem shows up across streams: a request leaves traces in the client, the server, and the database, each in its own log. A human debugger knows where to look. An agent must reconcile all three before it can reason about what went wrong."
+  },
+  {
+   "title": "Agent-Powered Codebase Q&A / Onboarding",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Lukas Möller (Cursor)",
+    "Aman Sanger (Cursor)"
+   ],
+   "category": "Context & Memory",
+   "source": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+   "tags": [
+    "code-understanding",
+    "onboarding",
+    "q&a",
+    "retrieval",
+    "search",
+    "context-awareness",
+    "knowledge-base"
+   ],
+   "slug": "agent-powered-codebase-qa-onboarding",
+   "id": "agent-powered-codebase-qa-onboarding",
+   "summary": "Agent indexes the codebase with embeddings and code graphs and answers natural-language questions about where code is and how it behaves",
+   "signals": [
+    "Developers onboard to a large or unfamiliar codebase",
+    "Team explores legacy systems or asks repository-wide questions"
+   ],
+   "anti_signals": [
+    "Codebase is small enough to read directly",
+    "Team cannot keep indexes current as code changes"
+   ],
+   "related": [
+    "precomputed-code-graph-lookup",
+    "agentic-search-over-vector-embeddings",
+    "curated-code-context-window",
+    "dynamic-context-injection"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nUnderstanding a large or unfamiliar codebase can be a significant challenge for developers, especially when onboarding to a new project or trying to debug a complex system. Manually searching and tracing code paths is time-consuming."
+  },
+  {
+   "title": "AI-Assisted Code Review / Verification",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Aman Sanger (Cursor)"
+   ],
+   "category": "Feedback Loops",
+   "source": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+   "tags": [
+    "code-review",
+    "verification",
+    "quality-assurance",
+    "human-ai-collaboration",
+    "trust",
+    "explainability",
+    "software-quality"
+   ],
+   "slug": "ai-assisted-code-review-verification",
+   "id": "ai-assisted-code-review-verification",
+   "summary": "Uses AI tools to flag issues, summarize change intent, and explain code so human reviewers focus on intent and business logic",
+   "signals": [
+    "AI generates more code than humans can review line by line",
+    "Code review is the development bottleneck"
+   ],
+   "anti_signals": [
+    "Team cannot tolerate false positives and alert fatigue",
+    "Architectural decisions that need human-only judgment"
+   ],
+   "related": [
+    "abstracted-code-representation-for-review",
+    "output-verification-loop",
+    "sub-agent-spawning",
+    "subagent-compilation-checker",
+    "deterministic-security-scanning-build-loop"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAs AI models generate increasing amounts of code, the bottleneck in software development shifts from code generation to code verification and review. Ensuring that AI-generated code is not only syntactically correct but also semantically correct, aligns with the intended functionality (especially if underspecified), and meets quality standards becomes crucial and time-consuming."
+  },
+  {
+   "title": "Anchored Structured Context Compaction",
+   "status": "production",
+   "evidence_grade": "medium",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anthropic Engineering (Effective Context Engineering)",
+    "OpenAI Codex Engineering",
+    "OpenClaw Compaction"
+   ],
+   "category": "Context & Memory",
+   "source": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "tags": [
+    "context-management",
+    "compaction",
+    "structured-summary",
+    "long-horizon-tasks",
+    "state-preservation",
+    "context-drift",
+    "agentic-memory"
+   ],
+   "slug": "anchored-structured-context-compaction",
+   "id": "anchored-structured-context-compaction",
+   "summary": "Maintains a typed state block (pinned goal and constraints, verified decisions, an artifact registry, open blockers) and merges only the newly evicted span into it at each compaction, so that long sessions keep exact details instead of drifting",
+   "signals": [
+    "Sessions run long enough to compact several times",
+    "Work depends on exact identifiers: file paths, record ids, schema versions, URLs",
+    "Earlier constraints or failed approaches come back after a compaction",
+    "The task has a fixed goal with hard constraints that must not change"
+   ],
+   "anti_signals": [
+    "Sessions fit in the context window without compaction",
+    "Conversational sessions where exact identifiers do not matter",
+    "Server-side compaction already returns state that the task can trust"
+   ],
+   "related": [
+    "context-window-auto-compaction",
+    "filesystem-based-agent-state",
+    "prompt-caching-via-exact-prefix-preservation",
+    "working-memory-via-todos"
+   ],
+   "domains": [
+    "coding",
+    "research",
+    "ops"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nLong sessions exceed the context window, so the agent must compact: it summarizes older turns and continues with the summary. [Context Window Auto-Compaction](context-window-auto-compaction.md) covers *when* the runtime compacts and *how* it retries after an overflow. It does not specify *what survives*.\n\nA free-form summary loses a different set of details at each boundary. After several boundaries, the losses compound like a message that passes along a chain of people (a telephone-game effect):\n\n- An exact file path becomes \"the config file\", and the agent edits or invents a path.\n- A rule that the user stated early disappears, and the agent breaks it.\n- A negative result (\"approach X failed because Y\") is not a step forward, so it is dropped, and the agent repeats approach X.\n- A decision that was already settled is argued again.\n\nAnthropic names the risk directly: \"overly aggressive compaction can result in the loss of subtle but critical context whose importance only becomes apparent later\"."
+  },
+  {
+   "title": "Background Agent with CI Feedback",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Quinn Slack"
+   ],
+   "category": "Feedback Loops",
+   "source": "https://ampcode.com/docs/orbs",
+   "tags": [
+    "asynchronous",
+    "ci",
+    "feedback"
+   ],
+   "slug": "background-agent-ci",
+   "id": "background-agent-with-ci-feedback",
+   "summary": "Runs the agent in the background on its own branch and uses CI results as feedback to patch failures until green or blocked",
+   "signals": [
+    "Long-running refactors or dependency upgrades",
+    "Developers wait and poll for CI results",
+    "CI gives objective pass or fail signals"
+   ],
+   "anti_signals": [
+    "No reliable CI suite exists",
+    "Task needs frequent human decisions during the work"
+   ],
+   "related": [
+    "custom-sandboxed-background-agent",
+    "stop-hook-auto-continue-pattern",
+    "seamless-background-to-foreground-handoff",
+    "agent-sdk-for-programmatic-control",
+    "factory-over-assistant"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nLong-running refactors and flaky-fix cycles force developers into synchronous supervision. When the agent must wait on tests, build jobs, and deployment checks, human attention gets wasted on polling instead of decision-making. This bottleneck is worse in distributed teams where CI feedback arrives minutes later and context-switch cost is high."
+  },
+  {
+   "title": "Code-Over-API (Code Mode)",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anthropic Engineering Team",
+    "Cloudflare Team"
+   ],
+   "category": "Tool Use & Environment",
+   "source": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+   "tags": [
+    "token-optimization",
+    "code-execution",
+    "data-processing",
+    "mcp",
+    "mcp-improvement",
+    "tool-interface",
+    "sandboxing",
+    "v8-isolates"
+   ],
+   "slug": "code-over-api-pattern",
+   "id": "code-over-api-pattern",
+   "summary": "Agent writes code that calls tools and processes data inside a sandbox, so only summaries and samples return to the context window instead of every intermediate result",
+   "signals": [
+    "Data-heavy workflows over spreadsheets, databases, or logs",
+    "A workflow has a clear sequence of tool calls you can map out upfront",
+    "Fan-out over many items would overflow context with direct tool calls",
+    "Token cost or latency matters"
+   ],
+   "anti_signals": [
+    "No secure sandboxed code execution environment is available",
+    "Open-ended research where each next step depends on the last result",
+    "LLM reasoning is needed between tool calls, such as per-item personalization",
+    "Single one-off tool calls or small results that fit easily in context"
+   ],
+   "related": [
+    "code-then-execute-pattern",
+    "dual-use-tool-design",
+    "virtual-machine-operator-agent",
+    "llm-friendly-api-design",
+    "session-scoped-context-runtime-for-agent-tools"
+   ],
+   "updated_at": "2026-11-23",
+   "excerpt": "\n## Problem\nWhen agents make direct API or tool calls, all intermediate data must flow through the model's context window. For data-heavy workflows (processing spreadsheets, filtering logs, transforming datasets), this creates massive token consumption and increased latency. A workflow that fetches 10,000 spreadsheet rows and filters them can easily consume 150,000+ tokens just moving data through the context.\n\nClassic MCP forces this inefficient pattern:\n\n```text\nLLM → tool #1 → large JSON response → LLM context\nLLM → tool #2 → large JSON response → LLM context\nLLM → tool #3 → large JSON response → LLM context\n→ final answer\n```\n\nEvery intermediate result rides back through the model's context, burning tokens and adding latency at each step. Fan-out makes it worse: processing 100 emails with direct tool calls means 100 separate round-trips, each dumping its metadata into context, before any actual work begins."
+  },
+  {
+   "title": "Continuous Autonomous Task Loop Pattern",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Internal Practice"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://gist.github.com/nibzard/a97ef0a1919328bcbc6a224a5d2cfc78",
+   "tags": [
+    "autonomous-execution",
+    "task-loop",
+    "rate-limiting",
+    "git-automation",
+    "cli-driven",
+    "stream-processing"
+   ],
+   "slug": "continuous-autonomous-task-loop-pattern",
+   "id": "continuous-autonomous-task-loop-pattern",
+   "summary": "Runs a loop where subagents pick the next task from a todo file, execute it in fresh context, commit it, and back off on rate limits",
+   "signals": [
+    "A todo file holds discrete, well-defined tasks",
+    "Manual task selection and Git commits slow down work",
+    "Rate limits interrupt long agent sessions"
+   ],
+   "anti_signals": [
+    "Tasks are complex or poorly defined",
+    "Each task decision needs human oversight",
+    "Elevated execution permissions are not allowed"
+   ],
+   "related": [
+    "stop-hook-auto-continue-pattern",
+    "filesystem-based-agent-state",
+    "cross-cycle-consensus-relay",
+    "tracker-as-desired-state-reconciliation",
+    "deterministic-zero-llm-orchestration"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nTraditional development workflows require constant human intervention for task management:\n\n- **Manual Task Selection**: Developers spend time deciding what to work on next from todo lists\n- **Context Switching Overhead**: Moving between different types of tasks interrupts flow state\n- **Rate Limit Interruptions**: API rate limits break development momentum and require manual waiting\n- **Repetitive Git Operations**: Each task completion requires manual staging, committing, and status checking\n- **Error Recovery**: Failed tasks need manual diagnosis and restart\n\nThis manual orchestration reduces overall productivity and prevents developers from focusing on higher-level problem solving."
+  },
+  {
+   "title": "Curated Code Context Window",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anonymous Speaker (Open Source Agent RL Talk)",
+    "Will Brown (Prime Intellect Talk)",
+    "Thorsten Ball"
+   ],
+   "category": "Context & Memory",
+   "source": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+   "tags": [
+    "context-management",
+    "code-agent",
+    "file-selection",
+    "noise-reduction"
+   ],
+   "slug": "curated-code-context-window",
+   "id": "curated-code-context-window",
+   "summary": "A search subagent finds the few relevant files for a task and injects only top snippets or summaries into the main coding agent's context",
+   "signals": [
+    "Coding agent works in a large repository",
+    "Loading all files adds noise and inflates token usage",
+    "Long-horizon tasks risk blowing up context length"
+   ],
+   "anti_signals": [
+    "Small codebase that fits in context",
+    "A frequently changing code index cannot be kept fresh"
+   ],
+   "related": [
+    "sub-agent-spawning",
+    "agentic-search-over-vector-embeddings",
+    "precomputed-code-graph-lookup",
+    "context-window-auto-compaction",
+    "agent-powered-codebase-qa-onboarding"
+   ],
+   "updated_at": "2026-10-14",
+   "excerpt": "\n## Problem\nLoading **all source files** or dumping entire repositories into the agent's context overwhelms the model, introduces noise, and slows inference. Coding agents need to focus on **only the most relevant modules** to efficiently reason about changes or generate new functionality.\n\n- Including every file biases the agent with irrelevant code; it \"loses coherence\" over large contexts.\n- Large contexts inflate token usage, slowing down multi-turn RL training."
+  },
+  {
+   "title": "Debiased LLM-as-a-Judge Evaluation",
+   "status": "production",
+   "evidence_grade": "high",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Zheng et al. (MT-Bench / Chatbot Arena, NeurIPS 2023)",
+    "Anthropic Evaluation Guidance"
+   ],
+   "category": "Reliability & Eval",
+   "source": "https://arxiv.org/abs/2306.05685",
+   "tags": [
+    "llm-as-a-judge",
+    "position-bias",
+    "verbosity-bias",
+    "self-enhancement-bias",
+    "rubric-based-eval",
+    "judge-calibration",
+    "human-alignment",
+    "evaluation"
+   ],
+   "slug": "debiased-llm-as-a-judge-evaluation",
+   "id": "debiased-llm-as-a-judge-evaluation",
+   "summary": "Removes the systematic distortions of a model judge before its scores gate a release: swaps the order of each pairwise comparison, grades narrow pass/fail rubric items that cite evidence, supplies a reference answer and a judge from another model family, and measures the agreement with human labels first",
+   "signals": [
+    "A model compares two outputs or scores one output against a criterion",
+    "Judge scores gate a release, mark a regression, or train a reward model",
+    "Candidates differ in length or polish, or come from the family of the judge",
+    "Scores moved after a change of the judge model or prompt, with no change in the system under test"
+   ],
+   "anti_signals": [
+    "The requirement is deterministic (schema, arithmetic, exact strings): grade it in code",
+    "The judgment is taste, with no rubric and no labeled examples",
+    "No person can label a slice of the cases to test the judge"
+   ],
+   "related": [
+    "deterministic-grader-in-the-loop",
+    "anti-reward-hacking-grader-design",
+    "workflow-evals-with-mocked-tools",
+    "rlaif-reinforcement-learning-from-ai-feedback"
+   ],
+   "domains": [
+    "evaluation",
+    "research",
+    "coding"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nA model judge (LLM-as-a-judge) is the usual grader for output that has no exact answer: the quality of a reply, a summary, a code review. The usual prompt asks for a holistic score, or for the better one of two candidates. That prompt makes systematic errors, and a release gate inherits each error.\n\n[Zheng et al.](https://arxiv.org/abs/2306.05685) measured the errors on MT-bench:\n\n- **Position bias.** \"Most LLM judges favor the first position\". With the default prompt, GPT-4 gave the same verdict after the two answers changed places in 65.0% of the cases, GPT-3.5 in 46.2%, and Claude-v1 in 23.8%.\n- **Verbosity bias.** The authors made 23 answers longer with no new information (a \"repetitive list\" attack). GPT-3.5 and Claude-v1 preferred the longer answer in 91.3% of the cases, and GPT-4 in 8.7%.\n- **Self-enhancement bias.** Compared to the humans, GPT-4 gave itself a win rate that was 10% higher. The authors add that their \"study cannot determine whether the models exhibit a self-enhancement bias\".\n\nA fourth limit is not a bias: the judge can be wrong on facts and on arithmetic. In the same study, GPT-4 called an incorrect answer correct in 14 of 20 math judgments. It can solve such a problem when you ask it separately, but it \"was misled by the provided answers\".\n\nEach error has a cost in an evaluation pipeline:\n\n- A judge that favors the first position makes the result depend on the order of the candidates.\n- A judge that favors length pays for padding. An agent that optimizes against that judge learns to write more, and not to write better.\n- A judge that scores its own model family higher hides the regressions of the other models.\n- A holistic score does not show which requirement failed, so the team does not know what to repair."
+  },
+  {
+   "title": "Delegated User Authorization (OAuth Token Exchange)",
+   "status": "production",
+   "evidence_grade": "high",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "IETF OAuth 2.0 Token Exchange (RFC 8693)",
+    "IETF OAuth 2.0 Security Best Current Practice (RFC 9700)"
+   ],
+   "category": "Security & Safety",
+   "source": "https://datatracker.ietf.org/doc/html/rfc8693",
+   "tags": [
+    "oauth",
+    "token-exchange",
+    "delegation",
+    "least-privilege",
+    "on-behalf-of",
+    "audit-attribution",
+    "multi-tenant",
+    "identity"
+   ],
+   "slug": "delegated-user-auth-token-exchange",
+   "id": "delegated-user-authorization-oauth-token-exchange",
+   "summary": "Exchanges the user's token and the agent's own identity for a short-lived, single-audience, minimally scoped token immediately before each tool call, so that the agent acts with delegated and attributable authority instead of a shared super-credential",
+   "signals": [
+    "A multi-tenant agent calls APIs on behalf of the signed-in user",
+    "The user's token is valid at more services, or with more scope, than the agent needs for one call",
+    "Audit logs must separate actions that the agent took from actions that the user took directly",
+    "A shared service account or admin API key is the only alternative"
+   ],
+   "anti_signals": [
+    "The tool needs no user-specific authority; the agent's own service identity is sufficient",
+    "The authorization server does not support the token exchange grant",
+    "One user runs a local agent with their own credentials; use a local credential broker instead"
+   ],
+   "related": [
+    "local-first-credential-broker",
+    "policy-gated-tool-proxy",
+    "exact-action-authorization-binding",
+    "sandboxed-tool-authorization"
+   ],
+   "domains": [
+    "enterprise",
+    "security",
+    "ops"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nAn enterprise agent that acts for a signed-in user has two common ways to authenticate a tool call. Both are defective.\n\n- **A shared service account or admin key.** The agent calls APIs with its own broad privilege. The API cannot apply the permissions of the user, because it never learns who asked. A prompt injection then spends the full privilege of the agent. This is the confused-deputy problem: the deputy has more privilege than the user and cannot tell a real request from an injected one.\n- **Token passthrough.** The agent forwards the access token of the user to each tool. That token is valid for every audience and scope that it was issued for. A third-party tool server (for example an MCP server) that receives the token can read it, and a broadly valid token can be replayed at other services.\n\nThe result is excess privilege in one direction and token leakage in the other. The audit trail is weak also: it records a service, not the pair of human and agent."
+  },
+  {
+   "title": "Durable Execution & Step Checkpointing",
+   "status": "production",
+   "evidence_grade": "high",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Temporal",
+    "Cloudflare Workflows",
+    "DBOS",
+    "Saga pattern (Garcia-Molina & Salem, 1987)"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://docs.temporal.io/workflows",
+   "tags": [
+    "durable-execution",
+    "checkpointing",
+    "replay",
+    "idempotency",
+    "saga-compensation",
+    "long-running-agents",
+    "workflow-orchestration",
+    "retries"
+   ],
+   "slug": "durable-execution-step-checkpointing",
+   "id": "durable-execution-step-checkpointing",
+   "summary": "Replays a durable step history to resume crashed, rate-limited, or approval-paused agent runs from the last completed step, without repeating finished LLM calls or committed side effects",
+   "signals": [
+    "Agent runs span minutes to days and include sleeps, polls, or waits for human approval",
+    "A step can fail transiently (LLM rate limit, provider timeout, worker deploy) after earlier steps already committed",
+    "Re-running a completed step is costly or unsafe, such as a duplicate LLM call, email, or charge",
+    "A failure in a later tool must undo an earlier external write"
+   ],
+   "anti_signals": [
+    "A short request with cheap, read-only steps; an in-process retry loop is sufficient",
+    "Mutating steps cannot be made idempotent, so replay would duplicate side effects",
+    "The team cannot commit to deterministic coordinator code and a durable store"
+   ],
+   "related": [
+    "filesystem-based-agent-state",
+    "exact-action-authorization-binding",
+    "human-in-loop-approval-framework",
+    "dead-mans-switch-for-scheduled-agent-jobs"
+   ],
+   "domains": [
+    "ops",
+    "enterprise",
+    "coding"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nAgent workflows are chains of side effects: LLM calls, tool calls, token exchanges, and writes. Many events can stop a run in the middle. A worker crashes or redeploys. A provider rate-limits a call. A person takes two days to approve a refund.\n\nEach naive recovery has a defect:\n\n- **Restart from the beginning.** You pay again for each completed LLM call, and you send the email or charge the card a second time.\n- **Keep the process alive during the wait.** The wait holds memory and connections, and a deploy still stops it.\n- **Hand-write checkpoint files.** Each workflow gets its own recovery code, and a crash between a side effect and its checkpoint still repeats the effect.\n\n[Filesystem-Based Agent State](filesystem-based-agent-state.md) covers checkpoints that the agent writes on purpose. It does not decide which steps run again after a failure, and it cannot make a repeated step safe."
+  },
+  {
+   "title": "Dynamic Context Injection",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Boris Cherny (via Claude Code)"
+   ],
+   "category": "Context & Memory",
+   "source": "https://www.nibzard.com/claude-code",
+   "tags": [
+    "context management",
+    "dynamic context",
+    "lazy loading",
+    "slash commands",
+    "at-mention",
+    "interactive context"
+   ],
+   "slug": "dynamic-context-injection",
+   "id": "dynamic-context-injection",
+   "summary": "Lets users inject files, folders, or saved prompts into the agent's context mid-session with @-mentions and custom slash commands",
+   "signals": [
+    "Interactive sessions need specific files or script output on demand",
+    "Users often paste large text blocks or edit static context files",
+    "Teams reuse the same complex instructions across sessions"
+   ],
+   "anti_signals": [
+    "Non-interactive agents with no user in the session",
+    "The needed context is static and fits in baseline configuration files",
+    "You cannot enforce path allowlists and secret scanning on injected files"
+   ],
+   "related": [
+    "layered-configuration-context",
+    "shell-command-contextualization",
+    "curated-code-context-window",
+    "progressive-tool-discovery",
+    "self-identity-accumulation"
+   ],
+   "updated_at": "2026-10-14",
+   "excerpt": "\n## Problem\nWhile layered configuration files provide good baseline context, agents often need specific pieces of information (e.g., contents of a particular file, output of a script, predefined complex prompt) on-demand during an interactive session. Constantly editing static context files or pasting large chunks of text into prompts is inefficient."
+  },
+  {
+   "title": "Episodic Memory Retrieval & Injection",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Reflexion (Shinn et al., NeurIPS 2023)",
+    "MemGPT (Packer et al., 2023)"
+   ],
+   "category": "Context & Memory",
+   "source": "https://help.openai.com/en/articles/8590148-memory-and-new-controls-for-chatgpt",
+   "tags": [
+    "episodic-memory",
+    "vector-db",
+    "retrieval-augmented",
+    "context-hint"
+   ],
+   "slug": "episodic-memory-retrieval-injection",
+   "id": "episodic-memory-retrieval-injection",
+   "summary": "Writes a structured memory record after each episode and injects the top-k similar past memories as hints when a new task starts",
+   "signals": [
+    "Agent works across multiple sessions on the same repo, user, or project",
+    "Agent repeats past mistakes or rediscovers earlier decisions",
+    "You can store and curate memory records with task and time metadata"
+   ],
+   "anti_signals": [
+    "Single-shot tasks with no continuity between sessions",
+    "You cannot review or prune memories, so noise would build up",
+    "Storage or retrieval cost is not acceptable for the workload"
+   ],
+   "related": [
+    "memory-synthesis-from-execution-logs",
+    "proactive-agent-state-externalization",
+    "filesystem-based-agent-state",
+    "self-identity-accumulation",
+    "memory-reinforcement-learning-memrl"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nStateless request handling causes agents to repeatedly rediscover decisions, constraints, and prior failures. Over multi-session workflows this leads to redundant work, inconsistent behavior, and shallow planning because each turn lacks durable historical context."
+  },
+  {
+   "title": "Factory over Assistant",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "AMP (Thorsten Ball, Quinn Slack)",
+    "Raising an Agent Podcast"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://www.youtube.com/watch?v=2wjnV6F2arc",
+   "tags": [
+    "parallelism",
+    "autonomous-agents",
+    "factory",
+    "assistant",
+    "sidebar",
+    "orchestration",
+    "asynchronous-work"
+   ],
+   "slug": "factory-over-assistant",
+   "id": "factory-over-assistant",
+   "summary": "Spawns several autonomous agents in parallel with automated feedback loops such as tests and builds, and checks on them later instead of watching one agent",
+   "signals": [
+    "Models can work autonomously for long periods",
+    "Tests, builds, and linters can verify agent output without a human",
+    "You have many independent tasks to run at once"
+   ],
+   "anti_signals": [
+    "Exploratory work where you do not yet know what you want",
+    "Tasks need frequent human guidance or domain knowledge not written down",
+    "Quick iterations where interactive feedback is faster"
+   ],
+   "related": [
+    "custom-sandboxed-background-agent",
+    "seamless-background-to-foreground-handoff",
+    "spectrum-of-control-blended-initiative",
+    "agent-modes-by-model-personality",
+    "llm-observability"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nThe \"assistant\" model—working one-on-one with an agent in a sidebar, watching it work, ping-ponging back and forth—limits productivity and scalability. As models become more autonomous and capable, the human becomes the bottleneck as the feedback loop. You can only run one agent at a time when you're watching it in a sidebar."
+  },
+  {
+   "title": "Failover-Aware Model Fallback",
+   "status": "production",
+   "authors": [
+    "OpenClaw Contributors"
+   ],
+   "based_on": [
+    "OpenClaw, formerly Clawdbot (https://github.com/openclaw/openclaw)"
+   ],
+   "category": "Reliability & Eval",
+   "source": "https://github.com/openclaw/openclaw/blob/main/src/agents/model-fallback-runner.ts",
+   "tags": [
+    "fallback",
+    "reliability",
+    "error-classification",
+    "multi-model",
+    "failover",
+    "resilience"
+   ],
+   "slug": "failover-aware-model-fallback",
+   "id": "failover-aware-model-fallback",
+   "summary": "Classifies each model failure by reason and falls back along a model chain only for retryable errors, failing fast on auth, billing, and user aborts",
+   "signals": [
+    "The agent calls models from multiple providers or models",
+    "Timeouts and rate limits interrupt requests",
+    "Blind retries waste calls on auth or billing errors"
+   ],
+   "anti_signals": [
+    "A single model with no alternative provider",
+    "Downstream parsing cannot handle output differences between models",
+    "Extra latency and API charges from failed attempts are not acceptable"
+   ],
+   "related": [
+    "agent-circuit-breaker",
+    "budget-aware-model-routing-with-hard-cost-caps",
+    "agent-sdk-for-programmatic-control",
+    "extended-coherence-work-sessions"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAI model requests fail for varied and often opaque reasons. Simple retry logic fails to distinguish between:\n\n- **Transient failures** (timeouts, rate limits) that benefit from retry with backoff\n- **Semantic failures** (auth errors, billing issues) where retry is futile\n- **User aborts** where retry wastes resources and frustrates users\n\nAgents using multiple models or providers need intelligent fallback strategies that respect failure semantics, avoid retry loops, and provide clear diagnostics."
+  },
+  {
+   "title": "Inference-Time Scaling",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Snell et al. (compute-optimal test-time scaling)",
+    "OpenAI (o1)",
+    "Wei et al. (CoT)",
+    "Wang et al. (Self-Consistency)",
+    "Yao et al. (Tree-of-Thought)"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://arxiv.org/abs/2408.03314",
+   "tags": [
+    "scaling",
+    "inference",
+    "compute",
+    "reasoning",
+    "performance",
+    "o1-model",
+    "test-time-compute",
+    "search",
+    "verification"
+   ],
+   "slug": "inference-time-scaling",
+   "id": "inference-time-scaling",
+   "summary": "Spends extra compute at inference time with best-of-N sampling, longer reasoning, self-refinement, search, and verification to improve output quality",
+   "signals": [
+    "Complex reasoning tasks such as math or coding where more deliberation helps",
+    "Output quality matters more than latency and cost",
+    "You want a smaller model to match a larger one on hard tasks"
+   ],
+   "anti_signals": [
+    "Simple tasks that gain nothing from extra compute",
+    "Latency-sensitive responses",
+    "Inference budget cannot absorb higher per-request cost"
+   ],
+   "related": [
+    "recursive-best-of-n-delegation",
+    "tree-of-thought-reasoning",
+    "language-agent-tree-search-lats",
+    "budget-aware-model-routing-with-hard-cost-caps",
+    "agent-driven-research"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nTraditional language models are limited by their training-time capabilities. Once trained, their performance is essentially fixed, regardless of how much compute is available at inference time. This means that for particularly challenging problems, we cannot simply \"think harder\" by allocating more computational resources to find better solutions. This limitation becomes especially apparent in complex reasoning tasks where more deliberation could lead to better outcomes."
+  },
+  {
+   "title": "Intelligent Bash Tool Execution",
+   "status": "production",
+   "authors": [
+    "OpenClaw Contributors"
+   ],
+   "based_on": [
+    "OpenClaw, formerly Clawdbot (https://github.com/openclaw/openclaw)"
+   ],
+   "category": "Tool Use & Environment",
+   "source": "https://github.com/openclaw/openclaw/blob/main/src/agents/bash-tools.exec-run.ts",
+   "tags": [
+    "bash",
+    "shell",
+    "pty",
+    "fallback",
+    "security",
+    "process-management",
+    "sandboxing"
+   ],
+   "slug": "intelligent-bash-tool-execution",
+   "id": "intelligent-bash-tool-execution",
+   "summary": "Runs agent shell commands through a multi-mode executor that uses a PTY when needed, falls back to direct exec, and manages approvals, background jobs, and signals",
+   "signals": [
+    "Agents run TTY-required CLIs or interactive tools",
+    "Agents start long-running background processes that need tracking and cleanup",
+    "Command execution needs approval modes such as deny, allowlist, or full"
+   ],
+   "anti_signals": [
+    "Agents only run simple non-interactive commands",
+    "The environment cannot install or compile a native PTY module and needs no TTY support"
+   ],
+   "related": [
+    "virtual-machine-operator-agent",
+    "sandboxed-tool-authorization",
+    "shell-command-contextualization",
+    "one-os-user-per-agent",
+    "filesystem-mediated-host-delegation"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nSecure, reliable command execution from agents is complex and error-prone:\n\n- **PTY requirements**: TTY-required CLIs (coding agents, terminal UIs) fail with direct exec\n- **Platform differences**: Linux and macOS behave differently for detached processes, signal handling\n- **Security concerns**: Arbitrary command execution needs approval workflows, elevated mode detection\n- **Background management**: Long-running processes need tracking, output aggregation, and cleanup\n\nAgents need a multi-mode execution strategy that adapts to the command's requirements while maintaining security and reliability."
+  },
+  {
+   "title": "Inversion of Control",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Quinn Slack",
+    "Thorsten Ball"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://www.nibzard.com/ampcode",
+   "tags": [
+    "orchestration",
+    "autonomy",
+    "control"
+   ],
+   "slug": "inversion-of-control",
+   "id": "inversion-of-control",
+   "summary": "Gives the agent tools, a high-level objective, and guardrails, then lets it choose sequencing and recovery while humans set policy and review",
+   "signals": [
+    "Humans spend time scripting each step the agent takes",
+    "Tasks have objective success criteria such as passing tests",
+    "Guardrails and checkpoints can be enforced at risky boundaries"
+   ],
+   "anti_signals": [
+    "No guardrails or telemetry exist to detect drift or overreach",
+    "Tasks have vague success criteria that need step-by-step human judgement",
+    "Every step is high risk and needs explicit human approval"
+   ],
+   "related": [
+    "agent-friendly-workflow-design",
+    "spectrum-of-control-blended-initiative",
+    "progressive-complexity-escalation",
+    "plan-then-execute-pattern",
+    "llm-observability"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nPrompt-as-puppeteer workflows force humans to micromanage each step, turning agents into expensive autocomplete tools. This limits throughput, creates brittle instructions that break on small context changes, and prevents agents from using their own planning capability."
+  },
+  {
+   "title": "Layered Configuration Context",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Boris Cherny (via Claude Code)"
+   ],
+   "category": "Context & Memory",
+   "source": "https://code.claude.com/docs/en/memory",
+   "tags": [
+    "context management",
+    "configuration",
+    "scoped context",
+    "automatic loading",
+    "CLAUDE.md"
+   ],
+   "slug": "layered-configuration-context",
+   "id": "layered-configuration-context",
+   "summary": "Loads context files from enterprise, user, project, and local levels automatically and merges them into the agent's baseline context",
+   "signals": [
+    "Agent needs project or team instructions in every session",
+    "Organization, user, and project need different baseline context",
+    "Same context is repeated manually in each prompt"
+   ],
+   "anti_signals": [
+    "One-off tasks that need no persistent context",
+    "Context window is too small to hold several layers"
+   ],
+   "related": [
+    "dynamic-context-injection",
+    "context-budget-as-a-governed-resource",
+    "prompt-caching-via-exact-prefix-preservation",
+    "surface-scoped-system-prompt",
+    "versioned-constitution-governance"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAI agents require relevant context to perform effectively. Providing this context manually in every prompt is cumbersome, and a one-size-fits-all global context is often too broad or too narrow. Different projects, users, and organizational policies may require different baseline information for the agent."
+  },
+  {
+   "title": "LLM Observability",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Will Larson (Imprint)"
+   ],
+   "category": "Reliability & Eval",
+   "source": "https://lethain.com/agents-logging/",
+   "tags": [
+    "observability",
+    "logging",
+    "debugging",
+    "tracing",
+    "datadog",
+    "langsmith",
+    "spans",
+    "monitoring",
+    "llmops"
+   ],
+   "slug": "llm-observability",
+   "id": "llm-observability",
+   "summary": "Sends agent runs to an LLM observability platform for span-level traces of each LLM call and tool use, plus aggregate cost, latency, and success metrics",
+   "signals": [
+    "Multi-step agent workflows are hard to debug from raw logs",
+    "Non-engineers need to inspect workflow runs",
+    "Team needs cost, latency, and success metrics across runs"
+   ],
+   "anti_signals": [
+    "Simple, deterministic tools with no agent behavior",
+    "Single-step operations where standard logs suffice",
+    "Budget does not cover observability spend"
+   ],
+   "related": [
+    "agent-first-tooling-and-logging",
+    "out-of-process-provider-boundary-replay",
+    "intent-level-cost-attribution",
+    "chain-of-thought-monitoring-interruption",
+    "verbose-reasoning-transparency"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAgents introduce **non-determinism**—the same input can produce different outputs. When agents do something sub-optimal, users flag it as a \"bug\" even if it's just prompt ambiguity. Debugging these issues requires tracing through complex multi-step workflows, but standard logging (CloudWatch, Lambda logs) is painful to navigate. Engineers need easy access to workflow execution details to debug quickly, or agents won't get adopted."
+  },
+  {
+   "title": "Multi-Tenant Agent & Memory Isolation",
+   "status": "production",
+   "evidence_grade": "high",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Firecracker microVMs (Agache et al., NSDI 2020)",
+    "Cloudflare Durable Objects",
+    "OWASP Agentic AI Threats and Mitigations"
+   ],
+   "category": "Security & Safety",
+   "source": "https://www.usenix.org/conference/nsdi20/presentation/agache",
+   "tags": [
+    "multi-tenancy",
+    "tenant-isolation",
+    "memory-isolation",
+    "sandboxing",
+    "microvm",
+    "cache-isolation",
+    "prompt-injection",
+    "data-leakage"
+   ],
+   "slug": "multi-tenant-agent-isolation",
+   "id": "multi-tenant-agent-memory-isolation",
+   "summary": "Enforces a tenant boundary on all four agent state planes (execution, retrieval and memory, cache, credential and egress), with tenant identity bound outside the model, so that one tenant's data or instructions cannot reach another",
+   "signals": [
+    "One agent deployment serves several customers or business units",
+    "The agent has persistent memory, vector retrieval, or a semantic cache",
+    "Tenants supply documents, prompts, or tool outputs that the agent reads",
+    "Compliance needs evidence that tenant data cannot cross tenant boundaries"
+   ],
+   "anti_signals": [
+    "A single-tenant deployment, or all users who share one trust domain and one data scope",
+    "All content that the agent handles is public",
+    "The hosting platform already enforces hard per-tenant isolation on every state plane"
+   ],
+   "related": [
+    "one-os-user-per-agent",
+    "egress-lockdown-no-exfiltration-channel",
+    "sandboxed-tool-authorization",
+    "pii-tokenization"
+   ],
+   "domains": [
+    "enterprise",
+    "security",
+    "ops"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nOne agent deployment often serves many customers. Each customer must see only its own data. The content of one customer must not steer the agent for another.\n\nMost teams isolate the compute: one sandbox for each session. An agent keeps state in more places than a usual service, and each one can leak.\n\n- **Execution:** `/tmp`, mounted volumes, environment variables, and the memory of a warm process.\n- **Retrieval and memory:** vector indexes, conversation stores, and episodic memory that the agent reads and writes.\n- **Caches:** semantic response caches, tool-result caches, and provider prompt caches.\n- **Credentials and egress:** tokens, and the destinations that the agent can reach.\n\nThe model sits in the path of each plane. The OWASP threat list calls memory poisoning possible through \"exploiting shared memory allowing users to affect other users\". A sandbox around the process does not stop a shared index or a shared cache from returning the row of another tenant."
+  },
+  {
+   "title": "PII Tokenization",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anthropic Engineering Team"
+   ],
+   "category": "Security & Safety",
+   "source": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+   "tags": [
+    "privacy",
+    "pii",
+    "security",
+    "mcp",
+    "data-protection"
+   ],
+   "slug": "pii-tokenization",
+   "id": "pii-tokenization",
+   "summary": "Replaces PII in tool results with placeholder tokens before the model sees them and restores the real values in outgoing tool calls",
+   "signals": [
+    "Agent workflows handle customer, HR, or medical records",
+    "Compliance rules such as GDPR, HIPAA, or CCPA apply",
+    "Agent routes data between tools without needing to read raw values"
+   ],
+   "anti_signals": [
+    "Agent must reason over the actual content of the sensitive values",
+    "Data contains no PII",
+    "Tokenization would replace access controls and encryption instead of adding to them"
+   ],
+   "related": [
+    "context-minimization-pattern",
+    "lethal-trifecta-threat-model",
+    "local-first-credential-broker",
+    "policy-gated-tool-proxy",
+    "sandboxed-tool-authorization"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAI agents often need to process workflows involving personally identifiable information (PII) such as emails, phone numbers, addresses, or financial data. However, sending raw PII through the model's context creates privacy risks and compliance concerns. Organizations need agents to orchestrate data workflows without exposing sensitive information to the LLM."
+  },
+  {
+   "title": "Plan-Then-Execute Pattern",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Luca Beurer-Kellner et al. (2025)",
+    "He et al. (2025)"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://arxiv.org/abs/2506.08837",
+   "tags": [
+    "planning",
+    "control-flow-integrity",
+    "prompt-injection"
+   ],
+   "slug": "plan-then-execute-pattern",
+   "id": "plan-then-execute-pattern",
+   "summary": "Has the LLM fix the full sequence of tool calls before it reads untrusted data, then runs that sequence so tool outputs change only parameters",
+   "signals": [
+    "Tool outputs contain untrusted content that can carry prompt injections",
+    "The set of actions is known up front but parameters vary",
+    "Complex tasks benefit from a reviewed plan before execution"
+   ],
+   "anti_signals": [
+    "The next action depends on what earlier tool results reveal",
+    "Poisoned output content, such as a bad email body, is the main risk",
+    "Simple task that a capable model can one-shot"
+   ],
+   "related": [
+    "action-selector-pattern",
+    "code-then-execute-pattern",
+    "dual-llm-pattern",
+    "context-minimization-pattern",
+    "discrete-phase-separation"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nWhen planning and execution are interleaved in one loop, untrusted tool outputs can influence which action is selected next. That makes the control flow itself attackable: a malicious intermediate result can redirect the agent into unsafe tools or unauthorized operations."
+  },
+  {
+   "title": "Progressive Autonomy with Model Evolution",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Boris Cherny (Anthropic)",
+    "Claude Code Team",
+    "Thorsten Ball (Sourcegraph/Amp, Latent Space interview)"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+   "tags": [
+    "model-evolution",
+    "scaffolding",
+    "autonomy",
+    "system-prompts",
+    "capabilities",
+    "model-intelligence",
+    "bitter-lesson",
+    "temporary-tooling"
+   ],
+   "slug": "progressive-autonomy-with-model-evolution",
+   "id": "progressive-autonomy-with-model-evolution",
+   "summary": "Treats scaffolding around the model as disposable: build the simplest thing that works, mark it temporary, and remove it when evals show a new model handles the task natively",
+   "signals": [
+    "A newer, more capable model is in production",
+    "System prompts hold instructions written for older model weaknesses",
+    "You plan tooling that compensates for a current model weakness",
+    "Token cost or latency of scaffolding is noticeable"
+   ],
+   "anti_signals": [
+    "No evals to detect quality loss after removal",
+    "Instructions or code carry domain knowledge or safety constraints",
+    "The work compounds over time and does not depend on model limitations",
+    "The new model is not yet proven stable in production"
+   ],
+   "related": [
+    "workflow-evals-with-mocked-tools",
+    "compounding-engineering-pattern",
+    "agent-assisted-scaffolding",
+    "progressive-complexity-escalation",
+    "canary-rollout-and-automatic-rollback-for-agent-policy-changes"
+   ],
+   "updated_at": "2026-11-23",
+   "excerpt": "\n## Problem\nAgent scaffolding built for older models becomes unnecessary overhead as models improve:\n\n- **Prompt bloat**: System prompts accumulate instructions that newer models don't need\n- **Over-engineered flows**: Complex orchestration for tasks models can now handle directly\n- **Wasted tokens**: Paying for instructions the model already knows\n- **Slower execution**: Unnecessary steps add latency\n- **Maintenance burden**: More code to maintain for diminishing benefit\n\nThe risk runs in both directions. Models improve faster than scaffolding is removed, so existing systems accumulate debt. And new scaffolding is often built to last: a feature that takes three months to build, such as a sophisticated context compression scheme or a custom tool-chain for code editing, can be rendered obsolete overnight by the next model generation that performs the task natively."
+  },
+  {
+   "title": "Reflection Loop",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Shinn et al. (2023)"
+   ],
+   "category": "Feedback Loops",
+   "source": "https://arxiv.org/abs/2303.11366",
+   "tags": [
+    "self-feedback",
+    "iterative-improvement",
+    "evaluation"
+   ],
+   "slug": "reflection",
+   "id": "reflection-loop",
+   "summary": "Scores each draft against a fixed rubric, feeds the critique into a revision, and repeats until the draft passes a threshold or the retry budget ends",
+   "signals": [
+    "Output must meet explicit quality criteria",
+    "Single-pass answers miss edge cases or constraints",
+    "Writing, reasoning, or code tasks with a clear scoring metric"
+   ],
+   "anti_signals": [
+    "No well-defined metric to score drafts",
+    "Extra compute per answer is not acceptable"
+   ],
+   "related": [
+    "deterministic-grader-in-the-loop",
+    "inference-time-scaling",
+    "self-critique-evaluator-loop",
+    "rlaif-reinforcement-learning-from-ai-feedback",
+    "output-verification-loop"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nSingle-pass generation frequently misses edge cases, constraints, or quality criteria that become obvious on review. Without a structured revision loop, agents return the first plausible answer even when a better answer is reachable with lightweight critique."
+  },
+  {
+   "title": "RLAIF (Reinforcement Learning from AI Feedback)",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anthropic",
+    "Google DeepMind"
+   ],
+   "category": "Reliability & Eval",
+   "source": "https://arxiv.org/abs/2212.08073",
+   "tags": [
+    "rlhf",
+    "rlaif",
+    "constitutional-ai",
+    "synthetic-data",
+    "feedback",
+    "alignment",
+    "evaluation"
+   ],
+   "slug": "rlaif-reinforcement-learning-from-ai-feedback",
+   "id": "rlaif-reinforcement-learning-from-ai-feedback",
+   "summary": "Uses an AI model guided by written principles to critique outputs and label preferences, which train a reward model that optimizes the policy",
+   "signals": [
+    "Human preference annotation is too expensive or slow to scale",
+    "Domain experts for labeling are scarce",
+    "Evaluation criteria can be written as explicit principles"
+   ],
+   "anti_signals": [
+    "No capable, well-aligned supervisory model for the target domain",
+    "Critical outputs need human validation that AI labels cannot replace"
+   ],
+   "related": [
+    "self-critique-evaluator-loop",
+    "anti-reward-hacking-grader-design",
+    "inference-healed-code-review-reward",
+    "variance-based-rl-sample-selection"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nTraditional Reinforcement Learning from Human Feedback (RLHF) requires extensive human annotation for preference data, which is expensive (often $1+ per annotation), time-consuming, and difficult to scale. This creates a bottleneck in training aligned AI systems, especially when dealing with complex or specialized domains where human expertise is scarce or costly."
+  },
+  {
+   "title": "Shell Command Contextualization",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Boris Cherny (via Claude Code)"
+   ],
+   "category": "UX & Collaboration",
+   "source": "https://code.claude.com/docs/en/interactive-mode",
+   "tags": [
+    "shell integration",
+    "context management",
+    "local execution",
+    "bash",
+    "cli",
+    "interactive tools"
+   ],
+   "slug": "shell-command-contextualization",
+   "id": "shell-command-contextualization",
+   "summary": "Lets the user run a shell command with a prefix such as ! and injects the command and its full output into the agent's context",
+   "signals": [
+    "Agent works in a local development environment",
+    "Users paste command output into prompts by hand",
+    "Agent needs linter, git, or file listing output to reason"
+   ],
+   "anti_signals": [
+    "Agent has no local shell access",
+    "Commands produce large output that inflates token costs"
+   ],
+   "related": [
+    "dynamic-context-injection",
+    "intelligent-bash-tool-execution",
+    "context-budget-as-a-governed-resource"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nWhen an AI agent interacts with a local development environment, it often needs to execute shell commands (e.g., run linters, check git status, list files) and then use the output of these commands as context for its subsequent reasoning or actions. Manually copying and pasting command output into the prompt is tedious and error-prone."
+  },
+  {
+   "title": "Skill Library Evolution",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anthropic Engineering Team",
+    "Will Larson (Imprint)",
+    "Amp (Nicolay)"
+   ],
+   "category": "Learning & Adaptation",
+   "source": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+   "tags": [
+    "code-reuse",
+    "skills",
+    "learning",
+    "capabilities",
+    "evolution",
+    "progressive-disclosure",
+    "on-demand-loading",
+    "mcp",
+    "lazy-loading"
+   ],
+   "slug": "skill-library-evolution",
+   "id": "skill-library-evolution",
+   "summary": "Saves working agent code as reusable skills in a skills directory, documents and tests them over time, and loads skill details only on demand",
+   "signals": [
+    "Agents solve similar problems across sessions",
+    "Agents rewrite the same code and waste tokens",
+    "Many skills or MCP tools would bloat context if loaded up front"
+   ],
+   "anti_signals": [
+    "One-off tasks with no repeated problems",
+    "No capacity to test, review, and deprecate saved skills"
+   ],
+   "related": [
+    "progressive-tool-discovery",
+    "compounding-engineering-pattern",
+    "dual-use-tool-design",
+    "iterative-prompt-skill-refinement",
+    "mcp-pattern-injection"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAgents frequently solve similar problems across different sessions or workflows. Without a mechanism to preserve and reuse working code, agents must rediscover solutions each time, which wastes tokens and time. Organizations want agents to build up capability over time rather than starting from scratch every session."
+  },
+  {
+   "title": "Spectrum of Control / Blended Initiative",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Aman Sanger (Cursor)"
+   ],
+   "category": "UX & Collaboration",
+   "source": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+   "tags": [
+    "human-agent-collaboration",
+    "autonomy-spectrum",
+    "interactive-control",
+    "task-delegation",
+    "code-editing",
+    "ide-integration"
+   ],
+   "slug": "spectrum-of-control-blended-initiative",
+   "id": "spectrum-of-control-blended-initiative",
+   "summary": "Gives users several autonomy modes, from inline completion to background agents, and lets them switch modes per task",
+   "signals": [
+    "Tasks range from small edits to multi-file features",
+    "Users need to move between direct control and delegation",
+    "Coding tool or IDE with room for several interaction paths"
+   ],
+   "anti_signals": [
+    "Single task type that needs only one autonomy level",
+    "Team cannot build and maintain several interaction modes"
+   ],
+   "related": [
+    "seamless-background-to-foreground-handoff",
+    "classify-then-act-for-background-agents",
+    "inversion-of-control",
+    "factory-over-assistant",
+    "progressive-complexity-escalation"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAI agents for tasks like coding can offer various levels of assistance, from simple completions to complex, multi-step operations. A one-size-fits-all approach to agent autonomy doesn't cater to the diverse needs of users or the varying complexity of tasks. Users need to fluidly shift between direct control and delegating tasks to the agent."
+  },
+  {
+   "title": "Swarm Migration Pattern",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Boris Cherny (Anthropic)",
+    "Anthropic Internal Users"
+   ],
+   "category": "Orchestration & Control",
+   "source": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+   "tags": [
+    "swarm",
+    "map-reduce",
+    "migration",
+    "parallelization",
+    "sub-agents",
+    "scalability",
+    "framework-migration"
+   ],
+   "slug": "swarm-migration-pattern",
+   "id": "swarm-migration-pattern",
+   "summary": "Main agent orchestrates 10+ parallel subagents working simultaneously on independent migration chunks for large-scale framework upgrades, lint rule rollouts, and API migrations.",
+   "signals": [
+    "Migration touches many files that can change independently",
+    "Good test coverage can verify each chunk",
+    "Clear, unambiguous migration rules exist"
+   ],
+   "anti_signals": [
+    "Fewer than about 10 files to migrate",
+    "Files are tightly coupled and need coordinated changes",
+    "Budget cannot cover many parallel agents"
+   ],
+   "related": [
+    "sub-agent-spawning",
+    "llm-map-reduce-pattern",
+    "deterministic-zero-llm-orchestration",
+    "recursive-best-of-n-delegation",
+    "planner-worker-separation-for-long-running-agents"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nLarge-scale code migrations are time-consuming when done sequentially:\n\n- **Framework upgrades** (e.g., testing library A → testing library B)\n- **Lint rule rollouts** across hundreds of files\n- **API migrations** when dependencies change\n- **Code modernization** (e.g., class components → hooks)\n- **Refactoring patterns** across the codebase\n\nHumans doing these manually is tedious; single agents doing them sequentially is slow."
+  },
+  {
+   "title": "Team-Shared Agent Configuration as Code",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Boris Cherny (Anthropic)",
+    "Enterprise Claude Code Users"
+   ],
+   "category": "UX & Collaboration",
+   "source": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+   "tags": [
+    "configuration",
+    "version-control",
+    "team-collaboration",
+    "permissions",
+    "consistency",
+    "onboarding"
+   ],
+   "slug": "team-shared-agent-configuration",
+   "id": "team-shared-agent-configuration-as-code",
+   "summary": "Check agent configuration into version control as code, enabling consistent behavior across teams, faster onboarding, and collaborative improvement through PRs and code review.",
+   "signals": [
+    "Several engineers use the same agent on one repository",
+    "Team members get the same permission prompts again and again",
+    "Team needs standard rules for files the agent must not touch"
+   ],
+   "anti_signals": [
+    "Solo developer with no shared repository",
+    "Config would need secrets that cannot be committed"
+   ],
+   "related": [
+    "layered-configuration-context",
+    "sandboxed-tool-authorization",
+    "versioned-constitution-governance",
+    "compounding-engineering-pattern",
+    "agent-friendly-workflow-design"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nWhen each engineer configures their AI agent independently:\n\n- **Inconsistent behavior**: Agents work differently for different team members\n- **Permission friction**: Everyone gets prompted for the same safe commands\n- **Duplicated effort**: Each person solves the same configuration problems\n- **Knowledge silos**: Good configurations don't spread across the team\n- **Onboarding overhead**: New team members start from scratch\n- **Security gaps**: No standardized rules about what agents can/can't touch"
+  },
+  {
+   "title": "Trajectory & State-Invariant Evaluation",
+   "status": "production",
+   "evidence_grade": "high",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "tau-bench (Yao et al., 2024)",
+    "OSWorld (Xie et al., 2024)"
+   ],
+   "category": "Reliability & Eval",
+   "source": "https://arxiv.org/abs/2406.12045",
+   "tags": [
+    "agent-evaluation",
+    "end-state-verification",
+    "trajectory-assertions",
+    "pass-hat-k",
+    "reliability",
+    "tool-use",
+    "policy-compliance",
+    "sandbox-reset"
+   ],
+   "slug": "trajectory-and-state-invariant-evaluation",
+   "id": "trajectory-state-invariant-evaluation",
+   "summary": "Grades a tool-using agent on the end state of its sandbox against the expected postconditions and not on its final prose, adds assertions on the recorded tool calls for policy preconditions and forbidden side effects, and repeats each scenario to measure the probability that all trials pass",
+   "signals": [
+    "The agent changes state through tools: database rows, files, orders, tickets",
+    "The final answer can claim a success that the actions do not support",
+    "The domain policy demands a precondition before some actions",
+    "Runs of the same task give different results"
+   ],
+   "anti_signals": [
+    "The output is one text answer with a reference answer: grade the answer",
+    "There is no inspectable end state and no recorded action log",
+    "The environment cannot return to the same initial state for each trial"
+   ],
+   "related": [
+    "workflow-evals-with-mocked-tools",
+    "deterministic-grader-in-the-loop",
+    "evidence-layered-evaluation-for-interactive-agents",
+    "incident-to-eval-synthesis"
+   ],
+   "domains": [
+    "customer-support",
+    "ops",
+    "evaluation"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nA tool-using agent ends with a sentence such as \"I canceled order #42 and issued the refund\". A grader that reads that sentence cannot see what happened in the environment. Four outcomes share the same prose:\n\n- The agent did not make the API call.\n- The agent canceled the wrong order.\n- The agent canceled the correct order, but without the confirmation that the policy demands.\n- The agent succeeded in one run of five.\n\nThe two usual fixes also fail. Exact trajectory matching compares the tool calls with one reference run, and it fails each other valid path. [OSWorld](https://arxiv.org/abs/2404.07972) names this defect of earlier benchmarks: their \"non-execution-based evaluation assumes a single solution for each task and wrongfully penalizes alternative correct solutions\". One run hides the variance. [tau-bench](https://arxiv.org/abs/2406.12045) adds that \"the trajectory can be extremely diverse for the same task, and success criteria are multi-faceted\"."
+  },
+  {
+   "title": "Unified Tool Gateway",
+   "status": "production",
+   "authors": [
+    "Blake Folgado (@blakefolgado)"
+   ],
+   "based_on": [
+    "API Gateway Pattern (microservices.io)",
+    "Model Context Protocol"
+   ],
+   "category": "Tool Use & Environment",
+   "source": "https://microservices.io/patterns/apigateway.html",
+   "tags": [
+    "tool-gateway",
+    "mcp",
+    "tool-aggregation",
+    "agent-tooling",
+    "api-gateway",
+    "tool-routing"
+   ],
+   "slug": "unified-tool-gateway",
+   "id": "unified-tool-gateway",
+   "summary": "Route all agent tool calls through a single gateway that handles discovery, authentication, billing, and execution across many heterogeneous providers.",
+   "maturity": "maturing",
+   "complexity": "medium",
+   "effort": "days",
+   "impact": "high",
+   "signals": [
+    "Agent needs 10+ external tools or APIs",
+    "Managing multiple API keys across providers",
+    "Usage-based billing required across tools",
+    "Teams sharing tool access with centralized controls"
+   ],
+   "anti_signals": [
+    "Single-provider tool usage",
+    "Agents that only need 1-2 tools",
+    "Fully offline or air-gapped environments"
+   ],
+   "prerequisites": [
+    "MCP or tool-use capable agent",
+    "Network access to external APIs"
+   ],
+   "related": [
+    "progressive-tool-discovery",
+    "tool-capability-compartmentalization"
+   ],
+   "anti_patterns": [
+    "direct-api-integration-per-tool"
+   ],
+   "tools": [
+    "mcp-servers",
+    "api-gateway",
+    "tool-registry"
+   ],
+   "domains": [
+    "tool-use",
+    "infrastructure",
+    "ops"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAs agent capabilities grow, they need access to an expanding set of external tools — web search, image generation, competitor research, security scanning, video production, and more. Each tool typically requires its own API key, authentication flow, rate-limiting logic, and billing integration.\n\nThis creates several compounding problems:\n\n* **Credential sprawl**: Agents or their operators must manage dozens of API keys across different providers, each with different authentication schemes.\n* **Integration tax**: Every new tool requires custom integration code — error handling, retries, schema translation, and response normalization.\n* **Billing fragmentation**: Usage is scattered across many provider dashboards, making cost tracking and budget enforcement difficult.\n* **Discovery overhead**: Agents have no unified way to find what tools are available or what capabilities they can access."
+  },
+  {
+   "title": "Verbose Reasoning Transparency",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Boris Cherny (via Claude Code)"
+   ],
+   "category": "UX & Collaboration",
+   "source": "https://www.nibzard.com/claude-code",
+   "tags": [
+    "explainability",
+    "debugging",
+    "transparency",
+    "agent reasoning",
+    "verbose mode",
+    "introspection"
+   ],
+   "slug": "verbose-reasoning-transparency",
+   "id": "verbose-reasoning-transparency",
+   "summary": "Lets users open a verbose view on demand that shows the agent's interpretation, tool choices, intermediate steps, and raw tool outputs",
+   "signals": [
+    "Users must debug unexpected agent output",
+    "Users need to learn how to prompt the agent better",
+    "High-stakes tasks where users must know why the agent acted"
+   ],
+   "anti_signals": [
+    "Verbose output would expose sensitive system prompts or credentials",
+    "Token overhead is not acceptable"
+   ],
+   "related": [
+    "chain-of-thought-monitoring-interruption",
+    "reasoning-token-firewall",
+    "llm-observability",
+    "abstracted-code-representation-for-review"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAI agents, especially those using complex models or multiple tools, can sometimes behave like \"black boxes.\" Users may not understand why an agent made a particular decision, chose a specific tool, or generated a certain output. This lack of transparency can hinder debugging, trust, and the ability to effectively guide the agent."
+  },
+  {
+   "title": "Virtual Machine Operator Agent",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Amjad Masad"
+   ],
+   "category": "Tool Use & Environment",
+   "source": "https://www.nibzard.com/silent-revolution",
+   "tags": [
+    "computer operation",
+    "virtual machine",
+    "execution environment",
+    "agent capability"
+   ],
+   "slug": "virtual-machine-operator-agent",
+   "id": "virtual-machine-operator-agent",
+   "summary": "Gives the agent a dedicated virtual machine where it can run code, install packages, use the file system, and operate CLI tools",
+   "signals": [
+    "Tasks need code execution, package installs, or system tools",
+    "Agent must work as a general-purpose computer operator",
+    "Isolation from the host system is required"
+   ],
+   "anti_signals": [
+    "Tasks are only text or code generation with no execution",
+    "Cold-start latency of VMs or containers is not acceptable"
+   ],
+   "related": [
+    "code-over-api-pattern",
+    "intelligent-bash-tool-execution",
+    "egress-lockdown-no-exfiltration-channel",
+    "one-os-user-per-agent",
+    "custom-sandboxed-background-agent"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nAI agents need to perform complex tasks beyond simple code generation or text manipulation. They require the ability to interact with a full computer environment to execute code, manage system resources, install software, and operate various applications."
+  },
+  {
+   "title": "Visual AI Multimodal Integration",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Anthropic computer use",
+    "OpenAI",
+    "Google"
+   ],
+   "category": "Tool Use & Environment",
+   "source": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool",
+   "tags": [
+    "multimodal",
+    "vision",
+    "video",
+    "image-processing",
+    "visual-understanding",
+    "agent-capabilities"
+   ],
+   "slug": "visual-ai-multimodal-integration",
+   "id": "visual-ai-multimodal-integration",
+   "summary": "Adds multimodal models to the agent so it can analyze images, video, and screenshots and combine them with text to reason and act",
+   "signals": [
+    "Tasks involve screenshots, charts, diagrams, or video",
+    "Agent must debug UIs or extract data from visual documents",
+    "Users want to show a problem instead of describing it"
+   ],
+   "anti_signals": [
+    "All inputs are text only",
+    "Budget cannot cover higher visual processing costs",
+    "Visual data carries privacy risks that cannot be controlled"
+   ],
+   "related": [
+    "three-stage-perception-architecture",
+    "rendered-ui-finish-gate",
+    "evidence-layered-evaluation-for-interactive-agents",
+    "virtual-machine-operator-agent"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nMany real-world tasks require understanding and processing visual information alongside text. Traditional text-only agents miss critical information present in images, videos, diagrams, and visual interfaces. This limitation prevents agents from helping with tasks like analyzing screenshots, debugging UI issues, understanding charts, processing security footage, or working with visual documentation."
+  },
+  {
+   "title": "Voice Agent Turn-Taking & Barge-In Handling",
+   "status": "production",
+   "evidence_grade": "high",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Pipecat (Daily)",
+    "LiveKit Agents"
+   ],
+   "category": "UX & Collaboration",
+   "source": "https://github.com/pipecat-ai/pipecat",
+   "tags": [
+    "voice-agents",
+    "turn-taking",
+    "barge-in",
+    "endpointing",
+    "vad",
+    "interruption-handling",
+    "realtime",
+    "telephony"
+   ],
+   "slug": "voice-agent-turn-taking-barge-in",
+   "id": "voice-agent-turn-taking-barge-in-handling",
+   "summary": "Couples four control loops in a voice agent so that neither side talks over the other: semantic end-of-turn detection, adaptive barge-in that flushes the audio pipeline, truncation of the assistant message to the words the user heard, and a filler while a slow tool runs",
+   "signals": [
+    "The agent talks with users over live audio: phone, WebRTC, or an in-app voice widget",
+    "A silence timer cuts users off when they pause to think, or noise and 'uh-huh' cut the agent off",
+    "After an interruption, the agent refers to words that it never finished saying",
+    "Tool calls leave dead air, so callers repeat themselves or hang up"
+   ],
+   "anti_signals": [
+    "Push-to-talk or text chat, where turn boundaries are explicit",
+    "The utterance must play in full, such as a legal notice; make it uninterruptible instead",
+    "A one-way broadcast with no speech from the user"
+   ],
+   "related": [
+    "chain-of-thought-monitoring-interruption",
+    "spectrum-of-control-blended-initiative",
+    "agent-circuit-breaker"
+   ],
+   "domains": [
+    "customer-support",
+    "telephony",
+    "enterprise"
+   ],
+   "updated_at": "2026-11-25",
+   "excerpt": "\n## Problem\nA chat loop gets turn-taking for free. The user submits a message, and the agent replies after that. Live audio has no submit event. From a sound stream, the agent must decide when the user has finished and when the user has cut in.\n\n[Chain-of-Thought Monitoring & Interruption](chain-of-thought-monitoring-interruption.md) gives the user a stop button for reasoning that the user can read. A voice channel has no button. The user speaks, and the agent must recognize that speech as a stop signal.\n\nThe common port of a chat loop to audio uses one voice activity detector (VAD) and a silence timer. It fails in three ways:\n\n- **It cuts users off.** A pause after \"I'd like to book...\" starts the reply, and the agent talks over the rest of the sentence.\n- **It stops for anything.** A cough, a door, or a listener's \"uh-huh\" counts as speech, so the agent stops in the middle of an answer.\n- **It answers words that nobody heard.** After the agent is cut off, its complete reply stays in the conversation history. The next reply assumes that the user heard all of it.\n\nA fourth defect appears when the agent calls a tool. Speech stops, the caller hears silence, and many callers start to speak again or hang up."
+  },
+  {
+   "title": "Workflow Evals with Mocked Tools",
+   "status": "production",
+   "authors": [
+    "Nikola Balic (@nibzard)"
+   ],
+   "based_on": [
+    "Will Larson (lethain.com)",
+    "Sierra (chat/voice platform)"
+   ],
+   "category": "Reliability & Eval",
+   "source": "https://lethain.com/agents-evals/",
+   "tags": [
+    "evals",
+    "testing",
+    "ci-cd",
+    "mocked-tools",
+    "simulations",
+    "workflow-validation",
+    "end-to-end-testing"
+   ],
+   "slug": "workflow-evals-with-mocked-tools",
+   "id": "workflow-evals-with-mocked-tools",
+   "summary": "Runs complete agent workflows against mocked tools in CI and checks which tools were called plus agent-as-judge quality criteria",
+   "signals": [
+    "Agent tools have side effects such as API or database writes",
+    "Unit tests pass but prompts and tools fail together",
+    "Need regression tests for agent behavior on each PR"
+   ],
+   "anti_signals": [
+    "Results must act as a strict CI gate, since non-determinism makes them flaky",
+    "Team cannot keep mocks in sync with real tools"
+   ],
+   "related": [
+    "incident-to-eval-synthesis",
+    "out-of-process-provider-boundary-replay",
+    "evidence-layered-evaluation-for-interactive-agents",
+    "anti-reward-hacking-grader-design",
+    "progressive-autonomy-with-model-evolution"
+   ],
+   "updated_at": "2026-10-13",
+   "excerpt": "\n## Problem\nUnit tests, linters, and typecheckers validate individual components but do not test agent workflows end to end. It is easy to create prompts that do not work well although every underlying piece is correct. You need to validate that prompts and tools work together effectively as a system."
+  }
+ ]
+}

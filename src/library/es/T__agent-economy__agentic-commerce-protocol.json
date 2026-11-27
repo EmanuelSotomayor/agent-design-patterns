@@ -1,0 +1,308 @@
+{
+ "cat": "agent-economy",
+ "slug": "agentic-commerce-protocol",
+ "name": "Agentic Commerce Protocol (ACP)(ACP)",
+ "icon": "🛒",
+ "complexity": "high",
+ "description": "Estándar abierto desarrollado en conjunto por Stripe y OpenAI (Apache-2.0, septiembre de 2025) para completar una compra con un comercio que sigue siendo el comerciante registrado (merchant of record). El comercio expone endpoints REST o MCP orientados a agentes (crear, actualizar, completar y cancelar el checkout) sobre un feed de productos; el agente paga con un Shared Payment Token emitido por Stripe y limitado a un solo comercio y al total del carrito, de modo que el agente nunca ve las credenciales de la tarjeta del comprador. Se lanzó como el estándar detrás de ChatGPT Instant Checkout con vendedores de Etsy y comercios de Shopify. Es distinto de `model-context-protocol`: MCP es un transporte general de llamadas a herramientas, mientras que ACP es un contrato de checkout específico que puede funcionar sobre MCP o sobre REST simple.",
+ "features": [
+  "El comercio sigue siendo el comerciante registrado y conserva el fulfillment y el soporte",
+  "Endpoints REST o MCP orientados a agentes: crear, actualizar, completar y cancelar el checkout",
+  "El feed de productos permite al agente explorar el catálogo y armar un carrito antes del pago",
+  "Shared Payment Token limitado a un comercio y a un total de carrito",
+  "El agente nunca ve las credenciales de tarjeta en bruto, por lo que el alcance PCI queda en el procesador",
+  "Estándar abierto Apache-2.0; aproximadamente una línea de código para los comercios que ya usan Stripe"
+ ],
+ "tldr": {
+  "what": "El agente explora el feed de productos del comercio, arma el carrito mediante endpoints REST/MCP y completa la compra con un token limitado por Stripe que nunca expone las credenciales del comprador.",
+  "when": "Compras autónomas en las que un agente debe completar transacciones mientras el comercio conserva el fulfillment, el soporte y su condición de comerciante registrado.",
+  "watchOut": "Los agentes pueden comprometerse a compras antes de la confirmación del usuario, o deben fallar de forma controlada si el total del carrito cambia entre las llamadas de crear y completar."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Agentic Commerce Protocol (ACP)",
+  "description": "Estándar abierto de Stripe y OpenAI para que un agente complete una compra con un comercio que sigue siendo el comerciante registrado. El agente explora un feed de productos, usa los endpoints Create / Update / Complete Checkout y paga con un Shared Payment Token limitado a un comercio y al total del carrito, de modo que nunca ve las credenciales de la tarjeta.",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "🎯 Usuario a ChatGPT\n\"Encuentra zapatillas de running negras\nde menos de $120 y cómpralas\"",
+    "x": 340,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente de compras\nChatGPT actuando como agente comprador",
+    "x": 350,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "product-feed",
+    "label": "📦 Feed de productos del comercio\nCatálogo, precios, stock en vivo",
+    "x": 680,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "create-checkout",
+    "label": "🧾 POST Create Checkout\nSKU RUN-BLK-10, cant. 1",
+    "x": 350,
+    "y": 270,
+    "w": 240
+   },
+   {
+    "id": "checkout-session",
+    "label": "💵 Sesión de checkout\n$98 + $6.50 envío + $8.36 impuestos\n= $112.86 total",
+    "x": 650,
+    "y": 270,
+    "w": 240
+   },
+   {
+    "id": "user-confirm",
+    "label": "✅ El usuario confirma\n\"Sí, cómpralas\"",
+    "x": 40,
+    "y": 270,
+    "w": 220
+   },
+   {
+    "id": "spt",
+    "label": "🔐 Shared Payment Token\nLimitado: solo este comercio,\nmáx. $112.86, un solo uso",
+    "x": 340,
+    "y": 400,
+    "w": 260
+   },
+   {
+    "id": "complete-checkout",
+    "label": "🧾 POST Complete Checkout\nSe envía el token, no las credenciales de la tarjeta",
+    "x": 350,
+    "y": 520,
+    "w": 240
+   },
+   {
+    "id": "merchant-charge",
+    "label": "🏬 Comerciante registrado\nCobra mediante su propia cuenta de Stripe",
+    "x": 650,
+    "y": 520,
+    "w": 240
+   },
+   {
+    "id": "payment-processor",
+    "label": "💳 Stripe\nCobra $112.86 al comprador",
+    "x": 650,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "order-webhooks",
+    "label": "📡 Pedido + Webhooks\nconfirmado -> enviado -> entregado",
+    "x": 340,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "fulfillment",
+    "label": "📦 Fulfillment\nEl comercio envía el pedido",
+    "x": 40,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "✨ Compra completada\nPedido #A1B2, seguimiento en el chat.\nEl agente nunca vio la tarjeta",
+    "x": 320,
+    "y": 770,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-user-agent",
+    "s": "user-request",
+    "t": "agent",
+    "label": "Solicitud de compra"
+   },
+   {
+    "id": "e-agent-feed",
+    "s": "agent",
+    "t": "product-feed",
+    "label": "Explorar feed"
+   },
+   {
+    "id": "e-feed-create",
+    "s": "product-feed",
+    "t": "create-checkout",
+    "label": "SKU de $98 seleccionado"
+   },
+   {
+    "id": "e-create-session",
+    "s": "create-checkout",
+    "t": "checkout-session",
+    "label": "El comercio responde"
+   },
+   {
+    "id": "e-session-confirm",
+    "s": "checkout-session",
+    "t": "user-confirm",
+    "label": "Mostrar total de $112.86"
+   },
+   {
+    "id": "e-confirm-spt",
+    "s": "user-confirm",
+    "t": "spt",
+    "label": "Aprobar pago"
+   },
+   {
+    "id": "e-spt-complete",
+    "s": "spt",
+    "t": "complete-checkout",
+    "label": "Token limitado"
+   },
+   {
+    "id": "e-complete-merchant",
+    "s": "complete-checkout",
+    "t": "merchant-charge",
+    "label": "Token, no tarjeta"
+   },
+   {
+    "id": "e-merchant-processor",
+    "s": "merchant-charge",
+    "t": "payment-processor",
+    "label": "Cobrar $112.86"
+   },
+   {
+    "id": "e-processor-webhooks",
+    "s": "payment-processor",
+    "t": "order-webhooks",
+    "label": "Pagado"
+   },
+   {
+    "id": "e-merchant-fulfill",
+    "s": "merchant-charge",
+    "t": "fulfillment",
+    "label": "Despachar"
+   },
+   {
+    "id": "e-webhooks-output",
+    "s": "order-webhooks",
+    "t": "output",
+    "label": "Actualizaciones de estado"
+   },
+   {
+    "id": "e-fulfill-output",
+    "s": "fulfillment",
+    "t": "output",
+    "label": "Envía"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El usuario le pide al agente que compre",
+    "description": "El comprador le da a ChatGPT un objetivo de compra en lenguaje natural con un presupuesto, delegando toda la compra al agente.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "agent"
+    ],
+    "edges": [
+     "e-user-agent"
+    ]
+   },
+   {
+    "title": "El agente explora el feed del comercio",
+    "description": "El agente lee el feed de productos del comercio, filtra zapatillas de running negras en stock a $120 o menos y selecciona un par de $98.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "product-feed",
+     "create-checkout"
+    ],
+    "edges": [
+     "e-agent-feed",
+     "e-feed-create"
+    ]
+   },
+   {
+    "title": "Create Checkout devuelve los totales",
+    "description": "El agente llama al endpoint Create Checkout del comercio; el comercio devuelve una sesión con subtotal, envío e impuestos que suman $112.86, y el agente se la muestra al usuario.",
+    "input": "",
+    "nodes": [
+     "create-checkout",
+     "checkout-session",
+     "user-confirm"
+    ],
+    "edges": [
+     "e-create-session",
+     "e-session-confirm"
+    ]
+   },
+   {
+    "title": "El usuario aprueba y se limita el SPT",
+    "description": "El usuario confirma, por lo que se emite un Shared Payment Token limitado a este único comercio y al total exacto de $112.86, y no puede reutilizarse en otro lugar ni por un monto mayor.",
+    "input": "",
+    "nodes": [
+     "user-confirm",
+     "spt"
+    ],
+    "edges": [
+     "e-confirm-spt"
+    ]
+   },
+   {
+    "title": "Completar el checkout con el token limitado",
+    "description": "El agente llama a Complete Checkout y envía el token en lugar de cualquier credencial de tarjeta. El comerciante registrado lo recibe para finalizar el pedido.",
+    "input": "",
+    "nodes": [
+     "spt",
+     "complete-checkout",
+     "merchant-charge"
+    ],
+    "edges": [
+     "e-spt-complete",
+     "e-complete-merchant"
+    ]
+   },
+   {
+    "title": "El comercio cobra mediante su propio Stripe",
+    "description": "El comercio cobra $112.86 al comprador a través de su propia cuenta de Stripe, mantiene el alcance PCI en el procesador y marca el pedido como pagado.",
+    "input": "",
+    "nodes": [
+     "merchant-charge",
+     "payment-processor",
+     "order-webhooks"
+    ],
+    "edges": [
+     "e-merchant-processor",
+     "e-processor-webhooks"
+    ]
+   },
+   {
+    "title": "El comercio despacha y emite webhooks",
+    "description": "El comercio envía el pedido y emite los webhooks de confirmado, enviado y entregado, exactamente igual que en cualquier otro canal.",
+    "input": "",
+    "nodes": [
+     "merchant-charge",
+     "fulfillment",
+     "order-webhooks"
+    ],
+    "edges": [
+     "e-merchant-fulfill"
+    ]
+   },
+   {
+    "title": "Compra completada, seguimiento en el chat",
+    "description": "El pedido y el seguimiento vuelven a aparecer en el chat. La compra se completó dentro de la conversación, el agente nunca tocó el número de tarjeta y el comercio siguió siendo el comerciante registrado.",
+    "input": "",
+    "nodes": [
+     "order-webhooks",
+     "fulfillment",
+     "output"
+    ],
+    "edges": [
+     "e-webhooks-output",
+     "e-fulfill-output"
+    ]
+   }
+  ]
+ }
+}

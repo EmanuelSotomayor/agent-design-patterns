@@ -1,0 +1,331 @@
+{
+ "cat": "interpretability",
+ "slug": "uncertainty-quantification",
+ "name": "Uncertainty Quantification(UQ)",
+ "icon": "📊",
+ "complexity": "high",
+ "description": "Cuantifica y comunica la confianza y la incertidumbre de la IA en sus predicciones",
+ "features": [
+  "Estimación de intervalos de confianza",
+  "Incertidumbre epistémica vs aleatoria",
+  "Visualización de intervalos de predicción",
+  "Salidas de probabilidad calibradas",
+  "Seguimiento de la propagación de la incertidumbre",
+  "Recomendaciones ajustadas al riesgo"
+ ],
+ "tldr": {
+  "what": "Separa la incertidumbre del modelo del ruido irreducible y luego reporta rangos de predicción y niveles de confianza junto a las estimaciones puntuales.",
+  "when": "Decisiones de alto riesgo en las que los usuarios necesitan conocer la confiabilidad de la predicción, o cuando los sistemas posteriores deben ajustar su comportamiento según la confianza.",
+  "watchOut": "Los intervalos mal calibrados inducen a los usuarios a una falsa confianza; la validación con datos reservados es esencial y a menudo se omite."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Cuantificación de la incertidumbre",
+  "description": "Un agente de triaje médico reporta una confianza calibrada en lugar de una etiqueta sin más. Separa la incertidumbre epistémica de la aleatoria, produce un intervalo de confianza calibrado y deriva o se abstiene según qué tan seguro esté.",
+  "nodes": [
+   {
+    "id": "patient-input",
+    "label": "🧑 Entrada de triaje\n54 años, fiebre 39.2C, tos\nSat O2 91% en aire ambiente",
+    "x": 360,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "triage-agent",
+    "label": "🤖 Agente de triaje\nPredice la gravedad más\nuna confianza calibrada",
+    "x": 360,
+    "y": 150,
+    "w": 240
+   },
+   {
+    "id": "ensemble",
+    "label": "🎲 Ensemble de modelos\nMC-dropout / deep ensemble\nmuestrean la predicción",
+    "x": 360,
+    "y": 250,
+    "w": 240
+   },
+   {
+    "id": "point-prediction",
+    "label": "🎯 Predicción puntual\nNeumonía, nivel ESI 2",
+    "x": 360,
+    "y": 360,
+    "w": 220
+   },
+   {
+    "id": "epistemic",
+    "label": "📉 Incertidumbre epistémica\nVacíos del modelo + datos\n±12% (reducible)",
+    "x": 40,
+    "y": 360,
+    "w": 200
+   },
+   {
+    "id": "aleatoric",
+    "label": "🎰 Incertidumbre aleatoria\nRuido inherente del caso\n±8% (irreducible)",
+    "x": 680,
+    "y": 360,
+    "w": 200
+   },
+   {
+    "id": "confidence-interval",
+    "label": "📏 Intervalo de confianza\nP(pneumonia) = 0.78\nIC 90% [0.66, 0.88]",
+    "x": 360,
+    "y": 470,
+    "w": 240
+   },
+   {
+    "id": "calibration",
+    "label": "⚖️ Verificación de calibración\nDiagrama de confiabilidad\nError de calib. esperado 0.03",
+    "x": 360,
+    "y": 570,
+    "w": 240
+   },
+   {
+    "id": "high-conf",
+    "label": "🟢 Confianza alta\nEscalar: iniciar\ntamizaje de sepsis",
+    "x": 30,
+    "y": 680,
+    "w": 200
+   },
+   {
+    "id": "low-conf",
+    "label": "🔴 Confianza baja\nMarcar: requiere\nradiografía de tórax",
+    "x": 300,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "abstain",
+    "label": "✋ Compuerta de abstención\nDerivar al clínico\nsi el intervalo es muy amplio",
+    "x": 600,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "risk-recommendation",
+    "label": "🚑 Recomendación ajustada al riesgo\nEstudio urgente, monitorear O2",
+    "x": 200,
+    "y": 790,
+    "w": 260
+   },
+   {
+    "id": "uncertainty-report",
+    "label": "📄 Informe de incertidumbre\nProbabilidad calibrada\n+ fuentes de duda",
+    "x": 540,
+    "y": 790,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-patient-agent",
+    "s": "patient-input",
+    "t": "triage-agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-ensemble",
+    "s": "triage-agent",
+    "t": "ensemble",
+    "label": "Muestrear"
+   },
+   {
+    "id": "e-ensemble-point",
+    "s": "ensemble",
+    "t": "point-prediction",
+    "label": "Predecir"
+   },
+   {
+    "id": "e-ensemble-epistemic",
+    "s": "ensemble",
+    "t": "epistemic",
+    "label": "epistémica"
+   },
+   {
+    "id": "e-ensemble-aleatoric",
+    "s": "ensemble",
+    "t": "aleatoric",
+    "label": "aleatoria"
+   },
+   {
+    "id": "e-point-interval",
+    "s": "point-prediction",
+    "t": "confidence-interval",
+    "label": ""
+   },
+   {
+    "id": "e-epistemic-interval",
+    "s": "epistemic",
+    "t": "confidence-interval",
+    "label": ""
+   },
+   {
+    "id": "e-aleatoric-interval",
+    "s": "aleatoric",
+    "t": "confidence-interval",
+    "label": ""
+   },
+   {
+    "id": "e-interval-calibration",
+    "s": "confidence-interval",
+    "t": "calibration",
+    "label": "calibrar"
+   },
+   {
+    "id": "e-calibration-high",
+    "s": "calibration",
+    "t": "high-conf",
+    "label": ""
+   },
+   {
+    "id": "e-calibration-low",
+    "s": "calibration",
+    "t": "low-conf",
+    "label": ""
+   },
+   {
+    "id": "e-calibration-abstain",
+    "s": "calibration",
+    "t": "abstain",
+    "label": ""
+   },
+   {
+    "id": "e-high-recommendation",
+    "s": "high-conf",
+    "t": "risk-recommendation",
+    "label": ""
+   },
+   {
+    "id": "e-low-recommendation",
+    "s": "low-conf",
+    "t": "risk-recommendation",
+    "label": ""
+   },
+   {
+    "id": "e-abstain-report",
+    "s": "abstain",
+    "t": "uncertainty-report",
+    "label": "derivar"
+   },
+   {
+    "id": "e-recommendation-report",
+    "s": "risk-recommendation",
+    "t": "uncertainty-report",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recibir la entrada de triaje",
+    "description": "Un paciente se presenta con fiebre, tos y baja saturación de oxígeno, y el agente debe juzgar la gravedad en condiciones de incertidumbre.",
+    "input": "",
+    "nodes": [
+     "patient-input",
+     "triage-agent"
+    ],
+    "edges": [
+     "e-patient-agent"
+    ]
+   },
+   {
+    "title": "Muestrear con un ensemble",
+    "description": "El Monte Carlo dropout o un deep ensemble genera muchas predicciones para que su dispersión permita cuantificar la incertidumbre.",
+    "input": "",
+    "nodes": [
+     "triage-agent",
+     "ensemble"
+    ],
+    "edges": [
+     "e-agent-ensemble"
+    ]
+   },
+   {
+    "title": "Producir una predicción puntual",
+    "description": "La media de las muestras da una predicción puntual de neumonía con nivel ESI 2.",
+    "input": "",
+    "nodes": [
+     "ensemble",
+     "point-prediction"
+    ],
+    "edges": [
+     "e-ensemble-point"
+    ]
+   },
+   {
+    "title": "Descomponer la incertidumbre",
+    "description": "La dispersión se divide en incertidumbre epistémica (vacíos reducibles del modelo y de los datos, ±12%) e incertidumbre aleatoria (ruido irreducible del caso, ±8%).",
+    "input": "",
+    "nodes": [
+     "ensemble",
+     "epistemic",
+     "aleatoric"
+    ],
+    "edges": [
+     "e-ensemble-epistemic",
+     "e-ensemble-aleatoric"
+    ]
+   },
+   {
+    "title": "Estimar un intervalo de confianza",
+    "description": "Al combinar las fuentes se obtiene una probabilidad de neumonía de 0.78 con un intervalo de confianza del 90% de 0.66 a 0.88.",
+    "input": "",
+    "nodes": [
+     "point-prediction",
+     "epistemic",
+     "aleatoric",
+     "confidence-interval"
+    ],
+    "edges": [
+     "e-point-interval",
+     "e-epistemic-interval",
+     "e-aleatoric-interval"
+    ]
+   },
+   {
+    "title": "Verificar la calibración",
+    "description": "Un diagrama de confiabilidad confirma que las probabilidades declaradas coinciden con las frecuencias observadas, con un error de calibración esperado de apenas 0.03.",
+    "input": "",
+    "nodes": [
+     "confidence-interval",
+     "calibration"
+    ],
+    "edges": [
+     "e-interval-calibration"
+    ]
+   },
+   {
+    "title": "Derivar según la confianza o abstenerse",
+    "description": "Los hallazgos de confianza alta se escalan a un tamizaje de sepsis, los de confianza baja se marcan para una radiografía de tórax y los intervalos demasiado amplios se derivan a un clínico.",
+    "input": "",
+    "nodes": [
+     "calibration",
+     "high-conf",
+     "low-conf",
+     "abstain"
+    ],
+    "edges": [
+     "e-calibration-high",
+     "e-calibration-low",
+     "e-calibration-abstain"
+    ]
+   },
+   {
+    "title": "Entregar una salida ajustada al riesgo",
+    "description": "El agente emite una recomendación de estudio urgente con monitoreo de oxígeno, junto con un informe de la probabilidad calibrada y sus fuentes de duda.",
+    "input": "",
+    "nodes": [
+     "high-conf",
+     "low-conf",
+     "abstain",
+     "risk-recommendation",
+     "uncertainty-report"
+    ],
+    "edges": [
+     "e-high-recommendation",
+     "e-low-recommendation",
+     "e-abstain-report",
+     "e-recommendation-report"
+    ]
+   }
+  ]
+ }
+}

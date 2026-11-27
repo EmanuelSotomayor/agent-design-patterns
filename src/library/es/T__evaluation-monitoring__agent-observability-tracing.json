@@ -1,0 +1,375 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "agent-observability-tracing",
+ "name": "Agent Observability & Tracing(AOT)",
+ "icon": "🔭",
+ "complexity": "medium",
+ "description": "Trazado a nivel de paso en producción que registra cada llamada al modelo, llamada a herramienta, paso del workflow y subagente como un span dentro de un único árbol de ejecución, anotado con métricas de tokens, latencia y costo. Estandarizado mediante las convenciones semánticas GenAI de OpenTelemetry (atributos gen_ai.*) y expuesto en plataformas como LangSmith, Braintrust y Datadog, es la señal en vivo para depurar fallas no deterministas en producción, a diferencia de los benchmarks offline que puntúan el comportamiento antes del despliegue.",
+ "features": [
+  "Spans jerárquicos para llamadas al modelo, llamadas a herramientas, pasos del workflow y subagentes",
+  "Conteo de tokens, latencia y costo por span, agregados a lo largo del árbol de ejecución",
+  "Convenciones semánticas GenAI de OpenTelemetry (atributos gen_ai.*) para trazas independientes del proveedor",
+  "Captura completa de entrada/salida y prompt/respuesta para reproducción y análisis de causa raíz",
+  "Depuración de causa raíz de fallas no deterministas de múltiples pasos en producción",
+  "Dashboards en vivo, alertas y exploración en detalle ofrecidos por LangSmith, Braintrust y Datadog"
+ ],
+ "tldr": {
+  "what": "Registra cada llamada al modelo, llamada a herramienta y paso del workflow como spans con marca de tiempo, conteo de tokens, latencia y costo, organizados en un único árbol de ejecución para depurar en producción.",
+  "when": "Sistemas en producción donde las fallas de agentes de múltiples pasos son no deterministas, difíciles de reproducir offline o requieren análisis de causa raíz a través de los límites entre el modelo y las herramientas.",
+  "watchOut": "La sobrecarga y los costos de almacenamiento crecen rápidamente con un logging detallado; capturar sin cuidado datos sensibles (PII, secretos) en prompts y respuestas genera riesgos de cumplimiento y seguridad."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Agent Observability & Tracing",
+  "description": "Trazado a nivel de paso de una ejecución de agente en producción. Cada llamada al modelo, llamada a herramienta, paso del workflow y subagente se convierte en un span dentro de un árbol de ejecución, anotado con métricas de tokens, latencia y costo mediante las convenciones GenAI de OpenTelemetry. Una solicitud fallida de un cliente se traza a través de 14 spans, la causa raíz se encuentra en una sola llamada a herramienta con argumentos malformados, y se desglosa el costo por solicitud.",
+  "nodes": [
+   {
+    "id": "request",
+    "label": "🎯 Solicitud del cliente\n\"Reembolsa el pedido #48213 y\nenvía la confirmación por correo\"",
+    "x": 320,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "instrumented-agent",
+    "label": "🤖 Agente instrumentado\nOrquesta la ejecución,\nemite un span por paso",
+    "x": 300,
+    "y": 150,
+    "w": 240
+   },
+   {
+    "id": "otel-sdk",
+    "label": "🧩 SDK de OpenTelemetry\nAtributos gen_ai.*:\nmodelo, tokens, costo",
+    "x": 640,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "span-plan",
+    "label": "📝 workflow.plan\n0.9s | 1,240 tok | $0.006",
+    "x": 30,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "span-lookup",
+    "label": "📝 tool.lookup_order\n0.3s | ok",
+    "x": 250,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "subagent-refund",
+    "label": "🧠 sub_agent.refund_worker\n5.1s | 2 spans hijos",
+    "x": 480,
+    "y": 270,
+    "w": 210
+   },
+   {
+    "id": "span-decide",
+    "label": "📝 model.decide_refund\n1.2s | 2,010 tok | $0.011",
+    "x": 380,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "span-process-refund",
+    "label": "💥 tool.process_refund\nERROR\nargs: { id: \"#48213 \",\namount: \"twelve\" }",
+    "x": 630,
+    "y": 380,
+    "w": 210
+   },
+   {
+    "id": "span-send-email",
+    "label": "🚫 tool.send_email\nomitido (falla previa)",
+    "x": 150,
+    "y": 390,
+    "w": 190
+   },
+   {
+    "id": "collector",
+    "label": "📡 Recolector de trazas\nExportar OTLP,\nensamblar el árbol de ejecución",
+    "x": 640,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "platform",
+    "label": "🔭 Plataforma de observabilidad\nLangSmith / Braintrust / Datadog",
+    "x": 620,
+    "y": 610,
+    "w": 250
+   },
+   {
+    "id": "span-tree-view",
+    "label": "🌳 Vista del árbol de spans\n14 spans | 8.4s en total",
+    "x": 320,
+    "y": 610,
+    "w": 200
+   },
+   {
+    "id": "metrics-panel",
+    "label": "📊 Panel de métricas\nTokens | latencia | costo\npor span",
+    "x": 40,
+    "y": 610,
+    "w": 200
+   },
+   {
+    "id": "root-cause",
+    "label": "🔍 Causa raíz\nArgumentos malformados de\nla salida de decide_refund",
+    "x": 300,
+    "y": 720,
+    "w": 210
+   },
+   {
+    "id": "cost-breakdown",
+    "label": "💰 Desglose de costos\nModelo 92% ($0.034)\nHerramientas+infra 8% ($0.003)",
+    "x": 40,
+    "y": 720,
+    "w": 210
+   },
+   {
+    "id": "fix",
+    "label": "🛠️ Corrección\nAgregar validación de esquema\nde salida en decide_refund",
+    "x": 600,
+    "y": 720,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✅ Re-ejecución trazada\n14/14 spans en verde | $0.037",
+    "x": 340,
+    "y": 800,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-request-agent",
+    "s": "request",
+    "t": "instrumented-agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-otel",
+    "s": "instrumented-agent",
+    "t": "otel-sdk",
+    "label": "instrumentar"
+   },
+   {
+    "id": "e-agent-plan",
+    "s": "instrumented-agent",
+    "t": "span-plan",
+    "label": "span"
+   },
+   {
+    "id": "e-agent-lookup",
+    "s": "instrumented-agent",
+    "t": "span-lookup",
+    "label": "span"
+   },
+   {
+    "id": "e-agent-subagent",
+    "s": "instrumented-agent",
+    "t": "subagent-refund",
+    "label": "span"
+   },
+   {
+    "id": "e-subagent-decide",
+    "s": "subagent-refund",
+    "t": "span-decide",
+    "label": "hijo"
+   },
+   {
+    "id": "e-subagent-process",
+    "s": "subagent-refund",
+    "t": "span-process-refund",
+    "label": "hijo"
+   },
+   {
+    "id": "e-process-email",
+    "s": "span-process-refund",
+    "t": "span-send-email",
+    "label": "omitido"
+   },
+   {
+    "id": "e-otel-collector",
+    "s": "otel-sdk",
+    "t": "collector",
+    "label": "exportar OTLP"
+   },
+   {
+    "id": "e-collector-platform",
+    "s": "collector",
+    "t": "platform",
+    "label": "ingerir 14 spans"
+   },
+   {
+    "id": "e-platform-tree",
+    "s": "platform",
+    "t": "span-tree-view",
+    "label": ""
+   },
+   {
+    "id": "e-platform-metrics",
+    "s": "platform",
+    "t": "metrics-panel",
+    "label": ""
+   },
+   {
+    "id": "e-tree-rootcause",
+    "s": "span-tree-view",
+    "t": "root-cause",
+    "label": "explorar en detalle"
+   },
+   {
+    "id": "e-process-rootcause",
+    "s": "span-process-refund",
+    "t": "root-cause",
+    "label": "argumentos malformados"
+   },
+   {
+    "id": "e-metrics-cost",
+    "s": "metrics-panel",
+    "t": "cost-breakdown",
+    "label": ""
+   },
+   {
+    "id": "e-rootcause-fix",
+    "s": "root-cause",
+    "t": "fix",
+    "label": ""
+   },
+   {
+    "id": "e-cost-fix",
+    "s": "cost-breakdown",
+    "t": "fix",
+    "label": ""
+   },
+   {
+    "id": "e-fix-output",
+    "s": "fix",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Comienza la ejecución instrumentada",
+    "description": "Una solicitud de un cliente entra a un agente envuelto con el SDK de OpenTelemetry. Cada paso que realice se registrará como un span con atributos gen_ai.* para el modelo, los tokens y el costo.",
+    "input": "",
+    "nodes": [
+     "request",
+     "instrumented-agent",
+     "otel-sdk"
+    ],
+    "edges": [
+     "e-request-agent",
+     "e-agent-otel"
+    ]
+   },
+   {
+    "title": "El agente emite spans",
+    "description": "A medida que el agente planifica, consulta el pedido y delega a un subagente de reembolsos, cada acción abre un span. La planificación costó 1,240 tokens; la consulta del pedido tuvo éxito en 0.3s.",
+    "input": "",
+    "nodes": [
+     "instrumented-agent",
+     "span-plan",
+     "span-lookup",
+     "subagent-refund"
+    ],
+    "edges": [
+     "e-agent-plan",
+     "e-agent-lookup",
+     "e-agent-subagent"
+    ]
+   },
+   {
+    "title": "El subagente y la falla",
+    "description": "El subagente de reembolsos hace una llamada al modelo para decidir el reembolso y luego llama a process_refund. Esa llamada a herramienta falla por argumentos malformados, así que el span posterior send_email se omite por completo.",
+    "input": "",
+    "nodes": [
+     "subagent-refund",
+     "span-decide",
+     "span-process-refund",
+     "span-send-email"
+    ],
+    "edges": [
+     "e-subagent-decide",
+     "e-subagent-process",
+     "e-process-email"
+    ]
+   },
+   {
+    "title": "Exportar e ingerir",
+    "description": "El SDK exporta los spans por OTLP a un recolector, que ensambla el árbol de ejecución completo e ingiere los 14 spans en la plataforma de observabilidad para su inspección.",
+    "input": "",
+    "nodes": [
+     "otel-sdk",
+     "collector",
+     "platform"
+    ],
+    "edges": [
+     "e-otel-collector",
+     "e-collector-platform"
+    ]
+   },
+   {
+    "title": "Inspeccionar la traza",
+    "description": "En la plataforma, el desarrollador abre el árbol de spans (14 spans, 8.4s en total) y el panel de métricas que muestra los tokens, la latencia y el costo atribuidos a cada span.",
+    "input": "",
+    "nodes": [
+     "platform",
+     "span-tree-view",
+     "metrics-panel"
+    ],
+    "edges": [
+     "e-platform-tree",
+     "e-platform-metrics"
+    ]
+   },
+   {
+    "title": "Encontrar la causa raíz",
+    "description": "Al explorar el span en rojo se revela la falla: process_refund recibió un id de pedido con un espacio al final y un monto no numérico (\"twelve\"), pasados directamente desde la salida del modelo decide_refund.",
+    "input": "",
+    "nodes": [
+     "span-tree-view",
+     "span-process-refund",
+     "root-cause"
+    ],
+    "edges": [
+     "e-tree-rootcause",
+     "e-process-rootcause"
+    ]
+   },
+   {
+    "title": "Desglosar el costo",
+    "description": "El panel de métricas atribuye el costo a lo largo de la ejecución: las llamadas al modelo representan el 92% ($0.034), las herramientas y la infraestructura el 8% ($0.003), y decide_refund es el span individual más caro con $0.011.",
+    "input": "",
+    "nodes": [
+     "metrics-panel",
+     "cost-breakdown"
+    ],
+    "edges": [
+     "e-metrics-cost"
+    ]
+   },
+   {
+    "title": "Corregir y volver a ejecutar en verde",
+    "description": "Se agrega validación de esquema de salida a la llamada a herramienta decide_refund. La tarea se vuelve a ejecutar y a trazar: los 14 spans están en verde con $0.037, y la corrección se confirma con el comportamiento observado en lugar de una suposición.",
+    "input": "",
+    "nodes": [
+     "root-cause",
+     "cost-breakdown",
+     "fix",
+     "output"
+    ],
+    "edges": [
+     "e-rootcause-fix",
+     "e-cost-fix",
+     "e-fix-output"
+    ]
+   }
+  ]
+ }
+}

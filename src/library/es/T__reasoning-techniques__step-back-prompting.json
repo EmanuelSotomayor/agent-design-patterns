@@ -1,0 +1,382 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "step-back-prompting",
+ "name": "Step-Back Prompting(SBP)",
+ "icon": "↩️",
+ "complexity": "medium",
+ "description": "Abstrae hacia principios de nivel superior antes de abordar problemas específicos",
+ "features": [
+  "Abstracción de alto nivel primero",
+  "Razonamiento basado en principios",
+  "Establecimiento de un marco conceptual",
+  "Reduce el riesgo de perderse en los detalles",
+  "Mayor precisión en el razonamiento",
+  "Enfoque de pensamiento estratégico"
+ ],
+ "tldr": {
+  "what": "Pide al agente que abstraiga hacia principios generales antes de resolver el problema específico y que luego aplique esos principios de vuelta al caso concreto.",
+  "when": "Decisiones complejas o problemas técnicos donde el razonamiento superficial falla o entra en bucles, y los principios subyacentes importan más que los detalles.",
+  "watchOut": "La abstracción puede alejarse demasiado del problema real, lo que vuelve irrelevantes los principios o agrega demora sin mejorar la respuesta."
+ },
+ "overview": {
+  "pattern": "Estrategia de razonamiento que da un paso atrás hacia principios más amplios antes de abordar problemas específicos",
+  "why": "Mejora el razonamiento al acceder a conocimiento fundamental relevante y aplicar principios generales a casos específicos",
+  "insight": "Problema específico → Hacer preguntas más amplias → Responder principios generales → Aplicar al caso específico → Solución mejorada",
+  "impl": [
+   {
+    "t": "Pregunta original",
+    "d": "Presenta el problema específico a resolver"
+   },
+   {
+    "t": "Dar un paso atrás",
+    "d": "Haz preguntas más amplias y generales"
+   },
+   {
+    "t": "Razonamiento de alto nivel",
+    "d": "Responde primero los principios abstractos"
+   },
+   {
+    "t": "Aplicar principios",
+    "d": "Usa el conocimiento general para el problema específico"
+   },
+   {
+    "t": "Respuesta final",
+    "d": "Resuelve la pregunta original con un contexto enriquecido"
+   }
+  ],
+  "example": "Pregunta específica → \"¿Cuáles son los principios generales?\" → Responder principios → Aplicar a la pregunta específica → Solución",
+  "dos": [
+   "Haz preguntas conceptuales genuinamente más amplias",
+   "Conecta los principios generales con instancias específicas",
+   "Usa preguntas de paso atrás para acceder al conocimiento relevante",
+   "Asegúrate de que las preguntas de paso atrás se puedan responder",
+   "Lleva el razonamiento abstracto de vuelta al problema concreto"
+  ],
+  "donts": [
+   "Hacer preguntas de paso atrás demasiado parecidas a la original",
+   "Retroceder tanto que se pierda el contexto",
+   "Omitir la conexión entre lo general y lo específico",
+   "Usarlo cuando el razonamiento directo es más eficiente",
+   "Generar preguntas de paso atrás sin un propósito claro"
+  ],
+  "use": [
+   "Problemas complejos que requieren conocimiento fundamental",
+   "Preguntas específicas de un dominio que necesitan contexto",
+   "Cuando fallan los intentos iniciales de razonamiento",
+   "Problemas con múltiples enfoques de solución",
+   "Contextos educativos o explicativos"
+  ],
+  "avoid": [
+   "Consultas factuales simples",
+   "Tareas procedimentales bien definidas",
+   "Cuando el acceso directo al conocimiento es suficiente",
+   "Decisiones rápidas con presión de tiempo",
+   "Problemas con caminos de solución evidentes"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de las preguntas",
+    "d": "Pertinencia y relevancia de las preguntas de paso atrás"
+   },
+   {
+    "n": "Activación del conocimiento",
+    "d": "Eficacia para acceder a los principios relevantes"
+   },
+   {
+    "n": "Puente entre principio y aplicación",
+    "d": "Calidad de la conexión entre lo abstracto y lo específico"
+   },
+   {
+    "n": "Mejora de la solución",
+    "d": "Mayor precisión frente al razonamiento directo"
+   },
+   {
+    "n": "Profundidad del razonamiento",
+    "d": "Riqueza de la base conceptual aportada"
+   },
+   {
+    "n": "Eficiencia de transferencia",
+    "d": "Velocidad para aplicar el conocimiento general al caso específico"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Problema de física",
+    "d": "\"¿Cuál es la aceleración?\" → \"¿Cuáles son las leyes de Newton?\" → Aplicar F=ma → Calcular la aceleración"
+   },
+   {
+    "n": "Análisis histórico",
+    "d": "\"¿Por qué cayó Roma?\" → \"¿Qué causa el colapso de los imperios?\" → Patrones generales → Factores específicos de Roma"
+   },
+   {
+    "n": "Diagnóstico médico",
+    "d": "\"¿Qué es esta erupción?\" → \"¿Cuáles son los principios dermatológicos?\" → Aplicar a los síntomas → Diagnóstico"
+   },
+   {
+    "n": "Estrategia de negocio",
+    "d": "\"¿Cómo aumentar las ventas?\" → \"¿Qué impulsa el comportamiento del cliente?\" → Aplicar insights de comportamiento → Estrategia"
+   },
+   {
+    "n": "Depuración de programas",
+    "d": "\"¿Por qué esto es lento?\" → \"¿Qué causa los problemas de rendimiento?\" → Principios de rendimiento → Optimización específica"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Step-Back Prompting",
+  "description": "Abstrae hacia principios y conceptos de nivel superior antes de abordar problemas específicos, ganando una perspectiva más amplia para mejorar la calidad de la solución",
+  "nodes": [
+   {
+    "id": "specific-problem",
+    "label": "📐 Problema específico\n\"Calcula el área de\nun trapecio con bases\nde 12cm y 8cm, altura 5cm\"",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "direct-approach",
+    "label": "⚡ Enfoque directo\n\"Solo aplica la fórmula del trapecio:\nA = ½(b₁ + b₂)h\nA = ½(12 + 8)5 = 50cm²\"",
+    "x": 150,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "step-back",
+    "label": "🔄 Paso atrás\n\"¿Qué conceptos de nivel superior\naplican aquí? ¿Qué principios\ngenerales rigen el área?\"",
+    "x": 400,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "area-principles",
+    "label": "📚 Principios del área\n\"Área = espacio encerrado\nSe puede descomponer\nSe puede aproximar\nLas unidades deben ser consistentes\"",
+    "x": 400,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "geometric-thinking",
+    "label": "🔺 Descomposición geométrica\n\"Formas complejas = \nsuma de formas simples\nTrapecio = triángulo + rectángulo\"",
+    "x": 150,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "approximation-thinking",
+    "label": "📊 Métodos de aproximación\n\"Promedia las bases\nMultiplica por la altura\nEstimación vs. exacto\"",
+    "x": 400,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "verification-thinking",
+    "label": "✅ Estrategias de verificación\n\"Varios enfoques\ndeben dar el mismo resultado\nRevisa unidades y razonabilidad\"",
+    "x": 650,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "method-1-decompose",
+    "label": "🔍 Método 1: Descomponer\n\"Dividir en rectángulo + triángulo\nRect: 8×5 = 40cm²\nTriángulo: ½×4×5 = 10cm²\nTotal: 50cm²\"",
+    "x": 150,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "method-2-average",
+    "label": "🔍 Método 2: Promediar\n\"Promedio de bases: (12+8)÷2 = 10\nMultiplicar por la altura: 10×5\nResultado: 50cm²\"",
+    "x": 400,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "method-3-verify",
+    "label": "🔍 Método 3: Verificar\n\"Usar la fórmula estándar:\nA = ½(b₁ + b₂)h\nA = ½(12+8)×5 = 50cm²\n✓ ¡Todos los métodos coinciden!\"",
+    "x": 650,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "deeper-insight",
+    "label": "💡 Comprensión más profunda\n\"¡La fórmula del trapecio ES un promedio!\n½(b₁ + b₂) = base promedio\nTodos los métodos de área se conectan\ncon principios fundamentales\"",
+    "x": 400,
+    "y": 660,
+    "w": 240
+   },
+   {
+    "id": "transferable-knowledge",
+    "label": "🌟 Conocimiento transferible\n\"Estos principios aplican a:\n• Cualquier descomposición de polígonos\n• Aproximación de integrales\n• Problemas de volumen en 3D\"",
+    "x": 400,
+    "y": 780,
+    "w": 220
+   },
+   {
+    "id": "direct-limitation",
+    "label": "❌ Límites del enfoque directo\n\"Memorización de fórmulas\nSin comprensión profunda\nDifícil de verificar\nNo se transfiere a problemas nuevos\"",
+    "x": 150,
+    "y": 280,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1a",
+    "s": "specific-problem",
+    "t": "direct-approach",
+    "label": "inmediato"
+   },
+   {
+    "id": "e1b",
+    "s": "specific-problem",
+    "t": "step-back",
+    "label": "primero paso atrás"
+   },
+   {
+    "id": "e2",
+    "s": "step-back",
+    "t": "area-principles",
+    "label": "identificar principios"
+   },
+   {
+    "id": "e3a",
+    "s": "area-principles",
+    "t": "geometric-thinking",
+    "label": "descomposición"
+   },
+   {
+    "id": "e3b",
+    "s": "area-principles",
+    "t": "approximation-thinking",
+    "label": "aproximación"
+   },
+   {
+    "id": "e3c",
+    "s": "area-principles",
+    "t": "verification-thinking",
+    "label": "verificación"
+   },
+   {
+    "id": "e4a",
+    "s": "geometric-thinking",
+    "t": "method-1-decompose",
+    "label": "aplicar"
+   },
+   {
+    "id": "e4b",
+    "s": "approximation-thinking",
+    "t": "method-2-average",
+    "label": "aplicar"
+   },
+   {
+    "id": "e4c",
+    "s": "verification-thinking",
+    "t": "method-3-verify",
+    "label": "aplicar"
+   },
+   {
+    "id": "e5a",
+    "s": "method-1-decompose",
+    "t": "deeper-insight",
+    "label": "conectar"
+   },
+   {
+    "id": "e5b",
+    "s": "method-2-average",
+    "t": "deeper-insight",
+    "label": "conectar"
+   },
+   {
+    "id": "e5c",
+    "s": "method-3-verify",
+    "t": "deeper-insight",
+    "label": "conectar"
+   },
+   {
+    "id": "e6",
+    "s": "deeper-insight",
+    "t": "transferable-knowledge",
+    "label": "generalizar"
+   },
+   {
+    "id": "e7",
+    "s": "direct-approach",
+    "t": "direct-limitation",
+    "label": "limitaciones"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Reconocimiento del problema y decisión de dar un paso atrás",
+    "description": "Se enfrenta a un problema específico de área de un trapecio. En lugar de aplicar la fórmula directamente, da un paso atrás de forma consciente para explorar los principios de nivel superior que rigen el cálculo de áreas.",
+    "input": "",
+    "nodes": [
+     "specific-problem",
+     "step-back",
+     "direct-approach",
+     "direct-limitation"
+    ],
+    "edges": [
+     "e1a",
+     "e1b",
+     "e7"
+    ]
+   },
+   {
+    "title": "Identificación de principios de nivel superior",
+    "description": "Abstrae hacia principios fundamentales del área: el área representa un espacio encerrado, se puede descomponer en formas más simples, aproximar mediante promedios y verificar con varios métodos.",
+    "input": "",
+    "nodes": [
+     "area-principles"
+    ],
+    "edges": [
+     "e2"
+    ]
+   },
+   {
+    "title": "Generación de enfoques guiada por principios",
+    "description": "A partir de principios abstractos, deriva tres enfoques concretos: descomposición geométrica (dividir en formas simples), método de aproximación (promediar las bases) y estrategia de verificación (varios métodos).",
+    "input": "",
+    "nodes": [
+     "geometric-thinking",
+     "approximation-thinking",
+     "verification-thinking"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c"
+    ]
+   },
+   {
+    "title": "Aplicación de múltiples métodos",
+    "description": "Aplica los tres métodos basados en principios al problema específico: descomposición (40+10=50), promedio (10×5=50) y verificación con la fórmula (50), mostrando que todos dan el mismo resultado.",
+    "input": "",
+    "nodes": [
+     "method-1-decompose",
+     "method-2-average",
+     "method-3-verify"
+    ],
+    "edges": [
+     "e4a",
+     "e4b",
+     "e4c"
+    ]
+   },
+   {
+    "title": "Comprensión profunda y transferencia de conocimiento",
+    "description": "Sintetiza los métodos para revelar que la fórmula del trapecio ES un promedio, lo que conecta todos los enfoques. Esta comprensión basada en principios se transfiere a la descomposición de polígonos, la integración y los problemas en 3D.",
+    "input": "",
+    "nodes": [
+     "deeper-insight",
+     "transferable-knowledge"
+    ],
+    "edges": [
+     "e5a",
+     "e5b",
+     "e5c",
+     "e6"
+    ]
+   }
+  ]
+ }
+}

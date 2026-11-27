@@ -1,0 +1,330 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "event-driven-orchestrator-worker",
+ "name": "Event-Driven Orchestrator-Worker(EDOW)",
+ "icon": "📋",
+ "complexity": "medium",
+ "description": "Un orquestador central asigna tareas a agentes worker mediante streaming de eventos",
+ "features": [
+  "Distribución asíncrona de tareas mediante eventos",
+  "Balanceo de carga basado en grupos de consumidores",
+  "Escalado y rebalanceo automático de workers",
+  "Tolerancia a fallos mediante la reproducción de eventos",
+  "Agentes worker sin estado",
+  "Arquitectura de orquestación desacoplada"
+ ],
+ "tldr": {
+  "what": "El orquestador publica tareas en un stream de eventos; los workers sin estado las consumen y procesan en paralelo, y publican los resultados de vuelta de forma asíncrona.",
+  "when": "Trabajo paralelo de alto volumen donde los workers fallan o escalan de forma impredecible y necesitas recuperación automática sin conexiones directas.",
+  "watchOut": "El orden de los eventos y la semántica exactly-once son difíciles; si omites el diseño de idempotencia, ocurren procesamientos duplicados o resultados perdidos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Event-Driven Orchestrator-Worker",
+  "description": "Un orquestador central distribuye tareas a agentes worker sin estado mediante un stream de eventos particionado. Los workers forman un grupo de consumidores que balancea la carga y se rebalancea automáticamente ante fallas, publicando los resultados en un topic posterior para su agregación.",
+  "nodes": [
+   {
+    "id": "client-request",
+    "label": "📄 Solicitud por lotes\n\"Extraer datos de 10,000 facturas\"",
+    "x": 360,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "orchestrator",
+    "label": "🎛️ Agente orquestador\nDivide el lote en tareas con clave",
+    "x": 375,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "work-queue-topic",
+    "label": "📨 Topic work-queue\nStream de eventos particionado (4 particiones)",
+    "x": 375,
+    "y": 260,
+    "w": 280
+   },
+   {
+    "id": "consumer-group",
+    "label": "👥 Grupo de consumidores\nAsigna particiones a los workers",
+    "x": 375,
+    "y": 370,
+    "w": 240
+   },
+   {
+    "id": "rebalancer",
+    "label": "⚖️ Rebalanceador\nReasigna particiones al escalar o ante fallas",
+    "x": 700,
+    "y": 370,
+    "w": 220
+   },
+   {
+    "id": "worker-1",
+    "label": "⚙️ Worker 1\nPartición 0\nEstado: procesando",
+    "x": 60,
+    "y": 490,
+    "w": 160
+   },
+   {
+    "id": "worker-2",
+    "label": "⚙️ Worker 2\nPartición 1\nEstado: procesando",
+    "x": 250,
+    "y": 490,
+    "w": 160
+   },
+   {
+    "id": "worker-3",
+    "label": "⚙️ Worker 3\nPartición 2\nEstado: caído",
+    "x": 440,
+    "y": 490,
+    "w": 160
+   },
+   {
+    "id": "worker-4",
+    "label": "⚙️ Worker 4\nPartición 3 + 2 reasignada\nEstado: procesando",
+    "x": 630,
+    "y": 490,
+    "w": 160
+   },
+   {
+    "id": "errors-topic",
+    "label": "⚠️ Topic errors\nTareas fallidas para reproducir",
+    "x": 620,
+    "y": 610,
+    "w": 200
+   },
+   {
+    "id": "results-topic",
+    "label": "📬 Topic results\nSalidas de tareas completadas",
+    "x": 250,
+    "y": 610,
+    "w": 220
+   },
+   {
+    "id": "aggregator",
+    "label": "🧮 Agregador de resultados\nReúne las salidas por clave de lote",
+    "x": 300,
+    "y": 710,
+    "w": 240
+   },
+   {
+    "id": "output",
+    "label": "✅ Salida agregada\nDataset estructurado de 10,000 facturas",
+    "x": 320,
+    "y": 810,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-orchestrator",
+    "s": "client-request",
+    "t": "orchestrator",
+    "label": ""
+   },
+   {
+    "id": "orchestrator-queue",
+    "s": "orchestrator",
+    "t": "work-queue-topic",
+    "label": "Publicar tareas"
+   },
+   {
+    "id": "queue-consumergroup",
+    "s": "work-queue-topic",
+    "t": "consumer-group",
+    "label": "Consumir"
+   },
+   {
+    "id": "consumergroup-rebalancer",
+    "s": "consumer-group",
+    "t": "rebalancer",
+    "label": "Membresía"
+   },
+   {
+    "id": "group-worker1",
+    "s": "consumer-group",
+    "t": "worker-1",
+    "label": "P0"
+   },
+   {
+    "id": "group-worker2",
+    "s": "consumer-group",
+    "t": "worker-2",
+    "label": "P1"
+   },
+   {
+    "id": "group-worker3",
+    "s": "consumer-group",
+    "t": "worker-3",
+    "label": "P2"
+   },
+   {
+    "id": "group-worker4",
+    "s": "consumer-group",
+    "t": "worker-4",
+    "label": "P3"
+   },
+   {
+    "id": "rebalancer-worker4",
+    "s": "rebalancer",
+    "t": "worker-4",
+    "label": "Reasignar P2"
+   },
+   {
+    "id": "worker3-errors",
+    "s": "worker-3",
+    "t": "errors-topic",
+    "label": "Falla"
+   },
+   {
+    "id": "errors-orchestrator",
+    "s": "errors-topic",
+    "t": "orchestrator",
+    "label": "Reproducir"
+   },
+   {
+    "id": "worker1-results",
+    "s": "worker-1",
+    "t": "results-topic",
+    "label": "Emitir"
+   },
+   {
+    "id": "worker2-results",
+    "s": "worker-2",
+    "t": "results-topic",
+    "label": "Emitir"
+   },
+   {
+    "id": "worker4-results",
+    "s": "worker-4",
+    "t": "results-topic",
+    "label": "Emitir"
+   },
+   {
+    "id": "results-aggregator",
+    "s": "results-topic",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "aggregator-output",
+    "s": "aggregator",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud por lotes",
+    "description": "Un cliente envía un trabajo por lotes grande que debe procesarse en paralelo sin acoplarse a ningún worker específico.",
+    "input": "",
+    "nodes": [
+     "client-request"
+    ],
+    "edges": [
+     "request-orchestrator"
+    ]
+   },
+   {
+    "title": "Distribución de tareas",
+    "description": "El orquestador divide el lote en tareas con clave y las publica en el topic particionado work-queue. Nunca se comunica directamente con los workers.",
+    "input": "",
+    "nodes": [
+     "orchestrator",
+     "work-queue-topic"
+    ],
+    "edges": [
+     "orchestrator-queue"
+    ]
+   },
+   {
+    "title": "Formación del grupo de consumidores",
+    "description": "Los workers sin estado se unen a un grupo de consumidores. Las particiones se asignan de modo que cada worker se encarga de una porción disjunta del stream.",
+    "input": "",
+    "nodes": [
+     "work-queue-topic",
+     "consumer-group",
+     "worker-1",
+     "worker-2",
+     "worker-3",
+     "worker-4"
+    ],
+    "edges": [
+     "queue-consumergroup",
+     "group-worker1",
+     "group-worker2",
+     "group-worker3",
+     "group-worker4"
+    ]
+   },
+   {
+    "title": "Falla de un worker",
+    "description": "El worker 3 se cae a mitad de la partición. Su tarea sin procesar se envía al topic errors para reproducirla en lugar de perderse.",
+    "input": "",
+    "nodes": [
+     "worker-3",
+     "errors-topic"
+    ],
+    "edges": [
+     "worker3-errors"
+    ]
+   },
+   {
+    "title": "Rebalanceo automático",
+    "description": "El rebalanceador detecta el cambio de membresía y reasigna la partición 2 a un worker sano, manteniendo estable el throughput sin intervención del orquestador.",
+    "input": "",
+    "nodes": [
+     "consumer-group",
+     "rebalancer",
+     "worker-4"
+    ],
+    "edges": [
+     "consumergroup-rebalancer",
+     "rebalancer-worker4"
+    ]
+   },
+   {
+    "title": "Reproducción de eventos",
+    "description": "El orquestador consume el topic errors y vuelve a publicar las tareas fallidas, de modo que la recuperación ocurre mediante reproducción en lugar de reintentos manuales.",
+    "input": "",
+    "nodes": [
+     "errors-topic",
+     "orchestrator"
+    ],
+    "edges": [
+     "errors-orchestrator"
+    ]
+   },
+   {
+    "title": "Emisión de resultados",
+    "description": "Los workers publican las salidas completadas en el topic results a medida que terminan, totalmente desacoplados entre sí.",
+    "input": "",
+    "nodes": [
+     "worker-1",
+     "worker-2",
+     "worker-4",
+     "results-topic"
+    ],
+    "edges": [
+     "worker1-results",
+     "worker2-results",
+     "worker4-results"
+    ]
+   },
+   {
+    "title": "Agregación y salida",
+    "description": "El agregador consume el topic results, reúne las salidas por clave de lote y emite el dataset estructurado final.",
+    "input": "",
+    "nodes": [
+     "results-topic",
+     "aggregator",
+     "output"
+    ],
+    "edges": [
+     "results-aggregator",
+     "aggregator-output"
+    ]
+   }
+  ]
+ }
+}

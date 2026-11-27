@@ -1,0 +1,611 @@
+{
+ "cat": "planning-execution",
+ "slug": "hierarchical-task-network-planning",
+ "name": "Hierarchical Task Network (HTN) Planning(HTN)",
+ "icon": "🏗️",
+ "complexity": "high",
+ "description": "Enfoque de planificación automatizada que descompone tareas complejas en redes jerárquicamente estructuradas de tareas más simples usando conocimiento del dominio",
+ "features": [
+  "Descomposición jerárquica de tareas",
+  "Integración del conocimiento del dominio",
+  "Abstracción de tareas en múltiples niveles",
+  "Gestión de restricciones de dependencia",
+  "Manejo de tareas primitivas y compuestas",
+  "Refinamiento de tareas basado en métodos"
+ ],
+ "tldr": {
+  "what": "Descompone tareas complejas en redes jerárquicas de subtareas usando reglas del dominio, refinando tareas abstractas en primitivas ejecutables.",
+  "when": "Problemas de múltiples etapas con patrones de descomposición conocidos, donde la estructura de tareas intermedias mejora la confiabilidad y reutilización de la planificación.",
+  "watchOut": "Requiere un modelado extenso del dominio por adelantado; es frágil cuando las restricciones del mundo real se desvían de la jerarquía de tareas predefinida."
+ },
+ "overview": {
+  "pattern": "Descomposición jerárquica de tareas complejas en subtareas manejables usando conocimiento del dominio",
+  "why": "Permite una planificación eficiente mediante abstracción, experiencia reutilizable y soluciones interpretables por humanos",
+  "insight": "Tareas (compuesta→primitiva) + Métodos (cómo descomponer) + Condiciones (cuándo aplicar) = Planes jerárquicos",
+  "impl": [
+   {
+    "t": "Definir el dominio",
+    "d": "Tareas (compuestas/primitivas), métodos, condiciones"
+   },
+   {
+    "t": "Crear métodos",
+    "d": "Reglas de descomposición: cuándo y cómo dividir las tareas"
+   },
+   {
+    "t": "Construir la red",
+    "d": "Estructura jerárquica de tareas con restricciones"
+   },
+   {
+    "t": "Planificar y ejecutar",
+    "d": "Descomponer el objetivo de nivel superior → acciones primitivas"
+   },
+   {
+    "t": "Monitorear y adaptar",
+    "d": "Replanificar si cambian las condiciones o fallan los métodos"
+   }
+  ],
+  "example": "analyze_market → [gather_data, process_info, generate_report] → primitive_actions",
+  "dos": [
+   "Codifica la experiencia del dominio en métodos y condiciones",
+   "Usa jerarquías de tareas claras con niveles de abstracción adecuados",
+   "Define precondiciones y efectos para cada método",
+   "Implementa backtracking cuando falle la descomposición",
+   "Guarda en cache los patrones de descomposición exitosos",
+   "Diseña librerías de métodos reutilizables para cada dominio"
+  ],
+  "donts": [
+   "Crear jerarquías demasiado profundas (>5-6 niveles)",
+   "Ignorar las restricciones de orden y las dependencias entre métodos",
+   "Usar HTN para secuencias de tareas lineales simples",
+   "Codificar soluciones fijas sin métodos condicionales",
+   "Omitir la validación de las precondiciones de los métodos"
+  ],
+  "use": [
+   "Flujos de trabajo complejos de múltiples pasos",
+   "La experiencia del dominio se puede codificar",
+   "Existe una estructura jerárquica de tareas",
+   "Hay varios enfoques de solución posibles",
+   "Se necesitan planes interpretables por humanos",
+   "Componentes de planificación reutilizables"
+  ],
+  "avoid": [
+   "Secuencias de tareas lineales simples",
+   "Dominios desconocidos o que cambian rápidamente",
+   "Comportamientos reactivos en tiempo real",
+   "No hay una jerarquía de tareas clara",
+   "Se necesitan enfoques puramente basados en datos",
+   "Problemas de optimización de una sola pasada"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de planes",
+    "d": "% de planes que se ejecutan con éxito"
+   },
+   {
+    "n": "Profundidad de descomposición",
+    "d": "Promedio de niveles en la jerarquía de tareas"
+   },
+   {
+    "n": "Tiempo de planificación",
+    "d": "Tiempo para generar un plan ejecutable"
+   },
+   {
+    "n": "Tasa de reutilización de métodos",
+    "d": "% de métodos reutilizados entre planes"
+   },
+   {
+    "n": "Frecuencia de backtracking",
+    "d": "% de planes que requieren backtracking"
+   },
+   {
+    "n": "Cobertura del dominio",
+    "d": "% de tareas del dominio planificables"
+   },
+   {
+    "n": "Optimalidad del plan",
+    "d": "Calidad frente a la solución óptima"
+   },
+   {
+    "n": "Eficiencia de ejecución",
+    "d": "Acciones primitivas por objetivo alcanzado"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Agentes de investigación autónomos",
+    "d": "Revisión de literatura → extracción de datos → análisis → síntesis"
+   },
+   {
+    "n": "Desarrollo de software",
+    "d": "Requisitos → diseño → implementación → pruebas → despliegue"
+   },
+   {
+    "n": "Manufactura",
+    "d": "Planificación de producto → asignación de recursos → producción → control de calidad"
+   },
+   {
+    "n": "IA para videojuegos",
+    "d": "Metas estratégicas → objetivos tácticos → acciones de unidades → primitivas de movimiento"
+   },
+   {
+    "n": "Robótica",
+    "d": "Navegar → planificación de rutas → control de movimiento → comandos de actuadores"
+   },
+   {
+    "n": "Procesos de negocio",
+    "d": "Planificación estratégica → asignación de recursos → ejecución de tareas → monitoreo"
+   },
+   {
+    "n": "Planificación militar",
+    "d": "Objetivos de misión → planes tácticos → asignación de unidades → acciones"
+   },
+   {
+    "n": "Sistemas educativos",
+    "d": "Metas de aprendizaje → diseño curricular → planificación de clases → actividades"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Hierarchical Task Network (HTN) Planning",
+  "description": "Metodología de planificación que descompone objetivos complejos en redes jerárquicas de tareas, usando conocimiento del dominio para dividir tareas abstractas en acciones primitivas ejecutables.",
+  "nodes": [
+   {
+    "id": "goal",
+    "label": "🎯 Objetivo de alto nivel\n\"Desplegar aplicación web\"",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "task-analyzer",
+    "label": "📊 Analizador de tareas\nDescompone en subtareas",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "method-library",
+    "label": "📚 Librería de métodos\nPlantillas de descomposición de tareas",
+    "x": 650,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "setup-infra",
+    "label": "🔧 Configurar infraestructura\nTarea abstracta",
+    "x": 100,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "build-app",
+    "label": "🏗️ Construir aplicación\nTarea abstracta",
+    "x": 300,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "deploy-app",
+    "label": "🚀 Desplegar aplicación\nTarea abstracta",
+    "x": 500,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "verify-deploy",
+    "label": "✅ Verificar despliegue\nTarea abstracta",
+    "x": 700,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "provision-server",
+    "label": "💻 Aprovisionar servidor\nSubtarea",
+    "x": 50,
+    "y": 420,
+    "w": 150
+   },
+   {
+    "id": "configure-network",
+    "label": "🌐 Configurar red\nSubtarea",
+    "x": 200,
+    "y": 420,
+    "w": 150
+   },
+   {
+    "id": "install-deps",
+    "label": "📦 Instalar dependencias\nSubtarea",
+    "x": 350,
+    "y": 420,
+    "w": 150
+   },
+   {
+    "id": "run-tests",
+    "label": "🧪 Ejecutar pruebas\nSubtarea",
+    "x": 500,
+    "y": 420,
+    "w": 150
+   },
+   {
+    "id": "create-bundle",
+    "label": "📁 Crear bundle\nSubtarea",
+    "x": 650,
+    "y": 420,
+    "w": 150
+   },
+   {
+    "id": "action-create-vm",
+    "label": "▶️ Crear VM\naws ec2 run-instances",
+    "x": 20,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "action-install-docker",
+    "label": "▶️ Instalar Docker\napt install docker",
+    "x": 160,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "action-setup-firewall",
+    "label": "▶️ Configurar firewall\nufw allow 443",
+    "x": 300,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "action-npm-install",
+    "label": "▶️ NPM Install\nnpm ci",
+    "x": 440,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "action-run-jest",
+    "label": "▶️ Ejecutar Jest\nnpm test",
+    "x": 580,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "action-webpack",
+    "label": "▶️ Build con Webpack\nnpm run build",
+    "x": 720,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "constraint-checker",
+    "label": "🔒 Verificador de restricciones\nValida precondiciones",
+    "x": 100,
+    "y": 700,
+    "w": 180
+   },
+   {
+    "id": "execution-monitor",
+    "label": "📡 Monitor de ejecución\nRastrea progreso y fallos",
+    "x": 350,
+    "y": 700,
+    "w": 180
+   },
+   {
+    "id": "replanning-engine",
+    "label": "🔄 Motor de replanificación\nManeja fallos y cambios",
+    "x": 600,
+    "y": 700,
+    "w": 180
+   },
+   {
+    "id": "output",
+    "label": "✨ Plan ejecutado\nDespliegue completado",
+    "x": 400,
+    "y": 820,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-analyzer",
+    "s": "goal",
+    "t": "task-analyzer",
+    "label": ""
+   },
+   {
+    "id": "analyzer-library",
+    "s": "task-analyzer",
+    "t": "method-library",
+    "label": "Consultar métodos"
+   },
+   {
+    "id": "library-analyzer",
+    "s": "method-library",
+    "t": "task-analyzer",
+    "label": "Devolver plantillas"
+   },
+   {
+    "id": "analyzer-setup",
+    "s": "task-analyzer",
+    "t": "setup-infra",
+    "label": "Descomponer"
+   },
+   {
+    "id": "analyzer-build",
+    "s": "task-analyzer",
+    "t": "build-app",
+    "label": "Descomponer"
+   },
+   {
+    "id": "analyzer-deploy",
+    "s": "task-analyzer",
+    "t": "deploy-app",
+    "label": "Descomponer"
+   },
+   {
+    "id": "analyzer-verify",
+    "s": "task-analyzer",
+    "t": "verify-deploy",
+    "label": "Descomponer"
+   },
+   {
+    "id": "setup-build",
+    "s": "setup-infra",
+    "t": "build-app",
+    "label": "Precede"
+   },
+   {
+    "id": "build-deploy",
+    "s": "build-app",
+    "t": "deploy-app",
+    "label": "Precede"
+   },
+   {
+    "id": "deploy-verify",
+    "s": "deploy-app",
+    "t": "verify-deploy",
+    "label": "Precede"
+   },
+   {
+    "id": "setup-provision",
+    "s": "setup-infra",
+    "t": "provision-server",
+    "label": ""
+   },
+   {
+    "id": "setup-network",
+    "s": "setup-infra",
+    "t": "configure-network",
+    "label": ""
+   },
+   {
+    "id": "build-deps",
+    "s": "build-app",
+    "t": "install-deps",
+    "label": ""
+   },
+   {
+    "id": "build-tests",
+    "s": "build-app",
+    "t": "run-tests",
+    "label": ""
+   },
+   {
+    "id": "build-bundle",
+    "s": "build-app",
+    "t": "create-bundle",
+    "label": ""
+   },
+   {
+    "id": "provision-vm",
+    "s": "provision-server",
+    "t": "action-create-vm",
+    "label": ""
+   },
+   {
+    "id": "provision-docker",
+    "s": "provision-server",
+    "t": "action-install-docker",
+    "label": ""
+   },
+   {
+    "id": "network-firewall",
+    "s": "configure-network",
+    "t": "action-setup-firewall",
+    "label": ""
+   },
+   {
+    "id": "deps-npm",
+    "s": "install-deps",
+    "t": "action-npm-install",
+    "label": ""
+   },
+   {
+    "id": "tests-jest",
+    "s": "run-tests",
+    "t": "action-run-jest",
+    "label": ""
+   },
+   {
+    "id": "bundle-webpack",
+    "s": "create-bundle",
+    "t": "action-webpack",
+    "label": ""
+   },
+   {
+    "id": "actions-constraint",
+    "s": "action-create-vm",
+    "t": "constraint-checker",
+    "label": "Validar"
+   },
+   {
+    "id": "constraint-monitor",
+    "s": "constraint-checker",
+    "t": "execution-monitor",
+    "label": ""
+   },
+   {
+    "id": "monitor-replan",
+    "s": "execution-monitor",
+    "t": "replanning-engine",
+    "label": "Si falla"
+   },
+   {
+    "id": "replan-analyzer",
+    "s": "replanning-engine",
+    "t": "task-analyzer",
+    "label": "Replanificar"
+   },
+   {
+    "id": "monitor-output",
+    "s": "execution-monitor",
+    "t": "output",
+    "label": "Éxito"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada del objetivo",
+    "description": "Objetivo de alto nivel: desplegar una aplicación web",
+    "input": "",
+    "nodes": [
+     "goal"
+    ],
+    "edges": [
+     "goal-analyzer"
+    ]
+   },
+   {
+    "title": "Análisis de tareas",
+    "description": "Analiza el objetivo y consulta la librería de métodos para obtener plantillas de descomposición",
+    "input": "",
+    "nodes": [
+     "task-analyzer",
+     "method-library"
+    ],
+    "edges": [
+     "analyzer-library",
+     "library-analyzer"
+    ]
+   },
+   {
+    "title": "Descomposición de nivel 1",
+    "description": "Descompone el objetivo en tareas abstractas de alto nivel",
+    "input": "",
+    "nodes": [
+     "setup-infra",
+     "build-app",
+     "deploy-app",
+     "verify-deploy"
+    ],
+    "edges": [
+     "analyzer-setup",
+     "analyzer-build",
+     "analyzer-deploy",
+     "analyzer-verify"
+    ]
+   },
+   {
+    "title": "Orden de tareas",
+    "description": "Establece dependencias temporales entre tareas",
+    "input": "",
+    "nodes": [
+     "setup-infra",
+     "build-app",
+     "deploy-app",
+     "verify-deploy"
+    ],
+    "edges": [
+     "setup-build",
+     "build-deploy",
+     "deploy-verify"
+    ]
+   },
+   {
+    "title": "Descomposición de nivel 2",
+    "description": "Descompone aún más las tareas abstractas en subtareas",
+    "input": "",
+    "nodes": [
+     "provision-server",
+     "configure-network",
+     "install-deps",
+     "run-tests",
+     "create-bundle"
+    ],
+    "edges": [
+     "setup-provision",
+     "setup-network",
+     "build-deps",
+     "build-tests",
+     "build-bundle"
+    ]
+   },
+   {
+    "title": "Acciones primitivas",
+    "description": "Descompone las subtareas en acciones primitivas ejecutables",
+    "input": "",
+    "nodes": [
+     "action-create-vm",
+     "action-install-docker",
+     "action-setup-firewall",
+     "action-npm-install",
+     "action-run-jest",
+     "action-webpack"
+    ],
+    "edges": [
+     "provision-vm",
+     "provision-docker",
+     "network-firewall",
+     "deps-npm",
+     "tests-jest",
+     "bundle-webpack"
+    ]
+   },
+   {
+    "title": "Validación de restricciones",
+    "description": "Verifica precondiciones y restricciones antes de la ejecución",
+    "input": "",
+    "nodes": [
+     "constraint-checker"
+    ],
+    "edges": [
+     "actions-constraint"
+    ]
+   },
+   {
+    "title": "Monitoreo de ejecución",
+    "description": "Ejecuta las acciones primitivas y monitorea el progreso",
+    "input": "",
+    "nodes": [
+     "execution-monitor"
+    ],
+    "edges": [
+     "constraint-monitor"
+    ]
+   },
+   {
+    "title": "Manejo de fallos",
+    "description": "Detecta fallos y activa la replanificación si es necesario",
+    "input": "",
+    "nodes": [
+     "replanning-engine",
+     "task-analyzer"
+    ],
+    "edges": [
+     "monitor-replan",
+     "replan-analyzer"
+    ]
+   },
+   {
+    "title": "Finalización exitosa",
+    "description": "Todas las tareas se completaron con éxito, despliegue finalizado",
+    "input": "",
+    "nodes": [
+     "output"
+    ],
+    "edges": [
+     "monitor-output"
+    ]
+   }
+  ]
+ }
+}

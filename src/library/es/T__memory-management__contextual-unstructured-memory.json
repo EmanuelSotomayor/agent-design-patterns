@@ -1,0 +1,707 @@
+{
+ "cat": "memory-management",
+ "slug": "contextual-unstructured-memory",
+ "name": "Contextual Unstructured Memory(CUM)",
+ "icon": "📄",
+ "complexity": "high",
+ "description": "Sistema de memoria explícito y general en cuanto a modalidades, que almacena información proveniente de entradas heterogéneas para sistemas de IA agéntica multiagente",
+ "features": [
+  "Almacenamiento independiente de la modalidad",
+  "Trazas de memoria explícitas",
+  "Manejo de entradas heterogéneas",
+  "Indexación de memoria entre modalidades",
+  "Estructuras de memoria flexibles",
+  "Accesibilidad para múltiples agentes",
+  "Asignación dinámica de memoria",
+  "Recuperación basada en el contenido"
+ ],
+ "tldr": {
+  "what": "Almacena diversos tipos de entrada (texto, imágenes, audio, datos estructurados) en una memoria compartida e indexada a la que pueden acceder múltiples agentes para recuperar contenido y coordinarse.",
+  "when": "Sistemas multiagente que crean o procesan contenido heterogéneo, donde los agentes necesitan referenciar el trabajo de los demás o construir sobre un contexto compartido entre modalidades.",
+  "watchOut": "El crecimiento excesivo de la memoria y la latencia de recuperación aumentan rápidamente; la sobrecarga de indexación y la complejidad de la búsqueda entre modalidades pueden superar los beneficios si no se acota con cuidado."
+ },
+ "overview": {
+  "pattern": "Sistema de memoria explícito y general en cuanto a modalidades que almacena información heterogénea sin esquemas rígidos",
+  "why": "Almacenamiento flexible de contenido, descubrimiento entre modalidades, organización adaptativa y relaciones emergentes entre contenidos",
+  "insight": "Embeddings multimodales + almacenamiento sin esquema + metadatos contextuales → memoria adaptativa entre modalidades",
+  "impl": [
+   {
+    "t": "Embeddings vectoriales",
+    "d": "Genera embeddings multimodales (CLIP, SentenceTransformers)"
+   },
+   {
+    "t": "Almacenamiento flexible",
+    "d": "Almacenamiento sin esquema que preserva los metadatos"
+   },
+   {
+    "t": "Índice entre modalidades",
+    "d": "Indexación basada en el contenido a través de modalidades"
+   },
+   {
+    "t": "Recuperación semántica",
+    "d": "Búsqueda por similitud con filtrado contextual"
+   },
+   {
+    "t": "Coordinación de agentes",
+    "d": "Patrones de acceso compartido a la memoria multimodal"
+   }
+  ],
+  "example": "multimodal_embeddings → schema_free_storage → cross_modal_indexing → semantic_retrieval → agent_coordination",
+  "dos": [
+   "Usa embeddings multimodales (CLIP, ALIGN) para la similitud entre modalidades",
+   "Preserva metadatos contextuales ricos junto con el contenido",
+   "Implementa almacenamiento híbrido: vectores + contenido original + metadatos",
+   "Habilita una organización emergente a partir de los patrones de uso",
+   "Soporta la evolución del esquema y tipos de contenido dinámicos"
+  ],
+  "donts": [
+   "Forzar esquemas rígidos sobre contenido inherentemente flexible",
+   "Ignorar el preprocesamiento y la optimización específicos de cada modalidad",
+   "Almacenar sin información contextual sobre la creación/el uso",
+   "Usar embeddings de una sola modalidad para contenido multimodal",
+   "Descuidar el costo computacional de la búsqueda por similitud a escala"
+  ],
+  "use": [
+   "Contenido multimodal entre texto, imágenes, audio y video",
+   "Tipos de contenido dinámicos que requieren flexibilidad de esquema",
+   "Descubrimiento entre modalidades y asociación de contenidos",
+   "Sistemas multiagente creativos y exploratorios",
+   "Integración de datos heterogéneos de múltiples fuentes"
+  ],
+  "avoid": [
+   "Datos altamente estructurados con esquemas estables",
+   "Aplicaciones críticas en rendimiento que requieren consultas exactas rápidas",
+   "Sistemas simples solo de texto o de una sola modalidad",
+   "Cumplimiento normativo que requiere validación estricta de datos",
+   "Entornos con recursos limitados y poca capacidad para embeddings"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de recuperación entre modalidades",
+    "d": "% de contenido relevante encontrado entre modalidades"
+   },
+   {
+    "n": "Flexibilidad de almacenamiento",
+    "d": "Nuevos tipos de contenido integrados sin cambios de esquema"
+   },
+   {
+    "n": "Calidad de la similitud semántica",
+    "d": "Coherencia del espacio de embeddings entre modalidades"
+   },
+   {
+    "n": "Tasa de descubrimiento de contenido",
+    "d": "Conexiones fortuitas entre modalidades encontradas"
+   },
+   {
+    "n": "Calidad de la colaboración entre agentes",
+    "d": "Éxito en la mejora de contenido entre múltiples agentes"
+   },
+   {
+    "n": "Tasa de evolución de la memoria",
+    "d": "Mejora de la organización adaptativa con el tiempo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Sistemas de contenido creativo",
+    "d": "Redactores, diseñadores visuales, productores de audio y editores de video que comparten recursos creativos no estructurados (78% más flexible frente a bases de datos estructuradas)"
+   },
+   {
+    "n": "Plataformas de investigación y descubrimiento",
+    "d": "Científicos que almacenan artículos, imágenes, datos, código y notas sin esquemas predefinidos (reconocimiento de patrones entre modalidades)"
+   },
+   {
+    "n": "Creación de contenido educativo",
+    "d": "Desarrollo de material de aprendizaje con texto, elementos visuales, audio y elementos interactivos (organización adaptativa del contenido)"
+   },
+   {
+    "n": "Sistemas de atención al cliente",
+    "d": "Gestión de tickets con texto, imágenes, grabaciones de voz y capturas de pantalla (base de conocimiento flexible para la resolución de problemas)"
+   },
+   {
+    "n": "Gestión de activos digitales",
+    "d": "Equipos de marketing que gestionan campañas con múltiples tipos y formatos de contenido (relaciones emergentes entre contenidos)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Memoria contextual no estructurada",
+  "description": "Sistema de memoria flexible para almacenar y recuperar formatos de datos variados, incluidos conversaciones, documentos y multimedia, mediante embeddings semánticos y búsqueda por similitud.",
+  "nodes": [
+   {
+    "id": "raw-input",
+    "label": "🌊 Entrada no estructurada sin procesar\n\"Conversaciones, documentos, logs, contenido multimedia\"",
+    "x": 400,
+    "y": 50,
+    "w": 420
+   },
+   {
+    "id": "unstructured-memory-core",
+    "label": "🧠 Núcleo de memoria no estructurada\nAlmacenamiento y recuperación flexibles",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "content-chunker",
+    "label": "✂️ Fragmentador de contenido\nSegmentación dinámica\nVentanas superpuestas",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "embedding-generator",
+    "label": "🎯 Generador de embeddings\nRepresentaciones vectoriales\nCodificación semántica",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "context-extractor",
+    "label": "🔍 Extractor de contexto\nExtracción de metadatos\nInformación temporal/espacial",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "format-detector",
+    "label": "📄 Detector de formato\nDetección del tipo de contenido\nProcesamiento multimodal",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "raw-content-store",
+    "label": "💾 Almacén de contenido original\nFormato original\nAlmacenamiento sin pérdida",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "vector-database",
+    "label": "🗄️ Base de datos vectorial\nAlmacenamiento de embeddings\nBúsqueda por similitud",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "context-index",
+    "label": "📇 Índice de contexto\nCatálogo de metadatos\nMapas de relaciones",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "temporal-store",
+    "label": "⏰ Almacén temporal\nOrdenamiento por tiempo\nSecuencias de eventos",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "association-graph",
+    "label": "🕸️ Grafo de asociaciones\nRed de conexiones\nMemorias relacionadas",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "semantic-search",
+    "label": "🔎 Búsqueda semántica\nBasada en el significado\nCoincidencia de conceptos",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "keyword-search",
+    "label": "🔤 Búsqueda por palabras clave\nCoincidencia exacta\nBúsqueda de texto completo",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "contextual-retrieval",
+    "label": "🎯 Recuperación contextual\nConsciente de la situación\nPuntuación de relevancia",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "associative-recall",
+    "label": "🔗 Recuerdo asociativo\nActivación en cadena\nRecuperación propagada",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "relevance-ranker",
+    "label": "📊 Ranker de relevancia\nPuntuar y ordenar resultados\nPonderación por contexto",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "result-aggregator",
+    "label": "🔀 Agregador de resultados\nCombinar fuentes\nEliminar duplicados",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "context-enricher",
+    "label": "✨ Enriquecedor de contexto\nAgregar metadatos\nAmpliar el contexto",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "format-converter",
+    "label": "🔄 Conversor de formato\nAdaptar la salida\nSegún el consumidor",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "memory-compressor",
+    "label": "🗜️ Compresor de memoria\nReducir la redundancia\nResumen",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "relevance-decay",
+    "label": "📉 Decaimiento de relevancia\nDesvanecimiento por tiempo\nAjuste de importancia",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "memory-merger",
+    "label": "🔀 Fusionador de memoria\nCombinar similares\nConsolidar fragmentos",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "garbage-collector",
+    "label": "🗑️ Recolector de basura\nEliminar lo obsoleto\nLimpiar huérfanos",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "consistency-checker",
+    "label": "✅ Verificación de consistencia\nDetección de conflictos\nResolución",
+    "x": 150,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "coverage-analyzer",
+    "label": "📊 Analizador de cobertura\nIdentificación de vacíos\nCompletitud",
+    "x": 350,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "quality-scorer",
+    "label": "⭐ Evaluador de calidad\nCalificación de confiabilidad\nNiveles de confianza",
+    "x": 550,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "flexible-output",
+    "label": "✨ Salida flexible\nRecuperación de memoria no estructurada consciente del contexto",
+    "x": 400,
+    "y": 1000,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-core",
+    "s": "raw-input",
+    "t": "unstructured-memory-core",
+    "label": ""
+   },
+   {
+    "id": "core-chunker",
+    "s": "unstructured-memory-core",
+    "t": "content-chunker",
+    "label": "Fragmentar"
+   },
+   {
+    "id": "core-embedding",
+    "s": "unstructured-memory-core",
+    "t": "embedding-generator",
+    "label": "Generar embeddings"
+   },
+   {
+    "id": "core-context",
+    "s": "unstructured-memory-core",
+    "t": "context-extractor",
+    "label": "Extraer"
+   },
+   {
+    "id": "core-format",
+    "s": "unstructured-memory-core",
+    "t": "format-detector",
+    "label": "Detectar"
+   },
+   {
+    "id": "chunker-raw",
+    "s": "content-chunker",
+    "t": "raw-content-store",
+    "label": ""
+   },
+   {
+    "id": "embedding-vector",
+    "s": "embedding-generator",
+    "t": "vector-database",
+    "label": ""
+   },
+   {
+    "id": "context-index",
+    "s": "context-extractor",
+    "t": "context-index",
+    "label": ""
+   },
+   {
+    "id": "context-temporal",
+    "s": "context-extractor",
+    "t": "temporal-store",
+    "label": ""
+   },
+   {
+    "id": "format-association",
+    "s": "format-detector",
+    "t": "association-graph",
+    "label": ""
+   },
+   {
+    "id": "vector-semantic",
+    "s": "vector-database",
+    "t": "semantic-search",
+    "label": ""
+   },
+   {
+    "id": "raw-keyword",
+    "s": "raw-content-store",
+    "t": "keyword-search",
+    "label": ""
+   },
+   {
+    "id": "index-contextual",
+    "s": "context-index",
+    "t": "contextual-retrieval",
+    "label": ""
+   },
+   {
+    "id": "association-recall",
+    "s": "association-graph",
+    "t": "associative-recall",
+    "label": ""
+   },
+   {
+    "id": "temporal-contextual",
+    "s": "temporal-store",
+    "t": "contextual-retrieval",
+    "label": ""
+   },
+   {
+    "id": "semantic-ranker",
+    "s": "semantic-search",
+    "t": "relevance-ranker",
+    "label": ""
+   },
+   {
+    "id": "keyword-aggregator",
+    "s": "keyword-search",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "contextual-enricher",
+    "s": "contextual-retrieval",
+    "t": "context-enricher",
+    "label": ""
+   },
+   {
+    "id": "recall-converter",
+    "s": "associative-recall",
+    "t": "format-converter",
+    "label": ""
+   },
+   {
+    "id": "ranker-aggregator",
+    "s": "relevance-ranker",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "aggregator-enricher",
+    "s": "result-aggregator",
+    "t": "context-enricher",
+    "label": ""
+   },
+   {
+    "id": "enricher-converter",
+    "s": "context-enricher",
+    "t": "format-converter",
+    "label": ""
+   },
+   {
+    "id": "raw-compressor",
+    "s": "raw-content-store",
+    "t": "memory-compressor",
+    "label": ""
+   },
+   {
+    "id": "temporal-decay",
+    "s": "temporal-store",
+    "t": "relevance-decay",
+    "label": ""
+   },
+   {
+    "id": "vector-merger",
+    "s": "vector-database",
+    "t": "memory-merger",
+    "label": ""
+   },
+   {
+    "id": "association-garbage",
+    "s": "association-graph",
+    "t": "garbage-collector",
+    "label": ""
+   },
+   {
+    "id": "compressor-raw",
+    "s": "memory-compressor",
+    "t": "raw-content-store",
+    "label": "Actualizar"
+   },
+   {
+    "id": "decay-temporal",
+    "s": "relevance-decay",
+    "t": "temporal-store",
+    "label": "Actualizar"
+   },
+   {
+    "id": "merger-vector",
+    "s": "memory-merger",
+    "t": "vector-database",
+    "label": "Actualizar"
+   },
+   {
+    "id": "garbage-association",
+    "s": "garbage-collector",
+    "t": "association-graph",
+    "label": "Limpiar"
+   },
+   {
+    "id": "converter-consistency",
+    "s": "format-converter",
+    "t": "consistency-checker",
+    "label": ""
+   },
+   {
+    "id": "aggregator-coverage",
+    "s": "result-aggregator",
+    "t": "coverage-analyzer",
+    "label": ""
+   },
+   {
+    "id": "enricher-quality",
+    "s": "context-enricher",
+    "t": "quality-scorer",
+    "label": ""
+   },
+   {
+    "id": "consistency-output",
+    "s": "consistency-checker",
+    "t": "flexible-output",
+    "label": ""
+   },
+   {
+    "id": "coverage-output",
+    "s": "coverage-analyzer",
+    "t": "flexible-output",
+    "label": ""
+   },
+   {
+    "id": "quality-output",
+    "s": "quality-scorer",
+    "t": "flexible-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada sin procesar",
+    "description": "Llega contenido no estructurado desde diversas fuentes",
+    "input": "",
+    "nodes": [
+     "raw-input",
+     "unstructured-memory-core"
+    ],
+    "edges": [
+     "input-core"
+    ]
+   },
+   {
+    "title": "Procesamiento del contenido",
+    "description": "Fragmentación, embeddings, extracción de contexto y detección de formato",
+    "input": "",
+    "nodes": [
+     "unstructured-memory-core",
+     "content-chunker",
+     "embedding-generator",
+     "context-extractor",
+     "format-detector"
+    ],
+    "edges": [
+     "core-chunker",
+     "core-embedding",
+     "core-context",
+     "core-format"
+    ]
+   },
+   {
+    "title": "Distribución del almacenamiento",
+    "description": "Almacenamiento en los sistemas de memoria apropiados",
+    "input": "",
+    "nodes": [
+     "raw-content-store",
+     "vector-database",
+     "context-index",
+     "temporal-store",
+     "association-graph"
+    ],
+    "edges": [
+     "chunker-raw",
+     "embedding-vector",
+     "context-index",
+     "context-temporal",
+     "format-association"
+    ]
+   },
+   {
+    "title": "Métodos de recuperación",
+    "description": "Se activan múltiples estrategias de recuperación",
+    "input": "",
+    "nodes": [
+     "semantic-search",
+     "keyword-search",
+     "contextual-retrieval",
+     "associative-recall"
+    ],
+    "edges": [
+     "vector-semantic",
+     "raw-keyword",
+     "index-contextual",
+     "association-recall",
+     "temporal-contextual"
+    ]
+   },
+   {
+    "title": "Procesamiento de resultados",
+    "description": "Ranking, agregación, enriquecimiento y conversión de resultados",
+    "input": "",
+    "nodes": [
+     "relevance-ranker",
+     "result-aggregator",
+     "context-enricher",
+     "format-converter"
+    ],
+    "edges": [
+     "semantic-ranker",
+     "keyword-aggregator",
+     "contextual-enricher",
+     "recall-converter"
+    ]
+   },
+   {
+    "title": "Flujo del pipeline",
+    "description": "Pipeline de procesamiento para los resultados",
+    "input": "",
+    "nodes": [
+     "relevance-ranker",
+     "result-aggregator",
+     "context-enricher",
+     "format-converter"
+    ],
+    "edges": [
+     "ranker-aggregator",
+     "aggregator-enricher",
+     "enricher-converter"
+    ]
+   },
+   {
+    "title": "Gestión de la memoria",
+    "description": "Compresión, decaimiento, fusión y limpieza",
+    "input": "",
+    "nodes": [
+     "memory-compressor",
+     "relevance-decay",
+     "memory-merger",
+     "garbage-collector"
+    ],
+    "edges": [
+     "raw-compressor",
+     "temporal-decay",
+     "vector-merger",
+     "association-garbage"
+    ]
+   },
+   {
+    "title": "Feedback de la gestión",
+    "description": "Actualización del almacenamiento según las operaciones de gestión",
+    "input": "",
+    "nodes": [
+     "raw-content-store",
+     "temporal-store",
+     "vector-database",
+     "association-graph"
+    ],
+    "edges": [
+     "compressor-raw",
+     "decay-temporal",
+     "merger-vector",
+     "garbage-association"
+    ]
+   },
+   {
+    "title": "Control de calidad",
+    "description": "Verificación de consistencia, cobertura y calidad",
+    "input": "",
+    "nodes": [
+     "consistency-checker",
+     "coverage-analyzer",
+     "quality-scorer"
+    ],
+    "edges": [
+     "converter-consistency",
+     "aggregator-coverage",
+     "enricher-quality"
+    ]
+   },
+   {
+    "title": "Salida flexible",
+    "description": "Entrega de memoria no estructurada consciente del contexto",
+    "input": "",
+    "nodes": [
+     "consistency-checker",
+     "coverage-analyzer",
+     "quality-scorer",
+     "flexible-output"
+    ],
+    "edges": [
+     "consistency-output",
+     "coverage-output",
+     "quality-output"
+    ]
+   }
+  ]
+ }
+}

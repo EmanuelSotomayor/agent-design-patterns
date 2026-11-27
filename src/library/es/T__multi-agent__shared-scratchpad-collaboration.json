@@ -1,0 +1,684 @@
+{
+ "cat": "multi-agent",
+ "slug": "shared-scratchpad-collaboration",
+ "name": "Shared Scratchpad Collaboration(SSC)",
+ "icon": "📝",
+ "complexity": "medium",
+ "description": "Varios agentes colaboran de forma transparente en un espacio de trabajo común con visibilidad compartida de todo el trabajo",
+ "features": [
+  "Colaboración transparente",
+  "Gestión del estado compartido",
+  "Visibilidad del trabajo en tiempo real",
+  "Refinamiento colaborativo",
+  "Construcción progresiva",
+  "Aprendizaje entre agentes"
+ ],
+ "tldr": {
+  "what": "Varios agentes escriben y leen en un espacio de trabajo compartido; cada uno ve todo el trabajo previo y construye sobre él de forma incremental.",
+  "when": "Documentos o salidas complejas que requieren distintas especialidades, donde los agentes se benefician de ver las contribuciones de los demás antes de agregar la suya.",
+  "watchOut": "Los agentes pueden contradecirse o sobrescribir el trabajo de los demás si las reglas de resolución de conflictos y de orden no son explícitas."
+ },
+ "overview": {
+  "pattern": "Varios agentes colaboran de forma transparente en un espacio de trabajo común con visibilidad compartida de todo el trabajo",
+  "why": "Elimina los silos de información, habilita un flujo de colaboración natural y ofrece una toma de decisiones transparente mediante visibilidad en tiempo real",
+  "insight": "Estado compartido + visibilidad en tiempo real + construcción progresiva + proceso transparente = inteligencia colaborativa natural",
+  "impl": [
+   {
+    "t": "Inicializar",
+    "d": "Crea un estado/espacio de trabajo compartido accesible para todos los agentes"
+   },
+   {
+    "t": "Definir",
+    "d": "Establece protocolos de colaboración y formatos de actualización"
+   },
+   {
+    "t": "Coordinar",
+    "d": "Los agentes leen, contribuyen y construyen sobre el trabajo compartido"
+   },
+   {
+    "t": "Sincronizar",
+    "d": "Visibilidad en tiempo real de todas las contribuciones de los agentes"
+   },
+   {
+    "t": "Converger",
+    "d": "Refinamiento colaborativo hacia el resultado final"
+   }
+  ],
+  "example": "shared_workspace.init() → agents.collaborate() → real_time_updates() → iterative_refinement()",
+  "dos": [
+   "Diseña un esquema claro de estado compartido con secciones estructuradas",
+   "Implementa visibilidad en tiempo real de todas las contribuciones de los agentes",
+   "Usa control de versiones y mecanismos de resolución de conflictos",
+   "Establece protocolos claros para los formatos de contribución de los agentes",
+   "Habilita la construcción progresiva y el refinamiento iterativo",
+   "Implementa un control de acceso y permisos de edición adecuados",
+   "Mantén registros de auditoría claros de todas las contribuciones",
+   "Diseña para procesos de toma de decisiones transparentes"
+  ],
+  "donts": [
+   "Permitir formatos de actualización desestructurados o contradictorios",
+   "Crear silos de información entre agentes",
+   "Omitir la resolución de conflictos en ediciones simultáneas",
+   "Ignorar la sobrecarga computacional del estado compartido",
+   "Permitir que los agentes se sobrescriban entre sí sin coordinación",
+   "Olvidar implementar mecanismos de rollback ante errores"
+  ],
+  "use": [
+   "Flujos de trabajo de creación colaborativa de contenido",
+   "Procesos de toma de decisiones transparentes",
+   "Resolución de problemas desde múltiples perspectivas",
+   "Requisitos de refinamiento iterativo",
+   "Escenarios de aprendizaje entre agentes",
+   "Aplicaciones de construcción de consenso"
+  ],
+  "avoid": [
+   "Necesidades de procesamiento paralelo independiente",
+   "Tareas compartimentadas de alta seguridad",
+   "Requisitos de flujos de trabajo lineales simples",
+   "Entornos con recursos limitados",
+   "Sistemas críticos de rendimiento en tiempo real",
+   "Escenarios en los que basta un solo agente"
+  ],
+  "metrics": [
+   {
+    "n": "Eficiencia de colaboración",
+    "d": "% del tiempo en que los agentes construyen vs. duplican trabajo"
+   },
+   {
+    "n": "Puntaje de transparencia",
+    "d": "Visibilidad del proceso de toma de decisiones"
+   },
+   {
+    "n": "Tasa de convergencia",
+    "d": "Tiempo para alcanzar el consenso colaborativo"
+   },
+   {
+    "n": "Aprendizaje entre agentes",
+    "d": "% de hallazgos compartidos entre agentes"
+   },
+   {
+    "n": "Sincronización del estado",
+    "d": "Velocidad de propagación de las actualizaciones en tiempo real"
+   },
+   {
+    "n": "Resolución de conflictos",
+    "d": "% de conflictos de edición resueltos automáticamente"
+   },
+   {
+    "n": "Calidad progresiva",
+    "d": "Mejora de la salida a lo largo de las iteraciones"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Creación colaborativa de documentos",
+    "d": "Varios agentes de redacción (investigación, contenido, edición, revisión) trabajando sobre un documento compartido con visibilidad en tiempo real"
+   },
+   {
+    "n": "Diseño de arquitectura de software",
+    "d": "Agentes de arquitectura, seguridad, rendimiento y UX diseñando un sistema de forma colaborativa con un plano compartido"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Agentes de mercado, finanzas, operaciones y riesgos construyendo una estrategia de negocio integral en un espacio de trabajo compartido"
+   },
+   {
+    "n": "Investigación científica",
+    "d": "Agentes de literatura, metodología, análisis y revisión por pares colaborando en un artículo de investigación con un proceso transparente"
+   },
+   {
+    "n": "Desarrollo de producto",
+    "d": "Agentes de investigación de usuarios, diseño, ingeniería y QA construyendo iterativamente los requisitos del producto en una especificación compartida"
+   },
+   {
+    "n": "Revisión de documentos legales",
+    "d": "Agentes de la materia, cumplimiento, riesgos y edición colaborando en el análisis de contratos con visibilidad total"
+   },
+   {
+    "n": "Lluvia de ideas creativa",
+    "d": "Agentes de concepto, narrativa, visual y técnico construyendo un proyecto creativo con un proceso de ideación transparente"
+   },
+   {
+    "n": "Currículo educativo",
+    "d": "Agentes de experto en la materia, pedagogía, evaluación y accesibilidad diseñando un curso con refinamiento colaborativo"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Shared Scratchpad Collaboration",
+  "description": "Framework colaborativo en el que varios agentes trabajan juntos usando un espacio de trabajo compartido para coordinar tareas, compartir hallazgos y construir sobre las contribuciones de los demás.",
+  "nodes": [
+   {
+    "id": "collaborative-task",
+    "label": "🎯 Tarea colaborativa\n\"Redactar un informe de investigación integral sobre energías renovables\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "shared-scratchpad",
+    "label": "📋 Scratchpad compartido\nEspacio de trabajo colaborativo central\nVersión: 1.0 | Última actualización: Agent-2",
+    "x": 350,
+    "y": 150,
+    "w": 300
+   },
+   {
+    "id": "research-agent",
+    "label": "🔍 Agente de investigación\nReunir datos y fuentes\nEstado: Redactando §2.1",
+    "x": 50,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "analysis-agent",
+    "label": "📊 Agente de análisis\nInterpretación de datos\nEstado: Revisando §1.3",
+    "x": 250,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "writing-agent",
+    "label": "✍️ Agente de redacción\nCreación de contenido\nEstado: Editando §3.0",
+    "x": 450,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "fact-check-agent",
+    "label": "✅ Agente de verificación de datos\nVerificar la exactitud\nEstado: Validando §2.0",
+    "x": 650,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "content-sections",
+    "label": "📄 Secciones de contenido\n1. Introducción ✓\n2. Energía solar (en progreso)\n3. Energía eólica (borrador)\n4. Hidroeléctrica (pendiente)",
+    "x": 100,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "shared-notes",
+    "label": "📝 Notas compartidas\n• Base de datos de estadísticas clave\n• Enlaces de referencia\n• Glosario de terminología\n• Elementos pendientes (TODO)",
+    "x": 350,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "version-history",
+    "label": "📚 Historial de versiones\nv1.0: Esquema inicial\nv1.1: Investigación agregada\nv1.2: Análisis integrado\nv1.3: Borrador actual",
+    "x": 600,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "lock-manager",
+    "label": "🔒 Gestor de bloqueos\nEvitar conflictos de edición\nBloqueado: §2.1 por Investigación",
+    "x": 50,
+    "y": 550,
+    "w": 180
+   },
+   {
+    "id": "change-tracker",
+    "label": "📍 Rastreador de cambios\nMonitorear modificaciones\n+45 líneas, -12 líneas",
+    "x": 250,
+    "y": 550,
+    "w": 180
+   },
+   {
+    "id": "merge-resolver",
+    "label": "🔀 Resolvedor de merges\nManejar ediciones concurrentes\nSin conflictos",
+    "x": 450,
+    "y": 550,
+    "w": 180
+   },
+   {
+    "id": "notification-hub",
+    "label": "🔔 Centro de notificaciones\nDifundir actualizaciones\n3 agentes notificados",
+    "x": 650,
+    "y": 550,
+    "w": 180
+   },
+   {
+    "id": "task-coordinator",
+    "label": "📋 Coordinador de tareas\nAsignar secciones a los agentes",
+    "x": 150,
+    "y": 680,
+    "w": 180
+   },
+   {
+    "id": "consistency-checker",
+    "label": "🎯 Verificador de consistencia\nAsegurar una salida coherente",
+    "x": 350,
+    "y": 680,
+    "w": 180
+   },
+   {
+    "id": "quality-monitor",
+    "label": "⭐ Monitor de calidad\nVigilar los estándares de contenido",
+    "x": 550,
+    "y": 680,
+    "w": 180
+   },
+   {
+    "id": "sync-engine",
+    "label": "🔄 Motor de sincronización\nSincronización en tiempo real",
+    "x": 250,
+    "y": 800,
+    "w": 180
+   },
+   {
+    "id": "conflict-handler",
+    "label": "⚠️ Manejador de conflictos\nResolver conflictos de escritura",
+    "x": 450,
+    "y": 800,
+    "w": 180
+   },
+   {
+    "id": "backup-manager",
+    "label": "💾 Gestor de respaldos\nAutoguardado y recuperación",
+    "x": 650,
+    "y": 800,
+    "w": 180
+   },
+   {
+    "id": "output",
+    "label": "✨ Informe completado\nDocumento de investigación integral con total transparencia",
+    "x": 400,
+    "y": 920,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-scratchpad",
+    "s": "collaborative-task",
+    "t": "shared-scratchpad",
+    "label": ""
+   },
+   {
+    "id": "research-scratchpad",
+    "s": "research-agent",
+    "t": "shared-scratchpad",
+    "label": "Leer/Escribir"
+   },
+   {
+    "id": "scratchpad-research",
+    "s": "shared-scratchpad",
+    "t": "research-agent",
+    "label": "Actualiza"
+   },
+   {
+    "id": "analysis-scratchpad",
+    "s": "analysis-agent",
+    "t": "shared-scratchpad",
+    "label": "Leer/Escribir"
+   },
+   {
+    "id": "scratchpad-analysis",
+    "s": "shared-scratchpad",
+    "t": "analysis-agent",
+    "label": "Actualiza"
+   },
+   {
+    "id": "writing-scratchpad",
+    "s": "writing-agent",
+    "t": "shared-scratchpad",
+    "label": "Leer/Escribir"
+   },
+   {
+    "id": "scratchpad-writing",
+    "s": "shared-scratchpad",
+    "t": "writing-agent",
+    "label": "Actualiza"
+   },
+   {
+    "id": "factcheck-scratchpad",
+    "s": "fact-check-agent",
+    "t": "shared-scratchpad",
+    "label": "Leer/Escribir"
+   },
+   {
+    "id": "scratchpad-factcheck",
+    "s": "shared-scratchpad",
+    "t": "fact-check-agent",
+    "label": "Actualiza"
+   },
+   {
+    "id": "scratchpad-content",
+    "s": "shared-scratchpad",
+    "t": "content-sections",
+    "label": ""
+   },
+   {
+    "id": "scratchpad-notes",
+    "s": "shared-scratchpad",
+    "t": "shared-notes",
+    "label": ""
+   },
+   {
+    "id": "scratchpad-history",
+    "s": "shared-scratchpad",
+    "t": "version-history",
+    "label": ""
+   },
+   {
+    "id": "research-content",
+    "s": "research-agent",
+    "t": "content-sections",
+    "label": "Escribir"
+   },
+   {
+    "id": "analysis-notes",
+    "s": "analysis-agent",
+    "t": "shared-notes",
+    "label": "Actualizar"
+   },
+   {
+    "id": "writing-content",
+    "s": "writing-agent",
+    "t": "content-sections",
+    "label": "Editar"
+   },
+   {
+    "id": "content-lock",
+    "s": "content-sections",
+    "t": "lock-manager",
+    "label": ""
+   },
+   {
+    "id": "content-change",
+    "s": "content-sections",
+    "t": "change-tracker",
+    "label": ""
+   },
+   {
+    "id": "change-merge",
+    "s": "change-tracker",
+    "t": "merge-resolver",
+    "label": ""
+   },
+   {
+    "id": "merge-notification",
+    "s": "merge-resolver",
+    "t": "notification-hub",
+    "label": ""
+   },
+   {
+    "id": "notify-research",
+    "s": "notification-hub",
+    "t": "research-agent",
+    "label": "Alerta"
+   },
+   {
+    "id": "notify-analysis",
+    "s": "notification-hub",
+    "t": "analysis-agent",
+    "label": "Alerta"
+   },
+   {
+    "id": "notify-writing",
+    "s": "notification-hub",
+    "t": "writing-agent",
+    "label": "Alerta"
+   },
+   {
+    "id": "lock-coordinator",
+    "s": "lock-manager",
+    "t": "task-coordinator",
+    "label": ""
+   },
+   {
+    "id": "merge-consistency",
+    "s": "merge-resolver",
+    "t": "consistency-checker",
+    "label": ""
+   },
+   {
+    "id": "consistency-quality",
+    "s": "consistency-checker",
+    "t": "quality-monitor",
+    "label": ""
+   },
+   {
+    "id": "coordinator-sync",
+    "s": "task-coordinator",
+    "t": "sync-engine",
+    "label": ""
+   },
+   {
+    "id": "consistency-conflict",
+    "s": "consistency-checker",
+    "t": "conflict-handler",
+    "label": ""
+   },
+   {
+    "id": "quality-backup",
+    "s": "quality-monitor",
+    "t": "backup-manager",
+    "label": ""
+   },
+   {
+    "id": "sync-output",
+    "s": "sync-engine",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "conflict-output",
+    "s": "conflict-handler",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "backup-output",
+    "s": "backup-manager",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "research-analysis-visibility",
+    "s": "research-agent",
+    "t": "analysis-agent",
+    "label": "Ver trabajo"
+   },
+   {
+    "id": "analysis-writing-visibility",
+    "s": "analysis-agent",
+    "t": "writing-agent",
+    "label": "Ver trabajo"
+   },
+   {
+    "id": "writing-factcheck-visibility",
+    "s": "writing-agent",
+    "t": "fact-check-agent",
+    "label": "Ver trabajo"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea colaborativa",
+    "description": "Tarea compleja que requiere que varios agentes trabajen juntos",
+    "input": "",
+    "nodes": [
+     "collaborative-task"
+    ],
+    "edges": [
+     "task-scratchpad"
+    ]
+   },
+   {
+    "title": "Inicializar el espacio de trabajo compartido",
+    "description": "Configura el scratchpad compartido con secciones y componentes",
+    "input": "",
+    "nodes": [
+     "shared-scratchpad",
+     "content-sections",
+     "shared-notes",
+     "version-history"
+    ],
+    "edges": [
+     "scratchpad-content",
+     "scratchpad-notes",
+     "scratchpad-history"
+    ]
+   },
+   {
+    "title": "Conexión de agentes",
+    "description": "Todos los agentes se conectan al scratchpad compartido con acceso de lectura/escritura",
+    "input": "",
+    "nodes": [
+     "research-agent",
+     "analysis-agent",
+     "writing-agent",
+     "fact-check-agent",
+     "shared-scratchpad"
+    ],
+    "edges": [
+     "research-scratchpad",
+     "analysis-scratchpad",
+     "writing-scratchpad",
+     "factcheck-scratchpad"
+    ]
+   },
+   {
+    "title": "Visibilidad transparente",
+    "description": "Los agentes pueden ver el trabajo de los demás en tiempo real",
+    "input": "",
+    "nodes": [
+     "research-agent",
+     "analysis-agent",
+     "writing-agent",
+     "fact-check-agent"
+    ],
+    "edges": [
+     "research-analysis-visibility",
+     "analysis-writing-visibility",
+     "writing-factcheck-visibility"
+    ]
+   },
+   {
+    "title": "Trabajo concurrente",
+    "description": "Varios agentes trabajan simultáneamente en distintas secciones",
+    "input": "",
+    "nodes": [
+     "research-agent",
+     "writing-agent",
+     "content-sections",
+     "shared-notes"
+    ],
+    "edges": [
+     "research-content",
+     "writing-content",
+     "analysis-notes"
+    ]
+   },
+   {
+    "title": "Gestión de bloqueos",
+    "description": "Evita conflictos bloqueando las secciones que se están editando",
+    "input": "",
+    "nodes": [
+     "content-sections",
+     "lock-manager",
+     "task-coordinator"
+    ],
+    "edges": [
+     "content-lock",
+     "lock-coordinator"
+    ]
+   },
+   {
+    "title": "Seguimiento de cambios",
+    "description": "Registra todas las modificaciones hechas por los agentes",
+    "input": "",
+    "nodes": [
+     "change-tracker",
+     "merge-resolver"
+    ],
+    "edges": [
+     "content-change",
+     "change-merge"
+    ]
+   },
+   {
+    "title": "Notificaciones de actualización",
+    "description": "Difunde los cambios a todos los agentes conectados",
+    "input": "",
+    "nodes": [
+     "notification-hub",
+     "research-agent",
+     "analysis-agent",
+     "writing-agent"
+    ],
+    "edges": [
+     "merge-notification",
+     "notify-research",
+     "notify-analysis",
+     "notify-writing"
+    ]
+   },
+   {
+    "title": "Actualizaciones en vivo",
+    "description": "Los agentes reciben actualizaciones en tiempo real desde el scratchpad",
+    "input": "",
+    "nodes": [
+     "shared-scratchpad",
+     "research-agent",
+     "analysis-agent",
+     "writing-agent",
+     "fact-check-agent"
+    ],
+    "edges": [
+     "scratchpad-research",
+     "scratchpad-analysis",
+     "scratchpad-writing",
+     "scratchpad-factcheck"
+    ]
+   },
+   {
+    "title": "Verificación de consistencia",
+    "description": "Asegura una salida coherente entre todas las contribuciones",
+    "input": "",
+    "nodes": [
+     "consistency-checker",
+     "quality-monitor"
+    ],
+    "edges": [
+     "merge-consistency",
+     "consistency-quality"
+    ]
+   },
+   {
+    "title": "Sincronización",
+    "description": "Sincroniza todos los cambios y resuelve cualquier conflicto",
+    "input": "",
+    "nodes": [
+     "sync-engine",
+     "conflict-handler",
+     "backup-manager"
+    ],
+    "edges": [
+     "coordinator-sync",
+     "consistency-conflict",
+     "quality-backup"
+    ]
+   },
+   {
+    "title": "Salida final",
+    "description": "Entrega el documento colaborativo completado",
+    "input": "",
+    "nodes": [
+     "output",
+     "sync-engine",
+     "conflict-handler",
+     "backup-manager"
+    ],
+    "edges": [
+     "sync-output",
+     "conflict-output",
+     "backup-output"
+    ]
+   }
+  ]
+ }
+}

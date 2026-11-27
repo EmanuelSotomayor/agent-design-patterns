@@ -1,0 +1,509 @@
+{
+ "cat": "fault-tolerance-infrastructure",
+ "slug": "llm-checkpoint-recovery",
+ "name": "LLM Checkpoint Recovery (Mnemosyne)(LCR)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Arquitectura ligera de proxies de dispositivo para la recuperación ante fallos de LLM, con checkpointing just-in-time y reconstrucción parcial de la topología",
+ "features": [
+  "Arquitectura de proxies de dispositivo",
+  "Checkpointing just-in-time",
+  "Librería flexible de comunicación colectiva",
+  "Ajuste de enlaces en tiempo de ejecución",
+  "Reconstrucción parcial de la topología",
+  "Preservación del estado de memoria"
+ ],
+ "tldr": {
+  "what": "Mantiene proxies de dispositivo ligeros que capturan bajo demanda el estado de los gradientes y del optimizador, y luego reconstruyen la topología de entrenamiento y reanudan desde el último checkpoint tras una falla.",
+  "when": "Entrenamiento distribuido de LLM a gran escala donde las fallas son frecuentes y necesitas una recuperación en menos de un minuto sin reentrenar todo ni recurrir al escalado elástico.",
+  "watchOut": "El checkpointing just-in-time agrega latencia durante el entrenamiento normal; los disparadores mal configurados pueden provocar fallas en cascada o agotamiento de memoria con tasas de fallo altas."
+ },
+ "overview": {
+  "pattern": "Arquitectura de proxies de dispositivo con checkpointing just-in-time para la recuperación ante fallos de LLM",
+  "why": "Reduce la sobrecarga de recuperación en un 58.8% frente a los enfoques tradicionales y habilita la reconstrucción parcial de la topología",
+  "insight": "Proxies de dispositivo ligeros + CCL flexible + reinicialización incremental de la comunicación = 3.6% de sobrecarga diaria",
+  "impl": [
+   {
+    "t": "Configurar el proxy",
+    "d": "Despliega la capa de proxies de dispositivo para interceptar errores"
+   },
+   {
+    "t": "Configurar la CCL",
+    "d": "Inicializa la librería flexible de comunicación colectiva"
+   },
+   {
+    "t": "Habilitar JIT",
+    "d": "Activa los disparadores de checkpointing just-in-time"
+   },
+   {
+    "t": "Recuperación parcial",
+    "d": "Implementa la reconstrucción incremental de la topología"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Registra los patrones de falla y los tiempos de recuperación"
+   }
+  ],
+  "example": "device_proxy → failure_detection → checkpoint_trigger → partial_reconstruction → resume_training",
+  "dos": [
+   "Usa proxies de dispositivo ligeros optimizados para la tolerancia a fallos",
+   "Implementa la reconstrucción parcial de la topología alrededor de los nodos con falla",
+   "Guarda en cache los estados de gradientes y los checkpoints del optimizador por separado",
+   "Usa reinicialización incremental de la comunicación (no un reinicio completo)",
+   "Monitorea los patrones de uso de memoria para predecir fallas"
+  ],
+  "donts": [
+   "Depender de las funciones de entrenamiento elástico como única tolerancia a fallos",
+   "Realizar una reinicialización global de la comunicación ante fallas individuales",
+   "Guardar checkpoints enormes en almacenamiento lento durante el entrenamiento",
+   "Ignorar el predominio temporal de la sobrecarga de comunicación",
+   "Usar checkpointing genérico para modelos de más de 70B parámetros"
+  ],
+  "use": [
+   "Entrenamiento distribuido de LLM (7B+ parámetros)",
+   "Ciclos de entrenamiento de varias semanas",
+   "Entornos con alta tasa de fallas",
+   "Ancho de banda limitado para el almacenamiento de checkpoints"
+  ],
+  "avoid": [
+   "Entrenamiento de modelos pequeños (<1B parámetros)",
+   "Despliegues de un solo nodo",
+   "Entornos de hardware estables",
+   "Ciclos de entrenamiento cortos (<24h)"
+  ],
+  "metrics": [
+   {
+    "n": "Tiempo de recuperación",
+    "d": "Segundos para reanudar el entrenamiento"
+   },
+   {
+    "n": "Sobrecarga",
+    "d": "% del tiempo de entrenamiento diario perdido"
+   },
+   {
+    "n": "Tamaño del checkpoint",
+    "d": "GB por snapshot del modelo"
+   },
+   {
+    "n": "Detección de fallas",
+    "d": "Tiempo para detectar la falla de un nodo"
+   },
+   {
+    "n": "Uso de memoria",
+    "d": "% de memoria pico preservada"
+   },
+   {
+    "n": "Costo de comunicación",
+    "d": "Ancho de banda para la reconstrucción"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Preentrenamiento de LLM",
+    "d": "Modelos de más de 70B parámetros con ciclos de entrenamiento de una semana"
+   },
+   {
+    "n": "Fine-tuning distribuido",
+    "d": "Adaptación multinodo con fallas de hardware frecuentes"
+   },
+   {
+    "n": "Entrenamiento MoE",
+    "d": "Mixture-of-experts dispersos con checkpoints de tamaño enorme"
+   },
+   {
+    "n": "Paralelismo híbrido",
+    "d": "Combinaciones de paralelismo de datos/tensores/pipeline con modos de falla complejos"
+   },
+   {
+    "n": "Entrenamiento en la nube",
+    "d": "Entrenamiento en instancias spot con interrupciones predecibles"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Recuperación de checkpoints de LLM",
+  "description": "Un sistema para guardar y recuperar el estado de generación de un LLM, que permite manejar interrupciones y mantener la continuidad de la conversación",
+  "nodes": [
+   {
+    "id": "writing-task",
+    "label": "📝 Tarea: escribir un informe de 10,000 palabras\n\"Analizar los impactos del cambio climático en la agricultura\"",
+    "x": 400,
+    "y": 50,
+    "w": 400
+   },
+   {
+    "id": "llm-processing",
+    "label": "🤖 Procesamiento del LLM\nGenerando el informe...\n7,500 palabras listas",
+    "x": 100,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "progress-75",
+    "label": "📊 Progreso: 75%\n30 minutos transcurridos\n$5 de costo de cómputo",
+    "x": 100,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "system-crash",
+    "label": "💥 ¡FALLA!\nGPU sin memoria\nTimeout de red\nProceso terminado",
+    "x": 350,
+    "y": 240,
+    "w": 180
+   },
+   {
+    "id": "without-checkpoint",
+    "label": "😱 Sin checkpoints\n¡Se perdió todo!\nEmpezar desde cero\nDesperdiciar $5 + 30 min",
+    "x": 600,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "checkpoint-manager",
+    "label": "💾 Gestor de checkpoints\nGuarda el progreso cada 1000 palabras",
+    "x": 400,
+    "y": 380,
+    "w": 250
+   },
+   {
+    "id": "checkpoint-1",
+    "label": "✅ Checkpoint 1\n1000 palabras\nIntroducción guardada",
+    "x": 150,
+    "y": 480,
+    "w": 140
+   },
+   {
+    "id": "checkpoint-2",
+    "label": "✅ Checkpoint 2\n3000 palabras\nAnálisis guardado",
+    "x": 300,
+    "y": 480,
+    "w": 140
+   },
+   {
+    "id": "checkpoint-3",
+    "label": "✅ Checkpoint 3\n5000 palabras\nSección de datos guardada",
+    "x": 450,
+    "y": 480,
+    "w": 140
+   },
+   {
+    "id": "checkpoint-4",
+    "label": "✅ Checkpoint 4\n7000 palabras\nResultados guardados",
+    "x": 600,
+    "y": 480,
+    "w": 140
+   },
+   {
+    "id": "detect-failure",
+    "label": "🔍 Detectar la falla\nEl proceso murió en 7,500",
+    "x": 200,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "find-checkpoint",
+    "label": "📍 Encontrar el último checkpoint\nCheckpoint 4: 7,000 palabras",
+    "x": 380,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "restore-state",
+    "label": "🔄 Restaurar el estado\nCargar el contexto guardado\nReconstruir la memoria",
+    "x": 580,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "resume-point",
+    "label": "▶️ Reanudar desde 7,000\nSolo rehacer 500 palabras\n¡Ahorra tiempo y dinero!",
+    "x": 300,
+    "y": 720,
+    "w": 180
+   },
+   {
+    "id": "complete-task",
+    "label": "✨ Tarea completa\n10,000 palabras listas\nTiempo perdido mínimo",
+    "x": 520,
+    "y": 720,
+    "w": 180
+   },
+   {
+    "id": "save-time",
+    "label": "⏱️ Ahorra tiempo\n5 min vs 30 min\nde reinicio",
+    "x": 150,
+    "y": 840,
+    "w": 140
+   },
+   {
+    "id": "save-money",
+    "label": "💰 Ahorra dinero\n$0.50 vs $5.00\nde recómputo",
+    "x": 320,
+    "y": 840,
+    "w": 140
+   },
+   {
+    "id": "reliability",
+    "label": "🛡️ Confiabilidad\nSin miedo a las\ntareas largas",
+    "x": 490,
+    "y": 840,
+    "w": 140
+   },
+   {
+    "id": "scalability",
+    "label": "📈 Escalabilidad\nManeja cargas\nde trabajo enormes",
+    "x": 660,
+    "y": 840,
+    "w": 140
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-llm",
+    "s": "writing-task",
+    "t": "llm-processing",
+    "label": ""
+   },
+   {
+    "id": "llm-progress",
+    "s": "llm-processing",
+    "t": "progress-75",
+    "label": ""
+   },
+   {
+    "id": "progress-crash",
+    "s": "progress-75",
+    "t": "system-crash",
+    "label": "¡FALLA!"
+   },
+   {
+    "id": "crash-without",
+    "s": "system-crash",
+    "t": "without-checkpoint",
+    "label": ""
+   },
+   {
+    "id": "task-checkpoint",
+    "s": "writing-task",
+    "t": "checkpoint-manager",
+    "label": ""
+   },
+   {
+    "id": "manager-cp1",
+    "s": "checkpoint-manager",
+    "t": "checkpoint-1",
+    "label": ""
+   },
+   {
+    "id": "manager-cp2",
+    "s": "checkpoint-manager",
+    "t": "checkpoint-2",
+    "label": ""
+   },
+   {
+    "id": "manager-cp3",
+    "s": "checkpoint-manager",
+    "t": "checkpoint-3",
+    "label": ""
+   },
+   {
+    "id": "manager-cp4",
+    "s": "checkpoint-manager",
+    "t": "checkpoint-4",
+    "label": ""
+   },
+   {
+    "id": "crash-detect",
+    "s": "system-crash",
+    "t": "detect-failure",
+    "label": ""
+   },
+   {
+    "id": "detect-find",
+    "s": "detect-failure",
+    "t": "find-checkpoint",
+    "label": ""
+   },
+   {
+    "id": "find-restore",
+    "s": "find-checkpoint",
+    "t": "restore-state",
+    "label": ""
+   },
+   {
+    "id": "cp4-find",
+    "s": "checkpoint-4",
+    "t": "find-checkpoint",
+    "label": "Más reciente"
+   },
+   {
+    "id": "restore-resume",
+    "s": "restore-state",
+    "t": "resume-point",
+    "label": ""
+   },
+   {
+    "id": "resume-complete",
+    "s": "resume-point",
+    "t": "complete-task",
+    "label": ""
+   },
+   {
+    "id": "resume-time",
+    "s": "resume-point",
+    "t": "save-time",
+    "label": ""
+   },
+   {
+    "id": "resume-money",
+    "s": "resume-point",
+    "t": "save-money",
+    "label": ""
+   },
+   {
+    "id": "complete-reliability",
+    "s": "complete-task",
+    "t": "reliability",
+    "label": ""
+   },
+   {
+    "id": "complete-scalability",
+    "s": "complete-task",
+    "t": "scalability",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea larga en ejecución",
+    "description": "Escribiendo un informe de 10,000 palabras sobre el cambio climático",
+    "input": "",
+    "nodes": [
+     "writing-task",
+     "llm-processing"
+    ],
+    "edges": [
+     "task-llm"
+    ]
+   },
+   {
+    "title": "75% completado",
+    "description": "7,500 palabras listas, 30 minutos transcurridos",
+    "input": "",
+    "nodes": [
+     "llm-processing",
+     "progress-75"
+    ],
+    "edges": [
+     "llm-progress"
+    ]
+   },
+   {
+    "title": "¡Falla del sistema!",
+    "description": "GPU sin memoria, el proceso muere",
+    "input": "",
+    "nodes": [
+     "progress-75",
+     "system-crash"
+    ],
+    "edges": [
+     "progress-crash"
+    ]
+   },
+   {
+    "title": "Sin checkpoints",
+    "description": "¡Se perdió todo! Hay que reiniciar desde cero",
+    "input": "",
+    "nodes": [
+     "system-crash",
+     "without-checkpoint"
+    ],
+    "edges": [
+     "crash-without"
+    ]
+   },
+   {
+    "title": "Con sistema de checkpoints",
+    "description": "Guarda el progreso automáticamente cada 1000 palabras",
+    "input": "",
+    "nodes": [
+     "writing-task",
+     "checkpoint-manager",
+     "checkpoint-1",
+     "checkpoint-2",
+     "checkpoint-3",
+     "checkpoint-4"
+    ],
+    "edges": [
+     "task-checkpoint",
+     "manager-cp1",
+     "manager-cp2",
+     "manager-cp3",
+     "manager-cp4"
+    ]
+   },
+   {
+    "title": "Detectar y encontrar el checkpoint",
+    "description": "El sistema encuentra el último checkpoint en 7,000 palabras",
+    "input": "",
+    "nodes": [
+     "system-crash",
+     "detect-failure",
+     "find-checkpoint",
+     "checkpoint-4"
+    ],
+    "edges": [
+     "crash-detect",
+     "detect-find",
+     "cp4-find"
+    ]
+   },
+   {
+    "title": "Restaurar el estado",
+    "description": "Carga el contexto guardado y reconstruye la memoria",
+    "input": "",
+    "nodes": [
+     "find-checkpoint",
+     "restore-state"
+    ],
+    "edges": [
+     "find-restore"
+    ]
+   },
+   {
+    "title": "Reanudar desde el checkpoint",
+    "description": "¡Solo hay que rehacer 500 palabras en lugar de 7,500!",
+    "input": "",
+    "nodes": [
+     "restore-state",
+     "resume-point",
+     "complete-task"
+    ],
+    "edges": [
+     "restore-resume",
+     "resume-complete"
+    ]
+   },
+   {
+    "title": "Ahorro enorme",
+    "description": "Ahorra 25 minutos y $4.50 en costos de cómputo",
+    "input": "",
+    "nodes": [
+     "resume-point",
+     "complete-task",
+     "save-time",
+     "save-money",
+     "reliability",
+     "scalability"
+    ],
+    "edges": [
+     "resume-time",
+     "resume-money",
+     "complete-reliability",
+     "complete-scalability"
+    ]
+   }
+  ]
+ }
+}

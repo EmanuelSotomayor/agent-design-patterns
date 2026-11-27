@@ -1,0 +1,384 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "in-context-learning",
+ "name": "In-Context Learning(ICL)",
+ "icon": "🎯",
+ "complexity": "medium",
+ "description": "Condicionar un modelo con instrucciones y demostraciones en el contexto actual, sin actualizar los parámetros del modelo",
+ "features": [
+  "Instrucciones zero-shot",
+  "Demostraciones few-shot",
+  "Especificación de tareas basada en ejemplos",
+  "Sin actualización de parámetros",
+  "Selección de ejemplos basada en recuperación",
+  "Pruebas de sensibilidad al orden del prompt"
+ ],
+ "tldr": {
+  "what": "Condiciona un modelo con instrucciones de la tarea y ejemplos en el prompt, sin cambiar los pesos del modelo, para guiar su comportamiento ante nuevas entradas.",
+  "when": "Tareas con categorías o patrones claros y fijos, donde unos pocos ejemplos etiquetados le muestran de forma confiable al modelo qué hacer.",
+  "watchOut": "El rendimiento se degrada drásticamente si los ejemplos no coinciden con la distribución de las entradas reales o si el modelo malinterpreta qué características importan."
+ },
+ "overview": {
+  "pattern": "Proporciona ejemplos de la tarea en el prompt para permitir que el modelo aprenda sin actualizar parámetros",
+  "why": "Permite una adaptación rápida a tareas, no requiere entrenamiento y aprovecha el reconocimiento de patrones del modelo para un rendimiento inmediato",
+  "insight": "Los modelos pueden aprender de demostraciones en contexto, realizando un descenso de gradiente implícito durante la inferencia",
+  "impl": [
+   {
+    "t": "Seleccionar",
+    "d": "Elige ejemplos relevantes para el contexto de la tarea"
+   },
+   {
+    "t": "Formatear",
+    "d": "Estructura los ejemplos con pares entrada-salida"
+   },
+   {
+    "t": "Prompt",
+    "d": "Combina los ejemplos con la consulta objetivo"
+   },
+   {
+    "t": "Inferir",
+    "d": "El modelo aprende el patrón a partir de los ejemplos"
+   },
+   {
+    "t": "Generar",
+    "d": "Aplica el patrón aprendido a la nueva entrada"
+   }
+  ],
+  "example": "examples + query → model_inference → output",
+  "dos": [
+   "Usa ejemplos diversos y de alta calidad, representativos de la tarea",
+   "Mantén un formato consistente en todos los ejemplos",
+   "Ordena los ejemplos de simples a complejos cuando sea posible",
+   "Incluye casos límite y condiciones de frontera",
+   "Prueba con distintas cantidades de ejemplos (de 1-shot a few-shot)",
+   "Usa separadores claros entre ejemplos"
+  ],
+  "donts": [
+   "Usar ejemplos contradictorios o inconsistentes",
+   "Sobrecargar el contexto con demasiados ejemplos",
+   "Usar ejemplos sesgados o no representativos",
+   "Mezclar distintos tipos de tareas en el mismo prompt",
+   "Ignorar los efectos de la selección y el orden de los ejemplos"
+  ],
+  "use": [
+   "Se necesita una adaptación rápida a nuevas tareas",
+   "Hay pocos o ningún dato de entrenamiento disponible",
+   "La tarea requiere demostración más que descripción",
+   "Prototipado rápido y experimentación",
+   "El modelo necesita comprender patrones complejos"
+  ],
+  "avoid": [
+   "Hay grandes cantidades de datos de entrenamiento disponibles",
+   "La tarea requiere un conocimiento extenso del dominio",
+   "Las limitaciones de la ventana de contexto son severas",
+   "Los requisitos de alta precisión superan la capacidad de ICL",
+   "Se necesita un rendimiento consistente entre variaciones"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión few-shot",
+    "d": "Rendimiento con K ejemplos"
+   },
+   {
+    "n": "Eficiencia por ejemplo",
+    "d": "Mejora de rendimiento por cada ejemplo"
+   },
+   {
+    "n": "Uso del contexto",
+    "d": "Uso de tokens vs. rendimiento"
+   },
+   {
+    "n": "Transferencia de tareas",
+    "d": "Generalización a entradas no vistas"
+   },
+   {
+    "n": "Sensibilidad a los ejemplos",
+    "d": "Varianza del rendimiento entre conjuntos de ejemplos"
+   },
+   {
+    "n": "Robustez ante el orden",
+    "d": "Estabilidad ante distintos órdenes de ejemplos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Clasificación de texto",
+    "d": "Análisis de sentimiento, categorización por temas con ejemplos etiquetados"
+   },
+   {
+    "n": "Extracción de datos",
+    "d": "Reconocimiento de entidades nombradas, extracción de información de documentos"
+   },
+   {
+    "n": "Traducción de formatos",
+    "d": "JSON a XML, transformación de datos estructurados"
+   },
+   {
+    "n": "Respuesta a preguntas",
+    "d": "Preguntas y respuestas de dominio específico con pares de ejemplo pregunta-respuesta"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Tareas de programación con ejemplos de código de entrada-salida"
+   },
+   {
+    "n": "Escritura creativa",
+    "d": "Transferencia de estilo, generación de contenido con ejemplos estilísticos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "In-Context Learning",
+  "description": "Enfoque de aprendizaje en el que los modelos se adaptan a nuevas tareas usando solo ejemplos proporcionados en el contexto de entrada, sin actualizar parámetros, lo que permite cambiar rápidamente de tarea y aprender con pocos ejemplos (few-shot).",
+  "nodes": [
+   {
+    "id": "task-query",
+    "label": "❓ Nueva tarea\n\"Traducir: Hello → Bonjour\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "example-1",
+    "label": "📝 Ejemplo 1\nGood → Bon",
+    "x": 100,
+    "y": 180,
+    "w": 150
+   },
+   {
+    "id": "example-2",
+    "label": "📝 Ejemplo 2\nThank you → Merci",
+    "x": 300,
+    "y": 180,
+    "w": 150
+   },
+   {
+    "id": "example-3",
+    "label": "📝 Ejemplo 3\nGoodbye → Au revoir",
+    "x": 500,
+    "y": 180,
+    "w": 150
+   },
+   {
+    "id": "example-4",
+    "label": "📝 Ejemplo 4\nYes → Oui",
+    "x": 700,
+    "y": 180,
+    "w": 150
+   },
+   {
+    "id": "prompt-assembly",
+    "label": "🔧 Ensamblado del prompt\nCombina ejemplos + consulta",
+    "x": 400,
+    "y": 320,
+    "w": 250
+   },
+   {
+    "id": "pattern-recognition",
+    "label": "🧠 Reconocimiento de patrones\nAprende la tarea a partir de ejemplos",
+    "x": 400,
+    "y": 440,
+    "w": 250
+   },
+   {
+    "id": "llm-processing",
+    "label": "🤖 Procesamiento del LLM\n¡Sin necesidad de entrenamiento!",
+    "x": 400,
+    "y": 560,
+    "w": 250
+   },
+   {
+    "id": "zero-shot",
+    "label": "0️⃣ Zero-Shot\nSin ejemplos",
+    "x": 150,
+    "y": 680,
+    "w": 140
+   },
+   {
+    "id": "few-shot",
+    "label": "🔢 Few-Shot\n2-5 ejemplos",
+    "x": 400,
+    "y": 680,
+    "w": 140
+   },
+   {
+    "id": "chain-of-thought",
+    "label": "🔗 CoT\nCon razonamiento",
+    "x": 650,
+    "y": 680,
+    "w": 140
+   },
+   {
+    "id": "task-completion",
+    "label": "✅ Respuesta\n\"Hello → Bonjour\"",
+    "x": 400,
+    "y": 800,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "ex1-prompt",
+    "s": "example-1",
+    "t": "prompt-assembly",
+    "label": ""
+   },
+   {
+    "id": "ex2-prompt",
+    "s": "example-2",
+    "t": "prompt-assembly",
+    "label": ""
+   },
+   {
+    "id": "ex3-prompt",
+    "s": "example-3",
+    "t": "prompt-assembly",
+    "label": ""
+   },
+   {
+    "id": "ex4-prompt",
+    "s": "example-4",
+    "t": "prompt-assembly",
+    "label": ""
+   },
+   {
+    "id": "query-prompt",
+    "s": "task-query",
+    "t": "prompt-assembly",
+    "label": ""
+   },
+   {
+    "id": "prompt-pattern",
+    "s": "prompt-assembly",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "pattern-llm",
+    "s": "pattern-recognition",
+    "t": "llm-processing",
+    "label": ""
+   },
+   {
+    "id": "llm-output",
+    "s": "llm-processing",
+    "t": "task-completion",
+    "label": ""
+   },
+   {
+    "id": "zero-llm",
+    "s": "zero-shot",
+    "t": "llm-processing",
+    "label": ""
+   },
+   {
+    "id": "few-llm",
+    "s": "few-shot",
+    "t": "llm-processing",
+    "label": ""
+   },
+   {
+    "id": "cot-llm",
+    "s": "chain-of-thought",
+    "t": "llm-processing",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Nueva tarea",
+    "description": "El usuario proporciona una nueva tarea para resolver",
+    "input": "",
+    "nodes": [
+     "task-query"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Proporcionar ejemplos",
+    "description": "Muestra al modelo ejemplos similares de entrada-salida",
+    "input": "",
+    "nodes": [
+     "task-query",
+     "example-1",
+     "example-2",
+     "example-3",
+     "example-4"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Combinar ejemplos + consulta",
+    "description": "Ensambla los ejemplos con la nueva tarea en un prompt",
+    "input": "",
+    "nodes": [
+     "example-1",
+     "example-2",
+     "example-3",
+     "example-4",
+     "task-query",
+     "prompt-assembly"
+    ],
+    "edges": [
+     "ex1-prompt",
+     "ex2-prompt",
+     "ex3-prompt",
+     "ex4-prompt",
+     "query-prompt"
+    ]
+   },
+   {
+    "title": "Reconocimiento de patrones",
+    "description": "El modelo identifica el patrón a partir de los ejemplos",
+    "input": "",
+    "nodes": [
+     "prompt-assembly",
+     "pattern-recognition"
+    ],
+    "edges": [
+     "prompt-pattern"
+    ]
+   },
+   {
+    "title": "Procesamiento del LLM",
+    "description": "Procesa sin ningún entrenamiento ni fine-tuning",
+    "input": "",
+    "nodes": [
+     "pattern-recognition",
+     "llm-processing"
+    ],
+    "edges": [
+     "pattern-llm"
+    ]
+   },
+   {
+    "title": "Generar respuesta",
+    "description": "Aplica el patrón aprendido para generar la respuesta",
+    "input": "",
+    "nodes": [
+     "llm-processing",
+     "task-completion"
+    ],
+    "edges": [
+     "llm-output"
+    ]
+   },
+   {
+    "title": "Variantes de ICL",
+    "description": "Distintos enfoques: Zero-shot, Few-shot, Chain-of-Thought",
+    "input": "",
+    "nodes": [
+     "zero-shot",
+     "few-shot",
+     "chain-of-thought",
+     "llm-processing"
+    ],
+    "edges": [
+     "zero-llm",
+     "few-llm",
+     "cot-llm"
+    ]
+   }
+  ]
+ }
+}

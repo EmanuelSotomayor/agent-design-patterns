@@ -1,0 +1,535 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "supervised-learning-adaptation",
+ "name": "Supervised Learning for Agents(SLA)",
+ "icon": "👨‍🏫",
+ "complexity": "medium",
+ "description": "Adaptación de un componente del agente a partir de ejemplos etiquetados de entrada-salida, con validación explícita y comportamiento de respaldo",
+ "features": [
+  "Ejemplos de entrenamiento etiquetados",
+  "Objetivos específicos de la tarea",
+  "Particiones de datos resistentes a fugas",
+  "Evaluación por clase y por segmento",
+  "Calibración de la confianza",
+  "Respaldo humano para casos inciertos"
+ ],
+ "tldr": {
+  "what": "Entrena un componente del agente con ejemplos etiquetados y salvaguardas contra la fuga de datos, y luego deriva los casos inciertos a revisión humana.",
+  "when": "Tienes suficientes datos etiquetados limpios y necesitas una clasificación confiable con supervisión humana para los casos límite.",
+  "watchOut": "La fuga de datos entre entrenamiento y prueba por ejemplos similares arruina las estimaciones de desempeño; particiona por cliente o por tiempo, no al azar."
+ },
+ "overview": {
+  "pattern": "Adapta modelos preentrenados a tareas específicas mediante entrenamiento supervisado con datos etiquetados del dominio objetivo",
+  "why": "Aprovecha el conocimiento existente del modelo mientras lo especializa para las tareas objetivo, logrando un alto desempeño con costos de entrenamiento razonables",
+  "insight": "El aprendizaje por transferencia desde modelos preentrenados, combinado con supervisión específica de la tarea, ofrece un equilibrio óptimo entre generalización y especialización",
+  "impl": [
+   {
+    "t": "Recolectar",
+    "d": "Reúne ejemplos de entrenamiento etiquetados específicos de la tarea"
+   },
+   {
+    "t": "Preprocesar",
+    "d": "Formatea los datos según los requisitos del dominio y la tarea objetivo"
+   },
+   {
+    "t": "Ajustar (fine-tune)",
+    "d": "Adapta el modelo preentrenado con objetivos supervisados"
+   },
+   {
+    "t": "Validar",
+    "d": "Prueba el desempeño en un conjunto de validación reservado"
+   },
+   {
+    "t": "Desplegar",
+    "d": "Aplica el modelo adaptado al entorno de la tarea objetivo"
+   }
+  ],
+  "example": "pretrained_model + labeled_data → supervised_fine_tuning → task_adapted_model",
+  "dos": [
+   "Usa datasets etiquetados de alta calidad y representativos del dominio objetivo",
+   "Implementa particiones adecuadas de entrenamiento/validación/prueba para evitar el sobreajuste",
+   "Aplica técnicas de regularización apropiadas (dropout, weight decay)",
+   "Monitorea el cambio de distribución entre el entrenamiento y el despliegue",
+   "Usa aprendizaje por transferencia desde modelos preentrenados relevantes",
+   "Implementa early stopping basado en el desempeño de validación"
+  ],
+  "donts": [
+   "Entrenar con datos etiquetados insuficientes o sesgados",
+   "Ignorar problemas de calidad de datos y el ruido en las etiquetas",
+   "Sobreajustar a los datos de entrenamiento sin una validación adecuada",
+   "Aplicarlo sin considerar las restricciones computacionales",
+   "Descuidar el ajuste de hiperparámetros y la selección de modelos"
+  ],
+  "use": [
+   "Hay datos etiquetados de alta calidad disponibles para la tarea objetivo",
+   "La tarea tiene relaciones claras de entrada-salida",
+   "Los requisitos de desempeño justifican los costos del entrenamiento supervisado",
+   "Se necesita una adaptación específica de dominio a partir de modelos generales",
+   "Las métricas de evaluación pueden definirse con claridad"
+  ],
+  "avoid": [
+   "Los datos etiquetados son escasos, costosos o de baja calidad",
+   "La tarea requiere aprendizaje en tiempo real a partir de muy pocos ejemplos",
+   "Los enfoques no supervisados o autosupervisados son suficientes",
+   "Las restricciones de privacidad impiden la recolección de datos",
+   "El entorno de despliegue cambia con frecuencia"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión en la tarea",
+    "d": "Desempeño en la tarea objetivo frente a modelos de referencia"
+   },
+   {
+    "n": "Eficiencia del entrenamiento",
+    "d": "Velocidad de convergencia y costo computacional"
+   },
+   {
+    "n": "Generalización",
+    "d": "Desempeño en datos de prueba no vistos"
+   },
+   {
+    "n": "Calidad de la transferencia",
+    "d": "Retención del conocimiento del preentrenamiento"
+   },
+   {
+    "n": "Eficiencia de datos",
+    "d": "Desempeño por ejemplo de entrenamiento etiquetado"
+   },
+   {
+    "n": "Robustez",
+    "d": "Desempeño ante cambios de distribución"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Clasificación específica de dominio",
+    "d": "Adapta clasificadores generales a dominios especializados (médico, legal, científico)"
+   },
+   {
+    "n": "Reconocimiento de entidades personalizado",
+    "d": "Entrena modelos NER para entidades y relaciones específicas del dominio"
+   },
+   {
+    "n": "Generación específica de la tarea",
+    "d": "Ajusta modelos de lenguaje para estilos o formatos de escritura específicos"
+   },
+   {
+    "n": "Adaptación del análisis de sentimiento",
+    "d": "Personaliza modelos de sentimiento para industrias o contextos específicos"
+   },
+   {
+    "n": "Especialización en generación de código",
+    "d": "Adapta modelos de código a lenguajes de programación o frameworks específicos"
+   },
+   {
+    "n": "Sistemas de preguntas y respuestas",
+    "d": "Entrena modelos de QA con bases de conocimiento específicas del dominio"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Aprendizaje supervisado para agentes",
+  "description": "Metodología de entrenamiento para agentes que usa ejemplos etiquetados y demostraciones de expertos para aprender los comportamientos deseados mediante técnicas de aprendizaje supervisado y mejora iterativa.",
+  "nodes": [
+   {
+    "id": "agent-goal",
+    "label": "🎯 Objetivo: entrenar un agente de atención al cliente\nGestionar devoluciones, reembolsos y reclamos de forma profesional",
+    "x": 400,
+    "y": 50,
+    "w": 400
+   },
+   {
+    "id": "expert-agent",
+    "label": "👨‍💼 Agente experto\n5 años de experiencia\n98% de satisfacción",
+    "x": 100,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "expert-examples",
+    "label": "📚 10,000 ejemplos\nConversaciones reales\nAcciones etiquetadas",
+    "x": 100,
+    "y": 300,
+    "w": 160
+   },
+   {
+    "id": "example-scenario",
+    "label": "💬 Cliente: \"¡Mi paquete llegó dañado!\"",
+    "x": 400,
+    "y": 180,
+    "w": 350
+   },
+   {
+    "id": "expert-decision",
+    "label": "✅ Acción del experto\n1. Disculparse\n2. Verificar el pedido\n3. Ofrecer un reemplazo\n4. Acelerar el envío",
+    "x": 350,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "expert-response",
+    "label": "💬 Respuesta del experto\n\"¡Lamento lo ocurrido!\nTe enviaré un reemplazo\ncon envío express.\"",
+    "x": 550,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "new-agent",
+    "label": "🤖 Nuevo agente\nSin experiencia\nNecesita entrenamiento",
+    "x": 700,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "learning-process",
+    "label": "📖 Aprendizaje\nEstudia los ejemplos\nImita al experto",
+    "x": 700,
+    "y": 300,
+    "w": 160
+   },
+   {
+    "id": "input-features",
+    "label": "📊 Características de entrada\n• Emoción del cliente\n• Tipo de problema\n• Valor del pedido\n• Historial",
+    "x": 150,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "action-labels",
+    "label": "🏷️ Etiquetas de acción\n• Reembolso: Sí/No\n• Reemplazo: Sí/No\n• Prioridad: 1-5\n• Tono de la respuesta",
+    "x": 350,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "supervised-training",
+    "label": "🎓 Entrenamiento supervisado\nEntrada → Acción\nMinimizar el error\nAprendizaje por batch",
+    "x": 550,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "test-scenario",
+    "label": "🧪 Prueba: \"Se entregó el artículo equivocado\"",
+    "x": 250,
+    "y": 540,
+    "w": 200
+   },
+   {
+    "id": "agent-prediction",
+    "label": "🤖 El agente predice\n1. Disculparse ✓\n2. Etiqueta de devolución ✓\n3. Enviar el artículo correcto ✓",
+    "x": 500,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "benefit-1",
+    "label": "⚡ Aprendizaje rápido\nMiles de\nejemplos a la vez",
+    "x": 100,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "benefit-2",
+    "label": "🎯 Consistente\nLa misma calidad\nque el experto",
+    "x": 270,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "benefit-3",
+    "label": "📈 Escalable\nEntrena muchos\nagentes rápidamente",
+    "x": 440,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "benefit-4",
+    "label": "✅ Confiable\nSin riesgos de\nprueba y error",
+    "x": 610,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "trained-agent",
+    "label": "🎉 Agente entrenado\nResuelve correctamente el 95% de los casos\n¡Aprendió de ejemplos de expertos, no de errores!",
+    "x": 400,
+    "y": 780,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-expert",
+    "s": "agent-goal",
+    "t": "expert-agent",
+    "label": ""
+   },
+   {
+    "id": "expert-examples-edge",
+    "s": "expert-agent",
+    "t": "expert-examples",
+    "label": ""
+   },
+   {
+    "id": "goal-scenario",
+    "s": "agent-goal",
+    "t": "example-scenario",
+    "label": ""
+   },
+   {
+    "id": "scenario-decision",
+    "s": "example-scenario",
+    "t": "expert-decision",
+    "label": ""
+   },
+   {
+    "id": "scenario-response",
+    "s": "example-scenario",
+    "t": "expert-response",
+    "label": ""
+   },
+   {
+    "id": "goal-new",
+    "s": "agent-goal",
+    "t": "new-agent",
+    "label": ""
+   },
+   {
+    "id": "new-learning",
+    "s": "new-agent",
+    "t": "learning-process",
+    "label": ""
+   },
+   {
+    "id": "examples-features",
+    "s": "expert-examples",
+    "t": "input-features",
+    "label": ""
+   },
+   {
+    "id": "decision-labels",
+    "s": "expert-decision",
+    "t": "action-labels",
+    "label": ""
+   },
+   {
+    "id": "response-labels",
+    "s": "expert-response",
+    "t": "action-labels",
+    "label": ""
+   },
+   {
+    "id": "features-training",
+    "s": "input-features",
+    "t": "supervised-training",
+    "label": ""
+   },
+   {
+    "id": "labels-training",
+    "s": "action-labels",
+    "t": "supervised-training",
+    "label": ""
+   },
+   {
+    "id": "learning-training",
+    "s": "learning-process",
+    "t": "supervised-training",
+    "label": ""
+   },
+   {
+    "id": "training-test",
+    "s": "supervised-training",
+    "t": "test-scenario",
+    "label": ""
+   },
+   {
+    "id": "test-prediction",
+    "s": "test-scenario",
+    "t": "agent-prediction",
+    "label": ""
+   },
+   {
+    "id": "training-benefit1",
+    "s": "supervised-training",
+    "t": "benefit-1",
+    "label": ""
+   },
+   {
+    "id": "prediction-benefit2",
+    "s": "agent-prediction",
+    "t": "benefit-2",
+    "label": ""
+   },
+   {
+    "id": "prediction-benefit3",
+    "s": "agent-prediction",
+    "t": "benefit-3",
+    "label": ""
+   },
+   {
+    "id": "prediction-benefit4",
+    "s": "agent-prediction",
+    "t": "benefit-4",
+    "label": ""
+   },
+   {
+    "id": "benefit2-final",
+    "s": "benefit-2",
+    "t": "trained-agent",
+    "label": ""
+   },
+   {
+    "id": "benefit3-final",
+    "s": "benefit-3",
+    "t": "trained-agent",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Objetivo del entrenamiento",
+    "description": "Entrenar a un agente de atención al cliente para gestionar devoluciones y reclamos",
+    "input": "",
+    "nodes": [
+     "agent-goal"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Ejemplos del experto",
+    "description": "Recolectar 10,000 ejemplos de un agente con experiencia",
+    "input": "",
+    "nodes": [
+     "agent-goal",
+     "expert-agent",
+     "expert-examples"
+    ],
+    "edges": [
+     "goal-expert",
+     "expert-examples-edge"
+    ]
+   },
+   {
+    "title": "Escenario de ejemplo",
+    "description": "Un cliente reclama por un paquete dañado",
+    "input": "",
+    "nodes": [
+     "agent-goal",
+     "example-scenario"
+    ],
+    "edges": [
+     "goal-scenario"
+    ]
+   },
+   {
+    "title": "Gestión del experto",
+    "description": "El experto muestra las acciones y la respuesta correctas",
+    "input": "",
+    "nodes": [
+     "example-scenario",
+     "expert-decision",
+     "expert-response"
+    ],
+    "edges": [
+     "scenario-decision",
+     "scenario-response"
+    ]
+   },
+   {
+    "title": "Aprendizaje del nuevo agente",
+    "description": "El nuevo agente estudia los ejemplos del experto",
+    "input": "",
+    "nodes": [
+     "agent-goal",
+     "new-agent",
+     "learning-process"
+    ],
+    "edges": [
+     "goal-new",
+     "new-learning"
+    ]
+   },
+   {
+    "title": "Extraer datos de entrenamiento",
+    "description": "Convertir los ejemplos en características y etiquetas",
+    "input": "",
+    "nodes": [
+     "expert-examples",
+     "expert-decision",
+     "expert-response",
+     "input-features",
+     "action-labels"
+    ],
+    "edges": [
+     "examples-features",
+     "decision-labels",
+     "response-labels"
+    ]
+   },
+   {
+    "title": "Entrenamiento supervisado",
+    "description": "Entrenar al agente para predecir las acciones del experto a partir de las entradas",
+    "input": "",
+    "nodes": [
+     "input-features",
+     "action-labels",
+     "learning-process",
+     "supervised-training"
+    ],
+    "edges": [
+     "features-training",
+     "labels-training",
+     "learning-training"
+    ]
+   },
+   {
+    "title": "Probar un nuevo escenario",
+    "description": "Probar con el reclamo \"se entregó el artículo equivocado\"",
+    "input": "",
+    "nodes": [
+     "supervised-training",
+     "test-scenario",
+     "agent-prediction"
+    ],
+    "edges": [
+     "training-test",
+     "test-prediction"
+    ]
+   },
+   {
+    "title": "Beneficios",
+    "description": "Entrenamiento rápido, consistente, escalable y confiable",
+    "input": "",
+    "nodes": [
+     "supervised-training",
+     "agent-prediction",
+     "benefit-1",
+     "benefit-2",
+     "benefit-3",
+     "benefit-4"
+    ],
+    "edges": [
+     "training-benefit1",
+     "prediction-benefit2",
+     "prediction-benefit3",
+     "prediction-benefit4"
+    ]
+   },
+   {
+    "title": "Agente entrenado",
+    "description": "95% de precisión al aprender de ejemplos de expertos",
+    "input": "",
+    "nodes": [
+     "benefit-2",
+     "benefit-3",
+     "trained-agent"
+    ],
+    "edges": [
+     "benefit2-final",
+     "benefit3-final"
+    ]
+   }
+  ]
+ }
+}

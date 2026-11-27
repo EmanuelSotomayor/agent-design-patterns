@@ -1,0 +1,280 @@
+{
+ "cat": "security-privacy",
+ "slug": "agent-sandboxing",
+ "name": "Agent Sandboxing(SBX)",
+ "icon": "📦",
+ "complexity": "medium",
+ "description": "Ejecuta el código generado por el agente, los comandos de shell y el procesamiento de contenido no confiable dentro de entornos aislados con un sistema de archivos acotado y una lista de dominios permitidos para la salida de red mediada por un proxy. Incluso un agente afectado por prompt injection no puede leer secretos del host, tocar archivos fuera de su alcance ni exfiltrar datos a un dominio no aprobado. El aislamiento se construye con primitivas del sistema operativo como Seatbelt y bubblewrap, con microVMs o contenedores, o con infraestructura de sandbox dedicada como E2B, Modal y Docker.",
+ "features": [
+  "El acotamiento del sistema de archivos limita las lecturas y escrituras a un directorio del proyecto",
+  "Salida de red restringida a una lista de permitidos aplicada por un proxy",
+  "Primitivas del sistema operativo (macOS Seatbelt, Linux bubblewrap) para un aislamiento liviano",
+  "Aislamiento con microVM o contenedores para límites más fuertes",
+  "Los secretos y credenciales del host se mantienen fuera del sandbox",
+  "La tarea se completa igual, solo con los permisos que necesita"
+ ],
+ "tldr": {
+  "what": "Ejecuta el código del agente en entornos aislados con acceso restringido al sistema de archivos y salida de red filtrada por un proxy con lista de permitidos.",
+  "when": "Los agentes ejecutan código no confiable o comandos de shell, o procesan contenido aportado por usuarios, donde un prompt injection o una salida maliciosa suponen un riesgo de exfiltración de datos.",
+  "watchOut": "Las vulnerabilidades de escape del sandbox o las políticas mal configuradas pueden anular el aislamiento; audita y actualiza la infraestructura de sandbox con regularidad."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Agent Sandboxing",
+  "description": "Un agente de programación ejecuta un script de build no confiable dentro de un entorno aislado con un sistema de archivos acotado y una lista de permitidos para la salida de red mediada por un proxy. Un script postinstall malicioso no puede leer las llaves SSH del host ni exfiltrar datos, mientras que el trabajo legítimo sigue llegando al registro de npm permitido y la tarea se completa.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea\n\"Instala las dependencias y ejecuta\nla suite de pruebas de este repo\"",
+    "x": 340,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "coding-agent",
+    "label": "🤖 Agente de programación\nGenera y ejecuta comandos",
+    "x": 360,
+    "y": 155,
+    "w": 240
+   },
+   {
+    "id": "sandbox",
+    "label": "📦 Sandbox\nEntorno aislado (Seatbelt / bubblewrap)\nSecretos del host fuera",
+    "x": 360,
+    "y": 260,
+    "w": 260
+   },
+   {
+    "id": "fs-policy",
+    "label": "🗂️ Alcance del sistema de archivos\nrw: /workspace/repo\ndeny: ~/.ssh, ~/.aws, /etc",
+    "x": 90,
+    "y": 375,
+    "w": 230
+   },
+   {
+    "id": "egress-proxy",
+    "label": "🚦 Proxy de salida\nallow: npmjs.org, github.com\ndefault: deny",
+    "x": 630,
+    "y": 375,
+    "w": 230
+   },
+   {
+    "id": "npm-install",
+    "label": "⚙️ npm install && npm test\nSe ejecuta dentro del sandbox",
+    "x": 360,
+    "y": 470,
+    "w": 240
+   },
+   {
+    "id": "npm-registry",
+    "label": "📥 registry.npmjs.org\n342 paquetes instalados\nPERMITIDO (en la lista de permitidos)",
+    "x": 70,
+    "y": 580,
+    "w": 220
+   },
+   {
+    "id": "malicious-postinstall",
+    "label": "💉 postinstall malicioso\nScript de una dependencia transitiva",
+    "x": 400,
+    "y": 585,
+    "w": 230
+   },
+   {
+    "id": "test-run",
+    "label": "🧪 Suite de pruebas\n118 pruebas, 116 aprobadas",
+    "x": 690,
+    "y": 585,
+    "w": 200
+   },
+   {
+    "id": "read-ssh-denied",
+    "label": "⛔ Leer ~/.ssh/id_rsa\nDENEGADO (fuera del alcance)",
+    "x": 300,
+    "y": 695,
+    "w": 210
+   },
+   {
+    "id": "exfil-denied",
+    "label": "⛔ POST exfil.attacker.com\nDENEGADO (el proxy bloquea la salida)",
+    "x": 540,
+    "y": 695,
+    "w": 230
+   },
+   {
+    "id": "output",
+    "label": "✅ Tarea completada\nPruebas ejecutadas, las llaves nunca se expusieron",
+    "x": 690,
+    "y": 700,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-agent",
+    "s": "task",
+    "t": "coding-agent",
+    "label": ""
+   },
+   {
+    "id": "agent-sandbox",
+    "s": "coding-agent",
+    "t": "sandbox",
+    "label": "Ejecutar en"
+   },
+   {
+    "id": "sandbox-fs",
+    "s": "sandbox",
+    "t": "fs-policy",
+    "label": "Acotar"
+   },
+   {
+    "id": "sandbox-egress",
+    "s": "sandbox",
+    "t": "egress-proxy",
+    "label": "Lista de permitidos"
+   },
+   {
+    "id": "sandbox-npm",
+    "s": "sandbox",
+    "t": "npm-install",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "npm-registry-edge",
+    "s": "npm-install",
+    "t": "npm-registry",
+    "label": "Permitido"
+   },
+   {
+    "id": "npm-test",
+    "s": "npm-install",
+    "t": "test-run",
+    "label": ""
+   },
+   {
+    "id": "npm-malicious",
+    "s": "npm-install",
+    "t": "malicious-postinstall",
+    "label": "Dep. transitiva"
+   },
+   {
+    "id": "malicious-ssh",
+    "s": "malicious-postinstall",
+    "t": "read-ssh-denied",
+    "label": ""
+   },
+   {
+    "id": "malicious-exfil",
+    "s": "malicious-postinstall",
+    "t": "exfil-denied",
+    "label": ""
+   },
+   {
+    "id": "fs-ssh",
+    "s": "fs-policy",
+    "t": "read-ssh-denied",
+    "label": "DENEGAR"
+   },
+   {
+    "id": "egress-exfil",
+    "s": "egress-proxy",
+    "t": "exfil-denied",
+    "label": "DENEGAR"
+   },
+   {
+    "id": "test-output",
+    "s": "test-run",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Ejecutar el agente en un sandbox",
+    "description": "El agente de programación no se ejecuta en el host. Todos los comandos corren dentro de un entorno aislado construido con primitivas del sistema operativo, con los secretos del host fuera.",
+    "input": "",
+    "nodes": [
+     "task",
+     "coding-agent",
+     "sandbox"
+    ],
+    "edges": [
+     "task-agent",
+     "agent-sandbox"
+    ]
+   },
+   {
+    "title": "Definir el alcance del sistema de archivos y la lista de permitidos de salida",
+    "description": "El sandbox limita las lecturas y escrituras al directorio del repo y deniega las rutas sensibles, mientras que un proxy restringe la salida de red a una lista de permitidos aprobada, con denegación por defecto.",
+    "input": "",
+    "nodes": [
+     "sandbox",
+     "fs-policy",
+     "egress-proxy"
+    ],
+    "edges": [
+     "sandbox-fs",
+     "sandbox-egress"
+    ]
+   },
+   {
+    "title": "La instalación legítima llega al registro permitido",
+    "description": "El agente ejecuta npm install y npm test. La salida hacia el registro de npm está en la lista de permitidos, así que los 342 paquetes se instalan con normalidad.",
+    "input": "",
+    "nodes": [
+     "sandbox",
+     "npm-install",
+     "npm-registry"
+    ],
+    "edges": [
+     "sandbox-npm",
+     "npm-registry-edge"
+    ]
+   },
+   {
+    "title": "Se dispara el postinstall malicioso",
+    "description": "Una dependencia transitiva incluye un script postinstall malicioso que intenta leer las llaves SSH del host y enviar datos a un dominio del atacante.",
+    "input": "",
+    "nodes": [
+     "npm-install",
+     "malicious-postinstall"
+    ],
+    "edges": [
+     "npm-malicious"
+    ]
+   },
+   {
+    "title": "El sandbox deniega ambos ataques",
+    "description": "La lectura de ~/.ssh se deniega porque está fuera del sistema de archivos acotado, y el POST al dominio del atacante se bloquea porque no está en la lista de permitidos de salida. Las denegaciones quedan registradas para su revisión.",
+    "input": "",
+    "nodes": [
+     "malicious-postinstall",
+     "read-ssh-denied",
+     "exfil-denied",
+     "fs-policy",
+     "egress-proxy"
+    ],
+    "edges": [
+     "malicious-ssh",
+     "malicious-exfil",
+     "fs-ssh",
+     "egress-exfil"
+    ]
+   },
+   {
+    "title": "La tarea se completa de forma segura",
+    "description": "El trabajo legítimo continúa: la suite de pruebas se ejecuta con 116 de 118 aprobadas. Las llaves SSH del host nunca se exponen y la inyección no tuvo adónde enviar datos.",
+    "input": "",
+    "nodes": [
+     "npm-install",
+     "test-run",
+     "output"
+    ],
+    "edges": [
+     "npm-test",
+     "test-output"
+    ]
+   }
+  ]
+ }
+}

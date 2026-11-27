@@ -1,0 +1,410 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "theagentcompany",
+ "name": "TheAgentCompany Benchmark(TAC)",
+ "icon": "🏢",
+ "complexity": "high",
+ "description": "Evalúa agentes LLM en tareas reales y relevantes que normalmente realizarían varios roles laborales en una empresa de ingeniería de software.",
+ "features": [
+  "Tareas profesionales del mundo real",
+  "Simulación de múltiples roles laborales",
+  "Puntuación de finalización parcial",
+  "Escenarios relevantes para la industria",
+  "Diversidad integral de tareas"
+ ],
+ "tldr": {
+  "what": "Mide el rendimiento de los agentes en tareas profesionales de varios pasos que abarcan roles de ingeniería de software, y puntúa por separado la finalización completa y el crédito parcial.",
+  "when": "Comparar agentes LLM en escenarios de trabajo realistas antes del despliegue, o seguir las mejoras de capacidad entre versiones de modelos.",
+  "watchOut": "Los puntajes de crédito parcial pueden ocultar agentes que fallan en pasos críticos; un puntaje parcial del 39% puede esconder trabajo incompleto sin ningún valor."
+ },
+ "overview": {
+  "pattern": "Entorno simulado de una empresa de software con 175 tareas profesionales del mundo real",
+  "why": "Evalúa agentes de IA listos para empresas en escenarios laborales realistas con colaboración entre múltiples herramientas",
+  "insight": "Los agentes SOTA actuales logran una tasa de finalización de ~30%, lo que evidencia brechas en su preparación para despliegues reales",
+  "impl": [
+   {
+    "t": "Clonar",
+    "d": "git clone https://github.com/TheAgentCompany/TheAgentCompany"
+   },
+   {
+    "t": "Preparar",
+    "d": "Entorno Docker con GitLab, OwnCloud, Plane, RocketChat"
+   },
+   {
+    "t": "Configurar",
+    "d": "Configura el agente con acceso a navegador, terminal y editor de código"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige tareas entre 175 escenarios profesionales"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Ejecuta una evaluación basada en checkpoints con crédito parcial"
+   }
+  ],
+  "example": "python run_evaluation.py --agent <current-agent-id> --tasks software_engineering --mode full",
+  "dos": [
+   "Prueba con varios roles laborales (desarrollo, QA, PM, administración, ciencia de datos)",
+   "Usa evaluación basada en checkpoints para valorar el crédito parcial",
+   "Habilita la comunicación del agente con colegas simulados",
+   "Aprovecha el entorno autoalojado para obtener resultados reproducibles",
+   "Enfócate en tareas profesionales de largo horizonte y de varios pasos"
+  ],
+  "donts": [
+   "Esperar tasas de finalización altas (el SOTA actual es ~30%)",
+   "Omitir la preparación y configuración adecuadas del entorno Docker",
+   "Ignorar la puntuación de crédito parcial: muchas tareas muestran avances parciales",
+   "Probar solo con tareas de automatización simples",
+   "Pasar por alto los requisitos de comunicación entre agentes"
+  ],
+  "use": [
+   "Evaluar capacidades de agentes listos para empresas",
+   "Probar escenarios de automatización del trabajo y de trabajadores digitales",
+   "Evaluar el rendimiento en tareas profesionales del mundo real",
+   "Investigación sobre el impacto de la IA en los mercados laborales",
+   "Evaluación de tareas de largo horizonte y de varios pasos"
+  ],
+  "avoid": [
+   "Demostraciones rápidas de capacidades o evaluación de tareas simples",
+   "Entornos con recursos limitados (requiere el stack completo de Docker)",
+   "Evaluación de un solo dominio o de tareas acotadas",
+   "Pruebas de rendimiento en tiempo real",
+   "Evaluación de tareas solo académicas o sintéticas"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de finalización completa",
+    "d": "% de tareas completadas con éxito (normalmente ~30%)"
+   },
+   {
+    "n": "Puntaje de crédito parcial",
+    "d": "Puntaje ponderado que incluye el avance parcial"
+   },
+   {
+    "n": "Rendimiento por categoría de tarea",
+    "d": "Tasa de éxito por rol laboral (desarrollo, QA, PM, etc.)"
+   },
+   {
+    "n": "Tiempo hasta la finalización",
+    "d": "Duración promedio de las tareas completadas con éxito"
+   },
+   {
+    "n": "Efectividad de la comunicación",
+    "d": "Calidad de las interacciones entre el agente y sus colegas"
+   },
+   {
+    "n": "Dominio en el uso de herramientas",
+    "d": "Uso efectivo del navegador, la terminal y el editor de código"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Evaluación de preparación empresarial",
+    "d": "Evaluar agentes de IA para escenarios reales de despliegue en el lugar de trabajo"
+   },
+   {
+    "n": "Investigación sobre automatización del trabajo",
+    "d": "Entender qué tareas profesionales se pueden automatizar con la IA actual"
+   },
+   {
+    "n": "Desarrollo de trabajadores digitales",
+    "d": "Construir y probar sistemas de IA que colaboran con colegas humanos"
+   },
+   {
+    "n": "Análisis de impacto económico",
+    "d": "Medir la progresión de las capacidades de la IA para la investigación de políticas del mercado laboral"
+   },
+   {
+    "n": "Pruebas de agentes con múltiples herramientas",
+    "d": "Evaluar el dominio de los agentes en navegadores web, terminales y editores de código"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón del benchmark TheAgentCompany",
+  "description": "Benchmark revolucionario de 2024 que evalúa agentes LLM en 175 tareas profesionales del mundo real dentro de un entorno simulado de empresa de software con herramientas de trabajo completas",
+  "nodes": [
+   {
+    "id": "agent-evaluation-challenge",
+    "label": "🤔 Desafío de evaluar agentes en el mundo real\n\"¿Cómo evaluar agentes LLM en\ntareas profesionales relevantes\nmás allá de benchmarks simples?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "theagentcompany-framework",
+    "label": "🏢 Framework TheAgentCompany\n\"Entorno simulado de empresa de software\ncon 175 tareas profesionales en\n6 departamentos + interacción con colegas\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "simulated-environment",
+    "label": "🏗️ Entorno laboral simulado\n\"Infraestructura completa de la empresa:\n• Espacio de trabajo local en Docker\n• Plataformas de intranet autoalojadas\n• Agentes colegas impulsados por LLM\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "intranet-platforms",
+    "label": "🌐 Conjunto de plataformas de intranet\n\"• GitLab: repositorios de código\n• OwnCloud: intercambio de archivos\n• Plane: gestión de proyectos\n• RocketChat: comunicación del equipo\"",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "colleague-interaction",
+    "label": "🤝 Sistema de colegas simulados\n\"Compañeros de trabajo impulsados por LLM con:\n• Perfiles de rol detallados\n• Afiliaciones a proyectos\n• Patrones de comunicación realistas\"",
+    "x": 350,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "professional-tasks",
+    "label": "📋 175 tareas profesionales\n\"Escenarios laborales reales en\nseis departamentos críticos con\ndistintos niveles de complejidad\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "engineering-tasks",
+    "label": "💻 Ingeniería y área técnica\n\"• Desarrollo de software (SDE)\n• Ciencia de datos (DS)\n• Revisiones de código y despliegue\"",
+    "x": 500,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "management-tasks",
+    "label": "📊 Gestión y operaciones\n\"• Gestión de proyectos (PM)\n• Recursos humanos (HR)\n• Coordinación administrativa\"",
+    "x": 650,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "business-tasks",
+    "label": "💰 Finanzas y negocio\n\"• Análisis financiero\n• Planificación presupuestaria\n• Apoyo a decisiones estratégicas\"",
+    "x": 750,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "evaluation-methodology",
+    "label": "🎯 Evaluación basada en checkpoints\n\"Sistema de evaluación granular:\n• Puntuación de finalización completa (0/1)\n• Recompensas por avance parcial\n• Seguimiento detallado del rendimiento\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "performance-insights",
+    "label": "📈 Hallazgos de rendimiento\n\"Gemini 2.5 Pro lidera con:\n• 30.3% de finalización completa de tareas\n• 39.3% de finalización parcial\n• Variaciones significativas entre categorías\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "capability-limitations",
+    "label": "⚠️ Limitaciones clave de capacidad\n\"Los agentes tienen dificultades con:\n• Interacciones sociales\n• Navegación web compleja\n• Experiencia específica del dominio\"",
+    "x": 600,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "benchmark-principle",
+    "label": "🎯 Principio de evaluación de tareas profesionales\n\"La simulación de un lugar de trabajo real revela brechas\nentre las capacidades de la IA y los requisitos del trabajo\nhumano en entornos profesionales\"",
+    "x": 400,
+    "y": 950,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "agent-evaluation-challenge",
+    "t": "theagentcompany-framework",
+    "label": "se aborda con"
+   },
+   {
+    "id": "e2",
+    "s": "theagentcompany-framework",
+    "t": "simulated-environment",
+    "label": "crea el entorno"
+   },
+   {
+    "id": "e3",
+    "s": "theagentcompany-framework",
+    "t": "professional-tasks",
+    "label": "define tareas"
+   },
+   {
+    "id": "e4",
+    "s": "simulated-environment",
+    "t": "intranet-platforms",
+    "label": "incluye plataformas"
+   },
+   {
+    "id": "e5",
+    "s": "simulated-environment",
+    "t": "colleague-interaction",
+    "label": "habilita la interacción"
+   },
+   {
+    "id": "e6",
+    "s": "professional-tasks",
+    "t": "engineering-tasks",
+    "label": "incluye lo técnico"
+   },
+   {
+    "id": "e7",
+    "s": "professional-tasks",
+    "t": "management-tasks",
+    "label": "incluye lo operativo"
+   },
+   {
+    "id": "e8",
+    "s": "professional-tasks",
+    "t": "business-tasks",
+    "label": "incluye lo financiero"
+   },
+   {
+    "id": "e9",
+    "s": "intranet-platforms",
+    "t": "evaluation-methodology",
+    "label": "respalda la evaluación"
+   },
+   {
+    "id": "e10",
+    "s": "colleague-interaction",
+    "t": "evaluation-methodology",
+    "label": "habilita la valoración"
+   },
+   {
+    "id": "e11",
+    "s": "engineering-tasks",
+    "t": "evaluation-methodology",
+    "label": "evaluado por"
+   },
+   {
+    "id": "e12",
+    "s": "management-tasks",
+    "t": "evaluation-methodology",
+    "label": "valorado por"
+   },
+   {
+    "id": "e13",
+    "s": "business-tasks",
+    "t": "evaluation-methodology",
+    "label": "medido por"
+   },
+   {
+    "id": "e14",
+    "s": "evaluation-methodology",
+    "t": "performance-insights",
+    "label": "revela el rendimiento"
+   },
+   {
+    "id": "e15",
+    "s": "evaluation-methodology",
+    "t": "capability-limitations",
+    "label": "expone limitaciones"
+   },
+   {
+    "id": "e16",
+    "s": "performance-insights",
+    "t": "benchmark-principle",
+    "label": "demuestra la realidad"
+   },
+   {
+    "id": "e17",
+    "s": "capability-limitations",
+    "t": "benchmark-principle",
+    "label": "prueba la necesidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de evaluar agentes en el mundo real",
+    "description": "Los benchmarks tradicionales no logran capturar la complejidad del trabajo profesional. ¿Cómo podemos evaluar agentes LLM en tareas reales y relevantes que importan en el entorno laboral?",
+    "input": "",
+    "nodes": [
+     "agent-evaluation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework integral TheAgentCompany",
+    "description": "Este benchmark revolucionario crea un entorno simulado completo de una empresa de software con 175 tareas profesionales en 6 departamentos, además de interacciones realistas con colegas.",
+    "input": "",
+    "nodes": [
+     "theagentcompany-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Infraestructura laboral simulada",
+    "description": "El framework despliega una infraestructura completa de empresa: espacio de trabajo local en Docker, plataformas de intranet autoalojadas (GitLab, OwnCloud, Plane, RocketChat) y agentes colegas impulsados por LLM.",
+    "input": "",
+    "nodes": [
+     "simulated-environment",
+     "intranet-platforms",
+     "colleague-interaction"
+    ],
+    "edges": [
+     "e2",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "175 tareas profesionales en seis departamentos",
+    "description": "El conjunto integral de tareas abarca los dominios de Ingeniería y área técnica (SDE, DS), Gestión y operaciones (PM, HR, administración) y Finanzas y negocio, con escenarios laborales realistas.",
+    "input": "",
+    "nodes": [
+     "professional-tasks",
+     "engineering-tasks",
+     "management-tasks",
+     "business-tasks"
+    ],
+    "edges": [
+     "e3",
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Metodología de evaluación basada en checkpoints",
+    "description": "Un sistema de evaluación avanzado ofrece un seguimiento granular del rendimiento con puntuación de finalización completa y recompensas por avance parcial, lo que permite un análisis detallado de las capacidades del agente.",
+    "input": "",
+    "nodes": [
+     "evaluation-methodology"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12",
+     "e13"
+    ]
+   },
+   {
+    "title": "Hallazgos de rendimiento y brechas de capacidad",
+    "description": "La evaluación revela la realidad actual: el mejor agente (Gemini 2.5 Pro) logra solo un 30.3% de finalización de tareas, con dificultades significativas en la interacción social, la navegación web y la experiencia en el dominio.",
+    "input": "",
+    "nodes": [
+     "performance-insights",
+     "capability-limitations",
+     "benchmark-principle"
+    ],
+    "edges": [
+     "e14",
+     "e15",
+     "e16",
+     "e17"
+    ]
+   }
+  ]
+ }
+}

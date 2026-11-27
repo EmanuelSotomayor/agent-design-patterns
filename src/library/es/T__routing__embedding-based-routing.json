@@ -1,0 +1,379 @@
+{
+ "cat": "routing",
+ "slug": "embedding-based-routing",
+ "name": "Embedding-based Routing(EBR)",
+ "icon": "🎯",
+ "complexity": "medium",
+ "description": "Un sistema de enrutamiento semántico que convierte las consultas y las definiciones de rutas en embeddings vectoriales de alta dimensión, y usa similitud coseno u otras métricas de distancia para asignar cada solicitud entrante al manejador semánticamente más similar, lo que permite coincidencias difusas, soporte multilingüe y enrutamiento consciente del contexto más allá de la simple coincidencia de palabras clave",
+ "features": [
+  "Coincidencia por similitud semántica mediante embeddings vectoriales",
+  "Enrutamiento independiente del idioma al preservar el significado",
+  "Manejo de límites difusos para consultas ambiguas",
+  "Embeddings de rutas precalculados para una coincidencia rápida",
+  "Umbrales y métricas de similitud configurables",
+  "Cache de embeddings para optimizar el rendimiento",
+  "Soporte para múltiples modelos de embeddings",
+  "Monitoreo de deriva y actualización de embeddings"
+ ],
+ "tldr": {
+  "what": "Convierte las consultas y las definiciones de rutas en embeddings vectoriales, y asigna las solicitudes entrantes a los manejadores por similitud semántica en lugar de por palabras clave.",
+  "when": "El enrutamiento debe manejar consultas ambiguas, múltiples idiomas o límites difusos donde la coincidencia exacta de palabras clave falla.",
+  "watchOut": "La calidad de los embeddings y los umbrales de similitud derivan con el tiempo; los embeddings desactualizados o los umbrales mal calibrados provocan enrutamientos erróneos silenciosos."
+ },
+ "overview": {
+  "pattern": "Enruta solicitudes comparando embeddings vectoriales en el espacio semántico",
+  "why": "Captura el significado más allá de las palabras clave, lo que permite coincidencias difusas y enrutamiento entre idiomas",
+  "insight": "Mismo modelo de embeddings + similitud coseno + umbrales inteligentes = enrutamiento semántico",
+  "impl": [
+   {
+    "t": "Generar embedding",
+    "d": "Convierte la consulta en una representación vectorial"
+   },
+   {
+    "t": "Comparar",
+    "d": "Calcula la similitud con los embeddings de las rutas"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige la ruta con mayor similitud"
+   },
+   {
+    "t": "Umbral",
+    "d": "Verifica que la similitud alcance el mínimo"
+   },
+   {
+    "t": "Enrutar",
+    "d": "Dirige al manejador/agente correspondiente"
+   }
+  ],
+  "example": "query_embedding = encode(query) → similarities = cosine_sim(query_embedding, route_embeddings) → if max(similarities) > 0.85: route()",
+  "dos": [
+   "Usa el mismo modelo de embeddings para consultas y rutas",
+   "Normaliza los embeddings para una similitud coseno consistente",
+   "Define umbrales de similitud adecuados mediante pruebas",
+   "Guarda en cache los embeddings de las rutas usadas con frecuencia",
+   "Monitorea la deriva de los embeddings y actualízalos periódicamente"
+  ],
+  "donts": [
+   "Mezclar distintos modelos de embeddings sin reentrenar",
+   "Usar similitud coseno a ciegas sin validación",
+   "Ignorar la magnitud cuando tiene significado",
+   "Omitir la normalización si el modelo la espera",
+   "Usar umbrales fijos para todos los tipos de ruta"
+  ],
+  "use": [
+   "La comprensión semántica es crucial",
+   "Las rutas tienen límites difusos",
+   "Se necesita enrutamiento independiente del idioma",
+   "Espacios de intención de alta dimensión"
+  ],
+  "avoid": [
+   "La coincidencia exacta de palabras clave es suficiente",
+   "El cálculo de embeddings es costoso",
+   "Las rutas requieren límites estrictos",
+   "Requisitos de baja latencia (<10ms)"
+  ],
+  "metrics": [
+   {
+    "n": "Puntaje de similitud",
+    "d": "Distribución de coincidencias de rutas"
+   },
+   {
+    "n": "Latencia de embeddings",
+    "d": "Tiempo para generar los vectores"
+   },
+   {
+    "n": "Precisión de enrutamiento",
+    "d": "% de consultas enrutadas correctamente"
+   },
+   {
+    "n": "Recall de enrutamiento",
+    "d": "% de consultas que encuentran una ruta"
+   },
+   {
+    "n": "Tasa de aciertos de cache",
+    "d": "% de embeddings servidos desde cache"
+   },
+   {
+    "n": "Efectividad del umbral",
+    "d": "Tasas de falsos positivos/negativos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Búsqueda semántica",
+    "d": "consulta → embedding → encontrar los documentos/FAQ más similares"
+   },
+   {
+    "n": "Clasificación de intención",
+    "d": "entrada del usuario → embedding → asociar a clústeres de intención"
+   },
+   {
+    "n": "Soporte multilingüe",
+    "d": "traducir el significado, no las palabras → enrutamiento unificado"
+   },
+   {
+    "n": "Navegación en bases de conocimiento",
+    "d": "pregunta → embedding → sección relevante del artículo"
+   },
+   {
+    "n": "Selección dinámica de herramientas",
+    "d": "descripción de la tarea → embedding → herramienta adecuada"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Embedding-Based Routing",
+  "description": "Demuestra el enrutamiento semántico mediante embeddings vectoriales y coincidencia por similitud",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Consulta del usuario\n\"¿Cómo exporto mis datos a Excel?\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "embedding-generator",
+    "label": "🔢 Generador de embeddings\nConvierte a representación vectorial",
+    "x": 375,
+    "y": 160,
+    "w": 330
+   },
+   {
+    "id": "query-vector",
+    "label": "Vector de la consulta\n[0.23, -0.45, 0.67, 0.12, ...]\n768 dimensiones",
+    "x": 50,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "vector-db",
+    "label": "🗄️ Base de datos vectorial\nEmbeddings de rutas precalculados",
+    "x": 650,
+    "y": 270,
+    "w": 250
+   },
+   {
+    "id": "similarity-compute",
+    "label": "📊 Cálculo de similitud\nCoincidencia por similitud coseno",
+    "x": 350,
+    "y": 380,
+    "w": 250
+   },
+   {
+    "id": "export-route",
+    "label": "📊 Manejador de exportación de datos\nSimilitud: 0.92\nExportar, CSV, Excel, Descargar",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "reporting-route",
+    "label": "📈 Manejador de reportes\nSimilitud: 0.71\nReportes, Analítica, Gráficos",
+    "x": 300,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "backup-route",
+    "label": "💾 Manejador de respaldos\nSimilitud: 0.43\nRespaldo, Archivo, Almacenamiento",
+    "x": 550,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "export-processor",
+    "label": "Procesar solicitud de exportación\n• Generar archivo Excel\n• Dar formato a las tablas de datos\n• Agregar encabezados y estilos",
+    "x": 50,
+    "y": 620,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "Respuesta\n\"Archivo Excel generado correctamente.\nEnlace de descarga: export_2024.xlsx\"",
+    "x": 400,
+    "y": 730,
+    "w": 280
+   },
+   {
+    "id": "embedding-examples",
+    "label": "Embeddings de rutas:\n• Exportar: [0.21, -0.43, ...]\n• Reporte: [0.18, -0.31, ...]\n• Respaldo: [0.45, 0.22, ...]",
+    "x": 650,
+    "y": 380,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-embedding",
+    "s": "input",
+    "t": "embedding-generator",
+    "label": ""
+   },
+   {
+    "id": "e-embedding-vector",
+    "s": "embedding-generator",
+    "t": "query-vector",
+    "label": "Generar"
+   },
+   {
+    "id": "e-embedding-db",
+    "s": "embedding-generator",
+    "t": "vector-db",
+    "label": "Obtener rutas"
+   },
+   {
+    "id": "e-vector-similarity",
+    "s": "query-vector",
+    "t": "similarity-compute",
+    "label": ""
+   },
+   {
+    "id": "e-db-similarity",
+    "s": "vector-db",
+    "t": "similarity-compute",
+    "label": ""
+   },
+   {
+    "id": "e-db-examples",
+    "s": "vector-db",
+    "t": "embedding-examples",
+    "label": ""
+   },
+   {
+    "id": "e-similarity-export",
+    "s": "similarity-compute",
+    "t": "export-route",
+    "label": "0.92"
+   },
+   {
+    "id": "e-similarity-reporting",
+    "s": "similarity-compute",
+    "t": "reporting-route",
+    "label": "0.71"
+   },
+   {
+    "id": "e-similarity-backup",
+    "s": "similarity-compute",
+    "t": "backup-route",
+    "label": "0.43"
+   },
+   {
+    "id": "e-export-processor",
+    "s": "export-route",
+    "t": "export-processor",
+    "label": ""
+   },
+   {
+    "id": "e-processor-output",
+    "s": "export-processor",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada de la consulta",
+    "description": "El usuario envía una consulta que requiere enrutamiento semántico basado en el significado.",
+    "input": "Consulta del usuario: \"¿Cómo exporto mis datos a Excel?\"",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Generar el embedding de la consulta",
+    "description": "Convierte el texto de la consulta en una representación vectorial de alta dimensión usando un modelo de embeddings.",
+    "input": "Texto: \"¿Cómo exporto mis datos a Excel?\"\nModelo: text-embedding-ada-002",
+    "nodes": [
+     "input",
+     "embedding-generator"
+    ],
+    "edges": [
+     "e-input-embedding"
+    ]
+   },
+   {
+    "title": "Creación del vector de la consulta",
+    "description": "El modelo de embeddings produce un vector de 768 dimensiones que captura el significado semántico.",
+    "input": "",
+    "nodes": [
+     "embedding-generator",
+     "query-vector"
+    ],
+    "edges": [
+     "e-embedding-vector"
+    ]
+   },
+   {
+    "title": "Recuperar los embeddings de las rutas",
+    "description": "Obtiene de la base de datos vectorial los embeddings precalculados de todas las rutas disponibles.",
+    "input": "",
+    "nodes": [
+     "embedding-generator",
+     "vector-db",
+     "embedding-examples"
+    ],
+    "edges": [
+     "e-embedding-db",
+     "e-db-examples"
+    ]
+   },
+   {
+    "title": "Calcular similitudes",
+    "description": "Calcula la similitud coseno entre el vector de la consulta y el vector de cada ruta.",
+    "input": "",
+    "nodes": [
+     "query-vector",
+     "vector-db",
+     "similarity-compute"
+    ],
+    "edges": [
+     "e-vector-similarity",
+     "e-db-similarity"
+    ]
+   },
+   {
+    "title": "Selección de ruta",
+    "description": "Selecciona la ruta con el puntaje de similitud más alto por encima del umbral.",
+    "input": "",
+    "nodes": [
+     "similarity-compute",
+     "export-route",
+     "reporting-route",
+     "backup-route"
+    ],
+    "edges": [
+     "e-similarity-export",
+     "e-similarity-reporting",
+     "e-similarity-backup"
+    ]
+   },
+   {
+    "title": "Procesar la solicitud",
+    "description": "El manejador seleccionado procesa la solicitud de exportación con lógica especializada.",
+    "input": "",
+    "nodes": [
+     "export-route",
+     "export-processor"
+    ],
+    "edges": [
+     "e-export-processor"
+    ]
+   },
+   {
+    "title": "Devolver la respuesta",
+    "description": "Envía el resultado procesado de vuelta al usuario.",
+    "input": "",
+    "nodes": [
+     "export-processor",
+     "output"
+    ],
+    "edges": [
+     "e-processor-output"
+    ]
+   }
+  ]
+ }
+}

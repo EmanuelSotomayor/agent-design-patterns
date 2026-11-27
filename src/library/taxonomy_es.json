@@ -1,0 +1,50 @@
+{
+ "agentic_design_groups": [
+  {"name": "Reasoning & control flow", "es": "Razonamiento y flujo de control",
+   "cats": ["reasoning-techniques", "prompt-chaining", "routing", "parallelization", "planning-execution", "workflow-orchestration"]},
+  {"name": "Knowledge & memory", "es": "Conocimiento y memoria",
+   "cats": ["knowledge-retrieval", "memory-management", "context-management", "context-orchestration", "knowledge-representation"]},
+  {"name": "Tools, agents & interaction", "es": "Herramientas, agentes e interacción",
+   "cats": ["tool-use", "multi-agent", "agent-economy", "ui-ux-patterns"]},
+  {"name": "Quality & improvement", "es": "Calidad y mejora",
+   "cats": ["reflection", "learning-adaptation", "evaluation-monitoring", "exploration-discovery", "prioritization", "interpretability"]},
+  {"name": "Production hardening", "es": "Robustez para producción",
+   "cats": ["fault-tolerance-infrastructure", "security-privacy", "resource-aware-optimization"]}
+ ],
+ "agentic_design_categories": {
+  "prompt-chaining": "Patrones de orquestación de prompts en varios pasos",
+  "routing": "Patrones de enrutamiento dinámico y delegación de solicitudes",
+  "parallelization": "Patrones de ejecución concurrente y procesamiento en paralelo para sistemas de IA",
+  "reflection": "Patrones de autoevaluación y mejora iterativa",
+  "tool-use": "Patrones de integración con herramientas externas y llamadas a funciones",
+  "planning-execution": "Estrategias de planificación avanzada para tareas complejas de varios pasos y el logro de objetivos",
+  "multi-agent": "Patrones de coordinación y comunicación entre múltiples agentes de IA",
+  "memory-management": "Patrones de gestión de contexto y persistencia de estado",
+  "learning-adaptation": "Patrones de aprendizaje dinámico y adaptación del comportamiento",
+  "fault-tolerance-infrastructure": "Patrones de tolerancia a fallos a nivel de infraestructura para la confiabilidad de sistemas de IA",
+  "knowledge-retrieval": "Patrones de recuperación de información y generación aumentada",
+  "reasoning-techniques": "Técnicas avanzadas de razonamiento y pensamiento",
+  "security-privacy": "Patrones integrales de seguridad, privacidad e IA ética para despliegues empresariales",
+  "evaluation-monitoring": "Patrones de evaluación de desempeño y monitoreo de sistemas",
+  "context-management": "Patrones estratégicos de optimización e ingeniería de la ventana de contexto para agentes de IA",
+  "ui-ux-patterns": "Patrones integrales de interfaz, experiencia de usuario y colaboración humano-IA para sistemas agénticos",
+  "workflow-orchestration": "Patrones de coordinación de flujos de trabajo con estado, orientados a eventos y empresariales",
+  "interpretability": "Patrones para explicar, inspeccionar y validar el comportamiento de modelos y agentes",
+  "knowledge-representation": "Patrones de conocimiento estructurado, semántica, validación y razonamiento",
+  "resource-aware-optimization": "Patrones de optimización de costo, latencia, energía, cómputo y memoria",
+  "context-orchestration": "Patrones para seleccionar, enrutar, dimensionar y combinar contexto",
+  "exploration-discovery": "Patrones de búsqueda, experimentación, adaptación y descubrimiento de soluciones",
+  "prioritization": "Patrones transparentes de ranking, planificación y decisión multicriterio",
+  "agent-economy": "Pagos, comercio, descubrimiento, identidad y contratos web para el internet agéntico"
+ },
+ "agentic_patterns_categories": {
+  "Orchestration & Control": "Cómo se coordinan, secuencian y controlan los agentes y sus subtareas",
+  "Reliability & Eval": "Evaluación, observabilidad y confiabilidad del comportamiento del agente",
+  "Security & Safety": "Seguridad, aislamiento, permisos y defensa frente a ataques",
+  "Context & Memory": "Gestión de la ventana de contexto, memoria y estado del agente",
+  "Tool Use & Environment": "Diseño de herramientas y del entorno donde actúa el agente",
+  "UX & Collaboration": "Experiencia de usuario y colaboración entre humanos y agentes",
+  "Feedback Loops": "Bucles de retroalimentación para que el agente se corrija y mejore",
+  "Learning & Adaptation": "Aprendizaje y adaptación del agente a partir de la experiencia"
+ }
+}

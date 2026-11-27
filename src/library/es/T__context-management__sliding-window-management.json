@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "sliding-window-management",
+ "name": "Sliding Window Management(SWM)",
+ "icon": "🔄",
+ "complexity": "medium",
+ "description": "Gestión dinámica de ventanas con sesgo de recencia, puntuación de relevancia y estrategias inteligentes de retención de tokens",
+ "features": [
+  "Dimensionamiento adaptativo de la ventana deslizante según la complejidad de la tarea",
+  "Retención del contexto ponderada por recencia",
+  "Priorización de tokens basada en la relevancia",
+  "Ajuste dinámico de la ventana de contexto durante la ejecución"
+ ],
+ "tldr": {
+  "what": "Reduce o amplía dinámicamente la ventana de contexto durante la ejecución, priorizando la información reciente y relevante mientras descarta el contenido antiguo menos importante.",
+  "when": "Tareas de larga duración donde el historial completo de la conversación excede los límites de tokens y necesitas preservar la información crítica para la tarea mientras descartas detalles tangenciales.",
+  "watchOut": "La puntuación de relevancia se basa en heurísticas; podrías descartar por accidente contexto que se necesitará después, lo que hace que el agente repita trabajo o pierda restricciones importantes."
+ },
+ "overview": {
+  "pattern": "Gestión dinámica de ventanas con sesgo de recencia, puntuación de relevancia y estrategias inteligentes de retención de tokens",
+  "why": "Optimiza el uso de memoria y la coherencia de la conversación gestionando de forma inteligente los límites del contexto en interacciones largas",
+  "insight": "El dimensionamiento adaptativo de la ventana con retención basada en relevancia mantiene la calidad de la conversación dentro de las restricciones de memoria",
+  "impl": [
+   {
+    "t": "Dimensionamiento de la ventana",
+    "d": "Ajustar dinámicamente el tamaño de la ventana según la complejidad de la tarea"
+   },
+   {
+    "t": "Ponderación por recencia",
+    "d": "Aplicar funciones de decaimiento para priorizar el contenido reciente"
+   },
+   {
+    "t": "Puntuación de relevancia",
+    "d": "Puntuar la importancia del contenido para las decisiones de retención"
+   },
+   {
+    "t": "Gestión de límites",
+    "d": "Gestionar las transiciones y la coherencia del contexto"
+   },
+   {
+    "t": "Ajuste del rendimiento",
+    "d": "Optimizar según métricas de calidad de las respuestas"
+   }
+  ],
+  "example": "size_window → weight_recency → score_relevance → manage_boundaries → tune_performance",
+  "dos": [
+   "Implementa un dimensionamiento adaptativo de la ventana según la complejidad de la conversación",
+   "Usa decaimiento exponencial para la ponderación por recencia",
+   "Preserva la coherencia de la conversación en los límites de la ventana",
+   "Monitorea y ajusta según métricas de rendimiento",
+   "Guarda en cache los segmentos de contexto referenciados con frecuencia"
+  ],
+  "donts": [
+   "Usar tamaños de ventana fijos para todos los tipos de conversación",
+   "Descartar contexto importante solo porque es antiguo",
+   "Ignorar las dependencias del contexto entre límites de ventana",
+   "Aplicar una puntuación de relevancia uniforme a todos los tipos de contenido",
+   "Omitir la validación de las transiciones de ventana"
+  ],
+  "use": [
+   "Gestión de conversaciones largas",
+   "Entornos con memoria limitada",
+   "Requisitos de procesamiento en tiempo real",
+   "Sistemas de conversación adaptativos"
+  ],
+  "avoid": [
+   "Interacciones de corta duración",
+   "Requisitos de contexto estático",
+   "Se necesitan referencias históricas de alta precisión",
+   "Contextos legales/de cumplimiento que requieren el historial completo"
+  ],
+  "metrics": [
+   {
+    "n": "Utilización del contexto",
+    "d": "% del contenido de la ventana usado activamente"
+   },
+   {
+    "n": "Puntuación de coherencia",
+    "d": "Calificación de la continuidad del flujo de conversación"
+   },
+   {
+    "n": "Calidad de las respuestas",
+    "d": "Calidad de la salida con contexto en ventana"
+   },
+   {
+    "n": "Eficiencia de memoria",
+    "d": "Densidad de información por token"
+   },
+   {
+    "n": "Velocidad de adaptación",
+    "d": "Tiempo para ajustar los parámetros de la ventana"
+   },
+   {
+    "n": "Suavidad de los límites",
+    "d": "% de transiciones de contexto sin interrupciones"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Gestión de conversaciones",
+    "d": "track_history → apply_recency_weights → score_relevance → maintain_coherence → optimize_window"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "conversation_context → priority_scoring → window_adjustment → response_generation → quality_feedback"
+   },
+   {
+    "n": "Tutoría educativa",
+    "d": "learning_progression → concept_retention → adaptive_windowing → personalized_context → performance_tracking"
+   },
+   {
+    "n": "Asistente de revisión de código",
+    "d": "code_context → relevance_analysis → window_optimization → suggestion_generation → feedback_loop"
+   },
+   {
+    "n": "Asistente de investigación",
+    "d": "research_context → importance_weighting → dynamic_windowing → knowledge_synthesis → iterative_refinement"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Sliding Window Management",
+  "description": "Gestión eficiente del contexto usando ventanas deslizantes de tamaño fijo, caches de buffer rotativo y desalojo FIFO, logrando complejidad lineal mientras se mantiene el historial relevante de la conversación",
+  "nodes": [
+   {
+    "id": "window-management-challenge",
+    "label": "🪟 Desafío de la gestión de ventanas\n\"¿Cómo manejar contextos largos\nsin complejidad cuadrática\npreservando la relevancia?\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "sliding-window-framework",
+    "label": "🔄 Framework de ventana deslizante\n\"Atención de tamaño fijo:\n• Enfoque en el contexto local\n• Complejidad lineal O(n×w)\n• Cache de buffer rotativo\n• Desalojo FIFO\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "sliding-window-attention",
+    "label": "🎯 Sliding Window Attention\n\"Patrón de atención local:\n• Tamaño de ventana w = 4096\n• Atiende ½w a cada lado\n• Complejidad O(n×w)\n• Mejora de velocidad 2x\"",
+    "x": 200,
+    "y": 350,
+    "w": 260
+   },
+   {
+    "id": "mistral-implementation",
+    "label": "🌬️ Mistral SWA\n\"Atención optimizada:\n• Tamaño de ventana de 4K\n• Alcance teórico de 131K\n• FlashAttention\n• Integración con xFormers\"",
+    "x": 50,
+    "y": 500,
+    "w": 210
+   },
+   {
+    "id": "buffer-window-memory",
+    "label": "📋 Memoria de ventana de buffer\n\"Gestión de conversaciones:\n• Últimas k interacciones\n• Desalojo FIFO\n• Control del límite de tokens\n• Reducción de latencia\"",
+    "x": 600,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "langchain-implementation",
+    "label": "🦜 Buffer de LangChain\n\"ConversationBufferWindowMemory:\n• k mensajes fijos\n• Poda automática\n• Optimización de costos\n• Preservación del contexto\"",
+    "x": 750,
+    "y": 500,
+    "w": 260
+   },
+   {
+    "id": "rolling-buffer-cache",
+    "label": "🔄 Cache de buffer rotativo\n\"Almacenamiento circular:\n• Posición: i mod W\n• Sobrescribe valores antiguos\n• Reducción de memoria 8x\n• Tamaño de cache fijo\"",
+    "x": 400,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "layered-attention",
+    "label": "📈 Atención por capas\n\"Campo receptivo extendido:\n• Capa k: W tokens\n• Capa k-1: 2×W tokens\n• Total: alcance l×W\n• Transformers apilados\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "fifo-eviction",
+    "label": "🚶 Desalojo FIFO\n\"First-In-First-Out:\n• Descartar los mensajes más antiguos\n• Mantener la recencia\n• Prevenir el desbordamiento\n• Implementación simple\"",
+    "x": 600,
+    "y": 800,
+    "w": 210
+   },
+   {
+    "id": "performance-benefits",
+    "label": "⚡ Beneficios de rendimiento\n\"Ganancias de optimización:\n• Velocidad 2x con secuencias de 16K\n• Reducción de cache 8x\n• Complejidad lineal\n• 50% de ahorro de memoria\"",
+    "x": 200,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "context-preservation",
+    "label": "📋 Preservación del contexto\n\"Mantenimiento de la relevancia:\n• Interacciones recientes\n• Información crítica\n• Flujo de la conversación\n• Retención de la calidad\"",
+    "x": 600,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "trade-offs",
+    "label": "⚖️ Ventajas y desventajas\n\"Consideraciones:\n• Enfoque en el contexto local\n• Se pierden interacciones lejanas\n• Ajuste del tamaño de ventana\n• Dependencia de la tarea\"",
+    "x": 400,
+    "y": 1100,
+    "w": 220
+   },
+   {
+    "id": "window-principle",
+    "label": "🎯 Principio de la ventana deslizante\n\"Las ventanas de tamaño fijo permiten un escalado de complejidad lineal\nLos buffers rotativos optimizan la memoria sin pérdida de calidad\nLos patrones de atención local son suficientes para la mayoría de los contextos\"",
+    "x": 400,
+    "y": 1250,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "window-management-challenge",
+    "t": "sliding-window-framework",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e2",
+    "s": "sliding-window-framework",
+    "t": "sliding-window-attention",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "sliding-window-framework",
+    "t": "buffer-window-memory",
+    "label": "gestiona"
+   },
+   {
+    "id": "e4",
+    "s": "sliding-window-framework",
+    "t": "rolling-buffer-cache",
+    "label": "utiliza"
+   },
+   {
+    "id": "e5",
+    "s": "sliding-window-attention",
+    "t": "mistral-implementation",
+    "label": "ejemplificado por"
+   },
+   {
+    "id": "e6",
+    "s": "buffer-window-memory",
+    "t": "langchain-implementation",
+    "label": "implementado en"
+   },
+   {
+    "id": "e7",
+    "s": "rolling-buffer-cache",
+    "t": "layered-attention",
+    "label": "habilita"
+   },
+   {
+    "id": "e8",
+    "s": "rolling-buffer-cache",
+    "t": "fifo-eviction",
+    "label": "aplica"
+   },
+   {
+    "id": "e9",
+    "s": "mistral-implementation",
+    "t": "layered-attention",
+    "label": "se extiende mediante"
+   },
+   {
+    "id": "e10",
+    "s": "langchain-implementation",
+    "t": "fifo-eviction",
+    "label": "usa"
+   },
+   {
+    "id": "e11",
+    "s": "layered-attention",
+    "t": "performance-benefits",
+    "label": "logra"
+   },
+   {
+    "id": "e12",
+    "s": "fifo-eviction",
+    "t": "context-preservation",
+    "label": "mantiene"
+   },
+   {
+    "id": "e13",
+    "s": "performance-benefits",
+    "t": "trade-offs",
+    "label": "equilibrado frente a"
+   },
+   {
+    "id": "e14",
+    "s": "context-preservation",
+    "t": "trade-offs",
+    "label": "considera"
+   },
+   {
+    "id": "e15",
+    "s": "trade-offs",
+    "t": "window-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la gestión de ventanas",
+    "description": "¿Cómo podemos manejar eficientemente contextos largos sin complejidad cuadrática O(n²), preservando el historial relevante de la conversación y manteniendo la calidad del modelo?",
+    "input": "",
+    "nodes": [
+     "window-management-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de ventana deslizante",
+    "description": "Un framework de atención de tamaño fijo aborda el desafío mediante el enfoque en el contexto local, un escalado de complejidad lineal O(n×w), caches de buffer rotativo y estrategias de desalojo FIFO.",
+    "input": "",
+    "nodes": [
+     "sliding-window-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Sliding Window Attention y memoria de buffer",
+    "description": "SWA implementa atención local con un tamaño de ventana w=4096 que atiende ½w tokens a cada lado, mientras que la memoria de buffer mantiene las últimas k interacciones con poda FIFO automática para controlar los tokens.",
+    "input": "",
+    "nodes": [
+     "sliding-window-attention",
+     "mistral-implementation",
+     "buffer-window-memory",
+     "langchain-implementation"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Implementación del cache de buffer rotativo",
+    "description": "El almacenamiento circular usa la posición i mod W para gestionar el cache, sobrescribiendo valores antiguos para lograr una reducción de memoria de 8x mientras mantiene un tamaño de cache fijo para una inferencia eficiente.",
+    "input": "",
+    "nodes": [
+     "rolling-buffer-cache"
+    ],
+    "edges": [
+     "e4"
+    ]
+   },
+   {
+    "title": "Atención por capas y desalojo FIFO",
+    "description": "Los transformers apilados extienden el campo receptivo a un alcance l×W mediante atención por capas, mientras que el desalojo FIFO descarta los mensajes más antiguos, mantiene la recencia y previene el desbordamiento.",
+    "input": "",
+    "nodes": [
+     "layered-attention",
+     "fifo-eviction"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Beneficios de rendimiento y desventajas",
+    "description": "Logra velocidad 2x con secuencias de 16K, reducción de cache 8x y 50% de ahorro de memoria, equilibrado frente a las limitaciones del enfoque local, lo que demuestra que las ventanas de tamaño fijo permiten un escalado lineal con contexto suficiente para la mayoría de las tareas.",
+    "input": "",
+    "nodes": [
+     "performance-benefits",
+     "context-preservation",
+     "trade-offs",
+     "window-principle"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

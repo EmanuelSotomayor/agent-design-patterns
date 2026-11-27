@@ -1,0 +1,290 @@
+{
+ "cat": "tool-use",
+ "slug": "structured-outputs",
+ "name": "Structured Outputs(SO)",
+ "icon": "🧱",
+ "complexity": "medium",
+ "description": "Garantiza que la salida del modelo cumpla un esquema restringiendo la decodificación. Un JSON Schema, una regex o una gramática se compila en una máquina de estados finitos y, en cada paso de decodificación, se enmascaran los tokens que violarían el esquema para que solo se puedan muestrear continuaciones válidas. En modo estricto, esto hace imposible el JSON mal formado y los argumentos de herramienta inválidos. Está disponible de forma nativa en OpenAI, Google y Anthropic, y en librerías abiertas como Outlines y vLLM.",
+ "features": [
+  "Decodificación restringida guiada por JSON Schema, regex o gramática",
+  "Esquema compilado en una máquina de estados finitos y una máscara de tokens por paso",
+  "Tokens inválidos enmascarados en cada paso de decodificación en modo estricto",
+  "Salida conforme al esquema garantizada, no solo solicitada",
+  "Elimina los errores de parseo de JSON y los argumentos inválidos en llamadas a herramientas",
+  "Soporte nativo de los proveedores, además de Outlines y vLLM"
+ ],
+ "tldr": {
+  "what": "Compila un esquema en una máquina de estados finitos y enmascara los tokens inválidos en cada paso de decodificación, garantizando que la salida cumpla el esquema.",
+  "when": "Extraer datos estructurados, llamar herramientas o generar JSON cuando los errores de parseo o los valores inválidos romperían el código posterior.",
+  "watchOut": "Las restricciones del esquema pueden forzar al modelo a emitir valores técnicamente válidos pero sin sentido semántico cuando la respuesta real queda fuera de las opciones permitidas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Structured Outputs",
+  "description": "La decodificación restringida garantiza una salida conforme al esquema. Un JSON Schema se compila en una máquina de estados finitos y, en cada paso de decodificación, se enmascaran los tokens que romperían el esquema, de modo que solo se puede producir JSON válido y el parseo posterior nunca falla.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea\nExtraer {name, amount, currency}\nde 10000 recibos",
+    "x": 350,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "schema",
+    "label": "📐 JSON Schema\nname: string, amount: number,\ncurrency: enum[USD, EUR, GBP]",
+    "x": 350,
+    "y": 140,
+    "w": 280
+   },
+   {
+    "id": "compiler",
+    "label": "🛠️ Compilar\nEsquema -> FSM",
+    "x": 360,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "fsm",
+    "label": "🔀 FSM / Gramática\nautómata de tokens válidos",
+    "x": 630,
+    "y": 250,
+    "w": 210
+   },
+   {
+    "id": "model",
+    "label": "🤖 Decodificador del LLM\ngenera token por token",
+    "x": 360,
+    "y": 360,
+    "w": 240
+   },
+   {
+    "id": "logits",
+    "label": "📊 Logits\ndistribución del siguiente token",
+    "x": 100,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "mask",
+    "label": "🚧 Máscara de tokens\nanula los tokens inválidos",
+    "x": 360,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "blocked",
+    "label": "🚫 Tokens bloqueados\nCAD no está en el enum,\nletras donde se espera un número",
+    "x": 620,
+    "y": 470,
+    "w": 210
+   },
+   {
+    "id": "sample",
+    "label": "🎲 Muestrear\nsolo una continuación válida",
+    "x": 360,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "loop-monitor",
+    "label": "🔁 Restricción por paso\nse aplica en cada paso de decodificación",
+    "x": 630,
+    "y": 580,
+    "w": 210
+   },
+   {
+    "id": "json-out",
+    "label": "📄 JSON válido\n{\"name\":\"Acme\",\"amount\":42.5,\"currency\":\"USD\"}",
+    "x": 330,
+    "y": 685,
+    "w": 300
+   },
+   {
+    "id": "consumer",
+    "label": "✅ Código posterior\njson.loads(), sin try/except,\n0 violaciones / 10000 filas",
+    "x": 350,
+    "y": 785,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-schema",
+    "s": "task",
+    "t": "schema",
+    "label": "Definir"
+   },
+   {
+    "id": "e-schema-compiler",
+    "s": "schema",
+    "t": "compiler",
+    "label": "Compilar"
+   },
+   {
+    "id": "e-compiler-fsm",
+    "s": "compiler",
+    "t": "fsm",
+    "label": "FSM"
+   },
+   {
+    "id": "e-task-model",
+    "s": "task",
+    "t": "model",
+    "label": "Texto del recibo"
+   },
+   {
+    "id": "e-fsm-mask",
+    "s": "fsm",
+    "t": "mask",
+    "label": "Conjunto permitido"
+   },
+   {
+    "id": "e-model-logits",
+    "s": "model",
+    "t": "logits",
+    "label": "Siguiente token"
+   },
+   {
+    "id": "e-logits-mask",
+    "s": "logits",
+    "t": "mask",
+    "label": "Puntajes crudos"
+   },
+   {
+    "id": "e-mask-blocked",
+    "s": "mask",
+    "t": "blocked",
+    "label": "Rechazar inválidos"
+   },
+   {
+    "id": "e-mask-sample",
+    "s": "mask",
+    "t": "sample",
+    "label": "Solo válidos"
+   },
+   {
+    "id": "e-sample-model",
+    "s": "sample",
+    "t": "model",
+    "label": "Agregar + repetir"
+   },
+   {
+    "id": "e-sample-monitor",
+    "s": "sample",
+    "t": "loop-monitor",
+    "label": "Cada paso"
+   },
+   {
+    "id": "e-sample-json",
+    "s": "sample",
+    "t": "json-out",
+    "label": "Al finalizar"
+   },
+   {
+    "id": "e-json-consumer",
+    "s": "json-out",
+    "t": "consumer",
+    "label": "Parsear con seguridad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Definir el esquema",
+    "description": "La tarea de extracción fija una forma de salida exacta: un string name, un amount numérico y una currency restringida a tres valores de enum.",
+    "input": "",
+    "nodes": [
+     "task",
+     "schema"
+    ],
+    "edges": [
+     "e-task-schema"
+    ]
+   },
+   {
+    "title": "Compilar el esquema en una FSM",
+    "description": "El esquema se compila una sola vez en una máquina de estados finitos que sabe, en todo momento, qué tokens siguen siendo válidos.",
+    "input": "",
+    "nodes": [
+     "schema",
+     "compiler",
+     "fsm"
+    ],
+    "edges": [
+     "e-schema-compiler",
+     "e-compiler-fsm"
+    ]
+   },
+   {
+    "title": "Decodificar con el modelo",
+    "description": "El modelo lee un recibo y produce logits para el siguiente token, exactamente como en la generación normal.",
+    "input": "",
+    "nodes": [
+     "task",
+     "model",
+     "logits"
+    ],
+    "edges": [
+     "e-task-model",
+     "e-model-logits"
+    ]
+   },
+   {
+    "title": "Enmascarar tokens inválidos",
+    "description": "La FSM define el conjunto permitido. Los tokens que romperían el esquema, como CAD fuera del enum o una letra donde corresponde un número, se enmascaran con probabilidad cero.",
+    "input": "",
+    "nodes": [
+     "fsm",
+     "mask",
+     "logits",
+     "blocked"
+    ],
+    "edges": [
+     "e-fsm-mask",
+     "e-logits-mask",
+     "e-mask-blocked"
+    ]
+   },
+   {
+    "title": "Muestrear una continuación válida",
+    "description": "Solo quedan tokens válidos, así que el token muestreado siempre mantiene la salida en un camino conforme al esquema. La restricción se vuelve a aplicar en cada paso de decodificación.",
+    "input": "",
+    "nodes": [
+     "mask",
+     "sample",
+     "loop-monitor",
+     "model"
+    ],
+    "edges": [
+     "e-mask-sample",
+     "e-sample-model",
+     "e-sample-monitor"
+    ]
+   },
+   {
+    "title": "Emitir JSON válido",
+    "description": "Cuando termina la decodificación, el resultado es JSON con validez garantizada que cumple el esquema, sin necesidad de una pasada de reparación.",
+    "input": "",
+    "nodes": [
+     "sample",
+     "json-out"
+    ],
+    "edges": [
+     "e-sample-json"
+    ]
+   },
+   {
+    "title": "Consumir sin reparar",
+    "description": "El código posterior parsea la salida directamente, sin try/except ni reintentos, y logra 0 violaciones del esquema en las 10000 filas.",
+    "input": "",
+    "nodes": [
+     "json-out",
+     "consumer"
+    ],
+    "edges": [
+     "e-json-consumer"
+    ]
+   }
+  ]
+ }
+}

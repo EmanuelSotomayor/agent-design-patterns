@@ -1,0 +1,305 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "self-consistency",
+ "name": "Self-Consistency(SC)",
+ "icon": "🗳️",
+ "complexity": "medium",
+ "description": "Muestrea varias rutas diversas de chain-of-thought con temperatura distinta de cero y luego agrega sus respuestas finales mediante votación por mayoría o ponderada por confianza. Como una respuesta correcta suele alcanzarse por muchas rutas de razonamiento distintas mientras que los errores individuales se dispersan, la respuesta de consenso es mucho más confiable que cualquier decodificación greedy individual.",
+ "features": [
+  "Muestrea N rutas de razonamiento independientes con temperatura distinta de cero",
+  "Marginaliza sobre el razonamiento votando solo las respuestas finales",
+  "Agregación de candidatos por mayoría o ponderada por confianza",
+  "Las respuestas correctas convergen mientras que los errores esporádicos pierden la votación",
+  "Base del escalado de cómputo en tiempo de prueba best-of-N",
+  "Universal Self-Consistency extiende la votación a salidas de formato libre"
+ ],
+ "tldr": {
+  "what": "Muestrea varias rutas de razonamiento con temperatura distinta de cero y luego elige la respuesta final por votación de mayoría o ponderación por confianza.",
+  "when": "Problemas con respuestas correctas verificables, donde existen rutas de razonamiento diversas y los errores se dispersan entre las muestras.",
+  "watchOut": "Requiere N veces más costo de inferencia; la votación por mayoría falla si la mayoría de las rutas converge en la misma respuesta equivocada."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Self-Consistency",
+  "description": "Muestrea varias rutas diversas de chain-of-thought con temperatura distinta de cero y agrega sus respuestas finales por votación de mayoría. Las respuestas correctas se repiten entre rutas independientes mientras que los errores se dispersan y pierden la votación, lo que da aproximadamente +17.9% en GSM8K frente al chain-of-thought greedy.",
+  "nodes": [
+   {
+    "id": "problem",
+    "label": "🧮 Problema (GSM8K)\n\"Weng gana $12/hr cuidando niños.\nAyer cuidó niños durante 1.5 horas.\n¿Cuánto ganó?\"",
+    "x": 300,
+    "y": 40,
+    "w": 340
+   },
+   {
+    "id": "sampler",
+    "label": "🎲 Muestreador de CoT diverso\nDecodifica N=5 rutas con temperatura 0.7",
+    "x": 330,
+    "y": 170,
+    "w": 280
+   },
+   {
+    "id": "path-1",
+    "label": "🔗 Ruta 1\n$12 x 1.5 = $18\nRespuesta: 18",
+    "x": 10,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "path-2",
+    "label": "🔗 Ruta 2\n0.5h=$6 + 1h=$12 = $18\nRespuesta: 18",
+    "x": 180,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "path-3",
+    "label": "🔗 Ruta 3\nredondea 1.5 hacia arriba a 2h\n$12 x 2 = $24\nRespuesta: 24",
+    "x": 350,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "path-4",
+    "label": "🔗 Ruta 4\n$12 x 1.5 = $18\nRespuesta: 18",
+    "x": 520,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "path-5",
+    "label": "🔗 Ruta 5\n$12 + $12/2 = $18\nRespuesta: 18",
+    "x": 690,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "extractor",
+    "label": "📤 Extractor de respuestas\nExtrae la respuesta final de cada ruta",
+    "x": 300,
+    "y": 430,
+    "w": 240
+   },
+   {
+    "id": "tally",
+    "label": "🗳️ Votación por mayoría\n{ 18: 4 votos, 24: 1 voto }",
+    "x": 290,
+    "y": 540,
+    "w": 260
+   },
+   {
+    "id": "recurrence",
+    "label": "💡 Por qué funciona\nLas respuestas correctas se repiten entre rutas;\nlos errores esporádicos se dispersan y pierden",
+    "x": 630,
+    "y": 540,
+    "w": 240
+   },
+   {
+    "id": "consensus",
+    "label": "✨ Respuesta de consenso\n$18 (80% de acuerdo)",
+    "x": 290,
+    "y": 660,
+    "w": 300
+   },
+   {
+    "id": "greedy-note",
+    "label": "⚠️ vs. decodificación greedy\nUna sola ruta greedy corría el riesgo del error 24.\nLa votación por mayoría agrega ~+17.9% en GSM8K.",
+    "x": 290,
+    "y": 770,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-problem-sampler",
+    "s": "problem",
+    "t": "sampler",
+    "label": ""
+   },
+   {
+    "id": "e-sampler-p1",
+    "s": "sampler",
+    "t": "path-1",
+    "label": "muestrear"
+   },
+   {
+    "id": "e-sampler-p2",
+    "s": "sampler",
+    "t": "path-2",
+    "label": "muestrear"
+   },
+   {
+    "id": "e-sampler-p3",
+    "s": "sampler",
+    "t": "path-3",
+    "label": "muestrear"
+   },
+   {
+    "id": "e-sampler-p4",
+    "s": "sampler",
+    "t": "path-4",
+    "label": "muestrear"
+   },
+   {
+    "id": "e-sampler-p5",
+    "s": "sampler",
+    "t": "path-5",
+    "label": "muestrear"
+   },
+   {
+    "id": "e-p1-extract",
+    "s": "path-1",
+    "t": "extractor",
+    "label": ""
+   },
+   {
+    "id": "e-p2-extract",
+    "s": "path-2",
+    "t": "extractor",
+    "label": ""
+   },
+   {
+    "id": "e-p3-extract",
+    "s": "path-3",
+    "t": "extractor",
+    "label": ""
+   },
+   {
+    "id": "e-p4-extract",
+    "s": "path-4",
+    "t": "extractor",
+    "label": ""
+   },
+   {
+    "id": "e-p5-extract",
+    "s": "path-5",
+    "t": "extractor",
+    "label": ""
+   },
+   {
+    "id": "e-extract-tally",
+    "s": "extractor",
+    "t": "tally",
+    "label": "contar"
+   },
+   {
+    "id": "e-tally-recurrence",
+    "s": "tally",
+    "t": "recurrence",
+    "label": "por qué"
+   },
+   {
+    "id": "e-tally-consensus",
+    "s": "tally",
+    "t": "consensus",
+    "label": "mayoría"
+   },
+   {
+    "id": "e-tally-greedy",
+    "s": "tally",
+    "t": "greedy-note",
+    "label": "vs. greedy"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Problema recibido",
+    "description": "Se plantea un problema matemático en lenguaje natural. El chain-of-thought greedy produciría una única respuesta y se quedaría con ella.",
+    "input": "",
+    "nodes": [
+     "problem"
+    ],
+    "edges": [
+     "e-problem-sampler"
+    ]
+   },
+   {
+    "title": "Muestrear N rutas diversas",
+    "description": "El muestreador decodifica 5 rutas de chain-of-thought independientes con temperatura 0.7, así que cada una explora la aritmética de forma ligeramente distinta.",
+    "input": "",
+    "nodes": [
+     "sampler",
+     "path-1",
+     "path-2",
+     "path-3",
+     "path-4",
+     "path-5"
+    ],
+    "edges": [
+     "e-sampler-p1",
+     "e-sampler-p2",
+     "e-sampler-p3",
+     "e-sampler-p4",
+     "e-sampler-p5"
+    ]
+   },
+   {
+    "title": "Extraer las respuestas finales",
+    "description": "Solo se extrae la respuesta final de cada ruta. La ruta 3 redondea por error 1.5 horas hacia arriba a 2 y reporta 24; las demás reportan 18.",
+    "input": "",
+    "nodes": [
+     "path-1",
+     "path-2",
+     "path-3",
+     "path-4",
+     "path-5",
+     "extractor"
+    ],
+    "edges": [
+     "e-p1-extract",
+     "e-p2-extract",
+     "e-p3-extract",
+     "e-p4-extract",
+     "e-p5-extract"
+    ]
+   },
+   {
+    "title": "Contar los votos",
+    "description": "Las respuestas se agregan por votación de mayoría: 18 recibe 4 votos y 24 recibe 1. Esto marginaliza sobre el razonamiento y conserva solo la distribución de respuestas.",
+    "input": "",
+    "nodes": [
+     "extractor",
+     "tally"
+    ],
+    "edges": [
+     "e-extract-tally"
+    ]
+   },
+   {
+    "title": "Por qué funciona el consenso",
+    "description": "Las respuestas correctas se alcanzan mediante muchas derivaciones válidas distintas y se refuerzan entre sí, mientras que un desliz aritmético aislado aparece en una sola ruta y pierde la votación.",
+    "input": "",
+    "nodes": [
+     "tally",
+     "recurrence"
+    ],
+    "edges": [
+     "e-tally-recurrence"
+    ]
+   },
+   {
+    "title": "Gana la votación por mayoría",
+    "description": "La respuesta de consenso es $18 con un 80% de acuerdo, más confiable que cualquier decodificación individual.",
+    "input": "",
+    "nodes": [
+     "tally",
+     "consensus"
+    ],
+    "edges": [
+     "e-tally-consensus"
+    ]
+   },
+   {
+    "title": "Contraste con la decodificación greedy",
+    "description": "Una sola ruta greedy podría haber caído en el error 24. La self-consistency por votación de mayoría agrega aproximadamente +17.9% de precisión en GSM8K y sustenta el escalado en tiempo de prueba best-of-N.",
+    "input": "",
+    "nodes": [
+     "tally",
+     "greedy-note"
+    ],
+    "edges": [
+     "e-tally-greedy"
+    ]
+   }
+  ]
+ }
+}

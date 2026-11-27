@@ -1,0 +1,382 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "skill-library",
+ "name": "Skill Library (Voyager)(SL)",
+ "icon": "📚",
+ "complexity": "high",
+ "description": "Un agente escribe habilidades (programas) reutilizables y ejecutables para los comportamientos que descubre, las almacena en una biblioteca indexada por los embeddings de sus descripciones y luego las recupera y combina en habilidades más complejas. La biblioteca crece como una forma de memoria procedimental, de modo que la capacidad se acumula con el tiempo sin actualizaciones de gradiente ni olvido catastrófico.",
+ "features": [
+  "Habilidades almacenadas como código ejecutable, no como pesos",
+  "Biblioteca indexada por embeddings para recuperar por significado",
+  "Un currículo automático propone la siguiente habilidad a aprender",
+  "Refinamiento iterativo del código a partir del feedback de ejecución",
+  "Composición de habilidades simples en habilidades complejas",
+  "Capacidad acumulativa sin olvido catastrófico"
+ ],
+ "tldr": {
+  "what": "El agente escribe código ejecutable para los comportamientos que descubre, lo almacena en una biblioteca indexada por embeddings y lo combina en habilidades complejas que crecen sin reentrenamiento.",
+  "when": "Aprendizaje abierto donde el agente descubre muchos comportamientos reutilizables con el tiempo y necesita construir sobre descubrimientos previos sin olvidar ni reentrenar.",
+  "watchOut": "La calidad y la corrección del código se degradan rápidamente si el feedback de ejecución es ruidoso o si el ciclo de refinamiento no detecta los errores antes de guardar en la biblioteca."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Biblioteca de habilidades (Voyager)",
+  "description": "Un agente de aprendizaje abierto escribe habilidades ejecutables reutilizables para los comportamientos que descubre, las almacena en una biblioteca indexada por embeddings y luego las recupera y combina en habilidades más complejas. La capacidad se acumula con el tiempo sin actualizaciones de gradiente ni olvido catastrófico.",
+  "nodes": [
+   {
+    "id": "env",
+    "label": "🌍 Entorno\nMundo estilo Minecraft + API",
+    "x": 340,
+    "y": 50,
+    "w": 230
+   },
+   {
+    "id": "curriculum",
+    "label": "🎓 Currículo automático\nSiguiente objetivo: obtener tablones de madera",
+    "x": 340,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente (LLM)\nescribe habilidades ejecutables",
+    "x": 340,
+    "y": 230,
+    "w": 230
+   },
+   {
+    "id": "write-skill",
+    "label": "✍️ Escribir habilidad\nprograma craftPlanks()",
+    "x": 110,
+    "y": 320,
+    "w": 190
+   },
+   {
+    "id": "run-verify",
+    "label": "▶️ Ejecutar y verificar\nejecutar en el entorno",
+    "x": 340,
+    "y": 320,
+    "w": 190
+   },
+   {
+    "id": "feedback",
+    "label": "🔁 Feedback\nlos errores impulsan la corrección iterativa",
+    "x": 590,
+    "y": 320,
+    "w": 190
+   },
+   {
+    "id": "skill-craft",
+    "label": "🪵 Habilidad: craftPlanks\nverificada y funcionando",
+    "x": 340,
+    "y": 415,
+    "w": 200
+   },
+   {
+    "id": "library",
+    "label": "📚 Biblioteca de habilidades\nindexada por embeddings",
+    "x": 340,
+    "y": 510,
+    "w": 220
+   },
+   {
+    "id": "lib-item-1",
+    "label": "🌲 mineWood()",
+    "x": 80,
+    "y": 605,
+    "w": 140
+   },
+   {
+    "id": "lib-item-2",
+    "label": "🪵 craftPlanks()",
+    "x": 270,
+    "y": 605,
+    "w": 140
+   },
+   {
+    "id": "lib-item-3",
+    "label": "🔨 craftTable()",
+    "x": 460,
+    "y": 605,
+    "w": 140
+   },
+   {
+    "id": "new-goal",
+    "label": "🎯 Objetivo más difícil\nconstruir un refugio",
+    "x": 680,
+    "y": 500,
+    "w": 190
+   },
+   {
+    "id": "retrieve",
+    "label": "🔎 Recuperar por significado\nbúsqueda por embeddings en la biblioteca",
+    "x": 680,
+    "y": 595,
+    "w": 200
+   },
+   {
+    "id": "compose",
+    "label": "🧩 Componer\nbuildShelter() llama a craftPlanks + más",
+    "x": 490,
+    "y": 700,
+    "w": 220
+   },
+   {
+    "id": "store-composed",
+    "label": "🏠 Habilidad: buildShelter\nguardada de vuelta en la biblioteca",
+    "x": 240,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "compounding",
+    "label": "📈 Acumulación\nla biblioteca crece, el éxito aumenta",
+    "x": 700,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "✨ Árbol tecnológico desbloqueado\nmás rápido que las líneas base que replanifican",
+    "x": 340,
+    "y": 790,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-env-curriculum",
+    "s": "env",
+    "t": "curriculum",
+    "label": ""
+   },
+   {
+    "id": "e-curriculum-agent",
+    "s": "curriculum",
+    "t": "agent",
+    "label": "Siguiente objetivo"
+   },
+   {
+    "id": "e-agent-write",
+    "s": "agent",
+    "t": "write-skill",
+    "label": ""
+   },
+   {
+    "id": "e-write-run",
+    "s": "write-skill",
+    "t": "run-verify",
+    "label": ""
+   },
+   {
+    "id": "e-run-feedback",
+    "s": "run-verify",
+    "t": "feedback",
+    "label": "Errores"
+   },
+   {
+    "id": "e-feedback-write",
+    "s": "feedback",
+    "t": "write-skill",
+    "label": "Corrección iterativa"
+   },
+   {
+    "id": "e-run-skill",
+    "s": "run-verify",
+    "t": "skill-craft",
+    "label": "Éxito"
+   },
+   {
+    "id": "e-skill-library",
+    "s": "skill-craft",
+    "t": "library",
+    "label": "Almacenar"
+   },
+   {
+    "id": "e-library-item1",
+    "s": "library",
+    "t": "lib-item-1",
+    "label": ""
+   },
+   {
+    "id": "e-library-item2",
+    "s": "library",
+    "t": "lib-item-2",
+    "label": ""
+   },
+   {
+    "id": "e-library-item3",
+    "s": "library",
+    "t": "lib-item-3",
+    "label": ""
+   },
+   {
+    "id": "e-curriculum-newgoal",
+    "s": "curriculum",
+    "t": "new-goal",
+    "label": "Avanzar el currículo"
+   },
+   {
+    "id": "e-newgoal-retrieve",
+    "s": "new-goal",
+    "t": "retrieve",
+    "label": ""
+   },
+   {
+    "id": "e-library-retrieve",
+    "s": "library",
+    "t": "retrieve",
+    "label": "Búsqueda por embeddings"
+   },
+   {
+    "id": "e-retrieve-compose",
+    "s": "retrieve",
+    "t": "compose",
+    "label": "Habilidades relevantes"
+   },
+   {
+    "id": "e-compose-store",
+    "s": "compose",
+    "t": "store-composed",
+    "label": ""
+   },
+   {
+    "id": "e-store-library",
+    "s": "store-composed",
+    "t": "library",
+    "label": "Agregar buildShelter"
+   },
+   {
+    "id": "e-store-compounding",
+    "s": "store-composed",
+    "t": "compounding",
+    "label": ""
+   },
+   {
+    "id": "e-compounding-output",
+    "s": "compounding",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "El currículo propone un objetivo",
+    "description": "Un currículo automático inspecciona el estado del agente en el mundo y propone el siguiente objetivo, en este caso obtener tablones de madera.",
+    "input": "",
+    "nodes": [
+     "env",
+     "curriculum",
+     "agent"
+    ],
+    "edges": [
+     "e-env-curriculum",
+     "e-curriculum-agent"
+    ]
+   },
+   {
+    "title": "Escribir una habilidad ejecutable",
+    "description": "El agente escribe un programa, una función como craftPlanks(), que llama a la API del entorno para lograr el objetivo propuesto.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "write-skill"
+    ],
+    "edges": [
+     "e-agent-write"
+    ]
+   },
+   {
+    "title": "Ejecutar, verificar, refinar",
+    "description": "El código se ejecuta en el entorno. Los errores de ejecución y el feedback vuelven al agente, que corrige el programa de forma iterativa hasta que funciona.",
+    "input": "",
+    "nodes": [
+     "write-skill",
+     "run-verify",
+     "feedback"
+    ],
+    "edges": [
+     "e-write-run",
+     "e-run-feedback",
+     "e-feedback-write"
+    ]
+   },
+   {
+    "title": "Almacenar la habilidad",
+    "description": "La habilidad craftPlanks verificada se agrega a la biblioteca y se indexa mediante un embedding de su descripción, junto a habilidades anteriores como mineWood y craftTable.",
+    "input": "",
+    "nodes": [
+     "run-verify",
+     "skill-craft",
+     "library",
+     "lib-item-1",
+     "lib-item-2",
+     "lib-item-3"
+    ],
+    "edges": [
+     "e-run-skill",
+     "e-skill-library",
+     "e-library-item1",
+     "e-library-item2",
+     "e-library-item3"
+    ]
+   },
+   {
+    "title": "Recuperar por significado",
+    "description": "El currículo avanza a un objetivo más difícil: construir un refugio. El agente recupera craftPlanks y otras habilidades relevantes de la biblioteca mediante búsqueda por embeddings en lugar del nombre exacto.",
+    "input": "",
+    "nodes": [
+     "curriculum",
+     "new-goal",
+     "library",
+     "retrieve"
+    ],
+    "edges": [
+     "e-curriculum-newgoal",
+     "e-newgoal-retrieve",
+     "e-library-retrieve"
+    ]
+   },
+   {
+    "title": "Componer una habilidad compleja",
+    "description": "Las habilidades recuperadas se combinan en un nuevo programa, buildShelter(), que llama a craftPlanks y a otras para cumplir la tarea más grande.",
+    "input": "",
+    "nodes": [
+     "retrieve",
+     "compose"
+    ],
+    "edges": [
+     "e-retrieve-compose"
+    ]
+   },
+   {
+    "title": "Almacenar y acumular",
+    "description": "buildShelter se guarda de vuelta en la biblioteca. Como las habilidades son código externo que se conserva, agregar una nunca sobrescribe las demás, así que la capacidad se acumula sin olvido catastrófico.",
+    "input": "",
+    "nodes": [
+     "compose",
+     "store-composed",
+     "library",
+     "compounding"
+    ],
+    "edges": [
+     "e-compose-store",
+     "e-store-library",
+     "e-store-compounding"
+    ]
+   },
+   {
+    "title": "Árbol tecnológico desbloqueado",
+    "description": "Las tareas posteriores reutilizan el trabajo previo, de modo que el agente obtiene más objetos únicos y desbloquea el árbol tecnológico mucho más rápido que las líneas base que replanifican desde cero, y la biblioteca aprendida se transfiere a mundos nuevos.",
+    "input": "",
+    "nodes": [
+     "compounding",
+     "output"
+    ],
+    "edges": [
+     "e-compounding-output"
+    ]
+   }
+  ]
+ }
+}

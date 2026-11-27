@@ -1,0 +1,436 @@
+{
+ "cat": "routing",
+ "slug": "dynamic-routing",
+ "name": "Dynamic Routing",
+ "icon": "🎛️",
+ "complexity": "high",
+ "description": "Enruta prompts con base en análisis en tiempo real y evaluación del contexto",
+ "features": [
+  "Toma de decisiones consciente del contexto",
+  "Adaptación de rutas en tiempo real",
+  "Lógica de enrutamiento con múltiples criterios",
+  "Ajuste dinámico de prioridades"
+ ],
+ "tldr": {
+  "what": "Enruta cada prompt por distintas cadenas de procesamiento según un análisis en tiempo real del contexto, el tipo de contenido y los objetivos.",
+  "when": "Manejar tipos de entrada diversos que requieren estrategias de procesamiento fundamentalmente distintas, o cuando la calidad de la salida depende de ajustar el enfoque a la situación.",
+  "watchOut": "La propia lógica de enrutamiento se convierte en un cuello de botella; las entradas mal clasificadas degradan la calidad en silencio, sin señales claras de fallo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón Dynamic Routing",
+  "description": "Muestra el enrutamiento inteligente de tareas por distintas rutas de procesamiento según el análisis del contenido y las condiciones del contexto",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud entrante\n\"Ayúdame con mi problema\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "classifier",
+    "label": "Clasificador de contenido\nAnaliza el tipo y la complejidad de la solicitud",
+    "x": 500,
+    "y": 180,
+    "w": 220
+   },
+   {
+    "id": "context-analyzer",
+    "label": "Analizador de contexto\nHistorial, preferencias y urgencia del usuario",
+    "x": 800,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "router",
+    "label": "Router dinámico\nSelecciona la ruta de procesamiento óptima",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "simple-path",
+    "label": "Ruta simple\nRecuperación directa de la respuesta",
+    "x": 200,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "analytical-path",
+    "label": "Ruta analítica\nRazonamiento de múltiples pasos",
+    "x": 400,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "creative-path",
+    "label": "Ruta creativa\nIdeación y lluvia de ideas",
+    "x": 600,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "expert-path",
+    "label": "Ruta experta\nProcesamiento especializado",
+    "x": 800,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "knowledge-lookup",
+    "label": "Consulta de conocimiento\nRecupera información factual",
+    "x": 200,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "reasoning-engine",
+    "label": "Motor de razonamiento\nAnálisis lógico",
+    "x": 400,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "creativity-engine",
+    "label": "Motor de creatividad\nAlgoritmos de ideación",
+    "x": 600,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "specialist-models",
+    "label": "Modelos especialistas\nExpertos de dominio",
+    "x": 800,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "quality-gate",
+    "label": "Control de calidad\nValida y puntúa la salida",
+    "x": 500,
+    "y": 760,
+    "w": 180
+   },
+   {
+    "id": "feedback-loop",
+    "label": "Feedback adaptativo\nAprende de los resultados",
+    "x": 300,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "output",
+    "label": "Respuesta optimizada\nAdaptada a la solicitud y al contexto",
+    "x": 500,
+    "y": 900,
+    "w": 200
+   },
+   {
+    "id": "classification-rules",
+    "label": "Reglas de clasificación\n• Factual → Simple\n• Compleja → Analítica\n• Abierta → Creativa\n• Técnica → Experta",
+    "x": 200,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "context-factors",
+    "label": "Factores de contexto\n• Experiencia del usuario\n• Restricciones de tiempo\n• Requisitos de calidad\n• Disponibilidad de recursos",
+    "x": 1000,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "routing-logic",
+    "label": "Lógica de enrutamiento\nMatriz de decisión ponderada\nUmbrales de confianza\nBalanceo de carga",
+    "x": 700,
+    "y": 320,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-classifier",
+    "s": "input",
+    "t": "classifier",
+    "label": ""
+   },
+   {
+    "id": "e-input-context",
+    "s": "input",
+    "t": "context-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-classifier-router",
+    "s": "classifier",
+    "t": "router",
+    "label": ""
+   },
+   {
+    "id": "e-context-router",
+    "s": "context-analyzer",
+    "t": "router",
+    "label": ""
+   },
+   {
+    "id": "e-router-simple",
+    "s": "router",
+    "t": "simple-path",
+    "label": "Consulta factual"
+   },
+   {
+    "id": "e-router-analytical",
+    "s": "router",
+    "t": "analytical-path",
+    "label": "Problema complejo"
+   },
+   {
+    "id": "e-router-creative",
+    "s": "router",
+    "t": "creative-path",
+    "label": "Abierta"
+   },
+   {
+    "id": "e-router-expert",
+    "s": "router",
+    "t": "expert-path",
+    "label": "Especializada"
+   },
+   {
+    "id": "e-simple-lookup",
+    "s": "simple-path",
+    "t": "knowledge-lookup",
+    "label": ""
+   },
+   {
+    "id": "e-analytical-reasoning",
+    "s": "analytical-path",
+    "t": "reasoning-engine",
+    "label": ""
+   },
+   {
+    "id": "e-creative-engine",
+    "s": "creative-path",
+    "t": "creativity-engine",
+    "label": ""
+   },
+   {
+    "id": "e-expert-specialist",
+    "s": "expert-path",
+    "t": "specialist-models",
+    "label": ""
+   },
+   {
+    "id": "e-lookup-quality",
+    "s": "knowledge-lookup",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "e-reasoning-quality",
+    "s": "reasoning-engine",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "e-creativity-quality",
+    "s": "creativity-engine",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "e-specialist-quality",
+    "s": "specialist-models",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "e-quality-output",
+    "s": "quality-gate",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "e-quality-feedback",
+    "s": "quality-gate",
+    "t": "feedback-loop",
+    "label": ""
+   },
+   {
+    "id": "e-feedback-router",
+    "s": "feedback-loop",
+    "t": "router",
+    "label": ""
+   },
+   {
+    "id": "e-rules-classifier",
+    "s": "classification-rules",
+    "t": "classifier",
+    "label": ""
+   },
+   {
+    "id": "e-factors-context",
+    "s": "context-factors",
+    "t": "context-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-logic-router",
+    "s": "routing-logic",
+    "t": "router",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Ingesta de la solicitud",
+    "description": "El sistema recibe una solicitud entrante que necesita procesamiento inteligente.",
+    "input": "Solicitud del usuario: \"Ayúdame a entender la computación cuántica y cómo podría afectar mis inversiones en criptomonedas\"",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Inicio del análisis en paralelo",
+    "description": "La solicitud se envía simultáneamente a clasificación y a análisis de contexto.",
+    "input": "Activa tanto el análisis de contenido como la evaluación del contexto del usuario",
+    "nodes": [
+     "input",
+     "classifier",
+     "context-analyzer"
+    ],
+    "edges": [
+     "e-input-classifier",
+     "e-input-context"
+    ]
+   },
+   {
+    "title": "Clasificación del contenido",
+    "description": "Analiza la complejidad de la solicitud, el dominio del tema y el tipo de procesamiento requerido.",
+    "input": "Análisis de clasificación: complejidad del tema, requisitos del dominio, tipo de respuesta",
+    "nodes": [
+     "classifier",
+     "classification-rules"
+    ],
+    "edges": [
+     "e-rules-classifier"
+    ]
+   },
+   {
+    "title": "Análisis de contexto",
+    "description": "Evalúa los antecedentes del usuario, sus preferencias y los factores situacionales.",
+    "input": "Contexto del usuario: interacciones previas, nivel de experiencia, necesidades actuales",
+    "nodes": [
+     "context-analyzer",
+     "context-factors"
+    ],
+    "edges": [
+     "e-factors-context"
+    ]
+   },
+   {
+    "title": "Selección dinámica de ruta",
+    "description": "Combina la clasificación y el contexto para determinar la ruta de procesamiento óptima.",
+    "input": "Clasificación + Contexto → Matriz de decisión de ruta",
+    "nodes": [
+     "router",
+     "routing-logic"
+    ],
+    "edges": [
+     "e-classifier-router",
+     "e-context-router",
+     "e-logic-router"
+    ]
+   },
+   {
+    "title": "Activación de la ruta experta",
+    "description": "Enruta a procesamiento especializado para aprovechar la experiencia técnica del dominio.",
+    "input": "Ruta experta seleccionada para la intersección entre computación cuántica y finanzas",
+    "nodes": [
+     "router",
+     "expert-path"
+    ],
+    "edges": [
+     "e-router-expert"
+    ]
+   },
+   {
+    "title": "Procesamiento con modelos especialistas",
+    "description": "Despliega modelos específicos del dominio para computación cuántica y análisis financiero.",
+    "input": "Procesamiento especializado: Física cuántica + Modelado financiero",
+    "nodes": [
+     "expert-path",
+     "specialist-models"
+    ],
+    "edges": [
+     "e-expert-specialist"
+    ]
+   },
+   {
+    "title": "Procesamiento por rutas alternativas",
+    "description": "Muestra cómo distintas solicitudes se enrutarían por distintas rutas.",
+    "input": "Ejemplo de enrutamiento para otros tipos de solicitud",
+    "nodes": [
+     "router",
+     "simple-path",
+     "analytical-path",
+     "creative-path"
+    ],
+    "edges": [
+     "e-router-simple",
+     "e-router-analytical",
+     "e-router-creative"
+    ]
+   },
+   {
+    "title": "Evaluación del control de calidad",
+    "description": "Valida la calidad y completitud de la salida antes de entregarla.",
+    "input": "Evaluación de calidad: precisión, completitud, relevancia, claridad",
+    "nodes": [
+     "specialist-models",
+     "quality-gate"
+    ],
+    "edges": [
+     "e-specialist-quality"
+    ]
+   },
+   {
+    "title": "Recopilación de feedback adaptativo",
+    "description": "Reúne datos de desempeño para mejorar futuras decisiones de enrutamiento.",
+    "input": "Recopila métricas de desempeño del enrutamiento y datos de satisfacción del usuario",
+    "nodes": [
+     "quality-gate",
+     "feedback-loop"
+    ],
+    "edges": [
+     "e-quality-feedback"
+    ]
+   },
+   {
+    "title": "Optimización de rutas",
+    "description": "Actualiza los algoritmos de enrutamiento con base en el feedback para una mejora continua.",
+    "input": "Aplica lo aprendido a la matriz de decisión de enrutamiento",
+    "nodes": [
+     "feedback-loop",
+     "router"
+    ],
+    "edges": [
+     "e-feedback-router"
+    ]
+   },
+   {
+    "title": "Entrega de la respuesta optimizada",
+    "description": "Entrega la respuesta final adaptada al contexto del usuario y a la complejidad de la solicitud.",
+    "input": "",
+    "nodes": [
+     "output"
+    ],
+    "edges": [
+     "e-quality-output"
+    ]
+   }
+  ]
+ }
+}

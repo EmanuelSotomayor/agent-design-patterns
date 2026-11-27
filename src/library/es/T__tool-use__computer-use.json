@@ -1,0 +1,319 @@
+{
+ "cat": "tool-use",
+ "slug": "computer-use",
+ "name": "Computer Use(CU)",
+ "icon": "🖱️",
+ "complexity": "high",
+ "description": "Los agentes operan interfaces gráficas de usuario (de escritorio, navegador o móvil) como lo haría una persona: leen capturas de pantalla y emiten acciones de mouse y teclado en lugar de llamar a APIs. El desafío central es el GUI grounding: traducir una intención a coordenadas de píxeles exactas en la pantalla. El agente ejecuta un bucle de captura, razonamiento, acción y observación hasta completar la tarea.",
+ "features": [
+  "Percepción de la pantalla en vivo basada en capturas",
+  "GUI grounding de la intención a coordenadas de píxeles precisas",
+  "Espacio de acciones de bajo nivel: clic, escribir, desplazar, arrastrar, presionar teclas",
+  "Bucle de percepción-razonamiento-acción-observación con feedback después de cada paso",
+  "Recuperación de errores ante popups, modales y estados inesperados de la UI",
+  "Funciona en aplicaciones y sitios que no exponen ninguna API"
+ ],
+ "tldr": {
+  "what": "El agente lee capturas de pantalla, traduce la intención a coordenadas de píxeles, ejecuta acciones de mouse y teclado, y repite el bucle hasta completar la tarea.",
+  "when": "Sistemas sin API, flujos de trabajo de UI complejos de varios pasos, o cuando necesitas automatizar aplicaciones legadas o de terceros.",
+  "watchOut": "El GUI grounding falla con layouts dinámicos, objetivos pequeños o elementos obstruidos, lo que provoca errores en cascada difíciles de recuperar."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Computer Use",
+  "description": "Un agente opera una interfaz gráfica de usuario como lo haría una persona: lee capturas de pantalla y emite acciones de mouse y teclado en lugar de llamar a APIs. Ejecuta un bucle de captura, GUI grounding, razonamiento, acción y observación, y se recupera cuando la UI hace algo inesperado.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea\nReservar el vuelo matutino más barato\nSFO -> JFK el 20 de julio",
+    "x": 380,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "agent",
+    "label": "🖱️ Agente de Computer Use\ncaptura -> razonar -> actuar -> observar",
+    "x": 360,
+    "y": 140,
+    "w": 300
+   },
+   {
+    "id": "screenshot",
+    "label": "📸 Captura de pantalla\nCaptura la pantalla en vivo (1280x800)",
+    "x": 40,
+    "y": 260,
+    "w": 180
+   },
+   {
+    "id": "grounding",
+    "label": "🎯 GUI Grounding\nIntención -> coordenadas de píxeles",
+    "x": 250,
+    "y": 260,
+    "w": 180
+   },
+   {
+    "id": "reason",
+    "label": "🧠 Razonar\nDecide la siguiente acción",
+    "x": 460,
+    "y": 260,
+    "w": 180
+   },
+   {
+    "id": "action",
+    "label": "⌨️ Acción\nclic / escribir / desplazar",
+    "x": 670,
+    "y": 260,
+    "w": 180
+   },
+   {
+    "id": "observe",
+    "label": "👁️ Observar\n¿La UI cambió como se esperaba?",
+    "x": 460,
+    "y": 370,
+    "w": 200
+   },
+   {
+    "id": "browser",
+    "label": "🌐 Sitio web de la aerolínea\nUI en vivo del navegador, sin API",
+    "x": 360,
+    "y": 470,
+    "w": 260
+   },
+   {
+    "id": "search-form",
+    "label": "📝 Llenar el formulario de búsqueda\nOrigen=SFO, Destino=JFK, Fecha=20 jul\nclic en Buscar",
+    "x": 60,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "popup",
+    "label": "🚫 Modal emergente\nUn overlay de newsletter bloquea la página",
+    "x": 360,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "results",
+    "label": "📋 Resultados\nOrdenar por salida más temprana\nleer precios desde los píxeles",
+    "x": 660,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "recovery",
+    "label": "♻️ Recuperación de errores\nUbicar y hacer clic en cerrar (x)",
+    "x": 360,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "select",
+    "label": "✅ Seleccionar vuelo\nclic en 7:05 AM, luego en Continuar",
+    "x": 660,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "🎉 Reserva confirmada\nVuelo correcto seleccionado, solo con capturas",
+    "x": 360,
+    "y": 785,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-agent",
+    "s": "task",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-screenshot",
+    "s": "agent",
+    "t": "screenshot",
+    "label": "Inicio del bucle"
+   },
+   {
+    "id": "e-screenshot-grounding",
+    "s": "screenshot",
+    "t": "grounding",
+    "label": "Píxeles"
+   },
+   {
+    "id": "e-grounding-reason",
+    "s": "grounding",
+    "t": "reason",
+    "label": "Coords"
+   },
+   {
+    "id": "e-reason-action",
+    "s": "reason",
+    "t": "action",
+    "label": "Planificar"
+   },
+   {
+    "id": "e-action-observe",
+    "s": "action",
+    "t": "observe",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "e-observe-screenshot",
+    "s": "observe",
+    "t": "screenshot",
+    "label": "Siguiente frame"
+   },
+   {
+    "id": "e-action-browser",
+    "s": "action",
+    "t": "browser",
+    "label": "clic / escribir"
+   },
+   {
+    "id": "e-browser-search",
+    "s": "browser",
+    "t": "search-form",
+    "label": "Ingresar viaje"
+   },
+   {
+    "id": "e-browser-popup",
+    "s": "browser",
+    "t": "popup",
+    "label": "¡Popup!"
+   },
+   {
+    "id": "e-popup-recovery",
+    "s": "popup",
+    "t": "recovery",
+    "label": "Cerrar (x)"
+   },
+   {
+    "id": "e-recovery-browser",
+    "s": "recovery",
+    "t": "browser",
+    "label": "Reintentar"
+   },
+   {
+    "id": "e-browser-results",
+    "s": "browser",
+    "t": "results",
+    "label": "Resultados de búsqueda"
+   },
+   {
+    "id": "e-results-select",
+    "s": "results",
+    "t": "select",
+    "label": "7:05 AM"
+   },
+   {
+    "id": "e-select-output",
+    "s": "select",
+    "t": "output",
+    "label": "Confirmar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea y bucle del agente",
+    "description": "El agente recibe un objetivo en lenguaje natural y establece su bucle de percepción, razonamiento, acción y observación sobre la pantalla.",
+    "input": "",
+    "nodes": [
+     "task",
+     "agent"
+    ],
+    "edges": [
+     "e-task-agent"
+    ]
+   },
+   {
+    "title": "Percepción por capturas de pantalla",
+    "description": "Cada ciclo comienza capturando la UI en vivo, que es la única observación que recibe el agente.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "screenshot"
+    ],
+    "edges": [
+     "e-agent-screenshot"
+    ]
+   },
+   {
+    "title": "GUI Grounding",
+    "description": "El agente traduce su intención a coordenadas de píxeles exactas en la pantalla actual y luego razona sobre el siguiente paso.",
+    "input": "",
+    "nodes": [
+     "screenshot",
+     "grounding",
+     "reason"
+    ],
+    "edges": [
+     "e-screenshot-grounding",
+     "e-grounding-reason"
+    ]
+   },
+   {
+    "title": "Actuar sobre la UI",
+    "description": "El agente emite acciones de mouse y teclado para llenar el formulario de búsqueda de vuelos en el sitio web real de la aerolínea.",
+    "input": "",
+    "nodes": [
+     "reason",
+     "action",
+     "browser",
+     "search-form"
+    ],
+    "edges": [
+     "e-reason-action",
+     "e-action-browser",
+     "e-browser-search"
+    ]
+   },
+   {
+    "title": "Observar y recuperarse del popup",
+    "description": "Después de actuar, el agente observa la pantalla. Ahora un popup de newsletter bloquea la página, así que ubica el botón de cerrar y hace clic en él antes de reintentar.",
+    "input": "",
+    "nodes": [
+     "action",
+     "observe",
+     "browser",
+     "popup",
+     "recovery"
+    ],
+    "edges": [
+     "e-action-observe",
+     "e-observe-screenshot",
+     "e-browser-popup",
+     "e-popup-recovery",
+     "e-recovery-browser"
+    ]
+   },
+   {
+    "title": "Leer resultados y seleccionar",
+    "description": "Con la página despejada, el agente lee los precios de los vuelos directamente desde los píxeles, ordena por la salida más temprana y selecciona el vuelo de las 7:05 AM.",
+    "input": "",
+    "nodes": [
+     "browser",
+     "results",
+     "select"
+    ],
+    "edges": [
+     "e-browser-results",
+     "e-results-select"
+    ]
+   },
+   {
+    "title": "Reserva confirmada",
+    "description": "El vuelo correcto se reserva únicamente mediante capturas de pantalla y clics, sin intervención de ninguna API de la aerolínea.",
+    "input": "",
+    "nodes": [
+     "select",
+     "output"
+    ],
+    "edges": [
+     "e-select-output"
+    ]
+   }
+  ]
+ }
+}

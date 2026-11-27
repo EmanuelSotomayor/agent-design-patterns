@@ -1,0 +1,381 @@
+{
+ "cat": "security-privacy",
+ "slug": "data-anonymization-patterns",
+ "name": "Data Anonymization Patterns(DAP)",
+ "icon": "🎭",
+ "complexity": "high",
+ "description": "Técnicas integrales de anonimización de datos, incluidas K-anonymity, L-diversity, T-closeness y la generación de datos sintéticos para sistemas agénticos",
+ "features": [
+  "K-anonymity para la indistinguibilidad",
+  "L-diversity para proteger atributos sensibles",
+  "T-closeness para la similitud de distribuciones",
+  "Generación de datos sintéticos",
+  "Procesamiento de anonimización federado",
+  "Optimización del equilibrio entre privacidad y utilidad"
+ ],
+ "tldr": {
+  "what": "Elimina o transforma los datos de identificación personal para que no se pueda volver a identificar a las personas, usando técnicas como generalización, supresión y generación de datos sintéticos.",
+  "when": "Compartir datasets entre organizaciones o agentes cuando aplican regulaciones de privacidad y necesitas evitar que los registros se vinculen con personas.",
+  "watchOut": "Una anonimización agresiva degrada seriamente la utilidad de los datos; los atacantes aún pueden reidentificar mediante información auxiliar o ataques de vinculación."
+ },
+ "overview": {
+  "pattern": "Técnicas integrales de anonimización de datos, incluidas K-anonymity, L-diversity, T-closeness y la generación de datos sintéticos para sistemas agénticos",
+  "why": "Protege la privacidad individual, permite compartir datos de forma segura, da soporte al aprendizaje federado y asegura el cumplimiento normativo",
+  "insight": "Anonimización en múltiples capas + generación sintética + procesamiento federado → colaboración entre agentes que preserva la privacidad",
+  "impl": [
+   {
+    "t": "Clasificación de datos",
+    "d": "Identifica PII, cuasi-identificadores y atributos sensibles"
+   },
+   {
+    "t": "Método de anonimización",
+    "d": "Selección entre K-anonymity, L-diversity y T-closeness"
+   },
+   {
+    "t": "Generación sintética",
+    "d": "Datos sintéticos basados en GAN o estadísticos"
+   },
+   {
+    "t": "Procesamiento federado",
+    "d": "Anonimización distribuida entre agentes"
+   },
+   {
+    "t": "Validación de utilidad",
+    "d": "Evaluación del equilibrio entre privacidad y utilidad"
+   }
+  ],
+  "example": "data_classification → anonymization_method → synthetic_generation → federated_processing → utility_validation",
+  "dos": [
+   "Implementa k-anonymity con un k mínimo de 5 para una protección básica",
+   "Usa generación de datos sintéticos en escenarios de PII de alto riesgo",
+   "Aplica anonimización federada en entornos multiagente",
+   "Combina múltiples técnicas (L-diversity + T-closeness)",
+   "Evalúa y prueba con regularidad el riesgo de reidentificación"
+  ],
+  "donts": [
+   "Depender solo del enmascaramiento de datos sin modelos de anonimización",
+   "Usar una generalización simple que destruya la utilidad de los datos",
+   "Ignorar las combinaciones de cuasi-identificadores que permiten reidentificar",
+   "Aplicar la anonimización después de que los datos ya se distribuyeron ampliamente",
+   "Omitir la validación de las propiedades estadísticas de los datos sintéticos"
+  ],
+  "use": [
+   "Aprendizaje federado multiagente",
+   "Intercambio de datos entre organizaciones",
+   "Publicación de datasets públicos",
+   "Requisitos de cumplimiento normativo"
+  ],
+  "avoid": [
+   "Datos que ya están cifrados en reposo",
+   "Procesamiento interno con un solo agente",
+   "Datasets de dominio público",
+   "Requisitos de streaming en tiempo real"
+  ],
+  "metrics": [
+   {
+    "n": "Riesgo de reidentificación",
+    "d": "Probabilidad de identificar a una persona"
+   },
+   {
+    "n": "Preservación de la utilidad de los datos",
+    "d": "% de precisión estadística conservada"
+   },
+   {
+    "n": "Nivel de K-anonymity",
+    "d": "Tamaño mínimo de grupo para la indistinguibilidad"
+   },
+   {
+    "n": "Puntaje de L-diversity",
+    "d": "Diversidad de valores de los atributos sensibles"
+   },
+   {
+    "n": "Umbral de T-closeness",
+    "d": "Similitud de la distribución con la población"
+   },
+   {
+    "n": "Fidelidad de los datos sintéticos",
+    "d": "Similitud estadística con los datos originales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA en salud",
+    "d": "Anonimización de historias clínicas para aprendizaje federado entre varios hospitales"
+   },
+   {
+    "n": "Agentes financieros",
+    "d": "Análisis de patrones de transacciones con protección de la privacidad de los clientes"
+   },
+   {
+    "n": "Ciudad inteligente",
+    "d": "Intercambio de datos de movilidad ciudadana entre organismos gubernamentales"
+   },
+   {
+    "n": "Colaboración en investigación",
+    "d": "Intercambio de datasets académicos con garantías de privacidad"
+   },
+   {
+    "n": "Analítica de seguros",
+    "d": "Anonimización de datos de siniestros para el cumplimiento normativo"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de anonimización de datos",
+  "description": "Técnicas integrales de anonimización de datos, incluidas K-anonymity, L-diversity, T-closeness y la generación de datos sintéticos para sistemas agénticos que preservan la privacidad",
+  "nodes": [
+   {
+    "id": "medical-ai-training",
+    "label": "🏥 Dataset de entrenamiento de IA médica\n\"Hay que entrenar una IA de diagnóstico con\n100K historias clínicas con\ninformación médica sensible\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "privacy-requirements",
+    "label": "🔒 Requisitos estrictos de privacidad\n\"Cumplimiento de HIPAA obligatorio\nEl riesgo de reidentificación de pacientes\ndebe eliminarse\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "simple-anonymization",
+    "label": "⚠️ Anonimización simple\n\"Eliminar nombres y SSN\nConservar edad, código postal, diagnóstico\nEnmascaramiento básico de datos\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "linkage-attack",
+    "label": "🎯 Vulnerabilidad a ataques de vinculación\n\"Edad + código postal + diagnóstico poco común\npermiten la reidentificación\nCuasi-identificadores expuestos\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "privacy-breach",
+    "label": "🚨 Violación de privacidad\n\"42% de los pacientes reidentificados\nCondiciones sensibles expuestas\nViolación de HIPAA confirmada\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "comprehensive-anonymization",
+    "label": "🛡️ Anonimización integral\n\"Enfoque con múltiples técnicas:\n• K-anonymity (k=5)\n• L-diversity (l=3)\n• T-closeness (t=0.2)\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "k-anonymity",
+    "label": "👥 K-Anonymity (k=5)\n\"Cada registro es indistinguible\nde al menos otros 4\nGeneralización + supresión\"",
+    "x": 500,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "l-diversity",
+    "label": "🎭 L-Diversity (l=3)\n\"Cada grupo tiene al menos\n3 valores sensibles distintos\nEvita ataques de homogeneidad\"",
+    "x": 650,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "t-closeness",
+    "label": "📊 T-Closeness (t=0.2)\n\"La distribución de los atributos\nsensibles en cada grupo\nes cercana a la distribución general\"",
+    "x": 800,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "synthetic-data",
+    "label": "🎲 Generación de datos sintéticos\n\"Genera registros artificiales\ncon las mismas propiedades estadísticas\npero sin datos reales de pacientes\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "privacy-preserved",
+    "label": "✅ Privacidad preservada\n\"Riesgo de reidentificación < 0.1%\nUtilidad conservada para entrenar la IA\nCumplimiento de HIPAA logrado\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "anonymization-principle",
+    "label": "🎯 Principio de anonimización\n\"La privacidad requiere garantías matemáticas\nEnmascaramiento simple ≠ anonimización real\nMúltiples técnicas dan defensa en profundidad\"",
+    "x": 400,
+    "y": 950,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "medical-ai-training",
+    "t": "privacy-requirements",
+    "label": "debe cumplir las regulaciones"
+   },
+   {
+    "id": "e2",
+    "s": "privacy-requirements",
+    "t": "simple-anonymization",
+    "label": "enfoque simple"
+   },
+   {
+    "id": "e3",
+    "s": "privacy-requirements",
+    "t": "comprehensive-anonymization",
+    "label": "enfoque integral"
+   },
+   {
+    "id": "e4",
+    "s": "simple-anonymization",
+    "t": "linkage-attack",
+    "label": "vulnerable a ataques"
+   },
+   {
+    "id": "e5",
+    "s": "linkage-attack",
+    "t": "privacy-breach",
+    "label": "permite la reidentificación"
+   },
+   {
+    "id": "e6",
+    "s": "comprehensive-anonymization",
+    "t": "k-anonymity",
+    "label": "aplicar K-anonymity"
+   },
+   {
+    "id": "e7",
+    "s": "comprehensive-anonymization",
+    "t": "l-diversity",
+    "label": "asegurar L-diversity"
+   },
+   {
+    "id": "e8",
+    "s": "comprehensive-anonymization",
+    "t": "t-closeness",
+    "label": "mantener T-closeness"
+   },
+   {
+    "id": "e9",
+    "s": "k-anonymity",
+    "t": "synthetic-data",
+    "label": "guiar la generación"
+   },
+   {
+    "id": "e10",
+    "s": "l-diversity",
+    "t": "synthetic-data",
+    "label": "preservar la diversidad"
+   },
+   {
+    "id": "e11",
+    "s": "t-closeness",
+    "t": "synthetic-data",
+    "label": "mantener las distribuciones"
+   },
+   {
+    "id": "e12",
+    "s": "synthetic-data",
+    "t": "privacy-preserved",
+    "label": "elimina la reidentificación"
+   },
+   {
+    "id": "e13",
+    "s": "privacy-breach",
+    "t": "anonymization-principle",
+    "label": "demuestra la insuficiencia"
+   },
+   {
+    "id": "e14",
+    "s": "privacy-preserved",
+    "t": "anonymization-principle",
+    "label": "demuestra la eficacia"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de datos de entrenamiento para IA médica",
+    "description": "Se necesita entrenar una IA de diagnóstico con 100K historias clínicas que contienen información médica sensible, garantizando el cumplimiento estricto de HIPAA y evitando la reidentificación.",
+    "input": "",
+    "nodes": [
+     "medical-ai-training",
+     "privacy-requirements"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de anonimización",
+    "description": "Los requisitos de privacidad se abordan con una anonimización simple (eliminar nombres/SSN) frente a un enfoque integral de anonimización con múltiples técnicas.",
+    "input": "",
+    "nodes": [
+     "simple-anonymization",
+     "comprehensive-anonymization"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Vulnerabilidad de la anonimización simple",
+    "description": "El enmascaramiento básico deja expuestos los cuasi-identificadores, lo que habilita ataques de vinculación en los que la combinación de edad + código postal + diagnóstico poco común permite reidentificar a los pacientes.",
+    "input": "",
+    "nodes": [
+     "linkage-attack",
+     "privacy-breach"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Anonimización integral con múltiples técnicas",
+    "description": "El enfoque avanzado aplica K-anonymity (k=5) para la indistinguibilidad, L-diversity (l=3) para la diversidad de valores sensibles y T-closeness (t=0.2) para preservar la distribución.",
+    "input": "",
+    "nodes": [
+     "k-anonymity",
+     "l-diversity",
+     "t-closeness"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Generación de datos sintéticos",
+    "description": "Las múltiples técnicas de anonimización guían la generación de registros artificiales con las mismas propiedades estadísticas pero sin datos reales de pacientes, lo que brinda la máxima protección de la privacidad.",
+    "input": "",
+    "nodes": [
+     "synthetic-data"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Éxito en la preservación de la privacidad y principio central",
+    "description": "Un enfoque en capas reduce el riesgo de reidentificación y mantiene los datos útiles para el entrenamiento, pero el riesgo residual depende de tu dataset y debe medirse, no suponerse. Esto muestra que las garantías matemáticas requieren múltiples técnicas de defensa.",
+    "input": "",
+    "nodes": [
+     "privacy-preserved",
+     "anonymization-principle"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

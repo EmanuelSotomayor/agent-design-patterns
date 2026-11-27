@@ -1,0 +1,327 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "risk-tiered-approval-escalation",
+ "name": "Approval Queues & Escalation Chains(AQE)",
+ "icon": "✅",
+ "complexity": "high",
+ "description": "La aprobación y la escalación como un flujo de trabajo operativo de primera clase, en lugar de una única compuerta de bloqueo. Las acciones se clasifican en niveles según su riesgo: las acciones reversibles se aprueban automáticamente; las de riesgo medio pasan a una revisión asíncrona en la que el agente persiste su estado, continúa con otro trabajo y se rehidrata cuando llega una decisión; y las acciones irreversibles requieren aprobación síncrona antes de ejecutarse. La escalación se activa con señales explícitas, como incumplimientos de confianza, una marca de irreversibilidad, la proximidad del SLA y la detección de anomalías o inyecciones, y enruta la decisión a un adjudicador de mayor autoridad (un humano, un agente con más privilegios o un flujo de trabajo externo). Se distingue de `human-in-the-loop`: HITL es la postura síncrona genérica, mientras que este patrón agrega niveles de riesgo, colas asíncronas con rehidratación del estado y enrutamiento a adjudicadores.",
+ "features": [
+  "Niveles de riesgo: autoaprobación para lo reversible, revisión asíncrona para lo medio, aprobación síncrona para lo irreversible",
+  "Aprobación asíncrona: el agente persiste su estado, trabaja en otras tareas y se rehidrata al recibir la decisión",
+  "Disparadores de escalación: incumplimiento de confianza, irreversibilidad, proximidad del SLA, anomalía o inyección",
+  "Enrutamiento a un adjudicador: un humano, un agente con más privilegios o un flujo de trabajo externo",
+  "Paquetes de contexto listos para decidir (resumen, diff, impacto financiero, marca de reversibilidad)",
+  "Límites de tiempo con escalación automática para que las aprobaciones no frenen las operaciones"
+ ],
+ "tldr": {
+  "what": "Enruta las acciones por niveles de riesgo: autoaprobación para lo reversible, revisión asíncrona con persistencia del estado para el riesgo medio y aprobación síncrona para lo irreversible. Escala a adjudicadores designados según la confianza, la marca de irreversibilidad, el SLA o anomalías.",
+  "when": "Operaciones en las que algunas decisiones pueden avanzar sin aprobación, otras necesitan revisión humana asíncrona sin bloquear al agente y algunas requieren una autorización síncrona antes de ejecutarse.",
+  "watchOut": "La rehidratación del estado tras la demora de la aprobación puede fallar en silencio si el contexto cambia o si la memoria de trabajo del agente está incompleta al reanudar."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Colas de aprobación y cadenas de escalación",
+  "description": "La aprobación y la escalación como un flujo de trabajo operativo. Las acciones se clasifican por riesgo: lo reversible se aprueba automáticamente, el riesgo medio va a una cola asíncrona donde el agente persiste su estado y sigue trabajando, y lo irreversible requiere una compuerta síncrona. La escalación enruta la decisión a un adjudicador de mayor autoridad ante señales como el incumplimiento del SLA.",
+  "nodes": [
+   {
+    "id": "incoming-action",
+    "label": "🎯 El agente propone una acción\nSolicitud de reembolso",
+    "x": 340,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "risk-classifier",
+    "label": "⚖️ Clasificador de riesgo\nNivel según monto + reversibilidad",
+    "x": 340,
+    "y": 155,
+    "w": 240
+   },
+   {
+    "id": "tier-auto",
+    "label": "🟢 Nivel 1: Reversible\n< $50 autoaprobación",
+    "x": 40,
+    "y": 265,
+    "w": 190
+   },
+   {
+    "id": "tier-async",
+    "label": "🟡 Nivel 2: Medio\nCola de revisión asíncrona",
+    "x": 330,
+    "y": 265,
+    "w": 190
+   },
+   {
+    "id": "tier-sync",
+    "label": "🔴 Nivel 3: Irreversible\nAprobación síncrona",
+    "x": 660,
+    "y": 265,
+    "w": 200
+   },
+   {
+    "id": "auto-execute",
+    "label": "✅ Reembolso de $38 emitido\nDe inmediato + registrado",
+    "x": 40,
+    "y": 385,
+    "w": 190
+   },
+   {
+    "id": "state-store",
+    "label": "💾 Persistir el estado del caso\nCliente, pedido, evidencia",
+    "x": 290,
+    "y": 385,
+    "w": 200
+   },
+   {
+    "id": "agent-continues",
+    "label": "🔁 El agente continúa\nToma el siguiente ticket",
+    "x": 560,
+    "y": 385,
+    "w": 190
+   },
+   {
+    "id": "sync-gate",
+    "label": "⛔ Compuerta síncrona\nEn pausa hasta que un humano apruebe",
+    "x": 680,
+    "y": 385,
+    "w": 200
+   },
+   {
+    "id": "approval-queue",
+    "label": "📥 Cola de aprobación\nReembolso de $2,000 + paquete de decisión",
+    "x": 290,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "sla-timer",
+    "label": "⏱️ Temporizador de SLA\n4h sin atender -> escalar",
+    "x": 560,
+    "y": 500,
+    "w": 190
+   },
+   {
+    "id": "supervisor",
+    "label": "🧑‍💼 Supervisor\nResuelve el caso",
+    "x": 290,
+    "y": 610,
+    "w": 200
+   },
+   {
+    "id": "escalation",
+    "label": "🚨 Escalar\nGerente de guardia",
+    "x": 560,
+    "y": 610,
+    "w": 190
+   },
+   {
+    "id": "rehydrate",
+    "label": "♻️ Rehidratar el estado\nRestaura el caso guardado",
+    "x": 290,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "async-execute",
+    "label": "✨ Reembolso ejecutado\nUn solo hilo coherente",
+    "x": 290,
+    "y": 780,
+    "w": 210
+   }
+  ],
+  "edges": [
+   {
+    "id": "action-classifier",
+    "s": "incoming-action",
+    "t": "risk-classifier",
+    "label": ""
+   },
+   {
+    "id": "classifier-auto",
+    "s": "risk-classifier",
+    "t": "tier-auto",
+    "label": "reversible < $50"
+   },
+   {
+    "id": "classifier-async",
+    "s": "risk-classifier",
+    "t": "tier-async",
+    "label": "medio $2,000"
+   },
+   {
+    "id": "classifier-sync",
+    "s": "risk-classifier",
+    "t": "tier-sync",
+    "label": "irreversible"
+   },
+   {
+    "id": "auto-exec",
+    "s": "tier-auto",
+    "t": "auto-execute",
+    "label": "autoaprobación"
+   },
+   {
+    "id": "async-store",
+    "s": "tier-async",
+    "t": "state-store",
+    "label": "persistir"
+   },
+   {
+    "id": "store-continue",
+    "s": "state-store",
+    "t": "agent-continues",
+    "label": "sin bloqueo"
+   },
+   {
+    "id": "store-queue",
+    "s": "state-store",
+    "t": "approval-queue",
+    "label": "encolar"
+   },
+   {
+    "id": "queue-sla",
+    "s": "approval-queue",
+    "t": "sla-timer",
+    "label": "adjuntar SLA"
+   },
+   {
+    "id": "queue-supervisor",
+    "s": "approval-queue",
+    "t": "supervisor",
+    "label": "paquete de decisión"
+   },
+   {
+    "id": "sla-escalation",
+    "s": "sla-timer",
+    "t": "escalation",
+    "label": "incumplimiento -> escalar"
+   },
+   {
+    "id": "supervisor-rehydrate",
+    "s": "supervisor",
+    "t": "rehydrate",
+    "label": "aprobar"
+   },
+   {
+    "id": "escalation-rehydrate",
+    "s": "escalation",
+    "t": "rehydrate",
+    "label": "el gerente decide"
+   },
+   {
+    "id": "rehydrate-execute",
+    "s": "rehydrate",
+    "t": "async-execute",
+    "label": ""
+   },
+   {
+    "id": "sync-gatee",
+    "s": "tier-sync",
+    "t": "sync-gate",
+    "label": "bloquear hasta aprobar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El agente propone una acción",
+    "description": "El agente de soporte genera una acción candidata (un reembolso) que tiene un efecto secundario sobre dinero, por lo que debe pasar por el plano de aprobación antes de ejecutarse.",
+    "input": "",
+    "nodes": [
+     "incoming-action",
+     "risk-classifier"
+    ],
+    "edges": [
+     "action-classifier"
+    ]
+   },
+   {
+    "title": "Clasificar por nivel de riesgo",
+    "description": "El clasificador asigna un nivel a la acción según su monto y reversibilidad: lo reversible y de bajo monto se aprueba automáticamente, lo de monto medio pasa a revisión asíncrona y lo irreversible va a una compuerta síncrona.",
+    "input": "",
+    "nodes": [
+     "risk-classifier",
+     "tier-auto",
+     "tier-async",
+     "tier-sync"
+    ],
+    "edges": [
+     "classifier-auto",
+     "classifier-async",
+     "classifier-sync"
+    ]
+   },
+   {
+    "title": "Reversible: autoaprobación",
+    "description": "Un reembolso de $38 por un artículo dañado es reversible y está por debajo del umbral de $50, así que el agente lo emite de inmediato y lo registra para una auditoría asíncrona.",
+    "input": "",
+    "nodes": [
+     "tier-auto",
+     "auto-execute"
+    ],
+    "edges": [
+     "auto-exec"
+    ]
+   },
+   {
+    "title": "Medio: cola asíncrona, el agente sigue trabajando",
+    "description": "Un reembolso de $2,000 supera el umbral, pero es reversible. El agente persiste el estado completo del caso en un almacén, lo encola para revisión y sigue con el siguiente ticket en lugar de bloquearse.",
+    "input": "",
+    "nodes": [
+     "tier-async",
+     "state-store",
+     "agent-continues",
+     "approval-queue"
+    ],
+    "edges": [
+     "async-store",
+     "store-continue",
+     "store-queue"
+    ]
+   },
+   {
+    "title": "Enrutar al adjudicador con SLA",
+    "description": "El caso encolado se enruta a un supervisor con un paquete listo para decidir (resumen, diff, impacto de $2,000, marca de reversibilidad). Un temporizador de SLA lo escalará automáticamente al gerente de guardia si permanece 4 horas sin atender.",
+    "input": "",
+    "nodes": [
+     "approval-queue",
+     "sla-timer",
+     "supervisor",
+     "escalation"
+    ],
+    "edges": [
+     "queue-sla",
+     "queue-supervisor",
+     "sla-escalation"
+    ]
+   },
+   {
+    "title": "Llega la decisión y el estado se rehidrata",
+    "description": "Ya sea que el supervisor apruebe o que decida el gerente al que se escaló, el agente rehidrata exactamente el estado guardado del caso y ejecuta el reembolso como un solo hilo coherente, en lugar de una conversación abandonada.",
+    "input": "",
+    "nodes": [
+     "supervisor",
+     "escalation",
+     "rehydrate",
+     "async-execute"
+    ],
+    "edges": [
+     "supervisor-rehydrate",
+     "escalation-rehydrate",
+     "rehydrate-execute"
+    ]
+   },
+   {
+    "title": "Irreversible: compuerta síncrona",
+    "description": "Por otro lado, una propuesta para cerrar la cuenta del cliente es irreversible. Ese nivel requiere aprobación síncrona: el agente se pausa y no puede continuar hasta que un humano apruebe en línea.",
+    "input": "",
+    "nodes": [
+     "tier-sync",
+     "sync-gate"
+    ],
+    "edges": [
+     "sync-gatee"
+    ]
+   }
+  ]
+ }
+}

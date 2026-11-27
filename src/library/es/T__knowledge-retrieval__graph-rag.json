@@ -1,0 +1,375 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "graph-rag",
+ "name": "Graph RAG(GRAG)",
+ "icon": "🕸️",
+ "complexity": "high",
+ "description": "RAG potenciado con grafos de conocimiento que usa relaciones entre entidades y detección de comunidades para consultas de comprensión global",
+ "features": [
+  "Construcción de grafos de conocimiento de entidades",
+  "Algoritmos de detección de comunidades",
+  "Procesamiento de consultas globales",
+  "Caminos de razonamiento multisalto",
+  "Resumen jerárquico",
+  "Recuperación consciente de las relaciones"
+ ],
+ "tldr": {
+  "what": "Construye un grafo de conocimiento de entidades a partir de documentos, detecta comunidades dentro de él y luego responde las consultas resumiendo las comunidades relevantes en lugar de recuperar chunks individuales.",
+  "when": "Responder preguntas analíticas amplias sobre grandes colecciones de documentos donde las relaciones entre entidades y las agrupaciones temáticas importan más que la coincidencia de palabras clave.",
+  "watchOut": "La construcción del grafo y la detección de comunidades son computacionalmente costosas; la calidad se degrada drásticamente si la extracción de entidades o la identificación de relaciones fallan en las etapas iniciales."
+ },
+ "overview": {
+  "pattern": "RAG basado en grafos de conocimiento con detección de comunidades y resumen jerárquico para razonamiento a gran escala",
+  "why": "Permite razonamiento multisalto complejo y comprensión de relaciones mediante el recorrido estructurado del grafo",
+  "insight": "El enfoque de Microsoft usa algoritmos de detección de comunidades para crear resúmenes jerárquicos para razonamiento global y local",
+  "impl": [
+   {
+    "t": "Extraer y construir",
+    "d": "NER/RE para extraer entidades y relaciones, y construir el grafo de conocimiento"
+   },
+   {
+    "t": "Indexar y almacenar",
+    "d": "Crea índices de grafo y capacidades de búsqueda híbrida texto-vector"
+   },
+   {
+    "t": "Consultar y mapear",
+    "d": "Analiza las entidades de la consulta y las mapea a nodos del grafo"
+   },
+   {
+    "t": "Recorrer y recuperar",
+    "d": "Recorrido multisalto del grafo con expansión acotada"
+   },
+   {
+    "t": "Ensamblar y generar",
+    "d": "Serializa el contexto del grafo y genera la respuesta"
+   }
+  ],
+  "example": "query → entity_linking → graph_traversal → subgraph_assembly → llm_generation → response",
+  "dos": [
+   "Implementa algoritmos de detección de comunidades para resumir grafos a gran escala",
+   "Usa indexación jerárquica con resúmenes de comunidades globales y locales",
+   "Aplica resolución de entidades y deduplicación para mantener la calidad del grafo",
+   "Combina búsqueda vectorial con recorrido del grafo para una recuperación híbrida",
+   "Implementa un recorrido acotado con límites de saltos explícitos (1-3 saltos)"
+  ],
+  "donts": [
+   "Permitir un recorrido del grafo sin control que provoque una explosión de contexto",
+   "Omitir la validación del enlazado de entidades y la puntuación de confianza",
+   "Descuidar el mantenimiento del grafo y la validación de su consistencia",
+   "Crear esquemas excesivamente complejos que perjudiquen el rendimiento de las consultas",
+   "Ignorar el seguimiento de procedencia de las aristas del grafo y de las fuentes de las entidades"
+  ],
+  "use": [
+   "Razonamiento multisalto complejo que requiere comprender las relaciones entre entidades",
+   "Dominios intensivos en conocimiento con información rica e interconectada",
+   "Datos empresariales con esquemas y relaciones de entidades bien definidos",
+   "Verificación de hechos que requiere caminos de evidencia estructurados",
+   "Bases de conocimiento a gran escala que necesitan resumen jerárquico"
+  ],
+  "avoid": [
+   "Consultas factuales simples que un RAG basado en documentos atiende adecuadamente",
+   "Dominios con baja calidad de extracción de entidades y de modelado de relaciones",
+   "Aplicaciones en tiempo real con requisitos estrictos de latencia",
+   "Datasets pequeños donde la complejidad del grafo supera los beneficios de la recuperación",
+   "Aplicaciones que carecen de esquemas de entidades u ontologías bien definidos"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de construcción del grafo",
+    "d": "Precisión/recall de las entidades y relaciones extraídas"
+   },
+   {
+    "n": "Exactitud de la detección de comunidades",
+    "d": "Coherencia y relevancia de las comunidades detectadas"
+   },
+   {
+    "n": "Relevancia de la recuperación",
+    "d": "Proporción de subgrafos relevantes en los resultados de la consulta"
+   },
+   {
+    "n": "Razonamiento multisalto",
+    "d": "Exactitud de la inferencia de relaciones complejas"
+   },
+   {
+    "n": "Completitud del contexto",
+    "d": "Cobertura de los vecindarios relevantes del grafo"
+   },
+   {
+    "n": "Tiempo de respuesta de la consulta",
+    "d": "Latencia de extremo a extremo, incluidas las operaciones de grafo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación biomédica",
+    "d": "Exploración de relaciones fármaco-enfermedad-gen con integración de literatura científica"
+   },
+   {
+    "n": "Análisis financiero",
+    "d": "Modelado de relaciones empresa-industria-mercado para investigación de inversiones"
+   },
+   {
+    "n": "Investigación jurídica",
+    "d": "Mapeo de relaciones de jurisprudencia con análisis de precedentes y citas"
+   },
+   {
+    "n": "Conocimiento empresarial",
+    "d": "Modelado de relaciones organizacionales con conexiones entre departamentos y proyectos"
+   },
+   {
+    "n": "Investigación académica",
+    "d": "Análisis de redes de citas y grafos de colaboración en investigación"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Graph RAG (RAG potenciado con grafos de conocimiento)",
+  "description": "Sistema de recuperación mejorado que usa grafos de conocimiento para comprender las relaciones entre entidades y ofrecer respuestas más precisas y contextualmente relevantes aprovechando conexiones de conocimiento estructurado.",
+  "nodes": [
+   {
+    "id": "indexing-phase",
+    "label": "📚 FASE DE INDEXACIÓN\n(Configuración única)",
+    "x": 150,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "document-processing",
+    "label": "📄 Procesamiento de documentos\nDocumentos corporativos\n+ Extracción de entidades",
+    "x": 150,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "knowledge-graph",
+    "label": "🕸️ Grafo de conocimiento\nEntidades: John, Sarah, AI_Team\nRelaciones: gestiona, lidera, desarrolla",
+    "x": 150,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "community-detection",
+    "label": "🏘️ Detección de comunidades\nClúster 1: Liderazgo\nClúster 2: Desarrollo de IA\nClúster 3: Marketing",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "community-summaries",
+    "label": "📋 Resúmenes de comunidades\n\"El equipo de liderazgo se enfoca\nen iniciativas estratégicas de IA\"\n+ resúmenes jerárquicos",
+    "x": 150,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "global-query",
+    "label": "❓ Consulta global\n\"¿Cuáles son los principales\ntemas estratégicos de\nnuestras iniciativas de IA?\"",
+    "x": 650,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "query-analysis",
+    "label": "🔍 Análisis de la consulta\nDetecta: alcance global\nRequiere: comprensión\nentre comunidades",
+    "x": 650,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "community-matching",
+    "label": "🎯 Coincidencia de comunidades\nComunidades relevantes:\n✓ Liderazgo\n✓ Desarrollo de IA",
+    "x": 650,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "hierarchical-retrieval",
+    "label": "📊 Recuperación jerárquica\nNivel 1: Resúmenes de comunidades\nNivel 2: Relaciones entre entidades\nNivel 3: Documentos originales",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "cross-community-synthesis",
+    "label": "🔗 Síntesis entre comunidades\nConecta temas entre\nlas comunidades de\nLiderazgo + Desarrollo de IA",
+    "x": 650,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "global-context",
+    "label": "🌐 Ensamblaje del contexto global\nContexto estructurado\nmultinivel con relaciones\nentre entidades",
+    "x": 650,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "final-generation",
+    "label": "🤖 Generación de la respuesta global\n\"Temas principales de IA: liderazgo\nen innovación, IA ética,\ncolaboración entre equipos\"",
+    "x": 650,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "final-answer",
+    "label": "✅ Respuesta integral\nPerspectivas globales sobre\nla estructura organizacional\ncon contexto de entidades",
+    "x": 400,
+    "y": 750,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "indexing-e1",
+    "s": "indexing-phase",
+    "t": "document-processing",
+    "label": "inicio"
+   },
+   {
+    "id": "indexing-e2",
+    "s": "document-processing",
+    "t": "knowledge-graph",
+    "label": "extraer entidades"
+   },
+   {
+    "id": "indexing-e3",
+    "s": "knowledge-graph",
+    "t": "community-detection",
+    "label": "agrupar"
+   },
+   {
+    "id": "indexing-e4",
+    "s": "community-detection",
+    "t": "community-summaries",
+    "label": "resumir"
+   },
+   {
+    "id": "query-e1",
+    "s": "global-query",
+    "t": "query-analysis",
+    "label": "analizar"
+   },
+   {
+    "id": "query-e2",
+    "s": "query-analysis",
+    "t": "community-matching",
+    "label": "coincidir alcance"
+   },
+   {
+    "id": "query-e3",
+    "s": "community-matching",
+    "t": "hierarchical-retrieval",
+    "label": "recuperar"
+   },
+   {
+    "id": "query-e4",
+    "s": "hierarchical-retrieval",
+    "t": "cross-community-synthesis",
+    "label": "sintetizar"
+   },
+   {
+    "id": "query-e5",
+    "s": "cross-community-synthesis",
+    "t": "global-context",
+    "label": "estructurar"
+   },
+   {
+    "id": "query-e6",
+    "s": "global-context",
+    "t": "final-generation",
+    "label": "generar"
+   },
+   {
+    "id": "query-e7",
+    "s": "final-generation",
+    "t": "final-answer",
+    "label": "salida"
+   },
+   {
+    "id": "cross-phase-1",
+    "s": "community-summaries",
+    "t": "hierarchical-retrieval",
+    "label": "usar resúmenes"
+   },
+   {
+    "id": "cross-phase-2",
+    "s": "knowledge-graph",
+    "t": "cross-community-synthesis",
+    "label": "relaciones entre entidades"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Construcción del grafo de conocimiento",
+    "description": "Los documentos se procesan para extraer entidades y relaciones, y se construye un grafo de conocimiento con detección de comunidades para identificar clústeres organizacionales.",
+    "input": "",
+    "nodes": [
+     "indexing-phase",
+     "document-processing",
+     "knowledge-graph",
+     "community-detection",
+     "community-summaries"
+    ],
+    "edges": [
+     "indexing-e1",
+     "indexing-e2",
+     "indexing-e3",
+     "indexing-e4"
+    ]
+   },
+   {
+    "title": "Procesamiento de consultas globales",
+    "description": "La consulta sobre 'temas estratégicos de IA' se analiza como una que requiere comprensión global a través de múltiples comunidades organizacionales.",
+    "input": "",
+    "nodes": [
+     "global-query",
+     "query-analysis",
+     "community-matching"
+    ],
+    "edges": [
+     "query-e1",
+     "query-e2"
+    ]
+   },
+   {
+    "title": "Recuperación jerárquica multinivel",
+    "description": "El sistema recupera en múltiples niveles: resúmenes de comunidades para temas amplios, relaciones entre entidades para las conexiones y documentos originales para los detalles.",
+    "input": "",
+    "nodes": [
+     "hierarchical-retrieval"
+    ],
+    "edges": [
+     "query-e3",
+     "cross-phase-1"
+    ]
+   },
+   {
+    "title": "Síntesis entre comunidades",
+    "description": "La información de las comunidades de Liderazgo y de Desarrollo de IA se sintetiza usando las relaciones entre entidades para identificar temas en común.",
+    "input": "",
+    "nodes": [
+     "cross-community-synthesis",
+     "global-context"
+    ],
+    "edges": [
+     "query-e4",
+     "query-e5",
+     "cross-phase-2"
+    ]
+   },
+   {
+    "title": "Generación de la respuesta global",
+    "description": "Se genera una respuesta integral a partir del contexto multinivel, que ofrece perspectivas organizacionales imposibles de obtener con la recuperación tradicional de documentos.",
+    "input": "",
+    "nodes": [
+     "final-generation",
+     "final-answer"
+    ],
+    "edges": [
+     "query-e6",
+     "query-e7"
+    ]
+   }
+  ]
+ }
+}

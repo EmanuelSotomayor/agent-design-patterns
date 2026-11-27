@@ -1,0 +1,485 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "online-learning-adaptation",
+ "name": "Online Learning for Agents(OLA)",
+ "icon": "🌊",
+ "complexity": "high",
+ "description": "Actualización incremental de un modelo a partir de un flujo de datos, controlando la deriva, los bucles de retroalimentación y el riesgo de rollback",
+ "features": [
+  "Evaluación precuencial",
+  "Actualizaciones incrementales del modelo",
+  "Detección de deriva de concepto",
+  "Replay acotado o ventanas móviles",
+  "Despliegue shadow y canary",
+  "Versionado y rollback"
+ ],
+ "tldr": {
+  "what": "Reentrena un modelo de forma incremental con datos etiquetados en streaming, mientras detecta la deriva de concepto, versiona las actualizaciones y hace rollback si el desempeño se degrada.",
+  "when": "Clasificadores o rankers en producción que reciben feedback continuo, donde reentrenar con todos los datos históricos es inviable o inseguro.",
+  "watchOut": "Las etiquetas retrasadas o fuera de orden corrompen la señal de entrenamiento; valida el orden de los eventos y maneja explícitamente las correcciones de etiquetas antes de actualizar."
+ },
+ "overview": {
+  "pattern": "Adapta los modelos de forma continua aprendiendo incrementalmente a partir de datos en streaming en tiempo real",
+  "why": "Permite adaptarse a entornos cambiantes, a la deriva de concepto y a patrones en evolución sin un reentrenamiento costoso",
+  "insight": "El aprendizaje secuencial con regret acotado permite que los modelos se mantengan actualizados conservando la eficiencia computacional",
+  "impl": [
+   {
+    "t": "Inicializar",
+    "d": "Configura el modelo con capacidad de aprendizaje incremental"
+   },
+   {
+    "t": "Flujo",
+    "d": "Procesa las muestras de datos secuencialmente a medida que llegan"
+   },
+   {
+    "t": "Actualizar",
+    "d": "Adapta los parámetros del modelo con cada nuevo ejemplo"
+   },
+   {
+    "t": "Regularizar",
+    "d": "Aplica restricciones para evitar el olvido catastrófico"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Haz seguimiento del desempeño y adapta las tasas de aprendizaje dinámicamente"
+   }
+  ],
+  "example": "model + streaming_data → incremental_updates → continuously_adapted_model",
+  "dos": [
+   "Implementa tasas de aprendizaje adaptativas según las características de los datos",
+   "Usa replay de memoria o buffers de ensayo para las muestras importantes",
+   "Aplica técnicas de regularización para evitar el olvido catastrófico",
+   "Monitorea la detección de deriva y los indicadores de cambio de concepto",
+   "Implementa algoritmos incrementales eficientes (SGD, gradiente en línea)",
+   "Usa enfoques de ventana deslizante para dar más peso a los datos recientes"
+  ],
+  "donts": [
+   "Actualizar de forma demasiado agresiva sin considerar la estabilidad",
+   "Ignorar la deriva de concepto y los cambios de distribución",
+   "Usar tasas de aprendizaje fijas para todos los tipos de datos",
+   "Aplicarlo sin estrategias adecuadas de gestión de memoria",
+   "Descuidar las restricciones computacionales y de latencia"
+  ],
+  "use": [
+   "Los datos llegan de forma continua en streaming",
+   "La distribución cambia con el tiempo (deriva de concepto)",
+   "La memoria y los recursos computacionales son limitados",
+   "La adaptación en tiempo real es crítica para el desempeño",
+   "El reentrenamiento por batch es demasiado costoso o lento"
+  ],
+  "avoid": [
+   "Los datos están disponibles en lotes completos",
+   "La distribución es estable y estacionaria",
+   "La alta precisión requiere un entrenamiento extenso",
+   "Los recursos computacionales son abundantes",
+   "El entrenamiento offline cumple todos los requisitos"
+  ],
+  "metrics": [
+   {
+    "n": "Cota de regret",
+    "d": "Pérdida acumulada frente al algoritmo offline óptimo"
+   },
+   {
+    "n": "Velocidad de adaptación",
+    "d": "Tiempo para recuperarse de la deriva de concepto"
+   },
+   {
+    "n": "Eficiencia de memoria",
+    "d": "Requisitos de almacenamiento frente a métodos por batch"
+   },
+   {
+    "n": "Costo computacional",
+    "d": "Tiempo de procesamiento por actualización"
+   },
+   {
+    "n": "Tasa de olvido",
+    "d": "Retención del conocimiento a lo largo del tiempo"
+   },
+   {
+    "n": "Precisión de detección de deriva",
+    "d": "Precision/recall para cambios de concepto"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Sistemas de recomendación en tiempo real",
+    "d": "Se adaptan a las preferencias y patrones de comportamiento cambiantes de los usuarios"
+   },
+   {
+    "n": "Trading financiero",
+    "d": "Aprende de la dinámica del mercado y se adapta a los cambios de régimen"
+   },
+   {
+    "n": "Detección de fraude",
+    "d": "Se adapta continuamente a nuevos patrones y técnicas de fraude"
+   },
+   {
+    "n": "Redes de sensores IoT",
+    "d": "Adaptan los modelos a condiciones ambientales cambiantes"
+   },
+   {
+    "n": "Personalización de contenido",
+    "d": "Adaptación en tiempo real al engagement y las preferencias del usuario"
+   },
+   {
+    "n": "Sistemas autónomos",
+    "d": "Aprendizaje continuo a partir de las interacciones con el entorno"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Aprendizaje en línea para agentes",
+  "description": "Sistema de aprendizaje en tiempo real para agentes que deben adaptarse continuamente a entornos cambiantes, como agentes de trading bursátil que se adaptan a condiciones de mercado dinámicas.",
+  "nodes": [
+   {
+    "id": "stock-trading-agent",
+    "label": "📈 Agente de trading bursátil\n¡Los mercados cambian cada segundo!\nDebe adaptarse en tiempo real",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "monday-market",
+    "label": "📅 Lunes 9:30 AM\nLas acciones tecnológicas suben\nEstrategia del agente: comprar tecnología",
+    "x": 100,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "monday-action",
+    "label": "💰 Acción: comprar AAPL\nResultado: +2% de ganancia ✅",
+    "x": 100,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "tuesday-news",
+    "label": "📰 Martes 10:00 AM\nÚltima hora: ¡la Fed sube las tasas!\nEl mercado cambia de golpe",
+    "x": 350,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "old-strategy-fails",
+    "label": "❌ La estrategia anterior falla\nComprar tecnología → pérdida -3%\n¡Hay que adaptarse YA!",
+    "x": 350,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "streaming-data",
+    "label": "🌊 Datos en streaming\nPrecios cada segundo\nNoticias en tiempo real\nSentimiento del mercado",
+    "x": 600,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "incremental-update",
+    "label": "🔄 Actualización incremental\nNo reentrenar todo\nSolo ajustar pesos\nAprender de la última operación",
+    "x": 600,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "pattern-shift",
+    "label": "🔍 Detectar cambio de patrón\nTecnología → Banca\nCrecimiento → Valor\n¡Aversión al riesgo!",
+    "x": 200,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "strategy-update",
+    "label": "🎯 Actualizar estrategia\nVender tecnología\nComprar acciones defensivas\nReducir el tamaño de la posición",
+    "x": 400,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "memory-buffer",
+    "label": "💾 Buffer de memoria\nConservar las últimas 1000 operaciones\nOlvidar patrones antiguos\nMantenerse actualizado",
+    "x": 600,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "wednesday-market",
+    "label": "📅 Miércoles\nLas acciones bancarias repuntan\n¡La jugada defensiva funciona!",
+    "x": 250,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "adapted-action",
+    "label": "💎 Nueva acción: comprar JPM\nResultado: +4% de ganancia ✅\n¡Adaptación exitosa!",
+    "x": 500,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "feature-1",
+    "label": "⚡ En tiempo real\nAprende al instante\nSin esperar batches",
+    "x": 100,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "feature-2",
+    "label": "🎯 Adaptativo\nCambia de estrategia\nsegún se mueve el mercado",
+    "x": 270,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "feature-3",
+    "label": "💾 Eficiente\nSin reentrenamiento completo\nSolo actualizaciones",
+    "x": 440,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "feature-4",
+    "label": "🔄 Continuo\nAprendizaje 24/7\nNunca se detiene",
+    "x": 610,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "adaptive-agent",
+    "label": "🎉 Agente de trading adaptativo\n¡Sobrevivió a la caída del mercado aprendiendo en tiempo real!\n¡Ganancias incluso en mercados volátiles!",
+    "x": 400,
+    "y": 780,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "agent-monday",
+    "s": "stock-trading-agent",
+    "t": "monday-market",
+    "label": ""
+   },
+   {
+    "id": "monday-action-edge",
+    "s": "monday-market",
+    "t": "monday-action",
+    "label": ""
+   },
+   {
+    "id": "agent-tuesday",
+    "s": "stock-trading-agent",
+    "t": "tuesday-news",
+    "label": ""
+   },
+   {
+    "id": "tuesday-fails",
+    "s": "tuesday-news",
+    "t": "old-strategy-fails",
+    "label": ""
+   },
+   {
+    "id": "agent-streaming",
+    "s": "stock-trading-agent",
+    "t": "streaming-data",
+    "label": ""
+   },
+   {
+    "id": "streaming-incremental",
+    "s": "streaming-data",
+    "t": "incremental-update",
+    "label": ""
+   },
+   {
+    "id": "fails-pattern",
+    "s": "old-strategy-fails",
+    "t": "pattern-shift",
+    "label": ""
+   },
+   {
+    "id": "pattern-strategy",
+    "s": "pattern-shift",
+    "t": "strategy-update",
+    "label": ""
+   },
+   {
+    "id": "incremental-strategy",
+    "s": "incremental-update",
+    "t": "strategy-update",
+    "label": ""
+   },
+   {
+    "id": "strategy-memory",
+    "s": "strategy-update",
+    "t": "memory-buffer",
+    "label": ""
+   },
+   {
+    "id": "strategy-wednesday",
+    "s": "strategy-update",
+    "t": "wednesday-market",
+    "label": ""
+   },
+   {
+    "id": "wednesday-adapted",
+    "s": "wednesday-market",
+    "t": "adapted-action",
+    "label": ""
+   },
+   {
+    "id": "incremental-feature1",
+    "s": "incremental-update",
+    "t": "feature-1",
+    "label": ""
+   },
+   {
+    "id": "strategy-feature2",
+    "s": "strategy-update",
+    "t": "feature-2",
+    "label": ""
+   },
+   {
+    "id": "memory-feature3",
+    "s": "memory-buffer",
+    "t": "feature-3",
+    "label": ""
+   },
+   {
+    "id": "streaming-feature4",
+    "s": "streaming-data",
+    "t": "feature-4",
+    "label": ""
+   },
+   {
+    "id": "adapted-final",
+    "s": "adapted-action",
+    "t": "adaptive-agent",
+    "label": ""
+   },
+   {
+    "id": "feature2-final",
+    "s": "feature-2",
+    "t": "adaptive-agent",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Agente de trading bursátil",
+    "description": "El agente debe adaptarse a mercados cambiantes en tiempo real",
+    "input": "",
+    "nodes": [
+     "stock-trading-agent"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Lunes: éxito inicial",
+    "description": "Las acciones tecnológicas suben, compra AAPL, +2% de ganancia",
+    "input": "",
+    "nodes": [
+     "stock-trading-agent",
+     "monday-market",
+     "monday-action"
+    ],
+    "edges": [
+     "agent-monday",
+     "monday-action-edge"
+    ]
+   },
+   {
+    "title": "Martes: shock de mercado",
+    "description": "¡La Fed sube las tasas! La estrategia anterior ahora pierde dinero",
+    "input": "",
+    "nodes": [
+     "stock-trading-agent",
+     "tuesday-news",
+     "old-strategy-fails"
+    ],
+    "edges": [
+     "agent-tuesday",
+     "tuesday-fails"
+    ]
+   },
+   {
+    "title": "Se activa el aprendizaje en línea",
+    "description": "Procesa datos en streaming y actualiza de forma incremental",
+    "input": "",
+    "nodes": [
+     "stock-trading-agent",
+     "streaming-data",
+     "incremental-update"
+    ],
+    "edges": [
+     "agent-streaming",
+     "streaming-incremental"
+    ]
+   },
+   {
+    "title": "Adaptación en tiempo real",
+    "description": "Detecta el cambio de patrón, actualiza la estrategia, gestiona la memoria",
+    "input": "",
+    "nodes": [
+     "old-strategy-fails",
+     "pattern-shift",
+     "strategy-update",
+     "memory-buffer",
+     "incremental-update"
+    ],
+    "edges": [
+     "fails-pattern",
+     "pattern-strategy",
+     "incremental-strategy",
+     "strategy-memory"
+    ]
+   },
+   {
+    "title": "Miércoles: éxito tras adaptarse",
+    "description": "¡La nueva estrategia funciona! Las acciones bancarias repuntan, +4% de ganancia",
+    "input": "",
+    "nodes": [
+     "strategy-update",
+     "wednesday-market",
+     "adapted-action"
+    ],
+    "edges": [
+     "strategy-wednesday",
+     "wednesday-adapted"
+    ]
+   },
+   {
+    "title": "Características clave",
+    "description": "Aprendizaje en tiempo real, adaptativo, eficiente y continuo",
+    "input": "",
+    "nodes": [
+     "incremental-update",
+     "strategy-update",
+     "memory-buffer",
+     "streaming-data",
+     "feature-1",
+     "feature-2",
+     "feature-3",
+     "feature-4"
+    ],
+    "edges": [
+     "incremental-feature1",
+     "strategy-feature2",
+     "memory-feature3",
+     "streaming-feature4"
+    ]
+   },
+   {
+    "title": "Éxito del agente adaptativo",
+    "description": "¡Sobrevivió a la caída del mercado aprendiendo en tiempo real!",
+    "input": "",
+    "nodes": [
+     "adapted-action",
+     "feature-2",
+     "adaptive-agent"
+    ],
+    "edges": [
+     "adapted-final",
+     "feature2-final"
+    ]
+   }
+  ]
+ }
+}

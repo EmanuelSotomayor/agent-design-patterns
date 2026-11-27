@@ -1,0 +1,754 @@
+{
+ "cat": "multi-agent",
+ "slug": "concurrent-orchestration",
+ "name": "Concurrent Orchestration(CO)",
+ "icon": "⚡",
+ "complexity": "medium",
+ "description": "Varios agentes trabajan simultáneamente en la misma tarea para aportar perspectivas diversas y capacidad de procesamiento en paralelo",
+ "features": [
+  "Procesamiento simultáneo",
+  "Perspectivas diversas",
+  "Razonamiento en ensamble",
+  "Lluvia de ideas en paralelo",
+  "Agregación de resultados",
+  "Construcción de consenso"
+ ],
+ "tldr": {
+  "what": "Varios agentes analizan la misma tarea en paralelo, cada uno desde un ángulo distinto, y luego los resultados se combinan en una salida unificada.",
+  "when": "Decisiones complejas que requieren experiencia diversa, donde la velocidad importa más que el refinamiento secuencial de un único análisis.",
+  "watchOut": "Las conclusiones contradictorias entre agentes requieren una lógica de resolución explícita; de lo contrario, obtienes recomendaciones contradictorias en lugar de claridad."
+ },
+ "overview": {
+  "pattern": "Varios agentes ejecutan la misma tarea de forma concurrente para aportar perspectivas diversas y razonamiento en ensamble",
+  "why": "Aprovecha la inteligencia colectiva, reduce el sesgo gracias a la diversidad, aumenta la precisión mediante el consenso y acelera la toma de decisiones",
+  "insight": "Ejecución en paralelo + experiencia diversa + mecanismos de consenso = mayor calidad y velocidad en las decisiones",
+  "impl": [
+   {
+    "t": "Diseñar agentes",
+    "d": "Crea agentes diversos con experiencia complementaria"
+   },
+   {
+    "t": "Configurar ejecución paralela",
+    "d": "Configura el procesamiento concurrente con entradas compartidas"
+   },
+   {
+    "t": "Implementar consenso",
+    "d": "Agrega mecanismos de votación/agregación para sintetizar los resultados"
+   },
+   {
+    "t": "Agregar coordinación",
+    "d": "Implementa un orquestador para la gestión de recursos"
+   },
+   {
+    "t": "Monitorear y optimizar",
+    "d": "Haz seguimiento de las métricas de rendimiento y optimiza el throughput"
+   }
+  ],
+  "example": "FinancialAgent ∥ MarketAgent ∥ RiskAgent ∥ TechAgent → Consenso → Decisión",
+  "dos": [
+   "Diseña agentes con perspectivas y experiencia realmente diversas",
+   "Usa votación ponderada por confianza para mejorar la calidad del consenso",
+   "Implementa mecanismos de timeout para evitar operaciones bloqueantes",
+   "Guarda resultados en cache para evitar procesamiento redundante entre agentes",
+   "Monitorea la calidad del consenso y las métricas de contribución de cada agente",
+   "Usa formatos de salida estructurados para una agregación consistente"
+  ],
+  "donts": [
+   "Crear agentes con roles superpuestos y perspectivas idénticas",
+   "Usar votación por mayoría simple sin considerar los niveles de experiencia",
+   "Permitir tiempo de procesamiento infinito sin protección contra bloqueos mutuos",
+   "Ignorar la contención de recursos y los problemas de presión de memoria",
+   "Aceptar el primer consenso sin validar su calidad"
+  ],
+  "use": [
+   "Necesitas perspectivas diversas en decisiones complejas",
+   "Lluvia de ideas y generación creativa de ideas",
+   "Evaluación de riesgos que requiere múltiples puntos de vista",
+   "Razonamiento en ensamble para lograr mayor precisión",
+   "El procesamiento en paralelo puede reducir la latencia total",
+   "Construcción de consenso en escenarios de alto riesgo"
+  ],
+  "avoid": [
+   "Tareas simples con soluciones óptimas claras",
+   "Sistemas en tiempo real que requieren respuestas inmediatas",
+   "Recursos computacionales limitados",
+   "Tareas con dependencias secuenciales estrictas",
+   "Cuando el costo de coordinar a los agentes supera los beneficios"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad del consenso",
+    "d": "Nivel de acuerdo y puntajes de confianza"
+   },
+   {
+    "n": "Diversidad de respuestas",
+    "d": "Varianza en las perspectivas y soluciones de los agentes"
+   },
+   {
+    "n": "Eficiencia de procesamiento",
+    "d": "Aceleración en paralelo frente a la ejecución secuencial"
+   },
+   {
+    "n": "Precisión de las decisiones",
+    "d": "Rendimiento del ensamble frente a agentes individuales"
+   },
+   {
+    "n": "Uso de recursos",
+    "d": "Uso de CPU/memoria durante la ejecución concurrente"
+   },
+   {
+    "n": "Costo de coordinación",
+    "d": "Tiempo dedicado a la sincronización y la agregación"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de decisiones de inversión",
+    "d": "Análisis en paralelo de agentes financiero, de mercado, de riesgo y tecnológico con consenso ponderado"
+   },
+   {
+    "n": "Diagnóstico médico",
+    "d": "Evaluación concurrente de agentes clínico, radiológico, de laboratorio y especialista con votación por confianza"
+   },
+   {
+    "n": "Generación de contenido creativo",
+    "d": "Lluvia de ideas simultánea de agentes redactor, editor, diseñador y estratega con salidas diversas"
+   },
+   {
+    "n": "Evaluación de ciberseguridad",
+    "d": "Análisis de seguridad en paralelo de agentes de red, aplicaciones, cumplimiento y amenazas con agregación de riesgos"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Análisis FODA concurrente de agentes de operaciones, finanzas, legal y tecnología con construcción de consenso"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Concurrent Orchestration",
+  "description": "Coordina varios agentes que trabajan simultáneamente en el mismo problema complejo, lo que permite procesamiento en paralelo, intercambio de perspectivas y convergencia hacia una solución integrada para obtener resultados completos.",
+  "nodes": [
+   {
+    "id": "complex-problem",
+    "label": "🎯 Problema complejo\n\"Diseñar infraestructura sostenible para una ciudad inteligente\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "orchestration-hub",
+    "label": "🎛️ Hub de orquestación\nCoordina agentes concurrentes",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "task-broadcaster",
+    "label": "📡 Difusor de tareas\nEnvía a todos los agentes",
+    "x": 200,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "context-provider",
+    "label": "📚 Proveedor de contexto\nBase de conocimiento compartida",
+    "x": 400,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "sync-coordinator",
+    "label": "🔄 Coordinador de sincronización\nGestiona el trabajo en paralelo",
+    "x": 600,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "urban-planner",
+    "label": "🏙️ Agente planificador urbano\nTrazado urbano y zonificación\nProgreso: 75%",
+    "x": 50,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "energy-expert",
+    "label": "⚡ Agente experto en energía\nSistemas renovables\nProgreso: 80%",
+    "x": 220,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "transport-specialist",
+    "label": "🚇 Especialista en transporte\nSoluciones de movilidad\nProgreso: 70%",
+    "x": 390,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "environmental-analyst",
+    "label": "🌳 Analista ambiental\nMétricas de sostenibilidad\nProgreso: 85%",
+    "x": 560,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "tech-architect",
+    "label": "💻 Arquitecto tecnológico\nIoT y conectividad\nProgreso: 65%",
+    "x": 730,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "urban-solution",
+    "label": "📋 Diseño urbano\nDistritos de uso mixto",
+    "x": 50,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "energy-solution",
+    "label": "📋 Plan energético\nRed solar + almacenamiento",
+    "x": 220,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "transport-solution",
+    "label": "📋 Mapa de transporte\nRed autónoma",
+    "x": 390,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "environmental-solution",
+    "label": "📋 Estrategia verde\nCarbono negativo",
+    "x": 560,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "tech-solution",
+    "label": "📋 Plano tecnológico\n5G + edge computing",
+    "x": 730,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "perspective-exchange",
+    "label": "💡 Intercambio de perspectivas\nComparte hallazgos en tiempo real",
+    "x": 100,
+    "y": 620,
+    "w": 200
+   },
+   {
+    "id": "conflict-detector",
+    "label": "⚖️ Detector de conflictos\nIdentifica incompatibilidades",
+    "x": 320,
+    "y": 620,
+    "w": 200
+   },
+   {
+    "id": "synergy-finder",
+    "label": "🔗 Buscador de sinergias\nDescubre oportunidades",
+    "x": 540,
+    "y": 620,
+    "w": 200
+   },
+   {
+    "id": "solution-aggregator",
+    "label": "🔀 Agregador de soluciones\nCombina perspectivas",
+    "x": 200,
+    "y": 740,
+    "w": 180
+   },
+   {
+    "id": "consensus-builder",
+    "label": "🤝 Constructor de consenso\nResuelve diferencias",
+    "x": 400,
+    "y": 740,
+    "w": 180
+   },
+   {
+    "id": "integration-engine",
+    "label": "⚙️ Motor de integración\nUnifica soluciones",
+    "x": 600,
+    "y": 740,
+    "w": 180
+   },
+   {
+    "id": "diversity-checker",
+    "label": "🎨 Verificador de diversidad\nAsegura perspectivas variadas",
+    "x": 150,
+    "y": 860,
+    "w": 180
+   },
+   {
+    "id": "completeness-validator",
+    "label": "✅ Validador de completitud\nTodos los aspectos cubiertos",
+    "x": 350,
+    "y": 860,
+    "w": 180
+   },
+   {
+    "id": "quality-assessor",
+    "label": "⭐ Evaluador de calidad\nEvalúa las soluciones",
+    "x": 550,
+    "y": 860,
+    "w": 180
+   },
+   {
+    "id": "final-solution",
+    "label": "✨ Solución integrada\nPlan integral de ciudad inteligente con perspectivas diversas",
+    "x": 400,
+    "y": 980,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "problem-hub",
+    "s": "complex-problem",
+    "t": "orchestration-hub",
+    "label": ""
+   },
+   {
+    "id": "hub-broadcaster",
+    "s": "orchestration-hub",
+    "t": "task-broadcaster",
+    "label": "Distribuir"
+   },
+   {
+    "id": "hub-context",
+    "s": "orchestration-hub",
+    "t": "context-provider",
+    "label": "Contexto"
+   },
+   {
+    "id": "hub-sync",
+    "s": "orchestration-hub",
+    "t": "sync-coordinator",
+    "label": "Coordinar"
+   },
+   {
+    "id": "broadcast-urban",
+    "s": "task-broadcaster",
+    "t": "urban-planner",
+    "label": ""
+   },
+   {
+    "id": "broadcast-energy",
+    "s": "task-broadcaster",
+    "t": "energy-expert",
+    "label": ""
+   },
+   {
+    "id": "broadcast-transport",
+    "s": "task-broadcaster",
+    "t": "transport-specialist",
+    "label": ""
+   },
+   {
+    "id": "broadcast-environmental",
+    "s": "task-broadcaster",
+    "t": "environmental-analyst",
+    "label": ""
+   },
+   {
+    "id": "broadcast-tech",
+    "s": "task-broadcaster",
+    "t": "tech-architect",
+    "label": ""
+   },
+   {
+    "id": "context-urban",
+    "s": "context-provider",
+    "t": "urban-planner",
+    "label": ""
+   },
+   {
+    "id": "context-energy",
+    "s": "context-provider",
+    "t": "energy-expert",
+    "label": ""
+   },
+   {
+    "id": "context-transport",
+    "s": "context-provider",
+    "t": "transport-specialist",
+    "label": ""
+   },
+   {
+    "id": "context-environmental",
+    "s": "context-provider",
+    "t": "environmental-analyst",
+    "label": ""
+   },
+   {
+    "id": "context-tech",
+    "s": "context-provider",
+    "t": "tech-architect",
+    "label": ""
+   },
+   {
+    "id": "urban-output",
+    "s": "urban-planner",
+    "t": "urban-solution",
+    "label": ""
+   },
+   {
+    "id": "energy-output",
+    "s": "energy-expert",
+    "t": "energy-solution",
+    "label": ""
+   },
+   {
+    "id": "transport-output",
+    "s": "transport-specialist",
+    "t": "transport-solution",
+    "label": ""
+   },
+   {
+    "id": "environmental-output",
+    "s": "environmental-analyst",
+    "t": "environmental-solution",
+    "label": ""
+   },
+   {
+    "id": "tech-output",
+    "s": "tech-architect",
+    "t": "tech-solution",
+    "label": ""
+   },
+   {
+    "id": "urban-energy-comm",
+    "s": "urban-planner",
+    "t": "energy-expert",
+    "label": "Compartir"
+   },
+   {
+    "id": "energy-transport-comm",
+    "s": "energy-expert",
+    "t": "transport-specialist",
+    "label": "Compartir"
+   },
+   {
+    "id": "transport-environmental-comm",
+    "s": "transport-specialist",
+    "t": "environmental-analyst",
+    "label": "Compartir"
+   },
+   {
+    "id": "environmental-tech-comm",
+    "s": "environmental-analyst",
+    "t": "tech-architect",
+    "label": "Compartir"
+   },
+   {
+    "id": "tech-urban-comm",
+    "s": "tech-architect",
+    "t": "urban-planner",
+    "label": "Compartir"
+   },
+   {
+    "id": "solutions-exchange",
+    "s": "urban-solution",
+    "t": "perspective-exchange",
+    "label": ""
+   },
+   {
+    "id": "solutions-conflict",
+    "s": "transport-solution",
+    "t": "conflict-detector",
+    "label": ""
+   },
+   {
+    "id": "solutions-synergy",
+    "s": "environmental-solution",
+    "t": "synergy-finder",
+    "label": ""
+   },
+   {
+    "id": "exchange-aggregator",
+    "s": "perspective-exchange",
+    "t": "solution-aggregator",
+    "label": ""
+   },
+   {
+    "id": "conflict-consensus",
+    "s": "conflict-detector",
+    "t": "consensus-builder",
+    "label": ""
+   },
+   {
+    "id": "synergy-integration",
+    "s": "synergy-finder",
+    "t": "integration-engine",
+    "label": ""
+   },
+   {
+    "id": "urban-aggregator",
+    "s": "urban-solution",
+    "t": "solution-aggregator",
+    "label": ""
+   },
+   {
+    "id": "energy-aggregator",
+    "s": "energy-solution",
+    "t": "solution-aggregator",
+    "label": ""
+   },
+   {
+    "id": "transport-aggregator",
+    "s": "transport-solution",
+    "t": "solution-aggregator",
+    "label": ""
+   },
+   {
+    "id": "environmental-aggregator",
+    "s": "environmental-solution",
+    "t": "solution-aggregator",
+    "label": ""
+   },
+   {
+    "id": "tech-aggregator",
+    "s": "tech-solution",
+    "t": "solution-aggregator",
+    "label": ""
+   },
+   {
+    "id": "aggregator-diversity",
+    "s": "solution-aggregator",
+    "t": "diversity-checker",
+    "label": ""
+   },
+   {
+    "id": "consensus-completeness",
+    "s": "consensus-builder",
+    "t": "completeness-validator",
+    "label": ""
+   },
+   {
+    "id": "integration-quality",
+    "s": "integration-engine",
+    "t": "quality-assessor",
+    "label": ""
+   },
+   {
+    "id": "diversity-final",
+    "s": "diversity-checker",
+    "t": "final-solution",
+    "label": ""
+   },
+   {
+    "id": "completeness-final",
+    "s": "completeness-validator",
+    "t": "final-solution",
+    "label": ""
+   },
+   {
+    "id": "quality-final",
+    "s": "quality-assessor",
+    "t": "final-solution",
+    "label": ""
+   },
+   {
+    "id": "sync-urban",
+    "s": "sync-coordinator",
+    "t": "urban-planner",
+    "label": "Sincronizar"
+   },
+   {
+    "id": "sync-energy",
+    "s": "sync-coordinator",
+    "t": "energy-expert",
+    "label": "Sincronizar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada del problema",
+    "description": "Problema complejo que requiere perspectivas diversas",
+    "input": "",
+    "nodes": [
+     "complex-problem"
+    ],
+    "edges": [
+     "problem-hub"
+    ]
+   },
+   {
+    "title": "Configuración de la orquestación",
+    "description": "Inicializa el hub con los sistemas de difusión y coordinación",
+    "input": "",
+    "nodes": [
+     "orchestration-hub",
+     "task-broadcaster",
+     "context-provider",
+     "sync-coordinator"
+    ],
+    "edges": [
+     "hub-broadcaster",
+     "hub-context",
+     "hub-sync"
+    ]
+   },
+   {
+    "title": "Difusión simultánea",
+    "description": "El problema se envía a todos los agentes al mismo tiempo",
+    "input": "",
+    "nodes": [
+     "task-broadcaster",
+     "urban-planner",
+     "energy-expert",
+     "transport-specialist",
+     "environmental-analyst",
+     "tech-architect"
+    ],
+    "edges": [
+     "broadcast-urban",
+     "broadcast-energy",
+     "broadcast-transport",
+     "broadcast-environmental",
+     "broadcast-tech"
+    ]
+   },
+   {
+    "title": "Contexto compartido",
+    "description": "Todos los agentes reciben la misma base de conocimiento y las mismas restricciones",
+    "input": "",
+    "nodes": [
+     "context-provider",
+     "urban-planner",
+     "energy-expert",
+     "transport-specialist",
+     "environmental-analyst",
+     "tech-architect"
+    ],
+    "edges": [
+     "context-urban",
+     "context-energy",
+     "context-transport",
+     "context-environmental",
+     "context-tech"
+    ]
+   },
+   {
+    "title": "Procesamiento concurrente",
+    "description": "Todos los agentes trabajan simultáneamente en el mismo problema",
+    "input": "",
+    "nodes": [
+     "urban-planner",
+     "energy-expert",
+     "transport-specialist",
+     "environmental-analyst",
+     "tech-architect"
+    ],
+    "edges": [
+     "sync-urban",
+     "sync-energy"
+    ]
+   },
+   {
+    "title": "Comunicación entre agentes",
+    "description": "Los agentes comparten hallazgos mientras trabajan",
+    "input": "",
+    "nodes": [
+     "urban-planner",
+     "energy-expert",
+     "transport-specialist",
+     "environmental-analyst",
+     "tech-architect"
+    ],
+    "edges": [
+     "urban-energy-comm",
+     "energy-transport-comm",
+     "transport-environmental-comm",
+     "environmental-tech-comm",
+     "tech-urban-comm"
+    ]
+   },
+   {
+    "title": "Soluciones en paralelo",
+    "description": "Cada agente produce su solución desde su perspectiva",
+    "input": "",
+    "nodes": [
+     "urban-solution",
+     "energy-solution",
+     "transport-solution",
+     "environmental-solution",
+     "tech-solution"
+    ],
+    "edges": [
+     "urban-output",
+     "energy-output",
+     "transport-output",
+     "environmental-output",
+     "tech-output"
+    ]
+   },
+   {
+    "title": "Análisis de perspectivas",
+    "description": "Intercambia hallazgos, detecta conflictos y encuentra sinergias",
+    "input": "",
+    "nodes": [
+     "perspective-exchange",
+     "conflict-detector",
+     "synergy-finder"
+    ],
+    "edges": [
+     "solutions-exchange",
+     "solutions-conflict",
+     "solutions-synergy"
+    ]
+   },
+   {
+    "title": "Convergencia de soluciones",
+    "description": "Agrega todas las perspectivas en una solución unificada",
+    "input": "",
+    "nodes": [
+     "solution-aggregator",
+     "consensus-builder",
+     "integration-engine"
+    ],
+    "edges": [
+     "exchange-aggregator",
+     "conflict-consensus",
+     "synergy-integration",
+     "urban-aggregator",
+     "energy-aggregator",
+     "transport-aggregator",
+     "environmental-aggregator",
+     "tech-aggregator"
+    ]
+   },
+   {
+    "title": "Validación de calidad",
+    "description": "Asegura diversidad, completitud y calidad",
+    "input": "",
+    "nodes": [
+     "diversity-checker",
+     "completeness-validator",
+     "quality-assessor"
+    ],
+    "edges": [
+     "aggregator-diversity",
+     "consensus-completeness",
+     "integration-quality"
+    ]
+   },
+   {
+    "title": "Integración final",
+    "description": "Entrega una solución integral con todas las perspectivas",
+    "input": "",
+    "nodes": [
+     "final-solution"
+    ],
+    "edges": [
+     "diversity-final",
+     "completeness-final",
+     "quality-final"
+    ]
+   }
+  ]
+ }
+}

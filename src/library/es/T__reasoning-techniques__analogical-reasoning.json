@@ -1,0 +1,410 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "analogical-reasoning",
+ "name": "Analogical Reasoning(AR)",
+ "icon": "🔄",
+ "complexity": "medium",
+ "description": "Resuelve problemas encontrando y aplicando patrones similares de dominios conocidos",
+ "features": [
+  "Reconocimiento de patrones entre dominios",
+  "Transferencia de conocimiento desde contextos familiares",
+  "Mapeo de similitudes estructurales",
+  "Resolución creativa de problemas",
+  "Aprendizaje a partir de ejemplos",
+  "Generación de ideas entre dominios"
+ ],
+ "tldr": {
+  "what": "Resuelve problemas nuevos mapeando estructuras de dominios familiares a otros desconocidos, transfiriendo patrones conocidos entre contextos.",
+  "when": "Problemas de diseño o estrategia donde no tienes un precedente directo, pero puedes encontrar sistemas estructuralmente similares en otros campos.",
+  "watchOut": "Las similitudes superficiales pueden ocultar diferencias críticas; los patrones transferidos suelen fallar cuando las restricciones o los incentivos del dominio realmente divergen."
+ },
+ "overview": {
+  "pattern": "Razonamiento que encuentra similitudes estructurales entre dominios familiares y desconocidos para transferir conocimiento y soluciones",
+  "why": "Aprovecha el conocimiento existente para resolver problemas nuevos identificando patrones y relaciones que trascienden dominios específicos",
+  "insight": "Identificar la fuente análoga → Mapear las relaciones estructurales → Transferir ideas → Adaptar al contexto objetivo → Validar",
+  "impl": [
+   {
+    "t": "Identificación de la fuente",
+    "d": "Encontrar situaciones o dominios análogos relevantes"
+   },
+   {
+    "t": "Mapeo estructural",
+    "d": "Identificar correspondencias entre la fuente y el objetivo"
+   },
+   {
+    "t": "Transferencia de conocimiento",
+    "d": "Aplicar ideas de la fuente al problema objetivo"
+   },
+   {
+    "t": "Adaptación",
+    "d": "Modificar el conocimiento transferido para el contexto objetivo"
+   },
+   {
+    "t": "Validación",
+    "d": "Verificar la validez de la analogía y la calidad de la solución"
+   }
+  ],
+  "example": "Problema objetivo → Encontrar un caso similar → Mapear la estructura → Transferir la solución → Adaptar y validar",
+  "dos": [
+   "Enfócate en las similitudes estructurales en lugar de las características superficiales",
+   "Usa múltiples analogías para fortalecer el razonamiento",
+   "Mapea explícitamente las relaciones entre la fuente y el objetivo",
+   "Considera las diferencias y las limitaciones del mapeo",
+   "Valida el conocimiento transferido en el dominio objetivo"
+  ],
+  "donts": [
+   "Depender únicamente de similitudes superficiales",
+   "Usar analogías débiles o irrelevantes sin justificación",
+   "Transferir conocimiento sin adaptarlo al contexto",
+   "Ignorar cuándo las analogías dejan de funcionar o fallan",
+   "Extender las analogías más allá de su alcance válido"
+  ],
+  "use": [
+   "Problemas nuevos con soluciones similares existentes",
+   "Resolución creativa de problemas e innovación",
+   "Explicaciones educativas y transferencia de conceptos",
+   "Aplicación de conocimiento entre dominios",
+   "Cuando los métodos de solución directa no son claros"
+  ],
+  "avoid": [
+   "Problemas técnicos muy específicos de un dominio",
+   "Cuando los métodos directos son más eficientes",
+   "Problemas que requieren un análisis cuantitativo preciso",
+   "Cuando no existen analogías significativas",
+   "Toma de decisiones críticas en tiempo real"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de la analogía",
+    "d": "Similitud estructural y relevancia para el problema objetivo"
+   },
+   {
+    "n": "Precisión del mapeo",
+    "d": "Corrección de las correspondencias entre fuente y objetivo"
+   },
+   {
+    "n": "Éxito de la transferencia",
+    "d": "Eficacia de la aplicación del conocimiento"
+   },
+   {
+    "n": "Validez de la solución",
+    "d": "Corrección en el dominio objetivo tras la adaptación"
+   },
+   {
+    "n": "Idea creativa",
+    "d": "Soluciones novedosas generadas mediante el pensamiento analógico"
+   },
+   {
+    "n": "Eficiencia del razonamiento",
+    "d": "Velocidad para descubrir la solución frente a los métodos directos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Descubrimiento científico",
+    "d": "La teoría de la evolución de Darwin inspirada en la teoría poblacional de Malthus → Mecanismo de selección natural"
+   },
+   {
+    "n": "Diseño de ingeniería",
+    "d": "La invención del velcro inspirada en las semillas de cardo → Diseño del cierre de gancho y bucle"
+   },
+   {
+    "n": "Estrategia de negocio",
+    "d": "La disrupción de Netflix análoga al modelo minorista de Amazon → Estrategia de streaming basada en plataforma"
+   },
+   {
+    "n": "Arquitectura de software",
+    "d": "El patrón circuit breaker de los sistemas eléctricos → Tolerancia a fallas en sistemas distribuidos"
+   },
+   {
+    "n": "Diagnóstico médico",
+    "d": "La analogía del corazón como bomba para entender problemas circulatorios → Ideas para el enfoque del tratamiento"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Analogical Reasoning",
+  "description": "Resuelve problemas nuevos encontrando y aplicando patrones similares de dominios conocidos, transfiriendo soluciones exitosas entre distintos contextos",
+  "nodes": [
+   {
+    "id": "new-problem",
+    "label": "🚧 Problema nuevo\n\"¿Cómo gestionar la congestión\nvehicular en el centro de la ciudad\nen las horas pico?\"",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "analogy-search",
+    "label": "🔍 Motor de búsqueda de analogías\n\"Buscando patrones similares:\n- Sistemas de control de flujo\n- Cuellos de botella de recursos\n- Gestión de colas\"",
+    "x": 400,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "water-domain",
+    "label": "💧 Sistemas de agua\n\"Tuberías, válvulas, presión\nRegulación del flujo\nGestión de cuellos de botella\"",
+    "x": 150,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "network-domain",
+    "label": "🌐 Tráfico de red\n\"Ancho de banda, routers, paquetes\nBalanceo de carga\nControl de congestión\"",
+    "x": 400,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "airline-domain",
+    "label": "✈️ Programación de aerolíneas\n\"Puertas, pistas, aviones\nGestión de franjas horarias\nMinimización de retrasos\"",
+    "x": 650,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "pattern-extraction",
+    "label": "🧩 Extracción de patrones\n\"Estructura común:\nCapacidad limitada + Alta demanda\n= Necesidad de control de flujo\"",
+    "x": 400,
+    "y": 400,
+    "w": 220
+   },
+   {
+    "id": "water-analogy",
+    "label": "🔄 Mapeo Agua → Tráfico\n\"Diámetro de tubería = Capacidad vial\nVálvula = Semáforo\nPresión = Nivel de congestión\"",
+    "x": 150,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "network-analogy",
+    "label": "🔄 Mapeo Red → Tráfico\n\"Router = Intersección\nPaquete = Vehículo\nBalanceador de carga = Optimizador de rutas\"",
+    "x": 400,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "airline-analogy",
+    "label": "🔄 Mapeo Aerolínea → Tráfico\n\"Franja de pista = Franja horaria vial\nPuerta = Espacio de estacionamiento\nCosto del retraso = Costo de la congestión\"",
+    "x": 650,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "solution-synthesis",
+    "label": "💡 Síntesis de la solución\n\"Combinar ideas:\n1. Precios dinámicos (aerolínea)\n2. Balanceo de carga (red)\n3. Control de flujo (agua)\"",
+    "x": 400,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "adapted-solution",
+    "label": "✅ Solución de tráfico adaptada\n\"Tarificación dinámica por congestión +\nAlgoritmos de enrutamiento inteligente +\nTemporización adaptativa de semáforos\n= 40% de reducción de la congestión\"",
+    "x": 400,
+    "y": 780,
+    "w": 280
+   },
+   {
+    "id": "analogy-validation",
+    "label": "✓ Verificación de validez\n\"¿Se sostienen las analogías?\n- Capacidad limitada ✓\n- Dinámica de flujo ✓\n- Mecanismos de control ✓\"",
+    "x": 100,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "boundary-awareness",
+    "label": "⚠️ Conciencia de los límites\n\"Dónde fallan las analogías:\n- Comportamiento humano ≠ paquetes\n- Preocupaciones de equidad social\n- Restricciones políticas\"",
+    "x": 700,
+    "y": 650,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "new-problem",
+    "t": "analogy-search",
+    "label": "buscar analogías"
+   },
+   {
+    "id": "e2a",
+    "s": "analogy-search",
+    "t": "water-domain",
+    "label": "similitud de flujo"
+   },
+   {
+    "id": "e2b",
+    "s": "analogy-search",
+    "t": "network-domain",
+    "label": "similitud de congestión"
+   },
+   {
+    "id": "e2c",
+    "s": "analogy-search",
+    "t": "airline-domain",
+    "label": "similitud de programación"
+   },
+   {
+    "id": "e3a",
+    "s": "water-domain",
+    "t": "pattern-extraction",
+    "label": "extraer patrones"
+   },
+   {
+    "id": "e3b",
+    "s": "network-domain",
+    "t": "pattern-extraction",
+    "label": "extraer patrones"
+   },
+   {
+    "id": "e3c",
+    "s": "airline-domain",
+    "t": "pattern-extraction",
+    "label": "extraer patrones"
+   },
+   {
+    "id": "e4a",
+    "s": "water-domain",
+    "t": "water-analogy",
+    "label": "mapear conceptos"
+   },
+   {
+    "id": "e4b",
+    "s": "network-domain",
+    "t": "network-analogy",
+    "label": "mapear conceptos"
+   },
+   {
+    "id": "e4c",
+    "s": "airline-domain",
+    "t": "airline-analogy",
+    "label": "mapear conceptos"
+   },
+   {
+    "id": "e5a",
+    "s": "water-analogy",
+    "t": "solution-synthesis",
+    "label": "aportar idea"
+   },
+   {
+    "id": "e5b",
+    "s": "network-analogy",
+    "t": "solution-synthesis",
+    "label": "aportar idea"
+   },
+   {
+    "id": "e5c",
+    "s": "airline-analogy",
+    "t": "solution-synthesis",
+    "label": "aportar idea"
+   },
+   {
+    "id": "e6a",
+    "s": "pattern-extraction",
+    "t": "analogy-validation",
+    "label": "validar"
+   },
+   {
+    "id": "e6b",
+    "s": "pattern-extraction",
+    "t": "boundary-awareness",
+    "label": "verificar límites"
+   },
+   {
+    "id": "e7a",
+    "s": "analogy-validation",
+    "t": "solution-synthesis",
+    "label": "validez confirmada"
+   },
+   {
+    "id": "e7b",
+    "s": "boundary-awareness",
+    "t": "solution-synthesis",
+    "label": "restringir la solución"
+   },
+   {
+    "id": "e8",
+    "s": "solution-synthesis",
+    "t": "adapted-solution",
+    "label": "implementar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Reconocimiento del problema y búsqueda de analogías",
+    "description": "Un nuevo problema de congestión vehicular desencadena la búsqueda de dominios análogos con patrones similares: sistemas de control de flujo, cuellos de botella de recursos y gestión de colas.",
+    "input": "",
+    "nodes": [
+     "new-problem",
+     "analogy-search",
+     "water-domain",
+     "network-domain",
+     "airline-domain"
+    ],
+    "edges": [
+     "e1",
+     "e2a",
+     "e2b",
+     "e2c"
+    ]
+   },
+   {
+    "title": "Extracción de patrones entre dominios",
+    "description": "El sistema identifica una estructura abstracta común en todos los dominios: capacidad limitada + alta demanda = necesidad de mecanismos de control de flujo.",
+    "input": "",
+    "nodes": [
+     "pattern-extraction"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c"
+    ]
+   },
+   {
+    "title": "Mapeo de conceptos y transferencia analógica",
+    "description": "Crea mapeos específicos entre los dominios y el tráfico: diámetro de tubería→capacidad vial, router→intersección, franja de pista→franja horaria vial.",
+    "input": "",
+    "nodes": [
+     "water-analogy",
+     "network-analogy",
+     "airline-analogy"
+    ],
+    "edges": [
+     "e4a",
+     "e4b",
+     "e4c"
+    ]
+   },
+   {
+    "title": "Validación de analogías y detección de límites",
+    "description": "Valida que las analogías centrales se sostienen (capacidad limitada, dinámica de flujo, mecanismos de control) mientras identifica dónde fallan (comportamiento humano ≠ paquetes de datos).",
+    "input": "",
+    "nodes": [
+     "analogy-validation",
+     "boundary-awareness"
+    ],
+    "edges": [
+     "e6a",
+     "e6b"
+    ]
+   },
+   {
+    "title": "Síntesis de soluciones de múltiples dominios",
+    "description": "Combina las ideas validadas de todas las analogías: precios dinámicos (aerolínea) + balanceo de carga (red) + control de flujo (agua) = una solución de tráfico que ninguna analogía por sí sola habría producido.",
+    "input": "",
+    "nodes": [
+     "solution-synthesis",
+     "adapted-solution"
+    ],
+    "edges": [
+     "e5a",
+     "e5b",
+     "e5c",
+     "e7a",
+     "e7b",
+     "e8"
+    ]
+   }
+  ]
+ }
+}

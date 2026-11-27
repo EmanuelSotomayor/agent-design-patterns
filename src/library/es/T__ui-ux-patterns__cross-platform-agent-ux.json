@@ -1,0 +1,452 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "cross-platform-agent-ux",
+ "name": "Cross-Platform Agent UX(CPX)",
+ "icon": "📱",
+ "complexity": "high",
+ "description": "Patrones de experiencia de agente consistentes entre dispositivos y plataformas, con sincronización y adaptación fluidas",
+ "features": [
+  "Experiencia de agente unificada en escritorio, móvil y web",
+  "Sincronización fluida entre dispositivos y gestión del estado",
+  "Adaptación optimizada para cada plataforma sin perder la consistencia",
+  "Activación de funciones según el contexto y las capacidades del dispositivo"
+ ],
+ "tldr": {
+  "what": "Mantiene un comportamiento y un estado del agente idénticos en escritorio, móvil y web sincronizando el contexto y adaptando la UI a las restricciones de cada plataforma.",
+  "when": "Los usuarios necesitan cambiar de dispositivo a mitad de una tarea sin perder el progreso, o tu agente atiende varios formatos de dispositivo con funcionalidades superpuestas.",
+  "watchOut": "La latencia de sincronización y los conflictos se multiplican con la cantidad de dispositivos; la divergencia del estado con mala conectividad rompe rápidamente la confianza del usuario."
+ },
+ "overview": {
+  "pattern": "Experiencias de agente consistentes en escritorio, móvil y web con sincronización fluida y adaptación optimizada para cada plataforma",
+  "why": "Permite flujos de trabajo fluidos entre varios dispositivos, mantiene el contexto del usuario y aprovecha las fortalezas únicas de cada plataforma",
+  "insight": "Consistencia de diseño + adaptación a la plataforma + sincronización en tiempo real → experiencia unificada entre dispositivos",
+  "impl": [
+   {
+    "t": "Sistema de diseño",
+    "d": "Colores, tipografía y layouts unificados"
+   },
+   {
+    "t": "Sincronización del estado",
+    "d": "Sincronización entre dispositivos en tiempo real"
+   },
+   {
+    "t": "Adaptación a la plataforma",
+    "d": "Optimizaciones específicas por dispositivo"
+   },
+   {
+    "t": "Transferencia de contexto",
+    "d": "Cambio de dispositivo sin fricciones"
+   },
+   {
+    "t": "Paridad de funciones",
+    "d": "Capacidades consistentes en todas las plataformas"
+   }
+  ],
+  "example": "design_system → state_sync → platform_adaptation → context_transfer → feature_parity",
+  "dos": [
+   "Mantén la consistencia visual en todas las plataformas",
+   "Adapta las interacciones a las convenciones de cada plataforma (gestos, navegación)",
+   "Sincroniza en tiempo real el estado del agente y el historial de conversación",
+   "Preserva el contexto cuando los usuarios cambian de dispositivo",
+   "Optimiza para las fortalezas y capacidades de cada plataforma"
+  ],
+  "donts": [
+   "Crear experiencias completamente distintas por plataforma",
+   "Ignorar los patrones de interacción propios de cada plataforma",
+   "Perder el estado de la conversación durante las transiciones entre dispositivos",
+   "Forzar las interfaces móviles a imitar los layouts de escritorio",
+   "Sacrificar el rendimiento por la consistencia visual"
+  ],
+  "use": [
+   "Flujos de trabajo de usuarios en varios dispositivos",
+   "Aplicaciones orientadas al consumidor",
+   "Herramientas de productividad empresarial",
+   "Experiencias de agente mobile-first"
+  ],
+  "avoid": [
+   "Herramientas especializadas de una sola plataforma",
+   "Entornos con recursos limitados",
+   "Se requieren funciones específicas de la plataforma",
+   "Aplicaciones simples de un solo propósito"
+  ],
+  "metrics": [
+   {
+    "n": "Uso entre dispositivos",
+    "d": "% de usuarios activos en varias plataformas"
+   },
+   {
+    "n": "Éxito en la transferencia de contexto",
+    "d": "Tasa de cambios de dispositivo sin fricciones"
+   },
+   {
+    "n": "Puntuación de consistencia entre plataformas",
+    "d": "Calificación de uniformidad de UI/UX"
+   },
+   {
+    "n": "Paridad de funciones",
+    "d": "Disponibilidad de capacidades en todas las plataformas"
+   },
+   {
+    "n": "Rendimiento de la sincronización",
+    "d": "Latencia de la sincronización del estado en tiempo real"
+   },
+   {
+    "n": "Satisfacción del usuario",
+    "d": "Calificación de la experiencia multiplataforma"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Asistente personal",
+    "d": "voz en el móvil → respuestas detalladas en escritorio → revisión visual en tablet"
+   },
+   {
+    "n": "Herramientas empresariales",
+    "d": "trabajo de campo en el móvil → análisis en escritorio → presentaciones en tablet"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "contacto inicial por teléfono → resolución detallada en la web → seguimiento en la app"
+   },
+   {
+    "n": "E-commerce",
+    "d": "navegación en el móvil → compra en escritorio → seguimiento del pedido en tablet"
+   },
+   {
+    "n": "Educación",
+    "d": "preguntas rápidas en el móvil → sesiones de estudio en escritorio → contenido interactivo en tablet"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Cross-Platform Agent UX",
+  "description": "Experiencia de agente consistente entre dispositivos y plataformas, de modo que una tarea iniciada en uno continúe en otro sin que el usuario tenga que volver a explicarse",
+  "nodes": [
+   {
+    "id": "crossplatform-challenge",
+    "label": "🌐 Desafío multiplataforma\n\"¿Cómo ofrecer experiencias de agente consistentes\nen dispositivos diversos, adaptándose a las convenciones\nde cada plataforma y manteniendo una sincronización fluida?\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "design-system",
+    "label": "🎨 Base del sistema de diseño\n\"Experiencias cohesivas:\n• Arquitectura de design tokens\n• Lenguaje de diseño universal\n• Consistencia de marca\n• Sistemas basados en componentes\"",
+    "x": 150,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "platform-adaptation",
+    "label": "📱 Adaptación a la plataforma\n\"Optimización por plataforma:\n• Convenciones nativas (HIG, Material)\n• Integración de capacidades del dispositivo\n• Optimización del rendimiento\n• Adaptación al método de entrada\"",
+    "x": 650,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "synchronization-engine",
+    "label": "🔄 Motor de sincronización\n\"Gestión del estado en tiempo real:\n• Arquitectura orientada a eventos\n• Continuidad de la conversación\n• Preservación del contexto\n• Estrategias de resolución de conflictos\"",
+    "x": 100,
+    "y": 350,
+    "w": 260
+   },
+   {
+    "id": "device-interfaces",
+    "label": "💻 Interfaces por dispositivo\n\"Layouts adaptativos:\n• Optimización para móviles\n• Escalado en escritorio\n• Experiencias híbridas en tablet\n• Adaptaciones para Smart TV\"",
+    "x": 400,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "identity-continuity",
+    "label": "👤 Identidad y continuidad\n\"Persistencia entre dispositivos:\n• Estandarización con SCIM\n• Passkeys sincronizables (AAL2)\n• Sincronización de perfiles\n• Gestión de preferencias\"",
+    "x": 700,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "multimodal-interactions",
+    "label": "🎙️ Interacciones multimodales\n\"Métodos de entrada adaptativos:\n• Interfaces táctiles vs. de mouse\n• Interacción por voz (crecimiento del 27%)\n• Reconocimiento de gestos (crecimiento del 17%)\n• Navegación con teclado\"",
+    "x": 150,
+    "y": 500,
+    "w": 260
+   },
+   {
+    "id": "performance-optimization",
+    "label": "⚡ Optimización del rendimiento\n\"Eficiencia por plataforma:\n• Adaptación a la red\n• Gestión de recursos\n• Optimización de la batería\n• Aceleración por hardware\"",
+    "x": 400,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "accessibility-integration",
+    "label": "♿ Integración de accesibilidad\n\"Experiencias inclusivas:\n• APIs de accesibilidad de la plataforma\n• Lectores de pantalla multiplataforma\n• Tecnología de asistencia impulsada por IA\n• Cumplimiento de WCAG 2.1\"",
+    "x": 650,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "development-frameworks",
+    "label": "🛠️ Frameworks de desarrollo\n\"Eficiencia de implementación:\n• Flutter, React Native\n• Kotlin Multiplatform\n• Progressive Web Apps\n• 37% de reducción del tiempo de desarrollo\"",
+    "x": 200,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "industry-success",
+    "label": "🏢 Casos de éxito de la industria\n\"Implementaciones reales:\n• Ecosistema de Microsoft 365\n• Consistencia de Google Workspace\n• Experiencia multiplataforma de Slack\n• Soporte multidispositivo de WhatsApp\"",
+    "x": 600,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "business-impact",
+    "label": "💰 Impacto en el negocio\n\"Qué medir:\n• Tareas retomadas en otro dispositivo vs. abandonadas\n• Retención de usuarios multidispositivo\n• Costo de una superficie compartida vs. varias\n• Mayor satisfacción del usuario\"",
+    "x": 150,
+    "y": 800,
+    "w": 280
+   },
+   {
+    "id": "future-evolution",
+    "label": "🚀 Evolución futura\n\"Tendencias emergentes:\n• Interfaces cerebro-computadora\n• Integración con computación espacial\n• Adaptaciones impulsadas por IA\n• Experiencias sensibles al contexto\"",
+    "x": 650,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "crossplatform-principle",
+    "label": "🎯 Principio de UX multiplataforma\n\"Adaptación cohesiva: los sistemas de diseño con optimizaciones por plataforma son los que retienen a los usuarios multidispositivo\nLa sincronización fluida permite experiencias de usuario continuas en todos los dispositivos\nLa accesibilidad universal con interacciones multimodales crea experiencias de agente inclusivas\"",
+    "x": 400,
+    "y": 950,
+    "w": 550
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "crossplatform-challenge",
+    "t": "design-system",
+    "label": "requiere"
+   },
+   {
+    "id": "e2",
+    "s": "crossplatform-challenge",
+    "t": "platform-adaptation",
+    "label": "necesita"
+   },
+   {
+    "id": "e3",
+    "s": "design-system",
+    "t": "synchronization-engine",
+    "label": "habilita"
+   },
+   {
+    "id": "e4",
+    "s": "design-system",
+    "t": "device-interfaces",
+    "label": "guía"
+   },
+   {
+    "id": "e5",
+    "s": "platform-adaptation",
+    "t": "identity-continuity",
+    "label": "soporta"
+   },
+   {
+    "id": "e6",
+    "s": "synchronization-engine",
+    "t": "multimodal-interactions",
+    "label": "coordina"
+   },
+   {
+    "id": "e7",
+    "s": "device-interfaces",
+    "t": "performance-optimization",
+    "label": "optimiza"
+   },
+   {
+    "id": "e8",
+    "s": "identity-continuity",
+    "t": "accessibility-integration",
+    "label": "garantiza"
+   },
+   {
+    "id": "e9",
+    "s": "multimodal-interactions",
+    "t": "development-frameworks",
+    "label": "implementado mediante"
+   },
+   {
+    "id": "e10",
+    "s": "performance-optimization",
+    "t": "development-frameworks",
+    "label": "logrado a través de"
+   },
+   {
+    "id": "e11",
+    "s": "accessibility-integration",
+    "t": "industry-success",
+    "label": "probado en"
+   },
+   {
+    "id": "e12",
+    "s": "development-frameworks",
+    "t": "business-impact",
+    "label": "impulsa"
+   },
+   {
+    "id": "e13",
+    "s": "industry-success",
+    "t": "business-impact",
+    "label": "genera"
+   },
+   {
+    "id": "e14",
+    "s": "industry-success",
+    "t": "future-evolution",
+    "label": "inspira"
+   },
+   {
+    "id": "e15",
+    "s": "platform-adaptation",
+    "t": "device-interfaces",
+    "label": "informa"
+   },
+   {
+    "id": "e16",
+    "s": "synchronization-engine",
+    "t": "identity-continuity",
+    "label": "mantiene"
+   },
+   {
+    "id": "e17",
+    "s": "device-interfaces",
+    "t": "multimodal-interactions",
+    "label": "soporta"
+   },
+   {
+    "id": "e18",
+    "s": "performance-optimization",
+    "t": "accessibility-integration",
+    "label": "mejora"
+   },
+   {
+    "id": "e19",
+    "s": "business-impact",
+    "t": "future-evolution",
+    "label": "financia"
+   },
+   {
+    "id": "e20",
+    "s": "future-evolution",
+    "t": "crossplatform-principle",
+    "label": "demuestra"
+   },
+   {
+    "id": "e21",
+    "s": "business-impact",
+    "t": "crossplatform-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de diseño multiplataforma",
+    "description": "Las organizaciones necesitan ofrecer experiencias de agente consistentes en dispositivos diversos, adaptándose a las convenciones de cada plataforma, manteniendo el rendimiento y garantizando una sincronización fluida del contexto y las preferencias del usuario.",
+    "input": "",
+    "nodes": [
+     "crossplatform-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Arquitectura de sistemas base",
+    "description": "Aborda los desafíos multiplataforma mediante bases sólidas de sistema de diseño, con arquitectura de design tokens y un lenguaje de diseño universal, combinadas con estrategias de adaptación que respetan las convenciones nativas de cada plataforma sin perder la consistencia de marca.",
+    "input": "",
+    "nodes": [
+     "design-system",
+     "platform-adaptation"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Capacidades centrales de la plataforma",
+    "description": "Los sistemas de diseño habilitan motores de sincronización para la gestión del estado en tiempo real y guían las interfaces específicas de cada dispositivo. La adaptación a la plataforma soporta la continuidad de identidad mediante la estandarización con SCIM y passkeys sincronizables, a la vez que informa el diseño de las interfaces por dispositivo.",
+    "input": "",
+    "nodes": [
+     "synchronization-engine",
+     "device-interfaces",
+     "identity-continuity"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e5",
+     "e15",
+     "e16"
+    ]
+   },
+   {
+    "title": "Integración de interacción y rendimiento",
+    "description": "Los motores de sincronización coordinan las interacciones multimodales entre entradas táctiles, de voz y de gestos. Las interfaces por dispositivo optimizan el rendimiento mediante una gestión de recursos específica de cada plataforma. La continuidad de identidad garantiza la integración de la accesibilidad en todas las plataformas y para todas las necesidades de los usuarios.",
+    "input": "",
+    "nodes": [
+     "multimodal-interactions",
+     "performance-optimization",
+     "accessibility-integration"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e17",
+     "e18"
+    ]
+   },
+   {
+    "title": "Desarrollo e implementación en la industria",
+    "description": "Las interacciones multimodales y la optimización del rendimiento se implementan mediante frameworks de desarrollo como Flutter, React Native y Progressive Web Apps, lo que reduce el trabajo duplicado entre superficies; mide esa reducción en tu propio desarrollo. La integración de la accesibilidad está probada en casos de éxito de la industria como Microsoft 365 y Google Workspace.",
+    "input": "",
+    "nodes": [
+     "development-frameworks",
+     "industry-success"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Impacto en el negocio e innovación",
+    "description": "Los frameworks compartidos rinden frutos al eliminar el trabajo duplicado entre superficies, no por una cifra llamativa; mídelo como tareas retomadas en otro dispositivo y como el costo de una superficie frente a varias. El éxito en la industria genera valor real a la vez que inspira la evolución futura, incluidas las interfaces cerebro-computadora y la integración con computación espacial.",
+    "input": "",
+    "nodes": [
+     "business-impact",
+     "future-evolution"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14",
+     "e19"
+    ]
+   },
+   {
+    "title": "Validación del principio de UX multiplataforma",
+    "description": "La evolución futura y el impacto en el negocio validan el principio central: la adaptación cohesiva mediante sistemas de diseño con optimizaciones por plataforma logra mejoras significativas en la retención, la sincronización fluida permite experiencias continuas y la accesibilidad universal crea interacciones de agente inclusivas.",
+    "input": "",
+    "nodes": [
+     "crossplatform-principle"
+    ],
+    "edges": [
+     "e20",
+     "e21"
+    ]
+   }
+  ]
+ }
+}

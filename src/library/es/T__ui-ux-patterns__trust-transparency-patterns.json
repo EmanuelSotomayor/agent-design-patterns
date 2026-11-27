@@ -1,0 +1,417 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "trust-transparency-patterns",
+ "name": "Trust and Transparency Patterns(TTP)",
+ "icon": "🔍",
+ "complexity": "high",
+ "description": "Patrones de diseño para generar confianza en el usuario mediante interfaces de IA explicable, transparencia en las decisiones y atribución de fuentes",
+ "features": [
+  "Interfaces de IA explicable con divulgación progresiva",
+  "Visualización de decisiones y transparencia del razonamiento",
+  "Sistemas de atribución de fuentes y citas",
+  "Indicadores de confianza y comunicación de la incertidumbre"
+ ],
+ "tldr": {
+  "what": "Expone el razonamiento de la IA, las fuentes de datos y los niveles de confianza mediante explicaciones desplegables, indicadores visuales y desgloses de decisiones que los usuarios pueden inspeccionar.",
+  "when": "Decisiones de alto impacto, dominios regulados o cuando los usuarios necesitan verificar la salida de la IA antes de actuar según sus recomendaciones o el contenido generado.",
+  "watchOut": "Explicar de más genera sobrecarga cognitiva; los usuarios ignoran la transparencia detallada si es demasiado densa o siempre está visible por defecto."
+ },
+ "overview": {
+  "pattern": "Interfaces de IA explicable con transparencia en las decisiones, atribución de fuentes y patrones que generan confianza para un despliegue responsable de la IA",
+  "why": "Genera confianza en el usuario, cumple requisitos regulatorios, permite tomar decisiones informadas y asegura la rendición de cuentas en los sistemas de IA",
+  "insight": "Framework de transparencia de tres niveles (qué/cómo/por qué) con divulgación progresiva: confianza a través de la comprensión, no de la fe ciega",
+  "impl": [
+   {
+    "t": "Diseñar el framework de transparencia",
+    "d": "Implementa transparencia en tres niveles: qué/cómo/por qué, con capas algorítmica, de interacción y social"
+   },
+   {
+    "t": "Construir componentes de explicabilidad",
+    "d": "Crea interfaces de divulgación progresiva con importancia de características y explicaciones contrafactuales"
+   },
+   {
+    "t": "Agregar indicadores de confianza",
+    "d": "Implementa visualización de la confianza, atribución de fuentes y marcadores de contenido generado por IA"
+   },
+   {
+    "t": "Crear visualización de decisiones",
+    "d": "Diseña árboles de decisión, rutas de razonamiento e interfaces de exploración interactiva"
+   },
+   {
+    "t": "Implementar Model Cards",
+    "d": "Construye documentación estructurada con una arquitectura de información para múltiples partes interesadas"
+   }
+  ],
+  "example": "transparency_levels → explainability_ui → trust_signals → decision_viz → model_documentation",
+  "dos": [
+   "Usa indicadores visuales claros (como los destellos de Einstein) para señalar el contenido generado por IA",
+   "Implementa tres niveles de transparencia: qué pasó, cómo se tomaron las decisiones y por qué importan",
+   "Ofrece divulgación progresiva con paneles de explicación desplegables",
+   "Incluye atribución de fuentes y citas para todas las recomendaciones de la IA",
+   "Diseña para las necesidades de distintas partes interesadas: explicaciones técnicas, legales y fáciles de entender para el usuario",
+   "Implementa fricción intencional para las decisiones de alto impacto con diálogos de confirmación",
+   "Usa explicaciones contrafactuales para mostrar escenarios de \"qué pasaría si\"",
+   "Crea model cards interactivas con una arquitectura de información en capas"
+  ],
+  "donts": [
+   "Ocultar la incertidumbre o presentar las decisiones de la IA como infalibles",
+   "Usar jerga técnica sin ofrecer explicaciones accesibles",
+   "Abrumar a los usuarios con demasiado detalle técnico desde el inicio",
+   "Implementar transparencia sin considerar la carga cognitiva del usuario",
+   "Omitir las advertencias de detección de sesgos y las salvaguardas contra toxicidad",
+   "Ofrecer explicaciones sin información accionable para los usuarios"
+  ],
+  "use": [
+   "Aplicaciones de toma de decisiones de alto impacto (salud, finanzas, legal)",
+   "Industrias reguladas que requieren pistas de auditoría y rendición de cuentas",
+   "Sistemas empresariales que necesitan inteligencia de negocios explicable",
+   "IA de cara al cliente donde la confianza es crítica para la adopción",
+   "Entornos con múltiples partes interesadas y necesidades de transparencia diversas",
+   "Sistemas de IA que toman decisiones automatizadas con consecuencias importantes",
+   "Aplicaciones donde los usuarios necesitan entender y verificar el razonamiento de la IA"
+  ],
+  "avoid": [
+   "Aplicaciones simples y de bajo riesgo donde la transparencia agrega complejidad innecesaria",
+   "Sistemas críticos en rendimiento donde la sobrecarga de las explicaciones es prohibitiva",
+   "Herramientas internas donde los usuarios tienen alta alfabetización y confianza en IA",
+   "Aplicaciones con lógica clara, determinista y basada en reglas",
+   "Sistemas donde la protección de la propiedad intelectual entra en conflicto con los requisitos de transparencia"
+  ],
+  "metrics": [
+   {
+    "n": "Puntaje de calibración de la confianza",
+    "d": "Alineación entre los niveles de confianza del usuario y la confiabilidad real de la IA"
+   },
+   {
+    "n": "Tasa de comprensión de las explicaciones",
+    "d": "% de usuarios que entienden correctamente las explicaciones del razonamiento de la IA"
+   },
+   {
+    "n": "Mejora en la confianza al decidir",
+    "d": "Aumento de la seguridad del usuario al tomar decisiones asistidas por IA"
+   },
+   {
+    "n": "Tasa de interacción con la transparencia",
+    "d": "% de usuarios que exploran activamente las funciones de explicación"
+   },
+   {
+    "n": "Precisión en la detección de errores",
+    "d": "Capacidad del usuario para identificar cuándo la IA se equivoca"
+   },
+   {
+    "n": "Índice de satisfacción de las partes interesadas",
+    "d": "Evaluación de múltiples partes interesadas sobre lo adecuado de la transparencia"
+   },
+   {
+    "n": "Puntaje de cumplimiento de auditoría",
+    "d": "Porcentaje de requisitos regulatorios de transparencia cumplidos"
+   },
+   {
+    "n": "Evaluación de la carga cognitiva",
+    "d": "Esfuerzo mental necesario para entender las explicaciones de la IA"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA en salud",
+    "d": "Razonamiento diagnóstico → visualización de evidencia clínica → integración con la revisión del médico → explicación al paciente"
+   },
+   {
+    "n": "Servicios financieros",
+    "d": "Visualización de la evaluación de riesgos → visualización del cumplimiento regulatorio → pistas de auditoría de decisiones → transparencia para el cliente"
+   },
+   {
+    "n": "Tecnología legal",
+    "d": "Razonamiento del análisis de casos → cita de precedentes → intervalos de confianza → apoyo a las decisiones del abogado"
+   },
+   {
+    "n": "BI empresarial",
+    "d": "Explicación del análisis de datos → atribución de fuentes → factores de decisión → reportes para partes interesadas"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "Detección de violaciones de políticas → visualización del razonamiento → proceso de apelación → informes de transparencia"
+   },
+   {
+    "n": "IA en contratación",
+    "d": "Factores de evaluación de candidatos → alertas de detección de sesgos → justificación de la decisión → documentación de cumplimiento"
+   },
+   {
+    "n": "Sistemas autónomos",
+    "d": "Visualización del árbol de decisión → visualización de datos de sensores → métricas de confianza → integración con supervisión humana"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Trust and Transparency Patterns",
+  "description": "Patrones de diseño para generar confianza en el usuario mediante interfaces de IA explicable, transparencia en las decisiones y atribución de fuentes, para que los usuarios confíen en el modelo donde es confiable y lo verifiquen donde no lo es",
+  "nodes": [
+   {
+    "id": "ai-trust-deficit",
+    "label": "🤷 Déficit de confianza en la IA\n\"¿Cómo generar confianza en los sistemas\nde IA mediante transparencia,\nexplicaciones y rendición de cuentas?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "trust-transparency-framework",
+    "label": "🛡️ Framework de confianza y transparencia\n\"Generar confianza:\n• Interfaces de IA explicable\n• Transparencia en las decisiones\n• Atribución de fuentes\n• Calibración de la confianza\"",
+    "x": 400,
+    "y": 200,
+    "w": 290
+   },
+   {
+    "id": "explainable-ai-patterns",
+    "label": "🔍 Patrones de IA explicable\n\"Interfaces XAI:\n• Transparencia de tres niveles\n• Divulgación progresiva\n• Ayuda sensible al contexto\n• Explicaciones visuales\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "explanation-generation",
+    "label": "⚡ Explicación en tiempo real\n\"Insights dinámicos:\n• Explicaciones en streaming\n• Cadena de pensamiento\n• Revelación progresiva\n• Adaptación al contexto\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "decision-transparency",
+    "label": "⚖️ Transparencia en las decisiones\n\"Visibilidad del razonamiento:\n• Procedencia de las decisiones\n• Lógica paso a paso\n• Opciones alternativas\n• Niveles de confianza\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "source-attribution",
+    "label": "📚 Atribución de fuentes\n\"Sistemas de citas:\n• Citas en tiempo real\n• Fuentes interactivas\n• Seguimiento de procedencia\n• Enlaces de verificación\"",
+    "x": 750,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "trust-calibration",
+    "label": "🎯 Calibración de la confianza\n\"Dependencia adecuada:\n• Tasas de mejora del 82%\n• Visualización de la confianza\n• Comunicación de la incertidumbre\n• Mitigación del exceso de confianza\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "audit-trails",
+    "label": "📋 Pistas de auditoría\n\"Seguimiento de decisiones:\n• Registros a prueba de manipulación\n• Logs completos\n• Cumplimiento regulatorio\n• Cadenas de responsabilidad\"",
+    "x": 200,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "bias-detection",
+    "label": "⚡ Detección de sesgos\n\"Monitoreo de equidad:\n• Análisis en tiempo real\n• Seguimiento demográfico\n• Métricas de rendimiento\n• Sistemas de alerta\"",
+    "x": 600,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "user-control",
+    "label": "🎮 Control del usuario\n\"Preservar la autonomía:\n• Mecanismos de anulación\n• Explicaciones personalizables\n• Integración del feedback\n• Aprendizaje de preferencias\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "privacy-balance",
+    "label": "⚖️ Equilibrio con la privacidad\n\"Concesiones de la transparencia:\n• Privacidad diferencial\n• Divulgación selectiva\n• Anonimización\n• Gestión del consentimiento\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "production-implementations",
+    "label": "🏢 Éxito en producción\n\"Despliegue en el mundo real:\n• Fuentes que los usuarios pueden abrir y verificar\n• Un umbral explícito para derivar a un humano\n• Pista de auditoría para los reguladores\n• Menos escalamientos por desconfianza\"",
+    "x": 400,
+    "y": 1100,
+    "w": 270
+   },
+   {
+    "id": "trust-principle",
+    "label": "🎯 Principio de confianza y transparencia\n\"La atribución genera confianza porque el usuario puede verificar, no porque el modelo lo afirme\nLa transparencia en las decisiones con pistas de auditoría asegura el cumplimiento regulatorio\nEl control del usuario con equilibrio de privacidad permite una dependencia adecuada de la IA\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-trust-deficit",
+    "t": "trust-transparency-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "trust-transparency-framework",
+    "t": "explainable-ai-patterns",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "trust-transparency-framework",
+    "t": "decision-transparency",
+    "label": "proporciona"
+   },
+   {
+    "id": "e4",
+    "s": "trust-transparency-framework",
+    "t": "trust-calibration",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "explainable-ai-patterns",
+    "t": "explanation-generation",
+    "label": "impulsado por"
+   },
+   {
+    "id": "e6",
+    "s": "decision-transparency",
+    "t": "source-attribution",
+    "label": "respaldado por"
+   },
+   {
+    "id": "e7",
+    "s": "trust-calibration",
+    "t": "audit-trails",
+    "label": "documentado por"
+   },
+   {
+    "id": "e8",
+    "s": "trust-calibration",
+    "t": "bias-detection",
+    "label": "monitoreado por"
+   },
+   {
+    "id": "e9",
+    "s": "explanation-generation",
+    "t": "audit-trails",
+    "label": "registrado por"
+   },
+   {
+    "id": "e10",
+    "s": "source-attribution",
+    "t": "bias-detection",
+    "label": "verificado por"
+   },
+   {
+    "id": "e11",
+    "s": "audit-trails",
+    "t": "user-control",
+    "label": "habilita"
+   },
+   {
+    "id": "e12",
+    "s": "bias-detection",
+    "t": "privacy-balance",
+    "label": "equilibrado con"
+   },
+   {
+    "id": "e13",
+    "s": "user-control",
+    "t": "production-implementations",
+    "label": "desplegado en"
+   },
+   {
+    "id": "e14",
+    "s": "privacy-balance",
+    "t": "production-implementations",
+    "label": "logrado en"
+   },
+   {
+    "id": "e15",
+    "s": "production-implementations",
+    "t": "trust-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío del déficit de confianza en la IA",
+    "description": "¿Cómo pueden los sistemas de IA generar confianza en el usuario mediante transparencia, explicaciones claras y rendición de cuentas cuando los usuarios a menudo no entienden los procesos de decisión de la IA?",
+    "input": "",
+    "nodes": [
+     "ai-trust-deficit"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de confianza y transparencia",
+    "description": "Un framework integral aborda el déficit de confianza mediante interfaces de IA explicable, transparencia en las decisiones, sistemas de atribución de fuentes y mecanismos de calibración de la confianza.",
+    "input": "",
+    "nodes": [
+     "trust-transparency-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "IA explicable y transparencia en las decisiones",
+    "description": "Transparencia de tres niveles con divulgación progresiva, impulsada por la generación de explicaciones en tiempo real. La transparencia en las decisiones ofrece visibilidad del razonamiento con atribución de fuentes y enlaces de verificación.",
+    "input": "",
+    "nodes": [
+     "explainable-ai-patterns",
+     "explanation-generation",
+     "decision-transparency",
+     "source-attribution"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Calibración de la confianza y monitoreo",
+    "description": "Mejora del 82% en la dependencia adecuada mediante la visualización de la confianza y la comunicación de la incertidumbre. Las pistas de auditoría y la detección de sesgos aseguran la rendición de cuentas y el monitoreo de la equidad.",
+    "input": "",
+    "nodes": [
+     "trust-calibration",
+     "audit-trails",
+     "bias-detection"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Control del usuario y equilibrio con la privacidad",
+    "description": "Preservación de la autonomía mediante mecanismos de anulación y explicaciones personalizables. El equilibrio con la privacidad se logra con privacidad diferencial y divulgación selectiva con gestión del consentimiento.",
+    "input": "",
+    "nodes": [
+     "user-control",
+     "privacy-balance"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Éxito en producción y validación",
+    "description": "La atribución y un umbral de confianza explícito son lo que hace que un sistema sea auditable en producción. La IA explicable con transparencia en las decisiones y control del usuario permite una dependencia adecuada de la IA mientras asegura el cumplimiento.",
+    "input": "",
+    "nodes": [
+     "production-implementations",
+     "trust-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

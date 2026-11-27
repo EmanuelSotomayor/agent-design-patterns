@@ -1,0 +1,453 @@
+{
+ "cat": "routing",
+ "slug": "geographic-routing",
+ "name": "Geographic Routing",
+ "icon": "🌍",
+ "complexity": "medium",
+ "description": "Enruta las solicitudes según la ubicación geográfica y la optimización regional",
+ "features": [
+  "Enrutamiento basado en la ubicación",
+  "Optimización del procesamiento regional",
+  "Minimización de la latencia",
+  "Cumplimiento de la soberanía de datos",
+  "Adaptación cultural y de idioma",
+  "Aprovechamiento de recursos regionales"
+ ],
+ "tldr": {
+  "what": "Enruta las solicitudes a sistemas regionales según la ubicación del usuario, seleccionando centros de datos, modelos de lenguaje y bases de conocimiento acordes con la geografía.",
+  "when": "Servicios que abarcan varias regiones donde la latencia, el cumplimiento normativo, el idioma o el contexto cultural varían significativamente según la ubicación.",
+  "watchOut": "Las fallas en la lógica de enrutamiento o los datos de ubicación desactualizados pueden enviar solicitudes sensibles a regiones equivocadas, incumpliendo normativas o exponiendo datos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón Geographic Routing",
+  "description": "Muestra el enrutamiento inteligente de solicitudes según la ubicación geográfica, el cumplimiento normativo y los requisitos de optimización regional",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud del usuario\n\"Acceso a un servicio global\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "geo-detector",
+    "label": "Detector geográfico\nIdentificación de la ubicación",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "ip-geolocation",
+    "label": "Geolocalización por IP\nMapeo de la ubicación",
+    "x": 200,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "compliance-analyzer",
+    "label": "Analizador de cumplimiento\nRequisitos regulatorios",
+    "x": 800,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "latency-analyzer",
+    "label": "Analizador de latencia\nOptimización del rendimiento",
+    "x": 350,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "data-sovereignty",
+    "label": "Soberanía de datos\nCumplimiento legal",
+    "x": 650,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "routing-engine",
+    "label": "Motor de decisión de enrutamiento\nSelección de la región óptima",
+    "x": 500,
+    "y": 460,
+    "w": 220
+   },
+   {
+    "id": "us-east",
+    "label": "US East (Virginia)\nLatencia: 45ms\nCumplimiento: US/CCPA",
+    "x": 100,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "us-west",
+    "label": "US West (Oregon)\nLatencia: 38ms\nCumplimiento: US/CCPA",
+    "x": 280,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "eu-central",
+    "label": "EU Central (Frankfurt)\nLatencia: 12ms\nCumplimiento: GDPR",
+    "x": 460,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "asia-pacific",
+    "label": "Asia Pacific (Tokyo)\nLatencia: 125ms\nCumplimiento: local",
+    "x": 640,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "south-america",
+    "label": "South America (São Paulo)\nLatencia: 180ms\nCumplimiento: LGPD",
+    "x": 820,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "eu-service",
+    "label": "Servicio de procesamiento de la UE\nPipeline conforme al GDPR",
+    "x": 460,
+    "y": 750,
+    "w": 160
+   },
+   {
+    "id": "us-service",
+    "label": "Servicio de procesamiento de EE. UU.\nPipeline conforme a la CCPA",
+    "x": 190,
+    "y": 750,
+    "w": 160
+   },
+   {
+    "id": "location-context",
+    "label": "Contexto de ubicación\n• IP: 85.214.132.117\n• País: Alemania\n• Ciudad: Frankfurt\n• ISP: Deutsche Telekom\n• Idioma: DE",
+    "x": 50,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "regulatory-rules",
+    "label": "Reglas regulatorias\n• GDPR: residencia de datos en la UE\n• CCPA: privacidad en California\n• LGPD: protección de datos en Brasil\n• SOX: cumplimiento financiero en EE. UU.\n• PIPEDA: privacidad en Canadá",
+    "x": 950,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "cdn-optimizer",
+    "label": "Optimizador de CDN\nEnrutamiento de entrega de contenido",
+    "x": 200,
+    "y": 460,
+    "w": 160
+   },
+   {
+    "id": "edge-nodes",
+    "label": "Selector de nodos edge\nOptimización por proximidad",
+    "x": 800,
+    "y": 460,
+    "w": 160
+   },
+   {
+    "id": "result-handler",
+    "label": "Manejador de resultados\nRespuesta conforme a la región",
+    "x": 500,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "geo-monitor",
+    "label": "Monitor geográfico\nSeguimiento del rendimiento global",
+    "x": 100,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "regional-balancer",
+    "label": "Balanceador de carga regional\nDistribución dentro de la región",
+    "x": 300,
+    "y": 460,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-detector",
+    "s": "input",
+    "t": "geo-detector",
+    "label": ""
+   },
+   {
+    "id": "e-detector-ip",
+    "s": "geo-detector",
+    "t": "ip-geolocation",
+    "label": ""
+   },
+   {
+    "id": "e-detector-compliance",
+    "s": "geo-detector",
+    "t": "compliance-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-detector-latency",
+    "s": "geo-detector",
+    "t": "latency-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-detector-sovereignty",
+    "s": "geo-detector",
+    "t": "data-sovereignty",
+    "label": ""
+   },
+   {
+    "id": "e-context-ip",
+    "s": "location-context",
+    "t": "ip-geolocation",
+    "label": ""
+   },
+   {
+    "id": "e-rules-compliance",
+    "s": "regulatory-rules",
+    "t": "compliance-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-latency-engine",
+    "s": "latency-analyzer",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-sovereignty-engine",
+    "s": "data-sovereignty",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-compliance-engine",
+    "s": "compliance-analyzer",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-ip-engine",
+    "s": "ip-geolocation",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-cdn-engine",
+    "s": "cdn-optimizer",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-edge-engine",
+    "s": "edge-nodes",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-engine-balancer",
+    "s": "routing-engine",
+    "t": "regional-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-engine-eu",
+    "s": "routing-engine",
+    "t": "eu-central",
+    "label": "Ruta GDPR"
+   },
+   {
+    "id": "e-engine-us-east",
+    "s": "routing-engine",
+    "t": "us-east",
+    "label": "US East"
+   },
+   {
+    "id": "e-engine-us-west",
+    "s": "routing-engine",
+    "t": "us-west",
+    "label": "US West"
+   },
+   {
+    "id": "e-eu-service",
+    "s": "eu-central",
+    "t": "eu-service",
+    "label": ""
+   },
+   {
+    "id": "e-us-service",
+    "s": "us-east",
+    "t": "us-service",
+    "label": ""
+   },
+   {
+    "id": "e-eu-result",
+    "s": "eu-service",
+    "t": "result-handler",
+    "label": ""
+   },
+   {
+    "id": "e-us-result",
+    "s": "us-service",
+    "t": "result-handler",
+    "label": ""
+   },
+   {
+    "id": "e-monitor-detector",
+    "s": "geo-monitor",
+    "t": "geo-detector",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de la solicitud global",
+    "description": "La solicitud del usuario llega al sistema de enrutamiento geográfico desde una ubicación internacional.",
+    "input": "Solicitud entrante de un usuario en Frankfurt, Alemania, que accede a una plataforma de servicios global.",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Activación de la detección geográfica",
+    "description": "Inicia el análisis geográfico para determinar la estrategia de enrutamiento óptima.",
+    "input": "Detección geográfica: análisis de IP, mapeo de ubicación, evaluación de cumplimiento",
+    "nodes": [
+     "input",
+     "geo-detector"
+    ],
+    "edges": [
+     "e-input-detector"
+    ]
+   },
+   {
+    "title": "Análisis de geolocalización por IP",
+    "description": "Analiza la dirección IP para determinar la ubicación geográfica precisa y las características de la red.",
+    "input": "Geolocalización por IP: mapear la dirección IP a una ubicación física y a un proveedor de red",
+    "nodes": [
+     "ip-geolocation",
+     "location-context"
+    ],
+    "edges": [
+     "e-detector-ip",
+     "e-context-ip"
+    ]
+   },
+   {
+    "title": "Evaluación del cumplimiento regulatorio",
+    "description": "Evalúa los requisitos regulatorios y las obligaciones de cumplimiento para la ubicación del usuario.",
+    "input": "Análisis de cumplimiento: leyes regionales de protección de datos, requisitos de privacidad, residencia de datos",
+    "nodes": [
+     "compliance-analyzer",
+     "regulatory-rules"
+    ],
+    "edges": [
+     "e-detector-compliance",
+     "e-rules-compliance"
+    ]
+   },
+   {
+    "title": "Análisis de optimización de latencia",
+    "description": "Calcula la latencia de red y las métricas de rendimiento hacia las regiones disponibles.",
+    "input": "Análisis de latencia: optimización de la ruta de red, rendimiento de la CDN, tiempos de respuesta",
+    "nodes": [
+     "latency-analyzer"
+    ],
+    "edges": [
+     "e-detector-latency"
+    ]
+   },
+   {
+    "title": "Evaluación de la soberanía de datos",
+    "description": "Evalúa los requisitos de soberanía de datos y las restricciones a la transferencia transfronteriza de datos.",
+    "input": "Soberanía de datos: jurisdicción legal, reglas de transferencia transfronteriza, requisitos de almacenamiento local",
+    "nodes": [
+     "data-sovereignty"
+    ],
+    "edges": [
+     "e-detector-sovereignty"
+    ]
+   },
+   {
+    "title": "Optimización de CDN y edge",
+    "description": "Optimiza la entrega de contenido y la selección de nodos edge para mejorar el rendimiento.",
+    "input": "Optimización de CDN: selección de nodos edge, cache de contenido, optimización de la ruta de entrega",
+    "nodes": [
+     "cdn-optimizer",
+     "edge-nodes"
+    ],
+    "edges": [
+     "e-cdn-engine",
+     "e-edge-engine"
+    ]
+   },
+   {
+    "title": "Síntesis de la decisión de enrutamiento",
+    "description": "Sintetiza todos los resultados del análisis para tomar la decisión de enrutamiento óptima.",
+    "input": "Síntesis de la decisión: combinar factores de cumplimiento, latencia, soberanía y rendimiento",
+    "nodes": [
+     "routing-engine"
+    ],
+    "edges": [
+     "e-latency-engine",
+     "e-sovereignty-engine",
+     "e-compliance-engine",
+     "e-ip-engine"
+    ]
+   },
+   {
+    "title": "Balanceo de carga regional",
+    "description": "Aplica balanceo de carga regional dentro de la región geográfica seleccionada.",
+    "input": "Balanceo regional: distribuir la carga entre los centros de datos y las zonas de disponibilidad de la UE",
+    "nodes": [
+     "regional-balancer"
+    ],
+    "edges": [
+     "e-engine-balancer"
+    ]
+   },
+   {
+    "title": "Despliegue en el centro de datos de la UE",
+    "description": "Enruta la solicitud al centro de datos EU Central para un procesamiento conforme al GDPR.",
+    "input": "Despliegue en la UE: pipeline de procesamiento conforme al GDPR en el centro de datos de Frankfurt",
+    "nodes": [
+     "eu-central"
+    ],
+    "edges": [
+     "e-engine-eu"
+    ]
+   },
+   {
+    "title": "Procesamiento conforme al GDPR",
+    "description": "Ejecuta el procesamiento de la solicitud usando un pipeline de servicios conforme al GDPR.",
+    "input": "Procesamiento GDPR: ejecución del servicio con privacidad desde el diseño y controles de protección de datos",
+    "nodes": [
+     "eu-service"
+    ],
+    "edges": [
+     "e-eu-service"
+    ]
+   },
+   {
+    "title": "Entrega de una respuesta conforme",
+    "description": "Devuelve los resultados procesados mediante un sistema de manejo de respuestas conforme a la normativa.",
+    "input": "",
+    "nodes": [
+     "result-handler",
+     "geo-monitor"
+    ],
+    "edges": [
+     "e-eu-result",
+     "e-monitor-detector"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,308 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "conversational-orchestration",
+ "name": "Conversational Orchestration",
+ "icon": "💬",
+ "complexity": "high",
+ "description": "Coordinación multiagente mediante patrones de conversación estructurados",
+ "features": [
+  "Flujos de conversación flexibles",
+  "Participación dinámica de los agentes",
+  "Mensajería según el contexto",
+  "Comunicación asíncrona",
+  "Gestión de la memoria de la conversación",
+  "Coordinación de múltiples turnos"
+ ],
+ "tldr": {
+  "what": "Coordina múltiples agentes mediante intercambios de mensajes estructurados donde cualquier agente puede intervenir, el contexto persiste entre turnos y la participación se adapta al estado de la conversación.",
+  "when": "Flujos de trabajo complejos que requieren idas y vueltas entre agentes especializados, donde el siguiente paso depende de lo que dijeron los agentes anteriores y el orden no está estrictamente predeterminado.",
+  "watchOut": "La conversación puede entrar en un bucle indefinido o divergir si los agentes no tienen criterios de salida claros o si el contexto crece demasiado para un paso de mensajes fiable."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Conversational Orchestration",
+  "description": "Múltiples agentes se coordinan mediante una conversación compartida al estilo de un chat grupal en lugar de pipelines fijos. Un moderador abre un hilo, los agentes especialistas aportan turnos que se acumulan como contexto compartido y un detector de consenso decide cuándo la discusión ha convergido.",
+  "nodes": [
+   {
+    "id": "topic-input",
+    "label": "📝 Tarea de revisión\n\"Evaluar un artículo sobre seguridad de la IA\"",
+    "x": 360,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "moderator",
+    "label": "🧑‍⚖️ Agente editor / moderador\nAbre y dirige la discusión",
+    "x": 375,
+    "y": 150,
+    "w": 270
+   },
+   {
+    "id": "shared-context",
+    "label": "🧵 Hilo de conversación\nContexto y memoria compartidos",
+    "x": 350,
+    "y": 260,
+    "w": 320
+   },
+   {
+    "id": "method-expert",
+    "label": "🔬 Experto en metodología\nCritica el diseño experimental",
+    "x": 60,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "stats-expert",
+    "label": "📊 Experto en estadística\nRevisa el análisis y el rigor",
+    "x": 370,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "domain-expert",
+    "label": "🧠 Experto en el dominio\nEvalúa el trabajo relacionado",
+    "x": 680,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "turn-1",
+    "label": "💬 Turno 1\n\"La metodología es sólida, pero...\"",
+    "x": 70,
+    "y": 510,
+    "w": 190
+   },
+   {
+    "id": "turn-2",
+    "label": "💬 Turno 2\n\"La potencia estadística es demasiado baja...\"",
+    "x": 375,
+    "y": 510,
+    "w": 190
+   },
+   {
+    "id": "turn-3",
+    "label": "💬 Turno 3\n\"El trabajo relacionado omite resultados clave...\"",
+    "x": 680,
+    "y": 510,
+    "w": 190
+   },
+   {
+    "id": "consensus-detector",
+    "label": "🤝 Detector de consenso\nMide el nivel de acuerdo",
+    "x": 210,
+    "y": 625,
+    "w": 210
+   },
+   {
+    "id": "summary-agent",
+    "label": "📄 Agente de resumen\nSintetiza la decisión",
+    "x": 500,
+    "y": 625,
+    "w": 210
+   },
+   {
+    "id": "output",
+    "label": "✅ Decisión de la revisión\n\"Aceptar con revisiones menores\"",
+    "x": 340,
+    "y": 735,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-moderator",
+    "s": "topic-input",
+    "t": "moderator",
+    "label": ""
+   },
+   {
+    "id": "moderator-context",
+    "s": "moderator",
+    "t": "shared-context",
+    "label": "Abrir hilo"
+   },
+   {
+    "id": "context-method",
+    "s": "shared-context",
+    "t": "method-expert",
+    "label": "Leer"
+   },
+   {
+    "id": "context-stats",
+    "s": "shared-context",
+    "t": "stats-expert",
+    "label": "Leer"
+   },
+   {
+    "id": "context-domain",
+    "s": "shared-context",
+    "t": "domain-expert",
+    "label": "Leer"
+   },
+   {
+    "id": "method-turn1",
+    "s": "method-expert",
+    "t": "turn-1",
+    "label": "Hablar"
+   },
+   {
+    "id": "stats-turn2",
+    "s": "stats-expert",
+    "t": "turn-2",
+    "label": "Hablar"
+   },
+   {
+    "id": "domain-turn3",
+    "s": "domain-expert",
+    "t": "turn-3",
+    "label": "Hablar"
+   },
+   {
+    "id": "turn1-context",
+    "s": "turn-1",
+    "t": "shared-context",
+    "label": "Agregar"
+   },
+   {
+    "id": "turn2-context",
+    "s": "turn-2",
+    "t": "shared-context",
+    "label": "Agregar"
+   },
+   {
+    "id": "turn3-context",
+    "s": "turn-3",
+    "t": "shared-context",
+    "label": "Agregar"
+   },
+   {
+    "id": "context-consensus",
+    "s": "shared-context",
+    "t": "consensus-detector",
+    "label": "Evaluar"
+   },
+   {
+    "id": "consensus-moderator",
+    "s": "consensus-detector",
+    "t": "moderator",
+    "label": "Sin consenso: continuar"
+   },
+   {
+    "id": "consensus-summary",
+    "s": "consensus-detector",
+    "t": "summary-agent",
+    "label": "Convergió"
+   },
+   {
+    "id": "summary-output",
+    "s": "summary-agent",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea de revisión",
+    "description": "Llega una tarea que necesita varias perspectivas, así que se entrega a un moderador en lugar de a un solo agente.",
+    "input": "",
+    "nodes": [
+     "topic-input",
+     "moderator"
+    ],
+    "edges": [
+     "input-moderator"
+    ]
+   },
+   {
+    "title": "Abrir el hilo",
+    "description": "El moderador abre un hilo de conversación compartido que contendrá el contexto completo que todos los participantes pueden ver.",
+    "input": "",
+    "nodes": [
+     "moderator",
+     "shared-context"
+    ],
+    "edges": [
+     "moderator-context"
+    ]
+   },
+   {
+    "title": "Se suman los expertos",
+    "description": "Los agentes especialistas leen el estado actual del hilo y deciden qué aportar según el contexto compartido, en lugar de seguir roles fijos en un pipeline.",
+    "input": "",
+    "nodes": [
+     "shared-context",
+     "method-expert",
+     "stats-expert",
+     "domain-expert"
+    ],
+    "edges": [
+     "context-method",
+     "context-stats",
+     "context-domain"
+    ]
+   },
+   {
+    "title": "Turnos aportados",
+    "description": "Cada experto habla por turnos y produce un mensaje informado por lo que se dijo antes.",
+    "input": "",
+    "nodes": [
+     "method-expert",
+     "stats-expert",
+     "domain-expert",
+     "turn-1",
+     "turn-2",
+     "turn-3"
+    ],
+    "edges": [
+     "method-turn1",
+     "stats-turn2",
+     "domain-turn3"
+    ]
+   },
+   {
+    "title": "El contexto se acumula",
+    "description": "Cada turno se agrega de vuelta al hilo compartido, de modo que las contribuciones posteriores se basan en el historial acumulado de múltiples turnos.",
+    "input": "",
+    "nodes": [
+     "turn-1",
+     "turn-2",
+     "turn-3",
+     "shared-context"
+    ],
+    "edges": [
+     "turn1-context",
+     "turn2-context",
+     "turn3-context"
+    ]
+   },
+   {
+    "title": "Detección de consenso",
+    "description": "Un detector de consenso evalúa el hilo. Si todavía no se alcanza un acuerdo, devuelve el control al moderador para otra ronda.",
+    "input": "",
+    "nodes": [
+     "shared-context",
+     "consensus-detector",
+     "moderator"
+    ],
+    "edges": [
+     "context-consensus",
+     "consensus-moderator"
+    ]
+   },
+   {
+    "title": "Resumen y decisión",
+    "description": "Una vez que la discusión converge, el agente de resumen sintetiza el hilo en una única decisión y emite el resultado final de la revisión.",
+    "input": "",
+    "nodes": [
+     "consensus-detector",
+     "summary-agent",
+     "output"
+    ],
+    "edges": [
+     "consensus-summary",
+     "summary-output"
+    ]
+   }
+  ]
+ }
+}

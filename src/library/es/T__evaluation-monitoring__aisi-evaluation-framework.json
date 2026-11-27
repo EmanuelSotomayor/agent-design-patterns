@@ -1,0 +1,366 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "aisi-evaluation-framework",
+ "name": "AISI Evaluation Framework(AISI-Eval)",
+ "icon": "🏛️",
+ "complexity": "high",
+ "description": "Framework de evaluación integral del AI Safety Institute para sistemas de IA de frontera, coordinado con el trabajo de seguridad de IA del NIST para una evaluación de seguridad con estándares gubernamentales.",
+ "features": [
+  "Evaluación de capacidades de IA de frontera",
+  "Protocolos de seguridad con estándares gubernamentales",
+  "Coordinación con los programas de seguridad de IA del NIST",
+  "Proceso de evaluación con múltiples partes interesadas",
+  "Verificación de seguridad previa al despliegue",
+  "Estándares de coordinación internacional",
+  "Niveles de evaluación basados en riesgo"
+ ],
+ "tldr": {
+  "what": "Evaluación estandarizada en múltiples niveles de sistemas de IA de frontera en las dimensiones de capacidad, seguridad y alineación antes del despliegue, coordinada con agencias gubernamentales.",
+  "when": "Lanzamientos de IA de alto riesgo donde se requiere cumplimiento regulatorio, verificación de seguridad o aprobación gubernamental antes del uso en producción.",
+  "watchOut": "Los resultados de la evaluación pueden quedar rezagados respecto de las capacidades reales del sistema; aprobar las evaluaciones no garantiza la seguridad en contextos de despliegue nuevos."
+ },
+ "overview": {
+  "pattern": "Framework de evaluación con estándares gubernamentales para sistemas de IA de frontera, con pruebas progresivas en tres niveles",
+  "why": "Garantiza una evaluación sistemática de seguridad antes del despliegue, permite la coordinación internacional y previene el uso indebido de IA de alto riesgo",
+  "insight": "Umbrales de capacidad + Red-teaming experto + Evaluación prerregistrada = Despliegue seguro de IA de frontera",
+  "impl": [
+   {
+    "t": "Modelo de riesgo",
+    "d": "Define escenarios de amenaza y umbrales de capacidad"
+   },
+   {
+    "t": "Pruebas por niveles",
+    "d": "Automatizado → Manual → Red-teaming experto"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Evaluación de capacidades, uso indebido e impacto social"
+   },
+   {
+    "t": "Umbral",
+    "d": "Compara los resultados con los umbrales de seguridad"
+   },
+   {
+    "t": "Decisión",
+    "d": "Desplegar, mitigar o restringir según la evaluación"
+   }
+  ],
+  "example": "preregister → tier_1_auto → tier_2_manual → tier_3_expert → safety_decision",
+  "dos": [
+   "Prerregistra el diseño de la evaluación antes de las pruebas",
+   "Usa un sistema de evaluación progresiva en tres niveles",
+   "Combina red-teaming automatizado y experto",
+   "Prueba umbrales de capacidad que indiquen riesgos graves",
+   "Implementa protocolos rigurosos de seguridad de la información"
+  ],
+  "donts": [
+   "Depender únicamente de evaluaciones automatizadas para modelos de alto riesgo",
+   "Omitir el red-teaming experto en sistemas de frontera",
+   "Ignorar el impacto social y el potencial de uso indebido",
+   "Desplegar sin cumplir los requisitos de umbral de seguridad",
+   "Pasar por alto los estándares de coordinación internacional"
+  ],
+  "use": [
+   "Despliegue de modelos de IA de frontera",
+   "Requisitos de cumplimiento gubernamental",
+   "Coordinación internacional de seguridad",
+   "Evaluación de sistemas de alta capacidad"
+  ],
+  "avoid": [
+   "Aplicaciones de IA de bajo riesgo",
+   "Evaluación de modelos que no son de frontera",
+   "Tareas de automatización simples",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Puntaje de capacidad",
+    "d": "Evaluación de capacidad autónoma (0-100%)"
+   },
+   {
+    "n": "Potencial de uso indebido",
+    "d": "Riesgo de explotación con fines maliciosos"
+   },
+   {
+    "n": "Umbral de seguridad",
+    "d": "Aprobado/reprobado frente a límites predefinidos"
+   },
+   {
+    "n": "Evaluación experta",
+    "d": "Resultados de la evaluación de red-team"
+   },
+   {
+    "n": "Impacto social",
+    "d": "Evaluación amplia del riesgo social"
+   },
+   {
+    "n": "Tasa de cumplimiento",
+    "d": "Adhesión a estándares internacionales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Evaluación de seguridad de IA de frontera",
+    "d": "Modelos de nivel GPT-5/Claude-4 que requieren aprobación gubernamental"
+   },
+   {
+    "n": "Coordinación internacional",
+    "d": "Protocolos de evaluación de seguridad multinacionales (Reino Unido-EE. UU.-UE)"
+   },
+   {
+    "n": "Cumplimiento regulatorio",
+    "d": "Cumplir los requisitos del AI Safety Institute para el despliegue"
+   },
+   {
+    "n": "Pruebas de umbrales de capacidad",
+    "d": "Identificar capacidades autónomas peligrosas"
+   },
+   {
+    "n": "Evaluación de seguridad con red-team",
+    "d": "Pruebas adversariales dirigidas por expertos para prevenir el uso indebido"
+   }
+  ]
+ },
+ "flow": {
+  "title": "AISI: Patrón del framework de evaluación del AI Safety Institute",
+  "description": "Evaluación colaborativa entre Reino Unido y EE. UU. de la seguridad de IA de frontera, con pruebas de capacidades cibernéticas, biológicas, químicas y de agentes, que incluye el framework de código abierto Inspect AI y evaluaciones previas al despliegue",
+  "nodes": [
+   {
+    "id": "frontier-ai-safety-challenge",
+    "label": "🛡️ Desafío de seguridad de IA de frontera\n\"¿Cómo evaluar sistemas de IA avanzados\nfrente a riesgos catastróficos antes del despliegue\nsin estándares establecidos?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "aisi-framework",
+    "label": "🏛️ Framework de evaluación AISI\n\"Enfoque colaborativo Reino Unido-EE. UU.:\n• Evaluación independiente\n• Pruebas previas al despliegue\n• Herramientas de código abierto\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "uk-us-collaboration",
+    "label": "🤝 Pruebas conjuntas Reino Unido-EE. UU.\n\"Colaboración histórica:\n• Acceso compartido a modelos\n• Intercambio de hallazgos de investigación\n• Evaluaciones conjuntas previas al despliegue\"",
+    "x": 200,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "international-network",
+    "label": "🌍 Red internacional\n\"10 equivalentes de AISI:\n• Enfoque coordinado\n• Metodologías compartidas\n• Estándares globales de seguridad\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "four-evaluation-areas",
+    "label": "🔍 Cuatro áreas centrales de prueba\n\"Evaluación de riesgos críticos:\n• Capacidades de ciberataque\n• Uso indebido químico/biológico\n• Habilidades de agentes autónomos\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "safeguards-effectiveness",
+    "label": "🛡️ Eficacia de las salvaguardas\n\"Validación de la protección:\n• Pruebas de confianza y seguridad\n• Resistencia a jailbreaks\n• Evaluación de mitigaciones\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "evaluation-methodology",
+    "label": "⚙️ Evaluación multimétodo\n\"Evaluación integral:\n• Pruebas automatizadas de capacidades\n• Ejercicios de red-teaming\n• Estudios de mejora en humanos\n• Evaluaciones de agentes de IA\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "inspect-ai-framework",
+    "label": "💻 Framework Inspect AI\n\"Evaluación de código abierto:\n• Más de 50 colaboradores de la comunidad\n• Soporte para diálogos de varios turnos\n• Evaluaciones calificadas por modelos\n• Suite de benchmarks de agentes\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "model-developer-partnership",
+    "label": "🤝 Alianzas con desarrolladores\n\"Colaboración constructiva:\n• Evaluación de OpenAI o1\n• Pruebas de Anthropic Claude\n• Participación voluntaria\n• Feedback previo al despliegue\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "evaluation-requirements",
+    "label": "📋 Requisitos de evaluación\n\"Necesidades de acceso integral:\n• Versiones de modelos Helpful-Only\n• Control para activar/desactivar salvaguardas\n• Acceso a la API de fine-tuning\n• Metodología confidencial\"",
+    "x": 400,
+    "y": 950,
+    "w": 280
+   },
+   {
+    "id": "safety-evaluation-principle",
+    "label": "🎯 Principio de evaluación de seguridad de IA\n\"Las pruebas independientes previas al despliegue identifican riesgos catastróficos\nLas herramientas de código abierto permiten la colaboración global en seguridad\nUna ciencia incipiente requiere un desarrollo metodológico iterativo\"",
+    "x": 400,
+    "y": 1100,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "frontier-ai-safety-challenge",
+    "t": "aisi-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "aisi-framework",
+    "t": "uk-us-collaboration",
+    "label": "establece colaboración"
+   },
+   {
+    "id": "e3",
+    "s": "aisi-framework",
+    "t": "four-evaluation-areas",
+    "label": "prueba 4 áreas"
+   },
+   {
+    "id": "e4",
+    "s": "uk-us-collaboration",
+    "t": "international-network",
+    "label": "se expande globalmente"
+   },
+   {
+    "id": "e5",
+    "s": "four-evaluation-areas",
+    "t": "safeguards-effectiveness",
+    "label": "incluye salvaguardas"
+   },
+   {
+    "id": "e6",
+    "s": "aisi-framework",
+    "t": "evaluation-methodology",
+    "label": "aplica la metodología"
+   },
+   {
+    "id": "e7",
+    "s": "evaluation-methodology",
+    "t": "inspect-ai-framework",
+    "label": "implementado mediante"
+   },
+   {
+    "id": "e8",
+    "s": "evaluation-methodology",
+    "t": "model-developer-partnership",
+    "label": "aplicado a través de"
+   },
+   {
+    "id": "e9",
+    "s": "inspect-ai-framework",
+    "t": "evaluation-requirements",
+    "label": "requiere acceso"
+   },
+   {
+    "id": "e10",
+    "s": "model-developer-partnership",
+    "t": "evaluation-requirements",
+    "label": "necesita capacidades"
+   },
+   {
+    "id": "e11",
+    "s": "evaluation-requirements",
+    "t": "safety-evaluation-principle",
+    "label": "habilita el principio"
+   },
+   {
+    "id": "e12",
+    "s": "safeguards-effectiveness",
+    "t": "safety-evaluation-principle",
+    "label": "valida el principio"
+   },
+   {
+    "id": "e13",
+    "s": "international-network",
+    "t": "safety-evaluation-principle",
+    "label": "escala el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de evaluación de seguridad de IA de frontera",
+    "description": "¿Cómo podemos evaluar sistemas de IA avanzados frente a riesgos catastróficos antes del despliegue cuando prácticamente no existen estándares ni buenas prácticas establecidas para las pruebas de seguridad de IA de frontera?",
+    "input": "",
+    "nodes": [
+     "frontier-ai-safety-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework de evaluación AISI",
+    "description": "El framework colaborativo entre Reino Unido y EE. UU. aborda el desafío mediante evaluación independiente, pruebas previas al despliegue y herramientas de código abierto, y establece el primer enfoque sistemático del mundo para la evaluación de seguridad de IA de frontera.",
+    "input": "",
+    "nodes": [
+     "aisi-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Colaboración internacional y áreas centrales de prueba",
+    "description": "La histórica alianza entre Reino Unido y EE. UU. (acceso compartido a modelos, evaluaciones conjuntas) se expande a una red de 10 países, mientras el framework prueba 4 áreas críticas: ciberataque, uso indebido químico/biológico, agentes autónomos y eficacia de las salvaguardas.",
+    "input": "",
+    "nodes": [
+     "uk-us-collaboration",
+     "international-network",
+     "four-evaluation-areas",
+     "safeguards-effectiveness"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Metodología de evaluación multimétodo",
+    "description": "El enfoque de evaluación integral emplea pruebas automatizadas de capacidades, ejercicios de red-teaming, estudios de mejora en humanos y evaluaciones de agentes de IA para evaluar a fondo los riesgos y capacidades de los modelos de frontera.",
+    "input": "",
+    "nodes": [
+     "evaluation-methodology"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Herramientas de código abierto y alianzas con desarrolladores",
+    "description": "El framework Inspect AI, con más de 50 colaboradores, permite una evaluación impulsada por la comunidad, mientras que las alianzas con OpenAI y Anthropic permiten pruebas previas al despliegue de o1, Claude y otros modelos de frontera.",
+    "input": "",
+    "nodes": [
+     "inspect-ai-framework",
+     "model-developer-partnership"
+    ],
+    "edges": [
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Requisitos de evaluación integral y principio",
+    "description": "Una evaluación eficaz requiere acceso a modelos Helpful-Only, control para activar/desactivar salvaguardas y APIs de fine-tuning, lo que demuestra que las pruebas independientes previas al despliegue identifican riesgos catastróficos mientras la colaboración abierta hace avanzar una ciencia de la seguridad aún incipiente.",
+    "input": "",
+    "nodes": [
+     "evaluation-requirements",
+     "safety-evaluation-principle"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12",
+     "e13"
+    ]
+   }
+  ]
+ }
+}

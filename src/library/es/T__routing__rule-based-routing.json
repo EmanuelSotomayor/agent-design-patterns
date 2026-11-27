@@ -1,0 +1,445 @@
+{
+ "cat": "routing",
+ "slug": "rule-based-routing",
+ "name": "Rule-based Routing(RBR)",
+ "icon": "📋",
+ "complexity": "low",
+ "description": "Un sistema de enrutamiento determinista que usa reglas, condiciones y árboles de decisión predefinidos para dirigir las consultas a los manejadores adecuados, y que ofrece decisiones de enrutamiento rápidas, predecibles y auditables mediante sentencias if-else, switch case y coincidencia de patrones, ideal para sistemas de IA agéntica críticos en cumplimiento y sensibles a la latencia",
+ "features": [
+  "Lógica determinista con if-else y switch case",
+  "Coincidencia de patrones con regex y palabras clave",
+  "Precedencia de reglas y resolución de conflictos",
+  "Gestión de reglas basada en configuración",
+  "Decisiones de enrutamiento de latencia ultrabaja (<5ms)",
+  "Registro de auditoría y trazabilidad completos",
+  "Control de versiones para las definiciones de reglas",
+  "Integración híbrida con respaldos de IA"
+ ],
+ "tldr": {
+  "what": "Usa lógica if-else y coincidencia de patrones para enrutar de forma determinista las consultas a los manejadores según condiciones de reglas predefinidas.",
+  "when": "Sistemas críticos en cumplimiento, enrutamiento sensible a la latencia o flujos de trabajo donde los registros de auditoría y la previsibilidad importan más que la flexibilidad.",
+  "watchOut": "Las reglas se vuelven frágiles e imposibles de mantener a medida que se acumulan los casos límite; los nuevos tipos de consultas suelen quedar sin coincidencia o coincidir con reglas equivocadas."
+ },
+ "overview": {
+  "pattern": "Enrutamiento determinista mediante reglas, condiciones y árboles de decisión predefinidos",
+  "why": "Ofrece decisiones de enrutamiento trazables, auditables y ultrarrápidas con resultados garantizados",
+  "insight": "Cadenas if-else + coincidencia de patrones + gestión de configuración = orquestación de agentes predecible",
+  "impl": [
+   {
+    "t": "Definir",
+    "d": "Crea reglas y condiciones de enrutamiento"
+   },
+   {
+    "t": "Extraer",
+    "d": "Analiza palabras clave/patrones de la entrada"
+   },
+   {
+    "t": "Coincidir",
+    "d": "Aplica lógica if-else/switch"
+   },
+   {
+    "t": "Validar",
+    "d": "Verifica la precedencia y los conflictos entre reglas"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Enruta a un manejador determinista"
+   }
+  ],
+  "example": "if (query.contains(\"refund\")) route(\"billing_agent\") else if (priority == \"urgent\") route(\"escalation_handler\")",
+  "dos": [
+   "Ordena las reglas de la más específica a la más general",
+   "Implementa rutas de respaldo/por defecto",
+   "Versiona las definiciones de tus reglas",
+   "Registra las decisiones de enrutamiento para la depuración",
+   "Combínalo con IA para flujos de trabajo híbridos"
+  ],
+  "donts": [
+   "Crear reglas superpuestas o en conflicto",
+   "Codificar reglas de forma fija sin gestión de configuración",
+   "Ignorar los casos límite y las excepciones",
+   "Complicarlo en exceso con demasiadas condiciones",
+   "Omitir la validación y las pruebas de las reglas"
+  ],
+  "use": [
+   "Se requiere enrutamiento determinista",
+   "Se necesitan registros de cumplimiento/auditoría",
+   "Las decisiones de baja latencia son críticas",
+   "Patrones de enrutamiento claros y estables"
+  ],
+  "avoid": [
+   "Se necesita una comprensión semántica compleja",
+   "Los patrones cambian con frecuencia",
+   "Manejo de consultas ambiguas",
+   "Los matices del lenguaje natural importan"
+  ],
+  "metrics": [
+   {
+    "n": "Cobertura de reglas",
+    "d": "% de consultas que coinciden con reglas"
+   },
+   {
+    "n": "Latencia de decisión",
+    "d": "Tiempo de enrutamiento (normalmente <5ms)"
+   },
+   {
+    "n": "Conflictos entre reglas",
+    "d": "Número de reglas superpuestas"
+   },
+   {
+    "n": "Tasa de respaldo",
+    "d": "% enrutado al manejador por defecto"
+   },
+   {
+    "n": "Mantenimiento de reglas",
+    "d": "Cambios por mes"
+   },
+   {
+    "n": "Precisión",
+    "d": "% enrutado correctamente vs. manual"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Escalamiento por prioridad",
+    "d": "if urgency=\"critical\" AND type=\"security\" → security_team"
+   },
+   {
+    "n": "Enrutamiento por departamento",
+    "d": "switch(category) { case \"billing\": finance_agent; case \"tech\": it_support }"
+   },
+   {
+    "n": "Flujos de trabajo de cumplimiento",
+    "d": "industrias reguladas que requieren rutas deterministas y auditables"
+   },
+   {
+    "n": "Distribución de carga",
+    "d": "enrutamiento round-robin o ponderado según la disponibilidad de los agentes"
+   },
+   {
+    "n": "Orquestación híbrida",
+    "d": "reglas para patrones conocidos + respaldo de IA para casos complejos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Rule-Based Routing",
+  "description": "Demuestra el enrutamiento determinista mediante reglas, condiciones y coincidencia de patrones predefinidas",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud entrante\n\"URGENT: Password reset for admin@company.com\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "rule-engine",
+    "label": "⚙️ Motor de reglas\nEvalúa condiciones y patrones",
+    "x": 375,
+    "y": 160,
+    "w": 300
+   },
+   {
+    "id": "rule1",
+    "label": "Regla 1: Verificación de prioridad\nIF contains(\"URGENT\")\nTHEN priority = HIGH\n✅ Coincide",
+    "x": 50,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "rule2",
+    "label": "Regla 2: Detección del tema\nIF contains(\"password\", \"reset\")\nTHEN topic = SECURITY\n✅ Coincide",
+    "x": 270,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "rule3",
+    "label": "Regla 3: Tipo de usuario\nIF email.endsWith(\"@company.com\")\nTHEN userType = INTERNAL\n✅ Coincide",
+    "x": 490,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "rule4",
+    "label": "Regla 4: Verificación de administrador\nIF email.startsWith(\"admin\")\nTHEN requiresEscalation = TRUE\n✅ Coincide",
+    "x": 710,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "decision",
+    "label": "🎯 Decisión de enrutamiento\nPrioridad: HIGH\nTema: SECURITY\nUsuario: INTERNAL\nEscalar: TRUE",
+    "x": 375,
+    "y": 400,
+    "w": 250
+   },
+   {
+    "id": "security-escalated",
+    "label": "🔐 Equipo de seguridad (escalado)\nIncidentes de seguridad de alta prioridad",
+    "x": 150,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "security-normal",
+    "label": "🛡️ Equipo de seguridad (normal)\nSolicitudes de seguridad estándar",
+    "x": 400,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "general-support",
+    "label": "💬 Soporte general\nIncidentes no críticos",
+    "x": 650,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "security-processor",
+    "label": "Procesar la solicitud escalada\n• Alertar al responsable de seguridad\n• Iniciar el restablecimiento de la contraseña del administrador\n• Registro de auditoría",
+    "x": 150,
+    "y": 640,
+    "w": 240
+   },
+   {
+    "id": "output",
+    "label": "Respuesta\n\"Se notificó al equipo de seguridad. Se inició el restablecimiento\nde la contraseña del administrador. Revisa tu email para ver las instrucciones.\"",
+    "x": 400,
+    "y": 760,
+    "w": 320
+   },
+   {
+    "id": "rule-config",
+    "label": "📋 Configuración de reglas\n• 15 reglas activas\n• Orden: por prioridad\n• Respaldo: Soporte general\n• Cache: habilitado",
+    "x": 750,
+    "y": 160,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-engine",
+    "s": "input",
+    "t": "rule-engine",
+    "label": ""
+   },
+   {
+    "id": "e-engine-config",
+    "s": "rule-engine",
+    "t": "rule-config",
+    "label": ""
+   },
+   {
+    "id": "e-engine-rule1",
+    "s": "rule-engine",
+    "t": "rule1",
+    "label": "Verificar"
+   },
+   {
+    "id": "e-engine-rule2",
+    "s": "rule-engine",
+    "t": "rule2",
+    "label": "Verificar"
+   },
+   {
+    "id": "e-engine-rule3",
+    "s": "rule-engine",
+    "t": "rule3",
+    "label": "Verificar"
+   },
+   {
+    "id": "e-engine-rule4",
+    "s": "rule-engine",
+    "t": "rule4",
+    "label": "Verificar"
+   },
+   {
+    "id": "e-rule1-decision",
+    "s": "rule1",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-rule2-decision",
+    "s": "rule2",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-rule3-decision",
+    "s": "rule3",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-rule4-decision",
+    "s": "rule4",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-decision-escalated",
+    "s": "decision",
+    "t": "security-escalated",
+    "label": "Seleccionado"
+   },
+   {
+    "id": "e-decision-normal",
+    "s": "decision",
+    "t": "security-normal",
+    "label": ""
+   },
+   {
+    "id": "e-decision-general",
+    "s": "decision",
+    "t": "general-support",
+    "label": ""
+   },
+   {
+    "id": "e-escalated-processor",
+    "s": "security-escalated",
+    "t": "security-processor",
+    "label": ""
+   },
+   {
+    "id": "e-processor-output",
+    "s": "security-processor",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud recibida",
+    "description": "El sistema recibe una solicitud entrante que debe enrutarse según reglas predefinidas.",
+    "input": "Solicitud: \"URGENT: Password reset for admin@company.com\"\n\nMetadatos:\n• Marca de tiempo: 2024-01-10 14:32:15\n• Origen: Portal web\n• IP: 192.168.1.100",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Activación del motor de reglas",
+    "description": "El motor de reglas carga las reglas configuradas y se prepara para evaluarlas contra la solicitud.",
+    "input": "Cargando la configuración de reglas:\n• Total de reglas: 15\n• Orden de evaluación: por prioridad\n• Coincidencia de patrones: regex y palabras clave\n• Ruta por defecto: Soporte general",
+    "nodes": [
+     "input",
+     "rule-engine",
+     "rule-config"
+    ],
+    "edges": [
+     "e-input-engine",
+     "e-engine-config"
+    ]
+   },
+   {
+    "title": "Regla 1: Verificación de prioridad",
+    "description": "La primera regla busca indicadores de prioridad en el mensaje.",
+    "input": "",
+    "nodes": [
+     "rule-engine",
+     "rule1"
+    ],
+    "edges": [
+     "e-engine-rule1"
+    ]
+   },
+   {
+    "title": "Regla 2: Detección del tema",
+    "description": "La segunda regla identifica la categoría del tema según palabras clave.",
+    "input": "",
+    "nodes": [
+     "rule-engine",
+     "rule2"
+    ],
+    "edges": [
+     "e-engine-rule2"
+    ]
+   },
+   {
+    "title": "Regla 3: Clasificación del tipo de usuario",
+    "description": "La tercera regla determina si el usuario es interno o externo.",
+    "input": "",
+    "nodes": [
+     "rule-engine",
+     "rule3"
+    ],
+    "edges": [
+     "e-engine-rule3"
+    ]
+   },
+   {
+    "title": "Regla 4: Verificación de escalamiento de administrador",
+    "description": "La cuarta regla verifica si la solicitud requiere un escalamiento especial.",
+    "input": "",
+    "nodes": [
+     "rule-engine",
+     "rule4"
+    ],
+    "edges": [
+     "e-engine-rule4"
+    ]
+   },
+   {
+    "title": "Agregación de los resultados de las reglas",
+    "description": "Todos los resultados de las reglas se combinan para tomar la decisión final de enrutamiento.",
+    "input": "",
+    "nodes": [
+     "rule1",
+     "rule2",
+     "rule3",
+     "rule4",
+     "decision"
+    ],
+    "edges": [
+     "e-rule1-decision",
+     "e-rule2-decision",
+     "e-rule3-decision",
+     "e-rule4-decision"
+    ]
+   },
+   {
+    "title": "Selección de la ruta",
+    "description": "Con base en las reglas agregadas, se selecciona la ruta adecuada.",
+    "input": "",
+    "nodes": [
+     "decision",
+     "security-escalated",
+     "security-normal",
+     "general-support"
+    ],
+    "edges": [
+     "e-decision-escalated",
+     "e-decision-normal",
+     "e-decision-general"
+    ]
+   },
+   {
+    "title": "Procesamiento de la solicitud",
+    "description": "El manejador del equipo de seguridad escalado procesa la solicitud de alta prioridad.",
+    "input": "",
+    "nodes": [
+     "security-escalated",
+     "security-processor"
+    ],
+    "edges": [
+     "e-escalated-processor"
+    ]
+   },
+   {
+    "title": "Devolución de la respuesta",
+    "description": "El resultado procesado se envía de vuelta al solicitante.",
+    "input": "",
+    "nodes": [
+     "security-processor",
+     "output"
+    ],
+    "edges": [
+     "e-processor-output"
+    ]
+   }
+  ]
+ }
+}

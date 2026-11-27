@@ -1,0 +1,344 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "enterprise-orchestration",
+ "name": "Enterprise Orchestration",
+ "icon": "🏢",
+ "complexity": "high",
+ "description": "Coordinación de nivel empresarial con capacidades de gobernanza, cumplimiento y auditoría",
+ "features": [
+  "Frameworks de gobernanza",
+  "Monitoreo del cumplimiento",
+  "Gestión de registros de auditoría",
+  "Integración con la seguridad empresarial",
+  "Gestión de SLA",
+  "Integración con procesos de negocio"
+ ],
+ "tldr": {
+  "what": "Coordina los flujos de trabajo de los agentes con gobernanza integrada, seguimiento del cumplimiento, logging de auditoría y controles de acceso basados en roles en todos los sistemas empresariales.",
+  "when": "Industrias reguladas que procesan datos sensibles donde necesitas cadenas de aprobación documentadas, pruebas de cumplimiento y enrutamiento de tareas basado en roles.",
+  "watchOut": "La sobrecarga de la gobernanza ralentiza la ejecución; el logging de auditoría a escala genera cuellos de botella de almacenamiento y consulta si no se diseña la arquitectura con cuidado."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Enterprise Orchestration",
+  "description": "Coordinación de nivel empresarial que envuelve el procesamiento de los agentes en controles de gobernanza, cumplimiento y auditoría. Cada etapa aplica control de acceso, compuertas de políticas, verificaciones de calidad y monitoreo de SLA, con las excepciones escaladas y los resultados registrados para la revisión regulatoria.",
+  "nodes": [
+   {
+    "id": "document-intake",
+    "label": "📄 Ingreso del documento\n\"Solicitud de préstamo con PII\"",
+    "x": 360,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "orchestrator",
+    "label": "🏢 Orquestador empresarial\nControlador de procesos gobernados",
+    "x": 375,
+    "y": 145,
+    "w": 270
+   },
+   {
+    "id": "iam-rbac",
+    "label": "🔐 IAM / RBAC\nControl de acceso basado en roles",
+    "x": 110,
+    "y": 250,
+    "w": 190
+   },
+   {
+    "id": "classification",
+    "label": "🏷️ Motor de clasificación\nEtiquetado de sensibilidad",
+    "x": 375,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "compliance-gate",
+    "label": "⚖️ Compuerta de cumplimiento\nVerificaciones de políticas GDPR / CCPA",
+    "x": 660,
+    "y": 250,
+    "w": 210
+   },
+   {
+    "id": "audit-log",
+    "label": "📓 Registro de auditoría\nLog de eventos inmutable",
+    "x": 40,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "sla-monitor",
+    "label": "⏱️ Monitor de SLA\nControla los plazos de cada etapa",
+    "x": 780,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "extraction-agent",
+    "label": "🤖 Agente de extracción\nAutorizado para datos clasificados",
+    "x": 250,
+    "y": 370,
+    "w": 200
+   },
+   {
+    "id": "approval-agent",
+    "label": "🧑‍⚖️ Agente de aprobación\nAprobación en múltiples etapas",
+    "x": 520,
+    "y": 370,
+    "w": 200
+   },
+   {
+    "id": "quality-gate",
+    "label": "✅ Compuerta de calidad\nValida la salida en cada etapa",
+    "x": 360,
+    "y": 480,
+    "w": 220
+   },
+   {
+    "id": "escalation",
+    "label": "🚨 Escalamiento de excepciones\nDeriva las fallas a humanos",
+    "x": 620,
+    "y": 480,
+    "w": 210
+   },
+   {
+    "id": "signing",
+    "label": "✍️ Firma digital\nSella la salida aprobada",
+    "x": 240,
+    "y": 590,
+    "w": 190
+   },
+   {
+    "id": "retention",
+    "label": "🗄️ Política de retención\nAplica reglas de ciclo de vida de los datos",
+    "x": 470,
+    "y": 590,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "✅ Salida conforme\nDecisión + dashboard listo para auditoría",
+    "x": 330,
+    "y": 700,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "intake-orchestrator",
+    "s": "document-intake",
+    "t": "orchestrator",
+    "label": ""
+   },
+   {
+    "id": "orchestrator-rbac",
+    "s": "orchestrator",
+    "t": "iam-rbac",
+    "label": "Autorizar"
+   },
+   {
+    "id": "orchestrator-classification",
+    "s": "orchestrator",
+    "t": "classification",
+    "label": "Clasificar"
+   },
+   {
+    "id": "orchestrator-compliance",
+    "s": "orchestrator",
+    "t": "compliance-gate",
+    "label": "Verificar"
+   },
+   {
+    "id": "rbac-extraction",
+    "s": "iam-rbac",
+    "t": "extraction-agent",
+    "label": "Autorización"
+   },
+   {
+    "id": "compliance-extraction",
+    "s": "compliance-gate",
+    "t": "extraction-agent",
+    "label": "Aprobado"
+   },
+   {
+    "id": "extraction-approval",
+    "s": "extraction-agent",
+    "t": "approval-agent",
+    "label": "Enrutar"
+   },
+   {
+    "id": "approval-quality",
+    "s": "approval-agent",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "quality-signing",
+    "s": "quality-gate",
+    "t": "signing",
+    "label": "Aprueba"
+   },
+   {
+    "id": "quality-escalation",
+    "s": "quality-gate",
+    "t": "escalation",
+    "label": "Falla"
+   },
+   {
+    "id": "escalation-orchestrator",
+    "s": "escalation",
+    "t": "orchestrator",
+    "label": "Remediar"
+   },
+   {
+    "id": "signing-retention",
+    "s": "signing",
+    "t": "retention",
+    "label": ""
+   },
+   {
+    "id": "retention-output",
+    "s": "retention",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "orchestrator-audit",
+    "s": "orchestrator",
+    "t": "audit-log",
+    "label": "Registrar"
+   },
+   {
+    "id": "approval-audit",
+    "s": "approval-agent",
+    "t": "audit-log",
+    "label": "Registrar"
+   },
+   {
+    "id": "orchestrator-sla",
+    "s": "orchestrator",
+    "t": "sla-monitor",
+    "label": "Rastrear"
+   },
+   {
+    "id": "sla-escalation",
+    "s": "sla-monitor",
+    "t": "escalation",
+    "label": "Incumplimiento"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Ingreso gobernado",
+    "description": "Un documento sensible ingresa al orquestador, que trata la solicitud como un proceso gobernado y no como una tarea simple.",
+    "input": "",
+    "nodes": [
+     "document-intake",
+     "orchestrator"
+    ],
+    "edges": [
+     "intake-orchestrator"
+    ]
+   },
+   {
+    "title": "Control de acceso y clasificación",
+    "description": "El orquestador autoriza la solicitud mediante IAM y RBAC y clasifica el documento por sensibilidad antes de cualquier procesamiento.",
+    "input": "",
+    "nodes": [
+     "orchestrator",
+     "iam-rbac",
+     "classification"
+    ],
+    "edges": [
+     "orchestrator-rbac",
+     "orchestrator-classification"
+    ]
+   },
+   {
+    "title": "Compuerta de cumplimiento",
+    "description": "Las verificaciones de políticas de GDPR y CCPA se ejecutan en la compuerta de cumplimiento, bloqueando el pipeline a menos que el documento pueda procesarse legalmente.",
+    "input": "",
+    "nodes": [
+     "orchestrator",
+     "compliance-gate"
+    ],
+    "edges": [
+     "orchestrator-compliance"
+    ]
+   },
+   {
+    "title": "Extracción autorizada",
+    "description": "Solo un agente con la autorización adecuada recibe el documento clasificado y extrae los campos requeridos.",
+    "input": "",
+    "nodes": [
+     "iam-rbac",
+     "compliance-gate",
+     "extraction-agent"
+    ],
+    "edges": [
+     "rbac-extraction",
+     "compliance-extraction"
+    ]
+   },
+   {
+    "title": "Aprobación en múltiples etapas",
+    "description": "El agente de aprobación aplica una aprobación en múltiples etapas para los datos sensibles y escribe cada decisión en el registro de auditoría inmutable.",
+    "input": "",
+    "nodes": [
+     "extraction-agent",
+     "approval-agent",
+     "audit-log"
+    ],
+    "edges": [
+     "extraction-approval",
+     "approval-audit"
+    ]
+   },
+   {
+    "title": "Compuerta de calidad y escalamiento",
+    "description": "Una compuerta de calidad valida la salida. Las fallas, y los incumplimientos de SLA detectados por el monitor, se escalan a humanos para su remediación.",
+    "input": "",
+    "nodes": [
+     "approval-agent",
+     "quality-gate",
+     "escalation",
+     "sla-monitor"
+    ],
+    "edges": [
+     "approval-quality",
+     "quality-escalation",
+     "sla-escalation",
+     "escalation-orchestrator"
+    ]
+   },
+   {
+    "title": "Firma y retención",
+    "description": "La salida aprobada se firma digitalmente y se le aplican políticas de retención para que su ciclo de vida esté controlado desde su creación.",
+    "input": "",
+    "nodes": [
+     "quality-gate",
+     "signing",
+     "retention"
+    ],
+    "edges": [
+     "quality-signing",
+     "signing-retention"
+    ]
+   },
+   {
+    "title": "Salida conforme",
+    "description": "La decisión final se entrega junto con un dashboard listo para auditoría, con cada etapa registrada y cada plazo controlado.",
+    "input": "",
+    "nodes": [
+     "retention",
+     "output",
+     "audit-log"
+    ],
+    "edges": [
+     "retention-output",
+     "orchestrator-audit",
+     "orchestrator-sla"
+    ]
+   }
+  ]
+ }
+}

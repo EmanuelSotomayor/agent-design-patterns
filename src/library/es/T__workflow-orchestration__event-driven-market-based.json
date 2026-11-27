@@ -1,0 +1,316 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "event-driven-market-based",
+ "name": "Event-Driven Market-Based(EDMB)",
+ "icon": "💱",
+ "complexity": "high",
+ "description": "Asignación descentralizada de tareas mediante un mercado de eventos de ofertas y demandas (bid/ask)",
+ "features": [
+  "Asignación de tareas basada en subastas",
+  "Flujos de eventos de bid/ask",
+  "Coordinación mediante un market maker",
+  "Mecanismos de precios dinámicos",
+  "Selección basada en reputación",
+  "Negociación descentralizada"
+ ],
+ "tldr": {
+  "what": "Los agentes ofertan por tareas publicadas en un mercado, un coordinador empareja ofertas con tareas según precio y reputación, y el ganador ejecuta la tarea y actualiza su reputación.",
+  "when": "Múltiples agentes autónomos compiten por trabajo, la asignación de tareas necesita precios dinámicos o quieres que los agentes se autoseleccionen según su capacidad y costo.",
+  "watchOut": "La sobrecarga de coordinación y la latencia de las rondas de ofertas pueden superar el ahorro de costos de la asignación descentralizada."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Event-Driven Market-Based",
+  "description": "Las tareas se asignan mediante una subasta descentralizada en lugar de una asignación central. Los clientes publican tareas como eventos, los agentes compiten publicando ofertas y un market maker empareja la oferta óptima según precio y reputación, actualizando la reputación después de la entrega.",
+  "nodes": [
+   {
+    "id": "client-task",
+    "label": "📋 Tarea del cliente\n\"Traducir 500 documentos, presupuesto $1,200\"",
+    "x": 360,
+    "y": 40,
+    "w": 320
+   },
+   {
+    "id": "task-requests-topic",
+    "label": "📢 Topic task-requests\nTarea abierta con requisitos",
+    "x": 375,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "market-maker",
+    "label": "🏦 Market Maker\nMotor de emparejamiento de bid vs. ask",
+    "x": 375,
+    "y": 260,
+    "w": 260
+   },
+   {
+    "id": "agent-a",
+    "label": "🤖 Agente A\nOferta: $0.020/palabra\nReputación: 4.8",
+    "x": 60,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "agent-b",
+    "label": "🤖 Agente B\nOferta: $0.015/palabra\nReputación: 4.2",
+    "x": 370,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "agent-c",
+    "label": "🤖 Agente C\nOferta: $0.025/palabra\nReputación: 4.9",
+    "x": 680,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "bid-stream-topic",
+    "label": "💰 Topic agent-bids\nOfertas: eventos de capacidad + precio",
+    "x": 375,
+    "y": 490,
+    "w": 280
+   },
+   {
+    "id": "reputation-ledger",
+    "label": "⭐ Registro de reputación\nPuntuaciones históricas de calidad",
+    "x": 720,
+    "y": 490,
+    "w": 210
+   },
+   {
+    "id": "winner",
+    "label": "🏆 Agente ganador (A)\nMejor utilidad precio-reputación",
+    "x": 375,
+    "y": 595,
+    "w": 240
+   },
+   {
+    "id": "service-delivery-topic",
+    "label": "📦 Topic service-delivery\nEvento de prueba de finalización",
+    "x": 300,
+    "y": 695,
+    "w": 240
+   },
+   {
+    "id": "payment-topic",
+    "label": "💳 payment + reputation-updates\nEvento de liquidación",
+    "x": 640,
+    "y": 695,
+    "w": 250
+   },
+   {
+    "id": "output",
+    "label": "✅ Traducción entregada\nAsignada sin planificador central",
+    "x": 300,
+    "y": 800,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-marketplace",
+    "s": "client-task",
+    "t": "task-requests-topic",
+    "label": "Publicar"
+   },
+   {
+    "id": "marketplace-maker",
+    "s": "task-requests-topic",
+    "t": "market-maker",
+    "label": ""
+   },
+   {
+    "id": "maker-agenta",
+    "s": "market-maker",
+    "t": "agent-a",
+    "label": "Difundir"
+   },
+   {
+    "id": "maker-agentb",
+    "s": "market-maker",
+    "t": "agent-b",
+    "label": "Difundir"
+   },
+   {
+    "id": "maker-agentc",
+    "s": "market-maker",
+    "t": "agent-c",
+    "label": "Difundir"
+   },
+   {
+    "id": "agenta-bids",
+    "s": "agent-a",
+    "t": "bid-stream-topic",
+    "label": "Ofertar"
+   },
+   {
+    "id": "agentb-bids",
+    "s": "agent-b",
+    "t": "bid-stream-topic",
+    "label": "Ofertar"
+   },
+   {
+    "id": "agentc-bids",
+    "s": "agent-c",
+    "t": "bid-stream-topic",
+    "label": "Ofertar"
+   },
+   {
+    "id": "bids-maker",
+    "s": "bid-stream-topic",
+    "t": "market-maker",
+    "label": "Evaluar"
+   },
+   {
+    "id": "reputation-maker",
+    "s": "reputation-ledger",
+    "t": "market-maker",
+    "label": "Ponderar"
+   },
+   {
+    "id": "maker-winner",
+    "s": "market-maker",
+    "t": "winner",
+    "label": "Emparejar"
+   },
+   {
+    "id": "winner-delivery",
+    "s": "winner",
+    "t": "service-delivery-topic",
+    "label": "Entregar"
+   },
+   {
+    "id": "delivery-payment",
+    "s": "service-delivery-topic",
+    "t": "payment-topic",
+    "label": "Liquidar"
+   },
+   {
+    "id": "payment-reputation",
+    "s": "payment-topic",
+    "t": "reputation-ledger",
+    "label": "Actualizar puntuación"
+   },
+   {
+    "id": "delivery-output",
+    "s": "service-delivery-topic",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea publicada",
+    "description": "Un cliente publica una tarea con requisitos y un presupuesto en el topic task-requests, sin decidir quién debe hacer el trabajo.",
+    "input": "",
+    "nodes": [
+     "client-task",
+     "task-requests-topic"
+    ],
+    "edges": [
+     "task-marketplace"
+    ]
+   },
+   {
+    "title": "Difusión del market maker",
+    "description": "El market maker consume la tarea abierta y la difunde para que cualquier agente capaz pueda decidir competir.",
+    "input": "",
+    "nodes": [
+     "task-requests-topic",
+     "market-maker",
+     "agent-a",
+     "agent-b",
+     "agent-c"
+    ],
+    "edges": [
+     "marketplace-maker",
+     "maker-agenta",
+     "maker-agentb",
+     "maker-agentc"
+    ]
+   },
+   {
+    "title": "Envío de ofertas",
+    "description": "Los agentes publican de forma independiente en el flujo agent-bids ofertas que combinan su precio y sus capacidades.",
+    "input": "",
+    "nodes": [
+     "agent-a",
+     "agent-b",
+     "agent-c",
+     "bid-stream-topic"
+    ],
+    "edges": [
+     "agenta-bids",
+     "agentb-bids",
+     "agentc-bids"
+    ]
+   },
+   {
+    "title": "Evaluación de ofertas",
+    "description": "El market maker consume el flujo de ofertas y pondera cada una frente al registro de reputación, no solo por precio.",
+    "input": "",
+    "nodes": [
+     "bid-stream-topic",
+     "market-maker",
+     "reputation-ledger"
+    ],
+    "edges": [
+     "bids-maker",
+     "reputation-maker"
+    ]
+   },
+   {
+    "title": "Adjudicación del emparejamiento",
+    "description": "El agente A gana por tener la mejor utilidad precio-reputación, aunque el agente B ofertó más bajo, y se le adjudica la tarea.",
+    "input": "",
+    "nodes": [
+     "market-maker",
+     "winner"
+    ],
+    "edges": [
+     "maker-winner"
+    ]
+   },
+   {
+    "title": "Entrega del servicio",
+    "description": "El agente ganador ejecuta el trabajo y publica un evento de prueba de finalización en el topic service-delivery.",
+    "input": "",
+    "nodes": [
+     "winner",
+     "service-delivery-topic"
+    ],
+    "edges": [
+     "winner-delivery"
+    ]
+   },
+   {
+    "title": "Pago y actualización de reputación",
+    "description": "La entrega dispara la liquidación, y el evento de pago devuelve una puntuación de reputación actualizada, lo que cierra el ciclo de incentivos.",
+    "input": "",
+    "nodes": [
+     "service-delivery-topic",
+     "payment-topic",
+     "reputation-ledger"
+    ],
+    "edges": [
+     "delivery-payment",
+     "payment-reputation"
+    ]
+   },
+   {
+    "title": "Resultado entregado",
+    "description": "La traducción completada se devuelve al cliente, asignada enteramente por la dinámica del mercado sin planificador central.",
+    "input": "",
+    "nodes": [
+     "service-delivery-topic",
+     "output"
+    ],
+    "edges": [
+     "delivery-output"
+    ]
+   }
+  ]
+ }
+}

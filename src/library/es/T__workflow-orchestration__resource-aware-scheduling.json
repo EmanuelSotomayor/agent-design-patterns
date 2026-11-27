@@ -1,0 +1,362 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "resource-aware-scheduling",
+ "name": "Resource-Aware Scheduling(RAS)",
+ "icon": "⚡",
+ "complexity": "high",
+ "description": "Programa dinámicamente las tareas de IA según los recursos de cómputo disponibles y las restricciones",
+ "features": [
+  "Monitoreo de recursos en tiempo real",
+  "Ajuste dinámico de prioridades",
+  "Optimización de múltiples recursos",
+  "Planificación consciente de los plazos",
+  "Equilibrio del consumo de energía",
+  "Integración de la gestión térmica"
+ ],
+ "tldr": {
+  "what": "Encola las tareas de IA y ajusta su prioridad y su momento de ejecución según mediciones en vivo de CPU, GPU, memoria, temperatura y energía.",
+  "when": "Sistemas que ejecutan múltiples cargas de trabajo de IA con plazos estrictos, cómputo limitado o restricciones térmicas que cambian durante la operación.",
+  "watchOut": "La sobrecarga del monitoreo constante puede superar el ahorro; los cambios bruscos de prioridad bajo contención de recursos desperdician más tiempo del que recuperan."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Resource-Aware Scheduling",
+  "description": "Planifica las tareas de IA según señales en vivo de cómputo, temperatura y energía, priorizando por plazo y desalojando o degradando trabajo para que las tareas críticas se cumplan a tiempo. Se ilustra con un vehículo autónomo que equilibra la percepción crítica para la seguridad con las cargas de trabajo en segundo plano.",
+  "nodes": [
+   {
+    "id": "task-stream",
+    "label": "🚗 Flujo de tareas del VA\nCarga de percepción + planificación",
+    "x": 380,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "scheduler",
+    "label": "⚡ Planificador consciente de recursos\nAsigna cómputo por prioridad",
+    "x": 380,
+    "y": 150,
+    "w": 300
+   },
+   {
+    "id": "cpu-monitor",
+    "label": "🖥️ Monitor de CPU\n75% en 4 núcleos",
+    "x": 40,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "gpu-monitor",
+    "label": "🎮 Monitor de GPU\n60% del acelerador de IA",
+    "x": 250,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "thermal-monitor",
+    "label": "🌡️ Monitor térmico\n68C de un límite de 85C",
+    "x": 470,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "battery-monitor",
+    "label": "🔋 Monitor de batería\n45% restante",
+    "x": 690,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "critical-tasks",
+    "label": "🛑 Tareas críticas\nFreno 8ms, obstáculo 16ms",
+    "x": 80,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "important-tasks",
+    "label": "🔵 Tareas importantes\nReconocimiento de señales 100ms",
+    "x": 370,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "optional-tasks",
+    "label": "⚪ Tareas opcionales\nActualización de mapa 30s, entretenimiento",
+    "x": 660,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "preemption",
+    "label": "⏫ Desalojo\nEl freno desaloja lo no crítico",
+    "x": 40,
+    "y": 540,
+    "w": 190
+   },
+   {
+    "id": "deferral",
+    "label": "⏳ Postergación\nRetiene lo opcional con carga alta",
+    "x": 260,
+    "y": 540,
+    "w": 190
+   },
+   {
+    "id": "throttle",
+    "label": "🔽 Reducción de frecuencia\n-20% de inferencia con calor",
+    "x": 480,
+    "y": 540,
+    "w": 190
+   },
+   {
+    "id": "adaptive-quality",
+    "label": "🎚️ Calidad adaptativa\nModelos de ahorro de energía",
+    "x": 700,
+    "y": 540,
+    "w": 190
+   },
+   {
+    "id": "execution-result",
+    "label": "✨ Ejecución\n99.9% de cumplimiento de plazos",
+    "x": 380,
+    "y": 680,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "stream-scheduler",
+    "s": "task-stream",
+    "t": "scheduler",
+    "label": ""
+   },
+   {
+    "id": "scheduler-cpu",
+    "s": "scheduler",
+    "t": "cpu-monitor",
+    "label": "consultar"
+   },
+   {
+    "id": "scheduler-gpu",
+    "s": "scheduler",
+    "t": "gpu-monitor",
+    "label": "consultar"
+   },
+   {
+    "id": "scheduler-thermal",
+    "s": "scheduler",
+    "t": "thermal-monitor",
+    "label": "consultar"
+   },
+   {
+    "id": "scheduler-battery",
+    "s": "scheduler",
+    "t": "battery-monitor",
+    "label": "consultar"
+   },
+   {
+    "id": "scheduler-critical",
+    "s": "scheduler",
+    "t": "critical-tasks",
+    "label": "clasificar"
+   },
+   {
+    "id": "scheduler-important",
+    "s": "scheduler",
+    "t": "important-tasks",
+    "label": "clasificar"
+   },
+   {
+    "id": "scheduler-optional",
+    "s": "scheduler",
+    "t": "optional-tasks",
+    "label": "clasificar"
+   },
+   {
+    "id": "critical-preempt",
+    "s": "critical-tasks",
+    "t": "preemption",
+    "label": "activa"
+   },
+   {
+    "id": "preempt-optional",
+    "s": "preemption",
+    "t": "optional-tasks",
+    "label": "suspender"
+   },
+   {
+    "id": "cpu-defer",
+    "s": "cpu-monitor",
+    "t": "deferral",
+    "label": "carga alta"
+   },
+   {
+    "id": "defer-optional",
+    "s": "deferral",
+    "t": "optional-tasks",
+    "label": "postergar"
+   },
+   {
+    "id": "thermal-throttle",
+    "s": "thermal-monitor",
+    "t": "throttle",
+    "label": "temperatura en aumento"
+   },
+   {
+    "id": "throttle-important",
+    "s": "throttle",
+    "t": "important-tasks",
+    "label": "reducir frecuencia"
+   },
+   {
+    "id": "battery-quality",
+    "s": "battery-monitor",
+    "t": "adaptive-quality",
+    "label": "batería baja"
+   },
+   {
+    "id": "quality-important",
+    "s": "adaptive-quality",
+    "t": "important-tasks",
+    "label": "modelo más liviano"
+   },
+   {
+    "id": "critical-exec",
+    "s": "critical-tasks",
+    "t": "execution-result",
+    "label": ""
+   },
+   {
+    "id": "important-exec",
+    "s": "important-tasks",
+    "t": "execution-result",
+    "label": ""
+   },
+   {
+    "id": "optional-exec",
+    "s": "optional-tasks",
+    "t": "execution-result",
+    "label": "si hay capacidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Flujo de tareas",
+    "description": "Un flujo continuo de tareas de percepción y planificación llega al planificador consciente de recursos.",
+    "input": "",
+    "nodes": [
+     "task-stream",
+     "scheduler"
+    ],
+    "edges": [
+     "stream-scheduler"
+    ]
+   },
+   {
+    "title": "Monitoreo de recursos",
+    "description": "El planificador consulta los monitores de CPU, GPU, temperatura y batería para leer el margen operativo actual.",
+    "input": "",
+    "nodes": [
+     "scheduler",
+     "cpu-monitor",
+     "gpu-monitor",
+     "thermal-monitor",
+     "battery-monitor"
+    ],
+    "edges": [
+     "scheduler-cpu",
+     "scheduler-gpu",
+     "scheduler-thermal",
+     "scheduler-battery"
+    ]
+   },
+   {
+    "title": "Clasificación por prioridad",
+    "description": "Las tareas se ordenan en niveles crítico, importante y opcional, cada uno con su propio plazo.",
+    "input": "",
+    "nodes": [
+     "scheduler",
+     "critical-tasks",
+     "important-tasks",
+     "optional-tasks"
+    ],
+    "edges": [
+     "scheduler-critical",
+     "scheduler-important",
+     "scheduler-optional"
+    ]
+   },
+   {
+    "title": "Planificación con desalojo",
+    "description": "Un evento crítico para la seguridad, como un frenado de emergencia, desaloja de inmediato todo el trabajo no crítico.",
+    "input": "",
+    "nodes": [
+     "critical-tasks",
+     "preemption",
+     "optional-tasks"
+    ],
+    "edges": [
+     "critical-preempt",
+     "preempt-optional"
+    ]
+   },
+   {
+    "title": "Postergación según la carga",
+    "description": "Una carga de CPU alta hace que el planificador postergue tareas opcionales, como las actualizaciones de mapa, hasta que se libere capacidad.",
+    "input": "",
+    "nodes": [
+     "cpu-monitor",
+     "deferral",
+     "optional-tasks"
+    ],
+    "edges": [
+     "cpu-defer",
+     "defer-optional"
+    ]
+   },
+   {
+    "title": "Reducción térmica",
+    "description": "El aumento de temperatura reduce la frecuencia de inferencia de las tareas importantes para mantenerse por debajo del límite térmico.",
+    "input": "",
+    "nodes": [
+     "thermal-monitor",
+     "throttle",
+     "important-tasks"
+    ],
+    "edges": [
+     "thermal-throttle",
+     "throttle-important"
+    ]
+   },
+   {
+    "title": "Calidad adaptativa según la energía",
+    "description": "Con batería baja, las tareas importantes pasan a modelos más livianos y de ahorro de energía sin comprometer la seguridad.",
+    "input": "",
+    "nodes": [
+     "battery-monitor",
+     "adaptive-quality",
+     "important-tasks"
+    ],
+    "edges": [
+     "battery-quality",
+     "quality-important"
+    ]
+   },
+   {
+    "title": "Ejecución dentro de los plazos",
+    "description": "Las tareas críticas e importantes siempre se ejecutan a tiempo; las opcionales solo se ejecutan cuando hay capacidad disponible.",
+    "input": "",
+    "nodes": [
+     "critical-tasks",
+     "important-tasks",
+     "optional-tasks",
+     "execution-result"
+    ],
+    "edges": [
+     "critical-exec",
+     "important-exec",
+     "optional-exec"
+    ]
+   }
+  ]
+ }
+}

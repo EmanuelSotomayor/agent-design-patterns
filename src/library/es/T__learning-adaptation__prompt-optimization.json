@@ -1,0 +1,362 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "prompt-optimization",
+ "name": "Automatic Prompt Optimization(APO)",
+ "icon": "🧬",
+ "complexity": "high",
+ "description": "Trata los prompts e instrucciones dentro de un pipeline de agentes como parámetros aprendibles que se optimizan de forma programática frente a una métrica y un dataset etiquetado, en lugar de ajustarse a mano. Los optimizadores generan demostraciones few-shot por bootstrapping y buscan entre distintas redacciones de instrucciones, y los métodos reflexivos mutan los prompts leyendo trazas de ejecución de fallas pasadas.",
+ "features": [
+  "Prompts tratados como parámetros optimizables",
+  "Few-shot por bootstrapping y búsqueda de instrucciones (DSPy/MIPROv2)",
+  "Evolución reflexiva de prompts sobre trazas de ejecución (GEPA)",
+  "Gradientes textuales a partir de feedback en lenguaje natural (TextGrad)",
+  "Bucle de propuestas con el LLM como optimizador (OPRO)",
+  "Evaluación y selección de candidatos guiadas por métricas"
+ ],
+ "tldr": {
+  "what": "Trata los prompts como parámetros aprendibles optimizados frente a métricas mediante bootstrapping few-shot, búsqueda de instrucciones, análisis de trazas de fallas y bucles de feedback del LLM, en lugar de ajustarlos manualmente.",
+  "when": "Tienes datos de validación etiquetados, una métrica clara y suficiente presupuesto de cómputo para ejecutar muchas iteraciones del pipeline y mejorar sistemáticamente la calidad de los prompts.",
+  "watchOut": "La optimización puede sobreajustarse a tu conjunto de validación o a tu métrica, produciendo prompts que fallan en dominios nuevos o que manipulan la recompensa en lugar de lograr mejoras reales de capacidad."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Automatic Prompt Optimization (APO)",
+  "description": "Trata los prompts de un pipeline de agentes como parámetros aprendibles. Un optimizador lee las trazas de fallas, propone mutaciones de instrucciones y demostraciones few-shot, evalúa los candidatos frente a una métrica e itera hasta que el pipeline mejora de 61% a 84%.",
+  "nodes": [
+   {
+    "id": "dataset",
+    "label": "📊 Dataset etiquetado\n200 ejemplos de preguntas y respuestas\nMétrica: coincidencia exacta",
+    "x": 330,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "pipeline",
+    "label": "🔗 Pipeline del agente\nRecuperar -> Responder\nPrompts = parámetros",
+    "x": 330,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "baseline-eval",
+    "label": "📉 Evaluación de línea base\nPuntaje: 61% de coincidencia exacta",
+    "x": 650,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "trace-log",
+    "label": "🧾 Trazas de fallas\nRegistra entradas, pasos y métrica\nde cada respuesta incorrecta",
+    "x": 330,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "optimizer",
+    "label": "🧬 Optimizador de prompts\nGEPA + MIPROv2",
+    "x": 330,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "reflect",
+    "label": "🔍 Reflexión\nDiagnóstico: la etapa de respuesta\nignora las fechas del pasaje",
+    "x": 60,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "mutate-instruction",
+    "label": "✏️ Mutación de instrucciones\nReescribe el prompt de la etapa de respuesta",
+    "x": 330,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "bootstrap-fewshot",
+    "label": "🎯 Bootstrapping few-shot\nBusca demostraciones",
+    "x": 610,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "candidate-a",
+    "label": "📄 Candidato A\ninstrucción nueva",
+    "x": 70,
+    "y": 570,
+    "w": 160
+   },
+   {
+    "id": "candidate-b",
+    "label": "📄 Candidato B\ndemostraciones nuevas",
+    "x": 340,
+    "y": 570,
+    "w": 160
+   },
+   {
+    "id": "candidate-c",
+    "label": "📄 Candidato C\ninstrucción + demostraciones",
+    "x": 610,
+    "y": 570,
+    "w": 160
+   },
+   {
+    "id": "minibatch-eval",
+    "label": "⚖️ Evaluación por minibatch\nConserva solo los candidatos\nque superan al mejor actual",
+    "x": 330,
+    "y": 670,
+    "w": 220
+   },
+   {
+    "id": "select-best",
+    "label": "🏆 Seleccionar el mejor\nEl ganador inicia la siguiente ronda\n(~15 rondas)",
+    "x": 90,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "holdout",
+    "label": "🛡️ Prueba con datos reservados\nProtege contra el sobreajuste a la métrica",
+    "x": 610,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "✨ Pipeline optimizado\nPuntaje: 84% de coincidencia exacta",
+    "x": 330,
+    "y": 780,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-dataset-pipeline",
+    "s": "dataset",
+    "t": "pipeline",
+    "label": ""
+   },
+   {
+    "id": "e-pipeline-baseline",
+    "s": "pipeline",
+    "t": "baseline-eval",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "e-baseline-trace",
+    "s": "baseline-eval",
+    "t": "trace-log",
+    "label": "Registrar fallas"
+   },
+   {
+    "id": "e-trace-optimizer",
+    "s": "trace-log",
+    "t": "optimizer",
+    "label": ""
+   },
+   {
+    "id": "e-optimizer-reflect",
+    "s": "optimizer",
+    "t": "reflect",
+    "label": "Reflexionar"
+   },
+   {
+    "id": "e-reflect-mutate",
+    "s": "reflect",
+    "t": "mutate-instruction",
+    "label": ""
+   },
+   {
+    "id": "e-optimizer-bootstrap",
+    "s": "optimizer",
+    "t": "bootstrap-fewshot",
+    "label": "Bootstrapping"
+   },
+   {
+    "id": "e-mutate-cand-a",
+    "s": "mutate-instruction",
+    "t": "candidate-a",
+    "label": ""
+   },
+   {
+    "id": "e-mutate-cand-c",
+    "s": "mutate-instruction",
+    "t": "candidate-c",
+    "label": ""
+   },
+   {
+    "id": "e-bootstrap-cand-b",
+    "s": "bootstrap-fewshot",
+    "t": "candidate-b",
+    "label": ""
+   },
+   {
+    "id": "e-bootstrap-cand-c",
+    "s": "bootstrap-fewshot",
+    "t": "candidate-c",
+    "label": ""
+   },
+   {
+    "id": "e-cand-a-eval",
+    "s": "candidate-a",
+    "t": "minibatch-eval",
+    "label": ""
+   },
+   {
+    "id": "e-cand-b-eval",
+    "s": "candidate-b",
+    "t": "minibatch-eval",
+    "label": ""
+   },
+   {
+    "id": "e-cand-c-eval",
+    "s": "candidate-c",
+    "t": "minibatch-eval",
+    "label": ""
+   },
+   {
+    "id": "e-eval-select",
+    "s": "minibatch-eval",
+    "t": "select-best",
+    "label": "Conservar los que mejoran"
+   },
+   {
+    "id": "e-select-optimizer",
+    "s": "select-best",
+    "t": "optimizer",
+    "label": "Siguiente ronda"
+   },
+   {
+    "id": "e-select-holdout",
+    "s": "select-best",
+    "t": "holdout",
+    "label": "Convergió"
+   },
+   {
+    "id": "e-holdout-output",
+    "s": "holdout",
+    "t": "output",
+    "label": "84%"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Medición de línea base",
+    "description": "El pipeline se ejecuta sobre el conjunto de 200 ejemplos con sus prompts escritos a mano y obtiene 61% de coincidencia exacta. Ese se convierte en el objetivo a superar.",
+    "input": "",
+    "nodes": [
+     "dataset",
+     "pipeline",
+     "baseline-eval"
+    ],
+    "edges": [
+     "e-dataset-pipeline",
+     "e-pipeline-baseline"
+    ]
+   },
+   {
+    "title": "Recolectar trazas de fallas",
+    "description": "Para cada respuesta incorrecta, el optimizador registra la entrada, las salidas intermedias de recuperación y respuesta, y la métrica. Estas trazas contienen la señal sobre por qué falla el pipeline.",
+    "input": "",
+    "nodes": [
+     "baseline-eval",
+     "trace-log"
+    ],
+    "edges": [
+     "e-baseline-trace"
+    ]
+   },
+   {
+    "title": "Reflexionar sobre las fallas",
+    "description": "Un optimizador reflexivo lee las trazas y escribe un diagnóstico en lenguaje natural, por ejemplo, que la etapa de respuesta ignora las fechas presentes en el pasaje recuperado.",
+    "input": "",
+    "nodes": [
+     "trace-log",
+     "optimizer",
+     "reflect"
+    ],
+    "edges": [
+     "e-trace-optimizer",
+     "e-optimizer-reflect"
+    ]
+   },
+   {
+    "title": "Proponer mutaciones",
+    "description": "Guiado por el diagnóstico, el optimizador reescribe la instrucción de la etapa de respuesta mientras MIPROv2 genera por bootstrapping y busca demostraciones few-shot candidatas en paralelo.",
+    "input": "",
+    "nodes": [
+     "optimizer",
+     "reflect",
+     "mutate-instruction",
+     "bootstrap-fewshot"
+    ],
+    "edges": [
+     "e-reflect-mutate",
+     "e-optimizer-bootstrap"
+    ]
+   },
+   {
+    "title": "Generar candidatos",
+    "description": "Las propuestas se combinan en programas candidatos: una instrucción nueva, demostraciones nuevas y una mezcla de ambas.",
+    "input": "",
+    "nodes": [
+     "mutate-instruction",
+     "bootstrap-fewshot",
+     "candidate-a",
+     "candidate-b",
+     "candidate-c"
+    ],
+    "edges": [
+     "e-mutate-cand-a",
+     "e-mutate-cand-c",
+     "e-bootstrap-cand-b",
+     "e-bootstrap-cand-c"
+    ]
+   },
+   {
+    "title": "Evaluar y conservar los que mejoran",
+    "description": "Cada candidato se puntúa en un minibatch reservado. Solo sobreviven los candidatos que superan al mejor actual, lo que mantiene la búsqueda barata y anclada en la métrica.",
+    "input": "",
+    "nodes": [
+     "candidate-a",
+     "candidate-b",
+     "candidate-c",
+     "minibatch-eval"
+    ],
+    "edges": [
+     "e-cand-a-eval",
+     "e-cand-b-eval",
+     "e-cand-c-eval"
+    ]
+   },
+   {
+    "title": "Seleccionar e iterar",
+    "description": "Se selecciona el mejor candidato, que inicia la siguiente ronda de reflexión y propuestas. Después de unas 15 rondas, la precisión de validación sube de 61% hacia 84%.",
+    "input": "",
+    "nodes": [
+     "minibatch-eval",
+     "select-best",
+     "optimizer"
+    ],
+    "edges": [
+     "e-eval-select",
+     "e-select-optimizer"
+    ]
+   },
+   {
+    "title": "Validar y publicar",
+    "description": "El pipeline convergido se vuelve a verificar en una partición de prueba reservada separada para protegerse del sobreajuste a la métrica de validación, confirmando el 84% antes de publicarse.",
+    "input": "",
+    "nodes": [
+     "select-best",
+     "holdout",
+     "output"
+    ],
+    "edges": [
+     "e-select-holdout",
+     "e-holdout-output"
+    ]
+   }
+  ]
+ }
+}

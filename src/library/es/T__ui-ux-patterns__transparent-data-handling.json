@@ -1,0 +1,331 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "transparent-data-handling",
+ "name": "Transparent Data Handling(TDH)",
+ "icon": "🔍",
+ "complexity": "high",
+ "description": "Visualización en tiempo real de los flujos de datos, las actividades de procesamiento, las ubicaciones de almacenamiento y el intercambio con terceros en sistemas de agentes, que da a los usuarios una comprensión clara del ciclo de vida de sus datos y les permite tomar decisiones de consentimiento informado.",
+ "features": [
+  "Visualización en vivo del flujo de datos desde la entrada hasta el almacenamiento",
+  "Registro de actividades de procesamiento en lenguaje comprensible para el usuario",
+  "Divulgación de la ubicación de almacenamiento y del intercambio con terceros",
+  "Seguimiento de la procedencia y del estado de eliminación de cada elemento"
+ ],
+ "tldr": {
+  "what": "Muestra a los usuarios registros en tiempo real de hacia dónde fluyen sus datos, cómo se procesan, dónde se almacenan y quién accede a ellos.",
+  "when": "Sistemas que manejan datos sensibles donde los usuarios necesitan verificar el cumplimiento normativo, revisar pistas de auditoría o tomar decisiones informadas sobre el intercambio de datos.",
+  "watchOut": "Abrumar a los usuarios con detalles técnicos anula el propósito; simplificar en exceso oculta riesgos reales y crea una falsa transparencia."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Transparent Data Handling Visualization",
+  "description": "Visualización en tiempo real de los flujos de datos, las actividades de procesamiento, las ubicaciones de almacenamiento y el intercambio con terceros en sistemas de agentes, que da a los usuarios una comprensión clara del ciclo de vida de sus datos y les permite tomar decisiones de consentimiento informado",
+  "nodes": [
+   {
+    "id": "user-data-submission",
+    "label": "📄 Carga de documento del usuario\n\"El usuario sube su historial clínico personal\na un agente de diagnóstico médico con IA\npara analizar síntomas y obtener recomendaciones\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "data-entry-point",
+    "label": "🔍 Clasificación y análisis de datos\n\"Información de salud personal detectada:\n• Historial médico (sensible)\n• Síntomas (personal)\n• Datos del seguro (financiero)\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "opaque-processing",
+    "label": "⚫ Procesamiento de datos opaco\n\"Los datos desaparecen en una caja negra\nSin visibilidad de los pasos de procesamiento\nUbicaciones de almacenamiento desconocidas\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "user-uncertainty",
+    "label": "❓ Incertidumbre del usuario\n\"¿Dónde se almacenan mis datos?\n¿Quién tiene acceso a ellos?\n¿Por cuánto tiempo se conservan?\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "trust-erosion",
+    "label": "📉 Erosión de la confianza\n\"Falta de transparencia\nAnsiedad del usuario por la privacidad\nMenor adopción del sistema\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "transparent-processing",
+    "label": "🔬 Visualización transparente del flujo de datos\n\"Visualización en tiempo real del recorrido de los datos\nDocumentación de los pasos de procesamiento\nMapa de ubicaciones de almacenamiento\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "processing-visualization",
+    "label": "⚙️ Transparencia del procesamiento\n\"Paso 1: Cifrado de datos (AES-256)\nPaso 2: Análisis de patrones de síntomas\nPaso 3: Cruce con conocimiento médico\"",
+    "x": 450,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "storage-transparency",
+    "label": "🏠 Transparencia del almacenamiento\n\"Principal: servidores cifrados en la UE\nRespaldo: instalación en EE. UU. con cumplimiento HIPAA\nRetención: 7 años según lo exigido\"",
+    "x": 700,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "sharing-disclosure",
+    "label": "🤝 Intercambio con terceros\n\"Red de derivación a especialistas:\n• Solo síntomas anonimizados\n• Se requiere consentimiento explícito\n• Se mantiene una pista de auditoría\"",
+    "x": 850,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "real-time-monitoring",
+    "label": "📊 Monitor de actividad en tiempo real\n\"Estado del procesamiento de datos en vivo\nVisualización del registro de accesos\nCuenta regresiva de retención\"",
+    "x": 500,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "user-control-center",
+    "label": "🎛️ Centro de control del usuario\n\"Pausar el procesamiento de datos\nRevocar permisos de intercambio\nSolicitar la eliminación de datos\"",
+    "x": 750,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "informed-consent",
+    "label": "✅ Consentimiento informado\n\"Los usuarios entienden el recorrido de sus datos\nDecisiones de consentimiento significativas\nUso confiado del sistema\"",
+    "x": 500,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "regulatory-compliance",
+    "label": "📋 Cumplimiento normativo\n\"Requisitos de transparencia del GDPR\nEstándares de divulgación de HIPAA\nDerecho a saber de la CCPA\"",
+    "x": 750,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "transparency-principle",
+    "label": "🎯 Principio de transparencia\n\"Los usuarios tienen derecho a entender cómo se procesan,\nalmacenan y comparten sus datos en tiempo real, no solo mediante políticas estáticas.\nLa transparencia hace posible un consentimiento verdaderamente informado.\"",
+    "x": 500,
+    "y": 950,
+    "w": 450
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "user-data-submission",
+    "t": "data-entry-point",
+    "label": "clasificación de datos sensibles"
+   },
+   {
+    "id": "e2",
+    "s": "data-entry-point",
+    "t": "opaque-processing",
+    "label": "caja negra tradicional"
+   },
+   {
+    "id": "e3",
+    "s": "data-entry-point",
+    "t": "transparent-processing",
+    "label": "marco de transparencia"
+   },
+   {
+    "id": "e4",
+    "s": "opaque-processing",
+    "t": "user-uncertainty",
+    "label": "genera confusión"
+   },
+   {
+    "id": "e5",
+    "s": "user-uncertainty",
+    "t": "trust-erosion",
+    "label": "reduce la confianza"
+   },
+   {
+    "id": "e6",
+    "s": "transparent-processing",
+    "t": "processing-visualization",
+    "label": "muestra los pasos de procesamiento"
+   },
+   {
+    "id": "e7",
+    "s": "transparent-processing",
+    "t": "storage-transparency",
+    "label": "revela detalles del almacenamiento"
+   },
+   {
+    "id": "e8",
+    "s": "transparent-processing",
+    "t": "sharing-disclosure",
+    "label": "divulga el acceso de terceros"
+   },
+   {
+    "id": "e9",
+    "s": "processing-visualization",
+    "t": "real-time-monitoring",
+    "label": "habilita el seguimiento en vivo"
+   },
+   {
+    "id": "e10",
+    "s": "storage-transparency",
+    "t": "real-time-monitoring",
+    "label": "monitorea la actividad de almacenamiento"
+   },
+   {
+    "id": "e11",
+    "s": "sharing-disclosure",
+    "t": "user-control-center",
+    "label": "ofrece opciones de control"
+   },
+   {
+    "id": "e12",
+    "s": "real-time-monitoring",
+    "t": "user-control-center",
+    "label": "se integra con los controles"
+   },
+   {
+    "id": "e13",
+    "s": "real-time-monitoring",
+    "t": "informed-consent",
+    "label": "facilita la comprensión"
+   },
+   {
+    "id": "e14",
+    "s": "user-control-center",
+    "t": "informed-consent",
+    "label": "empodera las decisiones"
+   },
+   {
+    "id": "e15",
+    "s": "user-control-center",
+    "t": "regulatory-compliance",
+    "label": "cumple los requisitos legales"
+   },
+   {
+    "id": "e16",
+    "s": "trust-erosion",
+    "t": "transparency-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e17",
+    "s": "informed-consent",
+    "t": "transparency-principle",
+    "label": "valida el enfoque"
+   },
+   {
+    "id": "e18",
+    "s": "regulatory-compliance",
+    "t": "transparency-principle",
+    "label": "confirma los requisitos"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Envío de datos de salud sensibles",
+    "description": "El usuario sube su historial clínico personal a un agente de diagnóstico médico con IA, incluidos su historial médico, sus síntomas actuales y la información de su seguro, que requieren un manejo cuidadoso.",
+    "input": "",
+    "nodes": [
+     "user-data-submission",
+     "data-entry-point"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos paradigmas de procesamiento de datos",
+    "description": "Los mismos datos de salud sensibles se procesan mediante un sistema tradicional opaco de caja negra (izquierda) frente a un marco de visualización transparente del flujo de datos (derecha).",
+    "input": "",
+    "nodes": [
+     "opaque-processing",
+     "transparent-processing"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Procesamiento opaco: incertidumbre del usuario y erosión de la confianza",
+    "description": "El enfoque tradicional de caja negra deja a los usuarios preguntándose por la ubicación de sus datos, los permisos de acceso y los períodos de retención, lo que reduce la confianza y la adopción del sistema.",
+    "input": "",
+    "nodes": [
+     "user-uncertainty",
+     "trust-erosion"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Componentes del flujo de datos transparente",
+    "description": "El marco de transparencia ofrece visualización en tiempo real de los pasos de procesamiento (cifrado, análisis, cruce), las ubicaciones de almacenamiento (servidores en la UE, respaldo en EE. UU.) y el intercambio con terceros (derivaciones a especialistas).",
+    "input": "",
+    "nodes": [
+     "processing-visualization",
+     "storage-transparency",
+     "sharing-disclosure"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Monitoreo en tiempo real y control del usuario",
+    "description": "El monitoreo de actividad en vivo muestra el estado del procesamiento de datos y los registros de acceso, mientras que el centro de control del usuario permite pausar el procesamiento, revocar permisos y solicitar la eliminación.",
+    "input": "",
+    "nodes": [
+     "real-time-monitoring",
+     "user-control-center"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Consentimiento informado y cumplimiento normativo",
+    "description": "La transparencia permite a los usuarios tomar decisiones de consentimiento informado con una comprensión completa del recorrido de sus datos, a la vez que cumple los requisitos de transparencia del GDPR, de divulgación de HIPAA y del derecho a saber de la CCPA.",
+    "input": "",
+    "nodes": [
+     "informed-consent",
+     "regulatory-compliance"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Principio central de transparencia",
+    "description": "La transparencia de datos en tiempo real va más allá de las políticas de privacidad estáticas y da a los usuarios visibilidad dinámica del ciclo de vida de sus datos para permitir decisiones de consentimiento verdaderamente informadas.",
+    "input": "",
+    "nodes": [
+     "transparency-principle"
+    ],
+    "edges": [
+     "e16",
+     "e17",
+     "e18"
+    ]
+   }
+  ]
+ }
+}

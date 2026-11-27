@@ -1,0 +1,391 @@
+{
+ "cat": "prompt-chaining",
+ "slug": "sequential-chaining",
+ "name": "Sequential Chaining",
+ "icon": "🔗",
+ "complexity": "low",
+ "description": "Una técnica fundamental de prompt engineering que divide tareas complejas en prompts más pequeños e interconectados, donde cada salida sirve como entrada para el siguiente paso, creando un pipeline de razonamiento estructurado que mejora significativamente el rendimiento del LLM en problemas de múltiples pasos",
+ "features": [
+  "Ejecución lineal del flujo de trabajo con procesamiento paso a paso",
+  "Preservación del contexto y gestión del estado entre prompts",
+  "Aislamiento de errores y recuperación en cada paso",
+  "Proceso de razonamiento transparente para la depuración",
+  "Menos alucinaciones gracias a prompts enfocados",
+  "Mayor precisión en tareas complejas frente a prompts monolíticos"
+ ],
+ "tldr": {
+  "what": "Divide una tarea en prompts ordenados, cada uno de los cuales consume la salida anterior como entrada para el siguiente paso.",
+  "when": "Trabajo de múltiples pasos donde los resultados intermedios necesitan verificarse o refinarse antes de pasar a la siguiente fase.",
+  "watchOut": "Los errores se acumulan aguas abajo; una equivocación temprana se propaga sin control por todos los pasos siguientes."
+ },
+ "overview": {
+  "pattern": "Divide tareas complejas en un pipeline lineal de pasos enfocados",
+  "why": "Reduce la carga cognitiva del modelo, aísla errores y habilita la integración de herramientas y el cache por paso",
+  "insight": "Output[N] → Input[N+1] con datos estructurados (JSON); cada paso puede guardarse en cache",
+  "impl": [
+   {
+    "t": "Descomponer",
+    "d": "Divide la tarea en etapas enfocadas"
+   },
+   {
+    "t": "Definir E/S",
+    "d": "Esquemas JSON para cada etapa"
+   },
+   {
+    "t": "Encadenar",
+    "d": "Output[N] → Input[N+1]"
+   },
+   {
+    "t": "Validar",
+    "d": "Verifica con aserciones y reintenta en cada paso"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Registra latencia, costo y errores"
+   }
+  ],
+  "example": "analyze_doc → extract_data → validate → transform → summarize",
+  "dos": [
+   "Usa salidas JSON/estructuradas entre etapas",
+   "Guarda en cache las salidas de etapas deterministas (enorme ahorro de costos)",
+   "Usa claves de cache basadas en el hash de la entrada + la versión del prompt",
+   "Implementa circuit breakers y reintentos",
+   "Define un TTL para los pasos en cache según las necesidades de frescura de los datos"
+  ],
+  "donts": [
+   "Pasar prosa extensa entre etapas",
+   "Guardar en cache pasos no deterministas o sensibles al tiempo",
+   "Omitir la invalidación del cache cuando cambian los prompts",
+   "Ignorar salidas parciales o rechazos",
+   "Dejar que los errores se propaguen en cascada sin control"
+  ],
+  "use": [
+   "Flujos de trabajo de múltiples pasos (3+ etapas)",
+   "Tareas de razonamiento complejas",
+   "Necesidad de aislar errores",
+   "Modelos distintos por etapa"
+  ],
+  "avoid": [
+   "Tareas simples de un solo paso",
+   "Necesidades de tiempo real/baja latencia",
+   "Lógica fuertemente acoplada",
+   "Presupuesto de API limitado"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito",
+    "d": "Finalización por etapa y de extremo a extremo"
+   },
+   {
+    "n": "Latencia",
+    "d": "P50/P95 por etapa"
+   },
+   {
+    "n": "Costo",
+    "d": "Σ(tokens × model_rate)"
+   },
+   {
+    "n": "Recuperación de errores",
+    "d": "% de fallas manejadas"
+   },
+   {
+    "n": "Tasa de aciertos de cache",
+    "d": "% de cómputos reutilizados"
+   },
+   {
+    "n": "Ahorro de costos",
+    "d": "$ ahorrados gracias al cache"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de documentos",
+    "d": "parsear → extraer → analizar → resumir (cache del parseo)"
+   },
+   {
+    "n": "Creación de contenido",
+    "d": "investigar → esquematizar → redactar → editar (cache de la investigación)"
+   },
+   {
+    "n": "Pipeline de datos",
+    "d": "validar → transformar → enriquecer → agregar (cache de las transformaciones)"
+   },
+   {
+    "n": "Flujo de decisión",
+    "d": "recopilar → evaluar → puntuar → recomendar (cache de la recopilación)"
+   },
+   {
+    "n": "Generación de reportes",
+    "d": "obtener → procesar → formatear → entregar (cache de todo excepto la entrega)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Sequential Chaining",
+  "description": "Muestra la ejecución lineal de un flujo de trabajo donde cada salida alimenta la siguiente entrada",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud de entrada\n\"Escribe una reseña de producto para unos audífonos inalámbricos\"",
+    "x": 250,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "research",
+    "label": "Cadena 1: Fase de investigación\nAnalizar las características del producto",
+    "x": 250,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "compare",
+    "label": "Cadena 2: Fase de comparación\nComparar con la competencia",
+    "x": 250,
+    "y": 310,
+    "w": 200
+   },
+   {
+    "id": "write",
+    "label": "Cadena 3: Fase de redacción\nGenerar el contenido de la reseña",
+    "x": 250,
+    "y": 440,
+    "w": 200
+   },
+   {
+    "id": "edit",
+    "label": "Cadena 4: Fase de edición\nMejorar la claridad y el tono",
+    "x": 250,
+    "y": 570,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "Salida final\nReseña de producto pulida",
+    "x": 250,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "context1",
+    "label": "Salida de la investigación\n• Cancelación de ruido: 95%\n• Duración de batería: 30hrs\n• Precio: $299",
+    "x": 550,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "context2",
+    "label": "Salida de la comparación\n• Competidor A: $349, 25hrs\n• Competidor B: $279, 20hrs\n• Mejor propuesta de valor",
+    "x": 550,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "context3",
+    "label": "Borrador de reseña\n\"Excelentes audífonos con\nuna gran duración de batería...\"",
+    "x": 550,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "context4",
+    "label": "Reseña editada\nMejor fluidez, gramática\ncorregida, tono mejorado",
+    "x": 550,
+    "y": 570,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-research",
+    "s": "input",
+    "t": "research",
+    "label": ""
+   },
+   {
+    "id": "e-research-compare",
+    "s": "research",
+    "t": "compare",
+    "label": ""
+   },
+   {
+    "id": "e-compare-write",
+    "s": "compare",
+    "t": "write",
+    "label": ""
+   },
+   {
+    "id": "e-write-edit",
+    "s": "write",
+    "t": "edit",
+    "label": ""
+   },
+   {
+    "id": "e-edit-output",
+    "s": "edit",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "e-research-context1",
+    "s": "research",
+    "t": "context1",
+    "label": ""
+   },
+   {
+    "id": "e-context1-compare",
+    "s": "context1",
+    "t": "compare",
+    "label": ""
+   },
+   {
+    "id": "e-compare-context2",
+    "s": "compare",
+    "t": "context2",
+    "label": ""
+   },
+   {
+    "id": "e-context2-write",
+    "s": "context2",
+    "t": "write",
+    "label": ""
+   },
+   {
+    "id": "e-write-context3",
+    "s": "write",
+    "t": "context3",
+    "label": ""
+   },
+   {
+    "id": "e-context3-edit",
+    "s": "context3",
+    "t": "edit",
+    "label": ""
+   },
+   {
+    "id": "e-edit-context4",
+    "s": "edit",
+    "t": "context4",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud inicial",
+    "description": "El usuario proporciona la tarea que debe resolverse mediante procesamiento secuencial.",
+    "input": "Escribe una reseña de producto completa de los audífonos inalámbricos Sony WH-1000XM5.",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Activación de la cadena de investigación",
+    "description": "La primera cadena analiza las especificaciones, características y detalles técnicos del producto.",
+    "input": "Producto: Sony WH-1000XM5\nTarea: Extraer las características y especificaciones clave",
+    "nodes": [
+     "input",
+     "research"
+    ],
+    "edges": [
+     "e-input-research"
+    ]
+   },
+   {
+    "title": "Generación de la salida de investigación",
+    "description": "La cadena de investigación produce datos estructurados sobre las características del producto.",
+    "input": "",
+    "nodes": [
+     "research",
+     "context1"
+    ],
+    "edges": [
+     "e-research-context1"
+    ]
+   },
+   {
+    "title": "Activación de la cadena de comparación",
+    "description": "La segunda cadena recibe la salida de la investigación y realiza un análisis competitivo.",
+    "input": "Datos de investigación + Tarea: Comparar con productos de la competencia",
+    "nodes": [
+     "context1",
+     "compare"
+    ],
+    "edges": [
+     "e-context1-compare"
+    ]
+   },
+   {
+    "title": "Generación de la salida de comparación",
+    "description": "La cadena de comparación genera un análisis de posicionamiento competitivo.",
+    "input": "",
+    "nodes": [
+     "compare",
+     "context2"
+    ],
+    "edges": [
+     "e-compare-context2"
+    ]
+   },
+   {
+    "title": "Activación de la cadena de redacción",
+    "description": "La tercera cadena combina los datos de investigación y de comparación para crear el contenido de la reseña.",
+    "input": "Datos de investigación + Análisis comparativo + Tarea: Escribir una reseña atractiva",
+    "nodes": [
+     "context2",
+     "write"
+    ],
+    "edges": [
+     "e-context2-write"
+    ]
+   },
+   {
+    "title": "Generación del borrador de la reseña",
+    "description": "La cadena de redacción produce el borrador inicial de la reseña.",
+    "input": "",
+    "nodes": [
+     "write",
+     "context3"
+    ],
+    "edges": [
+     "e-write-context3"
+    ]
+   },
+   {
+    "title": "Activación de la cadena de edición",
+    "description": "La cuarta cadena recibe el borrador y mejora la claridad, la fluidez y el atractivo.",
+    "input": "Borrador de reseña + Tarea: Mejorar la claridad, la fluidez y el interés del lector",
+    "nodes": [
+     "context3",
+     "edit"
+    ],
+    "edges": [
+     "e-context3-edit"
+    ]
+   },
+   {
+    "title": "Pulido y mejora final",
+    "description": "La cadena de edición refina la reseña hasta alcanzar calidad de publicación.",
+    "input": "",
+    "nodes": [
+     "edit",
+     "context4"
+    ],
+    "edges": [
+     "e-edit-context4"
+    ]
+   },
+   {
+    "title": "Reseña final pulida",
+    "description": "La cadena secuencial completa entrega una reseña de producto lista para publicar.",
+    "input": "",
+    "nodes": [
+     "output"
+    ],
+    "edges": [
+     "e-edit-output"
+    ]
+   }
+  ]
+ }
+}

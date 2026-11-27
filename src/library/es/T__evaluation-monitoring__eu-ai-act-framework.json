@@ -1,0 +1,382 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "eu-ai-act-framework",
+ "name": "EU AI Act Compliance Framework(EU-AIACT)",
+ "icon": "🇪🇺",
+ "complexity": "high",
+ "description": "Marco regulatorio de la Unión Europea para la evaluación de agentes de IA, con clasificación basada en el riesgo, requisitos para modelos GPAI y cumplimiento obligatorio para desplegarlos en la UE.",
+ "features": [
+  "Clasificación basada en el riesgo (Inaceptable, Alto, Limitado, Mínimo)",
+  "Requisitos de evaluación de modelos GPAI (umbral de 10^25 FLOPs)",
+  "Obligación de pruebas adversariales y red teaming",
+  "Requisitos de protección de ciberseguridad",
+  "Obligaciones de alfabetización en IA",
+  "Protocolos sistemáticos de evaluación de riesgos"
+ ],
+ "tldr": {
+  "what": "Clasifica los agentes de IA por nivel de riesgo y luego aplica requisitos obligatorios de pruebas, documentación y supervisión acordes con los umbrales regulatorios de la UE.",
+  "when": "Al desplegar agentes de IA en mercados de la UE o al manejar decisiones de alto impacto que afectan los derechos, la seguridad o la situación legal de la ciudadanía.",
+  "watchOut": "Los costos y plazos de cumplimiento son considerables; clasificar mal el nivel de riesgo genera exposición legal y esfuerzos de remediación desperdiciados."
+ },
+ "overview": {
+  "pattern": "Marco regulatorio de la Unión Europea para la evaluación de agentes de IA, con clasificación basada en el riesgo, requisitos para modelos GPAI y cumplimiento obligatorio para desplegarlos en la UE",
+  "why": "Marco legal integral que clasifica los sistemas de IA en 4 niveles de riesgo, con obligaciones específicas para los modelos de riesgo sistémico que superan los 10^25 FLOPs",
+  "insight": "11 proveedores globales superan el umbral GPAI: red teaming obligatorio, protección de ciberseguridad y notificación en 2 semanas, exigidos desde agosto de 2024",
+  "impl": [
+   {
+    "t": "Clasificar",
+    "d": "Determina el nivel de riesgo del sistema de IA: Prohibido, Alto riesgo, Riesgo limitado o Riesgo mínimo"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Para modelos GPAI >10^25 FLOPs: notifica a la Comisión Europea dentro de 2 semanas"
+   },
+   {
+    "t": "Probar",
+    "d": "Realiza pruebas adversariales y red teaming según protocolos estandarizados"
+   },
+   {
+    "t": "Proteger",
+    "d": "Implementa protecciones de ciberseguridad y mitigación sistemática de riesgos"
+   },
+   {
+    "t": "Documentar",
+    "d": "Mantén registros de cumplimiento y reporta los incidentes graves a la Oficina de IA"
+   }
+  ],
+  "example": "eu_compliance = EUAIAct(system=ai_agent, flops=compute_threshold, risk_level=\"high\", red_team=True)",
+  "dos": [
+   "Clasifica los sistemas de IA con el marco de riesgo de 4 niveles (Prohibido/Alto/Limitado/Mínimo)",
+   "Notifica a la Comisión Europea dentro de 2 semanas si el modelo GPAI supera el umbral de 10^25 FLOPs",
+   "Realiza las pruebas adversariales y el red teaming obligatorios para los modelos de riesgo sistémico",
+   "Implementa protecciones integrales de ciberseguridad contra el envenenamiento de datos y de modelos",
+   "Mantén documentación técnica y transparencia para los sistemas de alto riesgo"
+  ],
+  "donts": [
+   "Desplegar sistemas de IA prohibidos (puntuación social, manipulación, categorización biométrica)",
+   "Omitir el cumplimiento del Código de Buenas Prácticas para modelos GPAI (voluntario pero recomendado)",
+   "Ignorar los requisitos de reporte de incidentes graves a la Oficina de IA",
+   "Subestimar el plazo de implementación: la aplicación plena comienza en agosto de 2026",
+   "Desplegar sin una capacitación adecuada en alfabetización en IA para usuarios y partes interesadas"
+  ],
+  "use": [
+   "Despliegue de agentes de IA en el mercado de la UE o al servicio de ciudadanos de la UE",
+   "Modelos GPAI que superan el umbral computacional de 10^25 FLOPs",
+   "Sistemas de IA de alto riesgo en sectores regulados (salud, finanzas, transporte)",
+   "Evaluación del cumplimiento regulatorio de frameworks de agentes de IA",
+   "Alineación internacional en gobernanza de IA y buenas prácticas"
+  ],
+  "avoid": [
+   "Despliegues fuera de la UE sin impacto en ciudadanos de la UE",
+   "Sistemas de IA de riesgo mínimo (juegos, filtros de spam, aplicaciones básicas)",
+   "I+D interna sin despliegue en el mercado",
+   "Investigación académica bajo exenciones específicas",
+   "Sistemas heredados con períodos de transición extendidos (hasta agosto de 2027)"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de la clasificación de riesgo",
+    "d": "Categorización correcta en los niveles de riesgo Prohibido/Alto/Limitado/Mínimo"
+   },
+   {
+    "n": "Cumplimiento de modelos GPAI",
+    "d": "11 proveedores globales superan actualmente el umbral de 10^25 FLOPs"
+   },
+   {
+    "n": "Cobertura de red teaming",
+    "d": "Pruebas adversariales sistemáticas que documentan la identificación y mitigación de riesgos"
+   },
+   {
+    "n": "Protección de ciberseguridad",
+    "d": "Defensa contra el envenenamiento de datos, la evasión del modelo y los ataques adversariales"
+   },
+   {
+    "n": "Tasa de respuesta a incidentes",
+    "d": "Reporte oportuno de incidentes graves a la Oficina de IA de la UE"
+   },
+   {
+    "n": "Cumplimiento de transparencia",
+    "d": "Conciencia del usuario de que interactúa con IA y calidad de la documentación técnica"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Cumplimiento regulatorio",
+    "d": "Marco obligatorio para los agentes de IA que atienden el mercado de la UE desde agosto de 2024"
+   },
+   {
+    "n": "Evaluación de modelos GPAI",
+    "d": "11 proveedores globales deben cumplir los requisitos del umbral de 10^25 FLOPs"
+   },
+   {
+    "n": "Gestión de riesgos empresariales",
+    "d": "Clasificación y mitigación sistemáticas para sistemas de IA de alto riesgo"
+   },
+   {
+    "n": "Evaluación de ciberseguridad",
+    "d": "Protección integral contra vectores de ataque y vulnerabilidades específicos de la IA"
+   },
+   {
+    "n": "Estándares internacionales",
+    "d": "Marco de referencia que influye en la gobernanza global de la IA y en la alineación regulatoria"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de marco de cumplimiento del EU AI Act",
+  "description": "Primera regulación integral de IA del mundo, con 4 categorías de riesgo, requisitos estrictos para el alto riesgo, evaluaciones de conformidad y sanciones de hasta €40M o el 7% de la facturación, plenamente aplicable en 2026",
+  "nodes": [
+   {
+    "id": "ai-regulation-challenge",
+    "label": "⚖️ Desafío de cumplimiento de la regulación de IA\n\"¿Cómo asegurar que los sistemas de IA cumplan con\nla primera regulación integral de IA del mundo\nsin dejar de innovar?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "eu-ai-act-framework",
+    "label": "🏛️ Marco del EU AI Act\n\"Reglamento (UE) 2024/1689:\n• 4 categorías de riesgo\n• Enfoque basado en el riesgo\n• En vigor desde agosto de 2024\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "four-risk-categories",
+    "label": "📊 Cuatro categorías de riesgo\n\"Clasificación basada en el riesgo:\n• Inaceptable (Prohibido)\n• Alto riesgo (Regulado)\n• Riesgo limitado (Transparencia)\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "prohibited-ai-systems",
+    "label": "🚫 Sistemas de IA prohibidos\n\"Riesgo inaceptable prohibido:\n• Sistemas de puntuación social\n• Manipulación cognitiva\n• Identificación biométrica en tiempo real\"",
+    "x": 50,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "high-risk-ai-systems",
+    "label": "⚠️ Sistemas de IA de alto riesgo\n\"Requisitos estrictos:\n• Infraestructura crítica\n• Aplicación de la ley\n• Empleo, educación\"",
+    "x": 250,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "limited-minimal-risk",
+    "label": "💬 Riesgo limitado/mínimo\n\"Obligaciones de transparencia:\n• Aviso en chatbots\n• Etiquetado de deepfakes\n• La mayoría de la IA sin regular\"",
+    "x": 450,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "high-risk-requirements",
+    "label": "📋 Requisitos de alto riesgo\n\"Obligaciones del proveedor:\n• Sistema de gestión de riesgos\n• Gobernanza de datos\n• Documentación técnica\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "additional-requirements",
+    "label": "👁️ Supervisión y calidad\n\"Cumplimiento esencial:\n• Diseño para la supervisión humana\n• Sistema de gestión de calidad\n• Automatización del registro\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "conformity-assessment",
+    "label": "✅ Evaluación de conformidad\n\"Validación del cumplimiento:\n• Control interno (la mayoría de los casos)\n• Terceros (seguridad de productos)\n• Marcado CE obligatorio\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "penalties-fines",
+    "label": "💰 Sanciones y multas\n\"Aplicación escalonada:\n• IA prohibida: €40M o 7%\n• Datos/transparencia: €20M o 4%\n• Otras infracciones: €15M o 3%\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "implementation-timeline",
+    "label": "📅 Cronograma de implementación\n\"Despliegue por fases 2024-2027:\n• Feb 2025: aplican las prohibiciones\n• Ago 2025: obligaciones GPAI\n• Ago 2026: aplicación plena\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "compliance-principle",
+    "label": "🎯 Principio de cumplimiento del AI Act\n\"La regulación basada en el riesgo equilibra innovación y protección\nLa transparencia y la supervisión humana garantizan una IA confiable\nLas sanciones considerables impulsan esfuerzos serios de cumplimiento\"",
+    "x": 400,
+    "y": 950,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-regulation-challenge",
+    "t": "eu-ai-act-framework",
+    "label": "se aborda con"
+   },
+   {
+    "id": "e2",
+    "s": "eu-ai-act-framework",
+    "t": "four-risk-categories",
+    "label": "implementa 4 categorías"
+   },
+   {
+    "id": "e3",
+    "s": "eu-ai-act-framework",
+    "t": "high-risk-requirements",
+    "label": "define requisitos"
+   },
+   {
+    "id": "e4",
+    "s": "four-risk-categories",
+    "t": "prohibited-ai-systems",
+    "label": "incluye prohibidos"
+   },
+   {
+    "id": "e5",
+    "s": "four-risk-categories",
+    "t": "high-risk-ai-systems",
+    "label": "incluye alto riesgo"
+   },
+   {
+    "id": "e6",
+    "s": "four-risk-categories",
+    "t": "limited-minimal-risk",
+    "label": "incluye limitado/mínimo"
+   },
+   {
+    "id": "e7",
+    "s": "high-risk-ai-systems",
+    "t": "high-risk-requirements",
+    "label": "debe cumplir"
+   },
+   {
+    "id": "e8",
+    "s": "high-risk-requirements",
+    "t": "additional-requirements",
+    "label": "se extiende a"
+   },
+   {
+    "id": "e9",
+    "s": "additional-requirements",
+    "t": "conformity-assessment",
+    "label": "se valida mediante"
+   },
+   {
+    "id": "e10",
+    "s": "prohibited-ai-systems",
+    "t": "penalties-fines",
+    "label": "infracciones sancionadas"
+   },
+   {
+    "id": "e11",
+    "s": "conformity-assessment",
+    "t": "penalties-fines",
+    "label": "incumplimiento multado"
+   },
+   {
+    "id": "e12",
+    "s": "eu-ai-act-framework",
+    "t": "implementation-timeline",
+    "label": "sigue el cronograma"
+   },
+   {
+    "id": "e13",
+    "s": "penalties-fines",
+    "t": "compliance-principle",
+    "label": "aplica el principio"
+   },
+   {
+    "id": "e14",
+    "s": "implementation-timeline",
+    "t": "compliance-principle",
+    "label": "implementa el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de cumplimiento de la regulación de IA",
+    "description": "¿Cómo pueden las organizaciones asegurar que sus sistemas de IA cumplan con la primera regulación integral de IA del mundo sin perder innovación ni competitividad en el mercado global?",
+    "input": "",
+    "nodes": [
+     "ai-regulation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al marco del EU AI Act",
+    "description": "El Reglamento (UE) 2024/1689 establece el primer marco legal integral de IA del mundo, con un enfoque basado en el riesgo y 4 categorías de riesgo, en vigor desde agosto de 2024 con una implementación por fases hasta 2027.",
+    "input": "",
+    "nodes": [
+     "eu-ai-act-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Clasificación en cuatro categorías de riesgo",
+    "description": "El marco implementa una clasificación basada en el riesgo: Inaceptable/Prohibido (puntuación social, manipulación), Alto riesgo (infraestructura crítica, aplicación de la ley), Riesgo limitado (chatbots), Riesgo mínimo (la mayor parte de la IA actual).",
+    "input": "",
+    "nodes": [
+     "four-risk-categories",
+     "prohibited-ai-systems",
+     "high-risk-ai-systems",
+     "limited-minimal-risk"
+    ],
+    "edges": [
+     "e2",
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Requisitos para sistemas de IA de alto riesgo",
+    "description": "Los sistemas de alto riesgo deben cumplir obligaciones estrictas del proveedor: sistema de gestión de riesgos, gobernanza de datos, documentación técnica, diseño para la supervisión humana, sistema de gestión de calidad y registro automatizado.",
+    "input": "",
+    "nodes": [
+     "high-risk-requirements",
+     "additional-requirements"
+    ],
+    "edges": [
+     "e3",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Evaluación de conformidad y validación",
+    "description": "El cumplimiento se valida mediante una evaluación de conformidad: control interno para la mayoría de los sistemas de alto riesgo y evaluación por terceros para componentes de seguridad de productos, lo que da como resultado el marcado CE y el Certificado de Documentación Técnica de la UE.",
+    "input": "",
+    "nodes": [
+     "conformity-assessment"
+    ],
+    "edges": [
+     "e9"
+    ]
+   },
+   {
+    "title": "Sanciones y cronograma de implementación",
+    "description": "Las sanciones escalonadas impulsan el cumplimiento (€40M/7% por IA prohibida, €20M/4% por infracciones de datos) con una implementación por fases: prohibiciones en feb 2025, obligaciones GPAI en ago 2025 y aplicación plena en ago 2026, lo que demuestra que la regulación basada en el riesgo equilibra innovación y protección.",
+    "input": "",
+    "nodes": [
+     "penalties-fines",
+     "implementation-timeline",
+     "compliance-principle"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,292 @@
+{
+ "cat": "fault-tolerance-infrastructure",
+ "slug": "predictive-agent-fault-tolerance",
+ "name": "Predictive Agent Fault Tolerance(PAF)",
+ "icon": "🔮",
+ "complexity": "high",
+ "description": "Sistemas predictivos impulsados por IA que anticipan las fallas de los agentes antes de que ocurran e implementan medidas de recuperación preventivas",
+ "features": [
+  "Reconocimiento de patrones de falla",
+  "Analítica predictiva",
+  "Intervención preventiva",
+  "Análisis de tendencias de recursos",
+  "Detección de anomalías de comportamiento",
+  "Programación proactiva de la recuperación"
+ ],
+ "tldr": {
+  "what": "Analiza las métricas de rendimiento de los agentes y las tendencias de recursos para predecir fallas, y luego activa la recuperación antes de que ocurran los problemas.",
+  "when": "Flotas grandes de agentes donde las fallas se propagan en cascada, el tiempo de inactividad es costoso y tienes datos históricos que muestran patrones de falla predecibles.",
+  "watchOut": "Los falsos positivos provocan reinicios innecesarios, degradando la disponibilidad más que las fallas que previenen."
+ },
+ "overview": {
+  "pattern": "Sistemas predictivos impulsados por IA que anticipan las fallas de los agentes antes de que ocurran usando detección de anomalías basada en ML",
+  "why": "Prevención proactiva de fallas frente a respuesta reactiva, 78% de reducción del tiempo de inactividad no planificado, 67% más rápido en el tiempo medio de recuperación",
+  "insight": "Modelos de ML en ensamble (Random Forest + LSTM + Isolation Forest) + monitoreo del comportamiento = predicción de fallas con anticipación",
+  "impl": [
+   {
+    "t": "Configuración del monitoreo",
+    "d": "Desplegar monitoreo multidimensional (rendimiento, comportamiento, comunicación)"
+   },
+   {
+    "t": "Entrenamiento de ML",
+    "d": "Entrenar modelos de detección de anomalías con patrones históricos de falla"
+   },
+   {
+    "t": "Modelos predictivos",
+    "d": "Implementar LSTM, Isolation Forest y métodos de ensamble"
+   },
+   {
+    "t": "Sistema de alertas",
+    "d": "Configurar alertas escalonadas con umbrales de confianza"
+   },
+   {
+    "t": "Recuperación automática",
+    "d": "Activar acciones preventivas según las predicciones"
+   }
+  ],
+  "example": "monitoring_data → anomaly_detection → failure_prediction → preemptive_action → prevention_success",
+  "dos": [
+   "Usa métodos de ensamble (Random Forest + LSTM + Isolation Forest)",
+   "Monitorea patrones de comportamiento, no solo métricas de rendimiento",
+   "Implementa líneas base dinámicas que evolucionen con el comportamiento del sistema",
+   "Crea intervalos de confianza para las predicciones y cuantificación de la incertidumbre",
+   "Usa aprendizaje federado para la detección de anomalías multiagente"
+  ],
+  "donts": [
+   "Depender únicamente de un monitoreo reactivo basado en umbrales",
+   "Ignorar las anomalías de comunicación entre agentes",
+   "Entrenar modelos con datasets de fallas incompletos o desbalanceados",
+   "Desplegar predicciones sin mecanismos de interpretabilidad",
+   "Omitir la validación en entornos de despliegue reales"
+  ],
+  "use": [
+   "Sistemas de producción de misión crítica",
+   "Entornos colaborativos multiagente",
+   "Escenarios donde las fallas son muy costosas",
+   "Sistemas con datos históricos de fallas"
+  ],
+  "avoid": [
+   "Aplicaciones simples de un solo agente",
+   "Entornos sin historial de fallas",
+   "Requisitos de latencia ultrabaja",
+   "Despliegues edge con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de la predicción",
+    "d": "% de predicciones de falla correctas (precisión/recall)"
+   },
+   {
+    "n": "Tasa de falsos positivos",
+    "d": "% de alarmas de falla incorrectas"
+   },
+   {
+    "n": "Tiempo de anticipación",
+    "d": "Minutos/horas de predicción antes de la falla"
+   },
+   {
+    "n": "Éxito de la prevención",
+    "d": "% de fallas evitadas mediante acciones preventivas"
+   },
+   {
+    "n": "Confianza del modelo",
+    "d": "Puntuaciones de cuantificación de la incertidumbre"
+   },
+   {
+    "n": "Latencia de detección",
+    "d": "Tiempo para identificar patrones anómalos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Flotas de IA empresariales",
+    "d": "Monitorear más de 100 agentes con 97.2% de precisión para anomalías de comportamiento"
+   },
+   {
+    "n": "Infraestructura en la nube",
+    "d": "Predecir el agotamiento de recursos y problemas de capacidad antes de las fallas"
+   },
+   {
+    "n": "Sistemas de trading",
+    "d": "Detectar la deriva del modelo y la degradación del rendimiento en tiempo real"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Monitorear la confiabilidad de los agentes de diagnóstico y prevenir cascadas de diagnósticos erróneos"
+   },
+   {
+    "n": "Manufactura",
+    "d": "Predecir fallas de equipos mediante patrones de anomalías de sensores IoT"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Predictive Agent Fault Tolerance",
+  "description": "Sistema proactivo de tolerancia a fallas que monitorea la salud de los agentes, predice posibles fallas e implementa medidas preventivas para mantener la confiabilidad y la continuidad del sistema.",
+  "nodes": [
+   {
+    "id": "normal-operation",
+    "label": "🤖 Agente de trading\nOperación normal\n(portafolio de $2.5M)",
+    "x": 100,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "health-monitoring",
+    "label": "📊 Monitor de salud\nCPU: 45%\nMemoria: 60%\nLatencia: 12ms",
+    "x": 350,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "pattern-analysis",
+    "label": "🔍 Analizador de patrones\nDetectando anomalías\nen el uso de recursos",
+    "x": 600,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "prediction",
+    "label": "🎯 Predictor de fallas\n\"¡Fuga de memoria detectada!\nCaída prevista en 8 min\"",
+    "x": 850,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "alert-trigger",
+    "label": "⚠️ Disparador de alerta\nNivel de riesgo: ALTO\nTiempo hasta la falla: 8 min",
+    "x": 350,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "preemptive-action",
+    "label": "🚀 Acción de recuperación\n1. Guardar el estado de trading\n2. Escalar recursos\n3. Reiniciar el agente",
+    "x": 600,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "backup-agent",
+    "label": "🔄 Agente de respaldo\nActivado con\nel estado guardado",
+    "x": 100,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "seamless-operation",
+    "label": "✅ Operación sin interrupciones\nNinguna operación perdida\nPortafolio protegido",
+    "x": 350,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "learning-update",
+    "label": "🧠 Actualización del modelo\nAprender de la casi-falla\nMejorar las predicciones",
+    "x": 600,
+    "y": 350,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "normal-operation",
+    "t": "health-monitoring",
+    "label": "monitorear"
+   },
+   {
+    "id": "e2",
+    "s": "health-monitoring",
+    "t": "pattern-analysis",
+    "label": "métricas"
+   },
+   {
+    "id": "e3",
+    "s": "pattern-analysis",
+    "t": "prediction",
+    "label": "analizar"
+   },
+   {
+    "id": "e4",
+    "s": "prediction",
+    "t": "alert-trigger",
+    "label": "predecir falla"
+   },
+   {
+    "id": "e5",
+    "s": "alert-trigger",
+    "t": "preemptive-action",
+    "label": "disparar"
+   },
+   {
+    "id": "e6",
+    "s": "preemptive-action",
+    "t": "backup-agent",
+    "label": "activar"
+   },
+   {
+    "id": "e7",
+    "s": "backup-agent",
+    "t": "seamless-operation",
+    "label": "reanudar"
+   },
+   {
+    "id": "e8",
+    "s": "seamless-operation",
+    "t": "learning-update",
+    "label": "feedback"
+   },
+   {
+    "id": "e9",
+    "s": "learning-update",
+    "t": "pattern-analysis",
+    "label": "mejorar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Monitoreo de la operación normal",
+    "description": "El agente de trading opera normalmente mientras el monitor de salud registra continuamente las métricas del sistema (CPU, memoria, latencia, red).",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Reconocimiento de patrones",
+    "description": "El analizador de patrones procesa datos históricos para identificar señales de alerta temprana como fugas de memoria, agotamiento de recursos o degradación del rendimiento.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Predicción de fallas",
+    "description": "El predictor de IA analiza los patrones actuales frente a firmas de falla conocidas y predice una posible caída 8 minutos antes de que ocurra.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Recuperación preventiva",
+    "description": "El sistema guarda automáticamente el estado del agente, escala los recursos e inicia un reinicio ordenado antes de que ocurra la falla, evitando cualquier pérdida de datos.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Continuación sin interrupciones",
+    "description": "El agente de respaldo se activa con el estado preservado, asegurando una operación continua sin interrumpir las actividades críticas de trading.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Aprendizaje continuo",
+    "description": "El sistema aprende de los eventos de casi-falla para mejorar las predicciones futuras y reducir los falsos positivos en la detección de fallas.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   }
+  ]
+ }
+}

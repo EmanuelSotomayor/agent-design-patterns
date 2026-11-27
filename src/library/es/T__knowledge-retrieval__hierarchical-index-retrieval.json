@@ -1,0 +1,304 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "hierarchical-index-retrieval",
+ "name": "Hierarchical Index Retrieval (RAPTOR)(HIR)",
+ "icon": "🌲",
+ "complexity": "high",
+ "description": "Construye el índice de recuperación como un árbol de varios niveles en lugar de una lista plana de chunks. RAPTOR genera embeddings, agrupa y resume chunks de forma recursiva, de modo que una consulta pueda recuperar información de cualquier nivel de abstracción y devolver una síntesis general o el detalle de las hojas según se necesite. El contextual retrieval de Anthropic antepone a cada chunk un breve texto de contexto escrito por un LLM antes de generar el embedding, para que los chunks aislados sigan anclados al documento completo.",
+ "features": [
+  "Árbol recursivo de agrupar y luego resumir",
+  "Recuperación en múltiples niveles de abstracción",
+  "Recorrido de árbol colapsado a través de las capas",
+  "Enriquecimiento contextual de los chunks antes del embedding",
+  "Generación híbrida de candidatos con embeddings más BM25",
+  "Reranking de los candidatos combinados"
+ ],
+ "tldr": {
+  "what": "Construye un índice en árbol de varios niveles agrupando y resumiendo chunks de forma recursiva, lo que permite recuperar desde cualquier nivel de abstracción para devolver una síntesis amplia o detalles específicos.",
+  "when": "Documentos largos donde las consultas necesitan tanto panoramas generales como detalles precisos de las hojas, y donde los chunks aislados pierden sentido sin el contexto del documento.",
+  "watchOut": "Alto costo computacional durante la indexación y una complejidad de implementación considerable; una agrupación desalineada puede crear niveles de abstracción poco útiles que degradan la calidad de la recuperación."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Recuperación con índice jerárquico (RAPTOR)",
+  "description": "Construye el índice de recuperación como un árbol de varios niveles en lugar de una lista plana de chunks. RAPTOR agrupa y resume chunks de forma recursiva, y el enriquecimiento contextual ancla cada chunk, de modo que una pregunta multi-hop se responde con un resumen de nivel intermedio más el detalle de las hojas.",
+  "nodes": [
+   {
+    "id": "source-doc",
+    "label": "📖 Documento fuente\nManual técnico de 300 páginas",
+    "x": 50,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "leaf-chunks",
+    "label": "✂️ Chunks hoja\n~1,200 chunks de ~100 tokens",
+    "x": 50,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "contextual-augment",
+    "label": "🏷️ Enriquecimiento contextual\nAnteponer un texto de contexto\na cada chunk",
+    "x": 50,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "embed-leaves",
+    "label": "🔢 Embeddings de hojas\nEmbedding de chunk + contexto",
+    "x": 50,
+    "y": 360,
+    "w": 220
+   },
+   {
+    "id": "cluster",
+    "label": "🔗 Agrupar\nClustering suave con GMM",
+    "x": 50,
+    "y": 460,
+    "w": 220
+   },
+   {
+    "id": "summarize",
+    "label": "📝 Resumir\nResumen del LLM por grupo\n= nodo padre",
+    "x": 50,
+    "y": 560,
+    "w": 220
+   },
+   {
+    "id": "recurse",
+    "label": "🔁 Recursión\nAgrupar los resúmenes,\nresumir de nuevo",
+    "x": 300,
+    "y": 510,
+    "w": 180
+   },
+   {
+    "id": "raptor-tree",
+    "label": "🌲 Árbol RAPTOR\nhojas -> resúmenes intermedios -> raíz",
+    "x": 50,
+    "y": 670,
+    "w": 240
+   },
+   {
+    "id": "user-question",
+    "label": "❓ Pregunta\n\"¿Cómo interactúa el failover\ncon el calendario de respaldos?\"",
+    "x": 640,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "collapsed-tree-search",
+    "label": "🔍 Búsqueda en árbol colapsado\nRankear nodos de todas las capas",
+    "x": 640,
+    "y": 190,
+    "w": 240
+   },
+   {
+    "id": "mid-summary",
+    "label": "🧩 Resumen intermedio\n\"Failover y respaldo comparten\nel bloqueo de coordinación\"",
+    "x": 380,
+    "y": 660,
+    "w": 200
+   },
+   {
+    "id": "leaf-detail",
+    "label": "🍃 Detalle de hoja\n\"Los respaldos corren de 02:00 a 03:00 UTC\"",
+    "x": 610,
+    "y": 660,
+    "w": 210
+   },
+   {
+    "id": "answer",
+    "label": "✅ Respuesta\n\"El failover se pospone durante la\nventana de respaldo de 02:00-03:00\"",
+    "x": 460,
+    "y": 770,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "doc-chunks",
+    "s": "source-doc",
+    "t": "leaf-chunks",
+    "label": "fragmentar"
+   },
+   {
+    "id": "chunks-augment",
+    "s": "leaf-chunks",
+    "t": "contextual-augment",
+    "label": "agregar contexto"
+   },
+   {
+    "id": "augment-embed",
+    "s": "contextual-augment",
+    "t": "embed-leaves",
+    "label": "generar embeddings"
+   },
+   {
+    "id": "embed-cluster",
+    "s": "embed-leaves",
+    "t": "cluster",
+    "label": "agrupar"
+   },
+   {
+    "id": "cluster-summarize",
+    "s": "cluster",
+    "t": "summarize",
+    "label": "resumir"
+   },
+   {
+    "id": "summarize-recurse",
+    "s": "summarize",
+    "t": "recurse",
+    "label": "siguiente nivel"
+   },
+   {
+    "id": "recurse-cluster",
+    "s": "recurse",
+    "t": "cluster",
+    "label": "repetir"
+   },
+   {
+    "id": "summarize-tree",
+    "s": "summarize",
+    "t": "raptor-tree",
+    "label": "construir"
+   },
+   {
+    "id": "question-search",
+    "s": "user-question",
+    "t": "collapsed-tree-search",
+    "label": ""
+   },
+   {
+    "id": "search-tree",
+    "s": "collapsed-tree-search",
+    "t": "raptor-tree",
+    "label": "buscar en todas las capas"
+   },
+   {
+    "id": "tree-mid",
+    "s": "raptor-tree",
+    "t": "mid-summary",
+    "label": "nodo intermedio"
+   },
+   {
+    "id": "tree-leaf",
+    "s": "raptor-tree",
+    "t": "leaf-detail",
+    "label": "nodo hoja"
+   },
+   {
+    "id": "mid-answer",
+    "s": "mid-summary",
+    "t": "answer",
+    "label": ""
+   },
+   {
+    "id": "leaf-answer",
+    "s": "leaf-detail",
+    "t": "answer",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Fragmentar el documento",
+    "description": "Un manual de 300 páginas se divide en aproximadamente 1,200 chunks hoja de unos 100 tokens cada uno.",
+    "input": "",
+    "nodes": [
+     "source-doc",
+     "leaf-chunks"
+    ],
+    "edges": [
+     "doc-chunks"
+    ]
+   },
+   {
+    "title": "Enriquecimiento contextual",
+    "description": "A cada chunk se le antepone un texto de 1-2 oraciones (\"Esta sección, del capítulo 7 sobre alta disponibilidad, describe...\") antes de generar el embedding, para que los chunks aislados sigan anclados al documento.",
+    "input": "",
+    "nodes": [
+     "leaf-chunks",
+     "contextual-augment",
+     "embed-leaves"
+    ],
+    "edges": [
+     "chunks-augment",
+     "augment-embed"
+    ]
+   },
+   {
+    "title": "Agrupar y resumir de forma recursiva",
+    "description": "Las hojas similares se agrupan de forma suave, un LLM resume cada grupo en un nodo padre y el proceso se repite sobre los resúmenes para hacer crecer el árbol.",
+    "input": "",
+    "nodes": [
+     "embed-leaves",
+     "cluster",
+     "summarize",
+     "recurse"
+    ],
+    "edges": [
+     "embed-cluster",
+     "cluster-summarize",
+     "summarize-recurse",
+     "recurse-cluster"
+    ]
+   },
+   {
+    "title": "Árbol construido",
+    "description": "El resultado es un árbol RAPTOR: las hojas originales abajo, los resúmenes de grupos de nivel intermedio arriba y una raíz que resume el documento completo.",
+    "input": "",
+    "nodes": [
+     "summarize",
+     "raptor-tree"
+    ],
+    "edges": [
+     "summarize-tree"
+    ]
+   },
+   {
+    "title": "Consultar el árbol colapsado",
+    "description": "Se genera el embedding de la pregunta multi-hop y la búsqueda en árbol colapsado rankea juntos los nodos de todas las capas, de modo que resúmenes y hojas compiten en igualdad de condiciones.",
+    "input": "",
+    "nodes": [
+     "user-question",
+     "collapsed-tree-search",
+     "raptor-tree"
+    ],
+    "edges": [
+     "question-search",
+     "search-tree"
+    ]
+   },
+   {
+    "title": "Recuperar a través de los niveles",
+    "description": "La recuperación devuelve un resumen de nivel intermedio (failover y respaldo comparten el bloqueo de coordinación) más el detalle exacto de la hoja (los respaldos corren de 02:00 a 03:00 UTC).",
+    "input": "",
+    "nodes": [
+     "raptor-tree",
+     "mid-summary",
+     "leaf-detail"
+    ],
+    "edges": [
+     "tree-mid",
+     "tree-leaf"
+    ]
+   },
+   {
+    "title": "Componer la respuesta",
+    "description": "Combinando síntesis y detalles: el failover se pospone durante la ventana de respaldo de 02:00-03:00 porque ambos mantienen el bloqueo de coordinación. RAPTOR gana alrededor de 20% absoluto en QuALITY; el contextual retrieval reduce las recuperaciones fallidas un 49%, y un 67% con un reranker.",
+    "input": "",
+    "nodes": [
+     "mid-summary",
+     "leaf-detail",
+     "answer"
+    ],
+    "edges": [
+     "mid-answer",
+     "leaf-answer"
+    ]
+   }
+  ]
+ }
+}

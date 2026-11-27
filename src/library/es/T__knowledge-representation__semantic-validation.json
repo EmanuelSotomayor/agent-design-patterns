@@ -1,0 +1,327 @@
+{
+ "cat": "knowledge-representation",
+ "slug": "semantic-validation",
+ "name": "Semantic Data Validation(SDV)",
+ "icon": "🔍",
+ "complexity": "high",
+ "description": "Validación en múltiples capas de datos semánticos mediante restricciones ontológicas, reglas de negocio y verificaciones de consistencia lógica",
+ "features": [
+  "Validación basada en ontologías",
+  "Aplicación de reglas de negocio",
+  "Verificación de consistencia lógica",
+  "Validación de referencias cruzadas",
+  "Verificación de restricciones temporales",
+  "Reporte de errores en múltiples niveles"
+ ],
+ "tldr": {
+  "what": "Valida los datos contra esquemas ontológicos, reglas de negocio y restricciones lógicas en múltiples capas para detectar violaciones semánticas.",
+  "when": "Dominios complejos con requisitos estrictos de cumplimiento, relaciones entre entidades o dependencias temporales que una simple verificación de tipos no detecta.",
+  "watchOut": "Alto costo de implementación y carga de mantenimiento; los conflictos entre reglas y las interacciones entre restricciones a menudo solo aparecen en producción."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Validación de datos semánticos",
+  "description": "Validación en múltiples capas de datos semánticos contra restricciones ontológicas, reglas de negocio, restricciones temporales y referencias cruzadas. Los hechos afirmados por el agente se anclan y se verifican en cuanto a consistencia lógica antes de producir una decisión de cumplimiento y un registro de auditoría.",
+  "nodes": [
+   {
+    "id": "agent-knowledge",
+    "label": "🧾 Hechos afirmados por el agente\nfin:t12345 a fin:Transaction ;\nfin:amount 15000 ; fin:currency \"USD\"",
+    "x": 330,
+    "y": 40,
+    "w": 320
+   },
+   {
+    "id": "validator",
+    "label": "🔍 Orquestador de validación semántica\nEjecuta las verificaciones por capas en orden",
+    "x": 360,
+    "y": 160,
+    "w": 300
+   },
+   {
+    "id": "layer-ontology",
+    "label": "📐 Capa 1: Ontología\namount someValuesFrom xsd:decimal\ncurrency owl:cardinality 1",
+    "x": 20,
+    "y": 290,
+    "w": 220
+   },
+   {
+    "id": "layer-rules",
+    "label": "📜 Capa 2: Reglas de negocio (SWRL)\namount > 10000\n-> requiresApproval(?t, true)",
+    "x": 260,
+    "y": 290,
+    "w": 240
+   },
+   {
+    "id": "layer-temporal",
+    "label": "⏱️ Capa 3: Temporal\ntransactionDate < settlementDate\nreportingDate <= today",
+    "x": 520,
+    "y": 290,
+    "w": 240
+   },
+   {
+    "id": "layer-crossref",
+    "label": "🔗 Capa 4: Referencias cruzadas\nExistencia de la cuenta, estado KYC,\nverificación en lista negra AML",
+    "x": 700,
+    "y": 410,
+    "w": 230
+   },
+   {
+    "id": "grounding-check",
+    "label": "🟠 Verificación de anclaje\nLos hechos se corresponden con términos conocidos de la ontología",
+    "x": 60,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "consistency-check",
+    "label": "🟠 Verificación de consistencia\nSin implicaciones contradictorias",
+    "x": 320,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "pass-ontology",
+    "label": "🟢 Capa 1 aprobada\nEstructura válida",
+    "x": 40,
+    "y": 570,
+    "w": 200
+   },
+   {
+    "id": "warning-threshold",
+    "label": "⚠️ ADVERTENCIA: AMOUNT_THRESHOLD\nUna transacción grande requiere aprobación\nsugerencia: agregar un flujo de aprobación",
+    "x": 280,
+    "y": 570,
+    "w": 250
+   },
+   {
+    "id": "violation-aml",
+    "label": "⛔ CRÍTICO: AML_SCREENING\nLa transacción involucra a una entidad sancionada\nentidad: fin:t12345",
+    "x": 580,
+    "y": 570,
+    "w": 250
+   },
+   {
+    "id": "report",
+    "label": "📋 Reporte de validación (JSON)\nvalidationStatus: \"failed\"\n1 crítico, 1 advertencia",
+    "x": 300,
+    "y": 700,
+    "w": 250
+   },
+   {
+    "id": "audit-trail",
+    "label": "🗄️ Registro de auditoría\nLog de decisiones firmado y con marca de tiempo",
+    "x": 60,
+    "y": 700,
+    "w": 220
+   },
+   {
+    "id": "reject-escalate",
+    "label": "🚫 Rechazar y escalar\nBloquear la liquidación, notificar al responsable",
+    "x": 600,
+    "y": 700,
+    "w": 230
+   }
+  ],
+  "edges": [
+   {
+    "id": "knowledge-validator",
+    "s": "agent-knowledge",
+    "t": "validator",
+    "label": ""
+   },
+   {
+    "id": "validator-ontology",
+    "s": "validator",
+    "t": "layer-ontology",
+    "label": "L1"
+   },
+   {
+    "id": "validator-rules",
+    "s": "validator",
+    "t": "layer-rules",
+    "label": "L2"
+   },
+   {
+    "id": "validator-temporal",
+    "s": "validator",
+    "t": "layer-temporal",
+    "label": "L3"
+   },
+   {
+    "id": "temporal-crossref",
+    "s": "layer-temporal",
+    "t": "layer-crossref",
+    "label": "L4"
+   },
+   {
+    "id": "ontology-grounding",
+    "s": "layer-ontology",
+    "t": "grounding-check",
+    "label": ""
+   },
+   {
+    "id": "rules-consistency",
+    "s": "layer-rules",
+    "t": "consistency-check",
+    "label": ""
+   },
+   {
+    "id": "grounding-pass",
+    "s": "grounding-check",
+    "t": "pass-ontology",
+    "label": ""
+   },
+   {
+    "id": "consistency-warning",
+    "s": "consistency-check",
+    "t": "warning-threshold",
+    "label": ""
+   },
+   {
+    "id": "rules-warning",
+    "s": "layer-rules",
+    "t": "warning-threshold",
+    "label": ""
+   },
+   {
+    "id": "crossref-aml",
+    "s": "layer-crossref",
+    "t": "violation-aml",
+    "label": "verificar"
+   },
+   {
+    "id": "pass-report",
+    "s": "pass-ontology",
+    "t": "report",
+    "label": ""
+   },
+   {
+    "id": "warning-report",
+    "s": "warning-threshold",
+    "t": "report",
+    "label": ""
+   },
+   {
+    "id": "aml-report",
+    "s": "violation-aml",
+    "t": "report",
+    "label": ""
+   },
+   {
+    "id": "report-audit",
+    "s": "report",
+    "t": "audit-trail",
+    "label": "registrar"
+   },
+   {
+    "id": "report-reject",
+    "s": "report",
+    "t": "reject-escalate",
+    "label": "crítico"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recibir el conocimiento del agente",
+    "description": "El orquestador ingiere los hechos que un agente afirmó sobre una transacción: un monto de 15000 en USD que debe validarse antes de considerarse confiable o liquidarse.",
+    "input": "",
+    "nodes": [
+     "agent-knowledge",
+     "validator"
+    ],
+    "edges": [
+     "knowledge-validator"
+    ]
+   },
+   {
+    "title": "Capa 1: Restricciones ontológicas",
+    "description": "La estructura se verifica contra la ontología: amount debe ser un decimal y currency debe tener cardinalidad exactamente uno. Los hechos están bien tipados.",
+    "input": "",
+    "nodes": [
+     "validator",
+     "layer-ontology",
+     "grounding-check",
+     "pass-ontology"
+    ],
+    "edges": [
+     "validator-ontology",
+     "ontology-grounding",
+     "grounding-pass"
+    ]
+   },
+   {
+    "title": "Capa 2: Reglas de negocio",
+    "description": "Se activa una regla SWRL: como amount supera 10000, se infiere que la transacción requiere aprobación, lo que genera una advertencia AMOUNT_THRESHOLD.",
+    "input": "",
+    "nodes": [
+     "validator",
+     "layer-rules",
+     "consistency-check",
+     "warning-threshold"
+    ],
+    "edges": [
+     "validator-rules",
+     "rules-consistency",
+     "consistency-warning",
+     "rules-warning"
+    ]
+   },
+   {
+    "title": "Capa 3: Restricciones temporales",
+    "description": "Se verifica el orden de las fechas: transactionDate debe ser anterior a settlementDate y reportingDate no debe estar en el futuro, lo que mantiene coherente la línea temporal.",
+    "input": "",
+    "nodes": [
+     "validator",
+     "layer-temporal"
+    ],
+    "edges": [
+     "validator-temporal"
+    ]
+   },
+   {
+    "title": "Capa 4: Verificación de referencias cruzadas",
+    "description": "Se consultan referencias externas: existencia de la cuenta, estado KYC del cliente y verificación en la lista negra AML, que marca a la contraparte como entidad sancionada.",
+    "input": "",
+    "nodes": [
+     "layer-temporal",
+     "layer-crossref",
+     "violation-aml"
+    ],
+    "edges": [
+     "temporal-crossref",
+     "crossref-aml"
+    ]
+   },
+   {
+    "title": "Compilar el reporte multinivel",
+    "description": "Los resultados de todas las capas se combinan en un reporte JSON con validationStatus failed, un error crítico de AML y una advertencia de umbral, cada uno etiquetado con su regla.",
+    "input": "",
+    "nodes": [
+     "pass-ontology",
+     "warning-threshold",
+     "violation-aml",
+     "report"
+    ],
+    "edges": [
+     "pass-report",
+     "warning-report",
+     "aml-report"
+    ]
+   },
+   {
+    "title": "Decidir, registrar y escalar",
+    "description": "La violación crítica bloquea la liquidación y se escala a un responsable de cumplimiento, mientras la decisión completa se escribe en un registro de auditoría con marca de tiempo.",
+    "input": "",
+    "nodes": [
+     "report",
+     "audit-trail",
+     "reject-escalate"
+    ],
+    "edges": [
+     "report-audit",
+     "report-reject"
+    ]
+   }
+  ]
+ }
+}

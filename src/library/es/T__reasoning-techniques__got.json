@@ -1,0 +1,343 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "got",
+ "name": "Graph-of-Thought(GoT)",
+ "icon": "🕸️",
+ "complexity": "high",
+ "description": "Razonamiento no lineal con pensamientos como nodos y dependencias como aristas",
+ "features": [
+  "Exploración no lineal de pensamientos",
+  "Pensamientos como vértices, dependencias como aristas",
+  "Combinación sinérgica de ideas",
+  "Bucles de feedback y backtracking",
+  "Destilación de redes complejas",
+  "Superior al CoT lineal en problemas complejos"
+ ],
+ "tldr": {
+  "what": "Modela el razonamiento como un grafo dirigido en el que los pensamientos son nodos, las dependencias son aristas y el agente explora múltiples rutas con backtracking y síntesis.",
+  "when": "Problemas con muchos factores interdependientes en los que el razonamiento lineal pasa por alto soluciones emergentes o requiere revisar conclusiones anteriores.",
+  "watchOut": "El costo computacional y la latencia crecen de forma pronunciada; es fácil perder la coherencia en un grafo grande sin pasos explícitos de síntesis."
+ },
+ "overview": {
+  "pattern": "Red de razonamiento no lineal con nodos (pensamientos) y aristas (dependencias) que permite la síntesis entre rutas",
+  "why": "Aborda problemas complejos e interdependientes mediante backtracking, fusión y resolución de conflictos",
+  "insight": "Pensamientos como nodos del grafo → Dependencias explícitas → Fusión entre rutas → Síntesis coherente",
+  "impl": [
+   {
+    "t": "Inicializar el grafo",
+    "d": "Crea nodos (pensamientos) y aristas (dependencias)"
+   },
+   {
+    "t": "Expandir",
+    "d": "Genera pensamientos sucesores a partir de la frontera"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Puntúa nodos/subgrafos con evaluadores"
+   },
+   {
+    "t": "Fusionar",
+    "d": "Conecta rutas compatibles y resuelve conflictos"
+   },
+   {
+    "t": "Destilar",
+    "d": "Extrae una solución coherente del mejor subgrafo"
+   }
+  ],
+  "example": "Problema → [Nodo A ← Nodo B → Nodo C] → Fusionar rutas → Sintetizar la solución",
+  "dos": [
+   "Usa un seguimiento explícito de las dependencias entre pensamientos",
+   "Implementa una detección de ciclos y deduplicación robusta",
+   "Diseña evaluadores que puntúen subgrafos y no solo nodos",
+   "Guarda en cache los resultados intermedios y mantén los estados visitados",
+   "Habilita la síntesis entre rutas y la resolución de conflictos"
+  ],
+  "donts": [
+   "Permitir la expansión ilimitada del grafo (explosión combinatoria)",
+   "Fusionar ramas incompatibles sin verificar conflictos",
+   "Omitir la planificación de la granularidad de los pensamientos (demasiado gruesa/fina)",
+   "Usar evaluadores débiles que clasifican mal las rutas de solución",
+   "Ignorar el costo en tokens de la sobrecarga de explorar el grafo"
+  ],
+  "use": [
+   "Problemas complejos con subobjetivos interdependientes",
+   "Síntesis de investigación a partir de fuentes contradictorias",
+   "Problemas de optimización con múltiples restricciones",
+   "Planificación estratégica con compensaciones",
+   "Cuando fusionar rutas genera sinergias"
+  ],
+  "avoid": [
+   "Tareas simples de razonamiento lineal",
+   "Restricciones estrictas de latencia/costo",
+   "Dominios sin evaluadores confiables",
+   "Cuando Tree-of-Thought es suficiente",
+   "Aplicaciones en tiempo real"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de la solución",
+    "d": "Precisión frente a líneas base lineales/de árbol"
+   },
+   {
+    "n": "Eficiencia del grafo",
+    "d": "Nodos útiles / total de nodos explorados"
+   },
+   {
+    "n": "Calidad de la síntesis",
+    "d": "Coherencia de las rutas de solución fusionadas"
+   },
+   {
+    "n": "Precisión de las dependencias",
+    "d": "Corrección de las relaciones entre pensamientos"
+   },
+   {
+    "n": "Costo de exploración",
+    "d": "Tokens por nodo + sobrecarga de evaluación"
+   },
+   {
+    "n": "Tasa de convergencia",
+    "d": "Pasos para alcanzar una solución estable"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de investigación",
+    "d": "Nodo[Teoría A] ← Nodo[Evidencia 1] → Nodo[Síntesis] ← Nodo[Teoría B]"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Conecta análisis de mercado → estrategia de producto → asignación de recursos → evaluación de riesgos"
+   },
+   {
+    "n": "Diseño de sistemas",
+    "d": "Vincula requisitos → arquitectura → implementación → validación con bucles de feedback"
+   },
+   {
+    "n": "Análisis de políticas",
+    "d": "Mapea intereses de las partes interesadas → restricciones regulatorias → opciones de implementación → resultados"
+   },
+   {
+    "n": "Resolución creativa de problemas",
+    "d": "Fusiona enfoques de solución diversos mediante nodos de polinización cruzada"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Graph-of-Thought (GoT)",
+  "description": "Razonamiento no lineal en el que los pensamientos son vértices y las dependencias son aristas en una estructura de grafo dinámica",
+  "nodes": [
+   {
+    "id": "query",
+    "label": "❓ Problema\n\"¿Cómo reducir la huella\nde carbono de nuestro\nedificio de oficinas?\"",
+    "x": 400,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "energy-thought",
+    "label": "💡 Sistemas de energía\n\"Cambiar a fuentes\nrenovables + eficiencia\"",
+    "x": 150,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "transport-thought",
+    "label": "🚗 Transporte\n\"Fomentar el transporte\npúblico + trabajo remoto\"",
+    "x": 400,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "waste-thought",
+    "label": "♻️ Gestión de residuos\n\"Implementar programas\nde reciclaje + compostaje\"",
+    "x": 650,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "dependency-1",
+    "label": "🔗 Energía-Transporte\n\"Estaciones de carga\npara vehículos eléctricos\"",
+    "x": 275,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "dependency-2",
+    "label": "🔗 Transporte-Residuos\n\"Reducir los residuos\nde empaques de envíos\"",
+    "x": 525,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "synergy",
+    "label": "✨ Solución sinérgica\n\"Sistema de edificio inteligente:\nSolar + carga de VE +\nresiduos a energía\"",
+    "x": 400,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "feedback",
+    "label": "🔄 Bucle de feedback\n\"Monitorear y ajustar\nsegún los resultados\"",
+    "x": 150,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "final-plan",
+    "label": "📋 Plan integrado\n\"Reducción del 30% mediante\nun sistema de solar + transporte\n+ gestión de residuos\"",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "query",
+    "t": "energy-thought",
+    "label": "analizar"
+   },
+   {
+    "id": "e2",
+    "s": "query",
+    "t": "transport-thought",
+    "label": "analizar"
+   },
+   {
+    "id": "e3",
+    "s": "query",
+    "t": "waste-thought",
+    "label": "analizar"
+   },
+   {
+    "id": "e4",
+    "s": "energy-thought",
+    "t": "dependency-1",
+    "label": "se conecta con"
+   },
+   {
+    "id": "e5",
+    "s": "transport-thought",
+    "t": "dependency-1",
+    "label": "se conecta con"
+   },
+   {
+    "id": "e6",
+    "s": "transport-thought",
+    "t": "dependency-2",
+    "label": "se conecta con"
+   },
+   {
+    "id": "e7",
+    "s": "waste-thought",
+    "t": "dependency-2",
+    "label": "se conecta con"
+   },
+   {
+    "id": "e8",
+    "s": "dependency-1",
+    "t": "synergy",
+    "label": "contribuye"
+   },
+   {
+    "id": "e9",
+    "s": "dependency-2",
+    "t": "synergy",
+    "label": "contribuye"
+   },
+   {
+    "id": "e10",
+    "s": "waste-thought",
+    "t": "synergy",
+    "label": "entrada directa"
+   },
+   {
+    "id": "e11",
+    "s": "synergy",
+    "t": "feedback",
+    "label": "monitorear"
+   },
+   {
+    "id": "e12",
+    "s": "feedback",
+    "t": "energy-thought",
+    "label": "refinar"
+   },
+   {
+    "id": "e13",
+    "s": "synergy",
+    "t": "final-plan",
+    "label": "formular"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Generación de pensamientos multidimensional",
+    "description": "El problema se descompone en vértices de pensamiento independientes: sistemas de energía, transporte y gestión de residuos, cada uno explorado por separado.",
+    "input": "",
+    "nodes": [
+     "query",
+     "energy-thought",
+     "transport-thought",
+     "waste-thought"
+    ],
+    "edges": [
+     "e1",
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Descubrimiento de dependencias",
+    "description": "Las aristas del grafo revelan conexiones inesperadas: los sistemas de energía habilitan la carga de VE y las decisiones de transporte afectan los residuos de empaques.",
+    "input": "",
+    "nodes": [
+     "dependency-1",
+     "dependency-2"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Síntesis sinérgica",
+    "description": "Varias rutas de pensamiento convergen en una solución sinérgica: un sistema de edificio inteligente que integra los tres dominios con beneficios multiplicativos.",
+    "input": "",
+    "nodes": [
+     "synergy"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Integración de feedback no lineal",
+    "description": "Los bucles de feedback permiten hacer backtracking y refinar: monitorear los resultados puede actualizar dinámicamente los pensamientos originales sobre energía.",
+    "input": "",
+    "nodes": [
+     "feedback"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Solución final basada en el grafo",
+    "description": "La solución surge de la estructura del grafo: una reducción de carbono del 30% mediante un enfoque integrado que sería imposible con un pensamiento lineal.",
+    "input": "",
+    "nodes": [
+     "final-plan"
+    ],
+    "edges": [
+     "e13"
+    ]
+   }
+  ]
+ }
+}

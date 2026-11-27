@@ -1,0 +1,374 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "ag-ui-protocol",
+ "name": "AG-UI Protocol (Agent-User Interaction)(AGUI)",
+ "icon": "🔌",
+ "complexity": "medium",
+ "description": "Protocolo abierto basado en eventos (creado por CopilotKit, 2025) que estandariza la última milla entre el backend de un agente y cualquier frontend. El backend transmite por streaming unos 16 tipos de eventos estructurados (deltas de texto y tokens, inicio/argumentos/resultado de llamadas a herramientas, snapshots y deltas de estado, ciclo de vida de la ejecución y cancelación) sobre SSE, WebSocket o HTTP simple, de modo que un frontend puede renderizar la actividad del agente en vivo y devolver las acciones del usuario al mismo bucle de ejecución, sin depender del framework. Existen emisores nativos para LangGraph, CrewAI, Mastra y Microsoft Agent Framework, entre otros. Es el lado agente-a-UI del triángulo de protocolos, junto a MCP (agente-a-herramienta) y A2A (agente-a-agente). Es distinto de `chat-interface-patterns`: esos son convenciones de renderizado del frontend, mientras que AG-UI es el protocolo de transmisión que transporta el flujo de eventos subyacente.",
+ "features": [
+  "Unos 16 tipos de eventos estructurados: deltas de tokens, ciclo de vida de llamadas a herramientas, deltas de estado, ciclo de vida de la ejecución, cancelación",
+  "Streaming independiente del transporte sobre SSE, WebSocket o HTTP simple",
+  "Bucle bidireccional: el frontend renderiza la actividad y devuelve las acciones del usuario al agente",
+  "Sincronización de estado compartido mediante un snapshot completo más deltas incrementales",
+  "Emisores independientes del framework (LangGraph, CrewAI, Mastra, Microsoft Agent Framework)",
+  "Interrupciones a mitad de ejecución: pausar, aprobar, editar, reintentar y cancelar un agente en ejecución"
+ ],
+ "tldr": {
+  "what": "Protocolo de eventos estandarizado que transmite por streaming la actividad del agente (texto, llamadas a herramientas, estado, ciclo de vida) a cualquier frontend sobre SSE/WebSocket/HTTP, lo que permite control bidireccional y renderizado en vivo.",
+  "when": "Construcción de la UX de agentes donde el frontend debe mostrar la ejecución en vivo, admitir interrupciones a mitad de ejecución (pausar, aprobar, editar, cancelar) y funcionar con múltiples frameworks de backend.",
+  "watchOut": "El orden de los eventos y la consistencia del estado se rompen si los relojes del frontend y el backend se desfasan o la red pierde paquetes; requiere una lógica robusta de reproducción y reconciliación."
+ },
+ "overview": null,
+ "flow": {
+  "title": "AG-UI Protocol (Agent-User Interaction)",
+  "description": "Protocolo abierto basado en eventos que estandariza el flujo entre el backend de un agente y cualquier frontend. Unos 16 tipos de eventos estructurados (deltas de tokens, ciclo de vida de llamadas a herramientas, deltas de estado, ciclo de vida de la ejecución, cancelación) viajan sobre SSE o WebSocket para que la UI renderice la actividad en vivo y devuelva las acciones del usuario al mismo bucle.",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "🎯 Solicitud del usuario\n\"Compara el churn de Q2 y Q3,\nredacta un resumen\"",
+    "x": 340,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "agent-backend",
+    "label": "🤖 Backend del agente\nLangGraph / CrewAI / Mastra",
+    "x": 340,
+    "y": 160,
+    "w": 240
+   },
+   {
+    "id": "event-emitter",
+    "label": "📡 Emisor AG-UI\nCodifica ~16 tipos de eventos",
+    "x": 250,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "transport",
+    "label": "🔌 Transporte\nSSE / WebSocket / HTTP",
+    "x": 560,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "run-lifecycle",
+    "label": "🚦 Ciclo de vida de la ejecución\nRUN_STARTED / RUN_FINISHED",
+    "x": 20,
+    "y": 385,
+    "w": 190
+   },
+   {
+    "id": "text-deltas",
+    "label": "✍️ Deltas de texto\nTokens TEXT_MESSAGE_CONTENT",
+    "x": 240,
+    "y": 385,
+    "w": 190
+   },
+   {
+    "id": "tool-events",
+    "label": "🛠️ Eventos de herramientas\nSTART / ARGS / RESULT",
+    "x": 460,
+    "y": 385,
+    "w": 190
+   },
+   {
+    "id": "state-deltas",
+    "label": "🧩 Deltas de estado\nSTATE_SNAPSHOT / STATE_DELTA",
+    "x": 680,
+    "y": 385,
+    "w": 190
+   },
+   {
+    "id": "frontend",
+    "label": "🖥️ Renderizador frontend AG-UI\nUI independiente del framework",
+    "x": 340,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "plan-text",
+    "label": "📝 Plan en streaming\nRenderizado token por token",
+    "x": 20,
+    "y": 610,
+    "w": 180
+   },
+   {
+    "id": "tool-progress",
+    "label": "⏳ Progreso de la herramienta\n\"Consultando el data warehouse...\"",
+    "x": 230,
+    "y": 610,
+    "w": 180
+   },
+   {
+    "id": "gen-ui-chart",
+    "label": "📊 UI generativa\nGráfico parcial de churn",
+    "x": 440,
+    "y": 610,
+    "w": 180
+   },
+   {
+    "id": "shared-state",
+    "label": "🗂️ Estado compartido\nObjeto del borrador del resumen",
+    "x": 650,
+    "y": 610,
+    "w": 180
+   },
+   {
+    "id": "cancel-action",
+    "label": "🖱️ El usuario hace clic en Cancelar\nInterrupción a mitad de la herramienta",
+    "x": 230,
+    "y": 715,
+    "w": 190
+   },
+   {
+    "id": "run-cancelled",
+    "label": "⛔ Herramienta truncada\nLa ejecución termina (cancelada)",
+    "x": 230,
+    "y": 780,
+    "w": 190
+   },
+   {
+    "id": "synced-ui",
+    "label": "✨ UI sincronizada\nVista final coherente",
+    "x": 560,
+    "y": 780,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "req-backend",
+    "s": "user-request",
+    "t": "agent-backend",
+    "label": ""
+   },
+   {
+    "id": "backend-emitter",
+    "s": "agent-backend",
+    "t": "event-emitter",
+    "label": "emitir"
+   },
+   {
+    "id": "emitter-transport",
+    "s": "event-emitter",
+    "t": "transport",
+    "label": "SSE / WS"
+   },
+   {
+    "id": "transport-lifecycle",
+    "s": "transport",
+    "t": "run-lifecycle",
+    "label": ""
+   },
+   {
+    "id": "transport-text",
+    "s": "transport",
+    "t": "text-deltas",
+    "label": ""
+   },
+   {
+    "id": "transport-tools",
+    "s": "transport",
+    "t": "tool-events",
+    "label": ""
+   },
+   {
+    "id": "transport-state",
+    "s": "transport",
+    "t": "state-deltas",
+    "label": ""
+   },
+   {
+    "id": "lifecycle-frontend",
+    "s": "run-lifecycle",
+    "t": "frontend",
+    "label": ""
+   },
+   {
+    "id": "text-frontend",
+    "s": "text-deltas",
+    "t": "frontend",
+    "label": ""
+   },
+   {
+    "id": "tools-frontend",
+    "s": "tool-events",
+    "t": "frontend",
+    "label": ""
+   },
+   {
+    "id": "state-frontend",
+    "s": "state-deltas",
+    "t": "frontend",
+    "label": ""
+   },
+   {
+    "id": "frontend-plan",
+    "s": "frontend",
+    "t": "plan-text",
+    "label": "renderizar"
+   },
+   {
+    "id": "frontend-progress",
+    "s": "frontend",
+    "t": "tool-progress",
+    "label": "renderizar"
+   },
+   {
+    "id": "frontend-chart",
+    "s": "frontend",
+    "t": "gen-ui-chart",
+    "label": "renderizar"
+   },
+   {
+    "id": "frontend-sharedstate",
+    "s": "frontend",
+    "t": "shared-state",
+    "label": "sincronizar"
+   },
+   {
+    "id": "chart-cancel",
+    "s": "gen-ui-chart",
+    "t": "cancel-action",
+    "label": "el usuario hace clic en Cancelar"
+   },
+   {
+    "id": "cancel-backend",
+    "s": "cancel-action",
+    "t": "agent-backend",
+    "label": "entrada de cancelación"
+   },
+   {
+    "id": "cancel-cancelled",
+    "s": "cancel-action",
+    "t": "run-cancelled",
+    "label": "truncar"
+   },
+   {
+    "id": "sharedstate-synced",
+    "s": "shared-state",
+    "t": "synced-ui",
+    "label": ""
+   },
+   {
+    "id": "cancelled-synced",
+    "s": "run-cancelled",
+    "t": "synced-ui",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "La solicitud del usuario entra al bucle",
+    "description": "Un usuario le pide al backend del agente que compare el churn y redacte un resumen. El backend es nativo de un framework (LangGraph, CrewAI, Mastra o Microsoft Agent Framework) y habla AG-UI en su borde.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "agent-backend"
+    ],
+    "edges": [
+     "req-backend"
+    ]
+   },
+   {
+    "title": "El backend emite eventos AG-UI",
+    "description": "El backend se ejecuta y su emisor AG-UI codifica el progreso como unos 16 tipos de eventos estándar, transmitidos por streaming sobre una única conexión de transporte (SSE, WebSocket o HTTP simple).",
+    "input": "",
+    "nodes": [
+     "agent-backend",
+     "event-emitter",
+     "transport"
+    ],
+    "edges": [
+     "backend-emitter",
+     "emitter-transport"
+    ]
+   },
+   {
+    "title": "Streaming de tipos de eventos estructurados",
+    "description": "El transporte lleva las familias de eventos: ciclo de vida de la ejecución (RUN_STARTED / RUN_FINISHED), deltas de tokens de texto, ciclo de vida de llamadas a herramientas (START / ARGS / RESULT) y snapshot de estado más deltas.",
+    "input": "",
+    "nodes": [
+     "transport",
+     "run-lifecycle",
+     "text-deltas",
+     "tool-events",
+     "state-deltas"
+    ],
+    "edges": [
+     "transport-lifecycle",
+     "transport-text",
+     "transport-tools",
+     "transport-state"
+    ]
+   },
+   {
+    "title": "El frontend renderiza la actividad en vivo",
+    "description": "Un frontend independiente del framework consume los eventos y renderiza el plan token por token, una fila de progreso de la herramienta en vivo, un gráfico parcial de UI generativa y un objeto de estado compartido, todo a medida que llegan.",
+    "input": "",
+    "nodes": [
+     "run-lifecycle",
+     "text-deltas",
+     "tool-events",
+     "state-deltas",
+     "frontend",
+     "plan-text",
+     "tool-progress",
+     "gen-ui-chart",
+     "shared-state"
+    ],
+    "edges": [
+     "lifecycle-frontend",
+     "text-frontend",
+     "tools-frontend",
+     "state-frontend",
+     "frontend-plan",
+     "frontend-progress",
+     "frontend-chart",
+     "frontend-sharedstate"
+    ]
+   },
+   {
+    "title": "El usuario cancela a mitad de la herramienta",
+    "description": "Mientras la herramienta del gráfico sigue ejecutándose, el usuario hace clic en Cancelar. El frontend devuelve esa acción por la misma conexión al bucle de ejecución en curso.",
+    "input": "",
+    "nodes": [
+     "gen-ui-chart",
+     "cancel-action",
+     "agent-backend"
+    ],
+    "edges": [
+     "chart-cancel",
+     "cancel-backend"
+    ]
+   },
+   {
+    "title": "La ejecución se trunca y se marca como cancelada",
+    "description": "El backend trunca la herramienta en curso y termina la ejecución con un evento terminal de cancelación, de modo que la fila del gráfico a medio renderizar se marca como cancelada en lugar de quedar girando indefinidamente.",
+    "input": "",
+    "nodes": [
+     "cancel-action",
+     "run-cancelled"
+    ],
+    "edges": [
+     "cancel-cancelled"
+    ]
+   },
+   {
+    "title": "Los deltas de estado sincronizan la UI final",
+    "description": "El objeto de estado compartido, actualizado mediante snapshot más deltas, y la ejecución cancelada se resuelven en una única vista final coherente. Un solo protocolo transportó tokens, progreso de herramientas, UI generativa, estado compartido y cancelación.",
+    "input": "",
+    "nodes": [
+     "shared-state",
+     "run-cancelled",
+     "synced-ui"
+    ],
+    "edges": [
+     "sharedstate-synced",
+     "cancelled-synced"
+    ]
+   }
+  ]
+ }
+}

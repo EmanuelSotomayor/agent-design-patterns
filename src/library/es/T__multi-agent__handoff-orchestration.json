@@ -1,0 +1,674 @@
+{
+ "cat": "multi-agent",
+ "slug": "handoff-orchestration",
+ "name": "Handoff Orchestration(HO)",
+ "icon": "🤝",
+ "complexity": "medium",
+ "description": "Delegación dinámica en la que los agentes transfieren el control de forma inteligente según el contexto y las capacidades especializadas",
+ "features": [
+  "Enrutamiento consciente del contexto",
+  "Delegación dinámica",
+  "Correspondencia de capacidades",
+  "Transiciones fluidas",
+  "Transferencia completa del control",
+  "Escalamiento inteligente"
+ ],
+ "tldr": {
+  "what": "Enruta las solicitudes entre agentes especializados según el contexto detectado y transfiere el estado y el control completos al agente más adecuado.",
+  "when": "Los problemas abarcan múltiples dominios en los que distintos agentes sobresalen, y las decisiones de enrutamiento dependen del contenido del problema en lugar de reglas fijas.",
+  "watchOut": "Los traspasos pueden entrar en bucle o estancarse si los agentes clasifican mal los problemas o si el contexto se corrompe durante la transferencia entre sistemas."
+ },
+ "overview": {
+  "pattern": "Delegación dinámica en la que los agentes transfieren el control de forma inteligente según el contexto y las capacidades especializadas",
+  "why": "Aporta la experiencia adecuada en el momento adecuado, preserva la continuidad de la conversación, optimiza el uso de recursos y mejora la calidad de los resultados",
+  "insight": "Traspasos que preservan el contexto + enrutamiento por capacidades + escalamiento inteligente = delegación fluida a expertos",
+  "impl": [
+   {
+    "t": "Diseño del contexto",
+    "d": "Define el esquema de contexto del traspaso y las reglas de preservación"
+   },
+   {
+    "t": "Mapeo de capacidades",
+    "d": "Mapea las capacidades de los agentes y la lógica de enrutamiento"
+   },
+   {
+    "t": "Protocolo de traspaso",
+    "d": "Implementa mecanismos fluidos de transferencia de contexto"
+   },
+   {
+    "t": "Reglas de escalamiento",
+    "d": "Define las condiciones de activación y las decisiones de enrutamiento"
+   },
+   {
+    "t": "Monitorear transferencias",
+    "d": "Haz seguimiento del éxito de los traspasos y de la continuidad del contexto"
+   }
+  ],
+  "example": "TierOneAgent → [context+decision] → DatabaseAgent → [escalation] → SeniorDBAAgent",
+  "dos": [
+   "Preserva el contexto completo de la conversación durante las transferencias",
+   "Usa mensajes de traspaso estructurados con metadatos",
+   "Implementa enrutamiento basado en capacidades con puntajes de confianza",
+   "Agrega mecanismos de respaldo elegantes para los traspasos fallidos",
+   "Registra las decisiones de traspaso para auditoría y optimización",
+   "Usa protocolos estandarizados como Model Context Protocol"
+  ],
+  "donts": [
+   "Perder información de contexto durante las transiciones entre agentes",
+   "Crear bucles circulares de traspaso entre agentes",
+   "Traspasar sin verificar la disponibilidad del agente receptor",
+   "Ignorar los traspasos fallidos y seguir procesando",
+   "Usar enrutamiento fijo en el código sin evaluación dinámica de capacidades"
+  ],
+  "use": [
+   "Las tareas requieren experiencia especializada en distintas etapas",
+   "Atención al cliente con flujos de escalamiento",
+   "Resolución de problemas complejos con expertos del dominio",
+   "Enrutamiento dinámico basado en el análisis de la conversación",
+   "Situaciones que requieren preservar el contexto sin fricciones",
+   "Cargas de trabajo con límites de capacidades claros"
+  ],
+  "avoid": [
+   "Tareas simples que un solo agente puede manejar",
+   "Sistemas en tiempo real donde la latencia del traspaso es crítica",
+   "Flujos de trabajo con condiciones de activación del traspaso poco claras",
+   "Sistemas sin una infraestructura adecuada de gestión de contexto",
+   "Escenarios donde todos los agentes tienen capacidades similares"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de traspasos",
+    "d": "Porcentaje de transferencias de contexto exitosas"
+   },
+   {
+    "n": "Preservación del contexto",
+    "d": "Completitud de la información transferida"
+   },
+   {
+    "n": "Precisión del enrutamiento",
+    "d": "Selección correcta del agente según sus capacidades"
+   },
+   {
+    "n": "Latencia de transferencia",
+    "d": "Tiempo que tarda en completarse el traspaso"
+   },
+   {
+    "n": "Calidad de la resolución",
+    "d": "Éxito de la tarea tras el traspaso frente al manejo directo"
+   },
+   {
+    "n": "Eficiencia del escalamiento",
+    "d": "Reducción de saltos innecesarios entre agentes"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Atención al cliente",
+    "d": "Traspasos TierOne → Técnico → Ingeniero sénior con el historial completo de la conversación y el contexto del cliente"
+   },
+   {
+    "n": "Resolución de problemas técnicos",
+    "d": "Diagnóstico inicial → Experto del dominio → Especialista en escalamiento, con transferencia de datos de diagnóstico"
+   },
+   {
+    "n": "Consulta médica",
+    "d": "Atención primaria → Especialista → Equipo multidisciplinario, con el historial completo del paciente"
+   },
+   {
+    "n": "Gestión de casos legales",
+    "d": "Paralegal → Asociado → Socio, con transferencia del contexto del caso y del historial de documentos"
+   },
+   {
+    "n": "Asesoría financiera",
+    "d": "Asesor general → Especialista tributario → Experto en inversiones, con el perfil del cliente y el historial de transacciones"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Handoff Orchestration",
+  "description": "Transferencia coordinada de tareas entre agentes especializados que garantiza transiciones fluidas, preservación del contexto y un enrutamiento óptimo según las capacidades de los agentes y sus cargas de trabajo actuales.",
+  "nodes": [
+   {
+    "id": "user-query",
+    "label": "🎯 Consulta del usuario\n\"Ayúdame a diagnosticar un problema de red, corregir un bug en el código y desplegar\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "handoff-controller",
+    "label": "🎛️ Controlador de traspasos\nAnálisis de contexto y enrutamiento",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "context-analyzer",
+    "label": "🔍 Analizador de contexto\nActual: diagnóstico de red",
+    "x": 150,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "capability-matcher",
+    "label": "🎯 Emparejador de capacidades\nAsigna la tarea al experto",
+    "x": 375,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "state-manager",
+    "label": "💾 Gestor de estado\nPreserva el contexto entre traspasos",
+    "x": 600,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "triage-agent",
+    "label": "🏥 Agente de triaje\nEvaluación inicial\nEstado: ✅ Completo",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "network-specialist",
+    "label": "🌐 Especialista en redes\nDiagnostica la conectividad\nEstado: 🔄 Activo",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "code-debugger",
+    "label": "🐛 Depurador de código\nCorrige bugs\nEstado: ⏳ En espera",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "deployment-expert",
+    "label": "🚀 Experto en despliegue\nDespliega a producción\nEstado: ⏳ En espera",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "qa-validator",
+    "label": "✅ Validador de QA\nVerificaciones finales\nEstado: ⏳ En espera",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "handoff-1",
+    "label": "🔄 Traspaso #1\nTriaje → Red\nContexto: \"Errores de timeout\"",
+    "x": 135,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "handoff-2",
+    "label": "🔄 Traspaso #2\nRed → Depuración\nContexto: \"Falla del endpoint de la API\"",
+    "x": 305,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "handoff-3",
+    "label": "🔄 Traspaso #3\nDepuración → Despliegue\nContexto: \"Corrección aplicada\"",
+    "x": 475,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "handoff-4",
+    "label": "🔄 Traspaso #4\nDespliegue → QA\nContexto: \"Verificar en producción\"",
+    "x": 645,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "decision-engine",
+    "label": "🤔 Motor de decisiones\nDetermina el siguiente agente",
+    "x": 200,
+    "y": 620,
+    "w": 180
+   },
+   {
+    "id": "handoff-validator",
+    "label": "✔️ Validador de traspasos\nVerifica que esté listo",
+    "x": 400,
+    "y": 620,
+    "w": 180
+   },
+   {
+    "id": "fallback-handler",
+    "label": "↩️ Manejador de respaldo\nGestiona los traspasos fallidos",
+    "x": 600,
+    "y": 620,
+    "w": 180
+   },
+   {
+    "id": "context-package",
+    "label": "📦 Paquete de contexto\n• Historial del problema\n• Hallazgos previos\n• Soluciones parciales",
+    "x": 100,
+    "y": 740,
+    "w": 180
+   },
+   {
+    "id": "handoff-log",
+    "label": "📝 Registro de traspasos\n• Secuencia de agentes\n• Motivos de las decisiones\n• Tiempo invertido",
+    "x": 300,
+    "y": 740,
+    "w": 180
+   },
+   {
+    "id": "knowledge-transfer",
+    "label": "🧠 Transferencia de conocimiento\n• Ideas clave\n• Acciones pendientes\n• Restricciones",
+    "x": 500,
+    "y": 740,
+    "w": 180
+   },
+   {
+    "id": "completion-checker",
+    "label": "🎯 Verificador de finalización\n• Objetivos logrados\n• Tareas pendientes",
+    "x": 700,
+    "y": 740,
+    "w": 180
+   },
+   {
+    "id": "performance-monitor",
+    "label": "📊 Monitor de rendimiento\nEficiencia de los traspasos",
+    "x": 200,
+    "y": 860,
+    "w": 180
+   },
+   {
+    "id": "pattern-learner",
+    "label": "🎓 Aprendiz de patrones\nOptimiza el enrutamiento",
+    "x": 400,
+    "y": 860,
+    "w": 180
+   },
+   {
+    "id": "cost-optimizer",
+    "label": "💰 Optimizador de costos\nMinimiza los traspasos",
+    "x": 600,
+    "y": 860,
+    "w": 180
+   },
+   {
+    "id": "final-output",
+    "label": "✨ Tarea completada\nRed reparada, código depurado, desplegado con éxito",
+    "x": 400,
+    "y": 980,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-controller",
+    "s": "user-query",
+    "t": "handoff-controller",
+    "label": ""
+   },
+   {
+    "id": "controller-context",
+    "s": "handoff-controller",
+    "t": "context-analyzer",
+    "label": "Analizar"
+   },
+   {
+    "id": "controller-matcher",
+    "s": "handoff-controller",
+    "t": "capability-matcher",
+    "label": "Emparejar"
+   },
+   {
+    "id": "controller-state",
+    "s": "handoff-controller",
+    "t": "state-manager",
+    "label": "Rastrear"
+   },
+   {
+    "id": "controller-triage",
+    "s": "handoff-controller",
+    "t": "triage-agent",
+    "label": "Iniciar"
+   },
+   {
+    "id": "triage-handoff1",
+    "s": "triage-agent",
+    "t": "handoff-1",
+    "label": ""
+   },
+   {
+    "id": "handoff1-network",
+    "s": "handoff-1",
+    "t": "network-specialist",
+    "label": "Transferir"
+   },
+   {
+    "id": "network-handoff2",
+    "s": "network-specialist",
+    "t": "handoff-2",
+    "label": ""
+   },
+   {
+    "id": "handoff2-debugger",
+    "s": "handoff-2",
+    "t": "code-debugger",
+    "label": "Transferir"
+   },
+   {
+    "id": "debugger-handoff3",
+    "s": "code-debugger",
+    "t": "handoff-3",
+    "label": ""
+   },
+   {
+    "id": "handoff3-deployment",
+    "s": "handoff-3",
+    "t": "deployment-expert",
+    "label": "Transferir"
+   },
+   {
+    "id": "deployment-handoff4",
+    "s": "deployment-expert",
+    "t": "handoff-4",
+    "label": ""
+   },
+   {
+    "id": "handoff4-qa",
+    "s": "handoff-4",
+    "t": "qa-validator",
+    "label": "Transferir"
+   },
+   {
+    "id": "handoff1-decision",
+    "s": "handoff-1",
+    "t": "decision-engine",
+    "label": "Decidir"
+   },
+   {
+    "id": "handoff2-decision",
+    "s": "handoff-2",
+    "t": "decision-engine",
+    "label": ""
+   },
+   {
+    "id": "decision-validator",
+    "s": "decision-engine",
+    "t": "handoff-validator",
+    "label": ""
+   },
+   {
+    "id": "validator-fallback",
+    "s": "handoff-validator",
+    "t": "fallback-handler",
+    "label": "Si falla"
+   },
+   {
+    "id": "fallback-controller",
+    "s": "fallback-handler",
+    "t": "handoff-controller",
+    "label": "Reintentar"
+   },
+   {
+    "id": "state-package",
+    "s": "state-manager",
+    "t": "context-package",
+    "label": ""
+   },
+   {
+    "id": "handoff1-log",
+    "s": "handoff-1",
+    "t": "handoff-log",
+    "label": ""
+   },
+   {
+    "id": "handoff2-log",
+    "s": "handoff-2",
+    "t": "handoff-log",
+    "label": ""
+   },
+   {
+    "id": "package-transfer",
+    "s": "context-package",
+    "t": "knowledge-transfer",
+    "label": ""
+   },
+   {
+    "id": "transfer-completion",
+    "s": "knowledge-transfer",
+    "t": "completion-checker",
+    "label": ""
+   },
+   {
+    "id": "package-network",
+    "s": "context-package",
+    "t": "network-specialist",
+    "label": "Contexto"
+   },
+   {
+    "id": "package-debugger",
+    "s": "context-package",
+    "t": "code-debugger",
+    "label": "Contexto"
+   },
+   {
+    "id": "package-deployment",
+    "s": "context-package",
+    "t": "deployment-expert",
+    "label": "Contexto"
+   },
+   {
+    "id": "log-monitor",
+    "s": "handoff-log",
+    "t": "performance-monitor",
+    "label": ""
+   },
+   {
+    "id": "monitor-learner",
+    "s": "performance-monitor",
+    "t": "pattern-learner",
+    "label": ""
+   },
+   {
+    "id": "learner-optimizer",
+    "s": "pattern-learner",
+    "t": "cost-optimizer",
+    "label": ""
+   },
+   {
+    "id": "optimizer-controller",
+    "s": "cost-optimizer",
+    "t": "handoff-controller",
+    "label": "Optimizar"
+   },
+   {
+    "id": "qa-output",
+    "s": "qa-validator",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "completion-output",
+    "s": "completion-checker",
+    "t": "final-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta inicial",
+    "description": "Tarea compleja de varios pasos que requiere distintos tipos de experiencia",
+    "input": "",
+    "nodes": [
+     "user-query"
+    ],
+    "edges": [
+     "query-controller"
+    ]
+   },
+   {
+    "title": "Análisis de contexto",
+    "description": "Analiza los requisitos de la tarea y el contexto actual",
+    "input": "",
+    "nodes": [
+     "handoff-controller",
+     "context-analyzer",
+     "capability-matcher",
+     "state-manager"
+    ],
+    "edges": [
+     "controller-context",
+     "controller-matcher",
+     "controller-state"
+    ]
+   },
+   {
+    "title": "Triaje inicial",
+    "description": "El agente de triaje realiza la evaluación inicial",
+    "input": "",
+    "nodes": [
+     "triage-agent",
+     "handoff-controller"
+    ],
+    "edges": [
+     "controller-triage"
+    ]
+   },
+   {
+    "title": "Primera decisión de traspaso",
+    "description": "Identifica problemas de red y traspasa al especialista",
+    "input": "",
+    "nodes": [
+     "triage-agent",
+     "handoff-1",
+     "decision-engine"
+    ],
+    "edges": [
+     "triage-handoff1",
+     "handoff1-decision"
+    ]
+   },
+   {
+    "title": "Especialista en redes activo",
+    "description": "Transfiere el control con el contexto completo al agente de redes",
+    "input": "",
+    "nodes": [
+     "handoff-1",
+     "network-specialist",
+     "context-package"
+    ],
+    "edges": [
+     "handoff1-network",
+     "package-network",
+     "state-package"
+    ]
+   },
+   {
+    "title": "Segunda decisión de traspaso",
+    "description": "El especialista en redes encuentra un problema en el código y traspasa al depurador",
+    "input": "",
+    "nodes": [
+     "network-specialist",
+     "handoff-2",
+     "decision-engine"
+    ],
+    "edges": [
+     "network-handoff2",
+     "handoff2-decision"
+    ]
+   },
+   {
+    "title": "Depurador de código activo",
+    "description": "Transfiere el control con el contexto acumulado",
+    "input": "",
+    "nodes": [
+     "handoff-2",
+     "code-debugger",
+     "context-package",
+     "knowledge-transfer"
+    ],
+    "edges": [
+     "handoff2-debugger",
+     "package-debugger",
+     "package-transfer"
+    ]
+   },
+   {
+    "title": "Tercera decisión de traspaso",
+    "description": "Código corregido, listo para el despliegue",
+    "input": "",
+    "nodes": [
+     "code-debugger",
+     "handoff-3"
+    ],
+    "edges": [
+     "debugger-handoff3"
+    ]
+   },
+   {
+    "title": "Experto en despliegue activo",
+    "description": "Despliega el código corregido con el historial completo",
+    "input": "",
+    "nodes": [
+     "handoff-3",
+     "deployment-expert",
+     "context-package"
+    ],
+    "edges": [
+     "handoff3-deployment",
+     "package-deployment"
+    ]
+   },
+   {
+    "title": "Traspaso final a QA",
+    "description": "Transfiere a QA para la validación final",
+    "input": "",
+    "nodes": [
+     "deployment-expert",
+     "handoff-4",
+     "qa-validator"
+    ],
+    "edges": [
+     "deployment-handoff4",
+     "handoff4-qa"
+    ]
+   },
+   {
+    "title": "Análisis de rendimiento",
+    "description": "Monitorea la eficiencia de los traspasos y aprende patrones",
+    "input": "",
+    "nodes": [
+     "handoff-log",
+     "performance-monitor",
+     "pattern-learner",
+     "cost-optimizer"
+    ],
+    "edges": [
+     "log-monitor",
+     "monitor-learner",
+     "learner-optimizer",
+     "optimizer-controller"
+    ]
+   },
+   {
+    "title": "Finalización de la tarea",
+    "description": "Todos los traspasos completos, entrega el resultado final",
+    "input": "",
+    "nodes": [
+     "qa-validator",
+     "completion-checker",
+     "final-output"
+    ],
+    "edges": [
+     "qa-output",
+     "completion-output",
+     "transfer-completion"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,448 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "fot",
+ "name": "Forest-of-Thoughts(FoT)",
+ "icon": "🌲",
+ "complexity": "high",
+ "description": "Genera múltiples árboles de razonamiento para aumentar la diversidad y la robustez",
+ "features": [
+  "Múltiples árboles de razonamiento independientes",
+  "Mayor diversidad de soluciones",
+  "Tolerancia robusta a errores",
+  "Exploración de razonamiento en paralelo",
+  "Validación cruzada entre árboles",
+  "Selección del mejor camino"
+ ],
+ "tldr": {
+  "what": "Genera múltiples árboles de razonamiento independientes que exploran distintos ángulos y luego sintetiza los hallazgos de todos los árboles para encontrar soluciones robustas.",
+  "when": "Problemas complejos que requieren perspectivas diversas, donde un único camino de razonamiento pasa por alto ventajas y desventajas críticas o modos de falla.",
+  "watchOut": "El costo computacional crece abruptamente con la cantidad de árboles; la calidad de la síntesis depende mucho de qué tan bien ponderes y combines las salidas de los árboles."
+ },
+ "overview": {
+  "pattern": "Generar múltiples árboles de razonamiento independientes para aumentar la diversidad y la robustez",
+  "why": "Aporta tolerancia a errores, diversidad de soluciones y validación cruzada para problemas complejos",
+  "insight": "Múltiples árboles → Estrategias distintas → Validación cruzada → Consenso robusto o mejor camino",
+  "impl": [
+   {
+    "t": "Generar árboles",
+    "d": "Crear múltiples árboles de razonamiento independientes"
+   },
+   {
+    "t": "Diversificar",
+    "d": "Asegurar distintos puntos de partida y estrategias"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Puntuar cada árbol por calidad y validez"
+   },
+   {
+    "t": "Validar en cruz",
+    "d": "Comparar soluciones entre árboles"
+   },
+   {
+    "t": "Seleccionar el mejor",
+    "d": "Elegir el camino óptimo o el consenso"
+   }
+  ],
+  "example": "Problema → [Árbol1: Estrategia A, Árbol2: Estrategia B, Árbol3: Estrategia C] → Evaluar → Mejor solución",
+  "dos": [
+   "Genera árboles con distintos supuestos de partida",
+   "Usa estrategias de razonamiento diversas en cada árbol",
+   "Implementa una validación cruzada robusta entre árboles",
+   "Fija límites al tamaño del bosque (normalmente 3-7 árboles)",
+   "Cachea los resultados de los árboles para evitar cómputo redundante"
+  ],
+  "donts": [
+   "Generar demasiados árboles similares (redundancia)",
+   "Omitir las verificaciones de diversidad entre árboles",
+   "Permitir la generación ilimitada de árboles (explosión de costos)",
+   "Usar los mismos criterios de evaluación para todos los árboles",
+   "Ignorar la sobrecarga computacional frente a un único ToT"
+  ],
+  "use": [
+   "Decisiones de alto impacto que requieren robustez",
+   "Problemas con múltiples enfoques válidos",
+   "Cuando un único árbol podría pasar por alto soluciones",
+   "Resolución creativa de problemas complejos",
+   "Aplicaciones sensibles al riesgo"
+  ],
+  "avoid": [
+   "Problemas simples con soluciones claras",
+   "Presupuestos computacionales ajustados",
+   "Requisitos de tiempo real/baja latencia",
+   "Cuando Tree-of-Thought es suficiente",
+   "Espacios de solución muy restringidos"
+  ],
+  "metrics": [
+   {
+    "n": "Diversidad de soluciones",
+    "d": "Enfoques únicos entre árboles"
+   },
+   {
+    "n": "Tasa de consenso",
+    "d": "Acuerdo entre las soluciones de los árboles"
+   },
+   {
+    "n": "Tolerancia a errores",
+    "d": "Robustez ante fallas de árboles individuales"
+   },
+   {
+    "n": "Eficiencia computacional",
+    "d": "Mejora de calidad por cada árbol adicional"
+   },
+   {
+    "n": "Completitud de cobertura",
+    "d": "Amplitud de exploración del espacio de soluciones"
+   },
+   {
+    "n": "Selección del mejor camino",
+    "d": "Precisión al identificar el árbol óptimo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de inversiones",
+    "d": "Árbol1(Técnico), Árbol2(Fundamental), Árbol3(Sentimiento) → Decisión por consenso"
+   },
+   {
+    "n": "Diagnóstico médico",
+    "d": "Múltiples perspectivas de especialistas → Validación cruzada de síntomas → Conclusión robusta"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Árboles de distintos escenarios → Pruebas de estrés de estrategias → Enfoque óptimo"
+   },
+   {
+    "n": "Validación de investigaciones",
+    "d": "Abordar el problema desde múltiples ángulos → Verificar hallazgos → Resultados confiables"
+   },
+   {
+    "n": "Diseño creativo",
+    "d": "Generar árboles de conceptos diversos → Evaluar estética/función → Mejor diseño"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Forest-of-Thoughts (FoT)",
+  "description": "Genera en paralelo múltiples árboles de razonamiento diversos para aumentar la robustez de la solución y explorar distintos enfoques",
+  "nodes": [
+   {
+    "id": "problem",
+    "label": "❓ Problema\n\"Diseñar un sistema sostenible\nde gestión del agua\npara una ciudad propensa a sequías\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "tree1-root",
+    "label": "🌳 Árbol 1: Conservación\n\"Enfocarse en reducir\nel consumo de agua\"",
+    "x": 100,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "tree1-branch1",
+    "label": "💧 Medidores inteligentes\n\"Monitoreo del consumo\nen tiempo real\"",
+    "x": 50,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "tree1-branch2",
+    "label": "🏠 Sistemas de aguas grises\n\"Reutilizar agua de ducha/lavabo\npara riego\"",
+    "x": 150,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "tree1-solution",
+    "label": "✅ Solución 1\n\"40% de reducción del consumo\nmediante conservación inteligente\"",
+    "x": 100,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "tree2-root",
+    "label": "🌳 Árbol 2: Suministro\n\"Enfocarse en aumentar\nlas fuentes de agua\"",
+    "x": 400,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "tree2-branch1",
+    "label": "🌧️ Captación de agua de lluvia\n\"Captar y almacenar\nla lluvia\"",
+    "x": 350,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "tree2-branch2",
+    "label": "🏭 Desalinización\n\"Convertir agua de mar\nen agua dulce\"",
+    "x": 450,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "tree2-solution",
+    "label": "✅ Solución 2\n\"60% de aumento del suministro\nmediante nuevas fuentes\"",
+    "x": 400,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "tree3-root",
+    "label": "🌳 Árbol 3: Tecnología\n\"Enfocarse en la automatización\ninteligente\"",
+    "x": 700,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "tree3-branch1",
+    "label": "📊 Predicción con IA\n\"Pronosticar la demanda\ny optimizar el flujo\"",
+    "x": 650,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "tree3-branch2",
+    "label": "💧 Distribución inteligente\n\"Sensores IoT +\nválvulas automáticas\"",
+    "x": 750,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "tree3-solution",
+    "label": "✅ Solución 3\n\"30% de ganancia de eficiencia\nmediante sistemas inteligentes\"",
+    "x": 700,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "evaluation",
+    "label": "⚖️ Evaluación entre árboles\n\"Comparar soluciones:\nCosto, Plazo, Impacto\"",
+    "x": 400,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "hybrid-solution",
+    "label": "🔗 Solución híbrida del bosque\n\"Combinar los mejores elementos:\nMedidores inteligentes + Agua de lluvia\n+ Optimización con IA\"",
+    "x": 400,
+    "y": 600,
+    "w": 220
+   },
+   {
+    "id": "robust-plan",
+    "label": "🌟 Plan final robusto\n\"70% de mejora en seguridad hídrica\nmediante un enfoque diversificado\ncon estrategias de respaldo\"",
+    "x": 400,
+    "y": 720,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "problem",
+    "t": "tree1-root",
+    "label": "enfoque 1"
+   },
+   {
+    "id": "e2",
+    "s": "problem",
+    "t": "tree2-root",
+    "label": "enfoque 2"
+   },
+   {
+    "id": "e3",
+    "s": "problem",
+    "t": "tree3-root",
+    "label": "enfoque 3"
+   },
+   {
+    "id": "e4",
+    "s": "tree1-root",
+    "t": "tree1-branch1",
+    "label": "explorar"
+   },
+   {
+    "id": "e5",
+    "s": "tree1-root",
+    "t": "tree1-branch2",
+    "label": "explorar"
+   },
+   {
+    "id": "e6",
+    "s": "tree1-branch1",
+    "t": "tree1-solution",
+    "label": "combinar"
+   },
+   {
+    "id": "e7",
+    "s": "tree1-branch2",
+    "t": "tree1-solution",
+    "label": "combinar"
+   },
+   {
+    "id": "e8",
+    "s": "tree2-root",
+    "t": "tree2-branch1",
+    "label": "explorar"
+   },
+   {
+    "id": "e9",
+    "s": "tree2-root",
+    "t": "tree2-branch2",
+    "label": "explorar"
+   },
+   {
+    "id": "e10",
+    "s": "tree2-branch1",
+    "t": "tree2-solution",
+    "label": "combinar"
+   },
+   {
+    "id": "e11",
+    "s": "tree2-branch2",
+    "t": "tree2-solution",
+    "label": "combinar"
+   },
+   {
+    "id": "e12",
+    "s": "tree3-root",
+    "t": "tree3-branch1",
+    "label": "explorar"
+   },
+   {
+    "id": "e13",
+    "s": "tree3-root",
+    "t": "tree3-branch2",
+    "label": "explorar"
+   },
+   {
+    "id": "e14",
+    "s": "tree3-branch1",
+    "t": "tree3-solution",
+    "label": "combinar"
+   },
+   {
+    "id": "e15",
+    "s": "tree3-branch2",
+    "t": "tree3-solution",
+    "label": "combinar"
+   },
+   {
+    "id": "e16",
+    "s": "tree1-solution",
+    "t": "evaluation",
+    "label": "evaluar"
+   },
+   {
+    "id": "e17",
+    "s": "tree2-solution",
+    "t": "evaluation",
+    "label": "evaluar"
+   },
+   {
+    "id": "e18",
+    "s": "tree3-solution",
+    "t": "evaluation",
+    "label": "evaluar"
+   },
+   {
+    "id": "e19",
+    "s": "evaluation",
+    "t": "hybrid-solution",
+    "label": "sintetizar"
+   },
+   {
+    "id": "e20",
+    "s": "hybrid-solution",
+    "t": "robust-plan",
+    "label": "finalizar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Generación de árboles en paralelo",
+    "description": "El problema genera tres árboles de razonamiento diversos: enfoques centrados en conservación, en suministro y en tecnología, explorados simultáneamente.",
+    "input": "",
+    "nodes": [
+     "problem",
+     "tree1-root",
+     "tree2-root",
+     "tree3-root"
+    ],
+    "edges": [
+     "e1",
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Exploración independiente de ramas",
+    "description": "Cada árbol explora distintos caminos de solución de forma independiente: medidores inteligentes vs. aguas grises, agua de lluvia vs. desalinización, IA vs. sensores IoT.",
+    "input": "",
+    "nodes": [
+     "tree1-branch1",
+     "tree1-branch2",
+     "tree2-branch1",
+     "tree2-branch2",
+     "tree3-branch1",
+     "tree3-branch2"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e8",
+     "e9",
+     "e12",
+     "e13"
+    ]
+   },
+   {
+    "title": "Soluciones específicas de cada árbol",
+    "description": "Cada árbol genera su propia solución: reducción de la demanda, aumento del suministro, ganancia de eficiencia, lo que aporta opciones diversas.",
+    "input": "",
+    "nodes": [
+     "tree1-solution",
+     "tree2-solution",
+     "tree3-solution"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e10",
+     "e11",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Evaluación de todo el bosque",
+    "description": "Todas las soluciones de los árboles se evalúan en conjunto, comparando costo, plazo de implementación e impacto ambiental entre los distintos enfoques.",
+    "input": "",
+    "nodes": [
+     "evaluation"
+    ],
+    "edges": [
+     "e16",
+     "e17",
+     "e18"
+    ]
+   },
+   {
+    "title": "Síntesis del bosque y robustez",
+    "description": "Se combinan los mejores elementos de todos los árboles: medidores inteligentes + captación de agua de lluvia + optimización con IA crean una solución híbrida superior con un 70% de mejora.",
+    "input": "",
+    "nodes": [
+     "hybrid-solution",
+     "robust-plan"
+    ],
+    "edges": [
+     "e19",
+     "e20"
+    ]
+   }
+  ]
+ }
+}

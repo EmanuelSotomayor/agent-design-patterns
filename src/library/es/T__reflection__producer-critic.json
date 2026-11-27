@@ -1,0 +1,449 @@
+{
+ "cat": "reflection",
+ "slug": "producer-critic",
+ "name": "Producer-Critic Pattern(PC)",
+ "icon": "👥",
+ "complexity": "medium",
+ "description": "Patrón arquitectónico en el que agentes productor y crítico separados colaboran para mejorar la calidad",
+ "features": [
+  "Separación de responsabilidades",
+  "Evaluación imparcial",
+  "Implementación flexible del crítico",
+  "Bucles de feedback estructurados"
+ ],
+ "tldr": {
+  "what": "Un agente genera la salida mientras otro agente independiente la evalúa y devuelve feedback estructurado, repitiendo hasta alcanzar los umbrales de calidad.",
+  "when": "Trabajo que requiere refinamiento iterativo, donde una evaluación independiente evita que el productor refuerce sus propios errores.",
+  "watchOut": "El crítico y el productor pueden entrar en bucles improductivos si el feedback es vago o contradictorio, o si el productor no tiene caminos claros de mejora."
+ },
+ "overview": {
+  "pattern": "Agentes productor y crítico separados para una mejora imparcial de la calidad",
+  "why": "Evita el sesgo de autoevaluación, permite una crítica especializada y mejora la calidad de la salida",
+  "insight": "El productor se enfoca en crear, el crítico aporta una evaluación objetiva → Mayor calidad",
+  "impl": [
+   {
+    "t": "Definir roles",
+    "d": "El productor genera, el crítico evalúa"
+   },
+   {
+    "t": "Prompts separados",
+    "d": "System prompts distintos para cada agente"
+   },
+   {
+    "t": "El productor ejecuta",
+    "d": "Generación inicial del contenido"
+   },
+   {
+    "t": "El crítico analiza",
+    "d": "Evaluación y feedback estructurados"
+   },
+   {
+    "t": "Iterar",
+    "d": "El productor refina con base en la crítica"
+   }
+  ],
+  "example": "Producer(draft_code) → Critic(review) → Producer(refined_code)",
+  "dos": [
+   "Usa personas distintas (p. ej., \"Ingeniero Senior\" para el crítico)",
+   "Proporciona criterios de evaluación estructurados al crítico",
+   "Separa por completo las responsabilidades del productor y del crítico",
+   "Considera distintas implementaciones del crítico (LLM, reglas, humano)",
+   "Implementa condiciones de parada para evitar bucles infinitos"
+  ],
+  "donts": [
+   "Usar el mismo prompt/persona para ambos roles",
+   "Dejar que el productor vea las instrucciones del crítico (prevención de sesgos)",
+   "Omitir la validación de la calidad del feedback del crítico",
+   "Permitir iteraciones ilimitadas sin verificar la convergencia",
+   "Ignorar los costos computacionales del enfoque de dos agentes"
+  ],
+  "use": [
+   "Generación de contenido de alta calidad",
+   "Revisión y optimización de código",
+   "Validación de razonamientos complejos",
+   "Refinamiento de trabajo creativo"
+  ],
+  "avoid": [
+   "Tareas simples y directas",
+   "Aplicaciones en tiempo real",
+   "Presupuesto computacional limitado",
+   "Soluciones bien definidas de una sola pasada"
+  ],
+  "metrics": [
+   {
+    "n": "Delta de calidad",
+    "d": "Mejora de la v1 a la versión final"
+   },
+   {
+    "n": "Precisión de la crítica",
+    "d": "Problemas válidos / Total de críticas"
+   },
+   {
+    "n": "Tasa de convergencia",
+    "d": "Iteraciones hasta alcanzar una calidad aceptable"
+   },
+   {
+    "n": "Eficiencia de costos",
+    "d": "Ganancia de calidad / Costo en tokens"
+   },
+   {
+    "n": "Reducción de sesgos",
+    "d": "Puntuación de evaluación objetiva"
+   },
+   {
+    "n": "Detección de errores",
+    "d": "% de errores reales detectados"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Generación de código",
+    "d": "El desarrollador escribe → El ingeniero senior revisa → El desarrollador refina"
+   },
+   {
+    "n": "Creación de contenido",
+    "d": "El escritor redacta → El editor critica → El escritor pule"
+   },
+   {
+    "n": "Análisis de investigación",
+    "d": "El analista presenta → Un par revisa → El analista refuerza"
+   },
+   {
+    "n": "Documentos de diseño",
+    "d": "El arquitecto propone → El líder técnico evalúa → El arquitecto mejora"
+   },
+   {
+    "n": "Implementación de LLM-as-Judge",
+    "d": "Múltiples salidas → El crítico LLM clasifica/puntúa → Seleccionar la mejor"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Producer-Critic",
+  "description": "Demuestra cómo agentes productor y crítico separados colaboran para mejorar la calidad",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "Solicitud de tarea\n\"Escribe una entrada de blog técnica sobre microservicios\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "producer-agent",
+    "label": "✍️ Agente productor\nEspecialista en generación de contenido",
+    "x": 200,
+    "y": 160,
+    "w": 250
+   },
+   {
+    "id": "initial-output",
+    "label": "Salida inicial\nBorrador del blog v1\n\"Los microservicios son pequeños...\"",
+    "x": 200,
+    "y": 280,
+    "w": 220
+   },
+   {
+    "id": "critic-agent",
+    "label": "🔍 Agente crítico\nEspecialista en evaluación de calidad",
+    "x": 600,
+    "y": 160,
+    "w": 250
+   },
+   {
+    "id": "evaluation-criteria",
+    "label": "📋 Rúbrica de evaluación\n• Precisión técnica\n• Claridad y estructura\n• Ejemplos de código\n• Buenas prácticas",
+    "x": 850,
+    "y": 160,
+    "w": 180
+   },
+   {
+    "id": "critique-output",
+    "label": "📝 Informe de crítica\nPuntuación: 6.5/10\n• Faltan ejemplos\n• Sección de beneficios poco clara\n• Agregar consejos de despliegue",
+    "x": 600,
+    "y": 380,
+    "w": 220
+   },
+   {
+    "id": "refinement-decision",
+    "label": "🎯 Decisión de refinamiento\nPuntuación < 8.0\n⚡ Necesita mejoras",
+    "x": 400,
+    "y": 480,
+    "w": 200
+   },
+   {
+    "id": "producer-refine",
+    "label": "✏️ Refinamiento del productor\nIncorporando el feedback",
+    "x": 200,
+    "y": 580,
+    "w": 220
+   },
+   {
+    "id": "refined-output",
+    "label": "Salida refinada\nBorrador del blog v2\nCon ejemplos y mejoras",
+    "x": 200,
+    "y": 700,
+    "w": 220
+   },
+   {
+    "id": "critic-reeval",
+    "label": "🔍 Reevaluación del crítico\nSegunda pasada de revisión",
+    "x": 600,
+    "y": 580,
+    "w": 220
+   },
+   {
+    "id": "final-critique",
+    "label": "✅ Crítica final\nPuntuación: 8.7/10\nAceptado para publicación",
+    "x": 600,
+    "y": 700,
+    "w": 220
+   },
+   {
+    "id": "final-output",
+    "label": "Salida final\nEntrada de blog de alta calidad\nLista para publicar",
+    "x": 400,
+    "y": 820,
+    "w": 250
+   },
+   {
+    "id": "feedback-memory",
+    "label": "💾 Memoria de feedback\nAlmacenando patrones de crítica\npara mejoras futuras",
+    "x": 850,
+    "y": 480,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-producer",
+    "s": "task",
+    "t": "producer-agent",
+    "label": ""
+   },
+   {
+    "id": "e-task-critic",
+    "s": "task",
+    "t": "critic-agent",
+    "label": ""
+   },
+   {
+    "id": "e-critic-rubric",
+    "s": "critic-agent",
+    "t": "evaluation-criteria",
+    "label": ""
+   },
+   {
+    "id": "e-producer-output",
+    "s": "producer-agent",
+    "t": "initial-output",
+    "label": "Generar"
+   },
+   {
+    "id": "e-output-critic",
+    "s": "initial-output",
+    "t": "critic-agent",
+    "label": "Enviar"
+   },
+   {
+    "id": "e-critic-critique",
+    "s": "critic-agent",
+    "t": "critique-output",
+    "label": "Evaluar"
+   },
+   {
+    "id": "e-critique-decision",
+    "s": "critique-output",
+    "t": "refinement-decision",
+    "label": ""
+   },
+   {
+    "id": "e-critique-memory",
+    "s": "critique-output",
+    "t": "feedback-memory",
+    "label": ""
+   },
+   {
+    "id": "e-decision-producer",
+    "s": "refinement-decision",
+    "t": "producer-refine",
+    "label": "Refinar"
+   },
+   {
+    "id": "e-critique-producer",
+    "s": "critique-output",
+    "t": "producer-refine",
+    "label": "Feedback"
+   },
+   {
+    "id": "e-producer-refined",
+    "s": "producer-refine",
+    "t": "refined-output",
+    "label": ""
+   },
+   {
+    "id": "e-refined-critic",
+    "s": "refined-output",
+    "t": "critic-reeval",
+    "label": "Reenviar"
+   },
+   {
+    "id": "e-critic-final",
+    "s": "critic-reeval",
+    "t": "final-critique",
+    "label": ""
+   },
+   {
+    "id": "e-final-memory",
+    "s": "final-critique",
+    "t": "feedback-memory",
+    "label": ""
+   },
+   {
+    "id": "e-final-output",
+    "s": "final-critique",
+    "t": "final-output",
+    "label": "Aprobar"
+   },
+   {
+    "id": "e-refined-final",
+    "s": "refined-output",
+    "t": "final-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Distribución de la tarea",
+    "description": "La tarea se distribuye tanto al agente productor como al crítico, cada uno con su rol especializado.",
+    "input": "Tarea: \"Escribe una entrada de blog técnica sobre la arquitectura de microservicios, sus beneficios y buenas prácticas\"\n\nRequisitos:\n• 1500-2000 palabras\n• Incluir ejemplos de código\n• Cubrir estrategias de despliegue",
+    "nodes": [
+     "task",
+     "producer-agent",
+     "critic-agent"
+    ],
+    "edges": [
+     "e-task-producer",
+     "e-task-critic"
+    ]
+   },
+   {
+    "title": "El crítico prepara la evaluación",
+    "description": "El agente crítico carga los criterios de evaluación y se prepara para evaluar la salida.",
+    "input": "",
+    "nodes": [
+     "critic-agent",
+     "evaluation-criteria"
+    ],
+    "edges": [
+     "e-critic-rubric"
+    ]
+   },
+   {
+    "title": "El productor genera la salida inicial",
+    "description": "El agente productor crea el primer borrador de la entrada de blog.",
+    "input": "",
+    "nodes": [
+     "producer-agent",
+     "initial-output"
+    ],
+    "edges": [
+     "e-producer-output"
+    ]
+   },
+   {
+    "title": "Enviar a crítica",
+    "description": "La salida inicial se envía al agente crítico para su evaluación.",
+    "input": "Envío al crítico:\n• Versión del borrador: 1\n• Cantidad de palabras: 1.200\n• Secciones: Introducción, Beneficios\n• Falta: ejemplos, despliegue, buenas prácticas",
+    "nodes": [
+     "initial-output",
+     "critic-agent"
+    ],
+    "edges": [
+     "e-output-critic"
+    ]
+   },
+   {
+    "title": "El crítico evalúa la salida",
+    "description": "El agente crítico evalúa a fondo el contenido según la rúbrica.",
+    "input": "",
+    "nodes": [
+     "critic-agent",
+     "critique-output",
+     "feedback-memory"
+    ],
+    "edges": [
+     "e-critic-critique",
+     "e-critique-memory"
+    ]
+   },
+   {
+    "title": "Decisión de refinamiento",
+    "description": "El sistema determina si se necesita refinamiento según la puntuación.",
+    "input": "",
+    "nodes": [
+     "critique-output",
+     "refinement-decision"
+    ],
+    "edges": [
+     "e-critique-decision"
+    ]
+   },
+   {
+    "title": "El productor incorpora el feedback",
+    "description": "El agente productor refina el contenido con base en los puntos específicos de la crítica.",
+    "input": "",
+    "nodes": [
+     "refinement-decision",
+     "critique-output",
+     "producer-refine"
+    ],
+    "edges": [
+     "e-decision-producer",
+     "e-critique-producer"
+    ]
+   },
+   {
+    "title": "Generar la salida refinada",
+    "description": "El productor crea una versión mejorada que incorpora todo el feedback.",
+    "input": "",
+    "nodes": [
+     "producer-refine",
+     "refined-output"
+    ],
+    "edges": [
+     "e-producer-refined"
+    ]
+   },
+   {
+    "title": "Reevaluación del crítico",
+    "description": "El crítico realiza una segunda evaluación de la salida refinada.",
+    "input": "",
+    "nodes": [
+     "refined-output",
+     "critic-reeval",
+     "final-critique"
+    ],
+    "edges": [
+     "e-refined-critic",
+     "e-critic-final"
+    ]
+   },
+   {
+    "title": "Entrega de la salida final",
+    "description": "El contenido aprobado se finaliza y queda listo para publicar.",
+    "input": "",
+    "nodes": [
+     "final-critique",
+     "final-output",
+     "feedback-memory"
+    ],
+    "edges": [
+     "e-final-output",
+     "e-refined-final",
+     "e-final-memory"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,331 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "stateful-graph-workflows",
+ "name": "Stateful Graph Workflows",
+ "icon": "🗂️",
+ "complexity": "high",
+ "description": "Gestión de flujos de trabajo basada en grafos con estado persistente entre nodos",
+ "features": [
+  "Diseño de flujos de trabajo basado en nodos",
+  "Gestión de estado persistente",
+  "Control de flujo condicional",
+  "Rutas de ejecución en paralelo",
+  "Checkpoints del estado",
+  "Modificación dinámica del grafo"
+ ],
+ "tldr": {
+  "what": "Organiza el trabajo como nodos interconectados que se pasan datos entre etapas, guardando el progreso y el estado en cada paso para permitir enrutamiento condicional y rutas en paralelo.",
+  "when": "Procesos complejos de múltiples etapas en los que los resultados intermedios determinan los siguientes pasos, importa la recuperación ante fallos o se necesita procesar varios documentos a la vez.",
+  "watchOut": "El crecimiento excesivo del estado y los bugs de sincronización aumentan rápidamente; depurar fallos entre nodos distribuidos se vuelve exponencialmente más difícil que en pipelines lineales."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Stateful Graph Workflows",
+  "description": "Un flujo de trabajo modelado como un grafo dirigido de nodos que comparten un único objeto de estado persistente. Las aristas condicionales enrutan según el estado, los checkpoints permiten reanudar la ejecución tras un fallo y las ramas especialistas se ejecutan según una clasificación en tiempo de ejecución, al estilo de una máquina de estados de LangGraph.",
+  "nodes": [
+   {
+    "id": "workflow-input",
+    "label": "📄 Entrada del flujo\n\"PDF de contrato entrante\"",
+    "x": 360,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "state-store",
+    "label": "💾 Almacén de estado\nEstado compartido persistente + checkpoints",
+    "x": 40,
+    "y": 300,
+    "w": 230
+   },
+   {
+    "id": "extract-node",
+    "label": "📑 Nodo de extracción\nPDF a texto",
+    "x": 375,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "checkpoint-1",
+    "label": "🔖 Checkpoint\nSnapshot tras la extracción",
+    "x": 680,
+    "y": 150,
+    "w": 190
+   },
+   {
+    "id": "analyze-node",
+    "label": "🔎 Nodo de análisis\nTexto a entidades + confianza",
+    "x": 375,
+    "y": 255,
+    "w": 240
+   },
+   {
+    "id": "conditional-router",
+    "label": "🔀 Arista condicional\nEnruta según la confianza",
+    "x": 375,
+    "y": 360,
+    "w": 220
+   },
+   {
+    "id": "human-review",
+    "label": "🧑‍⚖️ Revisión humana\nRama de baja confianza",
+    "x": 680,
+    "y": 360,
+    "w": 200
+   },
+   {
+    "id": "classify-node",
+    "label": "🏷️ Nodo de clasificación\nEntidades a categoría",
+    "x": 375,
+    "y": 465,
+    "w": 210
+   },
+   {
+    "id": "legal-specialist",
+    "label": "⚖️ Especialista legal\nManeja type = legal",
+    "x": 220,
+    "y": 575,
+    "w": 200
+   },
+   {
+    "id": "tech-specialist",
+    "label": "🔧 Especialista técnico\nManeja type = technical",
+    "x": 500,
+    "y": 575,
+    "w": 200
+   },
+   {
+    "id": "resume-node",
+    "label": "♻️ Reanudar desde checkpoint\nSe recupera ante fallos",
+    "x": 730,
+    "y": 480,
+    "w": 210
+   },
+   {
+    "id": "output",
+    "label": "✅ Resultado enrutado\nSalida del especialista + estado final",
+    "x": 340,
+    "y": 690,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-extract",
+    "s": "workflow-input",
+    "t": "extract-node",
+    "label": ""
+   },
+   {
+    "id": "extract-checkpoint",
+    "s": "extract-node",
+    "t": "checkpoint-1",
+    "label": "Snapshot"
+   },
+   {
+    "id": "extract-analyze",
+    "s": "extract-node",
+    "t": "analyze-node",
+    "label": ""
+   },
+   {
+    "id": "analyze-router",
+    "s": "analyze-node",
+    "t": "conditional-router",
+    "label": ""
+   },
+   {
+    "id": "router-classify",
+    "s": "conditional-router",
+    "t": "classify-node",
+    "label": "confianza > 0.8"
+   },
+   {
+    "id": "router-humanreview",
+    "s": "conditional-router",
+    "t": "human-review",
+    "label": "confianza < 0.8"
+   },
+   {
+    "id": "humanreview-classify",
+    "s": "human-review",
+    "t": "classify-node",
+    "label": "Corregido"
+   },
+   {
+    "id": "classify-legal",
+    "s": "classify-node",
+    "t": "legal-specialist",
+    "label": "type = legal"
+   },
+   {
+    "id": "classify-tech",
+    "s": "classify-node",
+    "t": "tech-specialist",
+    "label": "type = technical"
+   },
+   {
+    "id": "legal-output",
+    "s": "legal-specialist",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "tech-output",
+    "s": "tech-specialist",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "extract-state",
+    "s": "extract-node",
+    "t": "state-store",
+    "label": "Persistir"
+   },
+   {
+    "id": "analyze-state",
+    "s": "analyze-node",
+    "t": "state-store",
+    "label": "Persistir"
+   },
+   {
+    "id": "classify-state",
+    "s": "classify-node",
+    "t": "state-store",
+    "label": "Persistir"
+   },
+   {
+    "id": "checkpoint-state",
+    "s": "checkpoint-1",
+    "t": "state-store",
+    "label": ""
+   },
+   {
+    "id": "state-resume",
+    "s": "state-store",
+    "t": "resume-node",
+    "label": "Restaurar"
+   },
+   {
+    "id": "resume-analyze",
+    "s": "resume-node",
+    "t": "analyze-node",
+    "label": "Reingresar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Flujo de trabajo inicializado",
+    "description": "Un documento entra al grafo y se crea un nuevo objeto de estado compartido en el almacén de estado para llevar los datos a través de todos los nodos.",
+    "input": "",
+    "nodes": [
+     "workflow-input",
+     "extract-node",
+     "state-store"
+    ],
+    "edges": [
+     "input-extract",
+     "extract-state"
+    ]
+   },
+   {
+    "title": "Extracción y checkpoint",
+    "description": "El nodo de extracción convierte el PDF a texto y escribe un checkpoint, capturando un snapshot reanudable del estado.",
+    "input": "",
+    "nodes": [
+     "extract-node",
+     "checkpoint-1",
+     "state-store"
+    ],
+    "edges": [
+     "extract-checkpoint",
+     "checkpoint-state"
+    ]
+   },
+   {
+    "title": "Análisis",
+    "description": "El nodo de análisis lee el estado compartido, obtiene entidades y registra un puntaje de confianza en el estado.",
+    "input": "",
+    "nodes": [
+     "extract-node",
+     "analyze-node",
+     "state-store"
+    ],
+    "edges": [
+     "extract-analyze",
+     "analyze-state"
+    ]
+   },
+   {
+    "title": "Enrutamiento condicional",
+    "description": "Una arista condicional inspecciona la confianza en el estado. Con confianza alta se avanza a la clasificación; con confianza baja se desvía a revisión humana.",
+    "input": "",
+    "nodes": [
+     "analyze-node",
+     "conditional-router",
+     "human-review"
+    ],
+    "edges": [
+     "analyze-router",
+     "router-humanreview"
+    ]
+   },
+   {
+    "title": "Recuperación desde checkpoint",
+    "description": "Si falla un nodo posterior, la ejecución restaura el último checkpoint desde el almacén de estado y vuelve a entrar al grafo sin repetir el trabajo anterior.",
+    "input": "",
+    "nodes": [
+     "state-store",
+     "resume-node",
+     "analyze-node"
+    ],
+    "edges": [
+     "state-resume",
+     "resume-analyze"
+    ]
+   },
+   {
+    "title": "Clasificación",
+    "description": "El nodo de clasificación asigna las entidades a una categoría de documento y actualiza el estado que determina la siguiente rama.",
+    "input": "",
+    "nodes": [
+     "conditional-router",
+     "classify-node",
+     "state-store"
+    ],
+    "edges": [
+     "router-classify",
+     "humanreview-classify",
+     "classify-state"
+    ]
+   },
+   {
+    "title": "Rama especialista",
+    "description": "Según el tipo clasificado, el grafo enruta al nodo especialista legal o técnico para un manejo específico del dominio.",
+    "input": "",
+    "nodes": [
+     "classify-node",
+     "legal-specialist",
+     "tech-specialist"
+    ],
+    "edges": [
+     "classify-legal",
+     "classify-tech"
+    ]
+   },
+   {
+    "title": "Resultado enrutado",
+    "description": "El especialista elegido produce la salida final, llevando el estado acumulado completo hasta el final del flujo de trabajo.",
+    "input": "",
+    "nodes": [
+     "legal-specialist",
+     "tech-specialist",
+     "output"
+    ],
+    "edges": [
+     "legal-output",
+     "tech-output"
+    ]
+   }
+  ]
+ }
+}

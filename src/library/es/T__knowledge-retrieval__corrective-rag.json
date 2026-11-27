@@ -1,0 +1,378 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "corrective-rag",
+ "name": "Corrective RAG (CRAG)(CRAG)",
+ "icon": "🔧",
+ "complexity": "high",
+ "description": "Sistema RAG que detecta y corrige automáticamente los malos resultados de recuperación mediante evaluación de calidad y una nueva recuperación",
+ "features": [
+  "Evaluación de la calidad de la recuperación",
+  "Detección automática de errores",
+  "Nueva recuperación correctiva",
+  "Estrategias de refinamiento de consultas",
+  "Ampliación de las fuentes de conocimiento",
+  "Filtrado basado en calidad"
+ ],
+ "tldr": {
+  "what": "Recupera documentos, puntúa su relevancia y vuelve a recuperar con consultas refinadas cuando la calidad cae por debajo de un umbral.",
+  "when": "Tareas con mucha recuperación en las que los resultados iniciales suelen ser incompletos u obsoletos, y puedes permitirte llamadas adicionales a la API.",
+  "watchOut": "Los umbrales de calidad demasiado altos disparan bucles interminables de nueva recuperación; los demasiado bajos anulan el propósito y desperdician cómputo."
+ },
+ "overview": {
+  "pattern": "RAG mejorado con evaluación explícita de la calidad de la recuperación y acciones correctivas basadas en puntuaciones de confianza",
+  "why": "Reduce las alucinaciones y mejora la precisión mediante evaluación de calidad y estrategias de corrección adaptativas",
+  "insight": "Estrategia de corrección en tres niveles: refinar los resultados de confianza alta, complementar los de confianza media y volver a recuperar los de confianza baja",
+  "impl": [
+   {
+    "t": "Recuperación inicial",
+    "d": "Recupera documentos candidatos con búsqueda densa, dispersa o híbrida"
+   },
+   {
+    "t": "Evaluación de calidad",
+    "d": "Evalúa la calidad de la recuperación con puntuaciones de confianza (alta/media/baja)"
+   },
+   {
+    "t": "Acción correctiva",
+    "d": "Refina, complementa o vuelve a recuperar según la banda de confianza"
+   },
+   {
+    "t": "Refinamiento del conocimiento",
+    "d": "Descompone y recompone la evidencia para obtener un contexto óptimo"
+   },
+   {
+    "t": "Generar y verificar",
+    "d": "Genera la respuesta con citas y verificación opcional"
+   }
+  ],
+  "example": "query → retrieve → evaluate_quality → [correct/supplement/re-retrieve] → refine → generate",
+  "dos": [
+   "Implementa un evaluador explícito de la calidad de la recuperación con umbrales de confianza calibrados",
+   "Usa refinamiento del conocimiento con descomponer-y-recomponer para procesar la evidencia",
+   "Aplica complementación con búsqueda web para los resultados de recuperación de confianza media",
+   "Exige citas de forma estricta con seguimiento de la procedencia",
+   "Guarda en cache las salidas del evaluador y el conocimiento refinado para mayor eficiencia"
+  ],
+  "donts": [
+   "Permitir que el evaluador quede descalibrado sin validar regularmente las puntuaciones de confianza",
+   "Omitir la prevención de la deriva de la consulta durante la nueva recuperación correctiva",
+   "Crear bucles de corrección sin límite y sin controles de costo y latencia",
+   "Mezclar fuentes desactualizadas y recientes sin conciliación temporal",
+   "Descuidar los mecanismos de abstención cuando la confianza se mantiene persistentemente baja"
+  ],
+  "use": [
+   "Aplicaciones de alto riesgo que requieren precisión y procedencia verificadas",
+   "Dominios que cambian rápidamente con actualizaciones frecuentes de contenido",
+   "Bases de conocimiento ruidosas o heterogéneas con calidad variable",
+   "Consultas de cola larga en las que la recuperación inicial suele fallar",
+   "Entornos regulados que exigen un fundamento explícito en evidencia"
+  ],
+  "avoid": [
+   "Aplicaciones en tiempo real con requisitos estrictos de latencia",
+   "Tareas de libro cerrado en las que basta el conocimiento paramétrico",
+   "Corpus homogéneos de alta calidad con un recall consistente",
+   "Entornos que prohíben el acceso web externo para complementar",
+   "Consultas factuales simples en las que el RAG estándar rinde de forma confiable"
+  ],
+  "metrics": [
+   {
+    "n": "Fidelidad de la respuesta",
+    "d": "Corrección factual y fundamentación en la evidencia recuperada"
+   },
+   {
+    "n": "Calibración del evaluador",
+    "d": "Precisión de las predicciones de confianza sobre la calidad (ROC-AUC, ECE)"
+   },
+   {
+    "n": "Efectividad de la corrección",
+    "d": "Mejora de la calidad gracias a las acciones correctivas"
+   },
+   {
+    "n": "Precisión de la recuperación",
+    "d": "Relevancia de los documentos después de la corrección"
+   },
+   {
+    "n": "Cobertura de citas",
+    "d": "Porcentaje de afirmaciones respaldadas por evidencia"
+   },
+   {
+    "n": "Distribución de acciones",
+    "d": "Equilibrio entre las decisiones de usar, complementar o volver a recuperar"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación jurídica",
+    "d": "Análisis de jurisprudencia que requiere fuentes verificadas y precisión temporal"
+   },
+   {
+    "n": "Preguntas y respuestas médicas",
+    "d": "Apoyo a decisiones clínicas con recomendaciones basadas en evidencia y controles de seguridad"
+   },
+   {
+    "n": "Análisis financiero",
+    "d": "Investigación de mercado que combina datos en tiempo real con conocimiento histórico"
+   },
+   {
+    "n": "Investigación de políticas públicas",
+    "d": "Información gubernamental y regulatoria que requiere precisión actualizada"
+   },
+   {
+    "n": "Documentación técnica",
+    "d": "Documentación de software y APIs con correcciones específicas por versión"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Corrective RAG (CRAG)",
+  "description": "Generación aumentada por recuperación que se autocorrige: evalúa la relevancia de los documentos recuperados, dispara búsquedas web para obtener información adicional y valida la precisión de las respuestas.",
+  "nodes": [
+   {
+    "id": "user-query",
+    "label": "❓ Consulta del usuario\n\"Último avance en el\ntratamiento del Alzheimer\nde 2024\"",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "initial-retrieval",
+    "label": "📚 Recuperación inicial\nObtiene documentos sobre\ntratamientos del Alzheimer",
+    "x": 400,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "quality-evaluator",
+    "label": "🔍 Evaluador de calidad\n\"¿Calidad de los documentos recuperados?\"\nPuntuación: 0.3/1.0 (Mala)",
+    "x": 400,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "high-quality-path",
+    "label": "✅ Calidad alta\nPuntuación > 0.8\nPasa a la generación",
+    "x": 150,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "medium-quality-path",
+    "label": "⚠️ Calidad media\n0.4 < Puntuación < 0.8\nRefina los documentos",
+    "x": 400,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "poor-quality-path",
+    "label": "❌ Calidad mala\nPuntuación < 0.4\nDispara la corrección",
+    "x": 650,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "document-refinement",
+    "label": "✂️ Refinamiento de documentos\nFiltra las partes irrelevantes\nConserva las secciones clave",
+    "x": 400,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "web-search",
+    "label": "🌐 Búsqueda web\n\"avance tratamiento\nAlzheimer 2024\"\nEncuentra fuentes recientes",
+    "x": 650,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "knowledge-base-expansion",
+    "label": "📊 Ampliación del conocimiento\nBusca en bases de datos más amplias\nRevistas médicas, ensayos",
+    "x": 650,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "corrected-retrieval",
+    "label": "🔄 Recuperación corregida\n\"Aprobación de Lecanemab por la FDA\nen ene 2023, 27% de desaceleración\ndel deterioro cognitivo\"",
+    "x": 650,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "quality-recheck",
+    "label": "✓ Nueva verificación de calidad\nNueva puntuación: 0.9/1.0\n(Excelente)",
+    "x": 400,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "final-generation",
+    "label": "🤖 Generación final\n\"Avance reciente:\nLecanemab aprobado por la FDA,\nmuestra una reducción del 27%...\"",
+    "x": 400,
+    "y": 850,
+    "w": 250
+   },
+   {
+    "id": "final-answer",
+    "label": "✅ Respuesta de alta calidad\nRespuesta precisa, actual\ny bien respaldada",
+    "x": 400,
+    "y": 950,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "user-query",
+    "t": "initial-retrieval",
+    "label": "recupera"
+   },
+   {
+    "id": "e2",
+    "s": "initial-retrieval",
+    "t": "quality-evaluator",
+    "label": "evalúa"
+   },
+   {
+    "id": "e3a",
+    "s": "quality-evaluator",
+    "t": "high-quality-path",
+    "label": "Puntuación > 0.8"
+   },
+   {
+    "id": "e3b",
+    "s": "quality-evaluator",
+    "t": "medium-quality-path",
+    "label": "0.4 < Puntuación < 0.8"
+   },
+   {
+    "id": "e3c",
+    "s": "quality-evaluator",
+    "t": "poor-quality-path",
+    "label": "Puntuación < 0.4"
+   },
+   {
+    "id": "e4",
+    "s": "medium-quality-path",
+    "t": "document-refinement",
+    "label": "refina"
+   },
+   {
+    "id": "e5",
+    "s": "poor-quality-path",
+    "t": "web-search",
+    "label": "busca en la web"
+   },
+   {
+    "id": "e6",
+    "s": "web-search",
+    "t": "knowledge-base-expansion",
+    "label": "amplía las fuentes"
+   },
+   {
+    "id": "e7",
+    "s": "knowledge-base-expansion",
+    "t": "corrected-retrieval",
+    "label": "recupera"
+   },
+   {
+    "id": "e8",
+    "s": "corrected-retrieval",
+    "t": "quality-recheck",
+    "label": "reevalúa"
+   },
+   {
+    "id": "e9",
+    "s": "document-refinement",
+    "t": "quality-recheck",
+    "label": "documentos refinados"
+   },
+   {
+    "id": "e10",
+    "s": "high-quality-path",
+    "t": "quality-recheck",
+    "label": "documentos buenos"
+   },
+   {
+    "id": "e11",
+    "s": "quality-recheck",
+    "t": "final-generation",
+    "label": "genera"
+   },
+   {
+    "id": "e12",
+    "s": "final-generation",
+    "t": "final-answer",
+    "label": "salida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recuperación inicial y evaluación de calidad",
+    "description": "Una consulta sobre el avance de 2024 en Alzheimer dispara la recuperación. El evaluador de calidad puntúa los documentos con 0.3/1.0, lo que detecta baja relevancia e información desactualizada.",
+    "input": "",
+    "nodes": [
+     "user-query",
+     "initial-retrieval",
+     "quality-evaluator"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Decisión de ruta basada en la calidad",
+    "description": "Según las puntuaciones de calidad, el sistema enruta hacia distintas estrategias de corrección: generación directa (>0.8), refinamiento (0.4-0.8) o corrección completa (<0.4).",
+    "input": "",
+    "nodes": [
+     "high-quality-path",
+     "medium-quality-path",
+     "poor-quality-path"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c"
+    ]
+   },
+   {
+    "title": "Se dispara la acción correctiva",
+    "description": "La mala puntuación de calidad dispara una búsqueda web de fuentes recientes y luego se amplía a bases de datos médicas para cubrir de forma integral los tratamientos más recientes.",
+    "input": "",
+    "nodes": [
+     "web-search",
+     "knowledge-base-expansion"
+    ],
+    "edges": [
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Nueva recuperación mejorada",
+    "description": "La recuperación corregida encuentra información actual sobre la aprobación de Lecanemab por la FDA y los resultados de ensayos clínicos en fuentes recientes.",
+    "input": "",
+    "nodes": [
+     "corrected-retrieval",
+     "quality-recheck"
+    ],
+    "edges": [
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Generación de una respuesta de alta calidad",
+    "description": "Con la puntuación de calidad mejorada a 0.9/1.0, el sistema genera una respuesta precisa y actual sobre el último avance en Alzheimer, con datos clínicos específicos.",
+    "input": "",
+    "nodes": [
+     "final-generation",
+     "final-answer"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   }
+  ]
+ }
+}

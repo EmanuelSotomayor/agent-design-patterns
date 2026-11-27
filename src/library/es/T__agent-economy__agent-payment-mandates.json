@@ -1,0 +1,305 @@
+{
+ "cat": "agent-economy",
+ "slug": "agent-payment-mandates",
+ "name": "Agent Payment Mandates (AP2)(AP2)",
+ "icon": "💳",
+ "complexity": "high",
+ "description": "Autoriza las compras iniciadas por agentes mediante una cadena de mandatos firmados criptográficamente como credenciales verificables, en lugar de entregarle al agente los datos de la tarjeta en bruto. Un Intent Mandate captura de antemano las restricciones del usuario (precio máximo, comercios permitidos, tiempo de vida) para que el agente pueda comprar cuando el usuario no está presente; un Cart Mandate lo firma el comercio y lo cofirma el usuario para los artículos y el precio exactos, lo que garantiza que pagas exactamente lo que ves; y un Payment Mandate se comparte con la red de pagos. La cadena firmada forma un registro de auditoría no repudiable que resuelve la autorización, la autenticidad y la rendición de cuentas del gasto autónomo, y es independiente del medio de pago, con un perfil A2A-x402 para medios cripto. Se distingue de authenticated-delegation: ese patrón otorga al agente una autoridad acotada para actuar, mientras que AP2 vincula cada compra específica a una cadena de mandatos firmados que una red de pagos puede verificar de forma independiente.",
+ "features": [
+  "El Intent Mandate codifica las restricciones del usuario (precio máximo, comercios permitidos, TTL) para compras sin el usuario presente",
+  "El Cart Mandate lo firma el comercio y lo cofirma el usuario para los artículos y el precio exactos",
+  "El Payment Mandate se comparte con la red de pagos para autorizar la liquidación",
+  "Las credenciales verificables encadenadas forman un registro de auditoría no repudiable",
+  "Resuelve la autorización, la autenticidad y la rendición de cuentas del gasto autónomo",
+  "Independiente del medio de pago, con una extensión A2A-x402 para liquidación con stablecoins"
+ ],
+ "tldr": {
+  "what": "El agente solicita compras dentro de restricciones firmadas por el usuario; el comercio y el usuario cofirman el carrito exacto; la red de pagos verifica la cadena de mandatos firmados antes de liquidar.",
+  "when": "Gasto autónomo de agentes cuando el usuario no puede aprobar cada transacción en tiempo real, y el registro de auditoría y el no repudio importan más que la velocidad.",
+  "watchOut": "El vencimiento, la revocación y la desviación de las restricciones de los mandatos generan brechas; si el agente o el comercio firman fuera de la intención del usuario, la cadena se rompe y las disputas se vuelven costosas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Mandatos de pago de agentes (AP2)",
+  "description": "El Agent Payments Protocol de Google autoriza las compras iniciadas por agentes mediante una cadena de mandatos firmados criptográficamente como credenciales verificables (Intent, Cart, Payment), lo que produce un registro de auditoría no repudiable y rechaza por diseño el gasto fuera de los límites.",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "🧑 Delegación del usuario\n\"Reserva un vuelo de ida y vuelta a Lisboa,\ntotal por debajo de $800\" (usuario no presente)",
+    "x": 320,
+    "y": 30,
+    "w": 300
+   },
+   {
+    "id": "intent-mandate",
+    "label": "📜 Intent Mandate\nmax_total=$800, dest=LIS, ttl=48h\nCredencial verificable firmada",
+    "x": 340,
+    "y": 140,
+    "w": 260
+   },
+   {
+    "id": "shopping-agent",
+    "label": "🛒 Agente de compras\nBusca tarifas dentro de las restricciones",
+    "x": 355,
+    "y": 245,
+    "w": 230
+   },
+   {
+    "id": "airline-merchant",
+    "label": "🏢 Aerolínea (comercio)\nArma el carrito, firma el Cart Mandate",
+    "x": 355,
+    "y": 340,
+    "w": 230
+   },
+   {
+    "id": "cart-mandate",
+    "label": "🧾 Cart Mandate\nLIS ida y vuelta $712\nFirmado por el comercio",
+    "x": 120,
+    "y": 440,
+    "w": 220
+   },
+   {
+    "id": "user-cosign",
+    "label": "✍️ Cofirma del usuario\nPagas lo que ves: bloqueado",
+    "x": 120,
+    "y": 545,
+    "w": 220
+   },
+   {
+    "id": "upsell",
+    "label": "⬆️ Oferta de mejora de asiento\n+$120 -> total $832",
+    "x": 640,
+    "y": 440,
+    "w": 200
+   },
+   {
+    "id": "over-cap",
+    "label": "🚫 Rechazado por exceder el tope\n$832 > $800: no hay Cart Mandate válido",
+    "x": 630,
+    "y": 545,
+    "w": 230
+   },
+   {
+    "id": "payment-mandate",
+    "label": "💳 Payment Mandate\nCadena firmada compartida con la red\n(sin número de tarjeta en bruto)",
+    "x": 340,
+    "y": 620,
+    "w": 260
+   },
+   {
+    "id": "payment-network",
+    "label": "🏦 Red de pagos\nVerifica las firmas Intent -> Cart -> Payment",
+    "x": 110,
+    "y": 715,
+    "w": 240
+   },
+   {
+    "id": "constraint-check",
+    "label": "🔎 Verificación de restricciones\n$712 <= $800 y comercio permitido",
+    "x": 400,
+    "y": 715,
+    "w": 230
+   },
+   {
+    "id": "settlement",
+    "label": "✅ Liquidación autorizada\n$712 cobrados, la tarjeta nunca se expone",
+    "x": 210,
+    "y": 795,
+    "w": 260
+   },
+   {
+    "id": "audit-trail",
+    "label": "🧾 Registro de auditoría\nCadena de VC firmadas, no repudiable",
+    "x": 560,
+    "y": 795,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-intent",
+    "s": "user-request",
+    "t": "intent-mandate",
+    "label": "Delegar"
+   },
+   {
+    "id": "intent-agent",
+    "s": "intent-mandate",
+    "t": "shopping-agent",
+    "label": "Autoridad"
+   },
+   {
+    "id": "agent-merchant",
+    "s": "shopping-agent",
+    "t": "airline-merchant",
+    "label": "Comprar"
+   },
+   {
+    "id": "merchant-cart",
+    "s": "airline-merchant",
+    "t": "cart-mandate",
+    "label": "Firmar carrito"
+   },
+   {
+    "id": "cart-cosign",
+    "s": "cart-mandate",
+    "t": "user-cosign",
+    "label": "Cofirmar"
+   },
+   {
+    "id": "cosign-payment",
+    "s": "user-cosign",
+    "t": "payment-mandate",
+    "label": "Autorizar"
+   },
+   {
+    "id": "merchant-upsell",
+    "s": "airline-merchant",
+    "t": "upsell",
+    "label": "Venta adicional"
+   },
+   {
+    "id": "upsell-overcap",
+    "s": "upsell",
+    "t": "over-cap",
+    "label": "$$832 > tope"
+   },
+   {
+    "id": "mandate-network",
+    "s": "payment-mandate",
+    "t": "payment-network",
+    "label": "Enviar cadena"
+   },
+   {
+    "id": "payment-constraint",
+    "s": "payment-mandate",
+    "t": "constraint-check",
+    "label": "Verificar"
+   },
+   {
+    "id": "network-settlement",
+    "s": "payment-network",
+    "t": "settlement",
+    "label": "Verificado"
+   },
+   {
+    "id": "constraint-settlement",
+    "s": "constraint-check",
+    "t": "settlement",
+    "label": "Dentro del tope"
+   },
+   {
+    "id": "network-audit",
+    "s": "payment-network",
+    "t": "audit-trail",
+    "label": "Registrar"
+   },
+   {
+    "id": "overcap-audit",
+    "s": "over-cap",
+    "t": "audit-trail",
+    "label": "Denegado, registrado"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Delegación del usuario",
+    "description": "El usuario delega una compra acotada sin estar presente, expresada como restricciones en lugar de un cheque en blanco.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "intent-mandate"
+    ],
+    "edges": [
+     "request-intent"
+    ]
+   },
+   {
+    "title": "Intent Mandate firmado",
+    "description": "Las restricciones (precio máximo, destino, TTL) se firman de antemano en una credencial verificable que el agente lleva como prueba de autoridad.",
+    "input": "",
+    "nodes": [
+     "intent-mandate",
+     "shopping-agent"
+    ],
+    "edges": [
+     "intent-agent"
+    ]
+   },
+   {
+    "title": "El agente compra y el comercio firma el carrito",
+    "description": "El agente encuentra una tarifa y la aerolínea devuelve un Cart Mandate firmado por el comercio para los artículos y el precio exactos.",
+    "input": "",
+    "nodes": [
+     "shopping-agent",
+     "airline-merchant",
+     "cart-mandate"
+    ],
+    "edges": [
+     "agent-merchant",
+     "merchant-cart"
+    ]
+   },
+   {
+    "title": "El usuario cofirma el Cart Mandate",
+    "description": "El usuario (o su dispositivo) cofirma y fija que pagas exactamente lo que ves; luego se prepara un Payment Mandate para la red.",
+    "input": "",
+    "nodes": [
+     "cart-mandate",
+     "user-cosign",
+     "payment-mandate"
+    ],
+    "edges": [
+     "cart-cosign",
+     "cosign-payment"
+    ]
+   },
+   {
+    "title": "La red verifica la cadena de mandatos",
+    "description": "La red de pagos comprueba que las firmas de Intent, Cart y Payment coincidan y que la verificación de restricciones se cumpla, sin ver la tarjeta en bruto.",
+    "input": "",
+    "nodes": [
+     "payment-mandate",
+     "payment-network",
+     "constraint-check"
+    ],
+    "edges": [
+     "mandate-network",
+     "payment-constraint"
+    ]
+   },
+   {
+    "title": "Venta adicional rechazada por exceder el tope",
+    "description": "Una venta adicional que llevaría el total a $832 supera el tope de $800 del Intent Mandate, por lo que no se puede firmar un Cart Mandate válido y se rechaza el cobro.",
+    "input": "",
+    "nodes": [
+     "airline-merchant",
+     "upsell",
+     "over-cap",
+     "audit-trail"
+    ],
+    "edges": [
+     "merchant-upsell",
+     "upsell-overcap",
+     "overcap-audit"
+    ]
+   },
+   {
+    "title": "Liquidación y registro de auditoría",
+    "description": "La tarifa dentro del presupuesto se liquida en $712 y cada paso queda registrado como una credencial firmada, lo que ofrece un registro no repudiable para la resolución de disputas.",
+    "input": "",
+    "nodes": [
+     "payment-network",
+     "constraint-check",
+     "settlement",
+     "audit-trail"
+    ],
+    "edges": [
+     "network-settlement",
+     "constraint-settlement",
+     "network-audit"
+    ]
+   }
+  ]
+ }
+}

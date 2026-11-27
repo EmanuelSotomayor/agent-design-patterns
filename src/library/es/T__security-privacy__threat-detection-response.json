@@ -1,0 +1,351 @@
+{
+ "cat": "security-privacy",
+ "slug": "threat-detection-response",
+ "name": "Threat Detection & Response(TDR)",
+ "icon": "🚨",
+ "complexity": "high",
+ "description": "Monitoreo de seguridad en tiempo real y respuesta automatizada ante amenazas",
+ "features": [
+  "Detección de amenazas en tiempo real",
+  "Análisis de anomalías de comportamiento",
+  "Respuesta automatizada a incidentes",
+  "Integración de inteligencia de amenazas",
+  "Modelos de seguridad basados en machine learning",
+  "Capacidad forense"
+ ],
+ "tldr": {
+  "what": "Monitorea en tiempo real el comportamiento de los agentes, el acceso a APIs y el uso de recursos; señala anomalías mediante modelos de ML; dispara contención automatizada o alertas.",
+  "when": "Sistemas en producción donde los agentes acceden a datos sensibles, APIs externas o recursos; el cumplimiento normativo exige pistas de auditoría y respuesta a incidentes.",
+  "watchOut": "Los falsos positivos por picos legítimos en el comportamiento de los agentes pueden disparar bloqueos costosos; ajustar los umbrales requiere experiencia en el dominio y líneas base históricas."
+ },
+ "overview": {
+  "pattern": "Monitoreo de seguridad en tiempo real y respuesta automatizada ante amenazas para entornos de agentes de IA",
+  "why": "Permite detectar amenazas rápidamente, reduce los incidentes de seguridad, automatiza la respuesta y conserva evidencia forense",
+  "insight": "Telemetría de múltiples fuentes + detección de anomalías con ML + respuesta automatizada → postura de seguridad proactiva",
+  "impl": [
+   {
+    "t": "Recolección de datos",
+    "d": "Telemetría de múltiples fuentes y logs de comportamiento"
+   },
+   {
+    "t": "Detección de anomalías",
+    "d": "Modelos de ML para análisis de comportamiento"
+   },
+   {
+    "t": "Clasificación de amenazas",
+    "d": "Evaluación de severidad e impacto"
+   },
+   {
+    "t": "Respuesta automatizada",
+    "d": "Acciones de contención y mitigación"
+   },
+   {
+    "t": "Actualización de inteligencia",
+    "d": "Base de datos de IOC y aprendizaje de patrones"
+   }
+  ],
+  "example": "telemetry_collection → anomaly_detection → threat_classification → automated_response → intelligence_update",
+  "dos": [
+   "Implementa detección en múltiples capas (comportamiento, red, acceso)",
+   "Usa modelos de ML entrenados con comportamientos específicos de los agentes",
+   "Automatiza la respuesta inmediata ante amenazas críticas",
+   "Mantén capacidades forenses completas",
+   "Integra feeds externos de inteligencia de amenazas"
+  ],
+  "donts": [
+   "Depender solo de la detección basada en firmas",
+   "Ignorar la optimización de la tasa de falsos positivos",
+   "Omitir la automatización de los playbooks de respuesta a incidentes",
+   "Demorar la contención de amenazas a la espera de revisión manual",
+   "Olvidar actualizar los modelos de detección con regularidad"
+  ],
+  "use": [
+   "Operaciones de seguridad empresarial",
+   "Requisitos de monitoreo en tiempo real",
+   "Automatización de respuesta a incidentes",
+   "Actividades de threat hunting"
+  ],
+  "avoid": [
+   "Entornos de desarrollo de bajo riesgo",
+   "Sistemas con recursos limitados",
+   "Aplicaciones de un solo usuario",
+   "Despliegues exclusivamente offline"
+  ],
+  "metrics": [
+   {
+    "n": "Tiempo medio de detección (MTTD)",
+    "d": "Tiempo para identificar amenazas"
+   },
+   {
+    "n": "Tiempo medio de respuesta (MTTR)",
+    "d": "Tiempo hasta iniciar la contención"
+   },
+   {
+    "n": "Tasa de falsos positivos",
+    "d": "% de actividades benignas señaladas como amenazas"
+   },
+   {
+    "n": "Cobertura de amenazas",
+    "d": "% de vectores de ataque conocidos detectados"
+   },
+   {
+    "n": "Tasa de contención de incidentes",
+    "d": "% de amenazas aisladas con éxito"
+   },
+   {
+    "n": "Índice de fatiga de alertas",
+    "d": "Métrica de sobrecarga de alertas del equipo de seguridad"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Operaciones de SOC",
+    "d": "Monitoreo 24/7, triaje automatizado, orquestación de incidentes"
+   },
+   {
+    "n": "Seguridad de IA en la nube",
+    "d": "Amenazas en contenedores, anomalías de API, detección de exfiltración de datos"
+   },
+   {
+    "n": "Agentes empresariales",
+    "d": "Detección de amenazas internas, escalada de privilegios, movimiento lateral"
+   },
+   {
+    "n": "IA financiera",
+    "d": "Detección de fraude, manipulación de mercado, incumplimientos normativos"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Violaciones de HIPAA, accesos no autorizados, ataques a la integridad de datos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Threat Detection & Response",
+  "description": "Sistema de monitoreo de seguridad en tiempo real y respuesta automatizada que detecta, analiza y neutraliza amenazas de seguridad con mínima intervención humana",
+  "nodes": [
+   {
+    "id": "ai-trading-system",
+    "label": "📈 Sistema de trading con IA\n\"Plataforma de trading de alta frecuencia\nque procesa más de $100M diarios en operaciones\ncon toma de decisiones algorítmica\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "apt-attack",
+    "label": "🎯 Amenaza persistente avanzada\n\"Atacantes sofisticados se infiltran\nen el sistema para manipular los algoritmos\nde trading con fines de abuso de mercado\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "manual-monitoring",
+    "label": "👥 Monitoreo de seguridad manual\n\"Analistas de seguridad revisan logs\ny alertas en horario laboral\nCobertura limitada de noche y fines de semana\"",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "detection-delay",
+    "label": "⏰ Demora en la detección\n\"Amenaza activa durante 48 horas\nantes de ser detectada por\nel hueco de monitoreo del fin de semana\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "manual-response",
+    "label": "📞 Proceso de respuesta manual\n\"Llamar al equipo de emergencia\nApagado manual del sistema\nSe reúne el equipo forense\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "financial-damage",
+    "label": "💸 Impacto financiero severo\n\"$50M en operaciones manipuladas\nInvestigación regulatoria\nConfianza del mercado dañada\"",
+    "x": 150,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "automated-detection",
+    "label": "🤖 Detección automatizada de amenazas\n\"Análisis de comportamiento con ML\nMonitoreo en tiempo real 24/7\nAlgoritmos de detección de anomalías\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "threat-analysis",
+    "label": "🔍 Análisis rápido de amenazas\n\"La IA correlaciona patrones de ataque\nIntegración de inteligencia de amenazas\nEvaluación de riesgo en segundos\"",
+    "x": 650,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "automated-response",
+    "label": "⚡ Respuesta automatizada\n\"Aislar sistemas comprometidos\nBloquear transacciones maliciosas\nPreservar evidencia forense\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "threat-neutralized",
+    "label": "🛡️ Amenaza neutralizada\n\"Ataque contenido en 3 minutos\nCero impacto financiero\nIntegridad del sistema preservada\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "response-principle",
+    "label": "🎯 Principio de respuesta a amenazas\n\"La velocidad de detección + respuesta determina el impacto\nLa automatización permite defensa en tiempo real\nSupervisión humana, ejecución por la máquina\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-trading-system",
+    "t": "apt-attack",
+    "label": "blanco de una amenaza sofisticada"
+   },
+   {
+    "id": "e2",
+    "s": "apt-attack",
+    "t": "manual-monitoring",
+    "label": "enfoque de seguridad manual"
+   },
+   {
+    "id": "e3",
+    "s": "apt-attack",
+    "t": "automated-detection",
+    "label": "enfoque de seguridad automatizado"
+   },
+   {
+    "id": "e4",
+    "s": "manual-monitoring",
+    "t": "detection-delay",
+    "label": "huecos de cobertura"
+   },
+   {
+    "id": "e5",
+    "s": "detection-delay",
+    "t": "manual-response",
+    "label": "proceso de respuesta lento"
+   },
+   {
+    "id": "e6",
+    "s": "manual-response",
+    "t": "financial-damage",
+    "label": "demasiado tarde para evitar el daño"
+   },
+   {
+    "id": "e7",
+    "s": "automated-detection",
+    "t": "threat-analysis",
+    "label": "análisis inmediato"
+   },
+   {
+    "id": "e8",
+    "s": "threat-analysis",
+    "t": "automated-response",
+    "label": "dispara la respuesta"
+   },
+   {
+    "id": "e9",
+    "s": "automated-response",
+    "t": "threat-neutralized",
+    "label": "neutraliza la amenaza"
+   },
+   {
+    "id": "e10",
+    "s": "financial-damage",
+    "t": "response-principle",
+    "label": "demuestra el costo de la demora"
+   },
+   {
+    "id": "e11",
+    "s": "threat-neutralized",
+    "t": "response-principle",
+    "label": "prueba el valor de la automatización"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Sistema de trading con IA de alto valor como blanco",
+    "description": "Una plataforma de trading de alta frecuencia que procesa más de $100M diarios en operaciones se convierte en blanco de atacantes sofisticados que buscan manipular los algoritmos de trading con fines de abuso de mercado.",
+    "input": "",
+    "nodes": [
+     "ai-trading-system"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Ataque de amenaza persistente avanzada",
+    "description": "Atacantes sofisticados lanzan un intento de infiltración coordinado para comprometer el sistema de trading y manipular la toma de decisiones algorítmica en beneficio propio.",
+    "input": "",
+    "nodes": [
+     "apt-attack"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de seguridad: manual vs. automatizado",
+    "description": "La misma amenaza avanzada enfrenta un monitoreo de seguridad manual (izquierda) con cobertura limitada frente a un sistema automatizado de detección y respuesta (derecha) con protección 24/7.",
+    "input": "",
+    "nodes": [
+     "manual-monitoring",
+     "automated-detection"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Monitoreo manual: demoras en la detección y respuesta lenta",
+    "description": "La cobertura limitada al horario laboral genera una demora de 48 horas en la detección durante el fin de semana, seguida de un proceso de respuesta manual lento que implica reunir al equipo de emergencia.",
+    "input": "",
+    "nodes": [
+     "detection-delay",
+     "manual-response"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Sistema automatizado: detección y análisis rápidos",
+    "description": "El análisis de comportamiento con ML ofrece monitoreo 24/7 con detección inmediata de amenazas, correlación de patrones de ataque mediante IA y evaluación de riesgo en segundos.",
+    "input": "",
+    "nodes": [
+     "threat-analysis"
+    ],
+    "edges": [
+     "e7"
+    ]
+   },
+   {
+    "title": "La velocidad de respuesta determina el impacto",
+    "description": "El enfoque manual termina en $50M de daños y una investigación regulatoria, mientras que la respuesta automatizada neutraliza la amenaza en 3 minutos con cero impacto financiero, lo que demuestra que la velocidad es crítica.",
+    "input": "",
+    "nodes": [
+     "financial-damage",
+     "automated-response",
+     "threat-neutralized",
+     "response-principle"
+    ],
+    "edges": [
+     "e6",
+     "e8",
+     "e9",
+     "e10",
+     "e11"
+    ]
+   }
+  ]
+ }
+}

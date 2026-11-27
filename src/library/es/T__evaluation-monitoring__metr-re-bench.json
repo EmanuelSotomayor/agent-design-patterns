@@ -1,0 +1,389 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "metr-re-bench",
+ "name": "METR RE-Bench(RE-Bench)",
+ "icon": "🔬",
+ "complexity": "high",
+ "description": "Benchmark para medir el rendimiento de agentes basados en modelos de frontera en tareas de ingeniería de investigación en ML, comparándolo con las capacidades de expertos humanos.",
+ "features": [
+  "Evaluación de tareas de ingeniería de investigación en ML",
+  "Comparación del rendimiento humano frente al del agente",
+  "Evaluación de las capacidades de los modelos de frontera",
+  "Medición de la productividad en investigación",
+  "Benchmarking de tareas de nivel experto",
+  "Diversidad integral de tareas"
+ ],
+ "tldr": {
+  "what": "Mide el rendimiento de agentes basados en modelos de frontera en tareas de ingeniería de investigación en ML frente a referencias de expertos humanos, considerando la tasa de finalización, la calidad del código y los aportes de investigación.",
+  "when": "Evaluar si los modelos de frontera pueden manejar trabajo real de ingeniería de investigación o comparar las mejoras de capacidad entre versiones de modelos.",
+  "watchOut": "El sesgo en la selección de tareas influye mucho en los resultados; las tareas demasiado acotadas o muy parecidas a los datos de entrenamiento inflan los puntajes de los agentes respecto de la variedad de la investigación en el mundo real."
+ },
+ "overview": {
+  "pattern": "Benchmark de METR que compara agentes de IA de frontera con 71 expertos humanos en 7 entornos de ingeniería de investigación en ML",
+  "why": "Evalúa las capacidades de automatización de I+D, señaladas como un riesgo clave en las políticas de seguridad de IA de frontera",
+  "insight": "Los agentes logran 4x el rendimiento humano con un presupuesto de 2h, pero los humanos los superan por 2x con 32h: el escalamiento en el tiempo importa",
+  "impl": [
+   {
+    "t": "Preparación",
+    "d": "Despliega 7 entornos de ingeniería de investigación en ML con acceso a GPU"
+   },
+   {
+    "t": "Configuración",
+    "d": "Define los presupuestos de tiempo (2h, 8h, 32h) y las funciones de puntuación"
+   },
+   {
+    "t": "Evaluación",
+    "d": "Ejecuta agentes en tareas de leyes de escalamiento, kernels de GPU y optimización de ML"
+   },
+   {
+    "t": "Comparación",
+    "d": "Compara con 71 intentos de expertos humanos (61 expertos distintos)"
+   },
+   {
+    "t": "Análisis",
+    "d": "Evalúa las capacidades de automatización de I+D frente al rendimiento humano"
+   }
+  ],
+  "example": "re_bench = REBench(environments=7, experts=71, models=[claude_3.5, o1_preview], budget=\"8h\")",
+  "dos": [
+   "Prueba en los 7 entornos para una evaluación integral de las capacidades de I+D",
+   "Compara el rendimiento con varios presupuestos de tiempo (2h, 8h, 32h)",
+   "Enfócate en tareas abiertas de ingeniería de investigación, no en ML clásico",
+   "Proporciona acceso a GPU para los experimentos de optimización de kernels y de escalamiento",
+   "Usa líneas base de expertos humanos de 61 investigadores distintos"
+  ],
+  "donts": [
+   "Esperar que los agentes superen a los humanos con presupuestos de tiempo extendidos (32h)",
+   "Enfocarse solo en el rendimiento a corto plazo: los humanos muestran un mejor escalamiento",
+   "Usar soluciones disponibles públicamente: el benchmark está diseñado para evitarlo",
+   "Omitir las consideraciones de seguridad de las capacidades de automatización de I+D",
+   "Ignorar la ventaja de velocidad de 10x que tienen los agentes en la generación de soluciones"
+  ],
+  "use": [
+   "Evaluar las capacidades de automatización de I+D de la IA de frontera",
+   "Medir habilidades de ingeniería de investigación frente a habilidades de ML clásico",
+   "Evaluar los riesgos de seguridad de IA derivados de la I+D autónoma",
+   "Comparar el rendimiento de los agentes con el de expertos humanos",
+   "Investigación sobre el descubrimiento científico impulsado por IA"
+  ],
+  "avoid": [
+   "Benchmarking estándar de ML con soluciones públicas",
+   "Evaluación de tareas de machine learning clásico",
+   "Evaluación de capacidades solo a corto plazo",
+   "Entornos sin recursos de GPU/cómputo",
+   "Evaluación de habilidades de ingeniería ajenas a la investigación"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de los expertos",
+    "d": "El 82% de los expertos humanos obtuvo puntajes distintos de cero"
+   },
+   {
+    "n": "Coincidencia con soluciones sólidas",
+    "d": "El 24% de los expertos igualó o superó las soluciones de referencia"
+   },
+   {
+    "n": "Ventaja de los agentes a corto plazo",
+    "d": "Puntajes 4x más altos que los humanos con un presupuesto de 2 horas"
+   },
+   {
+    "n": "Ventaja humana a largo plazo",
+    "d": "Puntajes humanos 2x frente a los mejores agentes con un presupuesto de 32 horas"
+   },
+   {
+    "n": "Velocidad de generación de soluciones",
+    "d": "Los agentes generan y prueban soluciones 10x más rápido que los humanos"
+   },
+   {
+    "n": "Eficiencia de costos",
+    "d": "Costo por intento de solución mucho menor para los agentes de IA"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación en seguridad de IA",
+    "d": "Evaluar los riesgos de automatización de I+D señalados en las políticas de seguridad de IA de frontera"
+   },
+   {
+    "n": "Evaluación de capacidades de investigación",
+    "d": "Medir el rendimiento de los agentes en leyes de escalamiento y optimización de kernels de GPU"
+   },
+   {
+    "n": "Comparación humano-IA",
+    "d": "Benchmarking directo frente a 71 intentos de expertos con varios presupuestos de tiempo"
+   },
+   {
+    "n": "Evaluación de I+D autónoma",
+    "d": "Reproducir la lista publicada (Claude 3.5 Sonnet, o1-preview) en tareas de investigación"
+   },
+   {
+    "n": "Políticas y gobernanza",
+    "d": "Apoyar las evaluaciones de capacidades de I+D del NSM de la Casa Blanca y de la EU AI Act"
+   }
+  ]
+ },
+ "flow": {
+  "title": "METR RE-Bench: patrón de evaluación de capacidades de I+D en IA",
+  "description": "El Research Engineering Benchmark de METR evalúa las capacidades de I+D de la IA de frontera en 7 entornos de ML con 71 intentos de expertos humanos, y revela las ventajas de la IA en velocidad frente a las ventajas humanas en razonamiento complejo",
+  "nodes": [
+   {
+    "id": "ai-rd-automation-challenge",
+    "label": "🔬 Desafío de la automatización de I+D en IA\n\"¿Cómo evaluar niveles peligrosos de\ncapacidades autónomas de I+D en IA que\npodrían suponer riesgos catastróficos para la sociedad?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "metr-rebench-framework",
+    "label": "🏗️ Framework METR RE-Bench\n\"Research Engineering Benchmark:\n• 7 entornos de investigación en ML\n• Comparación de capacidades humano vs. IA\n• Diseño de tareas novedosas y desafiantes\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "seven-environments",
+    "label": "🧪 7 entornos de ingeniería de investigación\n\"Tareas desafiantes de I+D en ML:\n• Optimización de kernels de GPU\n• Experimentos de leyes de escalamiento\n• Diseño de arquitecturas de modelos\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "core-research-tasks",
+    "label": "⚡ Tareas de investigación principales (1-3)\n\"• Optimize Runtime (fine-tuning de LLM)\n• Optimize Kernel (suma de prefijos en GPU)\n• Fix Embedding (recuperación del modelo)\"",
+    "x": 50,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "experimental-design-tasks",
+    "label": "📊 Tareas experimentales (4-5)\n\"• Diseño de experimentos de leyes de escalamiento\n• Restricted Architecture MLM\n• Optimización con restricciones novedosas\"",
+    "x": 250,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "advanced-implementation-tasks",
+    "label": "🤖 Tareas avanzadas (6-7)\n\"• Fine-tuning de GPT-2 con RL\n• Andamiaje para concursos de código en Rust\n• Integración de sistemas complejos\"",
+    "x": 450,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "human-expert-methodology",
+    "label": "👨‍🔬 Metodología con expertos humanos\n\"Estudio comparativo riguroso:\n• 61 expertos humanos distintos\n• 71 intentos de 8 horas en total\n• Se requiere experiencia en el dominio\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "time-budget-evaluation",
+    "label": "⏱️ Evaluación con varios presupuestos\n\"Rendimiento en distintas escalas de tiempo:\n• Evaluación rápida de 2 horas\n• Evaluación estándar de 8 horas\n• Análisis extendido de 32 horas\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "ai-speed-advantage",
+    "label": "🚀 Hallazgos sobre la ventaja de velocidad de la IA\n\"Dominio de la IA a corto plazo:\n• Puntajes 4x más altos (presupuesto de 2 horas)\n• Generación de soluciones 10x más rápida\n• Optimización superior de kernels de GPU\"",
+    "x": 200,
+    "y": 650,
+    "w": 230
+   },
+   {
+    "id": "human-reasoning-advantage",
+    "label": "🧠 Ventaja del razonamiento humano\n\"Superioridad humana a largo plazo:\n• Superan a la IA con un presupuesto de 8 horas\n• 2x el rendimiento de la IA (presupuesto de 32 horas)\n• Resolución superior de problemas complejos\"",
+    "x": 600,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "benchmark-results",
+    "label": "📈 Resultados del benchmark\n\"Expertos humanos: 82% con puntajes distintos de cero, 24% superan la referencia\nAgentes de IA: ventaja en velocidad, pero dificultades con restricciones novedosas\nAportes clave sobre los riesgos de la automatización de I+D en IA\"",
+    "x": 400,
+    "y": 800,
+    "w": 320
+   },
+   {
+    "id": "ai-rd-evaluation-principle",
+    "label": "🎯 Principio de evaluación de capacidades de I+D en IA\n\"La automatización de I+D en IA plantea riesgos emergentes, pero hoy tiene limitaciones\nLas ventajas en velocidad frente a la profundidad del razonamiento crean capacidades complementarias\nLa evaluación empírica es esencial para evaluar la seguridad de la IA\"",
+    "x": 400,
+    "y": 950,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-rd-automation-challenge",
+    "t": "metr-rebench-framework",
+    "label": "se aborda con"
+   },
+   {
+    "id": "e2",
+    "s": "metr-rebench-framework",
+    "t": "seven-environments",
+    "label": "implementa 7 entornos"
+   },
+   {
+    "id": "e3",
+    "s": "metr-rebench-framework",
+    "t": "human-expert-methodology",
+    "label": "usa expertos humanos"
+   },
+   {
+    "id": "e4",
+    "s": "seven-environments",
+    "t": "core-research-tasks",
+    "label": "incluye optimización"
+   },
+   {
+    "id": "e5",
+    "s": "seven-environments",
+    "t": "experimental-design-tasks",
+    "label": "incluye experimentos"
+   },
+   {
+    "id": "e6",
+    "s": "seven-environments",
+    "t": "advanced-implementation-tasks",
+    "label": "incluye implementación"
+   },
+   {
+    "id": "e7",
+    "s": "human-expert-methodology",
+    "t": "time-budget-evaluation",
+    "label": "se evalúa con varios presupuestos"
+   },
+   {
+    "id": "e8",
+    "s": "core-research-tasks",
+    "t": "ai-speed-advantage",
+    "label": "revela la velocidad de la IA"
+   },
+   {
+    "id": "e9",
+    "s": "experimental-design-tasks",
+    "t": "human-reasoning-advantage",
+    "label": "muestra la profundidad humana"
+   },
+   {
+    "id": "e10",
+    "s": "advanced-implementation-tasks",
+    "t": "human-reasoning-advantage",
+    "label": "favorece la complejidad humana"
+   },
+   {
+    "id": "e11",
+    "s": "time-budget-evaluation",
+    "t": "ai-speed-advantage",
+    "label": "muestra la ventaja de la IA a corto plazo"
+   },
+   {
+    "id": "e12",
+    "s": "time-budget-evaluation",
+    "t": "human-reasoning-advantage",
+    "label": "revela la ventaja humana a largo plazo"
+   },
+   {
+    "id": "e13",
+    "s": "ai-speed-advantage",
+    "t": "benchmark-results",
+    "label": "informa los resultados"
+   },
+   {
+    "id": "e14",
+    "s": "human-reasoning-advantage",
+    "t": "benchmark-results",
+    "label": "da forma a los hallazgos"
+   },
+   {
+    "id": "e15",
+    "s": "benchmark-results",
+    "t": "ai-rd-evaluation-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la evaluación de riesgos de la automatización de I+D en IA",
+    "description": "¿Cómo podemos evaluar niveles potencialmente peligrosos de capacidades autónomas de I+D en IA que podrían suponer riesgos catastróficos para la sociedad mediante la automatización avanzada de la investigación?",
+    "input": "",
+    "nodes": [
+     "ai-rd-automation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework METR RE-Bench",
+    "description": "El Research Engineering Benchmark aborda el desafío mediante una evaluación sistemática: 7 entornos de investigación en ML con un diseño de tareas novedosas y desafiantes que compara el rendimiento de expertos humanos con el de modelos de IA de frontera.",
+    "input": "",
+    "nodes": [
+     "metr-rebench-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "7 entornos de investigación y metodología con expertos humanos",
+    "description": "El framework implementa una evaluación integral: 7 entornos desafiantes (optimización, diseño experimental, implementación) probados por 61 expertos humanos distintos en 71 intentos de 8 horas, con requisitos de experiencia en el dominio.",
+    "input": "",
+    "nodes": [
+     "seven-environments",
+     "core-research-tasks",
+     "experimental-design-tasks",
+     "advanced-implementation-tasks",
+     "human-expert-methodology"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Evaluación en varias escalas de tiempo",
+    "description": "La metodología con expertos humanos evalúa el rendimiento con tres presupuestos de tiempo: evaluación rápida de 2 horas, evaluación estándar de 8 horas y análisis extendido de 32 horas, para capturar distintas dimensiones de capacidad.",
+    "input": "",
+    "nodes": [
+     "time-budget-evaluation"
+    ],
+    "edges": [
+     "e7"
+    ]
+   },
+   {
+    "title": "Hallazgos divergentes sobre las capacidades de la IA frente a las humanas",
+    "description": "La evaluación revela fortalezas complementarias: dominio de la IA en velocidad (puntajes 4x a las 2 horas, generación 10x más rápida) frente a la superioridad humana en razonamiento complejo (superan a la IA con presupuestos de 8 horas o más, 2x el rendimiento a las 32 horas).",
+    "input": "",
+    "nodes": [
+     "ai-speed-advantage",
+     "human-reasoning-advantage"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Evaluación de capacidades de I+D en IA e implicaciones para la seguridad",
+    "description": "Los resultados del benchmark muestran un 82% de éxito de los expertos humanos, con un 24% que supera las soluciones de referencia, mientras que los agentes de IA demuestran ventajas en velocidad pero tienen dificultades con restricciones novedosas, lo que prueba que la evaluación empírica es esencial para evaluar la seguridad de la IA.",
+    "input": "",
+    "nodes": [
+     "benchmark-results",
+     "ai-rd-evaluation-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

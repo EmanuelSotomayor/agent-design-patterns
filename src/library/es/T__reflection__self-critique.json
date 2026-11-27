@@ -1,0 +1,685 @@
+{
+ "cat": "reflection",
+ "slug": "self-critique",
+ "name": "Self-Critique(SC)",
+ "icon": "🔍",
+ "complexity": "medium",
+ "description": "El agente evalúa sus propias salidas mediante un análisis sistemático y genera mejoras específicas",
+ "features": [
+  "Evaluación sistemática de la calidad",
+  "Identificación y corrección de errores",
+  "Ciclos de refinamiento iterativo",
+  "Puntuación de confianza"
+ ],
+ "tldr": {
+  "what": "El agente genera una salida, luego identifica sistemáticamente sus fallas y produce una versión corregida sin feedback externo.",
+  "when": "Tareas en las que el agente puede detectar de forma confiable sus propios errores, como revisión de código, pulido de textos o validación lógica.",
+  "watchOut": "El agente puede reforzar sus propios sesgos o pasar por alto justamente los errores que cometió originalmente, sobre todo bajo presión de tiempo."
+ },
+ "overview": {
+  "pattern": "Un único agente evalúa y mejora iterativamente sus propias salidas",
+  "why": "Detecta errores, mejora la calidad y asegura la completitud sin validación externa",
+  "insight": "Generar → Criticar → Revisar → Repetir hasta alcanzar el umbral de calidad",
+  "impl": [
+   {
+    "t": "Generar",
+    "d": "Respuesta inicial a la tarea"
+   },
+   {
+    "t": "Criticar",
+    "d": "Evaluación sistemática de la calidad"
+   },
+   {
+    "t": "Identificar",
+    "d": "Problemas y mejoras específicos"
+   },
+   {
+    "t": "Revisar",
+    "d": "Corrige las debilidades identificadas"
+   },
+   {
+    "t": "Iterar",
+    "d": "Repite hasta alcanzar el umbral de calidad"
+   }
+  ],
+  "example": "generate(task) → critique(output) → revise(issues) → validate() → final_output",
+  "dos": [
+   "Define criterios de crítica claros y objetivos para la tarea",
+   "Usa plantillas de evaluación estructuradas (precisión, completitud, claridad)",
+   "Establece límites máximos de iteraciones (normalmente 2-3 ciclos)",
+   "Registra métricas de calidad para medir la mejora",
+   "Documenta el razonamiento de la crítica para mayor transparencia"
+  ],
+  "donts": [
+   "Permitir ciclos de revisión infinitos sin criterios de parada",
+   "Usar criterios vagos como \"mejóralo\"",
+   "Criticar en exceso respuestas aceptables",
+   "Ignorar el equilibrio entre costo computacional y ganancia de calidad",
+   "Aplicar la misma plantilla de crítica a todos los tipos de tareas"
+  ],
+  "use": [
+   "Generación de contenido de alto impacto",
+   "Tareas de razonamiento complejas",
+   "Requisitos donde la calidad importa más que la velocidad",
+   "Se necesita mejora iterativa"
+  ],
+  "avoid": [
+   "Aplicaciones en tiempo real",
+   "Tareas simples/directas",
+   "Presupuesto de cómputo limitado",
+   "Dominios de calidad subjetiva"
+  ],
+  "metrics": [
+   {
+    "n": "Ganancia de calidad",
+    "d": "% de mejora de v1 a la versión final"
+   },
+   {
+    "n": "Número de iteraciones",
+    "d": "Promedio de ciclos hasta converger"
+   },
+   {
+    "n": "Precisión de la crítica",
+    "d": "Problemas válidos / Total de críticas"
+   },
+   {
+    "n": "Eficiencia de tokens",
+    "d": "Ganancia de calidad / Tokens adicionales"
+   },
+   {
+    "n": "Tiempo de convergencia",
+    "d": "Tiempo total de procesamiento"
+   },
+   {
+    "n": "Reducción de errores",
+    "d": "% de disminución de errores"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Redacción académica",
+    "d": "Borrador → Criticar la lógica/evidencia → Reforzar los argumentos → Pulir"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Código inicial → Identificar bugs/ineficiencias → Corregir → Optimizar"
+   },
+   {
+    "n": "Documentación técnica",
+    "d": "Primera versión → Verificar precisión/completitud → Rellenar vacíos → Aclarar"
+   },
+   {
+    "n": "Informes de análisis",
+    "d": "Análisis en bruto → Verificar conclusiones → Agregar contexto → Refinar hallazgos"
+   },
+   {
+    "n": "Contenido creativo",
+    "d": "Borrador → Evaluar atractivo/claridad → Mejorar → Edición final"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Self-Critique",
+  "description": "Demuestra la evaluación y crítica sistemáticas de las propias salidas, con mejora iterativa mediante la reflexión y la evaluación de la calidad",
+  "nodes": [
+   {
+    "id": "initial-output",
+    "label": "Salida inicial\n\"Generar informe de análisis de mercado\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "output-analyzer",
+    "label": "Analizador de salidas\nEvalúa el contenido generado",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "critique-framework",
+    "label": "Marco de crítica\nCriterios de evaluación sistemáticos",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "accuracy-checker",
+    "label": "Verificador de precisión\nCorrección factual",
+    "x": 150,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "completeness-evaluator",
+    "label": "Evaluador de completitud\nEvaluación de cobertura",
+    "x": 350,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "clarity-assessor",
+    "label": "Evaluador de claridad\nLegibilidad y coherencia",
+    "x": 550,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "relevance-judge",
+    "label": "Juez de relevancia\nAlineación con el tema",
+    "x": 750,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "bias-detector",
+    "label": "Detector de sesgos\nAnálisis de objetividad",
+    "x": 950,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "accuracy-results",
+    "label": "Precisión: 85%\nProblemas: 3 afirmaciones no verificadas",
+    "x": 150,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "completeness-results",
+    "label": "Completitud: 70%\nFalta: análisis de competidores",
+    "x": 350,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "clarity-results",
+    "label": "Claridad: 90%\nMenor: 2 oraciones complejas",
+    "x": 550,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "relevance-results",
+    "label": "Relevancia: 95%\nExcelente alineación con el tema",
+    "x": 750,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "bias-results",
+    "label": "Sesgo: Riesgo bajo\n1 afirmación potencialmente subjetiva",
+    "x": 950,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "critique-synthesizer",
+    "label": "Sintetizador de críticas\nCombina los resultados de la evaluación",
+    "x": 500,
+    "y": 760,
+    "w": 200
+   },
+   {
+    "id": "improvement-strategist",
+    "label": "Estratega de mejoras\nGenera un plan de mejora",
+    "x": 300,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "confidence-scorer",
+    "label": "Evaluador de confianza\nEvalúa la confiabilidad de la salida",
+    "x": 700,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "revision-engine",
+    "label": "Motor de revisión\nImplementa las mejoras",
+    "x": 500,
+    "y": 1040,
+    "w": 200
+   },
+   {
+    "id": "knowledge-validator",
+    "label": "Validador de conocimiento\nSistema de verificación de hechos",
+    "x": 200,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "quality-metrics",
+    "label": "Métricas de calidad\nEvaluación cuantitativa",
+    "x": 800,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "reflection-db",
+    "label": "Base de datos de reflexión\nCríticas y patrones previos",
+    "x": 100,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "improvement-tracker",
+    "label": "Seguimiento de mejoras\nMonitoreo del progreso",
+    "x": 900,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "performance-monitor",
+    "label": "Monitor de rendimiento\n• Ciclos de crítica: 3\\n• Tasa de mejora: 87%\\n• Puntuación de calidad: 8.5/10\\n• Tiempo de procesamiento: 2.3s\\n• Confianza: 92%",
+    "x": 50,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "bias-scanner",
+    "label": "Escáner de sesgos\n• Sesgo cultural: No detectado\\n• Sesgo de género: No detectado\\n• Sesgo de edad: No detectado\\n• Sesgo de confirmación: Riesgo bajo\\n• Sesgo de selección: Riesgo bajo",
+    "x": 1100,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "learning-module",
+    "label": "Módulo de aprendizaje\nReconocimiento de patrones\\nMemoria de mejoras",
+    "x": 100,
+    "y": 900,
+    "w": 140
+   },
+   {
+    "id": "quality-assurance",
+    "label": "Aseguramiento de calidad\nValidación final\\nCumplimiento de estándares",
+    "x": 900,
+    "y": 900,
+    "w": 140
+   },
+   {
+    "id": "improved-output",
+    "label": "Salida mejorada\nAnálisis de mercado mejorado",
+    "x": 500,
+    "y": 1180,
+    "w": 200
+   },
+   {
+    "id": "meta-reflection",
+    "label": "Metarreflexión\nCrítica del proceso de crítica",
+    "x": 200,
+    "y": 1180,
+    "w": 160
+   },
+   {
+    "id": "process-optimizer",
+    "label": "Optimizador de procesos\nRefina la metodología de crítica",
+    "x": 800,
+    "y": 1180,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-initial-analyzer",
+    "s": "initial-output",
+    "t": "output-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-analyzer-framework",
+    "s": "output-analyzer",
+    "t": "critique-framework",
+    "label": ""
+   },
+   {
+    "id": "e-analyzer-validator",
+    "s": "output-analyzer",
+    "t": "knowledge-validator",
+    "label": ""
+   },
+   {
+    "id": "e-analyzer-metrics",
+    "s": "output-analyzer",
+    "t": "quality-metrics",
+    "label": ""
+   },
+   {
+    "id": "e-analyzer-db",
+    "s": "output-analyzer",
+    "t": "reflection-db",
+    "label": ""
+   },
+   {
+    "id": "e-analyzer-tracker",
+    "s": "output-analyzer",
+    "t": "improvement-tracker",
+    "label": ""
+   },
+   {
+    "id": "e-framework-accuracy",
+    "s": "critique-framework",
+    "t": "accuracy-checker",
+    "label": "Evaluar"
+   },
+   {
+    "id": "e-framework-completeness",
+    "s": "critique-framework",
+    "t": "completeness-evaluator",
+    "label": "Evaluar"
+   },
+   {
+    "id": "e-framework-clarity",
+    "s": "critique-framework",
+    "t": "clarity-assessor",
+    "label": "Evaluar"
+   },
+   {
+    "id": "e-framework-relevance",
+    "s": "critique-framework",
+    "t": "relevance-judge",
+    "label": "Evaluar"
+   },
+   {
+    "id": "e-framework-bias",
+    "s": "critique-framework",
+    "t": "bias-detector",
+    "label": "Evaluar"
+   },
+   {
+    "id": "e-accuracy-results",
+    "s": "accuracy-checker",
+    "t": "accuracy-results",
+    "label": ""
+   },
+   {
+    "id": "e-completeness-results",
+    "s": "completeness-evaluator",
+    "t": "completeness-results",
+    "label": ""
+   },
+   {
+    "id": "e-clarity-results",
+    "s": "clarity-assessor",
+    "t": "clarity-results",
+    "label": ""
+   },
+   {
+    "id": "e-relevance-results",
+    "s": "relevance-judge",
+    "t": "relevance-results",
+    "label": ""
+   },
+   {
+    "id": "e-bias-results",
+    "s": "bias-detector",
+    "t": "bias-results",
+    "label": ""
+   },
+   {
+    "id": "e-accuracy-synthesizer",
+    "s": "accuracy-results",
+    "t": "critique-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "e-completeness-synthesizer",
+    "s": "completeness-results",
+    "t": "critique-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "e-clarity-synthesizer",
+    "s": "clarity-results",
+    "t": "critique-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "e-relevance-synthesizer",
+    "s": "relevance-results",
+    "t": "critique-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "e-bias-synthesizer",
+    "s": "bias-results",
+    "t": "critique-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "e-synthesizer-strategist",
+    "s": "critique-synthesizer",
+    "t": "improvement-strategist",
+    "label": ""
+   },
+   {
+    "id": "e-synthesizer-scorer",
+    "s": "critique-synthesizer",
+    "t": "confidence-scorer",
+    "label": ""
+   },
+   {
+    "id": "e-strategist-revision",
+    "s": "improvement-strategist",
+    "t": "revision-engine",
+    "label": ""
+   },
+   {
+    "id": "e-scorer-revision",
+    "s": "confidence-scorer",
+    "t": "revision-engine",
+    "label": ""
+   },
+   {
+    "id": "e-revision-improved",
+    "s": "revision-engine",
+    "t": "improved-output",
+    "label": ""
+   },
+   {
+    "id": "e-learning-strategist",
+    "s": "learning-module",
+    "t": "improvement-strategist",
+    "label": ""
+   },
+   {
+    "id": "e-qa-revision",
+    "s": "quality-assurance",
+    "t": "revision-engine",
+    "label": ""
+   },
+   {
+    "id": "e-improved-meta",
+    "s": "improved-output",
+    "t": "meta-reflection",
+    "label": ""
+   },
+   {
+    "id": "e-improved-optimizer",
+    "s": "improved-output",
+    "t": "process-optimizer",
+    "label": ""
+   },
+   {
+    "id": "e-perf-accuracy",
+    "s": "performance-monitor",
+    "t": "accuracy-checker",
+    "label": ""
+   },
+   {
+    "id": "e-bias-scanner-detector",
+    "s": "bias-scanner",
+    "t": "bias-detector",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Generación de la salida inicial",
+    "description": "Genera el contenido inicial que requiere evaluación y crítica sistemáticas.",
+    "input": "Tarea: generar un informe integral de análisis de mercado sobre las tendencias del sector tecnológico en el Q4",
+    "nodes": [
+     "initial-output"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Inicialización del análisis de la salida",
+    "description": "Comienza el análisis sistemático de la salida generada para evaluar su calidad.",
+    "input": "Preparación del análisis: preparar la salida para una evaluación crítica multidimensional",
+    "nodes": [
+     "initial-output",
+     "output-analyzer"
+    ],
+    "edges": [
+     "e-initial-analyzer"
+    ]
+   },
+   {
+    "title": "Activación de los sistemas de soporte",
+    "description": "Activa los sistemas de validación de conocimiento, métricas de calidad y base de datos de reflexión.",
+    "input": "Inicialización del soporte: validación de conocimiento, métricas de calidad, base de datos de reflexión, seguimiento de mejoras",
+    "nodes": [
+     "knowledge-validator",
+     "quality-metrics",
+     "reflection-db",
+     "improvement-tracker"
+    ],
+    "edges": [
+     "e-analyzer-validator",
+     "e-analyzer-metrics",
+     "e-analyzer-db",
+     "e-analyzer-tracker"
+    ]
+   },
+   {
+    "title": "Configuración del marco de crítica",
+    "description": "Establece criterios de evaluación sistemáticos y un marco de evaluación multidimensional.",
+    "input": "Configuración del marco: definir criterios de evaluación de precisión, completitud, claridad, relevancia y sesgo",
+    "nodes": [
+     "critique-framework"
+    ],
+    "edges": [
+     "e-analyzer-framework"
+    ]
+   },
+   {
+    "title": "Ejecución de la crítica multidimensional",
+    "description": "Ejecuta la evaluación en paralelo en todas las dimensiones de crítica de forma simultánea.",
+    "input": "Crítica en paralelo: verificación de precisión, evaluación de completitud, evaluación de claridad, juicio de relevancia, detección de sesgos",
+    "nodes": [
+     "accuracy-checker",
+     "completeness-evaluator",
+     "clarity-assessor",
+     "relevance-judge",
+     "bias-detector"
+    ],
+    "edges": [
+     "e-framework-accuracy",
+     "e-framework-completeness",
+     "e-framework-clarity",
+     "e-framework-relevance",
+     "e-framework-bias"
+    ]
+   },
+   {
+    "title": "Generación de los resultados de la crítica",
+    "description": "Genera resultados detallados para cada dimensión de evaluación con hallazgos específicos.",
+    "input": "Compilación de resultados: hallazgos detallados para cada dimensión de crítica con puntuaciones y problemas específicos",
+    "nodes": [
+     "accuracy-results",
+     "completeness-results",
+     "clarity-results",
+     "relevance-results",
+     "bias-results"
+    ],
+    "edges": [
+     "e-accuracy-results",
+     "e-completeness-results",
+     "e-clarity-results",
+     "e-relevance-results",
+     "e-bias-results"
+    ]
+   },
+   {
+    "title": "Síntesis e integración de la crítica",
+    "description": "Sintetiza todos los resultados de la crítica en un resumen de evaluación integral.",
+    "input": "Síntesis: combinar todos los resultados de la evaluación en una crítica unificada con un orden de prioridades",
+    "nodes": [
+     "critique-synthesizer"
+    ],
+    "edges": [
+     "e-accuracy-synthesizer",
+     "e-completeness-synthesizer",
+     "e-clarity-synthesizer",
+     "e-relevance-synthesizer",
+     "e-bias-synthesizer"
+    ]
+   },
+   {
+    "title": "Desarrollo de la estrategia de mejora",
+    "description": "Desarrolla estrategias de mejora específicas y una puntuación de confianza para la salida.",
+    "input": "Desarrollo de la estrategia: crear un plan de mejora accionable con evaluación de confianza",
+    "nodes": [
+     "improvement-strategist",
+     "confidence-scorer",
+     "learning-module",
+     "quality-assurance"
+    ],
+    "edges": [
+     "e-synthesizer-strategist",
+     "e-synthesizer-scorer",
+     "e-learning-strategist",
+     "e-qa-revision"
+    ]
+   },
+   {
+    "title": "Implementación de la revisión",
+    "description": "Implementa las estrategias de mejora para elevar la calidad de la salida.",
+    "input": "Ejecución de la revisión: aplicar sistemáticamente las estrategias de mejora para optimizar la salida",
+    "nodes": [
+     "revision-engine"
+    ],
+    "edges": [
+     "e-strategist-revision",
+     "e-scorer-revision"
+    ]
+   },
+   {
+    "title": "Entrega de la salida mejorada",
+    "description": "Entrega la salida mejorada con una validación de calidad integral.",
+    "input": "Entrega final: presentar la salida mejorada con métricas de validación y aseguramiento de calidad",
+    "nodes": [
+     "improved-output",
+     "performance-monitor",
+     "bias-scanner"
+    ],
+    "edges": [
+     "e-revision-improved",
+     "e-perf-accuracy",
+     "e-bias-scanner-detector"
+    ]
+   },
+   {
+    "title": "Metarreflexión y optimización del proceso",
+    "description": "Realiza un metaanálisis del proceso de crítica y optimiza la metodología.",
+    "input": "Metaanálisis: evaluar la eficacia del proceso de crítica e identificar oportunidades de optimización",
+    "nodes": [
+     "meta-reflection",
+     "process-optimizer"
+    ],
+    "edges": [
+     "e-improved-meta",
+     "e-improved-optimizer"
+    ]
+   },
+   {
+    "title": "Finalización del patrón Self-Critique",
+    "description": "Completa el ciclo de autocrítica con resultados integrales e integración del aprendizaje.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   }
+  ]
+ }
+}

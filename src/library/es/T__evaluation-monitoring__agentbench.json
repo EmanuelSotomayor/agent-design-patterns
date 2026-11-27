@@ -1,0 +1,373 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "agentbench",
+ "name": "AgentBench(AgentBench)",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "El estudio original de AgentBench evaluó su lista publicada de modelos en 8 entornos diversos y en escenarios abiertos de múltiples turnos.",
+ "features": [
+  "8 entornos de evaluación distintos",
+  "Evaluación de interacciones de múltiples turnos",
+  "Entornos de SQL, juegos, web y sistema operativo",
+  "Evaluación integral de las capacidades del agente",
+  "Paquete de evaluación de código abierto"
+ ],
+ "tldr": {
+  "what": "Ejecuta agentes en ocho entornos diversos (SQL, juegos, web, sistema operativo) con interacciones de múltiples turnos para medir su capacidad real en distintos dominios.",
+  "when": "Comparar modelos de agentes o validar si tu agente maneja tareas variadas y abiertas, más allá de benchmarks de un solo dominio.",
+  "watchOut": "Alta complejidad y costo computacional; los resultados pueden no trasladarse a tus casos de uso específicos ni a entornos personalizados."
+ },
+ "overview": {
+  "pattern": "Primer benchmark integral que evalúa LLMs como agentes en 8 entornos diversos",
+  "why": "Evaluación sistemática de las capacidades de razonamiento, toma de decisiones e interacción de múltiples turnos en escenarios realistas",
+  "insight": "Revela brechas de rendimiento significativas entre modelos comerciales y de código abierto en tareas complejas de agentes",
+  "impl": [
+   {
+    "t": "Instalar",
+    "d": "git clone https://github.com/THUDM/AgentBench"
+   },
+   {
+    "t": "Configurar",
+    "d": "Configura las API keys y las dependencias del entorno"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige los entornos de evaluación (1-8)"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Ejecuta el benchmark contra tu agente LLM"
+   },
+   {
+    "t": "Analizar",
+    "d": "Revisa el rendimiento en todos los entornos"
+   }
+  ],
+  "example": "python run.py --model <current-model-id> --environments all --output results.json",
+  "dos": [
+   "Prueba en los 8 entornos para una evaluación integral",
+   "Reserva tiempo suficiente para las interacciones de múltiples turnos (4k-13k generaciones)",
+   "Compara los resultados con las líneas base publicadas originalmente (GPT-4, Claude) y con una línea base interna actual",
+   "Enfócate en las capacidades de razonamiento a largo plazo y de toma de decisiones",
+   "Analiza los modos de fallo en tareas complejas de múltiples pasos"
+  ],
+  "donts": [
+   "Basarte en los resultados de un solo entorno para evaluar la capacidad general",
+   "Omitir la configuración adecuada del entorno y de las dependencias",
+   "Ignorar la calidad del seguimiento de instrucciones en favor de completar la tarea",
+   "Comparar modelos sin controlar la ingeniería de prompts",
+   "Suponer que un buen rendimiento en un dominio se traslada a otros"
+  ],
+  "use": [
+   "Evaluación integral de las capacidades de agentes LLM",
+   "Investigación sobre razonamiento y toma de decisiones de agentes",
+   "Comparar varios modelos en tareas diversas",
+   "Identificar debilidades específicas en el rendimiento del agente",
+   "Investigación académica y desarrollo de modelos"
+  ],
+  "avoid": [
+   "Verificaciones rápidas de rendimiento en un solo dominio",
+   "Entornos con recursos limitados (requiere 4k-13k generaciones)",
+   "Necesidades de evaluación en tiempo real",
+   "Benchmarking exclusivamente de un dominio específico",
+   "Modelos sin soporte para conversaciones de múltiples turnos"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito general",
+    "d": "Rendimiento agregado en los 8 entornos"
+   },
+   {
+    "n": "Puntaje por entorno",
+    "d": "Evaluación de capacidades específicas de cada dominio"
+   },
+   {
+    "n": "Coherencia en múltiples turnos",
+    "d": "Consistencia a lo largo de los turnos de la conversación"
+   },
+   {
+    "n": "Seguimiento de instrucciones",
+    "d": "Apego a las especificaciones de la tarea"
+   },
+   {
+    "n": "Razonamiento a largo plazo",
+    "d": "Rendimiento en tareas de razonamiento extendido"
+   },
+   {
+    "n": "Brecha API vs OSS",
+    "d": "Comparación entre modelos comerciales y de código abierto"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación de agentes LLM",
+    "d": "Evaluación integral del razonamiento y la toma de decisiones en dominios diversos"
+   },
+   {
+    "n": "Comparación de modelos",
+    "d": "Benchmarking sistemático de modelos basados en API frente a modelos de código abierto (hasta 70B parámetros)"
+   },
+   {
+    "n": "Evaluación de capacidades",
+    "d": "Identificar fortalezas y debilidades específicas en entornos de SQL, juegos, web y sistema operativo"
+   },
+   {
+    "n": "Investigación académica",
+    "d": "Respaldar publicaciones sobre capacidades de agentes y calidad de la interacción de múltiples turnos"
+   },
+   {
+    "n": "Desarrollo de agentes",
+    "d": "Orientar mejoras en el razonamiento a largo plazo y el seguimiento de instrucciones"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de evaluación AgentBench",
+  "description": "El estudio original de AgentBench evaluó su lista publicada de modelos en 8 entornos, valorando el razonamiento y la toma de decisiones en escenarios abiertos de múltiples turnos",
+  "nodes": [
+   {
+    "id": "agentbench-framework",
+    "label": "🏗️ Framework AgentBench\n\"Primer benchmark integral de agentes LLM\ncon 8 entornos diversos\npara evaluación de múltiples turnos\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "technical-environments",
+    "label": "💻 Entornos técnicos\n\"• Sistema operativo\n• Base de datos\n• Grafo de conocimiento\"",
+    "x": 200,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "interactive-environments",
+    "label": "🎮 Entornos interactivos\n\"• Juego de cartas digital\n• Acertijos de pensamiento lateral\n• Tareas domésticas\"",
+    "x": 400,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "web-environments",
+    "label": "🌐 Entornos web\n\"• Compras web\n• Navegación web\n• Escenarios del mundo real\"",
+    "x": 600,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "multiturn-evaluation",
+    "label": "🔄 Proceso de evaluación de múltiples turnos\n\"4K-13K ciclos de interacción por entorno\nSe requieren cadenas de razonamiento extendidas\nEvaluación de toma de decisiones compleja\"",
+    "x": 400,
+    "y": 350,
+    "w": 280
+   },
+   {
+    "id": "reasoning-capabilities",
+    "label": "🧠 Razonamiento a largo plazo\n\"Resolución de problemas en varios pasos\nToma de decisiones secuencial\nPlanificación orientada a objetivos\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "adaptation-capabilities",
+    "label": "🎯 Adaptación al entorno\n\"Respuestas sensibles al contexto\nEstrategias específicas de cada tarea\nAjuste dinámico del comportamiento\"",
+    "x": 400,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "interaction-capabilities",
+    "label": "🤝 Capacidades interactivas\n\"Dominio en el uso de herramientas\nManipulación del entorno\nIncorporación del feedback\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "llm-evaluation",
+    "label": "📊 Evaluación integral de LLMs\n\"Más de 27 modelos probados, entre ellos:\n• GPT-4, Claude, PaLM-2\n• Alternativas de código abierto\n• Análisis de brechas de rendimiento\"",
+    "x": 400,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "performance-insights",
+    "label": "💡 Hallazgos clave de rendimiento\n\"GPT-4 lidera con 78% de éxito en tareas domésticas\nBrechas significativas entre comerciales y OSS\nSe identifican desafíos de razonamiento a largo plazo\"",
+    "x": 400,
+    "y": 800,
+    "w": 300
+   },
+   {
+    "id": "deployment-readiness",
+    "label": "🚀 Preparación para el despliegue de agentes\n\"El benchmark revela qué LLMs\nestán listos para desplegarse como\nagentes autónomos en el mundo real\"",
+    "x": 400,
+    "y": 950,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "agentbench-framework",
+    "t": "technical-environments",
+    "label": "despliega pruebas técnicas"
+   },
+   {
+    "id": "e2",
+    "s": "agentbench-framework",
+    "t": "interactive-environments",
+    "label": "crea desafíos interactivos"
+   },
+   {
+    "id": "e3",
+    "s": "agentbench-framework",
+    "t": "web-environments",
+    "label": "implementa escenarios web"
+   },
+   {
+    "id": "e4",
+    "s": "technical-environments",
+    "t": "multiturn-evaluation",
+    "label": "requiere múltiples turnos"
+   },
+   {
+    "id": "e5",
+    "s": "interactive-environments",
+    "t": "multiturn-evaluation",
+    "label": "habilita ciclos de interacción"
+   },
+   {
+    "id": "e6",
+    "s": "web-environments",
+    "t": "multiturn-evaluation",
+    "label": "admite sesiones extendidas"
+   },
+   {
+    "id": "e7",
+    "s": "multiturn-evaluation",
+    "t": "reasoning-capabilities",
+    "label": "evalúa el razonamiento"
+   },
+   {
+    "id": "e8",
+    "s": "multiturn-evaluation",
+    "t": "adaptation-capabilities",
+    "label": "mide la adaptación"
+   },
+   {
+    "id": "e9",
+    "s": "multiturn-evaluation",
+    "t": "interaction-capabilities",
+    "label": "prueba las habilidades de interacción"
+   },
+   {
+    "id": "e10",
+    "s": "reasoning-capabilities",
+    "t": "llm-evaluation",
+    "label": "informa la evaluación"
+   },
+   {
+    "id": "e11",
+    "s": "adaptation-capabilities",
+    "t": "llm-evaluation",
+    "label": "guía la valoración"
+   },
+   {
+    "id": "e12",
+    "s": "interaction-capabilities",
+    "t": "llm-evaluation",
+    "label": "da forma al puntaje"
+   },
+   {
+    "id": "e13",
+    "s": "llm-evaluation",
+    "t": "performance-insights",
+    "label": "revela hallazgos"
+   },
+   {
+    "id": "e14",
+    "s": "performance-insights",
+    "t": "deployment-readiness",
+    "label": "determina la preparación"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Introducción al framework AgentBench",
+    "description": "Primer benchmark integral diseñado específicamente para evaluar LLMs como agentes autónomos en 8 entornos diversos con requisitos de interacción de múltiples turnos.",
+    "input": "",
+    "nodes": [
+     "agentbench-framework"
+    ],
+    "edges": []
+   },
+   {
+    "title": "8 categorías de entornos diversos",
+    "description": "El framework despliega tres categorías de entornos: técnicos (sistema operativo, base de datos, grafo de conocimiento), interactivos (juego de cartas, acertijos, tareas domésticas) y basados en web (compras, navegación).",
+    "input": "",
+    "nodes": [
+     "technical-environments",
+     "interactive-environments",
+     "web-environments"
+    ],
+    "edges": [
+     "e1",
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Proceso de evaluación de múltiples turnos",
+    "description": "Cada entorno requiere de 4K a 13K ciclos de interacción, lo que permite una evaluación integral de cadenas de razonamiento extendidas y de capacidades complejas de toma de decisiones.",
+    "input": "",
+    "nodes": [
+     "multiturn-evaluation"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Tres dimensiones centrales de capacidad del agente",
+    "description": "La evaluación de múltiples turnos valora el razonamiento a largo plazo (resolución de problemas en varios pasos), la adaptación al entorno (estrategias sensibles al contexto) y las capacidades interactivas (dominio en el uso de herramientas).",
+    "input": "",
+    "nodes": [
+     "reasoning-capabilities",
+     "adaptation-capabilities",
+     "interaction-capabilities"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Evaluación integral de LLMs",
+    "description": "El framework evalúa más de 27 modelos, entre ellos GPT-4, Claude, PaLM-2 y alternativas de código abierto, y ofrece un análisis detallado de las brechas de rendimiento en todas las dimensiones de capacidad.",
+    "input": "",
+    "nodes": [
+     "llm-evaluation"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Hallazgos de rendimiento y preparación para el despliegue",
+    "description": "La evaluación revela hallazgos clave: GPT-4 lidera con una tasa de éxito del 78% en tareas domésticas y hay brechas significativas entre los modelos comerciales y los OSS, lo que permite tomar decisiones informadas sobre el despliegue de agentes.",
+    "input": "",
+    "nodes": [
+     "performance-insights",
+     "deployment-readiness"
+    ],
+    "edges": [
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

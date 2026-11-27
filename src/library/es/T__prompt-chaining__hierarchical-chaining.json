@@ -1,0 +1,400 @@
+{
+ "cat": "prompt-chaining",
+ "slug": "hierarchical-chaining",
+ "name": "Hierarchical Chaining",
+ "icon": "🏗️",
+ "complexity": "high",
+ "description": "Estructura los prompts en relaciones padre-hijo de varios niveles que permiten descomponer tareas complejas, donde los objetivos de alto nivel se dividen sistemáticamente en subtareas manejables con herencia de contexto; ideal para planificación de proyectos y diseño de sistemas",
+ "features": [
+  "Descomposición de tareas en varios niveles",
+  "Dependencias padre-hijo",
+  "Agregación jerárquica de resultados",
+  "Patrones de herencia de contexto"
+ ],
+ "tldr": {
+  "what": "Organiza los prompts en niveles padre-hijo donde cada hijo hereda el contexto de su padre y los resultados suben para alimentar los niveles superiores.",
+  "when": "Proyectos grandes que necesitan una división sistemática en subtareas con dependencias claras, donde la salida de cada nivel informa al siguiente.",
+  "watchOut": "Inflación del contexto y desperdicio de tokens a medida que la información heredada se acumula en niveles profundos, lo que degrada la calidad y aumenta el costo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón Hierarchical Chaining",
+  "description": "Demuestra la descomposición de tareas en varios niveles con dependencias padre-hijo y ejecución jerárquica",
+  "nodes": [
+   {
+    "id": "root",
+    "label": "Tarea raíz\n\"Crear plan de negocios\"",
+    "x": 400,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "exec-summary",
+    "label": "Resumen\nejecutivo",
+    "x": 100,
+    "y": 180,
+    "w": 140
+   },
+   {
+    "id": "market-analysis",
+    "label": "Análisis\nde mercado",
+    "x": 280,
+    "y": 180,
+    "w": 140
+   },
+   {
+    "id": "financial-proj",
+    "label": "Proyecciones\nfinancieras",
+    "x": 460,
+    "y": 180,
+    "w": 140
+   },
+   {
+    "id": "marketing-strategy",
+    "label": "Estrategia\nde marketing",
+    "x": 640,
+    "y": 180,
+    "w": 140
+   },
+   {
+    "id": "competitor-analysis",
+    "label": "Análisis de\ncompetidores",
+    "x": 180,
+    "y": 320,
+    "w": 120
+   },
+   {
+    "id": "target-customers",
+    "label": "Clientes\nobjetivo",
+    "x": 320,
+    "y": 320,
+    "w": 120
+   },
+   {
+    "id": "market-size",
+    "label": "Análisis del\ntamaño de mercado",
+    "x": 260,
+    "y": 460,
+    "w": 120
+   },
+   {
+    "id": "revenue-forecast",
+    "label": "Pronóstico\nde ingresos",
+    "x": 380,
+    "y": 320,
+    "w": 120
+   },
+   {
+    "id": "cost-analysis",
+    "label": "Análisis\nde costos",
+    "x": 520,
+    "y": 320,
+    "w": 120
+   },
+   {
+    "id": "funding-req",
+    "label": "Requisitos de\nfinanciamiento",
+    "x": 450,
+    "y": 460,
+    "w": 120
+   },
+   {
+    "id": "vision-mission",
+    "label": "Visión y\nmisión",
+    "x": 50,
+    "y": 320,
+    "w": 120
+   },
+   {
+    "id": "key-highlights",
+    "label": "Aspectos clave\ndel negocio",
+    "x": 100,
+    "y": 460,
+    "w": 120
+   },
+   {
+    "id": "market-output",
+    "label": "Insights de mercado\n• TAM: $2.5B\n• Competencia: moderada\n• Crecimiento: 15% interanual",
+    "x": 850,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "financial-output",
+    "label": "Modelo financiero\n• Año 1: $2M de ingresos\n• Punto de equilibrio: mes 18\n• Financiamiento: se necesitan $5M",
+    "x": 850,
+    "y": 460,
+    "w": 160
+   },
+   {
+    "id": "final-output",
+    "label": "Plan de negocios completo\nListo para inversionistas",
+    "x": 400,
+    "y": 600,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-root-exec",
+    "s": "root",
+    "t": "exec-summary",
+    "label": ""
+   },
+   {
+    "id": "e-root-market",
+    "s": "root",
+    "t": "market-analysis",
+    "label": ""
+   },
+   {
+    "id": "e-root-financial",
+    "s": "root",
+    "t": "financial-proj",
+    "label": ""
+   },
+   {
+    "id": "e-root-marketing",
+    "s": "root",
+    "t": "marketing-strategy",
+    "label": ""
+   },
+   {
+    "id": "e-market-competitor",
+    "s": "market-analysis",
+    "t": "competitor-analysis",
+    "label": ""
+   },
+   {
+    "id": "e-market-customers",
+    "s": "market-analysis",
+    "t": "target-customers",
+    "label": ""
+   },
+   {
+    "id": "e-customers-size",
+    "s": "target-customers",
+    "t": "market-size",
+    "label": ""
+   },
+   {
+    "id": "e-financial-revenue",
+    "s": "financial-proj",
+    "t": "revenue-forecast",
+    "label": ""
+   },
+   {
+    "id": "e-financial-cost",
+    "s": "financial-proj",
+    "t": "cost-analysis",
+    "label": ""
+   },
+   {
+    "id": "e-revenue-funding",
+    "s": "revenue-forecast",
+    "t": "funding-req",
+    "label": ""
+   },
+   {
+    "id": "e-cost-funding",
+    "s": "cost-analysis",
+    "t": "funding-req",
+    "label": ""
+   },
+   {
+    "id": "e-size-revenue",
+    "s": "market-size",
+    "t": "revenue-forecast",
+    "label": ""
+   },
+   {
+    "id": "e-exec-vision",
+    "s": "exec-summary",
+    "t": "vision-mission",
+    "label": ""
+   },
+   {
+    "id": "e-exec-highlights",
+    "s": "exec-summary",
+    "t": "key-highlights",
+    "label": ""
+   },
+   {
+    "id": "e-market-highlights",
+    "s": "market-analysis",
+    "t": "key-highlights",
+    "label": ""
+   },
+   {
+    "id": "e-financial-highlights",
+    "s": "financial-proj",
+    "t": "key-highlights",
+    "label": ""
+   },
+   {
+    "id": "e-market-output",
+    "s": "market-analysis",
+    "t": "market-output",
+    "label": ""
+   },
+   {
+    "id": "e-financial-output-edge",
+    "s": "financial-proj",
+    "t": "financial-output",
+    "label": ""
+   },
+   {
+    "id": "e-exec-final",
+    "s": "exec-summary",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "e-market-final",
+    "s": "market-output",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "e-financial-final",
+    "s": "financial-output",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "e-marketing-final",
+    "s": "marketing-strategy",
+    "t": "final-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Definición de la tarea raíz",
+    "description": "Define el objetivo de nivel superior que se dividirá jerárquicamente.",
+    "input": "Crear un plan de negocios integral para una startup de IA",
+    "nodes": [
+     "root"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Descomposición de nivel 1",
+    "description": "Divide la tarea raíz en secciones principales que se puedan trabajar de forma independiente.",
+    "input": "Tarea raíz → 4 secciones principales: Resumen ejecutivo, Análisis de mercado, Proyecciones financieras, Estrategia de marketing",
+    "nodes": [
+     "root",
+     "exec-summary",
+     "market-analysis",
+     "financial-proj",
+     "marketing-strategy"
+    ],
+    "edges": [
+     "e-root-exec",
+     "e-root-market",
+     "e-root-financial",
+     "e-root-marketing"
+    ]
+   },
+   {
+    "title": "Desglose del análisis de mercado",
+    "description": "La sección de Análisis de mercado se descompone en tareas de investigación específicas.",
+    "input": "Análisis de mercado → Análisis de competidores + Clientes objetivo + Tamaño de mercado",
+    "nodes": [
+     "market-analysis",
+     "competitor-analysis",
+     "target-customers",
+     "market-size"
+    ],
+    "edges": [
+     "e-market-competitor",
+     "e-market-customers",
+     "e-customers-size"
+    ]
+   },
+   {
+    "title": "Desglose de las proyecciones financieras",
+    "description": "La sección financiera se descompone con dependencias claras entre las subtareas.",
+    "input": "Proyecciones financieras → Pronóstico de ingresos + Análisis de costos → Requisitos de financiamiento",
+    "nodes": [
+     "financial-proj",
+     "revenue-forecast",
+     "cost-analysis",
+     "funding-req"
+    ],
+    "edges": [
+     "e-financial-revenue",
+     "e-financial-cost",
+     "e-revenue-funding",
+     "e-cost-funding"
+    ]
+   },
+   {
+    "title": "Dependencias entre ramas de la jerarquía",
+    "description": "El análisis del tamaño de mercado alimenta el pronóstico de ingresos, lo que muestra dependencias entre ramas.",
+    "input": "Datos del tamaño de mercado → Cálculos del pronóstico de ingresos",
+    "nodes": [
+     "market-size",
+     "revenue-forecast"
+    ],
+    "edges": [
+     "e-size-revenue"
+    ]
+   },
+   {
+    "title": "Finalización del análisis de mercado",
+    "description": "Las tareas de análisis de mercado se completan y generan insights consolidados.",
+    "input": "",
+    "nodes": [
+     "market-analysis",
+     "market-output"
+    ],
+    "edges": [
+     "e-market-output"
+    ]
+   },
+   {
+    "title": "Finalización del modelo financiero",
+    "description": "Las proyecciones financieras se completan con los requisitos de financiamiento calculados.",
+    "input": "",
+    "nodes": [
+     "financial-proj",
+     "financial-output"
+    ],
+    "edges": [
+     "e-financial-output-edge"
+    ]
+   },
+   {
+    "title": "Dependencias del resumen ejecutivo",
+    "description": "El resumen ejecutivo depende de que las demás secciones se completen primero.",
+    "input": "Insights de mercado + Modelo financiero → Aspectos clave del resumen ejecutivo",
+    "nodes": [
+     "exec-summary",
+     "vision-mission",
+     "key-highlights"
+    ],
+    "edges": [
+     "e-exec-vision",
+     "e-exec-highlights",
+     "e-market-highlights",
+     "e-financial-highlights"
+    ]
+   },
+   {
+    "title": "Agregación final",
+    "description": "Todas las secciones se combinan en el plan de negocios integral final.",
+    "input": "Resumen ejecutivo + Análisis de mercado + Proyecciones financieras + Estrategia de marketing",
+    "nodes": [
+     "final-output"
+    ],
+    "edges": [
+     "e-exec-final",
+     "e-market-final",
+     "e-financial-final",
+     "e-marketing-final"
+    ]
+   }
+  ]
+ }
+}

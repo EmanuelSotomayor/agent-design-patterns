@@ -1,0 +1,359 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "modular-rag",
+ "name": "Modular RAG(MRAG)",
+ "icon": "🧩",
+ "complexity": "high",
+ "description": "Arquitectura RAG flexible con módulos intercambiables que admite patrones de recuperación iterativos, adaptativos y no secuenciales",
+ "features": [
+  "Arquitectura de componentes modulares",
+  "Módulos de búsqueda",
+  "Módulos de memoria",
+  "Módulos de enrutamiento",
+  "Patrones de recuperación iterativa",
+  "Estrategias de recuperación adaptativa"
+ ],
+ "tldr": {
+  "what": "Intercambia componentes de recuperación (búsqueda, memoria, enrutamiento) para adaptar cómo un agente encuentra y usa el conocimiento en distintas consultas.",
+  "when": "Sistemas que necesitan distintas estrategias de recuperación para distintos tipos de consulta, o en los que la calidad de la recuperación mejora aprendiendo de interacciones pasadas.",
+  "watchOut": "La alta complejidad y las muchas piezas móviles dificultan depurar fallas; no queda claro qué módulo causó los malos resultados."
+ },
+ "overview": {
+  "pattern": "Arquitectura RAG descompuesta en módulos independientes e intercambiables conectados mediante interfaces estandarizadas",
+  "why": "Aporta flexibilidad, mantenibilidad y escalabilidad de equipos al separar responsabilidades en componentes distintos y verificables",
+  "insight": "Límites de módulos definidos por función (recuperación, ranking, fusión, generación) con APIs estandarizadas que permiten el intercambio en caliente",
+  "impl": [
+   {
+    "t": "Diseño de módulos",
+    "d": "Crea módulos independientes de recuperación, generación y aumentación"
+   },
+   {
+    "t": "Definición de interfaces",
+    "d": "Define APIs estandarizadas entre módulos"
+   },
+   {
+    "t": "Ensamblaje del pipeline",
+    "d": "Compón los módulos en pipelines de procesamiento flexibles"
+   },
+   {
+    "t": "Enrutamiento dinámico",
+    "d": "Enruta las consultas a las combinaciones de módulos adecuadas"
+   },
+   {
+    "t": "Orquestación de módulos",
+    "d": "Coordina la ejecución y el flujo de datos entre módulos"
+   }
+  ],
+  "example": "query → module_router → [retrieval_module, rerank_module, fusion_module] → generation_module → response",
+  "dos": [
+   "Diseña módulos con interfaces de entrada/salida claras y APIs estandarizadas",
+   "Implementa módulos intercambiables en caliente para pruebas A/B y despliegues graduales",
+   "Usa inyección de dependencias para una composición flexible de módulos",
+   "Guarda en cache las salidas de los módulos con el nivel de granularidad adecuado",
+   "Implementa verificaciones de salud de los módulos y mecanismos de respaldo"
+  ],
+  "donts": [
+   "Crear acoplamiento fuerte entre módulos o estado mutable compartido",
+   "Omitir el versionado de módulos y las consideraciones de compatibilidad hacia atrás",
+   "Ignorar el monitoreo y la observabilidad a nivel de módulo",
+   "Sobrediseñar los límites de los módulos para casos de uso simples",
+   "Descuidar el aislamiento de rendimiento de los módulos y los límites de recursos"
+  ],
+  "use": [
+   "Sistemas RAG a gran escala que requieren flexibilidad y mantenibilidad",
+   "Desarrollo con múltiples equipos con distinta experiencia de dominio",
+   "Necesidad de experimentar rápidamente con distintos enfoques",
+   "Sistemas que requieren comportamientos distintos para distintos tipos de consulta",
+   "Entornos de producción que necesitan despliegues graduales y pruebas A/B"
+  ],
+  "avoid": [
+   "Aplicaciones RAG simples de propósito único",
+   "Entornos con recursos limitados y presupuestos de latencia ajustados",
+   "Equipos pequeños sin experiencia en arquitectura modular",
+   "Prototipos e implementaciones de prueba de concepto",
+   "Sistemas con requisitos estables que no cambian"
+  ],
+  "metrics": [
+   {
+    "n": "Aislamiento de módulos",
+    "d": "Independencia y reemplazabilidad de cada módulo"
+   },
+   {
+    "n": "Flexibilidad del pipeline",
+    "d": "Cantidad de combinaciones y configuraciones de módulos admitidas"
+   },
+   {
+    "n": "Velocidad de desarrollo",
+    "d": "Tiempo para implementar módulos nuevos o modificar los existentes"
+   },
+   {
+    "n": "Confiabilidad del sistema",
+    "d": "Capacidad de aislamiento de fallas y degradación gradual"
+   },
+   {
+    "n": "Escalabilidad del rendimiento",
+    "d": "Escalado independiente de los módulos que son cuello de botella"
+   },
+   {
+    "n": "Complejidad de configuración",
+    "d": "Facilidad de composición del pipeline y orquestación de módulos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Plataformas RAG empresariales",
+    "d": "Arquitectura modular que da soporte a múltiples unidades de negocio con requisitos diferentes"
+   },
+   {
+    "n": "Infraestructura de investigación",
+    "d": "Plataformas académicas que permiten a los investigadores experimentar con distintos componentes RAG"
+   },
+   {
+    "n": "Sistemas multidominio",
+    "d": "Plataformas de comercio electrónico con módulos especializados para productos, reseñas y contenido de soporte"
+   },
+   {
+    "n": "Servicios RAG SaaS",
+    "d": "Plataformas en la nube que ofrecen a sus clientes pipelines RAG configurables"
+   },
+   {
+    "n": "Sistemas de IA híbridos",
+    "d": "Arquitecturas complejas que combinan RAG con otras capacidades de IA, como generación y análisis de código"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Modular RAG (generación aumentada por recuperación flexible)",
+  "description": "Sistema flexible de generación aumentada por recuperación con componentes modulares de enrutamiento, recuperación, generación y validación que se pueden configurar dinámicamente según la complejidad de la consulta.",
+  "nodes": [
+   {
+    "id": "user-query",
+    "label": "❓ Consulta compleja\n\"Compara la eficacia del tratamiento\nde los medicamentos para la diabetes\nen pacientes de edad avanzada\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "query-router",
+    "label": "🔀 Enrutador de consultas\nAnaliza la complejidad\nDetermina la estrategia",
+    "x": 400,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "retrieval-module-1",
+    "label": "📚 Base de datos de fármacos\nRecupera información\nbásica del medicamento",
+    "x": 150,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "retrieval-module-2",
+    "label": "🧪 Ensayos clínicos\nRecupera estudios\nde eficacia",
+    "x": 400,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "retrieval-module-3",
+    "label": "👴 Estudios en adultos mayores\nRecupera investigación\nespecífica por edad",
+    "x": 650,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "fusion-module",
+    "label": "🔗 Fusión de información\nCombina y contrasta\nmúltiples fuentes",
+    "x": 400,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "reasoning-module",
+    "label": "🧠 Módulo de razonamiento\nIdentifica vacíos\n¿Faltan datos de adultos mayores?",
+    "x": 400,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "adaptive-retrieval",
+    "label": "🔄 Recuperación adaptativa\nObtiene datos adicionales\nespecíficos de adultos mayores",
+    "x": 650,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "synthesis-module",
+    "label": "📊 Módulo de síntesis\nCompara medicamentos\nEstructura hallazgos",
+    "x": 400,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "generation-module",
+    "label": "🤖 Módulo de generación\nCrea un informe\nde análisis comparativo",
+    "x": 400,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "final-answer",
+    "label": "✅ Respuesta integral\n\"La metformina muestra mejor\ntolerancia en adultos mayores (78%)\nfrente a las sulfonilureas (65%)\"",
+    "x": 400,
+    "y": 750,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "user-query",
+    "t": "query-router",
+    "label": "analizar"
+   },
+   {
+    "id": "e2a",
+    "s": "query-router",
+    "t": "retrieval-module-1",
+    "label": "fármacos"
+   },
+   {
+    "id": "e2b",
+    "s": "query-router",
+    "t": "retrieval-module-2",
+    "label": "ensayos"
+   },
+   {
+    "id": "e2c",
+    "s": "query-router",
+    "t": "retrieval-module-3",
+    "label": "adultos mayores"
+   },
+   {
+    "id": "e3a",
+    "s": "retrieval-module-1",
+    "t": "fusion-module",
+    "label": "info básica"
+   },
+   {
+    "id": "e3b",
+    "s": "retrieval-module-2",
+    "t": "fusion-module",
+    "label": "datos de eficacia"
+   },
+   {
+    "id": "e3c",
+    "s": "retrieval-module-3",
+    "t": "fusion-module",
+    "label": "datos por edad"
+   },
+   {
+    "id": "e4",
+    "s": "fusion-module",
+    "t": "reasoning-module",
+    "label": "analizar vacíos"
+   },
+   {
+    "id": "e5",
+    "s": "reasoning-module",
+    "t": "adaptive-retrieval",
+    "label": "faltan datos"
+   },
+   {
+    "id": "e6",
+    "s": "adaptive-retrieval",
+    "t": "synthesis-module",
+    "label": "contexto adicional"
+   },
+   {
+    "id": "e7",
+    "s": "reasoning-module",
+    "t": "synthesis-module",
+    "label": "datos suficientes"
+   },
+   {
+    "id": "e8",
+    "s": "synthesis-module",
+    "t": "generation-module",
+    "label": "info estructurada"
+   },
+   {
+    "id": "e9",
+    "s": "generation-module",
+    "t": "final-answer",
+    "label": "generar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis y enrutamiento de la consulta",
+    "description": "Se analiza la consulta compleja sobre la comparación de medicamentos para la diabetes. El enrutador determina que se necesita una estrategia de recuperación de múltiples fuentes.",
+    "input": "",
+    "nodes": [
+     "user-query",
+     "query-router"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Recuperación paralela de módulos",
+    "description": "Tres módulos especializados recuperan en simultáneo: la base de datos de fármacos para la información básica, los ensayos clínicos para la eficacia y los estudios en adultos mayores para los datos específicos por edad.",
+    "input": "",
+    "nodes": [
+     "retrieval-module-1",
+     "retrieval-module-2",
+     "retrieval-module-3"
+    ],
+    "edges": [
+     "e2a",
+     "e2b",
+     "e2c"
+    ]
+   },
+   {
+    "title": "Fusión de información",
+    "description": "El módulo de fusión combina y contrasta la información de todos los módulos de recuperación, identificando conexiones y posibles vacíos.",
+    "input": "",
+    "nodes": [
+     "fusion-module"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c"
+    ]
+   },
+   {
+    "title": "Razonamiento adaptativo",
+    "description": "El módulo de razonamiento detecta datos insuficientes específicos de adultos mayores y activa la recuperación adaptativa para obtener información adicional focalizada.",
+    "input": "",
+    "nodes": [
+     "reasoning-module",
+     "adaptive-retrieval"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Síntesis y generación",
+    "description": "Toda la información recuperada se sintetiza en una comparación estructurada y luego el módulo de generación crea una respuesta integral con estadísticas específicas.",
+    "input": "",
+    "nodes": [
+     "synthesis-module",
+     "generation-module",
+     "final-answer"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9"
+    ]
+   }
+  ]
+ }
+}

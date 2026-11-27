@@ -1,0 +1,682 @@
+{
+ "cat": "memory-management",
+ "slug": "episodic-memory-systems",
+ "name": "Episodic Memory Systems(EMS)",
+ "icon": "📝",
+ "complexity": "high",
+ "description": "Memoria indexada en el tiempo de experiencias y eventos específicos, que almacena el historial autobiográfico de las interacciones de los agentes en sistemas de IA agéntica multiagente",
+ "features": [
+  "Almacenamiento de experiencias indexado en el tiempo",
+  "Trazas de memoria autobiográfica",
+  "Preservación de secuencias de eventos",
+  "Captura de experiencias con contexto rico",
+  "Historial de interacciones multiagente",
+  "Soporte para razonamiento temporal",
+  "Aprendizaje basado en la experiencia",
+  "Continuidad entre sesiones"
+ ],
+ "tldr": {
+  "what": "Almacena registros con marca de tiempo de las interacciones y eventos de los agentes, indexados por tiempo, lo que permite a los agentes recordar experiencias pasadas específicas y su contexto entre sesiones.",
+  "when": "Sistemas multiagente en los que los agentes necesitan aprender de interacciones previas, detectar patrones a lo largo del tiempo o mantener un comportamiento consistente basado en un historial compartido.",
+  "watchOut": "Los costos de almacenamiento y recuperación crecen rápidamente; consultar episodios antiguos se vuelve lento sin una indexación cuidadosa, y los recuerdos irrelevantes pueden inducir a malas decisiones."
+ },
+ "overview": {
+  "pattern": "Memoria indexada en el tiempo de experiencias y eventos específicos, que almacena el historial de interacciones del agente",
+  "why": "Aprendizaje basado en la experiencia, reconocimiento de patrones a partir de interacciones pasadas, continuidad entre sesiones",
+  "insight": "Episodios = Contexto + Resultado + Marca de tiempo → Reconocimiento de patrones → Mejores decisiones futuras",
+  "impl": [
+   {
+    "t": "Indexar eventos",
+    "d": "Asigna marca de tiempo e ID a todas las interacciones del agente"
+   },
+   {
+    "t": "Almacenar contexto",
+    "d": "Captura el contexto situacional completo y los resultados"
+   },
+   {
+    "t": "Construir la recuperación",
+    "d": "Búsqueda por similitud + temporal + basada en resultados"
+   },
+   {
+    "t": "Compartir episodios",
+    "d": "Acceso a la memoria episódica entre agentes"
+   },
+   {
+    "t": "Aprender patrones",
+    "d": "Extrae patrones recurrentes del historial de episodios"
+   }
+  ],
+  "example": "event_capture → context_storage → similarity_indexing → cross_agent_sharing → pattern_learning",
+  "dos": [
+   "Incluye metadatos contextuales ricos (participantes, resultados, confianza)",
+   "Usa marcas de tiempo jerárquicas (sesión > interacción > subacción)",
+   "Implementa búsqueda por similitud semántica para recuperar episodios",
+   "Almacena episodios tanto exitosos como fallidos para aprender",
+   "Habilita el intercambio de episodios entre agentes y el reconocimiento de patrones"
+  ],
+  "donts": [
+   "Almacenar solo resultados exitosos (aprende también de los fracasos)",
+   "Usar el almacenamiento de episodios para datos factuales que cambian con frecuencia",
+   "Ignorar las restricciones de privacidad al compartir episodios entre agentes",
+   "Almacenar episodios sin contexto suficiente para comprenderlos en el futuro",
+   "Dejar que el almacenamiento de episodios crezca indefinidamente sin estrategias de depuración"
+  ],
+  "use": [
+   "Se necesita tomar decisiones basadas en la experiencia",
+   "Aprendizaje a partir de patrones de interacción",
+   "El historial de colaboración multiagente es importante",
+   "Se requiere razonamiento temporal",
+   "Continuidad en la atención al cliente"
+  ],
+  "avoid": [
+   "Operaciones simples sin estado",
+   "Interacciones de usuarios sensibles a la privacidad",
+   "Requisitos de tiempo real y baja latencia",
+   "Necesidades de almacenamiento de conocimiento factual",
+   "Entornos con almacenamiento limitado"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de recuperación de episodios",
+    "d": "% de episodios relevantes encontrados"
+   },
+   {
+    "n": "Tasa de reconocimiento de patrones",
+    "d": "Identificación exitosa de patrones"
+   },
+   {
+    "n": "Velocidad de aprendizaje entre agentes",
+    "d": "Tiempo para compartir patrones exitosos"
+   },
+   {
+    "n": "Uso de la memoria",
+    "d": "Eficiencia de almacenamiento por episodio"
+   },
+   {
+    "n": "Coherencia temporal",
+    "d": "Puntuación de consistencia cronológica"
+   },
+   {
+    "n": "Mejora de decisiones",
+    "d": "Aumento de la tasa de éxito con el tiempo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Historial de atención al cliente",
+    "d": "Un sistema multiagente recuerda preferencias del cliente, problemas pasados y patrones de resolución (resolución de incidencias 85% más rápida)"
+   },
+   {
+    "n": "Seguimiento de tratamientos médicos",
+    "d": "Episodios de interacciones con pacientes, respuestas a tratamientos, patrones de resultados (protocolos de atención personalizados)"
+   },
+   {
+    "n": "Tutoría educativa",
+    "d": "Episodios de aprendizaje de estudiantes, patrones de conceptos erróneos, estrategias de explicación exitosas (métodos de enseñanza adaptativos)"
+   },
+   {
+    "n": "Equipos de desarrollo de software",
+    "d": "Episodios de revisión de código, patrones de bugs, enfoques de depuración exitosos (transferencia de conocimiento entre desarrolladores)"
+   },
+   {
+    "n": "Asesoría financiera",
+    "d": "Historial de interacciones con clientes, episodios de respuesta del mercado, patrones de estrategias exitosas (asesoría de inversión personalizada)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Episodic Memory Systems",
+  "description": "Sistema de memoria que captura y recuerda experiencias, eventos e interacciones específicas con contexto temporal, lo que permite a los agentes aprender de situaciones pasadas y aplicar conocimiento experiencial.",
+  "nodes": [
+   {
+    "id": "agent-experience",
+    "label": "🤖 Experiencia del agente\n\"Queja de un cliente por retraso en el envío\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "memory-controller",
+    "label": "🧠 Controlador de memoria\nOrquesta el almacenamiento y la recuperación",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "experience-encoder",
+    "label": "🔐 Codificador de experiencias\nContexto + Acción + Resultado",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "temporal-indexer",
+    "label": "⏰ Indexador temporal\nSeguimiento de marcas de tiempo y secuencias",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "episodic-store",
+    "label": "💾 Almacén episódico\nBase de datos de memoria a largo plazo",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "similarity-engine",
+    "label": "🔍 Motor de similitud\nCoincidencia de patrones y recuperación",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "context-capture",
+    "label": "📋 Contexto\n• Estado del entorno\n• Objetivos del agente\n• Parámetros de la tarea",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "action-record",
+    "label": "⚡ Acciones\n• Decisiones tomadas\n• Pasos realizados\n• Herramientas usadas",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "outcome-evaluation",
+    "label": "📊 Resultados\n• Éxito/fracaso\n• Métricas\n• Feedback",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "emotional-tags",
+    "label": "💭 Etiquetas emocionales\n• Importancia\n• Nivel de sorpresa\n• Confianza",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "metadata",
+    "label": "🏷️ Metadatos\n• ID del agente\n• Tipo de tarea\n• Duración",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "memory-formation",
+    "label": "🎯 Formación de memoria\nProceso de consolidación",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "memory-retrieval",
+    "label": "🔄 Recuperación de memoria\nRecuerdo basado en similitud",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "memory-consolidation",
+    "label": "🔗 Consolidación\nExtracción de patrones",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "memory-decay",
+    "label": "⏳ Decaimiento de la memoria\nCurva del olvido",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "similar-context",
+    "label": "🔍 Contexto similar\n\"Otra queja por envío\"",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "temporal-cue",
+    "label": "📅 Pista temporal\n\"Incidencias de la semana pasada\"",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "emotional-trigger",
+    "label": "😤 Disparador emocional\n\"Situación de alta urgencia\"",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "explicit-query",
+    "label": "❓ Consulta explícita\n\"¿Cómo manejamos esto?\"",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "episode-1",
+    "label": "📝 Episodio #142\n90% de similitud\n\"Reembolso + envío urgente\"",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "episode-2",
+    "label": "📝 Episodio #89\n85% de similitud\n\"Se ofreció un descuento\"",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "episode-3",
+    "label": "📝 Episodio #201\n75% de similitud\n\"Escalado al gerente\"",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "episode-4",
+    "label": "📝 Episodio #156\n70% de similitud\n\"Se proporcionó el seguimiento\"",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "pattern-recognition",
+    "label": "🎯 Reconocimiento de patrones\nEstrategias exitosas comunes",
+    "x": 150,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "strategy-adaptation",
+    "label": "🔄 Adaptación de estrategia\nEnfoque refinado",
+    "x": 350,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "confidence-update",
+    "label": "📈 Actualización de confianza\nProbabilidad de éxito",
+    "x": 550,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "informed-decision",
+    "label": "✨ Decisión informada\n\"Ofrecer reembolso + envío urgente según éxitos anteriores\"",
+    "x": 400,
+    "y": 1000,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "experience-controller",
+    "s": "agent-experience",
+    "t": "memory-controller",
+    "label": ""
+   },
+   {
+    "id": "controller-encoder",
+    "s": "memory-controller",
+    "t": "experience-encoder",
+    "label": "Codificar"
+   },
+   {
+    "id": "controller-temporal",
+    "s": "memory-controller",
+    "t": "temporal-indexer",
+    "label": "Indexar"
+   },
+   {
+    "id": "encoder-store",
+    "s": "experience-encoder",
+    "t": "episodic-store",
+    "label": ""
+   },
+   {
+    "id": "temporal-store",
+    "s": "temporal-indexer",
+    "t": "episodic-store",
+    "label": ""
+   },
+   {
+    "id": "store-similarity",
+    "s": "episodic-store",
+    "t": "similarity-engine",
+    "label": ""
+   },
+   {
+    "id": "context-encoder",
+    "s": "context-capture",
+    "t": "experience-encoder",
+    "label": ""
+   },
+   {
+    "id": "action-encoder",
+    "s": "action-record",
+    "t": "experience-encoder",
+    "label": ""
+   },
+   {
+    "id": "outcome-encoder",
+    "s": "outcome-evaluation",
+    "t": "experience-encoder",
+    "label": ""
+   },
+   {
+    "id": "emotional-encoder",
+    "s": "emotional-tags",
+    "t": "experience-encoder",
+    "label": ""
+   },
+   {
+    "id": "metadata-temporal",
+    "s": "metadata",
+    "t": "temporal-indexer",
+    "label": ""
+   },
+   {
+    "id": "encoder-formation",
+    "s": "experience-encoder",
+    "t": "memory-formation",
+    "label": "Formar"
+   },
+   {
+    "id": "similarity-retrieval",
+    "s": "similarity-engine",
+    "t": "memory-retrieval",
+    "label": "Recordar"
+   },
+   {
+    "id": "formation-consolidation",
+    "s": "memory-formation",
+    "t": "memory-consolidation",
+    "label": ""
+   },
+   {
+    "id": "consolidation-decay",
+    "s": "memory-consolidation",
+    "t": "memory-decay",
+    "label": "Tiempo"
+   },
+   {
+    "id": "similar-similarity",
+    "s": "similar-context",
+    "t": "similarity-engine",
+    "label": ""
+   },
+   {
+    "id": "temporal-similarity",
+    "s": "temporal-cue",
+    "t": "similarity-engine",
+    "label": ""
+   },
+   {
+    "id": "emotional-similarity",
+    "s": "emotional-trigger",
+    "t": "similarity-engine",
+    "label": ""
+   },
+   {
+    "id": "explicit-similarity",
+    "s": "explicit-query",
+    "t": "similarity-engine",
+    "label": ""
+   },
+   {
+    "id": "retrieval-episode1",
+    "s": "memory-retrieval",
+    "t": "episode-1",
+    "label": "Coincidencia"
+   },
+   {
+    "id": "retrieval-episode2",
+    "s": "memory-retrieval",
+    "t": "episode-2",
+    "label": "Coincidencia"
+   },
+   {
+    "id": "retrieval-episode3",
+    "s": "memory-retrieval",
+    "t": "episode-3",
+    "label": "Coincidencia"
+   },
+   {
+    "id": "retrieval-episode4",
+    "s": "memory-retrieval",
+    "t": "episode-4",
+    "label": "Coincidencia"
+   },
+   {
+    "id": "episode1-pattern",
+    "s": "episode-1",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "episode2-pattern",
+    "s": "episode-2",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "episode3-pattern",
+    "s": "episode-3",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "pattern-strategy",
+    "s": "pattern-recognition",
+    "t": "strategy-adaptation",
+    "label": ""
+   },
+   {
+    "id": "strategy-confidence",
+    "s": "strategy-adaptation",
+    "t": "confidence-update",
+    "label": ""
+   },
+   {
+    "id": "pattern-decision",
+    "s": "pattern-recognition",
+    "t": "informed-decision",
+    "label": ""
+   },
+   {
+    "id": "strategy-decision",
+    "s": "strategy-adaptation",
+    "t": "informed-decision",
+    "label": ""
+   },
+   {
+    "id": "confidence-decision",
+    "s": "confidence-update",
+    "t": "informed-decision",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Nueva experiencia",
+    "description": "El agente se enfrenta a un escenario de queja de un cliente",
+    "input": "",
+    "nodes": [
+     "agent-experience",
+     "memory-controller"
+    ],
+    "edges": [
+     "experience-controller"
+    ]
+   },
+   {
+    "title": "Codificación de la experiencia",
+    "description": "Descomponiendo la experiencia en componentes",
+    "input": "",
+    "nodes": [
+     "memory-controller",
+     "experience-encoder",
+     "temporal-indexer"
+    ],
+    "edges": [
+     "controller-encoder",
+     "controller-temporal"
+    ]
+   },
+   {
+    "title": "Componentes del episodio",
+    "description": "Capturando contexto, acciones, resultados, emociones y metadatos",
+    "input": "",
+    "nodes": [
+     "context-capture",
+     "action-record",
+     "outcome-evaluation",
+     "emotional-tags",
+     "metadata"
+    ],
+    "edges": [
+     "context-encoder",
+     "action-encoder",
+     "outcome-encoder",
+     "emotional-encoder",
+     "metadata-temporal"
+    ]
+   },
+   {
+    "title": "Almacenamiento en memoria",
+    "description": "Almacenando el episodio codificado en la memoria a largo plazo",
+    "input": "",
+    "nodes": [
+     "experience-encoder",
+     "temporal-indexer",
+     "episodic-store"
+    ],
+    "edges": [
+     "encoder-store",
+     "temporal-store"
+    ]
+   },
+   {
+    "title": "Formación de memoria",
+    "description": "Consolidando y fortaleciendo las trazas de memoria",
+    "input": "",
+    "nodes": [
+     "memory-formation",
+     "memory-consolidation",
+     "memory-decay"
+    ],
+    "edges": [
+     "encoder-formation",
+     "formation-consolidation",
+     "consolidation-decay"
+    ]
+   },
+   {
+    "title": "Disparadores de recuperación",
+    "description": "Una nueva situación dispara la búsqueda en memoria",
+    "input": "",
+    "nodes": [
+     "similar-context",
+     "temporal-cue",
+     "emotional-trigger",
+     "explicit-query",
+     "similarity-engine"
+    ],
+    "edges": [
+     "similar-similarity",
+     "temporal-similarity",
+     "emotional-similarity",
+     "explicit-similarity"
+    ]
+   },
+   {
+    "title": "Recuperación de memoria",
+    "description": "Encontrando episodios pasados similares",
+    "input": "",
+    "nodes": [
+     "similarity-engine",
+     "memory-retrieval",
+     "episodic-store"
+    ],
+    "edges": [
+     "store-similarity",
+     "similarity-retrieval"
+    ]
+   },
+   {
+    "title": "Recuerdo de episodios",
+    "description": "Recuperando experiencias pasadas relevantes",
+    "input": "",
+    "nodes": [
+     "memory-retrieval",
+     "episode-1",
+     "episode-2",
+     "episode-3",
+     "episode-4"
+    ],
+    "edges": [
+     "retrieval-episode1",
+     "retrieval-episode2",
+     "retrieval-episode3",
+     "retrieval-episode4"
+    ]
+   },
+   {
+    "title": "Reconocimiento de patrones",
+    "description": "Identificando patrones exitosos a partir de episodios pasados",
+    "input": "",
+    "nodes": [
+     "episode-1",
+     "episode-2",
+     "episode-3",
+     "pattern-recognition"
+    ],
+    "edges": [
+     "episode1-pattern",
+     "episode2-pattern",
+     "episode3-pattern"
+    ]
+   },
+   {
+    "title": "Adaptación de estrategia",
+    "description": "Adaptando la estrategia según los éxitos pasados",
+    "input": "",
+    "nodes": [
+     "pattern-recognition",
+     "strategy-adaptation",
+     "confidence-update"
+    ],
+    "edges": [
+     "pattern-strategy",
+     "strategy-confidence"
+    ]
+   },
+   {
+    "title": "Decisión informada",
+    "description": "Tomando la decisión con base en la memoria episódica",
+    "input": "",
+    "nodes": [
+     "pattern-recognition",
+     "strategy-adaptation",
+     "confidence-update",
+     "informed-decision"
+    ],
+    "edges": [
+     "pattern-decision",
+     "strategy-decision",
+     "confidence-decision"
+    ]
+   }
+  ]
+ }
+}

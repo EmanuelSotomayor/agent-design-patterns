@@ -1,0 +1,687 @@
+{
+ "cat": "memory-management",
+ "slug": "distributed-memory-architectures",
+ "name": "Distributed Memory Architectures(DMA)",
+ "icon": "🌐",
+ "complexity": "high",
+ "description": "Sistemas de memoria escalables distribuidos entre múltiples agentes, con patrones de acceso coordinados y mecanismos de consistencia",
+ "features": [
+  "Coordinación de almacenamiento distribuido",
+  "Gestión de protocolos de consistencia",
+  "Balanceo de carga entre nodos de memoria",
+  "Sincronización entre agentes"
+ ],
+ "tldr": {
+  "what": "Divide el almacenamiento de memoria entre múltiples agentes, con protocolos que garantizan la consistencia de los datos y lecturas/escrituras coordinadas entre nodos.",
+  "when": "Muchos agentes necesitan estado compartido a gran escala, se requiere distribución geográfica o un único cuello de botella de memoria limitaría el rendimiento.",
+  "watchOut": "Los protocolos de consistencia agregan latencia y complejidad; las particiones de red pueden provocar estados divergentes o fallas en cascada entre agentes."
+ },
+ "overview": {
+  "pattern": "Sistemas de memoria escalables distribuidos entre múltiples agentes, con acceso coordinado y mecanismos de consistencia",
+  "why": "Soporte a escala masiva, tolerancia a fallos, distribución geográfica y escalado elástico para grandes sistemas multiagente",
+  "insight": "Compromisos del teorema CAP + protocolos de consenso + estrategia de particionamiento → memoria escalable y tolerante a fallos",
+  "impl": [
+   {
+    "t": "Elegir la consistencia",
+    "d": "Compromisos del teorema CAP: CP (consistencia+partición) frente a AP (disponibilidad+partición)"
+   },
+   {
+    "t": "Diseñar el particionamiento",
+    "d": "Hashing consistente, sharding por rangos o por afinidad de agente"
+   },
+   {
+    "t": "Implementar el consenso",
+    "d": "Consenso Raft, PBFT o blockchain para la coordinación"
+   },
+   {
+    "t": "Agregar replicación",
+    "d": "Multi-master o master-slave con resolución de conflictos"
+   },
+   {
+    "t": "Monitorear y escalar",
+    "d": "Membresía dinámica, balanceo de carga, detección de fallos"
+   }
+  ],
+  "example": "consistency_model → partitioning_strategy → consensus_protocol → replication_pattern → monitoring_scaling",
+  "dos": [
+   "Elige el nivel de consistencia según el caso de uso: fuerte para transacciones, eventual para escalabilidad",
+   "Implementa hashing consistente para una distribución uniforme de la carga entre nodos de memoria",
+   "Usa relojes vectoriales o marcas de tiempo lógicas para un ordenamiento con consistencia causal",
+   "Diseña pensando en las particiones de red: implementa patrones de degradación elegante",
+   "Monitorea la salud del sistema: latencia, rendimiento, retraso de consistencia, eventos de partición"
+  ],
+  "donts": [
+   "Suponer que la consistencia fuerte siempre es necesaria: la consistencia eventual suele ser suficiente",
+   "Ignorar los compromisos del teorema CAP al diseñar sistemas de memoria distribuida",
+   "Olvidar manejar las fallas bizantinas en entornos multiagente adversarios",
+   "Pasar por alto el impacto de la latencia de red en los patrones de acceso a memoria",
+   "Desplegar sin mecanismos adecuados de respaldo y recuperación ante desastres"
+  ],
+  "use": [
+   "Sistemas multiagente a gran escala (más de 100 agentes)",
+   "Despliegues de agentes distribuidos geográficamente",
+   "Requisitos de alta disponibilidad y tolerancia a fallos",
+   "Necesidades masivas de almacenamiento de memoria (escala de TB o más)",
+   "Membresía dinámica de agentes y escalado elástico"
+  ],
+  "avoid": [
+   "Sistemas a pequeña escala con <10 agentes",
+   "Requisitos de consistencia fuerte con baja latencia",
+   "Despliegues simples en un único centro de datos",
+   "Escenarios de edge computing con memoria limitada",
+   "Entornos de prototipo o de desarrollo"
+  ],
+  "metrics": [
+   {
+    "n": "Retraso de consistencia",
+    "d": "Tiempo para propagar las actualizaciones a todas las réplicas"
+   },
+   {
+    "n": "Disponibilidad",
+    "d": "% de tiempo activo ante particiones de red y fallas de nodos"
+   },
+   {
+    "n": "Tolerancia a particiones",
+    "d": "Funcionalidad del sistema durante divisiones de red"
+   },
+   {
+    "n": "Latencia de acceso a memoria",
+    "d": "Tiempos de respuesta de lectura/escritura P50/P95/P99"
+   },
+   {
+    "n": "Distribución de carga",
+    "d": "Distribución de memoria y solicitudes entre nodos"
+   },
+   {
+    "n": "Tiempo de recuperación ante fallos",
+    "d": "Tiempo para restablecer la funcionalidad completa después de fallas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Redes globales de trading con IA",
+    "d": "Más de 1000 agentes de trading en distintos continentes que comparten memoria de mercado (consistencia eventual, tolerancia a particiones)"
+   },
+   {
+    "n": "Flotas de vehículos autónomos",
+    "d": "Coordinación a escala de ciudad con memoria de tráfico distribuida (particionamiento por ubicación, tolerancia a fallas bizantinas)"
+   },
+   {
+    "n": "Sistemas IoT de ciudades inteligentes",
+    "d": "Agentes sensores distribuidos con memoria ambiental compartida (arquitectura híbrida edge-cloud)"
+   },
+   {
+    "n": "Servicios de IA en múltiples centros de datos",
+    "d": "Agentes empresariales que abarcan regiones con bases de conocimiento replicadas (consistencia fuerte para datos críticos)"
+   },
+   {
+    "n": "Redes de agentes en blockchain",
+    "d": "Agentes descentralizados con memoria en un libro mayor distribuido (consistencia basada en consenso, historial inmutable)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Arquitecturas de memoria distribuida",
+  "description": "Sistemas de memoria escalables distribuidos entre múltiples nodos, con balanceo de carga, replicación y mecanismos de consistencia para cubrir los requisitos de memoria de agentes a gran escala.",
+  "nodes": [
+   {
+    "id": "memory-request",
+    "label": "🌐 Solicitud de memoria distribuida\n\"Acceder al conocimiento en múltiples nodos y regiones\"",
+    "x": 400,
+    "y": 50,
+    "w": 420
+   },
+   {
+    "id": "memory-orchestrator",
+    "label": "🎛️ Orquestador de memoria\nCoordinación y enrutamiento distribuidos",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "node-region-1",
+    "label": "📍 Región 1\nNorteamérica\nMemorias locales",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "node-region-2",
+    "label": "📍 Región 2\nEuropa\nMemorias locales",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "node-region-3",
+    "label": "📍 Región 3\nAsia-Pacífico\nMemorias locales",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "node-region-4",
+    "label": "📍 Región 4\nEdge global\nNodos de cache",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "local-cache",
+    "label": "💨 Cache local\nDatos calientes\nLatencia <10ms",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "regional-storage",
+    "label": "🗄️ Almacenamiento regional\nAcceso frecuente\nLatencia <50ms",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "global-repository",
+    "label": "🌍 Repositorio global\nDataset completo\nLatencia <200ms",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "archive-storage",
+    "label": "📦 Almacenamiento de archivo\nDatos fríos\nLatencia <1s",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "backup-replicas",
+    "label": "🔐 Réplicas de respaldo\nRecuperación ante desastres\nRedundancia",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "partitioning-strategy",
+    "label": "✂️ Particionamiento\nSharding de datos\nDistribución de carga",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "replication-manager",
+    "label": "📋 Replicación\nGestión de copias\nConsistencia",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "synchronization-service",
+    "label": "🔄 Sincronización\nSincronización entre nodos\nResolución de conflictos",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "routing-optimizer",
+    "label": "🛣️ Enrutamiento\nRuta óptima\nBalanceo de carga",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "strong-consistency",
+    "label": "🔒 Consistencia fuerte\nLinealizable\nSincronización inmediata",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "eventual-consistency",
+    "label": "🔄 Consistencia eventual\nConverge con el tiempo\nAlta disponibilidad",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "causal-consistency",
+    "label": "➡️ Consistencia causal\nOrden preservado\nOperaciones relacionadas",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "read-write-quorum",
+    "label": "📊 Quórum\nAcuerdo por mayoría\nConsistencia ajustable",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "failure-detector",
+    "label": "🚨 Detección de fallos\nMonitoreo de nodos\nHealth checks",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "failover-controller",
+    "label": "🔀 Failover\nConmutación automática\nActivación del respaldo",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "recovery-manager",
+    "label": "🔧 Recuperación\nRestauración de datos\nProceso de reconstrucción",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "consensus-protocol",
+    "label": "🤝 Consenso\nRaft/Paxos\nProtocolo de acuerdo",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "cdn-integration",
+    "label": "🌐 Integración con CDN\nCache en el edge\nEntrega global",
+    "x": 150,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "compression-layer",
+    "label": "🗜️ Compresión\nReducción de datos\nAhorro de ancho de banda",
+    "x": 350,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "prefetch-engine",
+    "label": "🔮 Precarga\nCarga predictiva\nReducción de latencia",
+    "x": 550,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "distributed-response",
+    "label": "✨ Respuesta distribuida\nAcceso a memoria rápido, confiable y distribuido globalmente",
+    "x": 400,
+    "y": 1000,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-orchestrator",
+    "s": "memory-request",
+    "t": "memory-orchestrator",
+    "label": ""
+   },
+   {
+    "id": "orchestrator-region1",
+    "s": "memory-orchestrator",
+    "t": "node-region-1",
+    "label": "Enrutar"
+   },
+   {
+    "id": "orchestrator-region2",
+    "s": "memory-orchestrator",
+    "t": "node-region-2",
+    "label": "Enrutar"
+   },
+   {
+    "id": "orchestrator-region3",
+    "s": "memory-orchestrator",
+    "t": "node-region-3",
+    "label": "Enrutar"
+   },
+   {
+    "id": "orchestrator-region4",
+    "s": "memory-orchestrator",
+    "t": "node-region-4",
+    "label": "Enrutar"
+   },
+   {
+    "id": "region1-cache",
+    "s": "node-region-1",
+    "t": "local-cache",
+    "label": ""
+   },
+   {
+    "id": "region2-regional",
+    "s": "node-region-2",
+    "t": "regional-storage",
+    "label": ""
+   },
+   {
+    "id": "region3-global",
+    "s": "node-region-3",
+    "t": "global-repository",
+    "label": ""
+   },
+   {
+    "id": "region4-archive",
+    "s": "node-region-4",
+    "t": "archive-storage",
+    "label": ""
+   },
+   {
+    "id": "region1-region2",
+    "s": "node-region-1",
+    "t": "node-region-2",
+    "label": "Sincronizar"
+   },
+   {
+    "id": "region2-region3",
+    "s": "node-region-2",
+    "t": "node-region-3",
+    "label": "Sincronizar"
+   },
+   {
+    "id": "region3-region4",
+    "s": "node-region-3",
+    "t": "node-region-4",
+    "label": "Sincronizar"
+   },
+   {
+    "id": "global-backup",
+    "s": "global-repository",
+    "t": "backup-replicas",
+    "label": "Respaldar"
+   },
+   {
+    "id": "cache-partitioning",
+    "s": "local-cache",
+    "t": "partitioning-strategy",
+    "label": ""
+   },
+   {
+    "id": "regional-replication",
+    "s": "regional-storage",
+    "t": "replication-manager",
+    "label": ""
+   },
+   {
+    "id": "global-sync",
+    "s": "global-repository",
+    "t": "synchronization-service",
+    "label": ""
+   },
+   {
+    "id": "archive-routing",
+    "s": "archive-storage",
+    "t": "routing-optimizer",
+    "label": ""
+   },
+   {
+    "id": "partitioning-strong",
+    "s": "partitioning-strategy",
+    "t": "strong-consistency",
+    "label": ""
+   },
+   {
+    "id": "replication-eventual",
+    "s": "replication-manager",
+    "t": "eventual-consistency",
+    "label": ""
+   },
+   {
+    "id": "sync-causal",
+    "s": "synchronization-service",
+    "t": "causal-consistency",
+    "label": ""
+   },
+   {
+    "id": "routing-quorum",
+    "s": "routing-optimizer",
+    "t": "read-write-quorum",
+    "label": ""
+   },
+   {
+    "id": "strong-failure",
+    "s": "strong-consistency",
+    "t": "failure-detector",
+    "label": ""
+   },
+   {
+    "id": "eventual-failover",
+    "s": "eventual-consistency",
+    "t": "failover-controller",
+    "label": ""
+   },
+   {
+    "id": "causal-recovery",
+    "s": "causal-consistency",
+    "t": "recovery-manager",
+    "label": ""
+   },
+   {
+    "id": "quorum-consensus",
+    "s": "read-write-quorum",
+    "t": "consensus-protocol",
+    "label": ""
+   },
+   {
+    "id": "failure-cdn",
+    "s": "failure-detector",
+    "t": "cdn-integration",
+    "label": ""
+   },
+   {
+    "id": "failover-compression",
+    "s": "failover-controller",
+    "t": "compression-layer",
+    "label": ""
+   },
+   {
+    "id": "recovery-prefetch",
+    "s": "recovery-manager",
+    "t": "prefetch-engine",
+    "label": ""
+   },
+   {
+    "id": "consensus-orchestrator",
+    "s": "consensus-protocol",
+    "t": "memory-orchestrator",
+    "label": "Consenso"
+   },
+   {
+    "id": "cdn-response",
+    "s": "cdn-integration",
+    "t": "distributed-response",
+    "label": ""
+   },
+   {
+    "id": "compression-response",
+    "s": "compression-layer",
+    "t": "distributed-response",
+    "label": ""
+   },
+   {
+    "id": "prefetch-response",
+    "s": "prefetch-engine",
+    "t": "distributed-response",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud de memoria",
+    "description": "La solicitud de memoria distribuida llega al orquestador",
+    "input": "",
+    "nodes": [
+     "memory-request",
+     "memory-orchestrator"
+    ],
+    "edges": [
+     "request-orchestrator"
+    ]
+   },
+   {
+    "title": "Distribución regional",
+    "description": "La solicitud se enruta a los nodos regionales apropiados",
+    "input": "",
+    "nodes": [
+     "memory-orchestrator",
+     "node-region-1",
+     "node-region-2",
+     "node-region-3",
+     "node-region-4"
+    ],
+    "edges": [
+     "orchestrator-region1",
+     "orchestrator-region2",
+     "orchestrator-region3",
+     "orchestrator-region4"
+    ]
+   },
+   {
+    "title": "Acceso al almacenamiento",
+    "description": "Se accede a distintas capas de almacenamiento según la localidad de los datos",
+    "input": "",
+    "nodes": [
+     "node-region-1",
+     "node-region-2",
+     "node-region-3",
+     "node-region-4",
+     "local-cache",
+     "regional-storage",
+     "global-repository",
+     "archive-storage"
+    ],
+    "edges": [
+     "region1-cache",
+     "region2-regional",
+     "region3-global",
+     "region4-archive"
+    ]
+   },
+   {
+    "title": "Sincronización entre regiones",
+    "description": "Se sincronizan los datos entre regiones",
+    "input": "",
+    "nodes": [
+     "node-region-1",
+     "node-region-2",
+     "node-region-3",
+     "node-region-4"
+    ],
+    "edges": [
+     "region1-region2",
+     "region2-region3",
+     "region3-region4"
+    ]
+   },
+   {
+    "title": "Respaldo y replicación",
+    "description": "Se mantienen réplicas de respaldo para la tolerancia a fallos",
+    "input": "",
+    "nodes": [
+     "global-repository",
+     "backup-replicas"
+    ],
+    "edges": [
+     "global-backup"
+    ]
+   },
+   {
+    "title": "Mecanismos de distribución",
+    "description": "Particionamiento, replicación, sincronización y enrutamiento",
+    "input": "",
+    "nodes": [
+     "partitioning-strategy",
+     "replication-manager",
+     "synchronization-service",
+     "routing-optimizer"
+    ],
+    "edges": [
+     "cache-partitioning",
+     "regional-replication",
+     "global-sync",
+     "archive-routing"
+    ]
+   },
+   {
+    "title": "Modelos de consistencia",
+    "description": "Se aplican las garantías de consistencia apropiadas",
+    "input": "",
+    "nodes": [
+     "strong-consistency",
+     "eventual-consistency",
+     "causal-consistency",
+     "read-write-quorum"
+    ],
+    "edges": [
+     "partitioning-strong",
+     "replication-eventual",
+     "sync-causal",
+     "routing-quorum"
+    ]
+   },
+   {
+    "title": "Tolerancia a fallos",
+    "description": "Se detectan las fallas y se gestiona la recuperación",
+    "input": "",
+    "nodes": [
+     "failure-detector",
+     "failover-controller",
+     "recovery-manager",
+     "consensus-protocol"
+    ],
+    "edges": [
+     "strong-failure",
+     "eventual-failover",
+     "causal-recovery",
+     "quorum-consensus"
+    ]
+   },
+   {
+    "title": "Feedback del consenso",
+    "description": "El protocolo de consenso actualiza al orquestador",
+    "input": "",
+    "nodes": [
+     "consensus-protocol",
+     "memory-orchestrator"
+    ],
+    "edges": [
+     "consensus-orchestrator"
+    ]
+   },
+   {
+    "title": "Optimización del rendimiento",
+    "description": "Integración con CDN, compresión y precarga",
+    "input": "",
+    "nodes": [
+     "cdn-integration",
+     "compression-layer",
+     "prefetch-engine"
+    ],
+    "edges": [
+     "failure-cdn",
+     "failover-compression",
+     "recovery-prefetch"
+    ]
+   },
+   {
+    "title": "Respuesta distribuida",
+    "description": "Se entrega una respuesta optimizada desde la arquitectura distribuida",
+    "input": "",
+    "nodes": [
+     "cdn-integration",
+     "compression-layer",
+     "prefetch-engine",
+     "distributed-response"
+    ],
+    "edges": [
+     "cdn-response",
+     "compression-response",
+     "prefetch-response"
+    ]
+   }
+  ]
+ }
+}

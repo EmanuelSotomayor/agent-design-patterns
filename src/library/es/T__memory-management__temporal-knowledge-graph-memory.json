@@ -1,0 +1,297 @@
+{
+ "cat": "memory-management",
+ "slug": "temporal-knowledge-graph-memory",
+ "name": "Temporal Knowledge Graph Memory(TKG)",
+ "icon": "🕰️",
+ "complexity": "high",
+ "description": "Un sustrato de memoria para agentes que almacena hechos como aristas de un grafo de conocimiento, donde cada arista lleva una validez bitemporal explícita: tiempo válido (cuándo el hecho era verdadero en el mundo) y tiempo de transacción (cuándo se ingirió). Cuando nueva información contradice un hecho existente, la arista se invalida escribiendo una marca de tiempo t_invalid en lugar de eliminarse, de modo que el grafo puede responder qué se creía y cuándo, y nunca entrega un hecho obsoleto como vigente. Este es el diseño de Zep y Graphiti. Se distingue de `semantic-memory-networks` y del patrón estático `knowledge-graph-construction` de knowledge-representation, que modelan un grafo sin dimensión temporal ni reemplazo de hechos.",
+ "features": [
+  "Hechos almacenados como aristas del grafo, no como vectores opacos",
+  "Marcas bitemporales: tiempo válido más tiempo de transacción",
+  "Una contradicción invalida una arista (escribe t_invalid) en lugar de eliminarla",
+  "Las consultas en un punto del tiempo reconstruyen estados de creencia pasados",
+  "Las consultas de vista actual filtran las aristas sin t_invalid",
+  "Extracción incremental de entidades y relaciones a partir de nuevos eventos"
+ ],
+ "tldr": {
+  "what": "Almacena hechos como aristas del grafo con marcas de tiempo válido y tiempo de transacción, e invalida las contradicciones marcando t_invalid en lugar de eliminarlas.",
+  "when": "Agentes de larga duración que siguen entidades cuyos hechos cambian con el tiempo y donde necesitas consultar qué se creía en cualquier momento pasado sin entregar datos obsoletos.",
+  "watchOut": "Alto costo operativo: la extracción, la deduplicación y el mantenimiento del índice temporal crecen con el volumen de hechos; una extracción desactualizada puede crear contradicciones falsas e inflar el grafo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Temporal Knowledge Graph Memory",
+  "description": "La memoria del agente almacena hechos como aristas de un grafo de conocimiento con validez bitemporal. Un evento contradictorio invalida la arista anterior (fija t_invalid) en lugar de eliminarla, de modo que las consultas de vista actual devuelven el hecho nuevo mientras las consultas en un punto del tiempo y de auditoría siguen recuperando el historial.",
+  "nodes": [
+   {
+    "id": "event-austin",
+    "label": "🟢 Evento de ene 2026\n\"Me acabo de mudar a Austin\"",
+    "x": 60,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "extractor",
+    "label": "🤖 Extractor de hechos\nEntidades + relaciones del evento",
+    "x": 360,
+    "y": 60,
+    "w": 260
+   },
+   {
+    "id": "kg-store",
+    "label": "🕰️ Grafo de conocimiento temporal\nLas aristas llevan valid_from / valid_to + ingested_at",
+    "x": 360,
+    "y": 185,
+    "w": 300
+   },
+   {
+    "id": "edge-austin",
+    "label": "🔗 Arista: User LIVES_IN Austin\nvalid_from 2026-01-10, valid_to null (abierta)",
+    "x": 60,
+    "y": 300,
+    "w": 250
+   },
+   {
+    "id": "event-denver",
+    "label": "🟢 Evento de mar 2027\n\"Nos mudamos a Denver la semana pasada\"",
+    "x": 700,
+    "y": 50,
+    "w": 230
+   },
+   {
+    "id": "contradiction",
+    "label": "⚠️ Verificación de contradicciones\nEl hecho nuevo entra en conflicto con la arista abierta de Austin",
+    "x": 700,
+    "y": 180,
+    "w": 240
+   },
+   {
+    "id": "invalidate",
+    "label": "🛑 Invalidar, no eliminar\nFijar valid_to de Austin = 2027-03-01 (t_invalid)",
+    "x": 430,
+    "y": 310,
+    "w": 250
+   },
+   {
+    "id": "edge-denver",
+    "label": "🔗 Arista: User LIVES_IN Denver\nvalid_from 2027-03-01, valid_to null (abierta)",
+    "x": 700,
+    "y": 310,
+    "w": 250
+   },
+   {
+    "id": "current-query",
+    "label": "🔵 Consulta de vista actual\n\"¿Dónde vive el usuario ahora?\"",
+    "x": 60,
+    "y": 440,
+    "w": 230
+   },
+   {
+    "id": "current-result",
+    "label": "📤 Resultado: Denver\nFiltrar valid_to = null. Nunca se entrega el Austin obsoleto",
+    "x": 60,
+    "y": 560,
+    "w": 250
+   },
+   {
+    "id": "pit-query",
+    "label": "🔵 Consulta en un punto del tiempo\n\"¿Dónde vivía el usuario en junio de 2026?\"",
+    "x": 370,
+    "y": 440,
+    "w": 240
+   },
+   {
+    "id": "pit-result",
+    "label": "📤 Resultado: Austin\nvalid_from <= jun 2026 < valid_to. El historial se conserva",
+    "x": 370,
+    "y": 560,
+    "w": 250
+   },
+   {
+    "id": "audit-timeline",
+    "label": "🧾 Línea de tiempo de auditoría\nAustin [ene26..mar27], Denver [mar27..ahora]",
+    "x": 690,
+    "y": 470,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "ev1-extractor",
+    "s": "event-austin",
+    "t": "extractor",
+    "label": "Ingerir"
+   },
+   {
+    "id": "extractor-store",
+    "s": "extractor",
+    "t": "kg-store",
+    "label": "Escribir"
+   },
+   {
+    "id": "store-edgeaustin",
+    "s": "kg-store",
+    "t": "edge-austin",
+    "label": "Arista abierta"
+   },
+   {
+    "id": "ev2-contradiction",
+    "s": "event-denver",
+    "t": "contradiction",
+    "label": "Ingerir"
+   },
+   {
+    "id": "edgeaustin-contradiction",
+    "s": "edge-austin",
+    "t": "contradiction",
+    "label": "¿Conflicto?"
+   },
+   {
+    "id": "contradiction-invalidate",
+    "s": "contradiction",
+    "t": "invalidate",
+    "label": "Reemplazar"
+   },
+   {
+    "id": "invalidate-edgeaustin",
+    "s": "invalidate",
+    "t": "edge-austin",
+    "label": "Fijar valid_to"
+   },
+   {
+    "id": "contradiction-edgedenver",
+    "s": "contradiction",
+    "t": "edge-denver",
+    "label": "Nueva arista"
+   },
+   {
+    "id": "currentq-store",
+    "s": "current-query",
+    "t": "kg-store",
+    "label": "Vista actual"
+   },
+   {
+    "id": "store-currentresult",
+    "s": "kg-store",
+    "t": "current-result",
+    "label": "valid_to null"
+   },
+   {
+    "id": "pitq-store",
+    "s": "pit-query",
+    "t": "kg-store",
+    "label": "A junio de 2026"
+   },
+   {
+    "id": "store-pitresult",
+    "s": "kg-store",
+    "t": "pit-result",
+    "label": "Austin"
+   },
+   {
+    "id": "store-audit",
+    "s": "kg-store",
+    "t": "audit-timeline",
+    "label": "Línea de tiempo completa"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Ingerir el primer hecho",
+    "description": "El evento de enero se extrae y se escribe como una arista abierta con valid_from fijado y valid_to en null (aún vigente).",
+    "input": "",
+    "nodes": [
+     "event-austin",
+     "extractor",
+     "kg-store",
+     "edge-austin"
+    ],
+    "edges": [
+     "ev1-extractor",
+     "extractor-store",
+     "store-edgeaustin"
+    ]
+   },
+   {
+    "title": "Llega un evento de vida contradictorio",
+    "description": "Catorce meses después, el usuario se muda. La verificación de contradicciones compara el hecho nuevo con la arista de Austin, que sigue abierta.",
+    "input": "",
+    "nodes": [
+     "event-denver",
+     "contradiction",
+     "edge-austin"
+    ],
+    "edges": [
+     "ev2-contradiction",
+     "edgeaustin-contradiction"
+    ]
+   },
+   {
+    "title": "Invalidar, no eliminar",
+    "description": "En lugar de eliminar la arista de Austin, el sistema le asigna valid_to = 2027-03-01 (t_invalid). El hecho se retira, no se borra.",
+    "input": "",
+    "nodes": [
+     "contradiction",
+     "invalidate",
+     "edge-austin"
+    ],
+    "edges": [
+     "contradiction-invalidate",
+     "invalidate-edgeaustin"
+    ]
+   },
+   {
+    "title": "Escribir la nueva arista abierta",
+    "description": "Se escribe una nueva arista de Denver con valid_from = 2027-03-01 y valid_to en null, que pasa a ser el hecho vigente.",
+    "input": "",
+    "nodes": [
+     "contradiction",
+     "edge-denver"
+    ],
+    "edges": [
+     "contradiction-edgedenver"
+    ]
+   },
+   {
+    "title": "La consulta de vista actual devuelve Denver",
+    "description": "Filtrar las aristas con valid_to = null devuelve Denver. El hecho obsoleto de Austin nunca se entrega como vigente.",
+    "input": "",
+    "nodes": [
+     "current-query",
+     "kg-store",
+     "current-result"
+    ],
+    "edges": [
+     "currentq-store",
+     "store-currentresult"
+    ]
+   },
+   {
+    "title": "La consulta en un punto del tiempo sigue devolviendo Austin",
+    "description": "Preguntar dónde vivía el usuario en junio de 2026 filtra valid_from <= jun 2026 < valid_to y devuelve correctamente Austin. El historial se conserva.",
+    "input": "",
+    "nodes": [
+     "pit-query",
+     "kg-store",
+     "pit-result"
+    ],
+    "edges": [
+     "pitq-store",
+     "store-pitresult"
+    ]
+   },
+   {
+    "title": "Auditar la línea de tiempo completa de creencias",
+    "description": "Como la invalidación conserva ambas aristas, el grafo responde qué se creía y cuándo: Austin y luego Denver, con intervalos exactos.",
+    "input": "",
+    "nodes": [
+     "kg-store",
+     "audit-timeline"
+    ],
+    "edges": [
+     "store-audit"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,381 @@
+{
+ "cat": "context-management",
+ "slug": "memory-block-architecture",
+ "name": "Memory Block Architecture(MBA)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Gestión estructurada del contexto mediante bloques de memoria discretos y funcionales con estrategias de cache inteligentes",
+ "features": [
+  "Organización en bloques de memoria funcionales discretos",
+  "Cache y recuperación inteligentes de bloques de memoria",
+  "Representación estructurada del contexto",
+  "Persistencia de bloques de memoria entre sesiones"
+ ],
+ "tldr": {
+  "what": "Organiza el contexto del agente en bloques de memoria tipados (hechos, procedimientos, preferencias) con cache inteligente y persistencia entre sesiones.",
+  "when": "Agentes de larga duración que necesitan recordar contexto de forma selectiva, conversaciones de varios turnos con conocimiento específico del dominio o sistemas que atienden a múltiples usuarios.",
+  "watchOut": "Alta complejidad de implementación y dificultad de depuración cuando las relaciones entre bloques se enredan o la lógica de invalidación de cache falla en silencio."
+ },
+ "overview": {
+  "pattern": "Gestión estructurada del contexto mediante bloques de memoria discretos y funcionales con estrategias de cache inteligentes",
+  "why": "Proporciona memoria organizada y persistente con patrones de acceso eficientes y continuidad entre sesiones para sistemas de agentes complejos",
+  "insight": "Los bloques funcionales discretos con organización jerárquica permiten una gestión de memoria eficiente y un cache inteligente",
+  "impl": [
+   {
+    "t": "Diseño de bloques",
+    "d": "Define bloques de memoria funcionales con esquemas estructurados"
+   },
+   {
+    "t": "Configuración de la jerarquía",
+    "d": "Organiza los bloques en relaciones jerárquicas"
+   },
+   {
+    "t": "Estrategia de cache",
+    "d": "Implementa la recuperación y el cache inteligentes de bloques"
+   },
+   {
+    "t": "Control de versiones",
+    "d": "Habilita el versionado de bloques y la gestión de actualizaciones"
+   },
+   {
+    "t": "Capa de persistencia",
+    "d": "Construye la persistencia de bloques de memoria entre sesiones"
+   }
+  ],
+  "example": "design_blocks → organize_hierarchy → cache_intelligently → version_control → persist_sessions",
+  "dos": [
+   "Diseña bloques con límites funcionales y esquemas claros",
+   "Implementa relaciones jerárquicas entre los bloques de memoria",
+   "Usa estrategias de cache LRU y basadas en prioridad",
+   "Versiona los bloques para que las actualizaciones sean consistentes",
+   "Habilita la persistencia entre sesiones para dar continuidad"
+  ],
+  "donts": [
+   "Crear bloques de memoria superpuestos o redundantes",
+   "Almacenar datos no estructurados sin esquemas adecuados",
+   "Cachear todos los bloques sin considerar los patrones de uso",
+   "Actualizar bloques sin una gestión de versiones adecuada",
+   "Ignorar las relaciones y dependencias entre bloques de memoria"
+  ],
+  "use": [
+   "Requisitos de memoria estructurada",
+   "Persistencia del agente entre sesiones",
+   "Necesidades de gestión modular del contexto",
+   "Sistemas empresariales con patrones de memoria complejos"
+  ],
+  "avoid": [
+   "Requisitos de memoria lineales y simples",
+   "Aplicaciones de procesamiento sin estado",
+   "Contextos temporales de una sola sesión",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Velocidad de acceso a bloques",
+    "d": "Tiempo promedio de recuperación por bloque de memoria"
+   },
+   {
+    "n": "Tasa de aciertos de cache",
+    "d": "% de bloques de memoria servidos desde la cache"
+   },
+   {
+    "n": "Continuidad de sesión",
+    "d": "% de restauraciones de memoria entre sesiones exitosas"
+   },
+   {
+    "n": "Utilización de bloques",
+    "d": "% de bloques de memoria con acceso activo"
+   },
+   {
+    "n": "Integridad de las relaciones",
+    "d": "% de relaciones válidas entre bloques"
+   },
+   {
+    "n": "Consistencia de versiones",
+    "d": "% de actualizaciones de versión de bloques exitosas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Memoria de asistente personal",
+    "d": "facts_block → procedures_block → preferences_block → relationships_block → context_assembly"
+   },
+   {
+    "n": "Conocimiento de atención al cliente",
+    "d": "customer_profile → interaction_history → product_knowledge → solution_database → personalized_response"
+   },
+   {
+    "n": "Aprendizaje en múltiples sesiones",
+    "d": "concept_blocks → skill_blocks → progress_tracking → adaptive_learning → knowledge_retention"
+   },
+   {
+    "n": "Memoria de agente empresarial",
+    "d": "company_policies → department_procedures → project_context → employee_profiles → intelligent_assistance"
+   },
+   {
+    "n": "Asistente de investigación",
+    "d": "paper_summaries → concept_relationships → methodology_blocks → findings_database → knowledge_synthesis"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Arquitectura de bloques de memoria",
+  "description": "Estructura la memoria persistente de un agente como bloques discretos y funcionales (persona, hechos del usuario, procedimientos, preferencias) que el propio agente puede leer, editar y cargar o descargar del contexto, mientras el almacén completo de bloques persiste entre sesiones.",
+  "nodes": [
+   {
+    "id": "user-message",
+    "label": "💬 Mensaje de nueva sesión\n\"Reserva mi restaurante habitual del martes,\npero esta vez a las 7pm\"",
+    "x": 360,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente\nLa ventana de contexto contiene solo\nlos bloques de memoria activos",
+    "x": 360,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "persona-block",
+    "label": "🎭 Bloque de persona (en contexto)\n\"Asistente personal conciso,\nconfirma antes de reservar\"",
+    "x": 40,
+    "y": 270,
+    "w": 230
+   },
+   {
+    "id": "user-block",
+    "label": "👤 Bloque de hechos del usuario (en contexto)\n\"Lugar habitual del martes: Bella Vista\nHora predeterminada: 6:30pm\nDieta: vegetariana\"",
+    "x": 300,
+    "y": 270,
+    "w": 250
+   },
+   {
+    "id": "procedure-block",
+    "label": "📋 Bloque de procedimiento (en contexto)\n\"Flujo de reserva: revisar calendario,\nreservar, agregar evento al calendario\"",
+    "x": 580,
+    "y": 270,
+    "w": 240
+   },
+   {
+    "id": "block-store",
+    "label": "🗄️ Almacén persistente de bloques\nTodos los bloques, versionados,\nsobrevive a cada sesión",
+    "x": 340,
+    "y": 400,
+    "w": 250
+   },
+   {
+    "id": "archival-blocks",
+    "label": "📦 Bloques de archivo (fuera de contexto)\nViajes pasados, proyectos de trabajo,\ncumpleaños familiares, preferencias antiguas",
+    "x": 640,
+    "y": 400,
+    "w": 260
+   },
+   {
+    "id": "block-cache",
+    "label": "⚡ Cache de bloques\nLa política de prioridad + LRU decide\nqué bloques permanecen en contexto",
+    "x": 40,
+    "y": 400,
+    "w": 240
+   },
+   {
+    "id": "memory-edit",
+    "label": "✏️ Autoedición: core_memory_replace\nBloque de hechos del usuario actualizado:\n\"Hora predeterminada: 6:30pm -> prefiere 7pm\"",
+    "x": 300,
+    "y": 530,
+    "w": 290
+   },
+   {
+    "id": "version-log",
+    "label": "🧾 Registro de versiones\nDiff del bloque registrado,\nvalor anterior recuperable",
+    "x": 640,
+    "y": 530,
+    "w": 220
+   },
+   {
+    "id": "task-result",
+    "label": "✅ Reserva confirmada\nBella Vista, martes 7pm,\nnota vegetariana adjunta",
+    "x": 300,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "next-session",
+    "label": "🔄 Semanas después, nueva sesión\nLos bloques se recargan desde el almacén:\nel agente ya conoce la preferencia de las 7pm",
+    "x": 620,
+    "y": 650,
+    "w": 270
+   }
+  ],
+  "edges": [
+   {
+    "id": "msg-to-agent",
+    "s": "user-message",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "agent-to-persona",
+    "s": "agent",
+    "t": "persona-block",
+    "label": ""
+   },
+   {
+    "id": "agent-to-user",
+    "s": "agent",
+    "t": "user-block",
+    "label": ""
+   },
+   {
+    "id": "agent-to-procedure",
+    "s": "agent",
+    "t": "procedure-block",
+    "label": ""
+   },
+   {
+    "id": "store-to-user",
+    "s": "block-store",
+    "t": "user-block",
+    "label": "cargar"
+   },
+   {
+    "id": "store-to-archival",
+    "s": "block-store",
+    "t": "archival-blocks",
+    "label": "contiene"
+   },
+   {
+    "id": "cache-to-store",
+    "s": "block-cache",
+    "t": "block-store",
+    "label": "cargar/descargar"
+   },
+   {
+    "id": "agent-to-edit",
+    "s": "agent",
+    "t": "memory-edit",
+    "label": "detecta cambio"
+   },
+   {
+    "id": "edit-to-store",
+    "s": "memory-edit",
+    "t": "block-store",
+    "label": "persistir"
+   },
+   {
+    "id": "edit-to-log",
+    "s": "memory-edit",
+    "t": "version-log",
+    "label": ""
+   },
+   {
+    "id": "agent-to-result",
+    "s": "agent",
+    "t": "task-result",
+    "label": ""
+   },
+   {
+    "id": "store-to-next",
+    "s": "block-store",
+    "t": "next-session",
+    "label": "recargar bloques"
+   }
+  ],
+  "steps": [
+   {
+    "title": "La sesión comienza con los bloques cargados",
+    "description": "El contexto del agente se arma a partir de bloques funcionales discretos: persona, hechos del usuario y procedimientos, cada uno una pequeña unidad estructurada en lugar del historial de chat en bruto",
+    "input": "",
+    "nodes": [
+     "user-message",
+     "agent",
+     "persona-block",
+     "user-block",
+     "procedure-block"
+    ],
+    "edges": [
+     "msg-to-agent",
+     "agent-to-persona",
+     "agent-to-user",
+     "agent-to-procedure"
+    ]
+   },
+   {
+    "title": "El almacén de bloques respalda el contexto",
+    "description": "Los bloques en contexto se cargan desde un almacén de bloques persistente y versionado; los bloques que no caben quedan en el archivo y pueden cargarse bajo demanda",
+    "input": "",
+    "nodes": [
+     "block-store",
+     "archival-blocks",
+     "user-block"
+    ],
+    "edges": [
+     "store-to-user",
+     "store-to-archival"
+    ]
+   },
+   {
+    "title": "La política de cache elige los bloques activos",
+    "description": "Una política de prioridad más LRU decide qué bloques ocupan la ventana de contexto limitada; los bloques poco usados se desalojan al almacén",
+    "input": "",
+    "nodes": [
+     "block-cache",
+     "block-store"
+    ],
+    "edges": [
+     "cache-to-store"
+    ]
+   },
+   {
+    "title": "El agente autoedita un bloque",
+    "description": "El mensaje revela un cambio de preferencia (\"esta vez a las 7pm\"); el propio agente actualiza el bloque de hechos del usuario con una operación de edición de memoria",
+    "input": "",
+    "nodes": [
+     "agent",
+     "memory-edit"
+    ],
+    "edges": [
+     "agent-to-edit"
+    ]
+   },
+   {
+    "title": "Edición persistida y versionada",
+    "description": "La actualización del bloque se escribe en el almacén y se registra en el registro de versiones, así que el cambio es duradero y reversible",
+    "input": "",
+    "nodes": [
+     "memory-edit",
+     "block-store",
+     "version-log"
+    ],
+    "edges": [
+     "edit-to-store",
+     "edit-to-log"
+    ]
+   },
+   {
+    "title": "La tarea se completa",
+    "description": "La reserva avanza con el flujo del bloque de procedimiento y la preferencia corregida",
+    "input": "",
+    "nodes": [
+     "agent",
+     "task-result"
+    ],
+    "edges": [
+     "agent-to-result"
+    ]
+   },
+   {
+    "title": "Continuidad entre sesiones",
+    "description": "Semanas después, una nueva sesión recarga los mismos bloques: la preferencia de las 7pm ya está ahí, sin tener que volver a enseñarla ni reproducir transcripciones antiguas",
+    "input": "",
+    "nodes": [
+     "block-store",
+     "next-session"
+    ],
+    "edges": [
+     "store-to-next"
+    ]
+   }
+  ]
+ }
+}

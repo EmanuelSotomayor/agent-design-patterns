@@ -1,0 +1,358 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "maps-benchmark",
+ "name": "MAPS: Multilingual Agent Performance & Security(MAPS)",
+ "icon": "🌐",
+ "complexity": "high",
+ "description": "Benchmark multilingüe del rendimiento y la seguridad de agentes en 12 idiomas. El ejemplo es una instantánea fechada del benchmark y no una recomendación actual de modelos.",
+ "features": [
+  "805 tareas únicas en 12 idiomas (9,660 instancias en total)",
+  "Evaluación del rendimiento en contextos lingüísticos diversos",
+  "Evaluación de seguridad para agentes multilingües",
+  "Detección de sesgos culturales y lingüísticos",
+  "Comparación de capacidades entre idiomas",
+  "Escenarios de tareas multilingües del mundo real"
+ ],
+ "tldr": {
+  "what": "Mide el rendimiento y la seguridad de los agentes en 12 idiomas usando 805 tareas únicas, y revela brechas de capacidad y vulnerabilidades por idioma.",
+  "when": "Al desplegar agentes para usuarios multilingües o al evaluar, antes de producción, si el rendimiento se degrada en idiomas distintos del inglés.",
+  "watchOut": "Los resultados reflejan la fecha del benchmark y la versión del modelo; los rankings de rendimiento cambian rápido y no predicen la seguridad multilingüe en el mundo real."
+ },
+ "overview": {
+  "pattern": "Primer framework de evaluación estandarizado para IA agéntica multilingüe en 11 idiomas con 805 tareas únicas",
+  "why": "Identifica brechas críticas de rendimiento y seguridad en despliegues fuera del inglés y permite sistemas de IA globales y equitativos",
+  "insight": "El rendimiento se degrada entre un 15 y un 40% en idiomas distintos del inglés, y las vulnerabilidades de seguridad aumentan significativamente",
+  "impl": [
+   {
+    "t": "Selección de idioma",
+    "d": "Elige entre 11 idiomas compatibles"
+   },
+   {
+    "t": "Configuración de tareas",
+    "d": "Configura tareas de GAIA, SWE-bench, MATH y ASB"
+   },
+   {
+    "t": "Prueba de rendimiento",
+    "d": "Evalúa la finalización de tareas y el razonamiento"
+   },
+   {
+    "t": "Prueba de seguridad",
+    "d": "Resistencia adversarial y a jailbreaks con ASB"
+   },
+   {
+    "t": "Comparar",
+    "d": "Analiza la brecha de rendimiento frente a la línea base en inglés"
+   }
+  ],
+  "example": "english_baseline → translate_tasks → multi_lang_eval → security_test → gap_analysis",
+  "dos": [
+   "Prueba en los 11 idiomas compatibles para lograr una cobertura completa",
+   "Usa Agent Security Benchmark (ASB) para las pruebas de robustez",
+   "Mide tanto la degradación del rendimiento como la de la seguridad",
+   "Correlaciona los resultados con la cantidad de entrada traducida",
+   "Incluye familias de idiomas tipológicamente diversas"
+  ],
+  "donts": [
+   "Depender solo de la evaluación en inglés para un despliegue global",
+   "Ignorar la detección de sesgos culturales y lingüísticos",
+   "Omitir las pruebas adversariales en idiomas distintos del inglés",
+   "Suponer un rendimiento uniforme en todos los idiomas",
+   "Pasar por alto la inyección de prompts en contextos multilingües"
+  ],
+  "use": [
+   "Despliegue global de agentes de IA",
+   "Evaluación de sistemas multilingües",
+   "Evaluación de sesgos culturales",
+   "Pruebas de cumplimiento internacional"
+  ],
+  "avoid": [
+   "Aplicaciones solo en inglés",
+   "Despliegues en un único idioma",
+   "Sistemas de IA no agénticos",
+   "Tareas de traducción simples"
+  ],
+  "metrics": [
+   {
+    "n": "Paridad entre idiomas",
+    "d": "Relación de rendimiento frente a la línea base en inglés (0-1)"
+   },
+   {
+    "n": "Tasa de finalización de tareas",
+    "d": "Tasa de éxito en las tareas multilingües"
+   },
+   {
+    "n": "Degradación de la seguridad",
+    "d": "Aumento de las violaciones de seguridad en ASB frente al inglés"
+   },
+   {
+    "n": "Puntaje de sesgo cultural",
+    "d": "Detección de sesgos entre grupos de idiomas"
+   },
+   {
+    "n": "Correlación con la traducción",
+    "d": "Rendimiento frente a la proporción de entrada traducida"
+   },
+   {
+    "n": "Robustez entre idiomas",
+    "d": "Resistencia adversarial en los distintos idiomas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Despliegue empresarial global",
+    "d": "Agentes de atención al cliente en varios idiomas con rendimiento consistente"
+   },
+   {
+    "n": "Detección de sesgos culturales",
+    "d": "Identificación y mitigación de sesgos en las respuestas de la IA entre culturas"
+   },
+   {
+    "n": "Cumplimiento internacional",
+    "d": "Cumplimiento de requisitos regulatorios en distintas regiones lingüísticas"
+   },
+   {
+    "n": "Pruebas de seguridad multilingües",
+    "d": "Evaluación de la resistencia a jailbreaks en idiomas distintos del inglés"
+   },
+   {
+    "n": "Sistemas de IA educativos",
+    "d": "Garantizar un rendimiento equitativo para poblaciones estudiantiles diversas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "MAPS: patrón de rendimiento y seguridad de agentes multilingües",
+  "description": "Primera evaluación estandarizada de agentes de IA multilingües, con 11 idiomas y 9,660 instancias en GAIA/SWE-bench/MATH/ASB, que revela hasta un 17% de degradación de la seguridad en contextos fuera del inglés",
+  "nodes": [
+   {
+    "id": "multilingual-agent-challenge",
+    "label": "🌍 Desafío de los agentes de IA multilingües\n\"¿Cómo asegurar que los agentes de IA funcionen\nde forma segura y eficaz en distintos idiomas\nmás allá de una evaluación centrada en el inglés?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "maps-framework",
+    "label": "🗺️ Framework del benchmark MAPS\n\"Suite de evaluación multilingüe:\n• 11 idiomas diversos\n• 805 tareas únicas\n• 9,660 instancias en total\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "eleven-languages",
+    "label": "🌐 Cobertura de 11 idiomas\n\"Representación global:\n• Germánicos: alemán\n• Romances: español, portugués, italiano\n• Asiáticos: chino, japonés, coreano\"",
+    "x": 200,
+    "y": 350,
+    "w": 280
+   },
+   {
+    "id": "additional-languages",
+    "label": "🗣️ Idiomas adicionales\n\"Sistemas de escritura diversos:\n• Eslavos: ruso\n• Semíticos: árabe, hebreo\n• Indoarios: hindi\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "four-benchmark-domains",
+    "label": "📊 Cuatro dominios de benchmark\n\"Cobertura integral:\n• GAIA: tareas del mundo real\n• SWE-bench: generación de código\n• MATH: razonamiento matemático\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "agent-security-benchmark",
+    "label": "🛡️ Agent Security Benchmark\n\"Evaluación de seguridad:\n• Vulnerabilidades de seguridad\n• Comportamientos inseguros\n• Pruebas de resistencia a ataques\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "performance-degradation",
+    "label": "📉 Degradación del rendimiento\n\"Impactos fuera del inglés:\n• GAIA: caída de hasta 16%\n• SWE/MATH: variación mínima\n• Correlación tarea-idioma\"",
+    "x": 200,
+    "y": 650,
+    "w": 230
+   },
+   {
+    "id": "security-vulnerability",
+    "label": "⚠️ Aumento de vulnerabilidades de seguridad\n\"Problemas críticos de seguridad:\n• ASB: aumento de hasta 17%\n• Debilidades específicas por idioma\n• Chino/japonés, los más robustos\"",
+    "x": 600,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "human-evaluation",
+    "label": "👥 Metodología de evaluación humana\n\"Control de calidad (más de 2000 muestras):\n• Adecuación: 4.47/5\n• Fluidez: 4.60/5\n• Respondibilidad: 94.4%\"",
+    "x": 400,
+    "y": 800,
+    "w": 270
+   },
+   {
+    "id": "task-specific-impacts",
+    "label": "📈 Análisis de impacto por tipo de tarea\n\"Estructuradas vs. lenguaje natural:\n• Código/matemáticas: impacto mínimo\n• Tareas complejas del mundo real: degradación significativa\n• Críticas para la seguridad: mayor vulnerabilidad\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   },
+   {
+    "id": "multilingual-evaluation-principle",
+    "label": "🎯 Principio de evaluación de agentes multilingües\n\"Una IA equitativa requiere pruebas integrales de idiomas\nLa degradación del rendimiento revela vulnerabilidades ocultas\nEl despliegue global exige robustez multilingüe\"",
+    "x": 400,
+    "y": 1100,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "multilingual-agent-challenge",
+    "t": "maps-framework",
+    "label": "se aborda con"
+   },
+   {
+    "id": "e2",
+    "s": "maps-framework",
+    "t": "eleven-languages",
+    "label": "cubre 11 idiomas"
+   },
+   {
+    "id": "e3",
+    "s": "maps-framework",
+    "t": "four-benchmark-domains",
+    "label": "prueba 4 dominios"
+   },
+   {
+    "id": "e4",
+    "s": "eleven-languages",
+    "t": "additional-languages",
+    "label": "se extiende a"
+   },
+   {
+    "id": "e5",
+    "s": "four-benchmark-domains",
+    "t": "agent-security-benchmark",
+    "label": "incluye ASB"
+   },
+   {
+    "id": "e6",
+    "s": "additional-languages",
+    "t": "performance-degradation",
+    "label": "revela problemas de rendimiento"
+   },
+   {
+    "id": "e7",
+    "s": "agent-security-benchmark",
+    "t": "security-vulnerability",
+    "label": "expone vulnerabilidades"
+   },
+   {
+    "id": "e8",
+    "s": "maps-framework",
+    "t": "human-evaluation",
+    "label": "se valida mediante"
+   },
+   {
+    "id": "e9",
+    "s": "performance-degradation",
+    "t": "task-specific-impacts",
+    "label": "se analiza en busca de"
+   },
+   {
+    "id": "e10",
+    "s": "security-vulnerability",
+    "t": "task-specific-impacts",
+    "label": "contribuye a"
+   },
+   {
+    "id": "e11",
+    "s": "human-evaluation",
+    "t": "task-specific-impacts",
+    "label": "valida los hallazgos"
+   },
+   {
+    "id": "e12",
+    "s": "task-specific-impacts",
+    "t": "multilingual-evaluation-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de evaluación de agentes de IA multilingües",
+    "description": "¿Cómo podemos asegurar que los agentes de IA funcionen de forma segura y eficaz en idiomas diversos cuando los benchmarks existentes se centran exclusivamente en el inglés y dejan sin explorar los entornos multilingües?",
+    "input": "",
+    "nodes": [
+     "multilingual-agent-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework del benchmark MAPS",
+    "description": "La primera suite de evaluación multilingüe estandarizada aborda el desafío con 11 idiomas diversos, 805 tareas únicas y 9,660 instancias en total en cuatro dominios principales de benchmark.",
+    "input": "",
+    "nodes": [
+     "maps-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Cobertura integral de 11 idiomas",
+    "description": "El framework cubre idiomas de todo el mundo: germánicos (alemán), romances (español, portugués, italiano), asiáticos (chino, japonés, coreano), eslavos (ruso), semíticos (árabe, hebreo) e indoarios (hindi).",
+    "input": "",
+    "nodes": [
+     "eleven-languages",
+     "additional-languages"
+    ],
+    "edges": [
+     "e2",
+     "e4"
+    ]
+   },
+   {
+    "title": "Integración de cuatro dominios de benchmark",
+    "description": "MAPS integra GAIA (tareas del mundo real), SWE-bench (generación de código), MATH (razonamiento matemático) y Agent Security Benchmark (ASB) para una evaluación multilingüe integral.",
+    "input": "",
+    "nodes": [
+     "four-benchmark-domains",
+     "agent-security-benchmark"
+    ],
+    "edges": [
+     "e3",
+     "e5"
+    ]
+   },
+   {
+    "title": "Degradación crítica del rendimiento y la seguridad",
+    "description": "La evaluación revela problemas significativos: GAIA muestra una caída de rendimiento de hasta 16%, ASB muestra un aumento de vulnerabilidades de seguridad de hasta 17%, mientras que SWE/MATH muestran una variación mínima entre idiomas.",
+    "input": "",
+    "nodes": [
+     "performance-degradation",
+     "security-vulnerability"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Validación humana y análisis por tipo de tarea",
+    "description": "Más de 2000 muestras verificadas manualmente (94.4% de respondibilidad, 4.47/5 de adecuación) revelan que las tareas estructuradas se ven mínimamente afectadas, mientras que las tareas complejas del mundo real y las críticas para la seguridad muestran una degradación significativa, lo que demuestra que una IA equitativa requiere pruebas multilingües integrales.",
+    "input": "",
+    "nodes": [
+     "human-evaluation",
+     "task-specific-impacts",
+     "multilingual-evaluation-principle"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   }
+  ]
+ }
+}

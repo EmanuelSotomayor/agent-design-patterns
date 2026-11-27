@@ -1,0 +1,368 @@
+{
+ "cat": "context-orchestration",
+ "slug": "multi-source-context-fusion",
+ "name": "Multi-Source Context Fusion(MSCF)",
+ "icon": "🔀",
+ "complexity": "high",
+ "description": "Combina de forma inteligente información contextual de múltiples fuentes con ponderación por calidad y resolución de conflictos",
+ "features": [
+  "Ponderación por prioridad de las fuentes",
+  "Algoritmos de resolución de conflictos",
+  "Métricas de evaluación de calidad",
+  "Manejo del contexto temporal",
+  "Validación cruzada entre fuentes",
+  "Representación unificada del contexto"
+ ],
+ "tldr": {
+  "what": "Fusiona datos de múltiples fuentes usando pesos de calidad y resolución de conflictos para construir una única representación unificada del contexto.",
+  "when": "Los sistemas necesitan información actualizada de varias bases de datos o APIs cuyas fuentes pueden entrar en conflicto, tener distinta confiabilidad o actualizarse a ritmos diferentes.",
+  "watchOut": "Los datos desactualizados o contradictorios de fuentes lentas pueden corromper la vista unificada; las reglas de ponderación que parecían correctas se vuelven incorrectas a medida que cambia la confiabilidad de las fuentes."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Fusión de contexto multifuente",
+  "description": "Un agente fusiona datos del cliente provenientes de registros del CRM, documentación del producto, historial de chat y señales en tiempo real en un único contexto coherente. Pondera las fuentes por confiabilidad y actualidad, detecta y resuelve conflictos, y adjunta la procedencia para que cada dato sea rastreable.",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "📥 Solicitud de soporte\n\"¿Deberíamos ofrecerle una mejora de plan a este cliente?\"",
+    "x": 340,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "fusion-agent",
+    "label": "🔀 Agente de fusión\nConstruye un único contexto 360° del cliente",
+    "x": 360,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "crm-source",
+    "label": "🗂️ Registros del CRM\nPerfil, plan, historial de compras\nConfiabilidad 95% · tiempo real",
+    "x": 20,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "docs-source",
+    "label": "📄 Documentación del producto\nDerechos de uso, límites de funciones\nConfiabilidad 90% · diaria",
+    "x": 250,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "chat-source",
+    "label": "💬 Historial de chat\nTickets, transcripciones, sentimiento\nConfiabilidad 85% · cada hora",
+    "x": 480,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "signals-source",
+    "label": "📡 Señales en tiempo real\nUso, eventos de facturación, inicios de sesión\nConfiabilidad 70% · streaming",
+    "x": 710,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "quality-assessment",
+    "label": "📊 Evaluación de calidad\nPuntúa confiabilidad + completitud",
+    "x": 120,
+    "y": 400,
+    "w": 210
+   },
+   {
+    "id": "weighting-engine",
+    "label": "⚖️ Motor de ponderación\nPesos por actualidad + relevancia",
+    "x": 380,
+    "y": 400,
+    "w": 210
+   },
+   {
+    "id": "temporal-handler",
+    "label": "🕒 Manejador temporal\nDecaimiento por antigüedad de valores obsoletos",
+    "x": 640,
+    "y": 400,
+    "w": 210
+   },
+   {
+    "id": "conflict-detector",
+    "label": "⚠️ Detector de conflictos\nEmail del CRM != Email del chat",
+    "x": 180,
+    "y": 520,
+    "w": 210
+   },
+   {
+    "id": "cross-validator",
+    "label": "🔎 Validador entre fuentes\nConfirma con 2+ fuentes",
+    "x": 520,
+    "y": 520,
+    "w": 210
+   },
+   {
+    "id": "conflict-resolver",
+    "label": "🤝 Resolutor de conflictos\nRegla: gana el valor verificado más reciente",
+    "x": 180,
+    "y": 630,
+    "w": 210
+   },
+   {
+    "id": "provenance-tracker",
+    "label": "🏷️ Rastreador de procedencia\nEtiqueta cada campo con su fuente",
+    "x": 520,
+    "y": 630,
+    "w": 210
+   },
+   {
+    "id": "unified-context",
+    "label": "🧩 Contexto unificado\nVista 360° · 94% de confianza",
+    "x": 340,
+    "y": 720,
+    "w": 250
+   },
+   {
+    "id": "personalized-response",
+    "label": "✨ Respuesta fundamentada\nOferta de mejora con fuentes citadas",
+    "x": 350,
+    "y": 800,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "req-agent",
+    "s": "user-request",
+    "t": "fusion-agent",
+    "label": ""
+   },
+   {
+    "id": "agent-crm",
+    "s": "fusion-agent",
+    "t": "crm-source",
+    "label": "Obtener"
+   },
+   {
+    "id": "agent-docs",
+    "s": "fusion-agent",
+    "t": "docs-source",
+    "label": "Obtener"
+   },
+   {
+    "id": "agent-chat",
+    "s": "fusion-agent",
+    "t": "chat-source",
+    "label": "Obtener"
+   },
+   {
+    "id": "agent-signals",
+    "s": "fusion-agent",
+    "t": "signals-source",
+    "label": "Obtener"
+   },
+   {
+    "id": "crm-quality",
+    "s": "crm-source",
+    "t": "quality-assessment",
+    "label": ""
+   },
+   {
+    "id": "docs-quality",
+    "s": "docs-source",
+    "t": "quality-assessment",
+    "label": ""
+   },
+   {
+    "id": "chat-quality",
+    "s": "chat-source",
+    "t": "quality-assessment",
+    "label": ""
+   },
+   {
+    "id": "signals-quality",
+    "s": "signals-source",
+    "t": "quality-assessment",
+    "label": ""
+   },
+   {
+    "id": "quality-weighting",
+    "s": "quality-assessment",
+    "t": "weighting-engine",
+    "label": "Puntuar"
+   },
+   {
+    "id": "weighting-temporal",
+    "s": "weighting-engine",
+    "t": "temporal-handler",
+    "label": "Actualidad"
+   },
+   {
+    "id": "temporal-conflict",
+    "s": "temporal-handler",
+    "t": "conflict-detector",
+    "label": ""
+   },
+   {
+    "id": "temporal-crossval",
+    "s": "temporal-handler",
+    "t": "cross-validator",
+    "label": ""
+   },
+   {
+    "id": "detector-resolver",
+    "s": "conflict-detector",
+    "t": "conflict-resolver",
+    "label": "Conflictos"
+   },
+   {
+    "id": "crossval-resolver",
+    "s": "cross-validator",
+    "t": "conflict-resolver",
+    "label": "Validado"
+   },
+   {
+    "id": "resolver-provenance",
+    "s": "conflict-resolver",
+    "t": "provenance-tracker",
+    "label": "Rastrear origen"
+   },
+   {
+    "id": "resolver-unified",
+    "s": "conflict-resolver",
+    "t": "unified-context",
+    "label": "Fusionar"
+   },
+   {
+    "id": "provenance-unified",
+    "s": "provenance-tracker",
+    "t": "unified-context",
+    "label": "Adjuntar fuente"
+   },
+   {
+    "id": "unified-response",
+    "s": "unified-context",
+    "t": "personalized-response",
+    "label": "Entregar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud entrante",
+    "description": "Se le pregunta a un agente si debe ofrecerle a un cliente específico una mejora de plan, lo que requiere una imagen completa y confiable de ese cliente.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "fusion-agent"
+    ],
+    "edges": [
+     "req-agent"
+    ]
+   },
+   {
+    "title": "Recopilar de las fuentes",
+    "description": "El agente de fusión obtiene en paralelo los datos del mismo cliente desde cuatro sistemas: registros del CRM, documentación del producto, historial de chat y señales en tiempo real en streaming.",
+    "input": "",
+    "nodes": [
+     "fusion-agent",
+     "crm-source",
+     "docs-source",
+     "chat-source",
+     "signals-source"
+    ],
+    "edges": [
+     "agent-crm",
+     "agent-docs",
+     "agent-chat",
+     "agent-signals"
+    ]
+   },
+   {
+    "title": "Evaluación de calidad de las fuentes",
+    "description": "Cada fuente se puntúa según su confiabilidad y completitud; luego el motor de ponderación asigna pesos por fuente para que los sistemas confiables cuenten más.",
+    "input": "",
+    "nodes": [
+     "crm-source",
+     "docs-source",
+     "chat-source",
+     "signals-source",
+     "quality-assessment",
+     "weighting-engine"
+    ],
+    "edges": [
+     "crm-quality",
+     "docs-quality",
+     "chat-quality",
+     "signals-quality",
+     "quality-weighting"
+    ]
+   },
+   {
+    "title": "Ponderación temporal",
+    "description": "El manejador temporal aplica decaimiento por antigüedad para que los valores obsoletos pierdan influencia, manteniendo la vista fusionada sesgada hacia los datos confiables más recientes.",
+    "input": "",
+    "nodes": [
+     "weighting-engine",
+     "temporal-handler"
+    ],
+    "edges": [
+     "weighting-temporal"
+    ]
+   },
+   {
+    "title": "Detección de conflictos y validación",
+    "description": "Se revisan los campos ponderados en busca de discrepancias (por ejemplo, el email del CRM difiere del email del chat) mientras el validador cruzado confirma cada valor contra dos o más fuentes.",
+    "input": "",
+    "nodes": [
+     "temporal-handler",
+     "conflict-detector",
+     "cross-validator"
+    ],
+    "edges": [
+     "temporal-conflict",
+     "temporal-crossval"
+    ]
+   },
+   {
+    "title": "Resolución de conflictos",
+    "description": "Los conflictos detectados y los campos validados pasan al resolutor, que aplica la regla de que gana el valor verificado más reciente para elegir un único valor autorizado por campo.",
+    "input": "",
+    "nodes": [
+     "conflict-detector",
+     "cross-validator",
+     "conflict-resolver"
+    ],
+    "edges": [
+     "detector-resolver",
+     "crossval-resolver"
+    ]
+   },
+   {
+    "title": "Procedencia y unificación",
+    "description": "El rastreador de procedencia etiqueta cada campo resuelto con su fuente de origen, y tanto los valores fusionados como su procedencia se ensamblan en un único contexto unificado.",
+    "input": "",
+    "nodes": [
+     "conflict-resolver",
+     "provenance-tracker",
+     "unified-context"
+    ],
+    "edges": [
+     "resolver-provenance",
+     "resolver-unified",
+     "provenance-unified"
+    ]
+   },
+   {
+    "title": "Respuesta fundamentada",
+    "description": "El agente responde la pregunta sobre la mejora de plan a partir del contexto unificado 360°, citando qué fuente respalda cada afirmación para que la recomendación sea auditable.",
+    "input": "",
+    "nodes": [
+     "unified-context",
+     "personalized-response"
+    ],
+    "edges": [
+     "unified-response"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,734 @@
+{
+ "cat": "memory-management",
+ "slug": "semantic-memory-networks",
+ "name": "Semantic Memory Networks(SMN)",
+ "icon": "🕸️",
+ "complexity": "high",
+ "description": "Sistemas de conocimiento general del mundo desvinculados del contexto específico de adquisición, que dan soporte al conocimiento factual y a las relaciones entre conceptos en sistemas de IA agéntica multiagente",
+ "features": [
+  "Representación del conocimiento factual",
+  "Mapeo de relaciones entre conceptos",
+  "Conocimiento independiente del contexto",
+  "Coincidencia por similitud semántica",
+  "Estructuras de grafos de conocimiento",
+  "Intercambio de conocimiento entre agentes",
+  "Organización jerárquica de conceptos",
+  "Vinculación de conocimiento entre dominios"
+ ],
+ "tldr": {
+  "what": "Almacena el conocimiento factual y las relaciones entre conceptos en una estructura de grafo compartida, lo que permite a los agentes consultar y vincular información entre dominios sin necesitar el contexto original.",
+  "when": "Varios agentes necesitan acceso consistente a hechos del mundo, jerarquías de conceptos o relaciones de dominio que persisten entre conversaciones y consultas.",
+  "watchOut": "Los grafos de conocimiento se vuelven obsoletos o inconsistentes cuando entran en conflicto las actualizaciones de distintos agentes, y la coincidencia por similitud semántica puede devolver conexiones plausibles pero incorrectas."
+ },
+ "overview": {
+  "pattern": "Sistemas de conocimiento general del mundo desvinculados del contexto de adquisición, que dan soporte al razonamiento factual",
+  "why": "Acceso al conocimiento independiente del contexto, razonamiento entre dominios, hechos consistentes entre agentes",
+  "insight": "Conceptos + Relaciones + Embeddings → Razonamiento multisalto → Consistencia del conocimiento entre agentes",
+  "impl": [
+   {
+    "t": "Construir el grafo",
+    "d": "Crea un grafo de conocimiento con conceptos y relaciones"
+   },
+   {
+    "t": "Generar embeddings de conceptos",
+    "d": "Genera embeddings semánticos para todas las entidades"
+   },
+   {
+    "t": "Vincular relaciones",
+    "d": "Mapea las conexiones jerárquicas y asociativas"
+   },
+   {
+    "t": "Compartir la red",
+    "d": "Habilita el acceso al grafo de conocimiento entre agentes"
+   },
+   {
+    "t": "Actualizar el grafo",
+    "d": "Refina continuamente las relaciones y agrega conceptos"
+   }
+  ],
+  "example": "concept_extraction → embedding_generation → relationship_mapping → cross_agent_sharing → continuous_refinement",
+  "dos": [
+   "Usa una organización jerárquica de conceptos (relaciones padre-hijo)",
+   "Implementa puntuación de similitud semántica para la recuperación de conceptos",
+   "Habilita el razonamiento multisalto a través de las relaciones entre conceptos",
+   "Mantén ontologías consistentes entre todos los agentes de la red",
+   "Versiona los grafos de conocimiento para lograr un razonamiento reproducible"
+  ],
+  "donts": [
+   "Almacenar información sensible al tiempo o que cambia rápidamente",
+   "Crear jerarquías de relaciones demasiado complejas (mantenlas interpretables)",
+   "Ignorar la consistencia semántica al combinar conocimiento de distintas fuentes",
+   "Dejar que los grafos de conocimiento crezcan sin podar las conexiones irrelevantes",
+   "Usarlo para almacenar información personal o específica del contexto"
+  ],
+  "use": [
+   "Representación de conocimiento de dominios complejos",
+   "Se requiere razonamiento multisalto",
+   "Integración de conocimiento entre dominios",
+   "Consistencia factual entre agentes",
+   "Bases de conocimiento científicas/técnicas"
+  ],
+  "avoid": [
+   "Almacenamiento simple de datos clave-valor",
+   "Información muy personal/contextual",
+   "Datos temporales que cambian rápidamente",
+   "Conocimiento sensible en términos de privacidad",
+   "Entornos con almacenamiento limitado"
+  ],
+  "metrics": [
+   {
+    "n": "Cobertura de conceptos",
+    "d": "% de conceptos del dominio representados"
+   },
+   {
+    "n": "Precisión de las relaciones",
+    "d": "% de conexiones semánticas correctas"
+   },
+   {
+    "n": "Tasa de resolución de consultas",
+    "d": "% de recuperaciones de conocimiento exitosas"
+   },
+   {
+    "n": "Consistencia entre agentes",
+    "d": "Puntuación de alineación del conocimiento"
+   },
+   {
+    "n": "Longitud de la ruta de razonamiento",
+    "d": "Promedio de saltos para encontrar respuestas"
+   },
+   {
+    "n": "Densidad del grafo de conocimiento",
+    "d": "Proporción de conexiones por concepto"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Redes de investigación científica",
+    "d": "Conceptos de física, química y biología vinculados entre disciplinas (permite descubrimientos entre dominios)"
+   },
+   {
+    "n": "Sistemas de conocimiento médico",
+    "d": "Enfermedades, síntomas, tratamientos e interacciones farmacológicas en una red semántica (razonamiento diagnóstico)"
+   },
+   {
+    "n": "Grafos de conocimiento jurídico",
+    "d": "Leyes, precedentes, regulaciones y relaciones de jurisdicción (investigación jurídica y cumplimiento)"
+   },
+   {
+    "n": "Modelos del dominio financiero",
+    "d": "Mercados, instrumentos, regulaciones y factores de riesgo interconectados (análisis de inversiones)"
+   },
+   {
+    "n": "Documentación técnica",
+    "d": "Conceptos de software, APIs, dependencias y buenas prácticas vinculados (asistencia a desarrolladores)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Semantic Memory Networks",
+  "description": "Red de conocimiento interconectada que modela relaciones semánticas, lo que permite una recuperación e inferencia conscientes del contexto mediante asociaciones conceptuales y razonamiento basado en grafos.",
+  "nodes": [
+   {
+    "id": "knowledge-query",
+    "label": "❓ Consulta de conocimiento\n\"¿Qué relaciones existen entre el cambio climático y la agricultura?\"",
+    "x": 400,
+    "y": 50,
+    "w": 400
+   },
+   {
+    "id": "semantic-core",
+    "label": "🧠 Núcleo de la red semántica\nRepresentación del conocimiento basada en grafos",
+    "x": 375,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "concept-nodes",
+    "label": "🔵 Nodos de concepto\nEntidades y abstracciones",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "relation-edges",
+    "label": "🔗 Aristas de relación\nConexiones semánticas",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "attribute-properties",
+    "label": "📋 Atributos\nPropiedades y características",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "hierarchical-structure",
+    "label": "📊 Jerarquías\nTaxonomías y ontologías",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "climate-concept",
+    "label": "🌡️ Cambio climático\nConcepto: Ambiental\nNivel: Global",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "agriculture-concept",
+    "label": "🌾 Agricultura\nConcepto: Industria\nNivel: Sector",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "crops-concept",
+    "label": "🌽 Rendimiento de cultivos\nConcepto: Producción\nNivel: Específico",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "weather-concept",
+    "label": "☁️ Patrones climáticos\nConcepto: Fenómenos\nNivel: Regional",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "soil-concept",
+    "label": "🪨 Salud del suelo\nConcepto: Recurso\nNivel: Local",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "causal-relation",
+    "label": "➡️ Causal\n\"afecta\"\n\"influye en\"",
+    "x": 100,
+    "y": 520,
+    "w": 140
+   },
+   {
+    "id": "temporal-relation",
+    "label": "⏰ Temporal\n\"precede\"\n\"sigue a\"",
+    "x": 250,
+    "y": 520,
+    "w": 140
+   },
+   {
+    "id": "spatial-relation",
+    "label": "📍 Espacial\n\"ubicado en\"\n\"adyacente a\"",
+    "x": 400,
+    "y": 520,
+    "w": 140
+   },
+   {
+    "id": "taxonomic-relation",
+    "label": "🌳 Taxonómica\n\"es-un\"\n\"parte-de\"",
+    "x": 550,
+    "y": 520,
+    "w": 140
+   },
+   {
+    "id": "functional-relation",
+    "label": "⚙️ Funcional\n\"se-usa-para\"\n\"habilita\"",
+    "x": 700,
+    "y": 520,
+    "w": 140
+   },
+   {
+    "id": "spreading-activation",
+    "label": "🌊 Activación propagada\nPropagación de la activación",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "path-finding",
+    "label": "🛤️ Búsqueda de rutas\nRuta semántica más corta",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "pattern-completion",
+    "label": "🧩 Completado de patrones\nRellena vacíos de conocimiento",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "analogical-reasoning",
+    "label": "🔄 Razonamiento analógico\nMapeo estructural",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "multi-hop-reasoning",
+    "label": "🔀 Razonamiento multisalto\nClima → Patrones climáticos → Cultivos",
+    "x": 100,
+    "y": 760,
+    "w": 180
+   },
+   {
+    "id": "context-integration",
+    "label": "🎯 Integración del contexto\nCombina lo local y lo global",
+    "x": 300,
+    "y": 760,
+    "w": 180
+   },
+   {
+    "id": "abstraction-levels",
+    "label": "📈 Niveles de abstracción\nGeneral ↔ Específico",
+    "x": 500,
+    "y": 760,
+    "w": 180
+   },
+   {
+    "id": "cross-domain-transfer",
+    "label": "🌐 Transferencia entre dominios\nAplica en distintos contextos",
+    "x": 700,
+    "y": 760,
+    "w": 180
+   },
+   {
+    "id": "knowledge-encoding",
+    "label": "💾 Codificación del conocimiento\nAlmacenamiento estructurado",
+    "x": 150,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "semantic-indexing",
+    "label": "🗂️ Indexación semántica\nRecuperación eficiente",
+    "x": 320,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "memory-consolidation",
+    "label": "🔗 Consolidación\nFortalece las conexiones",
+    "x": 490,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "knowledge-synthesis",
+    "label": "✨ Síntesis del conocimiento\nGenera hallazgos",
+    "x": 660,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "comprehensive-answer",
+    "label": "📊 Respuesta integral\n\"El cambio climático afecta a la agricultura mediante patrones climáticos alterados,\nla degradación del suelo y la reducción del rendimiento de los cultivos en regiones vulnerables\"",
+    "x": 400,
+    "y": 1000,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-core",
+    "s": "knowledge-query",
+    "t": "semantic-core",
+    "label": ""
+   },
+   {
+    "id": "core-concepts",
+    "s": "semantic-core",
+    "t": "concept-nodes",
+    "label": "Extraer"
+   },
+   {
+    "id": "core-relations",
+    "s": "semantic-core",
+    "t": "relation-edges",
+    "label": "Mapear"
+   },
+   {
+    "id": "core-attributes",
+    "s": "semantic-core",
+    "t": "attribute-properties",
+    "label": "Identificar"
+   },
+   {
+    "id": "core-hierarchies",
+    "s": "semantic-core",
+    "t": "hierarchical-structure",
+    "label": "Organizar"
+   },
+   {
+    "id": "concepts-climate",
+    "s": "concept-nodes",
+    "t": "climate-concept",
+    "label": ""
+   },
+   {
+    "id": "concepts-agriculture",
+    "s": "concept-nodes",
+    "t": "agriculture-concept",
+    "label": ""
+   },
+   {
+    "id": "concepts-crops",
+    "s": "concept-nodes",
+    "t": "crops-concept",
+    "label": ""
+   },
+   {
+    "id": "concepts-weather",
+    "s": "concept-nodes",
+    "t": "weather-concept",
+    "label": ""
+   },
+   {
+    "id": "concepts-soil",
+    "s": "concept-nodes",
+    "t": "soil-concept",
+    "label": ""
+   },
+   {
+    "id": "climate-weather",
+    "s": "climate-concept",
+    "t": "weather-concept",
+    "label": "causa"
+   },
+   {
+    "id": "weather-crops",
+    "s": "weather-concept",
+    "t": "crops-concept",
+    "label": "afecta"
+   },
+   {
+    "id": "agriculture-crops",
+    "s": "agriculture-concept",
+    "t": "crops-concept",
+    "label": "produce"
+   },
+   {
+    "id": "soil-crops",
+    "s": "soil-concept",
+    "t": "crops-concept",
+    "label": "sustenta"
+   },
+   {
+    "id": "climate-agriculture",
+    "s": "climate-concept",
+    "t": "agriculture-concept",
+    "label": "impacta"
+   },
+   {
+    "id": "climate-weather-causal",
+    "s": "causal-relation",
+    "t": "relation-edges",
+    "label": ""
+   },
+   {
+    "id": "temporal-edges",
+    "s": "temporal-relation",
+    "t": "relation-edges",
+    "label": ""
+   },
+   {
+    "id": "spatial-edges",
+    "s": "spatial-relation",
+    "t": "relation-edges",
+    "label": ""
+   },
+   {
+    "id": "taxonomic-edges",
+    "s": "taxonomic-relation",
+    "t": "relation-edges",
+    "label": ""
+   },
+   {
+    "id": "functional-edges",
+    "s": "functional-relation",
+    "t": "relation-edges",
+    "label": ""
+   },
+   {
+    "id": "climate-spreading",
+    "s": "climate-concept",
+    "t": "spreading-activation",
+    "label": ""
+   },
+   {
+    "id": "spreading-path",
+    "s": "spreading-activation",
+    "t": "path-finding",
+    "label": ""
+   },
+   {
+    "id": "path-pattern",
+    "s": "path-finding",
+    "t": "pattern-completion",
+    "label": ""
+   },
+   {
+    "id": "pattern-analogical",
+    "s": "pattern-completion",
+    "t": "analogical-reasoning",
+    "label": ""
+   },
+   {
+    "id": "spreading-multihop",
+    "s": "spreading-activation",
+    "t": "multi-hop-reasoning",
+    "label": ""
+   },
+   {
+    "id": "path-context",
+    "s": "path-finding",
+    "t": "context-integration",
+    "label": ""
+   },
+   {
+    "id": "pattern-abstraction",
+    "s": "pattern-completion",
+    "t": "abstraction-levels",
+    "label": ""
+   },
+   {
+    "id": "analogical-crossdomain",
+    "s": "analogical-reasoning",
+    "t": "cross-domain-transfer",
+    "label": ""
+   },
+   {
+    "id": "multihop-encoding",
+    "s": "multi-hop-reasoning",
+    "t": "knowledge-encoding",
+    "label": ""
+   },
+   {
+    "id": "context-indexing",
+    "s": "context-integration",
+    "t": "semantic-indexing",
+    "label": ""
+   },
+   {
+    "id": "abstraction-consolidation",
+    "s": "abstraction-levels",
+    "t": "memory-consolidation",
+    "label": ""
+   },
+   {
+    "id": "crossdomain-synthesis",
+    "s": "cross-domain-transfer",
+    "t": "knowledge-synthesis",
+    "label": ""
+   },
+   {
+    "id": "encoding-answer",
+    "s": "knowledge-encoding",
+    "t": "comprehensive-answer",
+    "label": ""
+   },
+   {
+    "id": "indexing-answer",
+    "s": "semantic-indexing",
+    "t": "comprehensive-answer",
+    "label": ""
+   },
+   {
+    "id": "consolidation-answer",
+    "s": "memory-consolidation",
+    "t": "comprehensive-answer",
+    "label": ""
+   },
+   {
+    "id": "synthesis-answer",
+    "s": "knowledge-synthesis",
+    "t": "comprehensive-answer",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta de conocimiento",
+    "description": "Consulta compleja sobre las relaciones entre clima y agricultura",
+    "input": "",
+    "nodes": [
+     "knowledge-query",
+     "semantic-core"
+    ],
+    "edges": [
+     "query-core"
+    ]
+   },
+   {
+    "title": "Descomposición semántica",
+    "description": "Descomposición en conceptos, relaciones, atributos y jerarquías",
+    "input": "",
+    "nodes": [
+     "semantic-core",
+     "concept-nodes",
+     "relation-edges",
+     "attribute-properties",
+     "hierarchical-structure"
+    ],
+    "edges": [
+     "core-concepts",
+     "core-relations",
+     "core-attributes",
+     "core-hierarchies"
+    ]
+   },
+   {
+    "title": "Identificación de conceptos",
+    "description": "Identificación de los conceptos semánticos relevantes",
+    "input": "",
+    "nodes": [
+     "concept-nodes",
+     "climate-concept",
+     "agriculture-concept",
+     "crops-concept",
+     "weather-concept",
+     "soil-concept"
+    ],
+    "edges": [
+     "concepts-climate",
+     "concepts-agriculture",
+     "concepts-crops",
+     "concepts-weather",
+     "concepts-soil"
+    ]
+   },
+   {
+    "title": "Mapeo de relaciones",
+    "description": "Establecimiento de relaciones semánticas entre conceptos",
+    "input": "",
+    "nodes": [
+     "climate-concept",
+     "agriculture-concept",
+     "crops-concept",
+     "weather-concept",
+     "soil-concept"
+    ],
+    "edges": [
+     "climate-weather",
+     "weather-crops",
+     "agriculture-crops",
+     "soil-crops",
+     "climate-agriculture"
+    ]
+   },
+   {
+    "title": "Tipos de relación",
+    "description": "Categorización de las relaciones: causales, temporales, espaciales, taxonómicas, funcionales",
+    "input": "",
+    "nodes": [
+     "causal-relation",
+     "temporal-relation",
+     "spatial-relation",
+     "taxonomic-relation",
+     "functional-relation",
+     "relation-edges"
+    ],
+    "edges": [
+     "climate-weather-causal",
+     "temporal-edges",
+     "spatial-edges",
+     "taxonomic-edges",
+     "functional-edges"
+    ]
+   },
+   {
+    "title": "Activación propagada",
+    "description": "Activación de conceptos relacionados mediante la propagación en la red",
+    "input": "",
+    "nodes": [
+     "climate-concept",
+     "spreading-activation",
+     "path-finding"
+    ],
+    "edges": [
+     "climate-spreading",
+     "spreading-path"
+    ]
+   },
+   {
+    "title": "Inferencia de patrones",
+    "description": "Completado de patrones y razonamiento analógico",
+    "input": "",
+    "nodes": [
+     "pattern-completion",
+     "analogical-reasoning"
+    ],
+    "edges": [
+     "path-pattern",
+     "pattern-analogical"
+    ]
+   },
+   {
+    "title": "Integración del conocimiento",
+    "description": "Razonamiento multisalto e integración del contexto",
+    "input": "",
+    "nodes": [
+     "multi-hop-reasoning",
+     "context-integration",
+     "abstraction-levels",
+     "cross-domain-transfer"
+    ],
+    "edges": [
+     "spreading-multihop",
+     "path-context",
+     "pattern-abstraction",
+     "analogical-crossdomain"
+    ]
+   },
+   {
+    "title": "Operaciones de memoria",
+    "description": "Codificación, indexación y consolidación del conocimiento semántico",
+    "input": "",
+    "nodes": [
+     "knowledge-encoding",
+     "semantic-indexing",
+     "memory-consolidation"
+    ],
+    "edges": [
+     "multihop-encoding",
+     "context-indexing",
+     "abstraction-consolidation"
+    ]
+   },
+   {
+    "title": "Síntesis del conocimiento",
+    "description": "Generación de hallazgos integrales a partir de la red semántica",
+    "input": "",
+    "nodes": [
+     "knowledge-synthesis",
+     "cross-domain-transfer"
+    ],
+    "edges": [
+     "crossdomain-synthesis"
+    ]
+   },
+   {
+    "title": "Respuesta integral",
+    "description": "Entrega del conocimiento integrado desde la memoria semántica",
+    "input": "",
+    "nodes": [
+     "knowledge-encoding",
+     "semantic-indexing",
+     "memory-consolidation",
+     "knowledge-synthesis",
+     "comprehensive-answer"
+    ],
+    "edges": [
+     "encoding-answer",
+     "indexing-answer",
+     "consolidation-answer",
+     "synthesis-answer"
+    ]
+   }
+  ]
+ }
+}

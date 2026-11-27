@@ -1,0 +1,354 @@
+{
+ "cat": "exploration-discovery",
+ "slug": "evolutionary-algorithms",
+ "name": "Evolutionary Discovery Algorithms(EDA)",
+ "icon": "🧬",
+ "complexity": "high",
+ "description": "Optimización bioinspirada que hace evolucionar soluciones mediante selección, mutación y cruce",
+ "features": [
+  "Búsqueda basada en poblaciones",
+  "Operadores genéticos",
+  "Evaluación de aptitud",
+  "Mantenimiento de la diversidad",
+  "Evolución multiobjetivo",
+  "Control adaptativo de parámetros"
+ ],
+ "tldr": {
+  "what": "Mantiene una población de soluciones candidatas y aplica selección y operadores genéticos (mutación, cruce) para que evolucionen soluciones mejores a lo largo de las generaciones.",
+  "when": "Espacios de búsqueda grandes donde necesitas múltiples soluciones diversas o debes equilibrar objetivos en conflicto sin un camino analítico claro.",
+  "watchOut": "La convergencia a óptimos locales es frecuente; el costo de evaluar la aptitud escala con el tamaño de la población y la cantidad de generaciones, lo que lo encarece en dominios lentos de evaluar."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Algoritmos evolutivos de descubrimiento",
+  "description": "Una población de 50 variantes de prompts de agente evoluciona a lo largo de generaciones. Cada variante se puntúa según el éxito en la tarea, se seleccionan las más aptas y luego el cruce y la mutación generan la siguiente generación, mientras un monitor de diversidad evita que la población colapse.",
+  "nodes": [
+   {
+    "id": "objective",
+    "label": "🎯 Objetivo\nEvolucionar el mejor prompt de agente\nAptitud = tasa de éxito - 0.1×longitud",
+    "x": 360,
+    "y": 50,
+    "w": 310
+   },
+   {
+    "id": "population",
+    "label": "🧬 Población\n50 variantes de prompt\nGeneración 1 / 100",
+    "x": 390,
+    "y": 165,
+    "w": 260
+   },
+   {
+    "id": "variant-a",
+    "label": "🔴 Variante A\n[conciso, sin ejemplos]\naptitud: 0.45",
+    "x": 90,
+    "y": 285,
+    "w": 175
+   },
+   {
+    "id": "variant-b",
+    "label": "🟢 Variante B\n[CoT, 2 ejemplos]\naptitud: 0.73",
+    "x": 350,
+    "y": 285,
+    "w": 175
+   },
+   {
+    "id": "variant-c",
+    "label": "🔵 Variante C\n[rol + rúbrica]\naptitud: 0.68",
+    "x": 610,
+    "y": 285,
+    "w": 175
+   },
+   {
+    "id": "fitness-eval",
+    "label": "⚖️ Evaluación de aptitud\nEjecuta cada variante en la suite de tareas\npuntaje = precisión - penalización por longitud",
+    "x": 340,
+    "y": 400,
+    "w": 260
+   },
+   {
+    "id": "weak-variant",
+    "label": "💀 Variante débil\naptitud 0.12\neliminada del grupo",
+    "x": 680,
+    "y": 405,
+    "w": 180
+   },
+   {
+    "id": "selection",
+    "label": "🏅 Selección\nTorneo k=3\nel 30% superior se reproduce",
+    "x": 120,
+    "y": 515,
+    "w": 200
+   },
+   {
+    "id": "elite",
+    "label": "👑 Elitismo\nConserva intactas las 5 mejores",
+    "x": 400,
+    "y": 515,
+    "w": 200
+   },
+   {
+    "id": "crossover",
+    "label": "🔀 Cruce\nUniforme, p=0.8\ncombina dos prompts padres",
+    "x": 110,
+    "y": 630,
+    "w": 195
+   },
+   {
+    "id": "mutation",
+    "label": "✨ Mutación\np=0.1\najusta una instrucción / un ejemplo",
+    "x": 360,
+    "y": 630,
+    "w": 195
+   },
+   {
+    "id": "diversity-monitor",
+    "label": "📊 Monitor de diversidad\nProtege contra el colapso\ninyecta mutaciones nuevas",
+    "x": 620,
+    "y": 630,
+    "w": 195
+   },
+   {
+    "id": "offspring",
+    "label": "🐣 Descendencia\nGeneración n+1\nmejor aptitud: 0.94",
+    "x": 350,
+    "y": 745,
+    "w": 220
+   },
+   {
+    "id": "evolved-agent",
+    "label": "🏆 Agente evolucionado\nGen 100, 97% de éxito\nprompt 60% más corto",
+    "x": 70,
+    "y": 745,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "objective-population",
+    "s": "objective",
+    "t": "population",
+    "label": ""
+   },
+   {
+    "id": "population-variant-a",
+    "s": "population",
+    "t": "variant-a",
+    "label": ""
+   },
+   {
+    "id": "population-variant-b",
+    "s": "population",
+    "t": "variant-b",
+    "label": ""
+   },
+   {
+    "id": "population-variant-c",
+    "s": "population",
+    "t": "variant-c",
+    "label": ""
+   },
+   {
+    "id": "variant-a-fitness",
+    "s": "variant-a",
+    "t": "fitness-eval",
+    "label": ""
+   },
+   {
+    "id": "variant-b-fitness",
+    "s": "variant-b",
+    "t": "fitness-eval",
+    "label": ""
+   },
+   {
+    "id": "variant-c-fitness",
+    "s": "variant-c",
+    "t": "fitness-eval",
+    "label": ""
+   },
+   {
+    "id": "fitness-weak",
+    "s": "fitness-eval",
+    "t": "weak-variant",
+    "label": "Eliminar"
+   },
+   {
+    "id": "fitness-selection",
+    "s": "fitness-eval",
+    "t": "selection",
+    "label": "Clasificar"
+   },
+   {
+    "id": "fitness-elite",
+    "s": "fitness-eval",
+    "t": "elite",
+    "label": "Preservar"
+   },
+   {
+    "id": "selection-crossover",
+    "s": "selection",
+    "t": "crossover",
+    "label": "Padres"
+   },
+   {
+    "id": "crossover-mutation",
+    "s": "crossover",
+    "t": "mutation",
+    "label": ""
+   },
+   {
+    "id": "mutation-diversity",
+    "s": "mutation",
+    "t": "diversity-monitor",
+    "label": ""
+   },
+   {
+    "id": "mutation-offspring",
+    "s": "mutation",
+    "t": "offspring",
+    "label": ""
+   },
+   {
+    "id": "elite-offspring",
+    "s": "elite",
+    "t": "offspring",
+    "label": ""
+   },
+   {
+    "id": "diversity-offspring",
+    "s": "diversity-monitor",
+    "t": "offspring",
+    "label": "Inyectar"
+   },
+   {
+    "id": "offspring-population",
+    "s": "offspring",
+    "t": "population",
+    "label": "Siguiente generación (bucle)"
+   },
+   {
+    "id": "offspring-evolved",
+    "s": "offspring",
+    "t": "evolved-agent",
+    "label": "Tras 100 generaciones"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Sembrar la población",
+    "description": "Cincuenta variantes de prompt compuestas al azar forman la Generación 1, cada una con una mezcla distinta de instrucciones, ejemplos y definición de rol.",
+    "input": "",
+    "nodes": [
+     "objective",
+     "population"
+    ],
+    "edges": [
+     "objective-population"
+    ]
+   },
+   {
+    "title": "Muestrear individuos",
+    "description": "Las variantes representativas abarcan el paisaje de aptitud, desde una Variante A concisa con 0.45 hasta una Variante B con chain-of-thought con 0.73.",
+    "input": "",
+    "nodes": [
+     "population",
+     "variant-a",
+     "variant-b",
+     "variant-c"
+    ],
+    "edges": [
+     "population-variant-a",
+     "population-variant-b",
+     "population-variant-c"
+    ]
+   },
+   {
+    "title": "Evaluar la aptitud",
+    "description": "Cada variante se ejecuta contra la suite de tareas; la aptitud es la precisión menos una penalización por longitud, de modo que se castigan los prompts inflados.",
+    "input": "",
+    "nodes": [
+     "variant-a",
+     "variant-b",
+     "variant-c",
+     "fitness-eval",
+     "weak-variant"
+    ],
+    "edges": [
+     "variant-a-fitness",
+     "variant-b-fitness",
+     "variant-c-fitness",
+     "fitness-weak"
+    ]
+   },
+   {
+    "title": "Seleccionar padres",
+    "description": "La selección por torneo con k=3 permite que el 30% superior se reproduzca, mientras que el elitismo copia las 5 mejores directamente a la siguiente generación.",
+    "input": "",
+    "nodes": [
+     "fitness-eval",
+     "selection",
+     "elite"
+    ],
+    "edges": [
+     "fitness-selection",
+     "fitness-elite"
+    ]
+   },
+   {
+    "title": "Cruce",
+    "description": "El cruce uniforme con p=0.8 combina dos prompts padres, mezclando las instrucciones de uno con los ejemplos del otro.",
+    "input": "",
+    "nodes": [
+     "selection",
+     "crossover"
+    ],
+    "edges": [
+     "selection-crossover"
+    ]
+   },
+   {
+    "title": "Mutar y proteger la diversidad",
+    "description": "La mutación con p=0.1 ajusta una instrucción o un ejemplo, y el monitor de diversidad inyecta variación nueva si la población converge demasiado rápido.",
+    "input": "",
+    "nodes": [
+     "crossover",
+     "mutation",
+     "diversity-monitor"
+    ],
+    "edges": [
+     "crossover-mutation",
+     "mutation-diversity"
+    ]
+   },
+   {
+    "title": "Formar la siguiente generación",
+    "description": "Las élites, los hijos del cruce y los mutantes se combinan en la generación descendiente, ahora con una mejor aptitud de 0.94, que vuelve al bucle como la nueva población.",
+    "input": "",
+    "nodes": [
+     "mutation",
+     "elite",
+     "diversity-monitor",
+     "offspring",
+     "population"
+    ],
+    "edges": [
+     "mutation-offspring",
+     "elite-offspring",
+     "diversity-offspring",
+     "offspring-population"
+    ]
+   },
+   {
+    "title": "Converger en el agente evolucionado",
+    "description": "Tras 100 generaciones, la población produce un prompt que alcanza un 97% de éxito y es un 60% más corto que la línea base escrita a mano.",
+    "input": "",
+    "nodes": [
+     "offspring",
+     "evolved-agent"
+    ],
+    "edges": [
+     "offspring-evolved"
+    ]
+   }
+  ]
+ }
+}

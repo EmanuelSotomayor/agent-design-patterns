@@ -1,0 +1,453 @@
+{
+ "cat": "routing",
+ "slug": "load-balancing",
+ "name": "Load Balancing",
+ "icon": "⚖️",
+ "complexity": "medium",
+ "description": "Distribuye la carga de trabajo de forma equilibrada entre los recursos de procesamiento disponibles",
+ "features": [
+  "Monitoreo de carga en tiempo real",
+  "Asignación dinámica de recursos",
+  "Gestión de colas",
+  "Optimización del rendimiento"
+ ],
+ "tldr": {
+  "what": "Dirige el trabajo entrante al recurso menos cargado según métricas en tiempo real, como CPU, memoria o cantidad de tareas activas.",
+  "when": "Varios agentes o servidores manejan solicitudes y necesitas evitar cuellos de botella y mantener tiempos de respuesta consistentes.",
+  "watchOut": "Las métricas van por detrás de la realidad: una tarea recién enrutada puede disparar la carga más rápido de lo que el monitoreo alcanza a detectar y rebalancear."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón Load Balancing",
+  "description": "Demuestra la distribución inteligente de la carga de trabajo entre los recursos de procesamiento disponibles según métricas de rendimiento y capacidad en tiempo real",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitudes entrantes\n\"Carga de trabajo de alto volumen\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "load-balancer",
+    "label": "Balanceador de carga\nMotor de distribución",
+    "x": 500,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "health-monitor",
+    "label": "Monitor de salud\nSeguimiento del estado del sistema",
+    "x": 200,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "metrics-collector",
+    "label": "Recolector de métricas\nAnalítica de rendimiento",
+    "x": 800,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "request-analyzer",
+    "label": "Analizador de solicitudes\nClasificación de la carga de trabajo",
+    "x": 350,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "algorithm-selector",
+    "label": "Selector de algoritmo\nEstrategia de balanceo",
+    "x": 650,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "server-a",
+    "label": "Servidor A\nCPU: 45% | RAM: 60%\nTareas: 12",
+    "x": 150,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "server-b",
+    "label": "Servidor B\nCPU: 78% | RAM: 85%\nTareas: 18",
+    "x": 350,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "server-c",
+    "label": "Servidor C\nCPU: 23% | RAM: 40%\nTareas: 6",
+    "x": 550,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "server-d",
+    "label": "Servidor D\nCPU: 67% | RAM: 72%\nTareas: 14",
+    "x": 750,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "queue-a",
+    "label": "Cola A\n3 tareas pendientes",
+    "x": 150,
+    "y": 650,
+    "w": 140
+   },
+   {
+    "id": "queue-b",
+    "label": "Cola B\n8 tareas pendientes",
+    "x": 350,
+    "y": 650,
+    "w": 140
+   },
+   {
+    "id": "queue-c",
+    "label": "Cola C\n1 tarea pendiente",
+    "x": 550,
+    "y": 650,
+    "w": 140
+   },
+   {
+    "id": "queue-d",
+    "label": "Cola D\n5 tareas pendientes",
+    "x": 750,
+    "y": 650,
+    "w": 140
+   },
+   {
+    "id": "round-robin",
+    "label": "Round Robin\nDistribución secuencial",
+    "x": 900,
+    "y": 350,
+    "w": 140
+   },
+   {
+    "id": "least-connections",
+    "label": "Least Connections\nMinimizar tareas activas",
+    "x": 900,
+    "y": 420,
+    "w": 140
+   },
+   {
+    "id": "weighted-round-robin",
+    "label": "Distribución ponderada\nEnrutamiento según capacidad",
+    "x": 900,
+    "y": 490,
+    "w": 140
+   },
+   {
+    "id": "performance-metrics",
+    "label": "Métricas de rendimiento\n• Tiempo de respuesta: 245ms\n• Throughput: 1,200 req/s\n• Tasa de errores: 0.2%\n• Disponibilidad: 99.9%",
+    "x": 50,
+    "y": 350,
+    "w": 160
+   },
+   {
+    "id": "result-aggregator",
+    "label": "Agregador de resultados\nCoordinación de respuestas",
+    "x": 450,
+    "y": 800,
+    "w": 180
+   },
+   {
+    "id": "feedback-system",
+    "label": "Sistema de feedback\nOptimización adaptativa",
+    "x": 50,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "auto-scaler",
+    "label": "Autoescalador\nAjuste dinámico de capacidad",
+    "x": 900,
+    "y": 200,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-balancer",
+    "s": "input",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-health-balancer",
+    "s": "health-monitor",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-metrics-balancer",
+    "s": "metrics-collector",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-balancer-analyzer",
+    "s": "load-balancer",
+    "t": "request-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-balancer-selector",
+    "s": "load-balancer",
+    "t": "algorithm-selector",
+    "label": ""
+   },
+   {
+    "id": "e-selector-roundrobin",
+    "s": "algorithm-selector",
+    "t": "round-robin",
+    "label": ""
+   },
+   {
+    "id": "e-selector-leastconn",
+    "s": "algorithm-selector",
+    "t": "least-connections",
+    "label": ""
+   },
+   {
+    "id": "e-selector-weighted",
+    "s": "algorithm-selector",
+    "t": "weighted-round-robin",
+    "label": ""
+   },
+   {
+    "id": "e-balancer-server-a",
+    "s": "load-balancer",
+    "t": "server-a",
+    "label": "Carga baja"
+   },
+   {
+    "id": "e-balancer-server-b",
+    "s": "load-balancer",
+    "t": "server-b",
+    "label": "Carga alta"
+   },
+   {
+    "id": "e-balancer-server-c",
+    "s": "load-balancer",
+    "t": "server-c",
+    "label": "Óptimo"
+   },
+   {
+    "id": "e-balancer-server-d",
+    "s": "load-balancer",
+    "t": "server-d",
+    "label": "Carga media"
+   },
+   {
+    "id": "e-server-a-queue",
+    "s": "server-a",
+    "t": "queue-a",
+    "label": ""
+   },
+   {
+    "id": "e-server-b-queue",
+    "s": "server-b",
+    "t": "queue-b",
+    "label": ""
+   },
+   {
+    "id": "e-server-c-queue",
+    "s": "server-c",
+    "t": "queue-c",
+    "label": ""
+   },
+   {
+    "id": "e-server-d-queue",
+    "s": "server-d",
+    "t": "queue-d",
+    "label": ""
+   },
+   {
+    "id": "e-queue-a-result",
+    "s": "queue-a",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-queue-c-result",
+    "s": "queue-c",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-performance-health",
+    "s": "performance-metrics",
+    "t": "health-monitor",
+    "label": ""
+   },
+   {
+    "id": "e-feedback-balancer",
+    "s": "feedback-system",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-metrics-autoscaler",
+    "s": "metrics-collector",
+    "t": "auto-scaler",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Ingreso de solicitudes",
+    "description": "Llegan solicitudes de alto volumen al balanceador de carga para su distribución.",
+    "input": "Tráfico entrante: 1,500 solicitudes concurrentes que requieren procesamiento en una infraestructura distribuida.",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Evaluación de la salud del sistema",
+    "description": "Monitorea la salud actual del sistema y la disponibilidad de recursos.",
+    "input": "Monitoreo de salud: estado de los servidores, utilización de recursos, profundidad de las colas",
+    "nodes": [
+     "input",
+     "health-monitor",
+     "load-balancer"
+    ],
+    "edges": [
+     "e-input-balancer",
+     "e-health-balancer"
+    ]
+   },
+   {
+    "title": "Recolección de métricas de rendimiento",
+    "description": "Reúne datos de rendimiento en tiempo real de todos los componentes del sistema.",
+    "input": "Recolección de métricas: tiempos de respuesta, throughput, tasas de error, utilización de capacidad",
+    "nodes": [
+     "metrics-collector",
+     "performance-metrics"
+    ],
+    "edges": [
+     "e-metrics-balancer",
+     "e-performance-health"
+    ]
+   },
+   {
+    "title": "Análisis de solicitudes",
+    "description": "Analiza las solicitudes entrantes para determinar sus requisitos de procesamiento.",
+    "input": "Clasificación de solicitudes: requisitos de recursos, niveles de prioridad, complejidad de procesamiento",
+    "nodes": [
+     "request-analyzer"
+    ],
+    "edges": [
+     "e-balancer-analyzer"
+    ]
+   },
+   {
+    "title": "Selección del algoritmo de balanceo de carga",
+    "description": "Elige la estrategia de distribución óptima según las condiciones actuales.",
+    "input": "Selección del algoritmo: patrones de carga actuales, capacidades de los servidores, objetivos de rendimiento",
+    "nodes": [
+     "algorithm-selector",
+     "round-robin",
+     "least-connections",
+     "weighted-round-robin"
+    ],
+    "edges": [
+     "e-balancer-selector",
+     "e-selector-roundrobin",
+     "e-selector-leastconn",
+     "e-selector-weighted"
+    ]
+   },
+   {
+    "title": "Evaluación de la capacidad de los servidores",
+    "description": "Evalúa la carga y la capacidad actuales de todos los servidores disponibles.",
+    "input": "Evaluación de servidores: uso de CPU, consumo de memoria, conexiones activas, estado de las colas",
+    "nodes": [
+     "server-a",
+     "server-b",
+     "server-c",
+     "server-d"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Distribución inteligente de solicitudes",
+    "description": "Distribuye las solicitudes según la capacidad de los servidores y el algoritmo seleccionado.",
+    "input": "Enrutamiento de solicitudes: distribución ponderada para optimizar la utilización de recursos",
+    "nodes": [
+     "load-balancer",
+     "server-c"
+    ],
+    "edges": [
+     "e-balancer-server-c"
+    ]
+   },
+   {
+    "title": "Gestión de colas",
+    "description": "Gestiona las colas de procesamiento para asegurar un manejo fluido de las solicitudes.",
+    "input": "Optimización de colas: priorización de tareas, manejo de desbordes, maximización del throughput",
+    "nodes": [
+     "queue-a",
+     "queue-b",
+     "queue-c",
+     "queue-d"
+    ],
+    "edges": [
+     "e-server-a-queue",
+     "e-server-b-queue",
+     "e-server-c-queue",
+     "e-server-d-queue"
+    ]
+   },
+   {
+    "title": "Procesamiento y agregación de resultados",
+    "description": "Procesa las solicitudes y agrega los resultados para coordinar las respuestas.",
+    "input": "Procesamiento de resultados: coordinar las respuestas de los servidores distribuidos",
+    "nodes": [
+     "queue-c",
+     "result-aggregator"
+    ],
+    "edges": [
+     "e-queue-c-result",
+     "e-queue-a-result"
+    ]
+   },
+   {
+    "title": "Análisis del feedback de rendimiento",
+    "description": "Analiza las métricas de rendimiento para optimizar las futuras decisiones de balanceo de carga.",
+    "input": "Análisis de feedback: tendencias de rendimiento, identificación de cuellos de botella, oportunidades de optimización",
+    "nodes": [
+     "feedback-system"
+    ],
+    "edges": [
+     "e-feedback-balancer"
+    ]
+   },
+   {
+    "title": "Evaluación de autoescalado",
+    "description": "Evalúa la necesidad de ajustar la capacidad dinámicamente según los patrones de carga.",
+    "input": "Análisis de escalado: tendencias de tráfico, patrones de utilización de recursos, planificación de capacidad",
+    "nodes": [
+     "auto-scaler"
+    ],
+    "edges": [
+     "e-metrics-autoscaler"
+    ]
+   },
+   {
+    "title": "Optimización del sistema y reportes",
+    "description": "Completa el ciclo de balanceo de carga con la optimización del sistema y el reporte de rendimiento.",
+    "input": "",
+    "nodes": [
+     "result-aggregator",
+     "performance-metrics"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}

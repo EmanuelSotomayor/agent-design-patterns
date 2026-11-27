@@ -1,0 +1,362 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "osworld",
+ "name": "OSWorld(OSWorld)",
+ "icon": "🖥️",
+ "complexity": "high",
+ "description": "Entornos de escritorio ejecutables en los que un agente se califica según el estado que deja después de hacer trabajo real a través de aplicaciones, archivos y el sistema operativo.",
+ "features": [
+  "Sistemas operativos reales, no simulaciones de ellos",
+  "Calificación basada en la ejecución, contra el estado final de la máquina",
+  "Tareas que abarcan varias aplicaciones y el sistema de archivos",
+  "Flujos de trabajo abiertos sin una única secuencia de acciones correcta",
+  "Variante de horizonte largo (OSWorld 2.0) junto con las tareas cortas originales",
+  "Línea base humana recopilada en los mismos entornos"
+ ],
+ "tldr": {
+  "what": "Ejecuta un agente en un escritorio real y luego califica el estado de la máquina, a través de las aplicaciones, los archivos y el sistema operativo subyacente.",
+  "when": "Se espera que tu agente opere software mediante la misma interfaz que recibe una persona, y no mediante una API creada para él.",
+  "watchOut": "Los fallos se concentran en saber dónde hacer clic más que en saber qué hacer, y un estado final alcanzado por una ruta que ningún operador aprobaría igual se califica como éxito."
+ },
+ "overview": {
+  "pattern": "Entornos de escritorio ejecutables en los que un agente se califica según el estado de la máquina después de trabajar, no según lo que reportó haber hecho",
+  "why": "El uso de computadora es la interfaz que realmente tiene la mayoría del software. Un benchmark que concede una API específica para la tarea mide algo más fácil que el trabajo real",
+  "insight": "Los fallos se concentran en el grounding de la GUI, no en el razonamiento sobre el objetivo: los agentes en gran medida entienden qué hacer, pero no logran encontrar de forma confiable dónde hacer clic",
+  "impl": [
+   {
+    "t": "Aprovisionar",
+    "d": "Inicia la imagen de la tarea para que el escritorio, los archivos y las aplicaciones estén en el estado inicial documentado"
+   },
+   {
+    "t": "Instruir",
+    "d": "Da solo el objetivo en lenguaje natural, sin procedimiento ni herramientas específicas para la tarea"
+   },
+   {
+    "t": "Observar",
+    "d": "Expón la pantalla, y el árbol de accesibilidad si tu agente lo usa, además del control de teclado y mouse"
+   },
+   {
+    "t": "Acotar",
+    "d": "Limita los pasos y el tiempo real; las tareas de horizonte largo fallan tanto por divagar como por actuar mal"
+   },
+   {
+    "t": "Verificar",
+    "d": "Ejecuta el script de cada tarea contra el estado final de la máquina y registra la trayectoria para revisarla"
+   }
+  ],
+  "example": "osworld = OSWorld(task_config=\"chart_to_mail.json\", observation=\"screenshot+a11y\", max_steps=50)",
+  "dos": [
+   "Califica el estado de la máquina, nunca la narración del agente sobre lo que hizo",
+   "Conserva la trayectoria: el paso donde ocurre el fallo importa más que la puntuación final",
+   "Reporta el modo de observación, ya que las ejecuciones solo con capturas de pantalla y las que usan el árbol de accesibilidad no son comparables",
+   "Separa los fallos de grounding de los fallos de planificación al leer los resultados",
+   "Fija la imagen del entorno, porque una actualización del sistema cambia el benchmark silenciosamente"
+  ],
+  "donts": [
+   "Comparar una puntuación con otra de una versión o subconjunto de tareas distinto de OSWorld",
+   "Tratar un estado final aprobado como una ruta autorizada: un agente puede llegar por un camino que ningún operador permitiría",
+   "Ejecutar sin límite de pasos e interpretar un timeout como un resultado de capacidad",
+   "Suponer que las puntuaciones en escritorio se trasladan a tus propias aplicaciones internas",
+   "Darle al agente una API específica para la tarea y aun así llamar al número un resultado de uso de computadora"
+  ],
+  "use": [
+   "Construir un agente que deba operar software mediante la interfaz que se le da a un humano",
+   "Decidir si el grounding de la GUI o la planificación de tareas es la restricción determinante",
+   "Comparar la capacidad de uso de computadora entre modelos en entornos idénticos",
+   "Validar flujos de trabajo entre aplicaciones antes de dejar que un agente toque un escritorio real"
+  ],
+  "avoid": [
+   "Tu agente tiene APIs de primera clase para todo lo que necesita, por lo que el uso de computadora es el camino más difícil sin ningún beneficio",
+   "Necesitas una señal rápida: estos entornos son lentos y pesados de ejecutar",
+   "El objetivo es una sola aplicación web, para lo cual WebArena encaja mejor",
+   "Necesitas confianza estadística a partir de muchos intentos con un presupuesto de cómputo pequeño"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito",
+    "d": "Fracción de tareas cuyo script de verificación pasa contra el estado final de la máquina"
+   },
+   {
+    "n": "Brecha con la línea base humana",
+    "d": "Distancia respecto a la tasa de finalización humana recopilada en los mismos entornos"
+   },
+   {
+    "n": "Fallos de grounding",
+    "d": "Proporción de fallos causados por actuar sobre el elemento de pantalla equivocado"
+   },
+   {
+    "n": "Pasos hasta completar",
+    "d": "Acciones usadas frente a la solución de referencia, lo que expone la divagación"
+   },
+   {
+    "n": "Tasa entre aplicaciones",
+    "d": "Éxito en tareas que abarcan más de un programa"
+   },
+   {
+    "n": "Errores irrecuperables",
+    "d": "Ejecuciones en las que una acción errónea temprana hizo inalcanzable el objetivo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Agentes de uso de computadora",
+    "d": "medir si un agente puede operar un escritorio en lugar de describir cómo operarlo"
+   },
+   {
+    "n": "Diagnóstico de grounding",
+    "d": "separar 'no sabía qué hacer' de 'no pudo encontrar el botón'"
+   },
+   {
+    "n": "Evaluación de horizonte largo",
+    "d": "flujos de trabajo de OSWorld 2.0 que se extienden mucho más allá de la duración de las tareas originales"
+   },
+   {
+    "n": "Pruebas de regresión",
+    "d": "fijar una imagen del entorno y volver a ejecutarla en distintas versiones del modelo"
+   },
+   {
+    "n": "Preparación empresarial",
+    "d": "evidencia antes de otorgarle a un agente el control de una estación de trabajo real"
+   }
+  ]
+ },
+ "flow": {
+  "title": "OSWorld: calificar a un agente según la máquina que deja",
+  "description": "Un escritorio real, una tarea escrita como la escribiría un colega y un script de verificación que inspecciona la computadora después, en lugar de leer lo que el agente dijo que hizo",
+  "nodes": [
+   {
+    "id": "instruction",
+    "label": "🗣️ Instrucción en lenguaje natural\n\"Exporta el gráfico de report.xlsx\ncomo PNG y adjúntalo a una respuesta\nen el hilo de correo abierto.\"",
+    "x": 400,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "environment",
+    "label": "🖥️ Escritorio ejecutable\n\"Un sistema operativo real con los archivos ya abiertos.\nPantalla, teclado, mouse.\nNinguna API específica de la tarea para llamar.\"",
+    "x": 400,
+    "y": 190,
+    "w": 300
+   },
+   {
+    "id": "perceive",
+    "label": "👁️ Percibir\n\"Leer la pantalla.\n¿Qué píxeles son el gráfico,\ncuáles son el botón de exportar?\"",
+    "x": 120,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "act",
+    "label": "🖱️ Actuar\n\"Clic, escribir, arrastrar.\nCada acción cae sobre un sistema\nde archivos real. No hay deshacer.\"",
+    "x": 400,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "cross-app",
+    "label": "🔀 Entre aplicaciones\n\"De la hoja de cálculo al gestor de archivos\ny al cliente de correo, manteniendo el\nhilo durante todo el camino.\"",
+    "x": 680,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "final-state",
+    "label": "💾 Estado final de la máquina\n\"El PNG en disco.\nLa respuesta en la carpeta de enviados.\nCualquier otra cosa que haya cambiado en el camino.\"",
+    "x": 400,
+    "y": 510,
+    "w": 300
+   },
+   {
+    "id": "verifier",
+    "label": "✅ Script de verificación por tarea\n\"¿Existe el archivo? ¿Es el gráfico\ncorrecto? ¿Se envió la respuesta en el\nhilo correcto?\"",
+    "x": 400,
+    "y": 660,
+    "w": 300
+   },
+   {
+    "id": "gap",
+    "label": "📉 La brecha de grounding\n\"Los humanos completan la mayoría.\nLos agentes completan muchas menos, y\nfallan sobre todo en saber dónde hacer clic.\"",
+    "x": 120,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "blind-spot",
+    "label": "⚠️ Lo que no puede ver\n\"Un estado final alcanzado por una ruta\nque ningún usuario tomaría igual puntúa.\nLlegar no es ser confiable.\"",
+    "x": 620,
+    "y": 800,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "instruction",
+    "t": "environment",
+    "label": ""
+   },
+   {
+    "id": "e2",
+    "s": "environment",
+    "t": "perceive",
+    "label": ""
+   },
+   {
+    "id": "e3",
+    "s": "environment",
+    "t": "act",
+    "label": ""
+   },
+   {
+    "id": "e4",
+    "s": "environment",
+    "t": "cross-app",
+    "label": ""
+   },
+   {
+    "id": "e5",
+    "s": "perceive",
+    "t": "act",
+    "label": ""
+   },
+   {
+    "id": "e6",
+    "s": "act",
+    "t": "cross-app",
+    "label": ""
+   },
+   {
+    "id": "e7",
+    "s": "act",
+    "t": "final-state",
+    "label": ""
+   },
+   {
+    "id": "e8",
+    "s": "cross-app",
+    "t": "final-state",
+    "label": ""
+   },
+   {
+    "id": "e9",
+    "s": "final-state",
+    "t": "verifier",
+    "label": ""
+   },
+   {
+    "id": "e10",
+    "s": "verifier",
+    "t": "gap",
+    "label": ""
+   },
+   {
+    "id": "e11",
+    "s": "verifier",
+    "t": "blind-spot",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Una tarea escrita como la escribiría un colega",
+    "description": "La instrucción nombra un resultado, no un procedimiento. Nada le dice al agente qué aplicaciones usar ni en qué orden, porque una persona que pide esto no lo diría.",
+    "input": "",
+    "nodes": [
+     "instruction"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Una computadora real, no una simulación",
+    "description": "El agente recibe un escritorio en ejecución con los archivos ya abiertos y la misma interfaz que tiene una persona: una pantalla, un teclado y un mouse. No hay una API específica para la tarea, y ese es justamente el punto.",
+    "input": "",
+    "nodes": [
+     "environment"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "La percepción es la parte difícil",
+    "description": "Antes de poder actuar, el agente tiene que decidir qué píxeles son el gráfico y cuáles el control de exportación. Este paso de grounding, no el razonamiento, es donde falla la mayoría de los intentos.",
+    "input": "",
+    "nodes": [
+     "perceive"
+    ],
+    "edges": [
+     "e2"
+    ]
+   },
+   {
+    "title": "Cada acción es irreversible",
+    "description": "Los clics y las pulsaciones de teclas caen sobre un sistema de archivos real. Un clic erróneo no es un token erróneo que el siguiente pueda corregir, y los errores se acumulan: un paso posterior no puede recuperar uno anterior.",
+    "input": "",
+    "nodes": [
+     "act"
+    ],
+    "edges": [
+     "e3",
+     "e5"
+    ]
+   },
+   {
+    "title": "El trabajo cruza aplicaciones",
+    "description": "Hoja de cálculo, gestor de archivos, cliente de correo. Sostener una sola tarea a través de tres programas es lo que distingue esto de un benchmark que vive dentro de una sola ventana.",
+    "input": "",
+    "nodes": [
+     "cross-app"
+    ],
+    "edges": [
+     "e4",
+     "e6"
+    ]
+   },
+   {
+    "title": "Lo que se califica es la computadora",
+    "description": "Cuando el agente se detiene, la máquina queda en algún estado. Ese estado, no la transcripción ni las capturas de pantalla, es lo que se entrega.",
+    "input": "",
+    "nodes": [
+     "final-state"
+    ],
+    "edges": [
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "La verificación es un script que inspecciona la máquina",
+    "description": "Cada tarea incluye su propio verificador: si el archivo existe, si es el gráfico correcto, si la respuesta se envió en el hilo correcto. Al estar basado en la ejecución, una narración segura de un trabajo nunca hecho obtiene cero.",
+    "input": "",
+    "nodes": [
+     "verifier"
+    ],
+    "edges": [
+     "e9"
+    ]
+   },
+   {
+    "title": "La brecha que esto expone",
+    "description": "Los humanos completan la mayoría de estas tareas. Los agentes completan muchas menos, y los fallos se concentran en el grounding de la GUI y en el conocimiento operativo más que en el razonamiento sobre el objetivo.",
+    "input": "",
+    "nodes": [
+     "gap"
+    ],
+    "edges": [
+     "e10"
+    ]
+   },
+   {
+    "title": "Y lo que todavía no puede ver",
+    "description": "Calificar el estado final significa que un agente puede alcanzarlo por una ruta que ningún usuario tomaría y que ningún operador aprobaría. Llegar ahí no es lo mismo que merecer la confianza para hacerlo.",
+    "input": "",
+    "nodes": [
+     "blind-spot"
+    ],
+    "edges": [
+     "e11"
+    ]
+   }
+  ]
+ }
+}

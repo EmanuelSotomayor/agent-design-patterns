@@ -1,0 +1,348 @@
+{
+ "cat": "exploration-discovery",
+ "slug": "curiosity-driven-search",
+ "name": "Curiosity-Driven Exploration(CDE)",
+ "icon": "🔍",
+ "complexity": "high",
+ "description": "Exploración basada en la motivación intrínseca que impulsa el descubrimiento de información novedosa y sorprendente",
+ "features": [
+  "Modelado de la motivación intrínseca",
+  "Detección de novedad",
+  "Cuantificación de la sorpresa",
+  "Maximización de la ganancia de información",
+  "Exploración basada en la incertidumbre",
+  "Capacidades de meta-aprendizaje"
+ ],
+ "tldr": {
+  "what": "El agente explora buscando estados de alta incertidumbre o alta sorpresa, y usa la ganancia de información o el error de predicción para priorizar qué incógnitas investigar.",
+  "when": "Tareas de descubrimiento abiertas en las que el agente debe identificar de forma autónoma preguntas valiosas sin un objetivo ni una señal de recompensa predefinidos.",
+  "watchOut": "El agente puede perseguir la novedad por sí misma y desperdiciar cómputo en descubrimientos tangenciales o de poco valor en lugar de converger en hallazgos útiles."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Exploración impulsada por la curiosidad",
+  "description": "Un agente explora una API REST sin documentar guiado por una recompensa intrínseca. Predice el resultado de cada llamada, y la sorpresa, la novedad y la ganancia de información de las respuestas inesperadas lo empujan hacia regiones inexploradas en lugar de hacia un objetivo fijo.",
+  "nodes": [
+   {
+    "id": "target-api",
+    "label": "🌐 API REST sin documentar\n120 endpoints, sin documentación\nObjetivo: mapear su comportamiento",
+    "x": 370,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "curiosity-agent",
+    "label": "🔍 Agente curioso\nBusca estados novedosos y sorprendentes",
+    "x": 390,
+    "y": 170,
+    "w": 280
+   },
+   {
+    "id": "state-encoder",
+    "label": "🧬 Codificador de estado\nEmbedding de endpoint + respuesta",
+    "x": 110,
+    "y": 290,
+    "w": 190
+   },
+   {
+    "id": "forward-model",
+    "label": "🔮 Modelo predictivo\nPredice la siguiente respuesta",
+    "x": 380,
+    "y": 290,
+    "w": 190
+   },
+   {
+    "id": "visited-memory",
+    "label": "🗂️ Memoria de visitados\nBuffer de estados vistos",
+    "x": 650,
+    "y": 290,
+    "w": 190
+   },
+   {
+    "id": "prediction-error",
+    "label": "⚡ Error de predicción\nsurprise = |pred - actual|\npuntaje: 8.7 / 10",
+    "x": 40,
+    "y": 410,
+    "w": 185
+   },
+   {
+    "id": "novelty-detector",
+    "label": "✨ Detector de novedad\ndistancia a lo visitado\nk-NN en el espacio de embeddings",
+    "x": 265,
+    "y": 410,
+    "w": 185
+   },
+   {
+    "id": "info-gain",
+    "label": "📊 Ganancia de información\nreducción esperada de la\nincertidumbre: 2.3 bits",
+    "x": 490,
+    "y": 410,
+    "w": 185
+   },
+   {
+    "id": "intrinsic-reward",
+    "label": "💡 Recompensa intrínseca\nr = surprise + novelty + gain\nno requiere recompensa externa",
+    "x": 340,
+    "y": 540,
+    "w": 250
+   },
+   {
+    "id": "novel-endpoint",
+    "label": "🆕 Endpoint novedoso\n/v2/graph esquema no visto\nrecompensa intrínseca alta",
+    "x": 70,
+    "y": 550,
+    "w": 190
+   },
+   {
+    "id": "known-region",
+    "label": "🔁 Región conocida\nya mapeada\nrecompensa ≈ 0, omitir",
+    "x": 690,
+    "y": 550,
+    "w": 180
+   },
+   {
+    "id": "policy-update",
+    "label": "🔧 Actualización de la política\nSesga la acción hacia\nregiones de alta recompensa",
+    "x": 390,
+    "y": 660,
+    "w": 210
+   },
+   {
+    "id": "knowledge-map",
+    "label": "🗺️ Mapa de conocimiento\n34% más cobertura, 12 descubrimientos",
+    "x": 390,
+    "y": 780,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "api-agent",
+    "s": "target-api",
+    "t": "curiosity-agent",
+    "label": "Observar"
+   },
+   {
+    "id": "agent-encoder",
+    "s": "curiosity-agent",
+    "t": "state-encoder",
+    "label": ""
+   },
+   {
+    "id": "agent-forward",
+    "s": "curiosity-agent",
+    "t": "forward-model",
+    "label": "Predecir"
+   },
+   {
+    "id": "agent-memory",
+    "s": "curiosity-agent",
+    "t": "visited-memory",
+    "label": ""
+   },
+   {
+    "id": "encoder-error",
+    "s": "state-encoder",
+    "t": "prediction-error",
+    "label": ""
+   },
+   {
+    "id": "forward-error",
+    "s": "forward-model",
+    "t": "prediction-error",
+    "label": "Comparar"
+   },
+   {
+    "id": "memory-novelty",
+    "s": "visited-memory",
+    "t": "novelty-detector",
+    "label": ""
+   },
+   {
+    "id": "forward-gain",
+    "s": "forward-model",
+    "t": "info-gain",
+    "label": ""
+   },
+   {
+    "id": "error-reward",
+    "s": "prediction-error",
+    "t": "intrinsic-reward",
+    "label": ""
+   },
+   {
+    "id": "novelty-reward",
+    "s": "novelty-detector",
+    "t": "intrinsic-reward",
+    "label": ""
+   },
+   {
+    "id": "gain-reward",
+    "s": "info-gain",
+    "t": "intrinsic-reward",
+    "label": ""
+   },
+   {
+    "id": "reward-novel",
+    "s": "intrinsic-reward",
+    "t": "novel-endpoint",
+    "label": "Recompensa alta"
+   },
+   {
+    "id": "reward-known",
+    "s": "intrinsic-reward",
+    "t": "known-region",
+    "label": "Recompensa baja"
+   },
+   {
+    "id": "novel-update",
+    "s": "novel-endpoint",
+    "t": "policy-update",
+    "label": ""
+   },
+   {
+    "id": "novel-memory",
+    "s": "novel-endpoint",
+    "t": "visited-memory",
+    "label": "Registrar"
+   },
+   {
+    "id": "update-agent",
+    "s": "policy-update",
+    "t": "curiosity-agent",
+    "label": "Explorar lo siguiente (ciclo)"
+   },
+   {
+    "id": "novel-map",
+    "s": "novel-endpoint",
+    "t": "knowledge-map",
+    "label": ""
+   },
+   {
+    "id": "update-map",
+    "s": "policy-update",
+    "t": "knowledge-map",
+    "label": "Integrar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Observar el estado actual",
+    "description": "El agente llama a un endpoint y codifica el endpoint junto con su respuesta en un embedding, que compara con el buffer de estados visitados.",
+    "input": "",
+    "nodes": [
+     "target-api",
+     "curiosity-agent",
+     "state-encoder",
+     "visited-memory"
+    ],
+    "edges": [
+     "api-agent",
+     "agent-encoder",
+     "agent-memory"
+    ]
+   },
+   {
+    "title": "Predecir el resultado",
+    "description": "El modelo predictivo anticipa la respuesta antes de que la llamada se resuelva, para que el agente pueda medir después cuánto se equivocó.",
+    "input": "",
+    "nodes": [
+     "curiosity-agent",
+     "forward-model"
+    ],
+    "edges": [
+     "agent-forward"
+    ]
+   },
+   {
+    "title": "Medir la sorpresa",
+    "description": "El error de predicción compara la respuesta predicha con la real. Un esquema inesperado obtiene 8.7 de 10 en sorpresa.",
+    "input": "",
+    "nodes": [
+     "state-encoder",
+     "forward-model",
+     "prediction-error"
+    ],
+    "edges": [
+     "encoder-error",
+     "forward-error"
+    ]
+   },
+   {
+    "title": "Evaluar la novedad y la ganancia de información",
+    "description": "El detector de novedad mide la distancia a los estados visitados previamente, y la ganancia de información estima 2.3 bits de reducción de la incertidumbre.",
+    "input": "",
+    "nodes": [
+     "visited-memory",
+     "novelty-detector",
+     "forward-model",
+     "info-gain"
+    ],
+    "edges": [
+     "memory-novelty",
+     "forward-gain"
+    ]
+   },
+   {
+    "title": "Calcular la recompensa intrínseca",
+    "description": "La sorpresa, la novedad y la ganancia de información se combinan en una única recompensa intrínseca que no necesita una señal de objetivo externa.",
+    "input": "",
+    "nodes": [
+     "prediction-error",
+     "novelty-detector",
+     "info-gain",
+     "intrinsic-reward"
+    ],
+    "edges": [
+     "error-reward",
+     "novelty-reward",
+     "gain-reward"
+    ]
+   },
+   {
+    "title": "Orientarse hacia la novedad",
+    "description": "Un endpoint novedoso como /v2/graph obtiene una recompensa alta y se registra, mientras que las regiones ya mapeadas puntúan cerca de cero y se omiten.",
+    "input": "",
+    "nodes": [
+     "intrinsic-reward",
+     "novel-endpoint",
+     "known-region",
+     "visited-memory"
+    ],
+    "edges": [
+     "reward-novel",
+     "reward-known",
+     "novel-memory"
+    ]
+   },
+   {
+    "title": "Actualizar la política y repetir el ciclo",
+    "description": "La política se desplaza hacia las regiones de alta recompensa y retroalimenta al agente para elegir la siguiente llamada.",
+    "input": "",
+    "nodes": [
+     "novel-endpoint",
+     "policy-update",
+     "curiosity-agent"
+    ],
+    "edges": [
+     "novel-update",
+     "update-agent"
+    ]
+   },
+   {
+    "title": "Integrar los descubrimientos",
+    "description": "Los descubrimientos confirmados se incorporan al mapa de conocimiento, lo que aporta un 34% más de cobertura y 12 comportamientos antes desconocidos.",
+    "input": "",
+    "nodes": [
+     "novel-endpoint",
+     "policy-update",
+     "knowledge-map"
+    ],
+    "edges": [
+     "novel-map",
+     "update-map"
+    ]
+   }
+  ]
+ }
+}

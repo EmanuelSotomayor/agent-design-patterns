@@ -1,0 +1,343 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "process-reward-models",
+ "name": "Process Reward Models & Verifier-Guided Search(PRM)",
+ "icon": "🪜",
+ "complexity": "high",
+ "description": "Usa un modelo de recompensa que puntúa cada paso intermedio de razonamiento (supervisión de proceso) en lugar de solo la respuesta final (supervisión de resultado). Los puntajes por paso ordenan y podan las soluciones candidatas durante el muestreo best-of-N o la búsqueda en árbol, concentrando el cómputo en tiempo de prueba en las ramas más prometedoras y en los problemas más difíciles.",
+ "features": [
+  "Puntuación de corrección por paso (supervisión de proceso)",
+  "Ordena y poda candidatos en best-of-N o búsqueda en árbol",
+  "Poda temprana de ramas con puntaje bajo",
+  "Asignación óptima de cómputo según la dificultad del problema",
+  "Más eficiente en muestras que los modelos de recompensa basados solo en el resultado",
+  "Selección de la respuesta final guiada por un verificador"
+ ],
+ "tldr": {
+  "what": "Puntúa cada paso de razonamiento con un modelo aprendido y luego poda de forma temprana las ramas de solución con puntaje bajo durante la búsqueda o el muestreo.",
+  "when": "Problemas de múltiples pasos donde importa la corrección intermedia, el cómputo en tiempo de prueba es flexible y puedes permitirte entrenar un verificador a nivel de paso.",
+  "watchOut": "La calidad del modelo de recompensa de proceso limita directamente la precisión de la poda; los puntajes de paso deficientes desperdician cómputo o cortan prematuramente caminos correctos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Process Reward Models y búsqueda guiada por verificador",
+  "description": "Un modelo de recompensa puntúa cada paso intermedio de razonamiento en lugar de solo la respuesta final. Los puntajes podan temprano las ramas débiles en una búsqueda best-of-N o en árbol, concentran el cómputo en tiempo de prueba en los caminos prometedores y seleccionan la respuesta final agregando los puntajes de los pasos.",
+  "nodes": [
+   {
+    "id": "problem",
+    "label": "🧩 Problema de enunciado\nPregunta matemática de varios pasos",
+    "x": 340,
+    "y": 50,
+    "w": 230
+   },
+   {
+    "id": "policy",
+    "label": "🤖 Modelo de política\nMuestrea 8 caminos de solución",
+    "x": 340,
+    "y": 145,
+    "w": 230
+   },
+   {
+    "id": "paths",
+    "label": "🌿 8 caminos candidatos\ncada uno es una secuencia de pasos",
+    "x": 340,
+    "y": 240,
+    "w": 230
+   },
+   {
+    "id": "path-1",
+    "label": "🟢 Camino 1\npasos 0.9, 0.8, 0.9",
+    "x": 30,
+    "y": 345,
+    "w": 150
+   },
+   {
+    "id": "path-2",
+    "label": "🟡 Camino 2\npasos 0.9, 0.4, cortado",
+    "x": 230,
+    "y": 345,
+    "w": 150
+   },
+   {
+    "id": "path-3",
+    "label": "🔴 Camino 3\npasos 0.2, cortado",
+    "x": 440,
+    "y": 345,
+    "w": 150
+   },
+   {
+    "id": "path-4",
+    "label": "🟢 Camino 4\npasos 0.8, 0.7, 0.8",
+    "x": 650,
+    "y": 345,
+    "w": 150
+   },
+   {
+    "id": "prm",
+    "label": "🪜 Modelo de recompensa de proceso\npuntúa cada paso a medida que se produce",
+    "x": 340,
+    "y": 450,
+    "w": 240
+   },
+   {
+    "id": "prune",
+    "label": "✂️ Poda\n5 de 8 cortados tras el paso 3\npuntaje acumulado bajo el umbral",
+    "x": 650,
+    "y": 455,
+    "w": 210
+   },
+   {
+    "id": "compute-saved",
+    "label": "⚡ Cómputo ahorrado\n>4x más eficiente\nque best-of-N ingenuo",
+    "x": 650,
+    "y": 565,
+    "w": 210
+   },
+   {
+    "id": "survivors",
+    "label": "🌱 Sobrevivientes\n3 caminos con puntaje alto continúan",
+    "x": 330,
+    "y": 555,
+    "w": 220
+   },
+   {
+    "id": "expand",
+    "label": "🌲 Expansión guiada\ncontinúan y se ramifican más",
+    "x": 330,
+    "y": 645,
+    "w": 220
+   },
+   {
+    "id": "aggregate",
+    "label": "🧮 Agregar puntajes\nmínimo o producto entre pasos",
+    "x": 330,
+    "y": 735,
+    "w": 220
+   },
+   {
+    "id": "select-answer",
+    "label": "🏆 Seleccionar respuesta\nponderada, no por voto mayoritario",
+    "x": 630,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "✅ Solución verificada\nsupera a self-consistency\ncon igual presupuesto de muestras",
+    "x": 40,
+    "y": 730,
+    "w": 210
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-problem-policy",
+    "s": "problem",
+    "t": "policy",
+    "label": ""
+   },
+   {
+    "id": "e-policy-paths",
+    "s": "policy",
+    "t": "paths",
+    "label": "Muestrear 8"
+   },
+   {
+    "id": "e-paths-p1",
+    "s": "paths",
+    "t": "path-1",
+    "label": ""
+   },
+   {
+    "id": "e-paths-p2",
+    "s": "paths",
+    "t": "path-2",
+    "label": ""
+   },
+   {
+    "id": "e-paths-p3",
+    "s": "paths",
+    "t": "path-3",
+    "label": ""
+   },
+   {
+    "id": "e-paths-p4",
+    "s": "paths",
+    "t": "path-4",
+    "label": ""
+   },
+   {
+    "id": "e-p1-prm",
+    "s": "path-1",
+    "t": "prm",
+    "label": ""
+   },
+   {
+    "id": "e-p2-prm",
+    "s": "path-2",
+    "t": "prm",
+    "label": ""
+   },
+   {
+    "id": "e-p3-prm",
+    "s": "path-3",
+    "t": "prm",
+    "label": ""
+   },
+   {
+    "id": "e-p4-prm",
+    "s": "path-4",
+    "t": "prm",
+    "label": ""
+   },
+   {
+    "id": "e-prm-prune",
+    "s": "prm",
+    "t": "prune",
+    "label": "Puntaje acumulado bajo"
+   },
+   {
+    "id": "e-prune-compute",
+    "s": "prune",
+    "t": "compute-saved",
+    "label": "Ahorrar presupuesto"
+   },
+   {
+    "id": "e-prm-survivors",
+    "s": "prm",
+    "t": "survivors",
+    "label": "Puntajes altos"
+   },
+   {
+    "id": "e-survivors-expand",
+    "s": "survivors",
+    "t": "expand",
+    "label": ""
+   },
+   {
+    "id": "e-expand-aggregate",
+    "s": "expand",
+    "t": "aggregate",
+    "label": ""
+   },
+   {
+    "id": "e-aggregate-select",
+    "s": "aggregate",
+    "t": "select-answer",
+    "label": "Ordenar por puntaje de paso"
+   },
+   {
+    "id": "e-select-output",
+    "s": "select-answer",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Muestrear caminos de solución",
+    "description": "La política genera 8 caminos de solución candidatos para el problema, cada uno como una secuencia de pasos de razonamiento etiquetados en lugar de una única respuesta final.",
+    "input": "",
+    "nodes": [
+     "problem",
+     "policy",
+     "paths",
+     "path-1",
+     "path-2",
+     "path-3",
+     "path-4"
+    ],
+    "edges": [
+     "e-problem-policy",
+     "e-policy-paths",
+     "e-paths-p1",
+     "e-paths-p2",
+     "e-paths-p3",
+     "e-paths-p4"
+    ]
+   },
+   {
+    "title": "Puntuar cada paso",
+    "description": "El modelo de recompensa de proceso asigna una probabilidad de corrección a cada paso a medida que se produce. El Camino 1 y el Camino 4 mantienen puntajes altos, mientras que el Camino 2 y el Camino 3 caen.",
+    "input": "",
+    "nodes": [
+     "path-1",
+     "path-2",
+     "path-3",
+     "path-4",
+     "prm"
+    ],
+    "edges": [
+     "e-p1-prm",
+     "e-p2-prm",
+     "e-p3-prm",
+     "e-p4-prm"
+    ]
+   },
+   {
+    "title": "Podar ramas débiles",
+    "description": "Los caminos cuyo puntaje acumulado por paso cae por debajo de un umbral se detienen temprano. Aquí, 5 de los 8 caminos se cortan tras el paso 3, antes de gastar más tokens en ellos.",
+    "input": "",
+    "nodes": [
+     "prm",
+     "prune"
+    ],
+    "edges": [
+     "e-prm-prune"
+    ]
+   },
+   {
+    "title": "Cómputo ahorrado",
+    "description": "Al no expandir ramas condenadas y adaptar la búsqueda a la dificultad, el enfoque guiado por PRM es más de 4x más eficiente que best-of-N ingenuo con un presupuesto equivalente.",
+    "input": "",
+    "nodes": [
+     "prune",
+     "compute-saved"
+    ],
+    "edges": [
+     "e-prune-compute"
+    ]
+   },
+   {
+    "title": "Expandir sobrevivientes",
+    "description": "Los tres caminos sobrevivientes con puntaje alto continúan y pueden ramificarse más, formando una búsqueda en árbol guiada por verificador enfocada en el razonamiento más prometedor.",
+    "input": "",
+    "nodes": [
+     "prm",
+     "survivors",
+     "expand"
+    ],
+    "edges": [
+     "e-prm-survivors",
+     "e-survivors-expand"
+    ]
+   },
+   {
+    "title": "Agregar y seleccionar",
+    "description": "Los caminos completados se ordenan agregando sus puntajes por paso, por ejemplo el mínimo o el producto entre pasos, en lugar de un simple voto mayoritario.",
+    "input": "",
+    "nodes": [
+     "expand",
+     "aggregate",
+     "select-answer"
+    ],
+    "edges": [
+     "e-expand-aggregate",
+     "e-aggregate-select"
+    ]
+   },
+   {
+    "title": "Solución verificada",
+    "description": "Se devuelve el camino seleccionado. En MATH, la supervisión de proceso junto con la selección ponderada supera claramente a self-consistency con el mismo presupuesto de muestras.",
+    "input": "",
+    "nodes": [
+     "select-answer",
+     "output"
+    ],
+    "edges": [
+     "e-select-output"
+    ]
+   }
+  ]
+ }
+}

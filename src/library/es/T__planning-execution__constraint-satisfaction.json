@@ -1,0 +1,566 @@
+{
+ "cat": "planning-execution",
+ "slug": "constraint-satisfaction",
+ "name": "Constraint Satisfaction Planning(CSP)",
+ "icon": "⚖️",
+ "complexity": "high",
+ "description": "Enfoque de planificación que satisface varias restricciones a la vez mientras optimiza objetivos",
+ "features": [
+  "Optimización con múltiples restricciones",
+  "Verificación de factibilidad",
+  "Resolución de conflictos",
+  "Análisis de compensaciones",
+  "Exploración del espacio de soluciones",
+  "Propagación de restricciones"
+ ],
+ "tldr": {
+  "what": "Satisface simultáneamente múltiples restricciones duras y blandas mientras explora el espacio de soluciones, usando propagación de restricciones para eliminar opciones inviables y resolver conflictos.",
+  "when": "Planificación de horarios o asignación de recursos complejas, donde compiten muchos requisitos, la factibilidad importa tanto como la optimización y las compensaciones entre restricciones requieren un manejo explícito.",
+  "watchOut": "El costo computacional crece exponencialmente con la cantidad de restricciones; una verificación de restricciones mal ordenada puede desperdiciar ciclos explorando ramas sin salida antes de retroceder."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón de satisfacción de restricciones",
+  "description": "Muestra la búsqueda sistemática de soluciones dentro de restricciones y limitaciones especificadas para sistemas de IA agéntica",
+  "nodes": [
+   {
+    "id": "problem-input",
+    "label": "Entrada del problema\n\"Desplegar 5 agentes de IA en 3 servidores\ncon restricciones de recursos y cumplimiento\"",
+    "x": 500,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "constraint-analyzer",
+    "label": "Analizador de restricciones\nIdentifica todas las restricciones y requisitos",
+    "x": 500,
+    "y": 180,
+    "w": 220
+   },
+   {
+    "id": "hard-constraints",
+    "label": "Restricciones duras\n• Servidor A: máx. 8GB de RAM\n• Servidor B: máx. 4GB de RAM\n• Servidor C: máx. 12GB de RAM\n• Dependencias entre agentes: A1→A2\n• Cumplimiento: zonas GDPR",
+    "x": 200,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "soft-constraints",
+    "label": "Restricciones blandas\n• Latencia preferida < 100ms\n• Balanceo de carga deseado\n• Optimización de costos\n• Redundancia preferida",
+    "x": 500,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "optimization-criteria",
+    "label": "Criterios de optimización\n• Minimizar el costo total\n• Maximizar el rendimiento\n• Garantizar la tolerancia a fallos\n• Cumplir los requisitos del SLA",
+    "x": 800,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "domain-modeling",
+    "label": "Modelado del dominio\nCrea un modelo formal de restricciones",
+    "x": 500,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "variables",
+    "label": "Variables\n• Asignaciones de agentes: X[i,j]\n• Asignación de recursos: R[i]\n• Tiempos: T[i]\n• Configuración: C[i]",
+    "x": 200,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "constraint-network",
+    "label": "Red de restricciones\nConstruye relaciones entre variables",
+    "x": 500,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "domain-restrictions",
+    "label": "Restricciones de dominio\n• Tipos de agente: [ML, NLP, CV]\n• Regiones de servidores: [US, EU, ASIA]\n• Niveles de recursos: [S, M, L, XL]",
+    "x": 800,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "solution-engine",
+    "label": "Motor de resolución CSP\nAplica algoritmos de resolución de restricciones",
+    "x": 500,
+    "y": 740,
+    "w": 220
+   },
+   {
+    "id": "backtracking-search",
+    "label": "Búsqueda con backtracking\nAsignación sistemática de variables",
+    "x": 150,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "arc-consistency",
+    "label": "Consistencia de arcos\nPreprocesa las restricciones",
+    "x": 350,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "forward-checking",
+    "label": "Forward checking\nPropaga las restricciones de forma temprana",
+    "x": 550,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "heuristics",
+    "label": "Heurísticas\n• MRV: la más restringida\n• LCV: la menos restrictiva\n• Heurística de grado",
+    "x": 750,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "local-search",
+    "label": "Búsqueda local\nOptimización por mínimos conflictos",
+    "x": 950,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "solution-validation",
+    "label": "Validación de la solución\nVerifica que se cumplan todas las restricciones",
+    "x": 500,
+    "y": 1020,
+    "w": 200
+   },
+   {
+    "id": "hard-constraint-check",
+    "label": "Verificación de restricciones duras\nSe cumplen todas las restricciones obligatorias",
+    "x": 250,
+    "y": 1160,
+    "w": 180
+   },
+   {
+    "id": "soft-constraint-eval",
+    "label": "Evaluación de restricciones blandas\nPuntúa la satisfacción de las preferencias",
+    "x": 500,
+    "y": 1160,
+    "w": 180
+   },
+   {
+    "id": "optimization-score",
+    "label": "Puntaje de optimización\nCalcula el valor de la función objetivo",
+    "x": 750,
+    "y": 1160,
+    "w": 180
+   },
+   {
+    "id": "solution-refinement",
+    "label": "Refinamiento de la solución\nOptimiza según las preferencias",
+    "x": 500,
+    "y": 1300,
+    "w": 200
+   },
+   {
+    "id": "tradeoff-analysis",
+    "label": "Análisis de compensaciones\n• Costo vs. rendimiento\n• Confiabilidad vs. velocidad\n• Cumplimiento vs. eficiencia",
+    "x": 200,
+    "y": 1440,
+    "w": 160
+   },
+   {
+    "id": "multi-objective",
+    "label": "Optimización multiobjetivo\nEquilibra objetivos en conflicto",
+    "x": 500,
+    "y": 1440,
+    "w": 180
+   },
+   {
+    "id": "pareto-optimization",
+    "label": "Optimización de Pareto\nEncuentra soluciones no dominadas",
+    "x": 800,
+    "y": 1440,
+    "w": 160
+   },
+   {
+    "id": "final-solution",
+    "label": "Solución final\nConfiguración óptima de despliegue de agentes",
+    "x": 500,
+    "y": 1580,
+    "w": 240
+   },
+   {
+    "id": "deployment-plan",
+    "label": "Plan de despliegue\n• Agente A1: Servidor A (4GB)\n• Agente A2: Servidor A (3GB)\n• Agente A3: Servidor B (4GB)\n• Agente A4: Servidor C (6GB)\n• Agente A5: Servidor C (5GB)",
+    "x": 200,
+    "y": 1720,
+    "w": 180
+   },
+   {
+    "id": "resource-allocation",
+    "label": "Asignación de recursos\n• RAM total: 22GB usados/24GB\n• Utilización de CPU: 75%\n• Ancho de banda de red: óptimo\n• Costo: $847/mes",
+    "x": 500,
+    "y": 1720,
+    "w": 180
+   },
+   {
+    "id": "compliance-verification",
+    "label": "Verificación de cumplimiento\n• GDPR: agentes de la UE en servidores de la UE ✓\n• Residencia de datos: conforme ✓\n• Zonas de seguridad: validadas ✓",
+    "x": 800,
+    "y": 1720,
+    "w": 180
+   },
+   {
+    "id": "monitoring-setup",
+    "label": "Monitoreo y adaptación\nSatisfacción continua de restricciones",
+    "x": 500,
+    "y": 1860,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "problem-input",
+    "t": "constraint-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e2",
+    "s": "constraint-analyzer",
+    "t": "hard-constraints",
+    "label": ""
+   },
+   {
+    "id": "e3",
+    "s": "constraint-analyzer",
+    "t": "soft-constraints",
+    "label": ""
+   },
+   {
+    "id": "e4",
+    "s": "constraint-analyzer",
+    "t": "optimization-criteria",
+    "label": ""
+   },
+   {
+    "id": "e5",
+    "s": "hard-constraints",
+    "t": "domain-modeling",
+    "label": ""
+   },
+   {
+    "id": "e6",
+    "s": "soft-constraints",
+    "t": "domain-modeling",
+    "label": ""
+   },
+   {
+    "id": "e7",
+    "s": "optimization-criteria",
+    "t": "domain-modeling",
+    "label": ""
+   },
+   {
+    "id": "e8",
+    "s": "domain-modeling",
+    "t": "variables",
+    "label": ""
+   },
+   {
+    "id": "e9",
+    "s": "domain-modeling",
+    "t": "constraint-network",
+    "label": ""
+   },
+   {
+    "id": "e10",
+    "s": "domain-modeling",
+    "t": "domain-restrictions",
+    "label": ""
+   },
+   {
+    "id": "e11",
+    "s": "variables",
+    "t": "solution-engine",
+    "label": ""
+   },
+   {
+    "id": "e12",
+    "s": "constraint-network",
+    "t": "solution-engine",
+    "label": ""
+   },
+   {
+    "id": "e13",
+    "s": "domain-restrictions",
+    "t": "solution-engine",
+    "label": ""
+   },
+   {
+    "id": "e14",
+    "s": "solution-engine",
+    "t": "backtracking-search",
+    "label": ""
+   },
+   {
+    "id": "e15",
+    "s": "solution-engine",
+    "t": "arc-consistency",
+    "label": ""
+   },
+   {
+    "id": "e16",
+    "s": "solution-engine",
+    "t": "forward-checking",
+    "label": ""
+   },
+   {
+    "id": "e17",
+    "s": "solution-engine",
+    "t": "heuristics",
+    "label": ""
+   },
+   {
+    "id": "e18",
+    "s": "solution-engine",
+    "t": "local-search",
+    "label": ""
+   },
+   {
+    "id": "e19",
+    "s": "backtracking-search",
+    "t": "solution-validation",
+    "label": ""
+   },
+   {
+    "id": "e20",
+    "s": "arc-consistency",
+    "t": "solution-validation",
+    "label": ""
+   },
+   {
+    "id": "e21",
+    "s": "forward-checking",
+    "t": "solution-validation",
+    "label": ""
+   },
+   {
+    "id": "e22",
+    "s": "heuristics",
+    "t": "solution-validation",
+    "label": ""
+   },
+   {
+    "id": "e23",
+    "s": "local-search",
+    "t": "solution-validation",
+    "label": ""
+   },
+   {
+    "id": "e24",
+    "s": "solution-validation",
+    "t": "hard-constraint-check",
+    "label": ""
+   },
+   {
+    "id": "e25",
+    "s": "solution-validation",
+    "t": "soft-constraint-eval",
+    "label": ""
+   },
+   {
+    "id": "e26",
+    "s": "solution-validation",
+    "t": "optimization-score",
+    "label": ""
+   },
+   {
+    "id": "e27",
+    "s": "hard-constraint-check",
+    "t": "solution-refinement",
+    "label": ""
+   },
+   {
+    "id": "e28",
+    "s": "soft-constraint-eval",
+    "t": "solution-refinement",
+    "label": ""
+   },
+   {
+    "id": "e29",
+    "s": "optimization-score",
+    "t": "solution-refinement",
+    "label": ""
+   },
+   {
+    "id": "e30",
+    "s": "solution-refinement",
+    "t": "tradeoff-analysis",
+    "label": ""
+   },
+   {
+    "id": "e31",
+    "s": "solution-refinement",
+    "t": "multi-objective",
+    "label": ""
+   },
+   {
+    "id": "e32",
+    "s": "solution-refinement",
+    "t": "pareto-optimization",
+    "label": ""
+   },
+   {
+    "id": "e33",
+    "s": "tradeoff-analysis",
+    "t": "final-solution",
+    "label": ""
+   },
+   {
+    "id": "e34",
+    "s": "multi-objective",
+    "t": "final-solution",
+    "label": ""
+   },
+   {
+    "id": "e35",
+    "s": "pareto-optimization",
+    "t": "final-solution",
+    "label": ""
+   },
+   {
+    "id": "e36",
+    "s": "final-solution",
+    "t": "deployment-plan",
+    "label": ""
+   },
+   {
+    "id": "e37",
+    "s": "final-solution",
+    "t": "resource-allocation",
+    "label": ""
+   },
+   {
+    "id": "e38",
+    "s": "final-solution",
+    "t": "compliance-verification",
+    "label": ""
+   },
+   {
+    "id": "e39",
+    "s": "deployment-plan",
+    "t": "monitoring-setup",
+    "label": ""
+   },
+   {
+    "id": "e40",
+    "s": "resource-allocation",
+    "t": "monitoring-setup",
+    "label": ""
+   },
+   {
+    "id": "e41",
+    "s": "compliance-verification",
+    "t": "monitoring-setup",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis del problema",
+    "description": "Analiza el problema de satisfacción de restricciones e identifica todos los requisitos",
+    "input": "",
+    "nodes": [
+     "problem-input",
+     "constraint-analyzer"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Identificación de restricciones",
+    "description": "Clasifica las restricciones en requisitos duros, preferencias blandas y criterios de optimización",
+    "input": "",
+    "nodes": [
+     "hard-constraints",
+     "soft-constraints",
+     "optimization-criteria"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Modelado del dominio",
+    "description": "Crea un modelo matemático formal del problema de satisfacción de restricciones",
+    "input": "",
+    "nodes": [
+     "domain-modeling",
+     "variables",
+     "constraint-network",
+     "domain-restrictions"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Búsqueda de soluciones",
+    "description": "Aplica algoritmos de resolución de restricciones para encontrar soluciones válidas",
+    "input": "",
+    "nodes": [
+     "solution-engine",
+     "backtracking-search",
+     "arc-consistency",
+     "forward-checking",
+     "heuristics",
+     "local-search"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Validación de la solución",
+    "description": "Verifica que las soluciones propuestas satisfagan todas las restricciones y evalúa su calidad",
+    "input": "",
+    "nodes": [
+     "solution-validation",
+     "hard-constraint-check",
+     "soft-constraint-eval",
+     "optimization-score"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Optimización multiobjetivo",
+    "description": "Equilibra los objetivos en conflicto y analiza las compensaciones entre distintas soluciones",
+    "input": "",
+    "nodes": [
+     "solution-refinement",
+     "tradeoff-analysis",
+     "multi-objective",
+     "pareto-optimization"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Implementación de la solución",
+    "description": "Genera un plan de despliegue detallado con asignación de recursos y verificación de cumplimiento",
+    "input": "",
+    "nodes": [
+     "final-solution",
+     "deployment-plan",
+     "resource-allocation",
+     "compliance-verification"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Monitoreo continuo",
+    "description": "Configura mecanismos de monitoreo y adaptación para la satisfacción dinámica de restricciones",
+    "input": "",
+    "nodes": [
+     "monitoring-setup"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}

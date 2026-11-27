@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "context-window-management-patterns",
+ "name": "Context Window Management UI(CWM)",
+ "icon": "🪟",
+ "complexity": "medium",
+ "description": "Patrones visuales para gestionar los límites de contexto del LLM, el uso de tokens y la optimización de la ventana de contexto en interfaces de agentes",
+ "features": [
+  "Medidores de uso de contexto con seguimiento visual del consumo de tokens",
+  "Indicadores de prioridad para decidir qué contexto conservar",
+  "Controles de compresión de contexto con preferencias del usuario",
+  "Interfaces de resumen de memoria y poda de contexto"
+ ],
+ "tldr": {
+  "what": "Muestra el uso de tokens, permite a los usuarios fijar mensajes importantes y resume automáticamente el contexto antiguo para mantenerse dentro de los límites del LLM.",
+  "when": "Conversaciones largas donde la ventana de contexto se llena y necesitas que los usuarios decidan qué conservar y qué descartar.",
+  "watchOut": "Los usuarios a menudo juzgan mal qué información necesita realmente el agente, lo que lleva a un contexto podado que rompe el razonamiento posterior."
+ },
+ "overview": {
+  "pattern": "Interfaces visuales para gestionar los límites de tokens del LLM y el contexto de la conversación",
+  "why": "Las ventanas de contexto tienen límites estrictos que pueden romper conversaciones y desperdiciar tokens si no se gestionan adecuadamente",
+  "insight": "Muestra el uso de tokens en tiempo real + permite que los usuarios prioricen el contexto + comprime automáticamente cuando sea necesario",
+  "impl": [
+   {
+    "t": "Seguimiento de tokens",
+    "d": "Conteo en tiempo real de tokens de entrada/salida"
+   },
+   {
+    "t": "Medidores de uso",
+    "d": "Barras de progreso visuales que muestran el consumo de contexto"
+   },
+   {
+    "t": "Controles de prioridad",
+    "d": "Fija mensajes importantes y comprime o elimina los demás"
+   },
+   {
+    "t": "Compresión inteligente",
+    "d": "Resume conversaciones antiguas conservando la información clave"
+   },
+   {
+    "t": "Gestión automática",
+    "d": "Sugerencias proactivas al acercarse a los límites"
+   }
+  ],
+  "example": "Medidor de tokens (75% lleno) → Advertencia → Fijar mensajes clave → Comprimir lo antiguo → Continuar la conversación",
+  "dos": [
+   "Muestra el uso de tokens en tiempo real con indicadores visuales claros",
+   "Permite que los usuarios fijen mensajes y contexto críticos",
+   "Ofrece compresión reversible y resúmenes inteligentes",
+   "Advierte a los usuarios antes de acercarse a los límites de tokens",
+   "Implementa gestión de ventana deslizante para conversaciones largas"
+  ],
+  "donts": [
+   "Dejar que las conversaciones fallen sin aviso",
+   "Eliminar contexto sin que el usuario lo sepa ni lo controle",
+   "Ocultar el consumo de tokens y los patrones de uso",
+   "Perder contexto crítico durante la compresión",
+   "Hacer que la gestión del contexto sea demasiado compleja para los usuarios"
+  ],
+  "use": [
+   "Conversaciones y sesiones largas",
+   "Análisis de documentos con contexto extenso",
+   "Tareas de razonamiento de múltiples turnos",
+   "Aplicaciones sensibles al costo"
+  ],
+  "avoid": [
+   "Preguntas y respuestas de un solo turno",
+   "Interacciones conversacionales cortas",
+   "Llamadas a API sin estado",
+   "Escenarios simples de uso de herramientas"
+  ],
+  "metrics": [
+   {
+    "n": "Eficiencia del contexto",
+    "d": "% de tokens útiles frente al total consumido"
+   },
+   {
+    "n": "Tasa de compresión",
+    "d": "Reducción de tokens gracias a la compresión inteligente"
+   },
+   {
+    "n": "Satisfacción del usuario",
+    "d": "Preferencia por la gestión automática o manual del contexto"
+   },
+   {
+    "n": "Duración de la conversación",
+    "d": "Interacciones extendidas gracias a la gestión"
+   },
+   {
+    "n": "Prevención de errores",
+    "d": "Reducción de fallas por desbordamiento del contexto"
+   },
+   {
+    "n": "Optimización de costos",
+    "d": "Ahorro en costo de tokens gracias a una gestión eficiente"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de documentos",
+    "d": "Gestiona el contexto de PDF extensos manteniendo el historial de la conversación"
+   },
+   {
+    "n": "Revisión de código",
+    "d": "Fija secciones de código críticas y comprime los hilos de discusión más antiguos"
+   },
+   {
+    "n": "Tareas de investigación",
+    "d": "Conserva los hallazgos clave mientras se procesan múltiples documentos fuente"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "Mantiene el contexto de la conversación mientras se accede a la base de conocimiento"
+   },
+   {
+    "n": "Escritura creativa",
+    "d": "Preserva los detalles de personajes y trama al desarrollar narrativas largas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de UI Context Window Management",
+  "description": "Patrones visuales para gestionar los límites de contexto del LLM, optimizar el uso de tokens y mejorar la eficiencia de la ventana de contexto, reduciendo costos mediante altas tasas de compresión",
+  "nodes": [
+   {
+    "id": "context-window-challenge",
+    "label": "📊 Desafío de la ventana de contexto\n\"¿Cómo visualizar y gestionar\nlos límites de contexto del LLM, el uso de tokens\ny la optimización de forma eficiente?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "context-management-framework",
+    "label": "🎛️ Framework de gestión del contexto\n\"Sistema de control visual:\n• Visualización del uso\n• Gestión del presupuesto\n• Optimización inteligente\n• Controles del usuario\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "usage-visualization",
+    "label": "📈 Visualización del uso\n\"Seguimiento de tokens:\n• Barras de progreso\n• Codificación por colores\n• Contadores en tiempo real\n• Mapas de calor\"",
+    "x": 200,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "visual-indicators",
+    "label": "🚦 Indicadores visuales\n\"Visualización del estado:\n• Colores de semáforo\n• Medidores tipo indicador\n• Vistas de línea de tiempo\n• Grafos de red\"",
+    "x": 50,
+    "y": 500,
+    "w": 210
+   },
+   {
+    "id": "budget-management",
+    "label": "💰 Gestión del presupuesto\n\"Control de costos:\n• Asignación de presupuesto\n• Alertas de gasto\n• Calculadoras de costos\n• Analítica de uso\"",
+    "x": 600,
+    "y": 350,
+    "w": 230
+   },
+   {
+    "id": "smart-budgeting",
+    "label": "🧠 Presupuesto inteligente\n\"Seguimiento inteligente:\n• Gasto predictivo\n• Asignación por departamento\n• Seguimiento del cumplimiento\n• Métricas de eficiencia\"",
+    "x": 750,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "context-optimization",
+    "label": "⚡ Optimización del contexto\n\"Compresión inteligente:\n• Tasa de compresión de 20x\n• Reducción de costos del 94%\n• Preservación de la calidad\n• Mejoras de rendimiento\"",
+    "x": 400,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "compression-controls",
+    "label": "🗜️ Controles de compresión\n\"Interfaz de usuario:\n• Controles deslizantes de compresión\n• Vistas de antes/después\n• Indicadores de calidad\n• Compresión reversible\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "real-time-monitoring",
+    "label": "⏱️ Monitoreo en tiempo real\n\"Seguimiento en vivo:\n• Métricas de rendimiento\n• Sugerencias de optimización\n• Tiempo de respuesta\n• Utilización de memoria\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "context-caching",
+    "label": "💾 Cache de contexto\n\"Almacenamiento inteligente:\n• Indicadores de aciertos de cache\n• Visualizaciones de precarga\n• Reducción de memoria de 8x\n• Precarga inteligente\"",
+    "x": 200,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "cross-session-management",
+    "label": "🔄 Gestión entre sesiones\n\"Patrones de persistencia:\n• Puentes entre sesiones\n• Bóvedas de memoria\n• Archivos de contexto\n• Límites de privacidad\"",
+    "x": 600,
+    "y": 950,
+    "w": 250
+   },
+   {
+    "id": "production-success",
+    "label": "🏆 Éxito en producción\n\"Resultados de la industria:\n• Conteo de tokens de OpenAI\n• Sistema de memoria de Claude\n• Cache de contexto de Gemini\n• Gobernanza empresarial\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "management-principle",
+    "label": "🎯 Principio de gestión del contexto\n\"El seguimiento visual del contexto con compresión inteligente es de donde provienen los ahorros\nLa optimización en tiempo real con controles del usuario permite un uso eficiente de los tokens\nLa persistencia entre sesiones con límites de privacidad asegura la continuidad\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "context-window-challenge",
+    "t": "context-management-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "context-management-framework",
+    "t": "usage-visualization",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "context-management-framework",
+    "t": "budget-management",
+    "label": "proporciona"
+   },
+   {
+    "id": "e4",
+    "s": "context-management-framework",
+    "t": "context-optimization",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "usage-visualization",
+    "t": "visual-indicators",
+    "label": "incluye"
+   },
+   {
+    "id": "e6",
+    "s": "budget-management",
+    "t": "smart-budgeting",
+    "label": "potenciado por"
+   },
+   {
+    "id": "e7",
+    "s": "context-optimization",
+    "t": "compression-controls",
+    "label": "controlado por"
+   },
+   {
+    "id": "e8",
+    "s": "context-optimization",
+    "t": "real-time-monitoring",
+    "label": "monitoreado por"
+   },
+   {
+    "id": "e9",
+    "s": "visual-indicators",
+    "t": "compression-controls",
+    "label": "guía"
+   },
+   {
+    "id": "e10",
+    "s": "smart-budgeting",
+    "t": "real-time-monitoring",
+    "label": "informa"
+   },
+   {
+    "id": "e11",
+    "s": "compression-controls",
+    "t": "context-caching",
+    "label": "optimizado por"
+   },
+   {
+    "id": "e12",
+    "s": "real-time-monitoring",
+    "t": "cross-session-management",
+    "label": "habilita"
+   },
+   {
+    "id": "e13",
+    "s": "context-caching",
+    "t": "production-success",
+    "label": "desplegado en"
+   },
+   {
+    "id": "e14",
+    "s": "cross-session-management",
+    "t": "production-success",
+    "label": "logrado en"
+   },
+   {
+    "id": "e15",
+    "s": "production-success",
+    "t": "management-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la ventana de contexto",
+    "description": "¿Cómo pueden las interfaces visualizar y gestionar de forma efectiva los límites de contexto del LLM, el uso de tokens y la optimización para ayudar a los usuarios a entender y controlar su contexto de manera eficiente?",
+    "input": "",
+    "nodes": [
+     "context-window-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de gestión del contexto",
+    "description": "Un sistema de control visual aborda el desafío mediante la visualización del uso, la gestión del presupuesto, la optimización inteligente y controles integrales del usuario para gestionar la ventana de contexto.",
+    "input": "",
+    "nodes": [
+     "context-management-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Visualización del uso y gestión del presupuesto",
+    "description": "Seguimiento de tokens con barras de progreso, codificación por colores y mapas de calor. La gestión del presupuesto brinda control de costos con analítica de gasto predictivo y sistemas de asignación por departamento.",
+    "input": "",
+    "nodes": [
+     "usage-visualization",
+     "visual-indicators",
+     "budget-management",
+     "smart-budgeting"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Optimización y control del contexto",
+    "description": "La compresión inteligente logra una tasa de compresión de 20x con una reducción de costos del 94%. Los controles del usuario incluyen controles deslizantes de compresión e indicadores de calidad, mientras el monitoreo en tiempo real sigue el rendimiento.",
+    "input": "",
+    "nodes": [
+     "context-optimization",
+     "compression-controls",
+     "real-time-monitoring"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Cache avanzada y gestión de sesiones",
+    "description": "La cache de contexto logra una reducción de memoria de 8x con precarga inteligente. La gestión entre sesiones brinda persistencia mediante bóvedas de memoria y archivos de contexto con límites de privacidad.",
+    "input": "",
+    "nodes": [
+     "context-caching",
+     "cross-session-management"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Éxito en producción y validación",
+    "description": "Las implementaciones de la industria incluyen el conteo de tokens de OpenAI, los sistemas de memoria de Claude y la cache de contexto de Gemini. El seguimiento visual con compresión inteligente permite un uso eficiente de los tokens a escala.",
+    "input": "",
+    "nodes": [
+     "production-success",
+     "management-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

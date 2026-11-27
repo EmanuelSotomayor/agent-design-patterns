@@ -1,0 +1,478 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "onboarding-education-patterns",
+ "name": "Onboarding and Education Patterns(OEP)",
+ "icon": "🎓",
+ "complexity": "medium",
+ "description": "Patrones de educación y onboarding de usuarios para presentar las capacidades del agente, construir modelos mentales adecuados y fomentar la confianza",
+ "features": [
+  "Divulgación progresiva de las capacidades y limitaciones del agente",
+  "Tutoriales interactivos sobre los patrones de interacción con el agente",
+  "Construcción de modelos mentales mediante una comunicación clara de las capacidades",
+  "Generación de confianza mediante la transparencia y la definición de expectativas"
+ ],
+ "tldr": {
+  "what": "Enseña a los usuarios las capacidades y los límites del agente mediante información por etapas, funciones guiadas y ayuda contextual para construir modelos mentales precisos.",
+  "when": "Despliegue de nuevos agentes donde los usuarios no tienen experiencia con sistemas de IA o necesitan límites claros sobre lo que el agente puede hacer de forma fiable.",
+  "watchOut": "Los usuarios que se saltan el onboarding igual forman modelos mentales incorrectos, lo que lleva a un mal uso y a frustración cuando los agentes fallan fuera de su alcance real."
+ },
+ "overview": {
+  "pattern": "Patrones de educación y onboarding de usuarios para construir modelos mentales adecuados y confianza en los agentes de IA",
+  "why": "Los usuarios necesitan una introducción adecuada a las capacidades del agente para desarrollar expectativas apropiadas y patrones de uso efectivos",
+  "insight": "Genera confianza mediante la divulgación progresiva de capacidades, la práctica directa y la comunicación transparente de las limitaciones",
+  "impl": [
+   {
+    "t": "Construcción del modelo mental",
+    "d": "Establece desde el principio capacidades y limitaciones claras del agente"
+   },
+   {
+    "t": "Divulgación progresiva",
+    "d": "Escalona la complejidad desde funciones básicas hasta avanzadas"
+   },
+   {
+    "t": "Tutoriales interactivos",
+    "d": "Práctica directa con interacciones reales con el agente"
+   },
+   {
+    "t": "Calibración de la confianza",
+    "d": "Demuestra la fiabilidad y los escenarios de fallo"
+   },
+   {
+    "t": "Ayuda contextual",
+    "d": "Asistencia justo a tiempo y descubrimiento de funciones"
+   }
+  ],
+  "example": "intro_capabilities → guided_interaction → trust_demo → practice_scenarios → ongoing_support",
+  "dos": [
+   "Empieza con límites claros de capacidades y limitaciones",
+   "Usa la divulgación progresiva para evitar la sobrecarga cognitiva",
+   "Ofrece práctica directa con feedback inmediato",
+   "Genera confianza gradualmente mediante la transparencia y la fiabilidad",
+   "Ofrece ayuda contextual y sugerencias para descubrir funciones"
+  ],
+  "donts": [
+   "Abrumar a los usuarios con todas las funciones a la vez",
+   "Prometer capacidades que el agente no puede cumplir",
+   "Usar tutoriales largos y cargados de texto sin interacción",
+   "Ocultar limitaciones o modos de fallo importantes",
+   "Obligar a los usuarios a seguir flujos de onboarding lineales y rígidos"
+  ],
+  "use": [
+   "Presentar capacidades novedosas de agentes de IA",
+   "Sistemas complejos que requieren construir modelos mentales",
+   "Aplicaciones de IA orientadas al consumidor",
+   "Sistemas donde la confianza y la fiabilidad son críticas"
+  ],
+  "avoid": [
+   "Usuarios expertos ya familiarizados con agentes similares",
+   "Herramientas de agente simples de propósito único",
+   "Herramientas internas con programas de capacitación extensos",
+   "Prototipos temporales o experimentales"
+  ],
+  "metrics": [
+   {
+    "n": "Finalización del onboarding",
+    "d": "% de usuarios que completan el flujo de capacitación inicial"
+   },
+   {
+    "n": "Adopción de funciones",
+    "d": "Tasa de descubrimiento y uso de funciones avanzadas"
+   },
+   {
+    "n": "Calibración de la confianza",
+    "d": "Dependencia adecuada de las recomendaciones del agente"
+   },
+   {
+    "n": "Tiempo hasta la productividad",
+    "d": "Tiempo desde el primer uso hasta completar tareas de forma efectiva"
+   },
+   {
+    "n": "Retención de usuarios",
+    "d": "% de usuarios que regresan después del onboarding inicial"
+   },
+   {
+    "n": "Reducción de soporte",
+    "d": "Disminución de las solicitudes de ayuda después del onboarding"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Presentación de un asistente de IA",
+    "d": "Revelación progresiva de capacidades con escenarios que generan confianza"
+   },
+   {
+    "n": "Onboarding de herramientas profesionales",
+    "d": "Educación sobre funciones expertas con integración al flujo de trabajo"
+   },
+   {
+    "n": "Productos de IA para consumidores",
+    "d": "Construcción de modelos mentales para usuarios cotidianos"
+   },
+   {
+    "n": "Despliegue de agentes empresariales",
+    "d": "Capacitación por rol con educación sobre cumplimiento"
+   },
+   {
+    "n": "Tutores de IA educativos",
+    "d": "Explicación de la metodología de aprendizaje y patrones de interacción"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de onboarding y educación para agentes de IA",
+  "description": "Patrones integrales para la educación de usuarios, la formación de modelos mentales, la introducción progresiva de capacidades y la generación de confianza en sistemas de agentes de IA, dirigidos a usuarios que entienden lo que el agente puede y no puede hacer% de mejoras en la lealtad",
+  "nodes": [
+   {
+    "id": "adoption-challenge",
+    "label": "🤔 Desafío de adopción de agentes de IA\n\"¿Cómo incorporar usuarios a los agentes de IA\nmientras se construyen modelos mentales adecuados,\nconfianza y un engagement sostenido?\"",
+    "x": 400,
+    "y": 50,
+    "w": 340
+   },
+   {
+    "id": "mental-model-formation",
+    "label": "🧠 Formación del modelo mental\n\"Construir comprensión:\n• Alineación con modelos existentes\n• Calibración de expectativas\n• Límites de capacidades\n• Feedback de adaptación\"",
+    "x": 150,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "progressive-disclosure",
+    "label": "📚 Divulgación progresiva\n\"Aprendizaje con andamiaje:\n• Desbloqueo de funciones por etapas\n• Gestión de la complejidad\n• Guía contextual\n• Dominio incremental\"",
+    "x": 650,
+    "y": 200,
+    "w": 250
+   },
+   {
+    "id": "trust-building",
+    "label": "🔐 Mecanismos de generación de confianza\n\"Establecer confianza:\n• Patrones de transparencia\n• Fricción consciente\n• Decisiones explicables\n• Supervisión humana\"",
+    "x": 100,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "capability-introduction",
+    "label": "🎯 Introducción de capacidades\n\"Revelación estratégica de funciones:\n• Primero la función central\n• Funciones secundarias\n• Capacidades avanzadas\n• Ampliación de casos de uso\"",
+    "x": 300,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "interactive-tutorials",
+    "label": "🎮 Tutoriales interactivos\n\"Experiencias guiadas:\n• Exploración práctica\n• Aprendizaje paso a paso\n• Espacio seguro de práctica\n• Feedback inmediato\"",
+    "x": 500,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "multimodal-education",
+    "label": "🎨 Educación multimodal\n\"Formatos de aprendizaje:\n• Demostraciones visuales\n• Contenido interactivo\n• Guía en audio\n• Práctica kinestésica\"",
+    "x": 700,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "misconception-correction",
+    "label": "🔧 Corrección de conceptos erróneos\n\"Patrones de calibración:\n• Comunicación de límites\n• Explicación de errores\n• Ajuste de expectativas\n• Anclaje en la realidad\"",
+    "x": 50,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "social-proof",
+    "label": "👥 Validación por prueba social\n\"Aprendizaje en comunidad:\n• Testimonios de usuarios\n• Historias de éxito\n• Interacciones entre pares\n• Respaldos de expertos\"",
+    "x": 250,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "contextual-help",
+    "label": "🆘 Ayuda contextual\n\"Soporte justo a tiempo:\n• Guía situacional\n• Sugerencias inteligentes\n• Tooltips adaptativos\n• Pistas progresivas\"",
+    "x": 450,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "assessment-validation",
+    "label": "📊 Evaluación y validación\n\"Seguimiento de competencias:\n• Evaluación de habilidades\n• Métricas de progreso\n• Analítica de desempeño\n• Indicadores de éxito\"",
+    "x": 650,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "industry-implementations",
+    "label": "🏢 Implementaciones en la industria\n\"Dónde se usa:\n• Salud: herramientas de flujo de trabajo clínico\n• Finanzas: consolas con fuerte carga de cumplimiento\n• Tecnología: plataformas para desarrolladores\n• Educación: material de cursos a ritmo propio\"",
+    "x": 200,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "metrics-evaluation",
+    "label": "📈 Métricas y evaluación\n\"Medición del éxito:\n• Proporción de usuarios que obtienen el primer valor\n• Tasa de regreso después de la primera sesión\n• Preguntas de soporte que el onboarding debió responder\n• Errores atribuibles a un modelo mental equivocado\"",
+    "x": 600,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "adaptive-learning",
+    "label": "🔄 Sistemas de aprendizaje adaptativo\n\"Motor de personalización:\n• Optimización de la ruta de aprendizaje\n• Ritmo individual\n• Análisis de brechas de habilidades\n• Personalización del contenido\"",
+    "x": 150,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "continuous-improvement",
+    "label": "🔄 Mejora continua\n\"Patrones de evolución:\n• Integración del feedback\n• Pruebas A/B\n• Monitoreo del desempeño\n• Refinamiento de patrones\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "framework-integration",
+    "label": "🚀 Integración del framework\n\"Despliegue del sistema:\n• Evaluación CLASSic\n• Colaboración HITL\n• Cumplimiento regulatorio\n• Escalamiento empresarial\"",
+    "x": 400,
+    "y": 950,
+    "w": 250
+   },
+   {
+    "id": "onboarding-principle",
+    "label": "🎯 Principio de onboarding y educación\n\"La divulgación progresiva funciona porque pospone la complejidad hasta que el usuario la pide\nMostrar la misma idea de más de una forma detecta los conceptos erróneos a tiempo\nLos tutoriales interactivos con validación por prueba social permiten un engagement sostenido\"",
+    "x": 400,
+    "y": 1100,
+    "w": 450
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "adoption-challenge",
+    "t": "mental-model-formation",
+    "label": "aborda mediante"
+   },
+   {
+    "id": "e2",
+    "s": "adoption-challenge",
+    "t": "progressive-disclosure",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e3",
+    "s": "mental-model-formation",
+    "t": "trust-building",
+    "label": "permite"
+   },
+   {
+    "id": "e4",
+    "s": "mental-model-formation",
+    "t": "capability-introduction",
+    "label": "guía"
+   },
+   {
+    "id": "e5",
+    "s": "mental-model-formation",
+    "t": "misconception-correction",
+    "label": "requiere"
+   },
+   {
+    "id": "e6",
+    "s": "progressive-disclosure",
+    "t": "interactive-tutorials",
+    "label": "implementa"
+   },
+   {
+    "id": "e7",
+    "s": "progressive-disclosure",
+    "t": "multimodal-education",
+    "label": "utiliza"
+   },
+   {
+    "id": "e8",
+    "s": "progressive-disclosure",
+    "t": "contextual-help",
+    "label": "proporciona"
+   },
+   {
+    "id": "e9",
+    "s": "trust-building",
+    "t": "social-proof",
+    "label": "aprovecha"
+   },
+   {
+    "id": "e10",
+    "s": "capability-introduction",
+    "t": "assessment-validation",
+    "label": "validado por"
+   },
+   {
+    "id": "e11",
+    "s": "interactive-tutorials",
+    "t": "adaptive-learning",
+    "label": "impulsado por"
+   },
+   {
+    "id": "e12",
+    "s": "social-proof",
+    "t": "industry-implementations",
+    "label": "evidenciado en"
+   },
+   {
+    "id": "e13",
+    "s": "assessment-validation",
+    "t": "metrics-evaluation",
+    "label": "alimenta a"
+   },
+   {
+    "id": "e14",
+    "s": "industry-implementations",
+    "t": "continuous-improvement",
+    "label": "impulsa"
+   },
+   {
+    "id": "e15",
+    "s": "metrics-evaluation",
+    "t": "continuous-improvement",
+    "label": "informa"
+   },
+   {
+    "id": "e16",
+    "s": "adaptive-learning",
+    "t": "framework-integration",
+    "label": "escala mediante"
+   },
+   {
+    "id": "e17",
+    "s": "continuous-improvement",
+    "t": "framework-integration",
+    "label": "permite"
+   },
+   {
+    "id": "e18",
+    "s": "misconception-correction",
+    "t": "contextual-help",
+    "label": "respaldado por"
+   },
+   {
+    "id": "e19",
+    "s": "multimodal-education",
+    "t": "assessment-validation",
+    "label": "evaluado mediante"
+   },
+   {
+    "id": "e20",
+    "s": "framework-integration",
+    "t": "onboarding-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de adopción de agentes de IA",
+    "description": "Las organizaciones enfrentan el complejo desafío de incorporar usuarios a sistemas de agentes de IA mientras construyen modelos mentales adecuados, establecen confianza y aseguran un engagement sostenido en poblaciones de usuarios diversas.",
+    "input": "",
+    "nodes": [
+     "adoption-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Formación del modelo mental y divulgación progresiva",
+    "description": "Aborda los desafíos de adopción mediante una formación estructurada del modelo mental que se alinea con la comprensión existente del usuario y una divulgación progresiva que da andamiaje al aprendizaje con la introducción de funciones por etapas y guía contextual.",
+    "input": "",
+    "nodes": [
+     "mental-model-formation",
+     "progressive-disclosure"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Generación de confianza e introducción de capacidades",
+    "description": "La formación del modelo mental permite generar confianza mediante patrones de transparencia y fricción consciente, a la vez que guía la introducción estratégica de capacidades desde las funciones centrales hasta las avanzadas, respaldada por mecanismos de corrección de conceptos erróneos.",
+    "input": "",
+    "nodes": [
+     "trust-building",
+     "capability-introduction",
+     "misconception-correction"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Aprendizaje interactivo y educación multimodal",
+    "description": "La divulgación progresiva implementa tutoriales interactivos para la exploración práctica y utiliza formatos de educación multimodal, al tiempo que proporciona ayuda contextual y soporte justo a tiempo para mejorar la experiencia de aprendizaje.",
+    "input": "",
+    "nodes": [
+     "interactive-tutorials",
+     "multimodal-education",
+     "contextual-help"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Prueba social y validación mediante evaluación",
+    "description": "La generación de confianza aprovecha la prueba social mediante testimonios de la comunidad e historias de éxito, mientras que la introducción de capacidades se valida mediante mecanismos integrales de evaluación y seguimiento de competencias.",
+    "input": "",
+    "nodes": [
+     "social-proof",
+     "assessment-validation"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e18",
+     "e19"
+    ]
+   },
+   {
+    "title": "Aprendizaje adaptativo y éxito en la industria",
+    "description": "Los tutoriales interactivos se apoyan en sistemas de aprendizaje adaptativo que personalizan el contenido y el ritmo. La prueba social se evidencia en implementaciones de la industria que muestran mejoras de productividad del 30-40% en los sectores de salud, finanzas y tecnología.",
+    "input": "",
+    "nodes": [
+     "adaptive-learning",
+     "industry-implementations"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Evaluación de métricas y mejora continua",
+    "description": "La validación mediante evaluación alimenta métricas que miden si los usuarios obtienen el primer valor y regresan, en lugar de si hicieron clic en todo el recorrido. Las implementaciones de la industria y la evaluación de métricas impulsan ciclos de mejora continua que refinan los patrones según el feedback del mundo real.",
+    "input": "",
+    "nodes": [
+     "metrics-evaluation",
+     "continuous-improvement"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Integración del framework y validación del principio",
+    "description": "El aprendizaje adaptativo y la mejora continua permiten la integración con frameworks empresariales usando los estándares de evaluación CLASSic, la colaboración HITL y el cumplimiento regulatorio. Esto demuestra el principio central de que la divulgación progresiva con aprendizaje con andamiaje y la generación de confianza multimodal logran un engagement sostenido de los usuarios.",
+    "input": "",
+    "nodes": [
+     "framework-integration",
+     "onboarding-principle"
+    ],
+    "edges": [
+     "e16",
+     "e17",
+     "e20"
+    ]
+   }
+  ]
+ }
+}

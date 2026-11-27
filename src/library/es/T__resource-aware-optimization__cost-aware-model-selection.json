@@ -1,0 +1,360 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "cost-aware-model-selection",
+ "name": "Cost-Aware Model Selection(CAMS)",
+ "icon": "💰",
+ "complexity": "medium",
+ "description": "Selecciona modelos de IA de forma inteligente según el equilibrio entre costo y rendimiento para tareas específicas",
+ "features": [
+  "Comparación de múltiples modelos",
+  "Análisis de costo-rendimiento",
+  "Cambio dinámico de modelo",
+  "Umbrales de calidad",
+  "Restricciones de presupuesto",
+  "Monitoreo del rendimiento"
+ ],
+ "tldr": {
+  "what": "Enruta las solicitudes a distintos modelos según el equilibrio entre costo y rendimiento, y cambia dinámicamente cuando se acercan los umbrales de calidad o los límites de presupuesto.",
+  "when": "Aplicaciones con importancia variable entre tareas, restricciones de presupuesto estrictas o cargas de trabajo mixtas donde algunas solicitudes toleran modelos más baratos.",
+  "watchOut": "Degradación de la calidad en casos límite cuando se seleccionan modelos más baratos; las salidas inconsistentes entre niveles de modelos confunden a los sistemas posteriores."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Cost-Aware Model Selection",
+  "description": "Un enrutador inteligente elige el modelo más barato que aún supera el umbral de calidad para cada tarea, escalando de Haiku a Sonnet y a Opus según la dificultad, respetando un presupuesto en tiempo real y registrando la versión exacta del modelo utilizado.",
+  "nodes": [
+   {
+    "id": "incoming-task",
+    "label": "📥 Tarea entrante\n\"Resumir tickets de soporte\"\n12,000 tickets/día",
+    "x": 360,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "task-classifier",
+    "label": "🧭 Enrutador de tareas\nEstima la dificultad\ny el umbral de calidad requerido",
+    "x": 360,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "price-feed",
+    "label": "🔖 Feed de precios en vivo\nActualiza $/Mtok\nsin precios fijos en el código",
+    "x": 40,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "cost-quality-analyzer",
+    "label": "⚖️ Analizador costo/calidad\nPuntúa cada modelo según\ncalidad esperada vs $",
+    "x": 360,
+    "y": 270,
+    "w": 230
+   },
+   {
+    "id": "budget-tracker",
+    "label": "💳 Control de presupuesto\nTope diario $200\nGastado $154 (77%)",
+    "x": 690,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "haiku-tier",
+    "label": "🟢 Nivel Haiku\n$0.25 / $1.25 por Mtok\nTareas masivas y simples",
+    "x": 40,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "sonnet-tier",
+    "label": "🔵 Nivel Sonnet\n$3 / $15 por Mtok\nTareas estándar",
+    "x": 360,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "opus-tier",
+    "label": "🟣 Nivel Opus\n$15 / $75 por Mtok\nRazonamiento de alto riesgo",
+    "x": 680,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "task-simple",
+    "label": "📝 Simple: clasificar sentimiento\nEnrutado a Haiku",
+    "x": 40,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "task-standard",
+    "label": "📝 Estándar: resumir documento\nEnrutado a Sonnet",
+    "x": 360,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "task-hard",
+    "label": "📝 Difícil: revisión de contrato legal\nEnrutado a Opus",
+    "x": 680,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "over-budget",
+    "label": "🚨 Umbral de presupuesto\n77% gastado, bajar\ntareas estándar a Haiku",
+    "x": 40,
+    "y": 640,
+    "w": 210
+   },
+   {
+    "id": "quality-gate",
+    "label": "🎯 Control de calidad\nPuntaje de evaluación >= 0.90\nsi no, escalar un nivel",
+    "x": 350,
+    "y": 640,
+    "w": 220
+   },
+   {
+    "id": "monitoring",
+    "label": "📊 Monitor\nCalidad, latencia, gasto\nregistra la versión exacta del modelo",
+    "x": 680,
+    "y": 640,
+    "w": 210
+   },
+   {
+    "id": "output",
+    "label": "✅ Enrutado y servido\n62% de costo ahorrado\nCalidad SLA 0.93",
+    "x": 350,
+    "y": 750,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-incoming-classifier",
+    "s": "incoming-task",
+    "t": "task-classifier",
+    "label": ""
+   },
+   {
+    "id": "classifier-analyzer",
+    "s": "task-classifier",
+    "t": "cost-quality-analyzer",
+    "label": ""
+   },
+   {
+    "id": "price-analyzer",
+    "s": "price-feed",
+    "t": "cost-quality-analyzer",
+    "label": "$/Mtok en vivo"
+   },
+   {
+    "id": "budget-analyzer",
+    "s": "budget-tracker",
+    "t": "cost-quality-analyzer",
+    "label": "Presupuesto restante"
+   },
+   {
+    "id": "analyzer-haiku",
+    "s": "cost-quality-analyzer",
+    "t": "haiku-tier",
+    "label": "Más barato"
+   },
+   {
+    "id": "analyzer-sonnet",
+    "s": "cost-quality-analyzer",
+    "t": "sonnet-tier",
+    "label": "Equilibrado"
+   },
+   {
+    "id": "analyzer-opus",
+    "s": "cost-quality-analyzer",
+    "t": "opus-tier",
+    "label": "Mejor calidad"
+   },
+   {
+    "id": "haiku-simple",
+    "s": "haiku-tier",
+    "t": "task-simple",
+    "label": ""
+   },
+   {
+    "id": "sonnet-standard",
+    "s": "sonnet-tier",
+    "t": "task-standard",
+    "label": ""
+   },
+   {
+    "id": "opus-hard",
+    "s": "opus-tier",
+    "t": "task-hard",
+    "label": ""
+   },
+   {
+    "id": "simple-quality",
+    "s": "task-simple",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "standard-quality",
+    "s": "task-standard",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "hard-quality",
+    "s": "task-hard",
+    "t": "quality-gate",
+    "label": ""
+   },
+   {
+    "id": "quality-escalate",
+    "s": "quality-gate",
+    "t": "opus-tier",
+    "label": "Escalar si < 0.90"
+   },
+   {
+    "id": "budget-overbudget",
+    "s": "budget-tracker",
+    "t": "over-budget",
+    "label": "77% gastado"
+   },
+   {
+    "id": "overbudget-analyzer",
+    "s": "over-budget",
+    "t": "cost-quality-analyzer",
+    "label": "Bajar de nivel"
+   },
+   {
+    "id": "quality-monitor",
+    "s": "quality-gate",
+    "t": "monitoring",
+    "label": ""
+   },
+   {
+    "id": "quality-output",
+    "s": "quality-gate",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "monitor-output",
+    "s": "monitoring",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de la tarea",
+    "description": "Llega una carga de trabajo de alto volumen de 12,000 tickets de soporte/día y el enrutador estima la dificultad y el umbral de calidad que debe alcanzar.",
+    "input": "",
+    "nodes": [
+     "incoming-task",
+     "task-classifier"
+    ],
+    "edges": [
+     "task-incoming-classifier"
+    ]
+   },
+   {
+    "title": "Análisis de costo/calidad",
+    "description": "El analizador combina los precios por token en vivo y el presupuesto restante para puntuar cada modelo candidato según la calidad esperada frente al costo.",
+    "input": "",
+    "nodes": [
+     "task-classifier",
+     "cost-quality-analyzer",
+     "price-feed",
+     "budget-tracker"
+    ],
+    "edges": [
+     "classifier-analyzer",
+     "price-analyzer",
+     "budget-analyzer"
+    ]
+   },
+   {
+    "title": "Selección de nivel",
+    "description": "El trabajo simple se enruta a Haiku ($0.25/Mtok de entrada), el trabajo estándar a Sonnet, y solo el razonamiento de alto riesgo a Opus ($15/Mtok de entrada).",
+    "input": "",
+    "nodes": [
+     "cost-quality-analyzer",
+     "haiku-tier",
+     "sonnet-tier",
+     "opus-tier"
+    ],
+    "edges": [
+     "analyzer-haiku",
+     "analyzer-sonnet",
+     "analyzer-opus"
+    ]
+   },
+   {
+    "title": "Enrutamiento de tareas por dificultad",
+    "description": "La clasificación de sentimiento va a Haiku, el resumen de documentos a Sonnet y la revisión de contratos legales a Opus.",
+    "input": "",
+    "nodes": [
+     "haiku-tier",
+     "sonnet-tier",
+     "opus-tier",
+     "task-simple",
+     "task-standard",
+     "task-hard"
+    ],
+    "edges": [
+     "haiku-simple",
+     "sonnet-standard",
+     "opus-hard"
+    ]
+   },
+   {
+    "title": "Control de calidad y escalamiento",
+    "description": "Cada resultado se verifica contra el conjunto de evaluación; todo lo que esté por debajo de 0.90 se vuelve a ejecutar un nivel más arriba, para que un modelo barato nunca entregue una respuesta que no pasa.",
+    "input": "",
+    "nodes": [
+     "task-simple",
+     "task-standard",
+     "task-hard",
+     "quality-gate",
+     "opus-tier"
+    ],
+    "edges": [
+     "simple-quality",
+     "standard-quality",
+     "hard-quality",
+     "quality-escalate"
+    ]
+   },
+   {
+    "title": "Guardrail de presupuesto",
+    "description": "Al llegar al 77% del tope diario de $200, el guardrail le indica al analizador que baje las tareas estándar a Haiku sin dejar de pasar los controles de calidad.",
+    "input": "",
+    "nodes": [
+     "budget-tracker",
+     "over-budget",
+     "cost-quality-analyzer"
+    ],
+    "edges": [
+     "budget-overbudget",
+     "overbudget-analyzer"
+    ]
+   },
+   {
+    "title": "Servir y monitorear",
+    "description": "Las respuestas se entregan mientras el monitor registra calidad, latencia, gasto y la versión exacta del modelo, logrando un 62% de ahorro de costos con una calidad SLA de 0.93.",
+    "input": "",
+    "nodes": [
+     "quality-gate",
+     "monitoring",
+     "output"
+    ],
+    "edges": [
+     "quality-monitor",
+     "quality-output",
+     "monitor-output"
+    ]
+   }
+  ]
+ }
+}

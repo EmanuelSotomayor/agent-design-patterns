@@ -1,0 +1,296 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "query-transformation-retrieval",
+ "name": "Query Transformation Retrieval(QTR)",
+ "icon": "🔄",
+ "complexity": "medium",
+ "description": "Reescribe o amplía la consulta del usuario antes de la recuperación para que los embeddings queden cerca de los documentos relevantes. HyDE genera un documento de respuesta hipotético y crea su embedding para encontrar vecinos reales; la expansión multiconsulta emite varias reformulaciones y fusiona los resultados; y el step-back prompting abstrae la pregunta para recuperar primero los principios subyacentes. Estas transformaciones aportan grandes mejoras de recuperación zero-shot sin entrenar el recuperador.",
+ "features": [
+  "Embedding de documento hipotético con HyDE",
+  "Reformulación y fusión multiconsulta",
+  "Abstracción step-back hacia los principios",
+  "Descomposición de la consulta en subpreguntas",
+  "Reciprocal rank fusion de los conjuntos de resultados",
+  "Mejora del recuperador sin entrenamiento"
+ ],
+ "tldr": {
+  "what": "Reescribe o amplía las consultas antes de la recuperación (mediante respuestas hipotéticas, múltiples reformulaciones o abstracción hacia los principios) para mejorar la alineación de los embeddings con los documentos relevantes.",
+  "when": "Preguntas del usuario vagas o poco especificadas en las que el embedding directo no logra sacar a la luz documentos relevantes sin reentrenar el recuperador.",
+  "watchOut": "La transformación puede alucinar consultas intermedias plausibles pero incorrectas, lo que lleva a recuperar con confianza documentos irrelevantes o engañosos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Query Transformation Retrieval",
+  "description": "Reescribe la consulta del usuario antes de la recuperación para que los embeddings queden cerca de los documentos relevantes. Una consulta vaga se amplía mediante HyDE, reformulación multiconsulta y abstracción step-back, y los tres conjuntos de resultados se fusionan en una respuesta fundamentada.",
+  "nodes": [
+   {
+    "id": "user-query",
+    "label": "❓ Consulta vaga\n\"por qué mi cosa está lenta\"",
+    "x": 360,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "query-transformer",
+    "label": "🔄 Transformador de consultas\nReescribe antes de recuperar",
+    "x": 360,
+    "y": 160,
+    "w": 240
+   },
+   {
+    "id": "vector-index",
+    "label": "🗄️ Índice vectorial\nChunks de documentos con embeddings",
+    "x": 700,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "hyde",
+    "label": "📝 HyDE\nRedacta una respuesta hipotética,\ngenera el embedding del borrador",
+    "x": 40,
+    "y": 290,
+    "w": 220
+   },
+   {
+    "id": "multi-query",
+    "label": "🌿 Expansión multiconsulta\n3 reformulaciones de la consulta",
+    "x": 360,
+    "y": 290,
+    "w": 220
+   },
+   {
+    "id": "step-back",
+    "label": "🪜 Abstracción step-back\nPregunta por los principios generales",
+    "x": 680,
+    "y": 290,
+    "w": 220
+   },
+   {
+    "id": "hyde-retrieval",
+    "label": "🎯 Recuperar (vector HyDE)\nVecinos del documento borrador",
+    "x": 40,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "mq-retrieval",
+    "label": "🎯 Recuperar x3\nTop-10 por reformulación",
+    "x": 360,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "sb-retrieval",
+    "label": "🎯 Recuperar (principios)\nPrimero los pasajes fundamentales",
+    "x": 680,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "fusion",
+    "label": "🔀 Reciprocal Rank Fusion\nFusiona + deduplica 3 conjuntos de resultados",
+    "x": 360,
+    "y": 560,
+    "w": 240
+   },
+   {
+    "id": "top-passages",
+    "label": "📄 Top 8 pasajes\nMayor rango fusionado",
+    "x": 360,
+    "y": 670,
+    "w": 240
+   },
+   {
+    "id": "grounded-answer",
+    "label": "✅ Respuesta fundamentada\n\"Consulta sin índice en orders.user_id;\nagrega un índice + cache de consultas\"",
+    "x": 360,
+    "y": 780,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-transformer-edge",
+    "s": "user-query",
+    "t": "query-transformer",
+    "label": ""
+   },
+   {
+    "id": "transformer-hyde",
+    "s": "query-transformer",
+    "t": "hyde",
+    "label": "transforma"
+   },
+   {
+    "id": "transformer-multi-query",
+    "s": "query-transformer",
+    "t": "multi-query",
+    "label": "transforma"
+   },
+   {
+    "id": "transformer-step-back",
+    "s": "query-transformer",
+    "t": "step-back",
+    "label": "transforma"
+   },
+   {
+    "id": "hyde-retrieve",
+    "s": "hyde",
+    "t": "hyde-retrieval",
+    "label": ""
+   },
+   {
+    "id": "mq-retrieve",
+    "s": "multi-query",
+    "t": "mq-retrieval",
+    "label": ""
+   },
+   {
+    "id": "sb-retrieve",
+    "s": "step-back",
+    "t": "sb-retrieval",
+    "label": ""
+   },
+   {
+    "id": "hyde-index",
+    "s": "hyde-retrieval",
+    "t": "vector-index",
+    "label": "consulta"
+   },
+   {
+    "id": "mq-index",
+    "s": "mq-retrieval",
+    "t": "vector-index",
+    "label": "consulta"
+   },
+   {
+    "id": "sb-index",
+    "s": "sb-retrieval",
+    "t": "vector-index",
+    "label": "consulta"
+   },
+   {
+    "id": "hyde-fusion",
+    "s": "hyde-retrieval",
+    "t": "fusion",
+    "label": ""
+   },
+   {
+    "id": "mq-fusion",
+    "s": "mq-retrieval",
+    "t": "fusion",
+    "label": ""
+   },
+   {
+    "id": "sb-fusion",
+    "s": "sb-retrieval",
+    "t": "fusion",
+    "label": ""
+   },
+   {
+    "id": "fusion-top",
+    "s": "fusion",
+    "t": "top-passages",
+    "label": "clasifica"
+   },
+   {
+    "id": "top-answer",
+    "s": "top-passages",
+    "t": "grounded-answer",
+    "label": "fundamenta"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Llega una consulta vaga",
+    "description": "Una consulta de 4 palabras, \"por qué mi cosa está lenta\", es demasiado escasa para que la búsqueda semántica simple la ubique cerca de los chunks correctos.",
+    "input": "",
+    "nodes": [
+     "user-query",
+     "query-transformer"
+    ],
+    "edges": [
+     "query-transformer-edge"
+    ]
+   },
+   {
+    "title": "Transformaciones en abanico",
+    "description": "El transformador reescribe la consulta de tres maneras en paralelo: HyDE, expansión multiconsulta y abstracción step-back.",
+    "input": "",
+    "nodes": [
+     "query-transformer",
+     "hyde",
+     "multi-query",
+     "step-back"
+    ],
+    "edges": [
+     "transformer-hyde",
+     "transformer-multi-query",
+     "transformer-step-back"
+    ]
+   },
+   {
+    "title": "Documento hipotético de HyDE",
+    "description": "El LLM redacta una respuesta plausible (\"consultas sin índice, búsquedas N+1, cache en frío...\") y genera el embedding de ese borrador en lugar de la consulta original para encontrar vecinos reales.",
+    "input": "",
+    "nodes": [
+     "hyde",
+     "hyde-retrieval",
+     "vector-index"
+    ],
+    "edges": [
+     "hyde-retrieve",
+     "hyde-index"
+    ]
+   },
+   {
+    "title": "Multiconsulta y step-back",
+    "description": "La multiconsulta emite tres reformulaciones y obtiene el top-10 de cada una; step-back abstrae hacia \"principios generales de optimización del rendimiento\" y recupera primero los pasajes fundamentales.",
+    "input": "",
+    "nodes": [
+     "multi-query",
+     "step-back",
+     "mq-retrieval",
+     "sb-retrieval",
+     "vector-index"
+    ],
+    "edges": [
+     "mq-retrieve",
+     "sb-retrieve",
+     "mq-index",
+     "sb-index"
+    ]
+   },
+   {
+    "title": "Fusionar los conjuntos de resultados",
+    "description": "Reciprocal rank fusion combina los tres conjuntos de recuperación, elimina duplicados y conserva los 8 mejores pasajes según el rango fusionado.",
+    "input": "",
+    "nodes": [
+     "hyde-retrieval",
+     "mq-retrieval",
+     "sb-retrieval",
+     "fusion",
+     "top-passages"
+    ],
+    "edges": [
+     "hyde-fusion",
+     "mq-fusion",
+     "sb-fusion",
+     "fusion-top"
+    ]
+   },
+   {
+    "title": "Respuesta fundamentada",
+    "description": "Los mejores pasajes sacan a la luz el chunk exacto que la búsqueda simple no encontró. La respuesta los cita: una consulta sin índice en orders.user_id, que se corrige agregando un índice y activando el cache de consultas.",
+    "input": "",
+    "nodes": [
+     "top-passages",
+     "grounded-answer"
+    ],
+    "edges": [
+     "top-answer"
+    ]
+   }
+  ]
+ }
+}

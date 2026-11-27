@@ -1,0 +1,342 @@
+{
+ "cat": "fault-tolerance-infrastructure",
+ "slug": "self-healing-operations-loop",
+ "name": "Agentic SRE (Self-Healing Operations)(ASRE)",
+ "icon": "🩺",
+ "complexity": "high",
+ "description": "Una arquitectura de operaciones en bucle cerrado en la que los agentes mantienen sano un sistema externo: detectan una anomalía, diagnostican la causa raíz probable, ejecutan una remediación acotada por políticas y luego verifican la recuperación frente a los objetivos de confiabilidad antes de cerrar el bucle. Normalmente se construye como un equipo con roles especializados (detector, diagnosticador, remediador, verificador) que opera bajo una gobernanza de humano sobre el bucle, donde los ingenieros definen la política, los guardrails y el conjunto de acciones permitidas, mientras los agentes ejecutan dentro de esos límites e informan. Los permisos de mínimo privilegio y la política como código mantienen las remediaciones dentro de un margen seguro, y las acciones de mayor riesgo requieren aprobación humana. Se distingue de `predictive-agent-fault-tolerance`: aquel mantiene vivo el propio sistema de agentes, mientras que este consiste en agentes que realizan trabajo de confiabilidad sobre los sistemas externos que operan.",
+ "features": [
+  "Bucle cerrado: detectar, diagnosticar, remediar, verificar",
+  "Equipo con roles especializados: detector, diagnosticador, remediador, verificador",
+  "Autonomía acotada por políticas con un conjunto de acciones permitidas de mínimo privilegio",
+  "Humano sobre el bucle: los ingenieros definen la política, los agentes ejecutan e informan",
+  "La recuperación se verifica frente a los SLOs antes de cerrar un incidente",
+  "Rollback automático e informes de incidentes generados para auditoría"
+ ],
+ "tldr": {
+  "what": "Los agentes detectan anomalías, diagnostican causas raíz, ejecutan correcciones acotadas por políticas y luego verifican la recuperación frente a los SLOs en un bucle cerrado bajo supervisión humana.",
+  "when": "Los sistemas externos necesitan recuperarse de forma autónoma de modos de falla conocidos, manteniendo a las personas en control de qué acciones pueden tomar los agentes.",
+  "watchOut": "Las políticas demasiado permisivas o una verificación débil pueden hacer que los agentes oculten síntomas en lugar de corregir las causas raíz, o que provoquen fallas en cascada."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Agentic SRE (operaciones autorreparables)",
+  "description": "Un equipo de agentes con roles especializados mantiene sano un servicio externo mediante un bucle cerrado: un detector abre un incidente ante un pico de latencia, un diagnosticador lo rastrea hasta un despliegue defectuoso, un remediador hace rollback dentro de la política y un verificador confirma la recuperación del SLO antes de que se genere un informe del incidente para las personas sobre el bucle.",
+  "nodes": [
+   {
+    "id": "telemetry",
+    "label": "📡 Flujo de telemetría\nTrazas, métricas, logs",
+    "x": 360,
+    "y": 40,
+    "w": 220
+   },
+   {
+    "id": "latency-spike",
+    "label": "📈 Pico de latencia\np99 1,900ms vs SLO de 450ms",
+    "x": 360,
+    "y": 130,
+    "w": 220
+   },
+   {
+    "id": "detector",
+    "label": "🔎 Agente detector\nCorrelaciona la anomalía",
+    "x": 340,
+    "y": 225,
+    "w": 210
+   },
+   {
+    "id": "incident",
+    "label": "🎫 Incidente abierto\nSeveridad: alta, 02:47",
+    "x": 630,
+    "y": 225,
+    "w": 200
+   },
+   {
+    "id": "diagnoser",
+    "label": "🧬 Agente diagnosticador\nAnálisis de causa raíz",
+    "x": 340,
+    "y": 320,
+    "w": 210
+   },
+   {
+    "id": "change-log",
+    "label": "🗒️ Registro de cambios\nDespliegues y configuraciones recientes",
+    "x": 40,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "root-cause",
+    "label": "🎯 Hipótesis de causa raíz\nDespliegue v317, consulta N+1, conf 0.86",
+    "x": 340,
+    "y": 410,
+    "w": 250
+   },
+   {
+    "id": "policy",
+    "label": "📜 Política de acciones\nAcciones permitidas + guardrails",
+    "x": 40,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "remediator",
+    "label": "🛠️ Agente remediador\nVerifica los límites de la política",
+    "x": 340,
+    "y": 500,
+    "w": 210
+   },
+   {
+    "id": "escalate",
+    "label": "⚠️ Fuera de política\np. ej., una migración de esquema escala",
+    "x": 640,
+    "y": 500,
+    "w": 210
+   },
+   {
+    "id": "human-approval",
+    "label": "🧑‍💼 Aprobación humana\nPunto de control del humano sobre el bucle",
+    "x": 650,
+    "y": 590,
+    "w": 200
+   },
+   {
+    "id": "rollback",
+    "label": "⏪ Rollback a v316\nDentro de la política, sin espera",
+    "x": 340,
+    "y": 590,
+    "w": 200
+   },
+   {
+    "id": "verifier",
+    "label": "✔️ Agente verificador\nVigila el p99 durante 10 min",
+    "x": 340,
+    "y": 680,
+    "w": 210
+   },
+   {
+    "id": "slo-check",
+    "label": "📊 Verificación del SLO\np99 de vuelta en 380ms, errores normales",
+    "x": 40,
+    "y": 680,
+    "w": 210
+   },
+   {
+    "id": "resolved",
+    "label": "🟢 SLO recuperado\nIncidente resuelto automáticamente",
+    "x": 250,
+    "y": 775,
+    "w": 200
+   },
+   {
+    "id": "incident-report",
+    "label": "📝 Informe del incidente\nCronología, causa, acción, verificación",
+    "x": 560,
+    "y": 775,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "s1",
+    "s": "telemetry",
+    "t": "latency-spike",
+    "label": "el p99 sube"
+   },
+   {
+    "id": "s2",
+    "s": "latency-spike",
+    "t": "detector",
+    "label": "anomalía"
+   },
+   {
+    "id": "s3",
+    "s": "detector",
+    "t": "incident",
+    "label": "abrir"
+   },
+   {
+    "id": "s4",
+    "s": "detector",
+    "t": "diagnoser",
+    "label": "diagnosticar"
+   },
+   {
+    "id": "s5",
+    "s": "diagnoser",
+    "t": "change-log",
+    "label": "cambios recientes"
+   },
+   {
+    "id": "s6",
+    "s": "diagnoser",
+    "t": "root-cause",
+    "label": "hipótesis"
+   },
+   {
+    "id": "s7",
+    "s": "root-cause",
+    "t": "remediator",
+    "label": "proponer rollback"
+   },
+   {
+    "id": "s8",
+    "s": "policy",
+    "t": "remediator",
+    "label": "acciones permitidas"
+   },
+   {
+    "id": "s9",
+    "s": "remediator",
+    "t": "rollback",
+    "label": "dentro de la política"
+   },
+   {
+    "id": "s10",
+    "s": "remediator",
+    "t": "escalate",
+    "label": "fuera de política"
+   },
+   {
+    "id": "s11",
+    "s": "escalate",
+    "t": "human-approval",
+    "label": "¿aprobar?"
+   },
+   {
+    "id": "s12",
+    "s": "rollback",
+    "t": "verifier",
+    "label": "verificar"
+   },
+   {
+    "id": "s13",
+    "s": "verifier",
+    "t": "slo-check",
+    "label": "vigilar 10m"
+   },
+   {
+    "id": "s14",
+    "s": "slo-check",
+    "t": "resolved",
+    "label": "recuperado"
+   },
+   {
+    "id": "s15",
+    "s": "resolved",
+    "t": "incident-report",
+    "label": "cerrar el bucle"
+   },
+   {
+    "id": "s16",
+    "s": "incident",
+    "t": "incident-report",
+    "label": "cronología"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Detectar la anomalía",
+    "description": "El agente detector correlaciona un pico de latencia p99 (1,900ms frente a un presupuesto de SLO de 450ms) entre trazas, métricas y tasas de error, y abre un incidente de alta severidad.",
+    "input": "",
+    "nodes": [
+     "telemetry",
+     "latency-spike",
+     "detector",
+     "incident"
+    ],
+    "edges": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   {
+    "title": "Diagnosticar la causa raíz",
+    "description": "El agente diagnosticador contrasta el pico con el registro de cambios y descubre que el despliegue v317 salió 9 minutos antes del inicio; la firma del error coincide con una nueva consulta N+1, lo que da una hipótesis de causa raíz con 0.86 de confianza.",
+    "input": "",
+    "nodes": [
+     "detector",
+     "diagnoser",
+     "change-log",
+     "root-cause"
+    ],
+    "edges": [
+     "s4",
+     "s5",
+     "s6"
+    ]
+   },
+   {
+    "title": "Verificar los límites de la política",
+    "description": "El remediador contrasta la acción propuesta con la política de guardia. Hacer rollback de un despliegue está en la lista de acciones permitidas; una acción más riesgosa, como una migración de esquema, quedaría fuera de la política y se escalaría a una persona.",
+    "input": "",
+    "nodes": [
+     "root-cause",
+     "remediator",
+     "policy",
+     "escalate",
+     "human-approval"
+    ],
+    "edges": [
+     "s7",
+     "s8",
+     "s10",
+     "s11"
+    ]
+   },
+   {
+    "title": "Remediar dentro de la política",
+    "description": "Como el rollback está dentro de la política y es de mínimo privilegio, el remediador lo ejecuta de inmediato y revierte el servicio al despliegue v316 sin esperar a una persona.",
+    "input": "",
+    "nodes": [
+     "remediator",
+     "rollback"
+    ],
+    "edges": [
+     "s9"
+    ]
+   },
+   {
+    "title": "Verificar la recuperación",
+    "description": "El agente verificador vigila el p99 durante 10 minutos frente al SLO en lugar de asumir que la corrección funcionó, siguiendo la latencia y la tasa de error mientras se estabilizan.",
+    "input": "",
+    "nodes": [
+     "rollback",
+     "verifier",
+     "slo-check"
+    ],
+    "edges": [
+     "s12",
+     "s13"
+    ]
+   },
+   {
+    "title": "SLO recuperado",
+    "description": "La latencia vuelve a 380ms y la tasa de error se normaliza, lo que confirma la recuperación. El incidente se resuelve automáticamente.",
+    "input": "",
+    "nodes": [
+     "slo-check",
+     "resolved"
+    ],
+    "edges": [
+     "s14"
+    ]
+   },
+   {
+    "title": "Cerrar el bucle",
+    "description": "Se genera un informe del incidente (cronología, causa raíz, acción tomada, verificación) y se deja para que lo revisen las personas sobre el bucle, cerrando el bucle detectar-diagnosticar-remediar-verificar.",
+    "input": "",
+    "nodes": [
+     "resolved",
+     "incident",
+     "incident-report"
+    ],
+    "edges": [
+     "s15",
+     "s16"
+    ]
+   }
+  ]
+ }
+}

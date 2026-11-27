@@ -1,0 +1,387 @@
+{
+ "cat": "context-management",
+ "slug": "hierarchical-context-architecture",
+ "name": "Hierarchical Context Architecture(HCA)",
+ "icon": "🏗️",
+ "complexity": "high",
+ "description": "Organización del contexto en varios niveles con jerarquías en forma de árbol, herencia y aislamiento de alcances",
+ "features": [
+  "Jerarquías de contexto en forma de árbol",
+  "Patrones de herencia de contexto padre-hijo",
+  "Aislamiento del alcance del contexto entre niveles de la jerarquía",
+  "Control de acceso jerárquico al contexto"
+ ],
+ "tldr": {
+  "what": "Organiza el contexto en niveles de un árbol donde los alcances hijos heredan reglas, políticas y datos del padre, mientras aíslan su propia información especializada.",
+  "when": "Grandes organizaciones donde las políticas globales deben propagarse en cascada a departamentos y proyectos, pero cada nivel necesita toma de decisiones y control de acceso aislados.",
+  "watchOut": "Las cadenas de herencia se vuelven frágiles; cambiar el contexto padre afecta silenciosamente a todos los descendientes, lo que provoca cambios de comportamiento difíciles de rastrear en todo el sistema."
+ },
+ "overview": {
+  "pattern": "Organización del contexto en varios niveles con jerarquías en forma de árbol, herencia y aislamiento de alcances",
+  "why": "Permite una gestión de contexto escalable para estructuras organizacionales complejas, con control de acceso y herencia adecuados",
+  "insight": "La organización jerárquica con herencia permite especializar el contexto sin perder la coherencia organizacional",
+  "impl": [
+   {
+    "t": "Diseñar la jerarquía",
+    "d": "Define la estructura de árbol con niveles de herencia"
+   },
+   {
+    "t": "Aislamiento de alcances",
+    "d": "Implementa límites de contexto y controles de acceso"
+   },
+   {
+    "t": "Reglas de herencia",
+    "d": "Configura la propagación de contexto de padre a hijo"
+   },
+   {
+    "t": "Lógica de sobrescritura",
+    "d": "Habilita sobrescrituras selectivas del contexto en cada nivel"
+   },
+   {
+    "t": "Motor de consultas",
+    "d": "Construye un sistema jerárquico de resolución de contexto"
+   }
+  ],
+  "example": "global_context → department_context → project_context → agent_context → task_context",
+  "dos": [
+   "Diseña jerarquías de herencia claras con niveles lógicos",
+   "Implementa aislamiento de alcances para evitar filtraciones de contexto",
+   "Usa carga diferida para jerarquías de contexto grandes",
+   "Almacena en cache las rutas de contexto a las que se accede con frecuencia",
+   "Documenta claramente las reglas de herencia de contexto"
+  ],
+  "donts": [
+   "Crear jerarquías profundas (>5 niveles) sin justificación",
+   "Permitir dependencias circulares en la herencia de contexto",
+   "Omitir la validación del control de acceso en los límites de la jerarquía",
+   "Sobrescribir el contexto padre sin una validación adecuada",
+   "Almacenar datos sensibles en niveles inapropiados de la jerarquía"
+  ],
+  "use": [
+   "Sistemas organizacionales complejos de varios niveles",
+   "Aplicaciones empresariales con jerarquías de roles",
+   "Sistemas multiinquilino con necesidades de aislamiento",
+   "Sistemas de IA escalables con especialización de contexto"
+  ],
+  "avoid": [
+   "Requisitos de contexto simples de un solo nivel",
+   "Estructuras organizacionales planas",
+   "Necesidades de cambio de contexto de alta frecuencia",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Profundidad de la jerarquía",
+    "d": "Promedio de niveles en el árbol de contexto"
+   },
+   {
+    "n": "Precisión de la herencia",
+    "d": "% de propagación correcta del contexto"
+   },
+   {
+    "n": "Aislamiento de alcances",
+    "d": "% de accesos no autorizados evitados"
+   },
+   {
+    "n": "Rendimiento de las consultas",
+    "d": "Latencia de resolución del contexto"
+   },
+   {
+    "n": "Tasa de aciertos de cache",
+    "d": "% de contextos servidos desde la cache"
+   },
+   {
+    "n": "Éxito de las sobrescrituras",
+    "d": "% de sobrescrituras de contexto válidas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Organización empresarial",
+    "d": "company_policies → division_rules → department_procedures → team_guidelines → individual_preferences"
+   },
+   {
+    "n": "SaaS multiinquilino",
+    "d": "platform_config → tenant_settings → workspace_rules → project_context → user_preferences"
+   },
+   {
+    "n": "Sistemas educativos",
+    "d": "institution_policies → school_rules → department_standards → course_context → student_profiles"
+   },
+   {
+    "n": "Redes de salud",
+    "d": "system_protocols → hospital_policies → department_procedures → patient_context → treatment_plans"
+   },
+   {
+    "n": "Sistemas gubernamentales",
+    "d": "federal_regulations → state_laws → local_ordinances → department_policies → case_specific_context"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Hierarchical Context Architecture",
+  "description": "Organiza el contexto del agente como un árbol de niveles con alcance (global, departamento, proyecto, agente) donde los contextos hijos heredan de sus padres, pueden sobrescribir localmente y permanecen aislados de los alcances hermanos.",
+  "nodes": [
+   {
+    "id": "incoming-task",
+    "label": "🎯 Tarea entrante\n\"Redactar la propuesta de precios del T3\npara el proyecto Atlas\"",
+    "x": 360,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "global-context",
+    "label": "🌐 Contexto global (Nivel 0)\nPolíticas de la empresa, voz de marca,\nreglas de cumplimiento universales",
+    "x": 340,
+    "y": 150,
+    "w": 270
+   },
+   {
+    "id": "sales-dept-context",
+    "label": "🏢 Contexto del depto. de Ventas (Nivel 1)\nMatriz de autoridad de descuentos,\nprocedimientos de precios regionales",
+    "x": 130,
+    "y": 280,
+    "w": 250
+   },
+   {
+    "id": "eng-dept-context",
+    "label": "🔧 Contexto del depto. de Ingeniería (Nivel 1)\nAlcance hermano aislado:\nno visible para los agentes de ventas",
+    "x": 600,
+    "y": 280,
+    "w": 260
+   },
+   {
+    "id": "atlas-project-context",
+    "label": "📁 Contexto del proyecto Atlas (Nivel 2)\nPerfil del cliente, historial del acuerdo,\nsobrescritura: tope de descuento personalizado del 12%",
+    "x": 130,
+    "y": 410,
+    "w": 270
+   },
+   {
+    "id": "agent-context",
+    "label": "🤖 Contexto del agente (Nivel 3)\nEstado actual del borrador,\nprogreso de la tarea, notas de trabajo",
+    "x": 130,
+    "y": 540,
+    "w": 250
+   },
+   {
+    "id": "inheritance-resolver",
+    "label": "🧬 Resolutor de herencia\nCombina los niveles 0 -> 3 de arriba abajo;\nel alcance más cercano gana en caso de conflicto",
+    "x": 430,
+    "y": 410,
+    "w": 250
+   },
+   {
+    "id": "override-check",
+    "label": "⚖️ Sobrescritura aplicada\nEl tope del proyecto del 12% reemplaza\nel valor predeterminado del depto. del 15%",
+    "x": 430,
+    "y": 540,
+    "w": 220
+   },
+   {
+    "id": "access-control",
+    "label": "🔒 Control de acceso por alcance\nEl agente solo lee su propia rama;\nacceso a la rama de ingeniería denegado",
+    "x": 700,
+    "y": 410,
+    "w": 250
+   },
+   {
+    "id": "assembled-context",
+    "label": "🧩 Contexto de trabajo ensamblado\nReglas globales + procedimientos de ventas\n+ sobrescrituras de Atlas + estado del agente",
+    "x": 360,
+    "y": 660,
+    "w": 280
+   },
+   {
+    "id": "task-output",
+    "label": "✅ Propuesta redactada\nUsa el tope del 12% de Atlas,\ncumple con la política global",
+    "x": 360,
+    "y": 770,
+    "w": 250
+   },
+   {
+    "id": "invalidation",
+    "label": "🔄 Actualización con alcance\nLos cambios de procedimiento del depto. se propagan\na los hijos; los hermanos no se modifican",
+    "x": 700,
+    "y": 660,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-to-global",
+    "s": "incoming-task",
+    "t": "global-context",
+    "label": ""
+   },
+   {
+    "id": "global-to-sales",
+    "s": "global-context",
+    "t": "sales-dept-context",
+    "label": "hereda"
+   },
+   {
+    "id": "global-to-eng",
+    "s": "global-context",
+    "t": "eng-dept-context",
+    "label": "hereda"
+   },
+   {
+    "id": "sales-to-atlas",
+    "s": "sales-dept-context",
+    "t": "atlas-project-context",
+    "label": "hereda"
+   },
+   {
+    "id": "atlas-to-agent",
+    "s": "atlas-project-context",
+    "t": "agent-context",
+    "label": "hereda"
+   },
+   {
+    "id": "sales-to-resolver",
+    "s": "sales-dept-context",
+    "t": "inheritance-resolver",
+    "label": ""
+   },
+   {
+    "id": "atlas-to-resolver",
+    "s": "atlas-project-context",
+    "t": "inheritance-resolver",
+    "label": ""
+   },
+   {
+    "id": "resolver-to-override",
+    "s": "inheritance-resolver",
+    "t": "override-check",
+    "label": ""
+   },
+   {
+    "id": "eng-to-access",
+    "s": "eng-dept-context",
+    "t": "access-control",
+    "label": "bloqueado"
+   },
+   {
+    "id": "agent-to-assembled",
+    "s": "agent-context",
+    "t": "assembled-context",
+    "label": ""
+   },
+   {
+    "id": "override-to-assembled",
+    "s": "override-check",
+    "t": "assembled-context",
+    "label": ""
+   },
+   {
+    "id": "assembled-to-output",
+    "s": "assembled-context",
+    "t": "task-output",
+    "label": ""
+   },
+   {
+    "id": "sales-to-invalidation",
+    "s": "sales-dept-context",
+    "t": "invalidation",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "La tarea entra por la raíz",
+    "description": "Llega una tarea de precios; el ensamblaje del contexto empieza desde el alcance global, que contiene las políticas de toda la empresa que todo agente hereda",
+    "input": "",
+    "nodes": [
+     "incoming-task",
+     "global-context"
+    ],
+    "edges": [
+     "task-to-global"
+    ]
+   },
+   {
+    "title": "Árbol de contextos con alcance",
+    "description": "El contexto global se ramifica en alcances de departamento; aquí es relevante la rama de ventas, mientras que la rama de ingeniería es un hermano aislado",
+    "input": "",
+    "nodes": [
+     "global-context",
+     "sales-dept-context",
+     "eng-dept-context"
+    ],
+    "edges": [
+     "global-to-sales",
+     "global-to-eng"
+    ]
+   },
+   {
+    "title": "Herencia a lo largo de la rama",
+    "description": "El contexto del proyecto Atlas hereda los procedimientos de ventas, y el contexto del agente hereda el alcance del proyecto, agregando su propio estado de trabajo",
+    "input": "",
+    "nodes": [
+     "sales-dept-context",
+     "atlas-project-context",
+     "agent-context"
+    ],
+    "edges": [
+     "sales-to-atlas",
+     "atlas-to-agent"
+    ]
+   },
+   {
+    "title": "Resolución de conflictos por el alcance más cercano",
+    "description": "El resolutor combina los niveles de arriba abajo; el tope de descuento del 12% del proyecto Atlas sobrescribe el valor predeterminado del departamento del 15% porque gana el alcance más cercano",
+    "input": "",
+    "nodes": [
+     "inheritance-resolver",
+     "override-check"
+    ],
+    "edges": [
+     "sales-to-resolver",
+     "atlas-to-resolver",
+     "resolver-to-override"
+    ]
+   },
+   {
+    "title": "Aislamiento de alcances aplicado",
+    "description": "El control de acceso mantiene al agente dentro de su propia rama: el contexto de ingeniería no se puede leer, lo que evita filtraciones entre alcances hermanos",
+    "input": "",
+    "nodes": [
+     "eng-dept-context",
+     "access-control"
+    ],
+    "edges": [
+     "eng-to-access"
+    ]
+   },
+   {
+    "title": "Contexto de trabajo ensamblado",
+    "description": "El contexto final es la ruta combinada desde la raíz hasta la hoja: reglas globales, procedimientos de ventas, sobrescrituras de Atlas y estado del agente; la propuesta se redacta con base en él",
+    "input": "",
+    "nodes": [
+     "assembled-context",
+     "task-output",
+     "agent-context",
+     "override-check"
+    ],
+    "edges": [
+     "agent-to-assembled",
+     "override-to-assembled",
+     "assembled-to-output"
+    ]
+   },
+   {
+    "title": "Propagación de actualizaciones con alcance",
+    "description": "Cuando cambia un procedimiento de un departamento, la actualización se propaga solo a los hijos de esa rama; los alcances hermanos no se modifican",
+    "input": "",
+    "nodes": [
+     "sales-dept-context",
+     "invalidation"
+    ],
+    "edges": [
+     "sales-to-invalidation"
+    ]
+   }
+  ]
+ }
+}

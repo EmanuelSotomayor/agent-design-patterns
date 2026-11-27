@@ -1,0 +1,461 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "privacy-security-ux",
+ "name": "Privacy and Security UX(PSX)",
+ "icon": "🔒",
+ "complexity": "high",
+ "description": "Patrones de diseño centrados en la privacidad para sistemas de agentes, con manejo transparente de datos, controles granulares y empoderamiento del usuario",
+ "features": [
+  "Controles de privacidad granulares con una explicación clara del uso de los datos",
+  "Prácticas transparentes de recopilación de datos y derechos del usuario",
+  "Kit de herramientas de UX de seguridad que equilibra usabilidad y protección",
+  "Patrones de cumplimiento de GDPR/CCPA con interfaces fáciles de usar"
+ ],
+ "tldr": {
+  "what": "Integra en las interfaces del agente controles de permisos granulares, explicaciones transparentes sobre los datos y derechos de acceso/eliminación del usuario, usando lenguaje sencillo.",
+  "when": "Sistemas que manejan datos personales, industrias reguladas (finanzas, salud) o casos en los que los usuarios necesitan control explícito sobre lo que los agentes recopilan y usan.",
+  "watchOut": "Cumplimiento de fachada sin protección real: controles que se ven bien, pero que en realidad no restringen el acceso ni el uso posterior de los datos por parte del agente."
+ },
+ "overview": {
+  "pattern": "Patrones de diseño centrados en la privacidad con manejo transparente de datos, controles granulares y empoderamiento del usuario",
+  "why": "Los agentes de IA manejan datos sensibles que requieren una protección de la privacidad robusta y cumplimiento normativo",
+  "insight": "Implementa privacidad desde el diseño con controles granulares, transparencia en lenguaje sencillo y seguridad usable",
+  "impl": [
+   {
+    "t": "Privacidad desde el diseño",
+    "d": "Integra controles granulares y transparencia en el núcleo de la UX"
+   },
+   {
+    "t": "Minimización de datos",
+    "d": "Especificación clara del propósito y recopilación solo de los datos esenciales"
+   },
+   {
+    "t": "Empoderamiento del usuario",
+    "d": "Controles sencillos de acceso, corrección, eliminación y portabilidad"
+   },
+   {
+    "t": "Procesamiento transparente",
+    "d": "Explicaciones en lenguaje sencillo sobre el uso de los datos y las decisiones de la IA"
+   },
+   {
+    "t": "UX de seguridad",
+    "d": "Controles de seguridad usables que equilibran protección y usabilidad"
+   }
+  ],
+  "example": "consent_granular → data_purpose_clear → processing_transparent → controls_accessible → security_usable",
+  "dos": [
+   "Usa lenguaje sencillo en los avisos de privacidad y formularios de consentimiento",
+   "Ofrece control granular sobre los tipos de datos y sus propósitos",
+   "Haz que la configuración de privacidad sea fácil de encontrar y accesible",
+   "Implementa consentimiento justo a tiempo para nuevos usos de los datos",
+   "Diseña las funciones de seguridad pensando en la usabilidad y la adopción"
+  ],
+  "donts": [
+   "Esconder la configuración de privacidad en menús profundos",
+   "Usar patrones oscuros para manipular las decisiones de privacidad",
+   "Abrumar a los usuarios con lenguaje legal complejo",
+   "Hacer que las opciones protectoras de la privacidad sean más difíciles que las permisivas",
+   "Sacrificar la seguridad por comodidad sin que el usuario lo sepa"
+  ],
+  "use": [
+   "Manejo de datos personales o sensibles",
+   "Entornos empresariales y regulados",
+   "Aplicaciones de IA orientadas al consumidor",
+   "Escenarios de procesamiento de datos transfronterizo"
+  ],
+  "avoid": [
+   "Solo procesamiento de datos anónimos",
+   "Herramientas internas sin datos personales",
+   "Sistemas prototipo sin datos reales",
+   "Utilidades simples de un solo propósito"
+  ],
+  "metrics": [
+   {
+    "n": "Uso de los controles de privacidad",
+    "d": "% de usuarios que gestionan activamente su configuración de privacidad"
+   },
+   {
+    "n": "Calidad del consentimiento",
+    "d": "Tasa de consentimiento informado vs aceptación manipulada"
+   },
+   {
+    "n": "Derechos de los titulares de datos",
+    "d": "Tasa de éxito de las solicitudes de acceso, corrección y eliminación"
+   },
+   {
+    "n": "Adopción de la seguridad",
+    "d": "% de usuarios que activan funciones de seguridad opcionales"
+   },
+   {
+    "n": "Eficacia de la transparencia",
+    "d": "Comprensión del usuario sobre los propósitos del procesamiento de datos"
+   },
+   {
+    "n": "Eficiencia del cumplimiento",
+    "d": "Tiempo para cumplir los requisitos regulatorios"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Panel de cumplimiento de GDPR",
+    "d": "Gestión granular del consentimiento con explicaciones claras del uso de los datos"
+   },
+   {
+    "n": "Controles de privacidad empresariales",
+    "d": "Acceso a datos basado en roles con registros de auditoría y gobernanza"
+   },
+   {
+    "n": "Privacidad en IA para consumidores",
+    "d": "Toma de decisiones de IA transparente con mecanismos sencillos para darse de baja"
+   },
+   {
+    "n": "Seguridad en IA para salud",
+    "d": "Interfaces conformes a HIPAA con protección de los datos del paciente"
+   },
+   {
+    "n": "Sistemas de IA financiera",
+    "d": "Cumplimiento de SOX/PCI con un diseño de UX centrado en la seguridad"
+   }
+  ]
+ },
+ "flow": {
+  "title": "UX de privacidad y seguridad",
+  "description": "Patrones de diseño centrados en la privacidad para sistemas de agentes, con manejo transparente de datos, controles granulares y empoderamiento del usuario, que logran más del 97% de confianza del usuario gracias a una protección integral de la privacidad",
+  "nodes": [
+   {
+    "id": "privacy-challenge",
+    "label": "🛡️ Desafío de privacidad y seguridad\n\"¿Cómo diseñar sistemas de agentes con\nprincipios centrados en la privacidad, manejo transparente de datos\ny empoderamiento del usuario sin perder funcionalidad?\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "privacy-by-design",
+    "label": "🏗️ Principios de privacidad desde el diseño\n\"Enfoque fundamental:\n• Minimización de datos\n• Limitación del propósito\n• Transparencia por defecto\n• Protección proactiva\"",
+    "x": 100,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "transparent-data-handling",
+    "label": "🔍 Manejo transparente de datos\n\"Visibilidad en tiempo real:\n• Visualización del flujo de datos\n• Transparencia del procesamiento\n• Ubicaciones de almacenamiento\n• Temporizadores de retención\"",
+    "x": 700,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "granular-controls",
+    "label": "🎛️ Controles de privacidad granulares\n\"Gestión detallada:\n• Permisos por tipo de dato\n• Limitación del propósito\n• Controles temporales\n• Consentimiento contextual\"",
+    "x": 50,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "user-empowerment",
+    "label": "📊 Panel de empoderamiento del usuario\n\"Control soberano:\n• Inventario de datos personales\n• Información sobre el uso\n• Puntaje de salud de la privacidad\n• Portabilidad de datos\"",
+    "x": 300,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "advanced-privacy-tech",
+    "label": "🔐 Tecnologías de privacidad avanzadas\n\"Protección criptográfica:\n• Privacidad diferencial\n• Aprendizaje federado\n• Cifrado homomórfico\n• Pruebas de conocimiento cero\"",
+    "x": 550,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "progressive-consent",
+    "label": "📝 Flujo de consentimiento progresivo\n\"Permisos justo a tiempo:\n• Divulgación por capas\n• Comunicación de riesgos\n• Notificaciones adaptativas\n• Vista previa del consentimiento\"",
+    "x": 800,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "regulatory-compliance",
+    "label": "⚖️ UX de cumplimiento normativo\n\"Integración del marco legal:\n• Derechos sobre los datos del GDPR\n• Transparencia de la CCPA\n• Cumplimiento del EU AI Act\n• Aplicación automatizada\"",
+    "x": 150,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "trust-verification",
+    "label": "✅ Sistemas de confianza y verificación\n\"Garantía criptográfica:\n• Registros de auditoría\n• Indicadores de cumplimiento\n• Respuesta a incidentes\n• Verificación de terceros\"",
+    "x": 650,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "industry-implementations",
+    "label": "🏢 Implementaciones en la industria\n\"Casos de éxito reales:\n• Apple: etiquetas nutricionales de privacidad\n• Signal: cifrado de extremo a extremo\n• DuckDuckGo: sin rastreo\n• Empresas: paneles de privacidad\"",
+    "x": 200,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "privacy-metrics",
+    "label": "📈 Métricas y beneficios de la privacidad\n\"Qué medir:\n• Si los usuarios entienden qué se recopila\n• Costo de demostrar el cumplimiento\n• Confianza, encuestada y no supuesta\n• Solicitudes de permiso por sesión\"",
+    "x": 600,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "privacy-innovation",
+    "label": "🚀 Tendencias de innovación en privacidad\n\"Tecnologías emergentes:\n• Enfoques de privacidad híbridos\n• Frameworks VPFL\n• Aceleración con SmartNIC\n• Conmutación entre múltiples cifrados\"",
+    "x": 150,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "continuous-evolution",
+    "label": "🔄 Evolución continua de la privacidad\n\"Mejora adaptativa:\n• Actualizaciones de tecnologías de privacidad\n• Cumplimiento normativo\n• Integración del feedback de los usuarios\n• Respuesta al panorama de amenazas\"",
+    "x": 650,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "privacy-principle",
+    "label": "🎯 Principio de diseño centrado en la privacidad\n\"La privacidad desde el diseño con manejo transparente de datos es lo que gana la confianza del usuario\nLos controles granulares con consentimiento progresivo reducen la fatiga de permisos\nLas tecnologías de privacidad avanzadas mantienen la funcionalidad y garantizan la protección\"",
+    "x": 400,
+    "y": 950,
+    "w": 480
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "privacy-challenge",
+    "t": "privacy-by-design",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "privacy-challenge",
+    "t": "transparent-data-handling",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e3",
+    "s": "privacy-by-design",
+    "t": "granular-controls",
+    "label": "habilita"
+   },
+   {
+    "id": "e4",
+    "s": "privacy-by-design",
+    "t": "user-empowerment",
+    "label": "empodera"
+   },
+   {
+    "id": "e5",
+    "s": "privacy-by-design",
+    "t": "regulatory-compliance",
+    "label": "asegura"
+   },
+   {
+    "id": "e6",
+    "s": "transparent-data-handling",
+    "t": "progressive-consent",
+    "label": "informa"
+   },
+   {
+    "id": "e7",
+    "s": "transparent-data-handling",
+    "t": "trust-verification",
+    "label": "valida"
+   },
+   {
+    "id": "e8",
+    "s": "granular-controls",
+    "t": "user-empowerment",
+    "label": "integra"
+   },
+   {
+    "id": "e9",
+    "s": "granular-controls",
+    "t": "advanced-privacy-tech",
+    "label": "utiliza"
+   },
+   {
+    "id": "e10",
+    "s": "user-empowerment",
+    "t": "privacy-metrics",
+    "label": "medido por"
+   },
+   {
+    "id": "e11",
+    "s": "advanced-privacy-tech",
+    "t": "privacy-innovation",
+    "label": "evoluciona hacia"
+   },
+   {
+    "id": "e12",
+    "s": "advanced-privacy-tech",
+    "t": "trust-verification",
+    "label": "verificado por"
+   },
+   {
+    "id": "e13",
+    "s": "progressive-consent",
+    "t": "regulatory-compliance",
+    "label": "cumple con"
+   },
+   {
+    "id": "e14",
+    "s": "regulatory-compliance",
+    "t": "industry-implementations",
+    "label": "probado en"
+   },
+   {
+    "id": "e15",
+    "s": "trust-verification",
+    "t": "privacy-metrics",
+    "label": "genera"
+   },
+   {
+    "id": "e16",
+    "s": "industry-implementations",
+    "t": "continuous-evolution",
+    "label": "impulsa"
+   },
+   {
+    "id": "e17",
+    "s": "privacy-metrics",
+    "t": "continuous-evolution",
+    "label": "informa"
+   },
+   {
+    "id": "e18",
+    "s": "privacy-innovation",
+    "t": "continuous-evolution",
+    "label": "habilita"
+   },
+   {
+    "id": "e19",
+    "s": "progressive-consent",
+    "t": "privacy-metrics",
+    "label": "mejora"
+   },
+   {
+    "id": "e20",
+    "s": "industry-implementations",
+    "t": "privacy-innovation",
+    "label": "inspira"
+   },
+   {
+    "id": "e21",
+    "s": "continuous-evolution",
+    "t": "privacy-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de privacidad y seguridad",
+    "description": "Las organizaciones enfrentan el desafío crítico de diseñar sistemas de agentes que mantengan principios centrados en la privacidad y, a la vez, garanticen un manejo transparente de datos, controles granulares para el usuario y cumplimiento normativo en diversos casos de uso y jurisdicciones.",
+    "input": "",
+    "nodes": [
+     "privacy-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Base de privacidad desde el diseño y transparencia",
+    "description": "Aborda los desafíos de privacidad con principios fundamentales de privacidad desde el diseño que integran la minimización de datos y la limitación del propósito, combinados con un manejo transparente de datos que ofrece visibilidad en tiempo real de los flujos y las actividades de procesamiento.",
+    "input": "",
+    "nodes": [
+     "privacy-by-design",
+     "transparent-data-handling"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Controles granulares y empoderamiento del usuario",
+    "description": "La privacidad desde el diseño habilita controles de privacidad granulares para una gestión detallada de permisos y empodera a los usuarios mediante paneles completos, al tiempo que asegura el cumplimiento normativo con patrones de diseño proactivos.",
+    "input": "",
+    "nodes": [
+     "granular-controls",
+     "user-empowerment",
+     "regulatory-compliance"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Consentimiento progresivo y verificación de la confianza",
+    "description": "El manejo transparente de datos informa los flujos de consentimiento progresivo con permisos justo a tiempo y valida la confianza mediante sistemas de verificación criptográfica, mientras que los controles granulares se integran con los paneles de empoderamiento del usuario.",
+    "input": "",
+    "nodes": [
+     "progressive-consent",
+     "trust-verification"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Tecnologías de privacidad avanzadas",
+    "description": "Los controles granulares utilizan tecnologías de privacidad avanzadas como la privacidad diferencial, el aprendizaje federado y el cifrado homomórfico. Estas tecnologías se verifican con sistemas de confianza, y el empoderamiento del usuario se mide con métricas de privacidad completas.",
+    "input": "",
+    "nodes": [
+     "advanced-privacy-tech",
+     "privacy-metrics"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e12"
+    ]
+   },
+   {
+    "title": "Cumplimiento normativo y casos de éxito en la industria",
+    "description": "El consentimiento progresivo cumple con los marcos regulatorios, lo que se demuestra con implementaciones en grandes empresas de tecnología. La verificación de la confianza genera métricas de privacidad medibles que muestran mejoras significativas en la confianza y la participación de los usuarios.",
+    "input": "",
+    "nodes": [
+     "industry-implementations"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15",
+     "e19"
+    ]
+   },
+   {
+    "title": "Innovación y evolución continua",
+    "description": "Las tecnologías de privacidad avanzadas evolucionan hacia innovaciones de vanguardia como los frameworks VPFL y la aceleración con SmartNIC. Las implementaciones en la industria y las métricas de privacidad impulsan una evolución continua que responde a las amenazas emergentes y a los cambios regulatorios.",
+    "input": "",
+    "nodes": [
+     "privacy-innovation",
+     "continuous-evolution"
+    ],
+    "edges": [
+     "e11",
+     "e16",
+     "e17",
+     "e18",
+     "e20"
+    ]
+   },
+   {
+    "title": "Validación del principio de diseño centrado en la privacidad",
+    "description": "La evolución continua demuestra el principio central de que la privacidad desde el diseño con manejo transparente de datos es lo que gana la confianza del usuario, que los controles granulares con consentimiento progresivo reducen la fatiga de permisos y que las tecnologías de privacidad avanzadas mantienen toda la funcionalidad y garantizan una protección integral.",
+    "input": "",
+    "nodes": [
+     "privacy-principle"
+    ],
+    "edges": [
+     "e21"
+    ]
+   }
+  ]
+ }
+}

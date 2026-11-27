@@ -1,0 +1,363 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "progressive-consent-communication",
+ "name": "Progressive Consent & Communication(PCC)",
+ "icon": "📋",
+ "complexity": "medium",
+ "description": "Flujos de permisos justo a tiempo con revelación progresiva, consentimiento contextual, comunicación clara de los riesgos y notificaciones de privacidad adaptativas que respetan la atención del usuario y garantizan decisiones informadas.",
+ "features": [
+  "Solicitudes de permisos justo a tiempo, en el momento en que se necesitan",
+  "Revelación progresiva, del resumen al detalle completo",
+  "Comunicación de los riesgos de cada permiso en lenguaje sencillo",
+  "Frecuencia de notificaciones adaptativa para evitar la fatiga de consentimiento"
+ ],
+ "tldr": {
+  "what": "Solicita los permisos solo cuando se necesitan, explica cada uno en lenguaje sencillo y permite a los usuarios ampliar los detalles sin obligarlos a leerlo todo de entrada.",
+  "when": "Agentes con múltiples capacidades en los que los usuarios otorgan acceso gradualmente a medida que usan las funciones, no todo al registrarse.",
+  "watchOut": "Los usuarios pueden otorgar permisos sin leer las explicaciones si las solicitudes les parecen rutinarias; la fatiga sigue erosionando el consentimiento informado."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Flujo de consentimiento y comunicación progresivos",
+  "description": "Flujos de permisos justo a tiempo con revelación progresiva, mecanismos de consentimiento contextual, comunicación clara de los riesgos y notificaciones de privacidad adaptativas que respetan la atención del usuario y garantizan decisiones informadas",
+  "nodes": [
+   {
+    "id": "ai-assistant-onboarding",
+    "label": "🤖 Onboarding de un asistente personal de IA\n\"¡Bienvenido! Puedo ayudarte con tu agenda,\nla gestión del correo, la planificación de viajes\ny la automatización de tareas personales\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "consent-complexity",
+    "label": "📋 Requisitos de consentimiento complejos\n\"Se necesitan varios permisos:\nacceso al calendario, lectura de correos, seguimiento de ubicación,\ngestión de contactos y almacenamiento en la nube\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "consent-overload",
+    "label": "📄 Sobrecarga del consentimiento tradicional\n\"Política de privacidad de 18 páginas\nTodos los permisos solicitados de entrada\nJerga legal y términos técnicos\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "user-overwhelm",
+    "label": "😵‍💫 Usuario abrumado\n\"Demasiada información a la vez\nImplicaciones de los permisos poco claras\nDecisiones de consentimiento apresuradas\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "blind-acceptance",
+    "label": "✅ Aceptación a ciegas\n\"Los usuarios hacen clic en 'Aceptar todo'\nsin leer ni entender\nDecisiones de consentimiento no informadas\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "progressive-consent",
+    "label": "🔄 Flujo de consentimiento progresivo\n\"Permisos justo a tiempo\nSolicitudes de consentimiento contextuales\nRevelación de la información por capas\"",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "initial-essential",
+    "label": "🏁 Permisos esenciales iniciales\n\"Configuración básica: nombre y zona horaria\nFuncionalidad principal: creación de tareas\nConsentimiento mínimo viable para empezar\"",
+    "x": 450,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "contextual-requests",
+    "label": "📍 Solicitudes de permisos contextuales\n\"'¿Agendar la reunión?' → Acceso al calendario\n'¿Revisar el correo en busca de novedades?' → Lectura de correos\nJusto a tiempo y con un propósito claro\"",
+    "x": 700,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "layered-disclosure",
+    "label": "📰 Revelación de la información por capas\n\"Resumen rápido → Detalles a pedido\nÍconos e indicadores visuales de privacidad\nExplicaciones en lenguaje sencillo\"",
+    "x": 950,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "risk-communication",
+    "label": "⚠️ Comunicación clara de los riesgos\n\"Riesgo bajo: acceso al calendario local\nRiesgo medio: análisis del contenido del correo\nRiesgo alto: compartir el historial de ubicaciones\"",
+    "x": 450,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "benefit-explanation",
+    "label": "💡 Explicación de los beneficios\n\"Con acceso al calendario, puedo:\n• Sugerir los mejores horarios para reuniones\n• Evitar conflictos de agenda\n• Enviar recordatorios inteligentes\"",
+    "x": 700,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "adaptive-notifications",
+    "label": "🔔 Notificaciones de privacidad adaptativas\n\"Resumen semanal de privacidad\nAlerta: se detectó un nuevo uso compartido de datos\nModo silencioso: notificaciones agrupadas\"",
+    "x": 950,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "consent-preview",
+    "label": "👁️ Vista previa y prueba del consentimiento\n\"Prueba la función con datos de muestra\nPrevisualiza el acceso a datos antes de consentir\nModo de prueba con opción de revocar\"",
+    "x": 500,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "micro-interactions",
+    "label": "🎯 Microinteracciones de consentimiento\n\"Desliza para otorgar acceso temporal\nMantén presionado para confirmar un permiso permanente\nArrastra para ajustar la granularidad del alcance\"",
+    "x": 750,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "informed-decisions",
+    "label": "🧠 Decisiones de consentimiento realmente informadas\n\"Los usuarios entienden las implicaciones\nSe preserva una elección significativa\nOtorgamiento de permisos con confianza\"",
+    "x": 625,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "progressive-principle",
+    "label": "🎯 Principio del consentimiento progresivo\n\"El consentimiento debe ser contextual, oportuno y comprensible,\nsolicitado cuando se necesita y con un propósito claro,\nno como avalanchas abrumadoras de información de entrada.\"",
+    "x": 625,
+    "y": 1100,
+    "w": 450
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-assistant-onboarding",
+    "t": "consent-complexity",
+    "label": "requiere varios permisos"
+   },
+   {
+    "id": "e2",
+    "s": "consent-complexity",
+    "t": "consent-overload",
+    "label": "tradicional, todo a la vez"
+   },
+   {
+    "id": "e3",
+    "s": "consent-complexity",
+    "t": "progressive-consent",
+    "label": "progresivo, justo a tiempo"
+   },
+   {
+    "id": "e4",
+    "s": "consent-overload",
+    "t": "user-overwhelm",
+    "label": "genera sobrecarga de información"
+   },
+   {
+    "id": "e5",
+    "s": "user-overwhelm",
+    "t": "blind-acceptance",
+    "label": "lleva a elecciones no informadas"
+   },
+   {
+    "id": "e6",
+    "s": "progressive-consent",
+    "t": "initial-essential",
+    "label": "empieza con permisos mínimos"
+   },
+   {
+    "id": "e7",
+    "s": "progressive-consent",
+    "t": "contextual-requests",
+    "label": "solicita cuando se necesita"
+   },
+   {
+    "id": "e8",
+    "s": "progressive-consent",
+    "t": "layered-disclosure",
+    "label": "ofrece capas de información"
+   },
+   {
+    "id": "e9",
+    "s": "initial-essential",
+    "t": "risk-communication",
+    "label": "explica los niveles de riesgo"
+   },
+   {
+    "id": "e10",
+    "s": "contextual-requests",
+    "t": "benefit-explanation",
+    "label": "aclara la propuesta de valor"
+   },
+   {
+    "id": "e11",
+    "s": "layered-disclosure",
+    "t": "adaptive-notifications",
+    "label": "habilita notificaciones inteligentes"
+   },
+   {
+    "id": "e12",
+    "s": "risk-communication",
+    "t": "consent-preview",
+    "label": "habilita experiencias de prueba"
+   },
+   {
+    "id": "e13",
+    "s": "benefit-explanation",
+    "t": "consent-preview",
+    "label": "permite probar funciones"
+   },
+   {
+    "id": "e14",
+    "s": "adaptive-notifications",
+    "t": "micro-interactions",
+    "label": "optimiza el diseño de la interacción"
+   },
+   {
+    "id": "e15",
+    "s": "consent-preview",
+    "t": "micro-interactions",
+    "label": "se integra con el flujo de consentimiento"
+   },
+   {
+    "id": "e16",
+    "s": "consent-preview",
+    "t": "informed-decisions",
+    "label": "habilita el aprendizaje experiencial"
+   },
+   {
+    "id": "e17",
+    "s": "micro-interactions",
+    "t": "informed-decisions",
+    "label": "mejora la UX del consentimiento"
+   },
+   {
+    "id": "e18",
+    "s": "blind-acceptance",
+    "t": "progressive-principle",
+    "label": "demuestra el problema"
+   },
+   {
+    "id": "e19",
+    "s": "informed-decisions",
+    "t": "progressive-principle",
+    "label": "valida el enfoque"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Onboarding de un asistente de IA con requisitos de consentimiento complejos",
+    "description": "La presentación de un asistente personal de IA requiere varios permisos (calendario, correo, ubicación, contactos, almacenamiento en la nube), lo que crea un desafío complejo de decisión de consentimiento para los nuevos usuarios.",
+    "input": "",
+    "nodes": [
+     "ai-assistant-onboarding",
+     "consent-complexity"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de comunicación del consentimiento",
+    "description": "Los permisos complejos se gestionan mediante la sobrecarga del consentimiento tradicional, todo a la vez y con políticas de privacidad extensas (izquierda), frente a un flujo de consentimiento progresivo justo a tiempo (derecha).",
+    "input": "",
+    "nodes": [
+     "consent-overload",
+     "progressive-consent"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Consentimiento tradicional: abrumamiento y aceptación a ciegas",
+    "description": "Las políticas de privacidad de 18 páginas y las solicitudes de permisos de entrada abruman al usuario, lo que lleva a decisiones apresuradas y a elegir 'Aceptar todo' a ciegas sin entender las implicaciones.",
+    "input": "",
+    "nodes": [
+     "user-overwhelm",
+     "blind-acceptance"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Componentes del flujo de consentimiento progresivo",
+    "description": "El enfoque progresivo empieza con los permisos esenciales mínimos, solicita acceso contextual cuando se usan las funciones y ofrece una revelación de la información por capas con indicadores visuales de privacidad.",
+    "input": "",
+    "nodes": [
+     "initial-essential",
+     "contextual-requests",
+     "layered-disclosure"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Comunicación mejorada: riesgos, beneficios y notificaciones",
+    "description": "Comunicación clara del nivel de riesgo (bajo/medio/alto), explicaciones explícitas del beneficio de cada permiso y notificaciones de privacidad adaptativas que respetan la atención del usuario.",
+    "input": "",
+    "nodes": [
+     "risk-communication",
+     "benefit-explanation",
+     "adaptive-notifications"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Empoderamiento del usuario: vista previa y microinteracciones",
+    "description": "Vista previa del consentimiento con pruebas sobre datos de muestra, modos de prueba con opción de revocar y microinteracciones intuitivas (deslizar para temporal, mantener presionado para permanente, arrastrar para la granularidad).",
+    "input": "",
+    "nodes": [
+     "consent-preview",
+     "micro-interactions"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Decisiones de consentimiento realmente informadas",
+    "description": "El enfoque progresivo permite que los usuarios entiendan las implicaciones, conserven una elección significativa y otorguen permisos con confianza gracias al aprendizaje experiencial y a una comunicación clara.",
+    "input": "",
+    "nodes": [
+     "informed-decisions"
+    ],
+    "edges": [
+     "e16",
+     "e17"
+    ]
+   },
+   {
+    "title": "Principio del consentimiento progresivo",
+    "description": "El consentimiento debe ser contextual, oportuno y comprensible: solicitado cuando se necesita y con un propósito claro, no como avalanchas abrumadoras de información de entrada que llevan a decisiones no informadas.",
+    "input": "",
+    "nodes": [
+     "progressive-principle"
+    ],
+    "edges": [
+     "e18",
+     "e19"
+    ]
+   }
+  ]
+ }
+}

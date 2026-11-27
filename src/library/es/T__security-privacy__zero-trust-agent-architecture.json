@@ -1,0 +1,336 @@
+{
+ "cat": "security-privacy",
+ "slug": "zero-trust-agent-architecture",
+ "name": "Zero-Trust Agent Architecture(ZTAA)",
+ "icon": "🛡️",
+ "complexity": "high",
+ "description": "Enfoque de \"nunca confíes, siempre verifica\" para la seguridad de agentes",
+ "features": [
+  "Verificación continua de la identidad de los agentes",
+  "Aplicación del acceso de mínimo privilegio",
+  "Microsegmentación de red",
+  "Evaluación de amenazas en tiempo real",
+  "Adaptación dinámica de políticas",
+  "Cifrado de extremo a extremo"
+ ],
+ "tldr": {
+  "what": "Verifica la identidad y los permisos del agente en cada punto de acceso, aplica el mínimo privilegio y adapta las políticas según señales de amenaza en tiempo real.",
+  "when": "Sistemas multiagente que manejan datos sensibles, donde el compromiso de un agente no debe propagarse en cascada, o entornos regulados que requieren pistas de auditoría.",
+  "watchOut": "La sobrecarga de verificación puede degradar seriamente la latencia; las políticas mal configuradas bloquean a agentes legítimos o generan una falsa sensación de seguridad."
+ },
+ "overview": {
+  "pattern": "Enfoque de \"nunca confíes, siempre verifica\" para la seguridad de agentes, con verificación continua y acceso de mínimo privilegio",
+  "why": "Elimina la confianza implícita, reduce la superficie de ataque, permite despliegues distribuidos seguros y mejora la detección de amenazas",
+  "insight": "Verificación continua + microsegmentación + mínimo privilegio + políticas dinámicas → ecosistema de agentes seguro",
+  "impl": [
+   {
+    "t": "Verificación de identidad",
+    "d": "Validación continua de la identidad del agente"
+   },
+   {
+    "t": "Microsegmentación",
+    "d": "Aislamiento de red por contexto de agente"
+   },
+   {
+    "t": "Mínimo privilegio",
+    "d": "Aplicación de derechos de acceso mínimos"
+   },
+   {
+    "t": "Monitoreo continuo",
+    "d": "Análisis de comportamiento en tiempo real"
+   },
+   {
+    "t": "Políticas dinámicas",
+    "d": "Adaptación del acceso según el riesgo"
+   }
+  ],
+  "example": "identity_verification → microsegmentation → least_privilege → continuous_monitoring → dynamic_policies",
+  "dos": [
+   "Verifica cada solicitud de agente, sin importar su origen",
+   "Implementa microsegmentación para aislar a los agentes",
+   "Aplica el principio de mínimo privilegio a todo acceso de agentes",
+   "Monitorea continuamente el comportamiento de los agentes en busca de anomalías",
+   "Usa comunicación cifrada en todas las interacciones entre agentes"
+  ],
+  "donts": [
+   "Confiar en los agentes solo por su ubicación en la red",
+   "Otorgar permisos de acceso amplios por defecto",
+   "Omitir la reautenticación en operaciones sensibles",
+   "Ignorar anomalías de comportamiento en agentes de confianza",
+   "Usar políticas de seguridad estáticas en todos los contextos"
+  ],
+  "use": [
+   "Sistemas de IA empresariales",
+   "Despliegues de agentes en la nube",
+   "Entornos multiagente distribuidos",
+   "Requisitos de alta seguridad"
+  ],
+  "avoid": [
+   "Aplicaciones simples de un solo agente",
+   "Entornos de desarrollo aislados",
+   "Herramientas internas de bajo riesgo",
+   "Sistemas en tiempo real críticos en rendimiento"
+  ],
+  "metrics": [
+   {
+    "n": "Reducción de incidentes de seguridad",
+    "d": "% de disminución de brechas de seguridad"
+   },
+   {
+    "n": "Tiempo medio de detección (MTTD)",
+    "d": "Tiempo para identificar amenazas"
+   },
+   {
+    "n": "Tasa de falsos positivos",
+    "d": "% de actividades legítimas marcadas"
+   },
+   {
+    "n": "Latencia de las decisiones de acceso",
+    "d": "Tiempo de las decisiones de autorización"
+   },
+   {
+    "n": "Cumplimiento de políticas",
+    "d": "% de adhesión a las políticas de seguridad"
+   },
+   {
+    "n": "Impacto en la productividad de los agentes",
+    "d": "Degradación del rendimiento por la seguridad"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Plataforma de IA empresarial",
+    "d": "Aislamiento multiinquilino, control de acceso dinámico, verificación continua"
+   },
+   {
+    "n": "Servicios de IA en la nube",
+    "d": "Seguridad de contenedores, protección de APIs, detección y respuesta a amenazas"
+   },
+   {
+    "n": "Sistemas de IA financieros",
+    "d": "Cumplimiento normativo, prevención de fraude, protección de datos sensibles"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Cumplimiento de HIPAA, protección de datos de pacientes, mantenimiento de pistas de auditoría"
+   },
+   {
+    "n": "IA gubernamental",
+    "d": "Manejo de datos clasificados, aplicación de autorizaciones de seguridad, monitoreo de amenazas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Zero-Trust Agent Architecture",
+  "description": "Arquitectura de seguridad donde ningún agente ni componente es de confianza por defecto, lo que exige verificación y validación continuas de todas las interacciones y operaciones",
+  "nodes": [
+   {
+    "id": "enterprise-ai-system",
+    "label": "🏢 Sistema de IA empresarial\n\"Agente de RR. HH. + Agente de Finanzas + Agente Legal\nProcesan datos sensibles de empleados\ny operaciones confidenciales del negocio\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "agent-interaction",
+    "label": "🤝 Solicitud de interacción entre agentes\n\"El agente de RR. HH. solicita datos salariales\nal agente de Finanzas para procesar\nrecomendaciones de ascenso\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "traditional-trust",
+    "label": "🤝 Modelo de confianza tradicional\n\"Agentes de confianza por defecto\nSeguridad de perímetro de red\nSeguridad interna asumida\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "direct-access",
+    "label": "🔓 Acceso directo a los datos\n\"El agente de RR. HH. obtiene acceso total\na la base de datos de Finanzas\nSin verificación requerida\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "breach-propagation",
+    "label": "🚨 Propagación del compromiso\n\"Si el agente de RR. HH. se ve comprometido,\ntodo el sistema de Finanzas queda expuesto\nSe habilita el movimiento lateral\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "zero-trust-architecture",
+    "label": "🛡️ Arquitectura Zero-Trust\n\"Nunca confíes, siempre verifica\nAutenticación continua\nPrincipio de mínimo privilegio\"",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "identity-verification",
+    "label": "🔍 Verificación de identidad\n\"Identidad del agente de RR. HH. confirmada\nPropósito de la solicitud validado\nAlcance de acceso determinado\"",
+    "x": 650,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "minimal-access",
+    "label": "🔐 Acceso mínimo otorgado\n\"Solo se entregan rangos salariales\nSin datos de empleados en bruto\nToken de acceso con tiempo limitado\"",
+    "x": 650,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "continuous-monitoring",
+    "label": "📊 Monitoreo continuo\n\"Todas las interacciones registradas\nComportamiento anómalo detectado\nPostura de seguridad en tiempo real\"",
+    "x": 650,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "zero-trust-principle",
+    "label": "🎯 Principio Zero-Trust\n\"No confíes en nada, verifica todo\nAsume que ya ocurrió una brecha\nLimita el radio de impacto mediante aislamiento\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "enterprise-ai-system",
+    "t": "agent-interaction",
+    "label": "requiere compartir datos"
+   },
+   {
+    "id": "e2",
+    "s": "agent-interaction",
+    "t": "traditional-trust",
+    "label": "enfoque tradicional"
+   },
+   {
+    "id": "e3",
+    "s": "agent-interaction",
+    "t": "zero-trust-architecture",
+    "label": "enfoque zero-trust"
+   },
+   {
+    "id": "e4",
+    "s": "traditional-trust",
+    "t": "direct-access",
+    "label": "otorga permisos amplios"
+   },
+   {
+    "id": "e5",
+    "s": "direct-access",
+    "t": "breach-propagation",
+    "label": "habilita el movimiento lateral"
+   },
+   {
+    "id": "e6",
+    "s": "zero-trust-architecture",
+    "t": "identity-verification",
+    "label": "verificar identidad e intención"
+   },
+   {
+    "id": "e7",
+    "s": "identity-verification",
+    "t": "minimal-access",
+    "label": "otorgar mínimo privilegio"
+   },
+   {
+    "id": "e8",
+    "s": "minimal-access",
+    "t": "continuous-monitoring",
+    "label": "monitorear toda la actividad"
+   },
+   {
+    "id": "e9",
+    "s": "breach-propagation",
+    "t": "zero-trust-principle",
+    "label": "demuestra el riesgo"
+   },
+   {
+    "id": "e10",
+    "s": "continuous-monitoring",
+    "t": "zero-trust-principle",
+    "label": "habilita la seguridad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Sistema de IA empresarial con datos sensibles",
+    "description": "Sistema multiagente (RR. HH. + Finanzas + Legal) que procesa datos confidenciales de empleados y operaciones del negocio, y requiere comunicación segura entre agentes.",
+    "input": "",
+    "nodes": [
+     "enterprise-ai-system"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Solicitud de intercambio de datos entre agentes",
+    "description": "El agente de RR. HH. necesita datos salariales del agente de Finanzas para procesar recomendaciones de ascenso, lo que genera la necesidad de un acceso seguro a datos entre agentes.",
+    "input": "",
+    "nodes": [
+     "agent-interaction"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos arquitecturas de seguridad: tradicional vs. zero-trust",
+    "description": "La misma solicitud de datos se procesa mediante un modelo de confianza tradicional (izquierda) con seguridad de perímetro frente a una arquitectura zero-trust (derecha) con verificación continua.",
+    "input": "",
+    "nodes": [
+     "traditional-trust",
+     "zero-trust-architecture"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Confianza tradicional: acceso amplio y vulnerabilidad",
+    "description": "El modelo tradicional le otorga al agente de RR. HH. acceso directo a la base de datos basándose en la confianza de red, pero si se ve comprometido, todo el sistema de Finanzas queda expuesto al movimiento lateral.",
+    "input": "",
+    "nodes": [
+     "direct-access",
+     "breach-propagation"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Zero-trust: verificación de identidad y acceso mínimo",
+    "description": "La arquitectura zero-trust verifica la identidad del agente de RR. HH., valida el propósito de la solicitud y otorga solo el acceso mínimo necesario (rangos salariales, no datos en bruto).",
+    "input": "",
+    "nodes": [
+     "identity-verification",
+     "minimal-access"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Monitoreo continuo y principio central",
+    "description": "Todas las interacciones se registran y monitorean en busca de anomalías, lo que demuestra el principio zero-trust: no confíes en nada, verifica todo, asume la brecha y limita el radio de impacto.",
+    "input": "",
+    "nodes": [
+     "continuous-monitoring",
+     "zero-trust-principle"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10"
+    ]
+   }
+  ]
+ }
+}

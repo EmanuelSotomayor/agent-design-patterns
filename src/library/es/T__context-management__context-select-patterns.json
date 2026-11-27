@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "context-select-patterns",
+ "name": "Context Select Patterns(CSEL)",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "Recuperación y ensamblaje dinámicos del contexto relevante mediante RAG, búsqueda semántica y curación inteligente del contexto",
+ "features": [
+  "Ensamblaje dinámico del contexto según los requisitos de la tarea",
+  "Recuperación de contexto basada en similitud semántica",
+  "Integración de RAG para bases de conocimiento empresariales",
+  "Priorización y ordenamiento inteligentes del contexto"
+ ],
+ "tldr": {
+  "what": "Recupera y ordena dinámicamente el contexto relevante de múltiples fuentes mediante búsqueda semántica y RAG, y luego ensambla los mejores resultados para cada tarea.",
+  "when": "Bases de conocimiento grandes en las que el contexto completo excede los límites de tokens y la relevancia varía según el tipo de tarea.",
+  "watchOut": "El contexto recuperado puede omitir matices específicos del dominio o contradecirse, por lo que requiere validación antes de que el agente actúe en función de él."
+ },
+ "overview": {
+  "pattern": "Recuperación y ensamblaje dinámicos del contexto relevante mediante RAG, búsqueda semántica y curación inteligente del contexto",
+  "why": "Permite una selección precisa del contexto a partir de grandes bases de conocimiento con relevancia y eficiencia de tokens óptimas",
+  "insight": "La similitud semántica con ordenamiento inteligente entrega información contextualmente relevante dentro de las restricciones de tokens",
+  "impl": [
+   {
+    "t": "Análisis de la tarea",
+    "d": "Extrae los requisitos de contexto de las especificaciones de la tarea"
+   },
+   {
+    "t": "Búsqueda semántica",
+    "d": "Realiza la recuperación de contexto basada en similitud"
+   },
+   {
+    "t": "Ordenamiento y puntuación",
+    "d": "Aplica puntuación de relevancia y priorización"
+   },
+   {
+    "t": "Ensamblaje",
+    "d": "Compone dinámicamente los componentes de contexto seleccionados"
+   },
+   {
+    "t": "Optimización",
+    "d": "Optimiza el equilibrio entre presupuesto de tokens y calidad"
+   }
+  ],
+  "example": "analyze_task → semantic_search → rank_relevance → assemble_context → optimize_budget",
+  "dos": [
+   "Usa embeddings vectoriales para la coincidencia por similitud semántica",
+   "Implementa búsqueda híbrida que combine semántica + palabras clave",
+   "Almacena en cache los patrones de contexto a los que se accede con frecuencia",
+   "Usa puntuación de relevancia con múltiples criterios",
+   "Implementa ensamblaje dinámico del contexto según la complejidad de la tarea"
+  ],
+  "donts": [
+   "Depender únicamente de la coincidencia de palabras clave para seleccionar el contexto",
+   "Seleccionar contexto sin considerar su relevancia para la tarea",
+   "Ignorar las restricciones del presupuesto de tokens durante la selección",
+   "Usar selección de contexto estática para tareas dinámicas",
+   "Omitir la evaluación de calidad del contexto recuperado"
+  ],
+  "use": [
+   "Aplicaciones intensivas en conocimiento",
+   "Necesidades de curación dinámica del contexto",
+   "Implementaciones de RAG empresariales",
+   "Sistemas inteligentes de búsqueda y recuperación"
+  ],
+  "avoid": [
+   "Requisitos de contexto estáticos",
+   "Bases de conocimiento simples y predefinidas",
+   "Aplicaciones muy sensibles a la latencia",
+   "Recursos computacionales limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de relevancia",
+    "d": "% del contexto seleccionado que es realmente relevante"
+   },
+   {
+    "n": "Cobertura del contexto",
+    "d": "% de los requisitos de la tarea cubiertos por la selección"
+   },
+   {
+    "n": "Velocidad de selección",
+    "d": "Tiempo para completar el ensamblaje del contexto"
+   },
+   {
+    "n": "Eficiencia de tokens",
+    "d": "Densidad de información por token usado"
+   },
+   {
+    "n": "Tasa de aciertos de cache",
+    "d": "% de contextos servidos desde la cache"
+   },
+   {
+    "n": "Puntuación de calidad",
+    "d": "Evaluación de calidad humana/automatizada"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "RAG empresarial",
+    "d": "analyze_query → search_knowledge_base → rank_documents → assemble_context → optimize_tokens"
+   },
+   {
+    "n": "Asistente de investigación",
+    "d": "identify_topics → semantic_retrieval → source_ranking → context_fusion → knowledge_synthesis"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "analyze_issue → retrieve_solutions → score_relevance → compose_response → quality_check"
+   },
+   {
+    "n": "Asistente de código",
+    "d": "parse_requirements → search_codebase → rank_examples → assemble_context → generate_solution"
+   },
+   {
+    "n": "Curación de contenido",
+    "d": "understand_intent → multi_source_search → relevance_filtering → context_assembly → presentation_optimization"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Context Select Patterns",
+  "description": "Técnicas estratégicas de recuperación y filtrado para seleccionar el contexto óptimo, que incluyen búsqueda semántica, enrutamiento de consultas, reordenamiento y selección adaptativa, y permiten respuestas precisas del LLM",
+  "nodes": [
+   {
+    "id": "context-selection-challenge",
+    "label": "🎯 Desafío de selección de contexto\n\"¿Cómo recuperar el contexto más relevante\nde enormes bases de conocimiento\nminimizando el ruido y el costo?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "selection-patterns-framework",
+    "label": "🔍 Framework de patrones de selección\n\"Recuperación en múltiples etapas:\n• Búsqueda semántica\n• Enrutamiento de consultas\n• Reordenamiento\n• Filtrado adaptativo\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "semantic-search",
+    "label": "🔢 Búsqueda semántica\n\"Recuperación basada en embeddings:\n• Similitud top-k\n• Bases de datos vectoriales\n• Distancia coseno\n• Productos punto rápidos\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "hybrid-search",
+    "label": "🔀 Búsqueda híbrida\n\"Enfoques combinados:\n• Palabras clave + semántica\n• BM25 + embeddings\n• Filtrado por metadatos\n• Fusión de puntuaciones\"",
+    "x": 50,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "query-routing",
+    "label": "🚦 Enrutamiento de consultas\n\"Despacho inteligente:\n• Selector LLM\n• Coincidencia de palabras clave\n• Clasificación de intención\n• Múltiples recuperadores\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "route-selection",
+    "label": "📋 Selección de ruta\n\"Tipos de enrutador:\n• Basado en metadatos\n• Similitud semántica\n• Selección de herramientas\n• Selección de índices\"",
+    "x": 750,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "two-stage-retrieval",
+    "label": "2️⃣ Recuperación en dos etapas\n\"Mejora de la precisión:\n• Etapa 1: k=40 candidatos\n• Etapa 2: Reordenar al top-5\n• Puntuación con cross-encoder\n• Filtrado basado en LLM\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "contextual-compression",
+    "label": "📦 Compresión contextual\n\"Extracción de relevancia:\n• Filtrado de documentos\n• Extracción de segmentos\n• LLMChainExtractor\n• EmbeddingsFilter\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "mmr-selection",
+    "label": "🎯 Selección MMR\n\"Optimización de la diversidad:\n• Maximum Marginal Relevance\n• Relevancia + diversidad\n• Reducción de redundancia\n• Perspectivas equilibradas\"",
+    "x": 600,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "parent-child-retrieval",
+    "label": "👨‍👦 Recuperación padre-hijo\n\"Contexto adaptativo:\n• Búsqueda en chunks pequeños\n• Expansión al nodo padre\n• Fusión automática\n• Enriquecimiento del contexto\"",
+    "x": 200,
+    "y": 950,
+    "w": 230
+   },
+   {
+    "id": "self-query-retrieval",
+    "label": "🤖 Recuperación por autoconsulta\n\"Descomposición de consultas:\n• Componentes semánticos\n• Filtros de metadatos\n• Consultas estructuradas\n• Búsqueda combinada\"",
+    "x": 600,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "node-post-processing",
+    "label": "⚙️ Posprocesamiento de nodos\n\"Refinamiento final:\n• Transformación\n• Filtrado\n• Reordenamiento\n• Calibración de puntuaciones\"",
+    "x": 400,
+    "y": 1100,
+    "w": 220
+   },
+   {
+    "id": "selection-principle",
+    "label": "🎯 Principio de selección de contexto\n\"La recuperación en múltiples etapas optimiza la relevancia y la diversidad\nEl enrutamiento inteligente se adapta a las características de la consulta\nLa selección adaptativa equilibra la precisión con la riqueza del contexto\"",
+    "x": 400,
+    "y": 1250,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "context-selection-challenge",
+    "t": "selection-patterns-framework",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e2",
+    "s": "selection-patterns-framework",
+    "t": "semantic-search",
+    "label": "comienza con"
+   },
+   {
+    "id": "e3",
+    "s": "selection-patterns-framework",
+    "t": "query-routing",
+    "label": "enruta mediante"
+   },
+   {
+    "id": "e4",
+    "s": "selection-patterns-framework",
+    "t": "two-stage-retrieval",
+    "label": "mejora con"
+   },
+   {
+    "id": "e5",
+    "s": "semantic-search",
+    "t": "hybrid-search",
+    "label": "se combina con"
+   },
+   {
+    "id": "e6",
+    "s": "query-routing",
+    "t": "route-selection",
+    "label": "selecciona"
+   },
+   {
+    "id": "e7",
+    "s": "hybrid-search",
+    "t": "two-stage-retrieval",
+    "label": "alimenta a"
+   },
+   {
+    "id": "e8",
+    "s": "route-selection",
+    "t": "two-stage-retrieval",
+    "label": "dirige a"
+   },
+   {
+    "id": "e9",
+    "s": "two-stage-retrieval",
+    "t": "contextual-compression",
+    "label": "comprime mediante"
+   },
+   {
+    "id": "e10",
+    "s": "two-stage-retrieval",
+    "t": "mmr-selection",
+    "label": "diversifica con"
+   },
+   {
+    "id": "e11",
+    "s": "contextual-compression",
+    "t": "parent-child-retrieval",
+    "label": "habilita"
+   },
+   {
+    "id": "e12",
+    "s": "mmr-selection",
+    "t": "self-query-retrieval",
+    "label": "mejora"
+   },
+   {
+    "id": "e13",
+    "s": "parent-child-retrieval",
+    "t": "node-post-processing",
+    "label": "procesa"
+   },
+   {
+    "id": "e14",
+    "s": "self-query-retrieval",
+    "t": "node-post-processing",
+    "label": "refina"
+   },
+   {
+    "id": "e15",
+    "s": "node-post-processing",
+    "t": "selection-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de selección de contexto",
+    "description": "¿Cómo podemos recuperar el contexto más relevante de enormes bases de conocimiento minimizando el ruido, el costo computacional y la información irrelevante que degrada el rendimiento del LLM?",
+    "input": "",
+    "nodes": [
+     "context-selection-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de patrones de selección",
+    "description": "Un framework de recuperación en múltiples etapas aborda el desafío mediante búsqueda semántica para la recuperación inicial, enrutamiento de consultas para el despacho inteligente, reordenamiento para la precisión y filtrado adaptativo para un contexto óptimo.",
+    "input": "",
+    "nodes": [
+     "selection-patterns-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Búsqueda semántica y enrutamiento de consultas",
+    "description": "La búsqueda semántica usa similitud top-k de embeddings con bases de datos vectoriales para una recuperación rápida, mientras que el enrutamiento de consultas despacha de forma inteligente a recuperadores especializados según la intención y los metadatos.",
+    "input": "",
+    "nodes": [
+     "semantic-search",
+     "hybrid-search",
+     "query-routing",
+     "route-selection"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Mejora con recuperación en dos etapas",
+    "description": "El proceso en dos etapas recupera k=40 candidatos en la etapa 1 y luego los reordena al top-5 mediante puntuación con cross-encoder o filtrado basado en LLM, lo que mejora significativamente la relevancia frente a la recuperación en una sola etapa.",
+    "input": "",
+    "nodes": [
+     "two-stage-retrieval"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Compresión contextual y diversidad",
+    "description": "La compresión contextual extrae solo los segmentos relevantes mediante LLMChainExtractor o EmbeddingsFilter, mientras que la selección MMR equilibra la relevancia con la diversidad para reducir la redundancia y ofrecer perspectivas equilibradas.",
+    "input": "",
+    "nodes": [
+     "contextual-compression",
+     "mmr-selection"
+    ],
+    "edges": [
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Recuperación avanzada y posprocesamiento",
+    "description": "La recuperación padre-hijo permite buscar en chunks pequeños con expansión al padre, la autoconsulta descompone las consultas en componentes semánticos y de metadatos, y el posprocesamiento de nodos aplica las transformaciones finales, lo que demuestra que la recuperación en múltiples etapas optimiza la relevancia y la diversidad.",
+    "input": "",
+    "nodes": [
+     "parent-child-retrieval",
+     "self-query-retrieval",
+     "node-post-processing",
+     "selection-principle"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

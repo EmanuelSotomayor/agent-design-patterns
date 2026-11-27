@@ -1,0 +1,370 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "ambient-agent-patterns",
+ "name": "Ambient Agent Patterns(AAP)",
+ "icon": "🌊",
+ "complexity": "high",
+ "description": "Interfaces de agente siempre presentes y conscientes del contexto que operan sin fricciones en segundo plano y siguen accesibles cuando se las necesita",
+ "features": [
+  "Conciencia contextual mediante la detección del entorno y del estado del usuario",
+  "Asistencia proactiva sin interrupciones intrusivas",
+  "Operación fluida en segundo plano con presencia selectiva en primer plano",
+  "Acciones anticipatorias basadas en patrones y preferencias aprendidos"
+ ],
+ "tldr": {
+  "what": "El agente se ejecuta continuamente en segundo plano, percibe el entorno y el estado del usuario y toma acciones anticipatorias, manteniéndose accesible sin interrupciones forzadas.",
+  "when": "Sistemas que gestionan entornos físicos o digitales en los que los usuarios se benefician de ayuda proactiva basada en patrones aprendidos y contexto en tiempo real.",
+  "watchOut": "Los agentes ambientales se vuelven fácilmente intrusivos o invasivos para la privacidad; los usuarios pierden la confianza cuando las acciones en segundo plano parecen impredecibles o se sienten como vigilancia."
+ },
+ "overview": {
+  "pattern": "Agentes que responden a señales ambientales y solo piden la intervención del usuario cuando detectan oportunidades importantes o necesitan feedback",
+  "why": "Reserva la atención del usuario para cuando más importa, permite varias tareas concurrentes e imita la comunicación humana natural",
+  "insight": "Escucha del flujo de eventos + interacción humana selectiva → aprendizaje a largo plazo con estado persistente",
+  "impl": [
+   {
+    "t": "Flujo de eventos",
+    "d": "Escucha señales ambientales de forma continua"
+   },
+   {
+    "t": "Gestión del estado",
+    "d": "Seguimiento persistente con workflows con estado"
+   },
+   {
+    "t": "Interacción humana",
+    "d": "Patrones de Notificar/Preguntar/Revisar"
+   },
+   {
+    "t": "Tareas concurrentes",
+    "d": "Varias operaciones simultáneas"
+   },
+   {
+    "t": "Memoria a largo plazo",
+    "d": "Aprendizaje y adaptación con el tiempo"
+   }
+  ],
+  "example": "ambient_signals → event_detection → selective_interaction → concurrent_processing → memory_update",
+  "dos": [
+   "Escucha señales ambientales de forma continua en busca de oportunidades",
+   "Usa patrones de interacción de Notificar/Preguntar/Revisar",
+   "Maneja varias tareas concurrentes de forma simultánea",
+   "Construye un estado persistente con workflows con estado",
+   "Reserva la atención del usuario para cuando más importa"
+  ],
+  "donts": [
+   "Exigir intervención humana constante para cada decisión",
+   "Bloquearse esperando feedback humano en operaciones rutinarias",
+   "Generar fatiga de notificaciones con alertas no críticas",
+   "Perder el contexto conversacional entre interacciones",
+   "Ignorar la naturaleza ambiental y esperar solo disparadores explícitos"
+  ],
+  "use": [
+   "Procesos en segundo plano de larga duración",
+   "Gestión y triaje de correo electrónico",
+   "Workflows de monitoreo continuo",
+   "Escenarios de coordinación de múltiples tareas"
+  ],
+  "avoid": [
+   "Necesidades puntuales de consulta-respuesta",
+   "Conversaciones interactivas en tiempo real",
+   "Automatización simple sin señales ambientales",
+   "Requisitos de operación sin estado"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de detección de señales",
+    "d": "% de eventos ambientales identificados correctamente"
+   },
+   {
+    "n": "Calidad de la interacción humana",
+    "d": "Eficacia de Notificar/Preguntar/Revisar"
+   },
+   {
+    "n": "Concurrencia de tareas",
+    "d": "Operaciones simultáneas manejadas"
+   },
+   {
+    "n": "Persistencia del estado",
+    "d": "Retención del contexto entre sesiones"
+   },
+   {
+    "n": "Eficiencia de la atención",
+    "d": "Proporción de interacciones valiosas vs ruido"
+   },
+   {
+    "n": "Aprendizaje a largo plazo",
+    "d": "Mejora de la adaptación con el tiempo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Asistente de correo con IA",
+    "d": "triaje en segundo plano, detección de prioridades, sugerencias de borradores"
+   },
+   {
+    "n": "Gestión de proyectos",
+    "d": "monitoreo de tareas, seguimiento de plazos, coordinación del equipo"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "enrutamiento de tickets, análisis de sentimiento, disparadores de escalamiento"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "monitoreo continuo, detección de infracciones de políticas"
+   },
+   {
+    "n": "Operaciones de sistemas",
+    "d": "monitoreo de salud, detección de anomalías, respuestas automatizadas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de agentes ambientales",
+  "description": "Agentes basados en eventos que escuchan flujos de datos y actúan de forma proactiva, involucrando a los humanos de forma selectiva mediante patrones de notificar, preguntar y revisar, mientras mantienen un estado persistente y capacidades multitarea",
+  "nodes": [
+   {
+    "id": "ambient-challenge",
+    "label": "🎯 Desafío del agente ambiental\n\"¿Cómo crear agentes basados en eventos que escuchen\nflujos de datos, actúen de forma proactiva e involucren\na los humanos de forma selectiva sin abrumarlos?\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "event-stream",
+    "label": "📡 Procesamiento del flujo de eventos\n\"Monitoreo continuo:\n• Escucha flujos de datos\n• Detección de eventos en tiempo real\n• Reconocimiento de patrones\n• Activación basada en disparadores\"",
+    "x": 200,
+    "y": 200,
+    "w": 240
+   },
+   {
+    "id": "persistent-state",
+    "label": "💾 Gestión del estado persistente\n\"Memoria a largo plazo:\n• Preservación del contexto\n• Continuidad de las tareas\n• Conciencia entre sesiones\n• Sincronización del estado\"",
+    "x": 600,
+    "y": 200,
+    "w": 240
+   },
+   {
+    "id": "hitl-patterns",
+    "label": "👤 Patrones de humano en el bucle\n\"Participación selectiva:\n• Notificar: señala eventos importantes\n• Preguntar: pide aclaraciones\n• Revisar: busca aprobación\n• Aprender: se adapta según el feedback\"",
+    "x": 100,
+    "y": 350,
+    "w": 260
+   },
+   {
+    "id": "multitask-orchestration",
+    "label": "⚡ Orquestación multitarea\n\"Procesamiento concurrente:\n• Ejecución de tareas en paralelo\n• Gestión de prioridades\n• Asignación de recursos\n• Cambio de contexto\"",
+    "x": 400,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "proactive-detection",
+    "label": "🔍 Detección proactiva de problemas\n\"Comportamiento anticipatorio:\n• Identificación de anomalías\n• Análisis de tendencias\n• Evaluación de riesgos\n• Acciones preventivas\"",
+    "x": 700,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "intelligent-interruption",
+    "label": "🧠 Interrupción inteligente\n\"Participación inteligente:\n• Momento adecuado según el contexto\n• Evaluación de la urgencia\n• Selección del canal de comunicación\n• Degradación elegante\"",
+    "x": 250,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "collaborative-intelligence",
+    "label": "🤝 Inteligencia colaborativa\n\"Alianza humano-IA:\n• Fortalezas complementarias\n• Toma de decisiones compartida\n• Construcción de confianza\n• Aprendizaje continuo\"",
+    "x": 550,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "framework-agnostic",
+    "label": "🔧 Implementación independiente del framework\n\"Principios universales:\n• Arquitectura basada en eventos\n• Patrones de gestión del estado\n• Protocolos de comunicación\n• Diseño modular\"",
+    "x": 400,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "ambient-principle",
+    "label": "🎯 Principio del agente ambiental\n\"Inteligencia basada en eventos: agentes proactivos que escuchan, aprenden y actúan\nParticipación humana selectiva mediante patrones de notificar, preguntar y revisar\nLa inteligencia colaborativa potencia las capacidades humanas sin abrumar\"",
+    "x": 400,
+    "y": 800,
+    "w": 480
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ambient-challenge",
+    "t": "event-stream",
+    "label": "requiere"
+   },
+   {
+    "id": "e2",
+    "s": "ambient-challenge",
+    "t": "persistent-state",
+    "label": "necesita"
+   },
+   {
+    "id": "e3",
+    "s": "event-stream",
+    "t": "hitl-patterns",
+    "label": "activa"
+   },
+   {
+    "id": "e4",
+    "s": "event-stream",
+    "t": "multitask-orchestration",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "persistent-state",
+    "t": "proactive-detection",
+    "label": "impulsa"
+   },
+   {
+    "id": "e6",
+    "s": "hitl-patterns",
+    "t": "intelligent-interruption",
+    "label": "utiliza"
+   },
+   {
+    "id": "e7",
+    "s": "multitask-orchestration",
+    "t": "collaborative-intelligence",
+    "label": "apoya"
+   },
+   {
+    "id": "e8",
+    "s": "proactive-detection",
+    "t": "intelligent-interruption",
+    "label": "informa"
+   },
+   {
+    "id": "e9",
+    "s": "intelligent-interruption",
+    "t": "framework-agnostic",
+    "label": "implementado mediante"
+   },
+   {
+    "id": "e10",
+    "s": "collaborative-intelligence",
+    "t": "framework-agnostic",
+    "label": "logrado mediante"
+   },
+   {
+    "id": "e11",
+    "s": "persistent-state",
+    "t": "multitask-orchestration",
+    "label": "mantiene"
+   },
+   {
+    "id": "e12",
+    "s": "hitl-patterns",
+    "t": "collaborative-intelligence",
+    "label": "habilita"
+   },
+   {
+    "id": "e13",
+    "s": "proactive-detection",
+    "t": "collaborative-intelligence",
+    "label": "potencia"
+   },
+   {
+    "id": "e14",
+    "s": "framework-agnostic",
+    "t": "ambient-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío del agente ambiental",
+    "description": "Las organizaciones necesitan agentes basados en eventos que puedan escuchar flujos de datos, actuar de forma proactiva e involucrar a los humanos de forma selectiva sin abrumarlos. Esto requiere equilibrar la automatización con una supervisión y un control humanos significativos.",
+    "input": "",
+    "nodes": [
+     "ambient-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Componentes centrales de infraestructura",
+    "description": "Los agentes ambientales requieren dos componentes fundamentales: el procesamiento del flujo de eventos para el monitoreo continuo y la detección en tiempo real, y la gestión del estado persistente para mantener el contexto entre sesiones y permitir la continuidad multitarea.",
+    "input": "",
+    "nodes": [
+     "event-stream",
+     "persistent-state"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Patrones de comportamiento del agente",
+    "description": "Los flujos de eventos activan los patrones de humano en el bucle (notificar, preguntar, revisar) y habilitan la orquestación multitarea para el procesamiento concurrente. El estado persistente impulsa la detección proactiva de problemas mediante el análisis de tendencias y la identificación de anomalías.",
+    "input": "",
+    "nodes": [
+     "hitl-patterns",
+     "multitask-orchestration",
+     "proactive-detection"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Interacción humano-agente",
+    "description": "Los patrones de humano en el bucle utilizan la interrupción inteligente para elegir el momento y la comunicación según el contexto. La orquestación multitarea apoya la inteligencia colaborativa, mientras que la detección proactiva informa cuándo y cómo involucrar a los humanos de forma eficaz.",
+    "input": "",
+    "nodes": [
+     "intelligent-interruption",
+     "collaborative-intelligence"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Integración entre componentes",
+    "description": "El estado persistente mantiene el contexto de la orquestación multitarea, los patrones de humano en el bucle habilitan la inteligencia colaborativa y la detección proactiva potencia la alianza entre humanos y agentes mediante una toma de decisiones informada.",
+    "input": "",
+    "nodes": [],
+    "edges": [
+     "e11",
+     "e12",
+     "e13"
+    ]
+   },
+   {
+    "title": "Implementación independiente del framework",
+    "description": "La interrupción inteligente y la inteligencia colaborativa se implementan con patrones universales: arquitectura basada en eventos, gestión del estado, protocolos de comunicación y diseño modular, que funcionan en distintos frameworks tecnológicos.",
+    "input": "",
+    "nodes": [
+     "framework-agnostic"
+    ],
+    "edges": [
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Validación del principio del agente ambiental",
+    "description": "La implementación independiente del framework demuestra el principio central de que los agentes ambientales logran inteligencia colaborativa mediante el monitoreo basado en eventos, la participación humana selectiva y una gestión persistente del contexto que potencia las capacidades humanas en lugar de reemplazarlas.",
+    "input": "",
+    "nodes": [
+     "ambient-principle"
+    ],
+    "edges": [
+     "e14"
+    ]
+   }
+  ]
+ }
+}

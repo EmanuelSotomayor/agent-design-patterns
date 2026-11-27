@@ -1,0 +1,337 @@
+{
+ "cat": "security-privacy",
+ "slug": "differential-privacy-patterns",
+ "name": "Differential Privacy Patterns(DPP)",
+ "icon": "🔒",
+ "complexity": "high",
+ "description": "Procesamiento de datos que preserva la privacidad con garantías matemáticas de privacidad",
+ "features": [
+  "Garantías matemáticas de privacidad",
+  "Mecanismos de inyección de ruido",
+  "Gestión del presupuesto de privacidad",
+  "Optimización del equilibrio entre utilidad y privacidad",
+  "Aplicación del teorema de composición",
+  "Análisis formal de privacidad"
+ ],
+ "tldr": {
+  "what": "Agrega ruido calibrado a los resultados de las consultas para que cambiar cualquier registro individual afecte mínimamente la salida, con garantías formales de privacidad medidas por épsilon.",
+  "when": "Agregación de datos sensibles donde debes demostrar que no se puede inferir de forma confiable, a partir de los resultados, la presencia o ausencia de ningún individuo.",
+  "watchOut": "Un épsilon más pequeño (privacidad más fuerte) reduce drásticamente la precisión de los resultados; el ajuste requiere gran experiencia estadística y conocimiento del dominio sobre la pérdida de utilidad aceptable."
+ },
+ "overview": {
+  "pattern": "Procesamiento de datos que preserva la privacidad con garantías matemáticas mediante inyección controlada de ruido",
+  "why": "Ofrece garantías formales de privacidad, permite compartir datos de forma segura, facilita el cumplimiento regulatorio y mantiene la utilidad estadística",
+  "insight": "Ruido calibrado + límites de sensibilidad + presupuesto de privacidad → privacidad garantizada matemáticamente",
+  "impl": [
+   {
+    "t": "Presupuesto de privacidad",
+    "d": "Define el parámetro de privacidad épsilon (ε)"
+   },
+   {
+    "t": "Análisis de sensibilidad",
+    "d": "Calcula los límites de sensibilidad de la consulta"
+   },
+   {
+    "t": "Mecanismo de ruido",
+    "d": "Aplica inyección de ruido Laplace/Gaussiano"
+   },
+   {
+    "t": "Composición",
+    "d": "Lleva el registro del gasto acumulado de privacidad"
+   },
+   {
+    "t": "Validación de utilidad",
+    "d": "Verifica que se preserve la utilidad estadística"
+   }
+  ],
+  "example": "privacy_budget → sensitivity_analysis → noise_injection → composition_tracking → utility_validation",
+  "dos": [
+   "Define valores de épsilon adecuados para los requisitos de privacidad",
+   "Usa mecanismos de ruido probados (Laplace, Gaussiano, Exponencial)",
+   "Registra el gasto del presupuesto de privacidad en todas las consultas",
+   "Aplica la invariancia al posprocesamiento para mejorar la utilidad",
+   "Valida la utilidad estadística después de inyectar ruido"
+  ],
+  "donts": [
+   "Usar la misma instancia de ruido en múltiples consultas",
+   "Exceder el presupuesto de privacidad sin una composición adecuada",
+   "Ignorar los límites de sensibilidad en consultas no acotadas",
+   "Aplicar privacidad diferencial a datos ya agregados",
+   "Omitir el análisis formal de privacidad en mecanismos personalizados"
+  ],
+  "use": [
+   "Procesamiento de datos sensibles",
+   "Publicación de análisis estadísticos",
+   "Sistemas de aprendizaje federado",
+   "Requisitos de cumplimiento regulatorio"
+  ],
+  "avoid": [
+   "Análisis de datos públicos",
+   "Datasets privados de un solo usuario",
+   "Requisitos de precisión perfecta",
+   "Cálculos no estadísticos"
+  ],
+  "metrics": [
+   {
+    "n": "Garantía de privacidad",
+    "d": "Nivel de privacidad diferencial épsilon (ε)"
+   },
+   {
+    "n": "Utilidad estadística",
+    "d": "% de precisión preservada después del ruido"
+   },
+   {
+    "n": "Uso del presupuesto de privacidad",
+    "d": "Tasa de consumo acumulado de ε"
+   },
+   {
+    "n": "Sensibilidad de la consulta",
+    "d": "Contribución individual máxima"
+   },
+   {
+    "n": "Eficiencia de la composición",
+    "d": "Optimización del costo de privacidad"
+   },
+   {
+    "n": "Precisión de la calibración del ruido",
+    "d": "Aplicación correcta de la escala de ruido"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Analítica de salud",
+    "d": "Análisis de historias clínicas con cumplimiento de HIPAA y garantías de privacidad"
+   },
+   {
+    "n": "Datos censales",
+    "d": "Publicación de estadísticas de población con protección de la privacidad individual"
+   },
+   {
+    "n": "Investigación financiera",
+    "d": "Análisis de patrones de transacciones sin identificar a los clientes"
+   },
+   {
+    "n": "Analítica educativa",
+    "d": "Estudios de rendimiento estudiantil preservando la privacidad"
+   },
+   {
+    "n": "Servicios de ubicación",
+    "d": "Insights agregados de movilidad sin rastreo individual"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Differential Privacy Pattern",
+  "description": "Procesamiento de datos que preserva la privacidad con garantías matemáticas mediante inyección controlada de ruido y presupuestos de privacidad épsilon-delta",
+  "nodes": [
+   {
+    "id": "medical-research",
+    "label": "🏥 Consulta de investigación médica\n\"¿Cuál es el salario promedio de los pacientes\ncon diabetes en nuestra base de datos?\n(10.000 historias clínicas)\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "privacy-challenge",
+    "label": "🔍 Desafío de privacidad\n\"Una consulta directa podría revelar\ninformación de pacientes individuales\nmediante inferencia estadística\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "no-privacy",
+    "label": "⚠️ Sin protección de privacidad\n\"Consulta directa a la base de datos\nResultados estadísticos exactos\nSin ruido ni ofuscación\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "exact-result",
+    "label": "📊 Resultado exacto\n\"Salario promedio: $47,832.15\n(Preciso al centavo)\nPrecisión estadística perfecta\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "privacy-breach",
+    "label": "🚨 Privacidad vulnerable\n\"Posibles ataques con información auxiliar\nRiesgo de inferencia individual\nSin negación plausible\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "differential-privacy",
+    "label": "🛡️ Privacidad diferencial\n\"Privacidad ε-diferencial (ε=0.1)\nMecanismo de ruido Laplace\nGestión del presupuesto de privacidad\"",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "noise-injection",
+    "label": "🎲 Inyección controlada de ruido\n\"Resultado real: $47,832.15\nRuido: +$1,247.38\nResultado privado: $49,079.53\"",
+    "x": 650,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "privacy-guarantee",
+    "label": "✅ Garantía matemática de privacidad\n\"La presencia o ausencia individual\nes indistinguible con alta probabilidad\nSe preserva la negación plausible\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "utility-preserved",
+    "label": "📈 Utilidad preservada\n\"Se mantienen las tendencias estadísticas\nLos insights de investigación son válidos\nEquilibrio privacidad-utilidad optimizado\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "privacy-principle",
+    "label": "🎯 Principio de la privacidad diferencial\n\"Garantía matemática: no se puede determinar\nsi tus datos están incluidos a partir de los resultados\nRuido controlado = Privacidad cuantificada\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "medical-research",
+    "t": "privacy-challenge",
+    "label": "genera riesgo de privacidad"
+   },
+   {
+    "id": "e2",
+    "s": "privacy-challenge",
+    "t": "no-privacy",
+    "label": "enfoque de consulta directa"
+   },
+   {
+    "id": "e3",
+    "s": "privacy-challenge",
+    "t": "differential-privacy",
+    "label": "enfoque que preserva la privacidad"
+   },
+   {
+    "id": "e4",
+    "s": "no-privacy",
+    "t": "exact-result",
+    "label": "devuelve una respuesta precisa"
+   },
+   {
+    "id": "e5",
+    "s": "exact-result",
+    "t": "privacy-breach",
+    "label": "permite ataques de inferencia"
+   },
+   {
+    "id": "e6",
+    "s": "differential-privacy",
+    "t": "noise-injection",
+    "label": "aplica el mecanismo Laplace"
+   },
+   {
+    "id": "e7",
+    "s": "noise-injection",
+    "t": "privacy-guarantee",
+    "label": "ofrece una garantía matemática"
+   },
+   {
+    "id": "e8",
+    "s": "privacy-guarantee",
+    "t": "utility-preserved",
+    "label": "mantiene el valor de la investigación"
+   },
+   {
+    "id": "e9",
+    "s": "privacy-breach",
+    "t": "privacy-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e10",
+    "s": "utility-preserved",
+    "t": "privacy-principle",
+    "label": "demuestra la efectividad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de privacidad en investigación médica",
+    "description": "Un investigador necesita el salario promedio de los pacientes diabéticos a partir de 10.000 registros, pero una consulta directa podría revelar información individual mediante ataques de inferencia estadística.",
+    "input": "",
+    "nodes": [
+     "medical-research",
+     "privacy-challenge"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de procesamiento de datos",
+    "description": "La misma consulta de investigación se procesa con dos sistemas distintos: acceso directo a la base de datos (izquierda) vs. protección con privacidad diferencial (derecha).",
+    "input": "",
+    "nodes": [
+     "no-privacy",
+     "differential-privacy"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Sistema sin protección: precisión perfecta, sin privacidad",
+    "description": "La consulta directa devuelve un resultado preciso ($47,832.15) con precisión estadística perfecta, pero permite ataques con información auxiliar e inferencia individual sin negación plausible.",
+    "input": "",
+    "nodes": [
+     "exact-result",
+     "privacy-breach"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Privacidad diferencial: inyección controlada de ruido",
+    "description": "La privacidad ε-diferencial (ε=0.1) aplica el mecanismo de ruido Laplace, agregando $1,247.38 de ruido al resultado real y produciendo una respuesta privada de $49,079.53.",
+    "input": "",
+    "nodes": [
+     "noise-injection"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Garantía matemática de privacidad",
+    "description": "El ruido ofrece una garantía matemática de que la presencia o ausencia de un individuo en la base de datos es indistinguible con alta probabilidad, preservando la negación plausible.",
+    "input": "",
+    "nodes": [
+     "privacy-guarantee"
+    ],
+    "edges": [
+     "e7"
+    ]
+   },
+   {
+    "title": "Equilibrio privacidad-utilidad y principio central",
+    "description": "La utilidad para la investigación se preserva mientras se protege la privacidad, lo que demuestra que el ruido controlado ofrece garantías de privacidad cuantificadas sin destruir los insights estadísticos.",
+    "input": "",
+    "nodes": [
+     "utility-preserved",
+     "privacy-principle"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10"
+    ]
+   }
+  ]
+ }
+}

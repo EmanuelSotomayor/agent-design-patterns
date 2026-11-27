@@ -1,0 +1,307 @@
+{
+ "cat": "multi-agent",
+ "slug": "ledger-orchestration",
+ "name": "Ledger Orchestration (Magentic-One)(LO)",
+ "icon": "📒",
+ "complexity": "high",
+ "description": "Un orquestador dirige un equipo de agentes especializados usando dos registros (ledgers): un registro de tareas que contiene hechos, suposiciones fundamentadas y un plan, y un registro de progreso en el que el orquestador reflexiona en cada paso sobre si se está avanzando, si el equipo está estancado y qué agente debe actuar a continuación. Cuando el progreso se estanca, un bucle externo actualiza los hechos y revisa el plan. Presentado en Microsoft Magentic-One.",
+ "features": [
+  "Registro de tareas: hechos, suposiciones fundamentadas y plan actual",
+  "Registro de progreso: autorreflexión sobre el progreso en cada paso",
+  "Detección de estancamiento mediante un contador y un umbral",
+  "El bucle externo replanifica y actualiza los hechos cuando hay bloqueo",
+  "Selección dinámica del siguiente agente en cada turno",
+  "Equipo generalista: WebSurfer, FileSurfer, Coder, ComputerTerminal"
+ ],
+ "tldr": {
+  "what": "El orquestador mantiene un registro de tareas con hechos y plan, usa un registro de progreso para reflexionar en cada paso, detecta estancamientos mediante un contador y replanifica cuando hay bloqueo.",
+  "when": "Tareas complejas de varios pasos que requieren búsqueda web, manejo de archivos, programación y trabajo en terminal, en las que el equipo necesita redirigirse dinámicamente cuando el progreso se detiene.",
+  "watchOut": "El umbral de detección de estancamiento y la lógica de replanificación deben ajustarse con cuidado, o el sistema entra en bucles infinitos o se rinde demasiado pronto."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Ledger Orchestration (Magentic-One)",
+  "description": "Un orquestador dirige un equipo generalista usando un registro de tareas (hechos, suposiciones, plan) y un registro de progreso (autorreflexión en cada paso: ¿se está avanzando?, ¿hay estancamiento?, ¿quién actúa ahora?). Un bucle externo actualiza los hechos y replanifica cuando el progreso se estanca. Basado en Microsoft Magentic-One.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea\n\"Encuentra el vuelo directo SFO->HND más barato en agosto,\nguarda los 5 mejores en flights.csv\"",
+    "x": 300,
+    "y": 40,
+    "w": 340
+   },
+   {
+    "id": "task-ledger",
+    "label": "📒 Registro de tareas\nHechos: fechas flexibles, solo directos\nSuposiciones: ANA / United vuelan directo\nPlan: buscar -> extraer -> escribir CSV",
+    "x": 20,
+    "y": 170,
+    "w": 240
+   },
+   {
+    "id": "orchestrator",
+    "label": "🧭 Orquestador\nDirige los bucles interno + externo",
+    "x": 330,
+    "y": 180,
+    "w": 260
+   },
+   {
+    "id": "progress-ledger",
+    "label": "📈 Registro de progreso\nP1 ¿satisfecho? no\nP2 ¿estancado? contador\nP3 ¿quién actúa ahora?",
+    "x": 650,
+    "y": 170,
+    "w": 240
+   },
+   {
+    "id": "websurfer",
+    "label": "🌐 WebSurfer\nNavega sitios de vuelos",
+    "x": 20,
+    "y": 330,
+    "w": 200
+   },
+   {
+    "id": "filesurfer",
+    "label": "📄 FileSurfer\nLee páginas guardadas",
+    "x": 250,
+    "y": 330,
+    "w": 200
+   },
+   {
+    "id": "coder",
+    "label": "💻 Coder\nEscribe un script parser",
+    "x": 470,
+    "y": 330,
+    "w": 200
+   },
+   {
+    "id": "terminal",
+    "label": "⌨️ ComputerTerminal\nEjecuta código, escribe el CSV",
+    "x": 690,
+    "y": 330,
+    "w": 200
+   },
+   {
+    "id": "stall",
+    "label": "🚫 Estancamiento detectado\nWebSurfer bloqueado por un muro de cookies\n2 turnos, sin progreso",
+    "x": 250,
+    "y": 470,
+    "w": 250
+   },
+   {
+    "id": "replan",
+    "label": "🔁 Replanificación en el bucle externo\nActualizar hechos: \"el sitio X bloquea bots\"\nRevisar plan: usar un sitio alternativo",
+    "x": 540,
+    "y": 470,
+    "w": 250
+   },
+   {
+    "id": "output",
+    "label": "✅ flights.csv (5 filas)\nCompetitivo en GAIA, AssistantBench, WebArena",
+    "x": 300,
+    "y": 610,
+    "w": 340
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-orch",
+    "s": "task",
+    "t": "orchestrator",
+    "label": ""
+   },
+   {
+    "id": "orch-taskledger",
+    "s": "orchestrator",
+    "t": "task-ledger",
+    "label": "construir"
+   },
+   {
+    "id": "orch-progledger",
+    "s": "orchestrator",
+    "t": "progress-ledger",
+    "label": "reflexionar"
+   },
+   {
+    "id": "orch-web",
+    "s": "orchestrator",
+    "t": "websurfer",
+    "label": "asignar"
+   },
+   {
+    "id": "orch-file",
+    "s": "orchestrator",
+    "t": "filesurfer",
+    "label": "asignar"
+   },
+   {
+    "id": "orch-coder",
+    "s": "orchestrator",
+    "t": "coder",
+    "label": "asignar"
+   },
+   {
+    "id": "orch-term",
+    "s": "orchestrator",
+    "t": "terminal",
+    "label": "asignar"
+   },
+   {
+    "id": "web-prog",
+    "s": "websurfer",
+    "t": "progress-ledger",
+    "label": "reportar"
+   },
+   {
+    "id": "file-prog",
+    "s": "filesurfer",
+    "t": "progress-ledger",
+    "label": "reportar"
+   },
+   {
+    "id": "coder-term",
+    "s": "coder",
+    "t": "terminal",
+    "label": "script"
+   },
+   {
+    "id": "term-prog",
+    "s": "terminal",
+    "t": "progress-ledger",
+    "label": "reportar"
+   },
+   {
+    "id": "prog-stall",
+    "s": "progress-ledger",
+    "t": "stall",
+    "label": "se dispara el contador"
+   },
+   {
+    "id": "stall-replan",
+    "s": "stall",
+    "t": "replan",
+    "label": ""
+   },
+   {
+    "id": "replan-taskledger",
+    "s": "replan",
+    "t": "task-ledger",
+    "label": "actualizar hechos + plan"
+   },
+   {
+    "id": "replan-orch",
+    "s": "replan",
+    "t": "orchestrator",
+    "label": "reanudar"
+   },
+   {
+    "id": "term-output",
+    "s": "terminal",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Construir el registro de tareas",
+    "description": "El orquestador recibe la tarea y completa el registro de tareas: hechos conocidos, suposiciones fundamentadas y un plan inicial (buscar, extraer, escribir el CSV).",
+    "input": "",
+    "nodes": [
+     "task",
+     "orchestrator",
+     "task-ledger"
+    ],
+    "edges": [
+     "task-orch",
+     "orch-taskledger"
+    ]
+   },
+   {
+    "title": "Registro de progreso + siguiente agente",
+    "description": "Antes de cada paso, el orquestador completa el registro de progreso: si la solicitud está satisfecha, si hay estancamiento y quién debe actuar a continuación. Selecciona a WebSurfer.",
+    "input": "",
+    "nodes": [
+     "orchestrator",
+     "progress-ledger",
+     "websurfer"
+    ],
+    "edges": [
+     "orch-progledger",
+     "orch-web"
+    ]
+   },
+   {
+    "title": "Ejecución del bucle interno",
+    "description": "El equipo actúa turno por turno: WebSurfer navega, FileSurfer lee una página guardada, Coder escribe un parser, y cada uno reporta de vuelta para que se actualice el registro de progreso.",
+    "input": "",
+    "nodes": [
+     "websurfer",
+     "filesurfer",
+     "coder",
+     "progress-ledger"
+    ],
+    "edges": [
+     "orch-file",
+     "orch-coder",
+     "web-prog",
+     "file-prog"
+    ]
+   },
+   {
+    "title": "Estancamiento detectado",
+    "description": "WebSurfer queda bloqueado por un muro de cookies durante dos turnos. Se dispara el contador de estancamiento del registro de progreso, lo que indica que no hay progreso real.",
+    "input": "",
+    "nodes": [
+     "progress-ledger",
+     "stall"
+    ],
+    "edges": [
+     "prog-stall"
+    ]
+   },
+   {
+    "title": "Replanificación en el bucle externo",
+    "description": "El orquestador entra en el bucle externo: actualiza los hechos del registro de tareas (\"el sitio X bloquea bots\") y revisa el plan para usar un sitio alternativo; luego reanuda.",
+    "input": "",
+    "nodes": [
+     "stall",
+     "replan",
+     "task-ledger",
+     "orchestrator"
+    ],
+    "edges": [
+     "stall-replan",
+     "replan-taskledger",
+     "replan-orch"
+    ]
+   },
+   {
+    "title": "Coder + Terminal terminan",
+    "description": "Con un plan viable, Coder genera un parser y ComputerTerminal lo ejecuta para extraer los cinco vuelos directos más baratos.",
+    "input": "",
+    "nodes": [
+     "orchestrator",
+     "coder",
+     "terminal",
+     "progress-ledger"
+    ],
+    "edges": [
+     "orch-coder",
+     "orch-term",
+     "coder-term",
+     "term-prog"
+    ]
+   },
+   {
+    "title": "Finalización",
+    "description": "El registro de progreso indica que la solicitud está satisfecha. Se escribe flights.csv con 5 filas. Este orquestador obtuvo resultados competitivos en GAIA, AssistantBench y WebArena.",
+    "input": "",
+    "nodes": [
+     "terminal",
+     "output"
+    ],
+    "edges": [
+     "term-output"
+    ]
+   }
+  ]
+ }
+}

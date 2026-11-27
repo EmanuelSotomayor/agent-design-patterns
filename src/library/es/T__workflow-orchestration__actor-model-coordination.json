@@ -1,0 +1,370 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "actor-model-coordination",
+ "name": "Actor Model Coordination",
+ "icon": "🎭",
+ "complexity": "high",
+ "description": "Coordinación por paso asíncrono de mensajes entre actores independientes",
+ "features": [
+  "Paso asíncrono de mensajes",
+  "Gestión del ciclo de vida de los actores",
+  "Aislamiento de fallas y recuperación",
+  "Transparencia de ubicación",
+  "Creación dinámica de actores",
+  "Jerarquías de supervisión"
+ ],
+ "tldr": {
+  "what": "Agentes independientes intercambian mensajes de forma asíncrona; cada uno gestiona su propio estado y ciclo de vida dentro de una jerarquía de supervisión que aísla las fallas.",
+  "when": "Sistemas distribuidos que necesitan trabajo concurrente en tareas separadas con recuperación automática ante fallas de componentes individuales.",
+  "watchOut": "Las garantías de orden de los mensajes y la depuración del estado distribuido se vuelven complejas; la sobrecarga de supervisión puede superar los beneficios en workflows secuenciales simples."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Actor Model Coordination",
+  "description": "Actores independientes se coordinan únicamente mediante mensajes asíncronos entregados en sus buzones, sin estado compartido. Un árbol de supervisión aísla las fallas y reinicia los actores que fallan, mientras que un log de mensajes permite reproducirlos. Se ilustra con un batch distribuido de procesamiento de contenido.",
+  "nodes": [
+   {
+    "id": "content-batch",
+    "label": "📥 Batch de contenido\n500 elementos multimedia mixtos",
+    "x": 360,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "supervisor-actor",
+    "label": "🎭 Actor supervisor\nRaíz del árbol de supervisión",
+    "x": 360,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "message-log",
+    "label": "🗄️ Log de mensajes\nPersistido para reproducción",
+    "x": 60,
+    "y": 150,
+    "w": 190
+   },
+   {
+    "id": "supervision-strategy",
+    "label": "🛡️ Estrategia de supervisión\nrestart / resume / stop",
+    "x": 660,
+    "y": 150,
+    "w": 210
+   },
+   {
+    "id": "ingestion-actor",
+    "label": "📨 Actor de ingesta\nRecibe + particiona el contenido",
+    "x": 110,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "processing-coordinator",
+    "label": "🎯 Coordinador de procesamiento\nEnruta elementos a los procesadores",
+    "x": 370,
+    "y": 280,
+    "w": 220
+   },
+   {
+    "id": "output-manager",
+    "label": "📤 Actor gestor de salida\nRecopila + ensambla los resultados",
+    "x": 660,
+    "y": 280,
+    "w": 210
+   },
+   {
+    "id": "coordinator-mailbox",
+    "label": "📬 Buzón del coordinador\nCola FIFO de mensajes",
+    "x": 380,
+    "y": 390,
+    "w": 210
+   },
+   {
+    "id": "text-processor",
+    "label": "📝 Procesador de texto x3\nBuzón: 40 msgs",
+    "x": 150,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "image-processor",
+    "label": "🖼️ Procesador de imágenes x2\nBuzón: 25 msgs",
+    "x": 390,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "video-processor",
+    "label": "🎬 Procesador de video x1\nBuzón: 8 msgs",
+    "x": 630,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "crashed-actor",
+    "label": "💥 Actor de texto fallido\nExcepción en el elemento #217",
+    "x": 90,
+    "y": 640,
+    "w": 190
+   },
+   {
+    "id": "restart",
+    "label": "♻️ Directiva de reinicio\nCrea una instancia nueva",
+    "x": 340,
+    "y": 640,
+    "w": 190
+   },
+   {
+    "id": "assembled-output",
+    "label": "✨ Salida ensamblada\nBatch procesado entregado",
+    "x": 620,
+    "y": 640,
+    "w": 210
+   }
+  ],
+  "edges": [
+   {
+    "id": "batch-supervisor",
+    "s": "content-batch",
+    "t": "supervisor-actor",
+    "label": ""
+   },
+   {
+    "id": "supervisor-ingestion",
+    "s": "supervisor-actor",
+    "t": "ingestion-actor",
+    "label": "supervisa"
+   },
+   {
+    "id": "supervisor-coordinator",
+    "s": "supervisor-actor",
+    "t": "processing-coordinator",
+    "label": "supervisa"
+   },
+   {
+    "id": "supervisor-output",
+    "s": "supervisor-actor",
+    "t": "output-manager",
+    "label": "supervisa"
+   },
+   {
+    "id": "supervisor-strategy",
+    "s": "supervisor-actor",
+    "t": "supervision-strategy",
+    "label": "define"
+   },
+   {
+    "id": "ingestion-mailbox",
+    "s": "ingestion-actor",
+    "t": "coordinator-mailbox",
+    "label": "envío asíncrono"
+   },
+   {
+    "id": "mailbox-coordinator",
+    "s": "coordinator-mailbox",
+    "t": "processing-coordinator",
+    "label": "entrega FIFO"
+   },
+   {
+    "id": "coordinator-text",
+    "s": "processing-coordinator",
+    "t": "text-processor",
+    "label": "despachar"
+   },
+   {
+    "id": "coordinator-image",
+    "s": "processing-coordinator",
+    "t": "image-processor",
+    "label": "despachar"
+   },
+   {
+    "id": "coordinator-video",
+    "s": "processing-coordinator",
+    "t": "video-processor",
+    "label": "despachar"
+   },
+   {
+    "id": "mailbox-log",
+    "s": "coordinator-mailbox",
+    "t": "message-log",
+    "label": "persistir"
+   },
+   {
+    "id": "log-text",
+    "s": "message-log",
+    "t": "text-processor",
+    "label": "reproducir"
+   },
+   {
+    "id": "text-crash",
+    "s": "text-processor",
+    "t": "crashed-actor",
+    "label": "caída (aislada)"
+   },
+   {
+    "id": "crash-strategy",
+    "s": "crashed-actor",
+    "t": "supervision-strategy",
+    "label": "escalar"
+   },
+   {
+    "id": "strategy-restart",
+    "s": "supervision-strategy",
+    "t": "restart",
+    "label": "one-for-one"
+   },
+   {
+    "id": "restart-text",
+    "s": "restart",
+    "t": "text-processor",
+    "label": "recrear"
+   },
+   {
+    "id": "text-output",
+    "s": "text-processor",
+    "t": "output-manager",
+    "label": "resultado"
+   },
+   {
+    "id": "image-output",
+    "s": "image-processor",
+    "t": "output-manager",
+    "label": "resultado"
+   },
+   {
+    "id": "video-output",
+    "s": "video-processor",
+    "t": "output-manager",
+    "label": "resultado"
+   },
+   {
+    "id": "output-assembled",
+    "s": "output-manager",
+    "t": "assembled-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Llegada del batch",
+    "description": "Un batch de contenido se entrega al actor supervisor, que es la raíz del sistema de actores.",
+    "input": "",
+    "nodes": [
+     "content-batch",
+     "supervisor-actor"
+    ],
+    "edges": [
+     "batch-supervisor"
+    ]
+   },
+   {
+    "title": "Árbol de supervisión",
+    "description": "El supervisor crea y supervisa a sus actores hijos y declara la estrategia de reinicio que rige las fallas.",
+    "input": "",
+    "nodes": [
+     "supervisor-actor",
+     "ingestion-actor",
+     "processing-coordinator",
+     "output-manager",
+     "supervision-strategy"
+    ],
+    "edges": [
+     "supervisor-ingestion",
+     "supervisor-coordinator",
+     "supervisor-output",
+     "supervisor-strategy"
+    ]
+   },
+   {
+    "title": "Mensajería asíncrona",
+    "description": "El actor de ingesta envía mensajes al buzón del coordinador; no hay memoria compartida, solo mensajes en cola.",
+    "input": "",
+    "nodes": [
+     "ingestion-actor",
+     "coordinator-mailbox",
+     "processing-coordinator"
+    ],
+    "edges": [
+     "ingestion-mailbox",
+     "mailbox-coordinator"
+    ]
+   },
+   {
+    "title": "Despacho de mensajes",
+    "description": "El coordinador vacía su buzón en orden y despacha los elementos a los pools de procesadores de texto, imágenes y video.",
+    "input": "",
+    "nodes": [
+     "processing-coordinator",
+     "text-processor",
+     "image-processor",
+     "video-processor"
+    ],
+    "edges": [
+     "coordinator-text",
+     "coordinator-image",
+     "coordinator-video"
+    ]
+   },
+   {
+    "title": "Persistencia de mensajes",
+    "description": "Los mensajes del buzón se persisten en el log de mensajes para poder reproducirlos después de una caída.",
+    "input": "",
+    "nodes": [
+     "coordinator-mailbox",
+     "message-log"
+    ],
+    "edges": [
+     "mailbox-log"
+    ]
+   },
+   {
+    "title": "Aislamiento de fallas",
+    "description": "Un procesador de texto lanza una excepción en el elemento #217 y se cae, pero la falla queda aislada y no afecta a los demás actores.",
+    "input": "",
+    "nodes": [
+     "text-processor",
+     "crashed-actor"
+    ],
+    "edges": [
+     "text-crash"
+    ]
+   },
+   {
+    "title": "Recuperación supervisada",
+    "description": "La caída escala a la estrategia de supervisión, que reinicia una instancia nueva y reproduce sus mensajes desde el log.",
+    "input": "",
+    "nodes": [
+     "crashed-actor",
+     "supervision-strategy",
+     "restart",
+     "text-processor",
+     "message-log"
+    ],
+    "edges": [
+     "crash-strategy",
+     "strategy-restart",
+     "restart-text",
+     "log-text"
+    ]
+   },
+   {
+    "title": "Ensamblado de resultados",
+    "description": "Los procesadores envían sus resultados al gestor de salida, que ensambla y entrega el batch completo.",
+    "input": "",
+    "nodes": [
+     "text-processor",
+     "image-processor",
+     "video-processor",
+     "output-manager",
+     "assembled-output"
+    ],
+    "edges": [
+     "text-output",
+     "image-output",
+     "video-output",
+     "output-assembled"
+    ]
+   }
+  ]
+ }
+}

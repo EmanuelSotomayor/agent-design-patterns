@@ -1,0 +1,297 @@
+{
+ "cat": "context-management",
+ "slug": "filesystem-as-context",
+ "name": "Filesystem as Context (Context Offloading)(FSC)",
+ "icon": "🗃️",
+ "complexity": "medium",
+ "description": "Trata las propias herramientas de archivos del agente junto con el sistema de archivos del sistema operativo como una memoria externa ilimitada, persistente y operable por el agente. Las salidas de herramientas que consumen muchos tokens, como resultados de búsqueda, volcados de páginas y archivos grandes, se escriben en disco y se reemplazan en el historial de mensajes por una referencia corta (una ruta más un resumen de una línea); el agente vuelve a leer el archivo o le aplica grep cuando lo necesita. Esto mantiene pequeña la ventana de contexto activa y estable el prefijo del KV-cache, preservando la recuperabilidad completa, a diferencia del resumen con pérdida. Se distingue de `context-write-patterns` (que enseña abstracciones de memoria como buffers y almacenes vectoriales en lugar de que el agente lea y escriba sus propios archivos de trabajo) y de `plan-todo-recitation`, que es solo la parte de recitación de todo.md de esta idea más amplia.",
+ "features": [
+  "Herramientas de archivos (read, write, grep) usadas como memoria externa del agente",
+  "Salidas grandes de herramientas escritas en disco, reemplazadas en el contexto por la ruta más un resumen corto",
+  "Volver a leer o aplicar grep cuando se necesite para recuperar los bytes exactos",
+  "Prefijo del KV-cache estable porque los turnos anteriores no se reescriben",
+  "Sin pérdida: el contenido completo sigue siendo recuperable, a diferencia del resumen",
+  "Persiste entre turnos y sesiones, sin el límite de la ventana de contexto"
+ ],
+ "tldr": {
+  "what": "El agente escribe las salidas grandes de herramientas en archivos en disco y las reemplaza en el contexto por la ruta más un resumen de una línea, volviendo a leerlas cuando lo necesita.",
+  "when": "Trabajo de múltiples turnos con resultados de búsqueda grandes, volcados de páginas o contenidos de archivos que inflarían la ventana de contexto o desestabilizarían el KV-cache.",
+  "watchOut": "El almacenamiento en el sistema de archivos es finito y requiere gestión; el agente debe verificar que el archivo exista y esté actualizado antes de asumir que las referencias guardadas siguen siendo válidas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Filesystem as Context (descarga de contexto)",
+  "description": "El agente usa sus propias herramientas de archivos y el sistema de archivos como memoria externa ilimitada. Un volcado de página que consume muchos tokens se escribe en disco y se reemplaza en el historial por una referencia corta, lo que mantiene pequeño el contexto activo y estable el KV-cache; luego se vuelve a leer (con grep) cuando se necesitan los bytes exactos, con recuperabilidad completa.",
+  "nodes": [
+   {
+    "id": "user-task",
+    "label": "🟢 Tarea de investigación\nSintetizar 12 páginas web en un informe breve",
+    "x": 340,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente de investigación\nVentana de contexto de 200k, herramientas de archivos disponibles",
+    "x": 340,
+    "y": 160,
+    "w": 280
+   },
+   {
+    "id": "fetch-tool",
+    "label": "🛠️ Herramienta fetch\nfetch(\"annual-report-2025\")",
+    "x": 60,
+    "y": 270,
+    "w": 220
+   },
+   {
+    "id": "big-payload",
+    "label": "🔴 Contenido enorme\n41,800 tokens de texto de la página",
+    "x": 60,
+    "y": 380,
+    "w": 220
+   },
+   {
+    "id": "offload-writer",
+    "label": "🟣 Escritor de descarga\nEscribir el texto completo en disco en lugar de incluirlo en línea",
+    "x": 350,
+    "y": 380,
+    "w": 250
+   },
+   {
+    "id": "reference-note",
+    "label": "📌 Referencia de ~60 tokens\nRuta + resumen de una línea guardados en el historial",
+    "x": 650,
+    "y": 375,
+    "w": 240
+   },
+   {
+    "id": "file-store",
+    "label": "🗃️ /work/sources/annual-report-2025.txt\nContenido completo de 41.8k tokens en disco",
+    "x": 350,
+    "y": 500,
+    "w": 300
+   },
+   {
+    "id": "context-window",
+    "label": "📈 Contexto activo\n12 referencias ~700 tokens (antes ~500k)",
+    "x": 650,
+    "y": 495,
+    "w": 230
+   },
+   {
+    "id": "kv-cache",
+    "label": "⚡ KV-cache\nPrefijo sin cambios, tokens en cache reutilizados",
+    "x": 650,
+    "y": 605,
+    "w": 230
+   },
+   {
+    "id": "later-step",
+    "label": "🔵 Paso posterior\nCitar la redacción exacta sobre privacidad de datos",
+    "x": 40,
+    "y": 505,
+    "w": 230
+   },
+   {
+    "id": "grep-tool",
+    "label": "🛠️ Herramienta grep\ngrep -n \"privacy\" sobre el archivo guardado",
+    "x": 40,
+    "y": 615,
+    "w": 230
+   },
+   {
+    "id": "exact-quote",
+    "label": "📤 Cita exacta\n3 líneas coincidentes citadas textualmente",
+    "x": 350,
+    "y": 625,
+    "w": 240
+   },
+   {
+    "id": "notes-md",
+    "label": "📓 /work/notes.md\nLas notas de trabajo persisten entre turnos + reinicios",
+    "x": 350,
+    "y": 735,
+    "w": 270
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-agent",
+    "s": "user-task",
+    "t": "agent",
+    "label": "Inicio"
+   },
+   {
+    "id": "agent-fetch",
+    "s": "agent",
+    "t": "fetch-tool",
+    "label": "Obtener página"
+   },
+   {
+    "id": "fetch-payload",
+    "s": "fetch-tool",
+    "t": "big-payload",
+    "label": "41.8k tokens"
+   },
+   {
+    "id": "payload-offload",
+    "s": "big-payload",
+    "t": "offload-writer",
+    "label": "Demasiado grande para incluir en línea"
+   },
+   {
+    "id": "offload-file",
+    "s": "offload-writer",
+    "t": "file-store",
+    "label": "Escribir texto completo"
+   },
+   {
+    "id": "offload-reference",
+    "s": "offload-writer",
+    "t": "reference-note",
+    "label": "Emitir referencia"
+   },
+   {
+    "id": "reference-context",
+    "s": "reference-note",
+    "t": "context-window",
+    "label": "Queda en el historial"
+   },
+   {
+    "id": "context-kv",
+    "s": "context-window",
+    "t": "kv-cache",
+    "label": "Prefijo estable"
+   },
+   {
+    "id": "agent-later",
+    "s": "agent",
+    "t": "later-step",
+    "label": "Después"
+   },
+   {
+    "id": "later-grep",
+    "s": "later-step",
+    "t": "grep-tool",
+    "label": "Grep al archivo"
+   },
+   {
+    "id": "grep-file",
+    "s": "grep-tool",
+    "t": "file-store",
+    "label": "Leer 3 líneas"
+   },
+   {
+    "id": "file-quote",
+    "s": "file-store",
+    "t": "exact-quote",
+    "label": "Bytes exactos"
+   },
+   {
+    "id": "agent-notes",
+    "s": "agent",
+    "t": "notes-md",
+    "label": "Persistir"
+   }
+  ],
+  "steps": [
+   {
+    "title": "La tarea necesita muchas páginas grandes",
+    "description": "El agente debe leer 12 páginas web cuyo texto combinado superaría ampliamente un presupuesto de contexto razonable.",
+    "input": "",
+    "nodes": [
+     "user-task",
+     "agent"
+    ],
+    "edges": [
+     "task-agent"
+    ]
+   },
+   {
+    "title": "Una herramienta devuelve un contenido enorme",
+    "description": "Obtener un solo informe anual produce 41,800 tokens. Incluirlo en línea consumiría aproximadamente el 20% de la ventana en una sola página y reescribiría el prefijo del cache.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "fetch-tool",
+     "big-payload"
+    ],
+    "edges": [
+     "agent-fetch",
+     "fetch-payload"
+    ]
+   },
+   {
+    "title": "Descargar a disco en lugar de incluir en línea",
+    "description": "El texto completo se escribe en /work/sources/ en lugar de pegarse en el historial, lo que saca ese peso de la ventana de contexto.",
+    "input": "",
+    "nodes": [
+     "big-payload",
+     "offload-writer",
+     "file-store"
+    ],
+    "edges": [
+     "payload-offload",
+     "offload-file"
+    ]
+   },
+   {
+    "title": "Mantener solo una referencia corta en el contexto",
+    "description": "Una referencia de ~60 tokens (ruta más resumen de una línea) queda en el historial. Doce páginas que sumarían ~500k tokens se convierten en ~700 tokens de referencias.",
+    "input": "",
+    "nodes": [
+     "offload-writer",
+     "reference-note",
+     "context-window"
+    ],
+    "edges": [
+     "offload-reference",
+     "reference-context"
+    ]
+   },
+   {
+    "title": "El contexto sigue pequeño y el KV-cache sigue caliente",
+    "description": "Como los turnos anteriores no se reescriben, el prefijo en cache se reutiliza. Los tokens en cache son mucho más baratos que los que no lo están, así que el costo y la latencia se mantienen bajos.",
+    "input": "",
+    "nodes": [
+     "context-window",
+     "kv-cache"
+    ],
+    "edges": [
+     "context-kv"
+    ]
+   },
+   {
+    "title": "Volver a leer cuando se necesiten los bytes exactos",
+    "description": "Un paso posterior necesita una cita textual. El agente aplica grep al archivo guardado, lee las 3 líneas coincidentes y las cita con exactitud. Nada se perdió por el resumen.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "later-step",
+     "grep-tool",
+     "file-store",
+     "exact-quote"
+    ],
+    "edges": [
+     "agent-later",
+     "later-grep",
+     "grep-file",
+     "file-quote"
+    ]
+   },
+   {
+    "title": "Las notas de trabajo persisten entre turnos",
+    "description": "Un archivo /work/notes.md de trabajo y el directorio de fuentes sobreviven a cada turno y a un reinicio a mitad de la tarea, lo que brinda memoria durable más allá de la ventana de contexto.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "notes-md"
+    ],
+    "edges": [
+     "agent-notes"
+    ]
+   }
+  ]
+ }
+}

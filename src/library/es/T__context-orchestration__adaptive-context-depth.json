@@ -1,0 +1,529 @@
+{
+ "cat": "context-orchestration",
+ "slug": "adaptive-context-depth",
+ "name": "Adaptive Context Depth(ACD)",
+ "icon": "📊",
+ "complexity": "high",
+ "description": "Ajusta dinámicamente la profundidad de memoria y la complejidad del contexto según los requisitos de la tarea en sistemas de IA agéntica multiagente",
+ "features": [
+  "Ajuste dinámico de la profundidad",
+  "Evaluación de complejidad multiagente",
+  "Optimización de recursos en tiempo real",
+  "Escalado del contexto específico por tarea",
+  "Predicción automatizada de la dificultad",
+  "Balanceo de la carga de trabajo de los agentes",
+  "Gestión de la jerarquía de contexto",
+  "Adaptación consciente del rendimiento"
+ ],
+ "tldr": {
+  "what": "Ajusta cuánto contexto recibe cada agente y con qué profundidad procesa según la complejidad de la tarea, escalando dinámicamente la memoria y la sobrecarga de coordinación.",
+  "when": "Sistemas multiagente en los que las tareas simples necesitan un contexto mínimo pero las complejas requieren un razonamiento más profundo, y quieres evitar desperdiciar recursos en trabajo sencillo.",
+  "watchOut": "Predecir la complejidad de la tarea de antemano no es confiable; una clasificación errónea desperdicia tiempo o hace que los agentes fallen a mitad de la tarea cuando la profundidad resulta insuficiente."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Profundidad de contexto adaptativa en sistemas multiagente",
+  "description": "Ajuste dinámico de la profundidad de memoria y la complejidad del contexto según los requisitos de la tarea para un uso óptimo de los recursos",
+  "nodes": [
+   {
+    "id": "task-input",
+    "label": "Entrada de la tarea\\nRecepción e interpretación de la consulta",
+    "x": 100,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "task-analyzer",
+    "label": "Analizador de tareas\\nAnálisis y categorización de requisitos",
+    "x": 300,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "complexity-metrics",
+    "label": "Métricas de complejidad\\nPuntuación de complejidad multidimensional",
+    "x": 300,
+    "y": 100,
+    "w": 160
+   },
+   {
+    "id": "complexity-assessor",
+    "label": "Evaluador de complejidad\\nMotor de evaluación de la dificultad de la tarea",
+    "x": 500,
+    "y": 150,
+    "w": 160
+   },
+   {
+    "id": "domain-mapper",
+    "label": "Mapeador de dominios\\nIdentifica los dominios especialistas requeridos",
+    "x": 500,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "depth-controller",
+    "label": "Controlador de profundidad\\nSelección dinámica de la profundidad del contexto",
+    "x": 700,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "context-level-1",
+    "label": "Nivel de contexto 1\\nRecuperación factual básica",
+    "x": 900,
+    "y": 50,
+    "w": 130
+   },
+   {
+    "id": "context-level-3",
+    "label": "Nivel de contexto 3\\nAnálisis de varios pasos",
+    "x": 900,
+    "y": 150,
+    "w": 130
+   },
+   {
+    "id": "context-level-5",
+    "label": "Nivel de contexto 5\\nDiseño de sistemas complejos",
+    "x": 900,
+    "y": 250,
+    "w": 130
+   },
+   {
+    "id": "agent-coordinator",
+    "label": "Coordinador de agentes\\nSelección y asignación óptima de agentes",
+    "x": 700,
+    "y": 400,
+    "w": 170
+   },
+   {
+    "id": "cv-agent",
+    "label": "Agente de visión por computadora\\nEspecialista en procesamiento visual",
+    "x": 1100,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "control-agent",
+    "label": "Agente de sistemas de control\\nEspecialista en control vehicular",
+    "x": 1100,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "safety-agent",
+    "label": "Agente de análisis de seguridad\\nEspecialista en protocolos de seguridad",
+    "x": 1100,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "ethics-agent",
+    "label": "Agente de ética\\nEspecialista en cumplimiento ético",
+    "x": 1100,
+    "y": 600,
+    "w": 150
+   },
+   {
+    "id": "resource-allocator",
+    "label": "Asignador de recursos\\nAsignación dinámica de memoria y cómputo",
+    "x": 500,
+    "y": 400,
+    "w": 170
+   },
+   {
+    "id": "memory-pool",
+    "label": "Pool de memoria\\nGestión adaptativa de la memoria",
+    "x": 300,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "compute-scheduler",
+    "label": "Planificador de cómputo\\nCoordinación del procesamiento en paralelo",
+    "x": 500,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "coordination-hub",
+    "label": "Hub de coordinación\\nIntegración y sincronización entre agentes",
+    "x": 900,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "performance-monitor",
+    "label": "Monitor de rendimiento\\nSeguimiento del rendimiento del sistema en tiempo real",
+    "x": 700,
+    "y": 600,
+    "w": 170
+   },
+   {
+    "id": "efficiency-analyzer",
+    "label": "Analizador de eficiencia\\nEvaluación de la eficiencia de la profundidad del contexto",
+    "x": 500,
+    "y": 650,
+    "w": 170
+   },
+   {
+    "id": "load-balancer",
+    "label": "Balanceador de carga\\nOptimización de la distribución de la carga de trabajo",
+    "x": 300,
+    "y": 650,
+    "w": 160
+   },
+   {
+    "id": "resource-monitor",
+    "label": "Monitor de recursos\\nSeguimiento de la disponibilidad de recursos",
+    "x": 700,
+    "y": 100,
+    "w": 160
+   },
+   {
+    "id": "adaptive-optimizer",
+    "label": "Optimizador adaptativo\\nOptimización continua de la estrategia",
+    "x": 100,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "learning-module",
+    "label": "Módulo de aprendizaje\\nReconocimiento de patrones y aprendizaje de estrategias",
+    "x": 100,
+    "y": 700,
+    "w": 170
+   },
+   {
+    "id": "context-strategy",
+    "label": "Estrategia de contexto\\nEstrategias adaptativas de profundidad del contexto",
+    "x": 300,
+    "y": 750,
+    "w": 170
+   },
+   {
+    "id": "system-output",
+    "label": "Salida del sistema\\nEntrega de la solución integrada",
+    "x": 900,
+    "y": 700,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-to-analyzer",
+    "s": "task-input",
+    "t": "task-analyzer",
+    "label": ""
+   },
+   {
+    "id": "analyzer-to-metrics",
+    "s": "task-analyzer",
+    "t": "complexity-metrics",
+    "label": ""
+   },
+   {
+    "id": "analyzer-to-assessor",
+    "s": "task-analyzer",
+    "t": "complexity-assessor",
+    "label": ""
+   },
+   {
+    "id": "assessor-to-mapper",
+    "s": "complexity-assessor",
+    "t": "domain-mapper",
+    "label": ""
+   },
+   {
+    "id": "assessor-to-depth",
+    "s": "complexity-assessor",
+    "t": "depth-controller",
+    "label": ""
+   },
+   {
+    "id": "depth-to-level1",
+    "s": "depth-controller",
+    "t": "context-level-1",
+    "label": ""
+   },
+   {
+    "id": "depth-to-level3",
+    "s": "depth-controller",
+    "t": "context-level-3",
+    "label": ""
+   },
+   {
+    "id": "depth-to-level5",
+    "s": "depth-controller",
+    "t": "context-level-5",
+    "label": ""
+   },
+   {
+    "id": "depth-to-coordinator",
+    "s": "depth-controller",
+    "t": "agent-coordinator",
+    "label": ""
+   },
+   {
+    "id": "coordinator-to-cv",
+    "s": "agent-coordinator",
+    "t": "cv-agent",
+    "label": ""
+   },
+   {
+    "id": "coordinator-to-control",
+    "s": "agent-coordinator",
+    "t": "control-agent",
+    "label": ""
+   },
+   {
+    "id": "coordinator-to-safety",
+    "s": "agent-coordinator",
+    "t": "safety-agent",
+    "label": ""
+   },
+   {
+    "id": "coordinator-to-ethics",
+    "s": "agent-coordinator",
+    "t": "ethics-agent",
+    "label": ""
+   },
+   {
+    "id": "mapper-to-allocator",
+    "s": "domain-mapper",
+    "t": "resource-allocator",
+    "label": ""
+   },
+   {
+    "id": "allocator-to-memory",
+    "s": "resource-allocator",
+    "t": "memory-pool",
+    "label": ""
+   },
+   {
+    "id": "allocator-to-compute",
+    "s": "resource-allocator",
+    "t": "compute-scheduler",
+    "label": ""
+   },
+   {
+    "id": "allocator-to-context",
+    "s": "resource-allocator",
+    "t": "context-level-5",
+    "label": ""
+   },
+   {
+    "id": "agents-to-coordination",
+    "s": "cv-agent",
+    "t": "coordination-hub",
+    "label": ""
+   },
+   {
+    "id": "control-to-coordination",
+    "s": "control-agent",
+    "t": "coordination-hub",
+    "label": ""
+   },
+   {
+    "id": "safety-to-coordination",
+    "s": "safety-agent",
+    "t": "coordination-hub",
+    "label": ""
+   },
+   {
+    "id": "ethics-to-coordination",
+    "s": "ethics-agent",
+    "t": "coordination-hub",
+    "label": ""
+   },
+   {
+    "id": "coordination-to-monitor",
+    "s": "coordination-hub",
+    "t": "performance-monitor",
+    "label": ""
+   },
+   {
+    "id": "monitor-to-analyzer",
+    "s": "performance-monitor",
+    "t": "efficiency-analyzer",
+    "label": ""
+   },
+   {
+    "id": "analyzer-to-balancer",
+    "s": "efficiency-analyzer",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "balancer-to-resources",
+    "s": "load-balancer",
+    "t": "resource-allocator",
+    "label": ""
+   },
+   {
+    "id": "monitor-to-depth",
+    "s": "resource-monitor",
+    "t": "depth-controller",
+    "label": ""
+   },
+   {
+    "id": "monitor-to-optimizer",
+    "s": "performance-monitor",
+    "t": "adaptive-optimizer",
+    "label": ""
+   },
+   {
+    "id": "optimizer-to-learning",
+    "s": "adaptive-optimizer",
+    "t": "learning-module",
+    "label": ""
+   },
+   {
+    "id": "learning-to-strategy",
+    "s": "learning-module",
+    "t": "context-strategy",
+    "label": ""
+   },
+   {
+    "id": "coordination-to-output",
+    "s": "coordination-hub",
+    "t": "system-output",
+    "label": ""
+   },
+   {
+    "id": "strategy-to-output",
+    "s": "context-strategy",
+    "t": "system-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción y análisis de la tarea",
+    "description": "El sistema recibe la consulta y realiza la categorización inicial de la tarea y la estimación de su complejidad",
+    "input": "Consulta: \"Diseña un sistema de IA para la seguridad de vehículos autónomos en entornos urbanos\"",
+    "nodes": [
+     "task-input",
+     "task-analyzer",
+     "complexity-metrics"
+    ],
+    "edges": [
+     "input-to-analyzer"
+    ]
+   },
+   {
+    "title": "Evaluación de la complejidad",
+    "description": "Un análisis multidimensional determina la puntuación de complejidad de la tarea y la profundidad de procesamiento requerida",
+    "input": "",
+    "nodes": [
+     "task-analyzer",
+     "complexity-assessor",
+     "domain-mapper"
+    ],
+    "edges": [
+     "analyzer-to-assessor",
+     "assessor-to-mapper"
+    ]
+   },
+   {
+    "title": "Selección de la profundidad del contexto",
+    "description": "El sistema selecciona el nivel óptimo de profundidad del contexto según la evaluación de complejidad y los recursos disponibles",
+    "input": "",
+    "nodes": [
+     "complexity-assessor",
+     "depth-controller",
+     "context-level-5",
+     "resource-monitor"
+    ],
+    "edges": [
+     "assessor-to-depth",
+     "depth-to-level5",
+     "monitor-to-depth"
+    ]
+   },
+   {
+    "title": "Selección y asignación de agentes",
+    "description": "Se selecciona la combinación óptima de agentes según los dominios requeridos y la distribución actual de la carga de trabajo",
+    "input": "",
+    "nodes": [
+     "depth-controller",
+     "agent-coordinator",
+     "cv-agent",
+     "control-agent",
+     "safety-agent",
+     "ethics-agent"
+    ],
+    "edges": [
+     "depth-to-coordinator",
+     "coordinator-to-cv",
+     "coordinator-to-control",
+     "coordinator-to-safety",
+     "coordinator-to-ethics"
+    ]
+   },
+   {
+    "title": "Asignación dinámica de recursos",
+    "description": "Los recursos de memoria y cómputo se asignan según los requisitos de profundidad del contexto y las necesidades de los agentes",
+    "input": "",
+    "nodes": [
+     "resource-allocator",
+     "memory-pool",
+     "compute-scheduler",
+     "context-level-5"
+    ],
+    "edges": [
+     "allocator-to-memory",
+     "allocator-to-compute",
+     "allocator-to-context"
+    ]
+   },
+   {
+    "title": "Ejecución del procesamiento en paralelo",
+    "description": "Todos los agentes asignados procesan sus tareas especializadas en paralelo usando la profundidad de contexto asignada",
+    "input": "",
+    "nodes": [
+     "cv-agent",
+     "control-agent",
+     "safety-agent",
+     "ethics-agent",
+     "context-level-5",
+     "coordination-hub"
+    ],
+    "edges": [
+     "agents-to-coordination"
+    ]
+   },
+   {
+    "title": "Monitoreo del rendimiento y feedback",
+    "description": "Monitoreo del rendimiento en tiempo real con ajustes adaptativos según la carga y la eficiencia del sistema",
+    "input": "",
+    "nodes": [
+     "performance-monitor",
+     "efficiency-analyzer",
+     "load-balancer",
+     "resource-monitor"
+    ],
+    "edges": [
+     "monitor-to-analyzer",
+     "analyzer-to-balancer",
+     "balancer-to-resources"
+    ]
+   },
+   {
+    "title": "Optimización adaptativa",
+    "description": "El sistema aprende de las métricas de rendimiento y optimiza la estrategia de profundidad del contexto para futuras tareas similares",
+    "input": "",
+    "nodes": [
+     "adaptive-optimizer",
+     "learning-module",
+     "context-strategy",
+     "system-output"
+    ],
+    "edges": [
+     "optimizer-to-learning",
+     "learning-to-strategy",
+     "strategy-to-output"
+    ]
+   }
+  ]
+ }
+}

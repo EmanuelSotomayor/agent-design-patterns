@@ -1,0 +1,483 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "simple-preference-optimization",
+ "name": "Simple Preference Optimization(SimPO)",
+ "icon": "⚙️",
+ "complexity": "high",
+ "description": "Optimización de preferencias sin referencia que usa la log-probabilidad de la secuencia normalizada por longitud como recompensa implícita, con un margen de recompensa objetivo",
+ "features": [
+  "Entrenamiento sin modelo de referencia",
+  "Recompensa implícita normalizada por longitud",
+  "Margen de recompensa objetivo",
+  "Objetivo de preferencias por pares",
+  "Comparación de verosimilitud a nivel de secuencia",
+  "Monitoreo de longitud y calidad"
+ ],
+ "tldr": {
+  "what": "Entrena un modelo para que prefiera las respuestas elegidas sobre las rechazadas comparando log-probabilidades normalizadas por longitud, sin necesidad de un modelo de referencia separado.",
+  "when": "Tienes datos de preferencias por pares (respuestas elegidas/rechazadas) y quieres optimizar el comportamiento del modelo sin el costo computacional de mantener un modelo de referencia.",
+  "watchOut": "La normalización por longitud puede ocultar diferencias de calidad cuando las respuestas elegidas y rechazadas difieren mucho en longitud, lo que degrada la señal de preferencia."
+ },
+ "overview": {
+  "pattern": "Optimización de preferencias sin referencia que usa márgenes de recompensa normalizados por longitud para el entrenamiento de alineación",
+  "why": "Elimina la dependencia de un modelo de referencia, reduce la sobrecarga computacional y mitiga el sesgo de longitud en el aprendizaje de preferencias",
+  "insight": "Las diferencias de log-probabilidad promedio crean recompensas implícitas sin requerir líneas base de un modelo de referencia",
+  "impl": [
+   {
+    "t": "SFT",
+    "d": "Fine-tuning supervisado sobre datos de demostración"
+   },
+   {
+    "t": "Datos de preferencias",
+    "d": "Recopila comparaciones de preferencias por pares"
+   },
+   {
+    "t": "Pérdida SimPO",
+    "d": "Aplica optimización de preferencias sin referencia"
+   },
+   {
+    "t": "Control de longitud",
+    "d": "Normaliza según las diferencias de longitud de las respuestas"
+   },
+   {
+    "t": "Validar",
+    "d": "Evalúa la alineación sin depender de un modelo de referencia"
+   }
+  ],
+  "example": "sft_data + preference_pairs → simpo_training → aligned_model (reference_free)",
+  "dos": [
+   "Usa datos de preferencias de alta calidad con distinciones claras",
+   "Implementa normalización por longitud para manejar el sesgo de longitud de las respuestas",
+   "Ajusta el parámetro gamma para un escalado óptimo del margen de recompensa",
+   "Monitorea la estabilidad del entrenamiento con tasas de aprendizaje adecuadas",
+   "Valida contra líneas base de modelos de referencia cuando estén disponibles",
+   "Usa datasets de preferencias diversos que cubran múltiples dominios"
+  ],
+  "donts": [
+   "Ignorar el sesgo de longitud al recopilar datos de preferencias",
+   "Fijar gamma demasiado alto (provoca inestabilidad en el entrenamiento)",
+   "Usarlo sin un ajuste adecuado de hiperparámetros",
+   "Aplicarlo en dominios donde los modelos de referencia son críticos",
+   "Omitir la comparación con DPO y otros métodos basados en referencia"
+  ],
+  "use": [
+   "El modelo de referencia no está disponible o no es confiable",
+   "Quieres evitar la dependencia y la sobrecarga de un modelo de referencia",
+   "El sesgo de longitud es una preocupación importante en las preferencias",
+   "Se prioriza la eficiencia computacional",
+   "Se prefiere un pipeline de entrenamiento simple"
+  ],
+  "avoid": [
+   "El modelo de referencia aporta una estabilidad crucial",
+   "Necesitas regularización KL explícita por seguridad",
+   "El dominio requiere un control cuidadoso de la distribución",
+   "La calidad de los datos de entrenamiento es dudosa",
+   "La línea base del modelo de referencia está bien establecida"
+  ],
+  "metrics": [
+   {
+    "n": "Exactitud de preferencias",
+    "d": "% de predicciones por pares correctas sin referencia"
+   },
+   {
+    "n": "Mitigación del sesgo de longitud",
+    "d": "Reducción de la correlación entre longitud y preferencia"
+   },
+   {
+    "n": "Eficiencia del entrenamiento",
+    "d": "Velocidad de convergencia sin modelo de referencia"
+   },
+   {
+    "n": "Calidad de las respuestas",
+    "d": "Puntajes de evaluación humana frente a las líneas base"
+   },
+   {
+    "n": "Puntaje de estabilidad",
+    "d": "Confiabilidad de la convergencia del entrenamiento"
+   },
+   {
+    "n": "Ahorro computacional",
+    "d": "Reducción de recursos frente a métodos basados en referencia"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Entrenamiento con recursos limitados",
+    "d": "Optimización de preferencias sin la sobrecarga de un modelo de referencia"
+   },
+   {
+    "n": "Dominios sensibles a la longitud",
+    "d": "Aplicaciones donde la longitud de la respuesta afecta significativamente las preferencias"
+   },
+   {
+    "n": "Prototipado rápido",
+    "d": "Alineación rápida de preferencias sin configurar un modelo de referencia complejo"
+   },
+   {
+    "n": "Adaptación de dominio",
+    "d": "Aprendizaje de preferencias en dominios nuevos sin líneas base establecidas"
+   },
+   {
+    "n": "Sistemas educativos",
+    "d": "Optimización de preferencias simple para aplicaciones de aprendizaje"
+   },
+   {
+    "n": "Generación de contenido",
+    "d": "Escritura creativa y contenido donde el sesgo de longitud es problemático"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Simple Preference Optimization",
+  "description": "Enfoque simplificado de optimización de preferencias que reduce la complejidad de los métodos de alineación sin perder eficacia al entrenar modelos según las preferencias humanas.",
+  "nodes": [
+   {
+    "id": "user-task",
+    "label": "💬 Tarea: \"Explícale la computación cuántica a un niño\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "dpo-approach",
+    "label": "🤯 Complejidad de DPO\n• Modelo de referencia πref\n• Divergencia KL\n• Bradley-Terry\n• ¡Matemáticas complejas!",
+    "x": 100,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "dpo-formula",
+    "label": "📐 Pérdida DPO\nlog σ(β·log[π/πref](yw)\n- β·log[π/πref](yl))",
+    "x": 100,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "simpo-approach",
+    "label": "✨ Simplicidad de SimPO\n• SIN modelo de referencia\n• Recompensa normalizada por longitud\n• Margen objetivo γ\n• ¡Simple y eficaz!",
+    "x": 600,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "simpo-formula",
+    "label": "🎯 Pérdida SimPO\n-log σ((β/|y|)·(log π(yw) - log π(yl))\n- γ)",
+    "x": 600,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "winning-response",
+    "label": "✅ Respuesta ganadora\n\"¡Las computadoras cuánticas son como\ncalculadoras mágicas que pueden probar\nmuchas respuestas a la vez,\ncomo alguien que resuelve un laberinto\nrevisando todos los caminos al mismo tiempo!\"",
+    "x": 250,
+    "y": 400,
+    "w": 220
+   },
+   {
+    "id": "losing-response",
+    "label": "❌ Respuesta perdedora\n\"La computación cuántica usa\nla superposición y el entrelazamiento\nde qubits para realizar\ncálculos sobre amplitudes\nde ondas de probabilidad.\"",
+    "x": 530,
+    "y": 400,
+    "w": 220
+   },
+   {
+    "id": "length-normalization",
+    "label": "📏 Normalización por longitud\nLog-prob promedio\npor token",
+    "x": 150,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "reward-margin",
+    "label": "📊 Margen de recompensa objetivo\nγ = ganadora - perdedora\n¡Fija la brecha directamente!",
+    "x": 400,
+    "y": 540,
+    "w": 200
+   },
+   {
+    "id": "no-reference",
+    "label": "🆓 Sin modelo de referencia\n¡Ahorra 50% de memoria!\nEntrenamiento más rápido",
+    "x": 650,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "direct-optimization",
+    "label": "🎯 Optimización directa\nMaximiza la probabilidad de la buena respuesta\nMinimiza la probabilidad de la mala respuesta",
+    "x": 400,
+    "y": 660,
+    "w": 350
+   },
+   {
+    "id": "performance",
+    "label": "📈 Rendimiento (ilustrativo)\nDPO: 72.3%\nSimPO: 73.5%\n¡Mejor y más simple!",
+    "x": 200,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "efficiency",
+    "label": "⚡ Eficiencia\n2x más rápido\n50% menos memoria\nMás fácil de ajustar",
+    "x": 400,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "simplicity",
+    "label": "🎨 Simplicidad\nSin πref que mantener\nCódigo más limpio\nMenos bugs",
+    "x": 600,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "final-result",
+    "label": "🎉 Resultado de SimPO\n\"Piensa en los átomos como bloques de LEGO. Las computadoras normales\nsolo pueden probar una combinación de LEGO a la vez.\n¿Las computadoras cuánticas? ¡Es como tener manos mágicas\nque pueden probar TODAS las combinaciones a la vez!\"",
+    "x": 400,
+    "y": 900,
+    "w": 500
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-dpo",
+    "s": "user-task",
+    "t": "dpo-approach",
+    "label": ""
+   },
+   {
+    "id": "dpo-formula-edge",
+    "s": "dpo-approach",
+    "t": "dpo-formula",
+    "label": ""
+   },
+   {
+    "id": "task-simpo",
+    "s": "user-task",
+    "t": "simpo-approach",
+    "label": ""
+   },
+   {
+    "id": "simpo-formula-edge",
+    "s": "simpo-approach",
+    "t": "simpo-formula",
+    "label": ""
+   },
+   {
+    "id": "simpo-winning",
+    "s": "simpo-formula",
+    "t": "winning-response",
+    "label": ""
+   },
+   {
+    "id": "simpo-losing",
+    "s": "simpo-formula",
+    "t": "losing-response",
+    "label": ""
+   },
+   {
+    "id": "winning-length",
+    "s": "winning-response",
+    "t": "length-normalization",
+    "label": ""
+   },
+   {
+    "id": "losing-length",
+    "s": "losing-response",
+    "t": "length-normalization",
+    "label": ""
+   },
+   {
+    "id": "responses-margin",
+    "s": "winning-response",
+    "t": "reward-margin",
+    "label": ""
+   },
+   {
+    "id": "losing-margin",
+    "s": "losing-response",
+    "t": "reward-margin",
+    "label": ""
+   },
+   {
+    "id": "simpo-noref",
+    "s": "simpo-approach",
+    "t": "no-reference",
+    "label": ""
+   },
+   {
+    "id": "length-optimize",
+    "s": "length-normalization",
+    "t": "direct-optimization",
+    "label": ""
+   },
+   {
+    "id": "margin-optimize",
+    "s": "reward-margin",
+    "t": "direct-optimization",
+    "label": ""
+   },
+   {
+    "id": "noref-optimize",
+    "s": "no-reference",
+    "t": "direct-optimization",
+    "label": ""
+   },
+   {
+    "id": "optimize-performance",
+    "s": "direct-optimization",
+    "t": "performance",
+    "label": ""
+   },
+   {
+    "id": "optimize-efficiency",
+    "s": "direct-optimization",
+    "t": "efficiency",
+    "label": ""
+   },
+   {
+    "id": "optimize-simplicity",
+    "s": "direct-optimization",
+    "t": "simplicity",
+    "label": ""
+   },
+   {
+    "id": "performance-final",
+    "s": "performance",
+    "t": "final-result",
+    "label": ""
+   },
+   {
+    "id": "efficiency-final",
+    "s": "efficiency",
+    "t": "final-result",
+    "label": ""
+   },
+   {
+    "id": "simplicity-final",
+    "s": "simplicity",
+    "t": "final-result",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea del usuario",
+    "description": "Explícale la computación cuántica a un niño",
+    "input": "",
+    "nodes": [
+     "user-task"
+    ],
+    "edges": []
+   },
+   {
+    "title": "DPO: enfoque complejo",
+    "description": "Necesita modelo de referencia, divergencia KL, matemáticas complejas",
+    "input": "",
+    "nodes": [
+     "user-task",
+     "dpo-approach",
+     "dpo-formula"
+    ],
+    "edges": [
+     "task-dpo",
+     "dpo-formula-edge"
+    ]
+   },
+   {
+    "title": "SimPO: enfoque simple",
+    "description": "Sin modelo de referencia, solo log-probabilidades promedio",
+    "input": "",
+    "nodes": [
+     "user-task",
+     "simpo-approach",
+     "simpo-formula"
+    ],
+    "edges": [
+     "task-simpo",
+     "simpo-formula-edge"
+    ]
+   },
+   {
+    "title": "Generar respuestas",
+    "description": "Ganadora: apta para niños; perdedora: demasiado técnica",
+    "input": "",
+    "nodes": [
+     "simpo-formula",
+     "winning-response",
+     "losing-response"
+    ],
+    "edges": [
+     "simpo-winning",
+     "simpo-losing"
+    ]
+   },
+   {
+    "title": "Innovaciones clave",
+    "description": "Normalización por longitud, margen objetivo, sin modelo de referencia",
+    "input": "",
+    "nodes": [
+     "winning-response",
+     "losing-response",
+     "length-normalization",
+     "reward-margin",
+     "no-reference"
+    ],
+    "edges": [
+     "winning-length",
+     "losing-length",
+     "responses-margin",
+     "losing-margin",
+     "simpo-noref"
+    ]
+   },
+   {
+    "title": "Optimización directa",
+    "description": "Maximiza directamente las buenas respuestas y minimiza las malas",
+    "input": "",
+    "nodes": [
+     "length-normalization",
+     "reward-margin",
+     "no-reference",
+     "direct-optimization"
+    ],
+    "edges": [
+     "length-optimize",
+     "margin-optimize",
+     "noref-optimize"
+    ]
+   },
+   {
+    "title": "Resultados",
+    "description": "Mejor rendimiento, 2x más rápido, 50% menos memoria",
+    "input": "",
+    "nodes": [
+     "direct-optimization",
+     "performance",
+     "efficiency",
+     "simplicity"
+    ],
+    "edges": [
+     "optimize-performance",
+     "optimize-efficiency",
+     "optimize-simplicity"
+    ]
+   },
+   {
+    "title": "Salida final",
+    "description": "Explicación perfecta para niños usando SimPO",
+    "input": "",
+    "nodes": [
+     "performance",
+     "efficiency",
+     "simplicity",
+     "final-result"
+    ],
+    "edges": [
+     "performance-final",
+     "efficiency-final",
+     "simplicity-final"
+    ]
+   }
+  ]
+ }
+}

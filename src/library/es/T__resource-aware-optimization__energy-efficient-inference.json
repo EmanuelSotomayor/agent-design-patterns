@@ -1,0 +1,373 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "energy-efficient-inference",
+ "name": "Energy-Efficient Inference(EEI)",
+ "icon": "🔋",
+ "complexity": "high",
+ "description": "Optimiza la inferencia de IA para un consumo mínimo de energía sin perder rendimiento",
+ "features": [
+  "Monitoreo del consumo de energía",
+  "Escalado dinámico de frecuencia",
+  "Compresión de modelos",
+  "Optimización de batch",
+  "Aceleración por hardware",
+  "Gestión térmica"
+ ],
+ "tldr": {
+  "what": "Reduce el consumo de energía durante la inferencia bajando la precisión, escalando la frecuencia del hardware, comprimiendo modelos y agrupando solicitudes en batches.",
+  "when": "Dispositivos móviles o edge con batería limitada, restricciones térmicas o un alto volumen de inferencia, donde el consumo de energía impacta directamente en el costo o la autonomía.",
+  "watchOut": "La optimización agresiva degrada la precisión o la latencia de forma impredecible; mide ambas antes y después en tu hardware y carga de trabajo reales."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Energy-Efficient Inference",
+  "description": "La IA en el dispositivo alarga la batería y se mantiene fresca agrupando solicitudes similares, cuantizando pesos, saliendo antes con entradas fáciles y ubicando el trabajo en la NPU, todo bajo un presupuesto de energía y una protección térmica.",
+  "nodes": [
+   {
+    "id": "inference-requests",
+    "label": "📥 Solicitudes de inferencia\n120 req/s en el dispositivo\nBatería 25% | 42°C",
+    "x": 360,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "power-monitor",
+    "label": "🔋 Monitor de energía\nBatería 25% | 42°C\nPresupuesto de energía 3.5W",
+    "x": 680,
+    "y": 50,
+    "w": 210
+   },
+   {
+    "id": "energy-scheduler",
+    "label": "🧭 Planificador de energía\nElige precisión, batch\ny hardware destino",
+    "x": 360,
+    "y": 150,
+    "w": 230
+   },
+   {
+    "id": "batch-optimizer",
+    "label": "📦 Optimizador de batch\nAgrupa solicitudes similares\nBatch 8, +3ms de espera",
+    "x": 60,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "quantizer",
+    "label": "🔢 Cuantizador\nFP32 a INT8\n4x más pequeño, 3.8x menos energía",
+    "x": 360,
+    "y": 270,
+    "w": 210
+   },
+   {
+    "id": "early-exit",
+    "label": "🚪 Capas de salida temprana\nLas entradas simples salen en\nla capa 6 de 24",
+    "x": 660,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "distilled-model",
+    "label": "🧪 Modelo destilado\nEstudiante podado al 60%\nGuiado por el maestro",
+    "x": 60,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "cache-layer",
+    "label": "🗃️ Cache de predicciones\nReutiliza resultados frecuentes\nTasa de aciertos del 34%",
+    "x": 360,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "npu-placement",
+    "label": "⚡ Ubicación en hardware\nMatmul en NPU 8 TOPS/W\nCPU en reposo",
+    "x": 660,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "dvfs",
+    "label": "🎚️ Gobernador DVFS\nCPU de 2.4 a 1.8GHz\nLimitación por calor",
+    "x": 60,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "thermal-guard",
+    "label": "🌡️ Protección térmica\n42°C > límite de 40°C\nReducir batch, bajar el reloj",
+    "x": 360,
+    "y": 510,
+    "w": 210
+   },
+   {
+    "id": "accuracy-check",
+    "label": "🎯 Verificación de precisión\nMantener >= 95% de FP32\nsi no, conservar FP16",
+    "x": 660,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "batched-work",
+    "label": "🧩 Carga de trabajo en batch\n8 solicitudes en la NPU\nINT8, capas 1-6",
+    "x": 360,
+    "y": 630,
+    "w": 230
+   },
+   {
+    "id": "output",
+    "label": "✅ Servido en el dispositivo\n70% menos energía\n3x de batería, 32°C",
+    "x": 360,
+    "y": 740,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "requests-scheduler",
+    "s": "inference-requests",
+    "t": "energy-scheduler",
+    "label": ""
+   },
+   {
+    "id": "monitor-scheduler",
+    "s": "power-monitor",
+    "t": "energy-scheduler",
+    "label": "Batería y calor"
+   },
+   {
+    "id": "scheduler-batch",
+    "s": "energy-scheduler",
+    "t": "batch-optimizer",
+    "label": ""
+   },
+   {
+    "id": "scheduler-quant",
+    "s": "energy-scheduler",
+    "t": "quantizer",
+    "label": ""
+   },
+   {
+    "id": "scheduler-earlyexit",
+    "s": "energy-scheduler",
+    "t": "early-exit",
+    "label": ""
+   },
+   {
+    "id": "scheduler-npu",
+    "s": "energy-scheduler",
+    "t": "npu-placement",
+    "label": ""
+   },
+   {
+    "id": "quant-distilled",
+    "s": "quantizer",
+    "t": "distilled-model",
+    "label": "Comprimir"
+   },
+   {
+    "id": "quant-accuracy",
+    "s": "quantizer",
+    "t": "accuracy-check",
+    "label": ""
+   },
+   {
+    "id": "accuracy-quant",
+    "s": "accuracy-check",
+    "t": "quantizer",
+    "label": "Conservar FP16 si < 95%"
+   },
+   {
+    "id": "batch-cache",
+    "s": "batch-optimizer",
+    "t": "cache-layer",
+    "label": "Reutilizar"
+   },
+   {
+    "id": "batch-batched",
+    "s": "batch-optimizer",
+    "t": "batched-work",
+    "label": ""
+   },
+   {
+    "id": "earlyexit-batched",
+    "s": "early-exit",
+    "t": "batched-work",
+    "label": ""
+   },
+   {
+    "id": "npu-batched",
+    "s": "npu-placement",
+    "t": "batched-work",
+    "label": ""
+   },
+   {
+    "id": "distilled-batched",
+    "s": "distilled-model",
+    "t": "batched-work",
+    "label": "Modelo estudiante"
+   },
+   {
+    "id": "npu-dvfs",
+    "s": "npu-placement",
+    "t": "dvfs",
+    "label": ""
+   },
+   {
+    "id": "monitor-thermal",
+    "s": "power-monitor",
+    "t": "thermal-guard",
+    "label": "42°C"
+   },
+   {
+    "id": "thermal-dvfs",
+    "s": "thermal-guard",
+    "t": "dvfs",
+    "label": "Limitar"
+   },
+   {
+    "id": "thermal-batch",
+    "s": "thermal-guard",
+    "t": "batch-optimizer",
+    "label": "Reducir batch"
+   },
+   {
+    "id": "dvfs-batched",
+    "s": "dvfs",
+    "t": "batched-work",
+    "label": ""
+   },
+   {
+    "id": "batched-output",
+    "s": "batched-work",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "cache-output",
+    "s": "cache-layer",
+    "t": "output",
+    "label": "Aciertos de cache"
+   },
+   {
+    "id": "accuracy-output",
+    "s": "accuracy-check",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de solicitudes y presupuesto de energía",
+    "description": "El tráfico en el dispositivo llega a 120 req/s mientras el monitor de energía informa al planificador 25% de batería, 42°C y un tope de 3.5W.",
+    "input": "",
+    "nodes": [
+     "inference-requests",
+     "power-monitor",
+     "energy-scheduler"
+    ],
+    "edges": [
+     "requests-scheduler",
+     "monitor-scheduler"
+    ]
+   },
+   {
+    "title": "Selección de estrategia consciente de la energía",
+    "description": "El planificador despliega cuatro palancas de energía: batching, cuantización, salida temprana y ubicación en la NPU.",
+    "input": "",
+    "nodes": [
+     "energy-scheduler",
+     "batch-optimizer",
+     "quantizer",
+     "early-exit",
+     "npu-placement"
+    ],
+    "edges": [
+     "scheduler-batch",
+     "scheduler-quant",
+     "scheduler-earlyexit",
+     "scheduler-npu"
+    ]
+   },
+   {
+    "title": "Compresión del modelo",
+    "description": "Los pesos pasan de FP32 a INT8 para usar 4x menos memoria y 3.8x menos energía, la destilación poda el 60% de los parámetros, y una verificación de precisión vuelve a FP16 si la calidad cae por debajo del 95% de FP32.",
+    "input": "",
+    "nodes": [
+     "quantizer",
+     "distilled-model",
+     "accuracy-check"
+    ],
+    "edges": [
+     "quant-distilled",
+     "quant-accuracy",
+     "accuracy-quant"
+    ]
+   },
+   {
+    "title": "Batching y salida temprana",
+    "description": "Las solicitudes similares se agrupan en batches de 8 con una espera de 3ms, los resultados frecuentes se reutilizan desde una cache con una tasa de aciertos del 34%, y las entradas simples salen en la capa 6 de 24.",
+    "input": "",
+    "nodes": [
+     "batch-optimizer",
+     "cache-layer",
+     "early-exit",
+     "batched-work"
+    ],
+    "edges": [
+     "batch-cache",
+     "batch-batched",
+     "earlyexit-batched"
+    ]
+   },
+   {
+    "title": "Ubicación en hardware y DVFS",
+    "description": "Las multiplicaciones de matrices pasan a la NPU a 8 TOPS/W y el gobernador DVFS baja la CPU en reposo de 2.4GHz a 1.8GHz.",
+    "input": "",
+    "nodes": [
+     "npu-placement",
+     "dvfs",
+     "batched-work"
+    ],
+    "edges": [
+     "npu-dvfs",
+     "npu-batched",
+     "dvfs-batched",
+     "distilled-batched"
+    ]
+   },
+   {
+    "title": "Gestión térmica",
+    "description": "A 42°C, por encima del límite de 40°C, la protección térmica reduce el batch y baja el reloj para disipar calor antes de que la limitación empeore.",
+    "input": "",
+    "nodes": [
+     "power-monitor",
+     "thermal-guard",
+     "dvfs",
+     "batch-optimizer"
+    ],
+    "edges": [
+     "monitor-thermal",
+     "thermal-dvfs",
+     "thermal-batch"
+    ]
+   },
+   {
+    "title": "Servicio eficiente",
+    "description": "La carga de trabajo ajustada se ejecuta con 70% menos energía, aproximadamente 3x de duración de batería y un dispositivo 10°C más frío, manteniendo ~95% de la precisión original.",
+    "input": "",
+    "nodes": [
+     "batched-work",
+     "cache-layer",
+     "accuracy-check",
+     "output"
+    ],
+    "edges": [
+     "batched-output",
+     "cache-output",
+     "accuracy-output"
+    ]
+   }
+  ]
+ }
+}

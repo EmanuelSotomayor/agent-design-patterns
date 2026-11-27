@@ -1,0 +1,525 @@
+{
+ "cat": "reflection",
+ "slug": "llm-as-judge",
+ "name": "LLM as Judge(LJ)",
+ "icon": "⚖️",
+ "complexity": "low",
+ "description": "Implementación específica de Producer-Critic en la que un LLM actúa como crítico para evaluar salidas",
+ "features": [
+  "Evaluación automática de calidad",
+  "Evaluación en lenguaje natural",
+  "Ranking/puntuación escalable",
+  "Rúbricas configurables"
+ ],
+ "tldr": {
+  "what": "Genera varias salidas candidatas y luego usa un segundo LLM para puntuar cada una según una rúbrica y seleccionar el resultado mejor calificado.",
+  "when": "Necesitas un filtrado de calidad consistente y tienes presupuesto para múltiples llamadas al LLM; el ranking importa más que la velocidad.",
+  "watchOut": "Puede que el LLM juez no aplique las rúbricas de forma consistente y confiable, sobre todo con criterios subjetivos o casos límite."
+ },
+ "overview": {
+  "pattern": "Usa LLMs para evaluar y puntuar a escala las salidas de otros LLMs",
+  "why": "Automatiza la evaluación de calidad, permite la selección best-of-N y escala la evaluación",
+  "insight": "Implementación específica de Producer-Critic en la que el crítico es un LLM con prompts de evaluación",
+  "impl": [
+   {
+    "t": "Definir criterios",
+    "d": "Especifica métricas y rúbricas de evaluación"
+   },
+   {
+    "t": "Diseñar el prompt",
+    "d": "Crea un prompt estructurado para el juez"
+   },
+   {
+    "t": "Entregar salidas",
+    "d": "Pasa el contenido generado al juez"
+   },
+   {
+    "t": "Obtener puntajes",
+    "d": "Recibe calificaciones/rankings/decisiones"
+   },
+   {
+    "t": "Actuar según los resultados",
+    "d": "Filtra, ordena o selecciona salidas"
+   }
+  ],
+  "example": "outputs[n] → LLM_Judge(criteria) → scores[n] → select_best(scores)",
+  "dos": [
+   "Usa criterios de evaluación claros y objetivos",
+   "Implementa un panel de jueces para decisiones controvertidas",
+   "Incluye rúbricas y ejemplos en los prompts del juez",
+   "Usa formatos de salida estructurados (JSON) para los puntajes",
+   "Valida la consistencia del juez con casos de prueba conocidos"
+  ],
+  "donts": [
+   "Usar criterios vagos como \"bueno\" o \"mejor\"",
+   "Depender de un solo juez para decisiones críticas",
+   "Omitir la calibración del juez frente a evaluaciones humanas",
+   "Usar el mismo modelo para generar y juzgar (sesgo)",
+   "Ignorar la incertidumbre o los puntajes de confianza del juez"
+  ],
+  "use": [
+   "Evaluar múltiples salidas",
+   "Aseguramiento de calidad a escala",
+   "Pruebas A/B de respuestas de LLM",
+   "Moderación automática de contenido"
+  ],
+  "avoid": [
+   "Tareas creativas subjetivas",
+   "Generación de una sola salida",
+   "Decisiones críticas en tiempo real",
+   "Evaluaciones legales/médicas"
+  ],
+  "metrics": [
+   {
+    "n": "Concordancia del juez",
+    "d": "Correlación con evaluadores humanos"
+   },
+   {
+    "n": "Consistencia",
+    "d": "Mismo juicio ante la misma entrada"
+   },
+   {
+    "n": "Discriminación",
+    "d": "Capacidad de ordenar diferencias de calidad"
+   },
+   {
+    "n": "Tasa de falsos positivos",
+    "d": "Contenido bueno marcado como malo"
+   },
+   {
+    "n": "Cobertura",
+    "d": "% de casos límite manejados correctamente"
+   },
+   {
+    "n": "Velocidad",
+    "d": "Evaluaciones por segundo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Selección de salidas",
+    "d": "Generar 5 respuestas → El juez las ordena → Devolver la mejor al usuario"
+   },
+   {
+    "n": "Compuertas de calidad",
+    "d": "Verifica si el código/contenido generado cumple los estándares antes del despliegue"
+   },
+   {
+    "n": "Pruebas A/B",
+    "d": "Compara versiones de modelos juzgando sus salidas para los mismos prompts"
+   },
+   {
+    "n": "Filtrado de seguridad",
+    "d": "Evalúa las salidas en busca de contenido dañino/sesgado antes de entregarlas"
+   },
+   {
+    "n": "Evaluación de RAG",
+    "d": "Juzga la relevancia de los documentos recuperados para la consulta"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón LLM as Judge",
+  "description": "Muestra cómo usar un LLM para evaluar, puntuar y ordenar múltiples salidas",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "Tarea de evaluación\n\"Selecciona la mejor respuesta de soporte al cliente\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "candidate1",
+    "label": "Candidata A\n\"Entiendo tu frustración.\nDéjame ayudarte a resolverlo...\"",
+    "x": 50,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "candidate2",
+    "label": "Candidata B\n\"Gracias por contactarnos.\nEspera mientras reviso...\"",
+    "x": 280,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "candidate3",
+    "label": "Candidata C\n\"Se registró tu problema.\nTicket #12345 creado.\"",
+    "x": 510,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "candidate4",
+    "label": "Candidata D\n\"Perdón por las molestias.\n¿Probaste reiniciar?\"",
+    "x": 740,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "judge-llm",
+    "label": "⚖️ LLM juez\nMotor de evaluación y puntuación",
+    "x": 375,
+    "y": 300,
+    "w": 300
+   },
+   {
+    "id": "evaluation-rubric",
+    "label": "📋 Rúbrica de evaluación\n• Empatía (0-10)\n• Utilidad (0-10)\n• Claridad (0-10)\n• Orientación a la acción (0-10)",
+    "x": 700,
+    "y": 300,
+    "w": 200
+   },
+   {
+    "id": "eval1",
+    "label": "Puntaje A: 8.5/10\n✓ Empática\n✓ Útil\n✓ Próximos pasos claros",
+    "x": 50,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "eval2",
+    "label": "Puntaje B: 6.0/10\n✓ Profesional\n✗ Genérica\n✗ Sin solución",
+    "x": 240,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "eval3",
+    "label": "Puntaje C: 4.5/10\n✗ Impersonal\n✗ Sin empatía\n✓ Tiene ticket",
+    "x": 430,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "eval4",
+    "label": "Puntaje D: 5.0/10\n✓ Se disculpa\n✗ Poco útil\n✗ Solución genérica",
+    "x": 620,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "ranking-engine",
+    "label": "🏆 Motor de ranking\nAnálisis comparativo",
+    "x": 375,
+    "y": 540,
+    "w": 250
+   },
+   {
+    "id": "pairwise-comparison",
+    "label": "🔄 Comparación por pares\nA vs B: gana A\nA vs C: gana A\nA vs D: gana A",
+    "x": 650,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "final-ranking",
+    "label": "📊 Ranking final\n1.º: Candidata A (8.5)\n2.º: Candidata B (6.0)\n3.º: Candidata D (5.0)\n4.º: Candidata C (4.5)",
+    "x": 375,
+    "y": 660,
+    "w": 220
+   },
+   {
+    "id": "decision",
+    "label": "✅ Decisión\nSeleccionar la candidata A\nConfianza: 85%",
+    "x": 375,
+    "y": 780,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "Respuesta seleccionada\n\"Entiendo tu frustración...\"\nCon informe de evaluación detallado",
+    "x": 375,
+    "y": 900,
+    "w": 280
+   },
+   {
+    "id": "explanation",
+    "label": "💭 Razonamiento de la evaluación\n\"A muestra empatía genuina,\nofrece ayuda concreta\ny mantiene el profesionalismo\"",
+    "x": 50,
+    "y": 780,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-c1",
+    "s": "task",
+    "t": "candidate1",
+    "label": ""
+   },
+   {
+    "id": "e-task-c2",
+    "s": "task",
+    "t": "candidate2",
+    "label": ""
+   },
+   {
+    "id": "e-task-c3",
+    "s": "task",
+    "t": "candidate3",
+    "label": ""
+   },
+   {
+    "id": "e-task-c4",
+    "s": "task",
+    "t": "candidate4",
+    "label": ""
+   },
+   {
+    "id": "e-c1-judge",
+    "s": "candidate1",
+    "t": "judge-llm",
+    "label": ""
+   },
+   {
+    "id": "e-c2-judge",
+    "s": "candidate2",
+    "t": "judge-llm",
+    "label": ""
+   },
+   {
+    "id": "e-c3-judge",
+    "s": "candidate3",
+    "t": "judge-llm",
+    "label": ""
+   },
+   {
+    "id": "e-c4-judge",
+    "s": "candidate4",
+    "t": "judge-llm",
+    "label": ""
+   },
+   {
+    "id": "e-judge-rubric",
+    "s": "judge-llm",
+    "t": "evaluation-rubric",
+    "label": ""
+   },
+   {
+    "id": "e-judge-eval1",
+    "s": "judge-llm",
+    "t": "eval1",
+    "label": "8.5"
+   },
+   {
+    "id": "e-judge-eval2",
+    "s": "judge-llm",
+    "t": "eval2",
+    "label": "6.0"
+   },
+   {
+    "id": "e-judge-eval3",
+    "s": "judge-llm",
+    "t": "eval3",
+    "label": "4.5"
+   },
+   {
+    "id": "e-judge-eval4",
+    "s": "judge-llm",
+    "t": "eval4",
+    "label": "5.0"
+   },
+   {
+    "id": "e-eval1-rank",
+    "s": "eval1",
+    "t": "ranking-engine",
+    "label": ""
+   },
+   {
+    "id": "e-eval2-rank",
+    "s": "eval2",
+    "t": "ranking-engine",
+    "label": ""
+   },
+   {
+    "id": "e-eval3-rank",
+    "s": "eval3",
+    "t": "ranking-engine",
+    "label": ""
+   },
+   {
+    "id": "e-eval4-rank",
+    "s": "eval4",
+    "t": "ranking-engine",
+    "label": ""
+   },
+   {
+    "id": "e-rank-pairwise",
+    "s": "ranking-engine",
+    "t": "pairwise-comparison",
+    "label": ""
+   },
+   {
+    "id": "e-rank-final",
+    "s": "ranking-engine",
+    "t": "final-ranking",
+    "label": ""
+   },
+   {
+    "id": "e-eval1-explain",
+    "s": "eval1",
+    "t": "explanation",
+    "label": ""
+   },
+   {
+    "id": "e-final-decision",
+    "s": "final-ranking",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-decision-output",
+    "s": "decision",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Configuración de la tarea",
+    "description": "Define la tarea de evaluación y reúne las candidatas a juzgar.",
+    "input": "Tarea: seleccionar la mejor respuesta de soporte para un cliente enojado que se queja por un envío demorado.\n\nContexto: el cliente lleva 2 semanas esperando, es miembro premium y es su primer reclamo.",
+    "nodes": [
+     "task"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Generación de candidatas",
+    "description": "Se generan o proporcionan varias respuestas candidatas para evaluar.",
+    "input": "",
+    "nodes": [
+     "task",
+     "candidate1",
+     "candidate2",
+     "candidate3",
+     "candidate4"
+    ],
+    "edges": [
+     "e-task-c1",
+     "e-task-c2",
+     "e-task-c3",
+     "e-task-c4"
+    ]
+   },
+   {
+    "title": "Envío al LLM juez",
+    "description": "Todas las candidatas se envían al LLM juez para su evaluación.",
+    "input": "Prompt del juez:\n\"Evalúa estas respuestas de soporte al cliente según:\n1. Empatía (comprender la frustración del cliente)\n2. Utilidad (ofrecer soluciones)\n3. Claridad (comunicación clara)\n4. Orientación a la acción (próximos pasos)\n\nPuntúa cada una de 0 a 10 y explica tu razonamiento.\"",
+    "nodes": [
+     "candidate1",
+     "candidate2",
+     "candidate3",
+     "candidate4",
+     "judge-llm"
+    ],
+    "edges": [
+     "e-c1-judge",
+     "e-c2-judge",
+     "e-c3-judge",
+     "e-c4-judge"
+    ]
+   },
+   {
+    "title": "Carga de la rúbrica de evaluación",
+    "description": "El LLM juez aplica criterios de evaluación estructurados a cada candidata.",
+    "input": "",
+    "nodes": [
+     "judge-llm",
+     "evaluation-rubric"
+    ],
+    "edges": [
+     "e-judge-rubric"
+    ]
+   },
+   {
+    "title": "Evaluaciones individuales",
+    "description": "El LLM juez evalúa cada candidata según la rúbrica.",
+    "input": "",
+    "nodes": [
+     "judge-llm",
+     "eval1",
+     "eval2",
+     "eval3",
+     "eval4"
+    ],
+    "edges": [
+     "e-judge-eval1",
+     "e-judge-eval2",
+     "e-judge-eval3",
+     "e-judge-eval4"
+    ]
+   },
+   {
+    "title": "Generación de explicaciones",
+    "description": "El juez proporciona un razonamiento detallado para la candidata con mayor puntaje.",
+    "input": "",
+    "nodes": [
+     "eval1",
+     "explanation"
+    ],
+    "edges": [
+     "e-eval1-explain"
+    ]
+   },
+   {
+    "title": "Ranking comparativo",
+    "description": "Se comparan los puntajes y se ordenan las candidatas.",
+    "input": "",
+    "nodes": [
+     "eval1",
+     "eval2",
+     "eval3",
+     "eval4",
+     "ranking-engine"
+    ],
+    "edges": [
+     "e-eval1-rank",
+     "e-eval2-rank",
+     "e-eval3-rank",
+     "e-eval4-rank"
+    ]
+   },
+   {
+    "title": "Comparación por pares",
+    "description": "Comparación por pares opcional para validar el ranking.",
+    "input": "",
+    "nodes": [
+     "ranking-engine",
+     "pairwise-comparison"
+    ],
+    "edges": [
+     "e-rank-pairwise"
+    ]
+   },
+   {
+    "title": "Ranking final",
+    "description": "Produce el ranking final con puntajes y niveles de confianza.",
+    "input": "",
+    "nodes": [
+     "ranking-engine",
+     "final-ranking"
+    ],
+    "edges": [
+     "e-rank-final"
+    ]
+   },
+   {
+    "title": "Decisión y salida",
+    "description": "Selecciona la mejor candidata y entrega la salida final.",
+    "input": "",
+    "nodes": [
+     "final-ranking",
+     "decision",
+     "output"
+    ],
+    "edges": [
+     "e-final-decision",
+     "e-decision-output"
+    ]
+   }
+  ]
+ }
+}

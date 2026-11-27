@@ -1,0 +1,355 @@
+{
+ "cat": "exploration-discovery",
+ "slug": "multi-armed-bandits",
+ "name": "Multi-Armed Bandit Optimization(MAB)",
+ "icon": "🎰",
+ "complexity": "medium",
+ "description": "Toma de decisiones secuencial bajo incertidumbre con un equilibrio óptimo entre exploración y explotación",
+ "features": [
+  "Minimización del arrepentimiento (regret)",
+  "Cotas de confianza",
+  "Optimización bayesiana",
+  "Conciencia del contexto",
+  "Adaptación a entornos no estacionarios",
+  "Manejo de múltiples objetivos"
+ ],
+ "tldr": {
+  "what": "Equilibra probar opciones nuevas frente a explotar las que ya se sabe que son buenas, usando cotas de confianza para decidir qué brazo accionar en cada ronda.",
+  "when": "Decisiones repetidas con recompensas inciertas en las que aprendes de cada elección y necesitas minimizar el arrepentimiento total a lo largo del tiempo.",
+  "watchOut": "Convergencia lenta o malas decisiones si las señales de recompensa son ruidosas o tardías, o si el entorno cambia más rápido de lo que el algoritmo se adapta."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Optimización con Multi-Armed Bandit",
+  "description": "Un agente hace pruebas A/B con cinco variantes de prompt de sistema para un bot de soporte. En cada ronda acciona un brazo usando epsilon-greedy, UCB o Thompson sampling, observa si el ticket se resolvió, actualiza sus distribuciones posteriores y reduce el arrepentimiento acumulado acercándose a la mejor variante.",
+  "nodes": [
+   {
+    "id": "optimization-goal",
+    "label": "🎯 Objetivo de optimización\nPrueba A/B de 5 variantes de prompt de sistema\nMaximizar la tasa de resolución de tickets",
+    "x": 360,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "bandit-agent",
+    "label": "🎰 Agente bandit\nDecisiones secuenciales bajo incertidumbre",
+    "x": 390,
+    "y": 170,
+    "w": 290
+   },
+   {
+    "id": "arm-a",
+    "label": "🅰️ Brazo A: Conciso\naccionado: 42, μ=0.61",
+    "x": 30,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "arm-b",
+    "label": "🅱️ Brazo B: Empático\naccionado: 38, μ=0.68",
+    "x": 210,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "arm-c",
+    "label": "🇨 Brazo C: Paso a paso\naccionado: 91, μ=0.87",
+    "x": 390,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "arm-d",
+    "label": "🇩 Brazo D: Formal\naccionado: 25, μ=0.54",
+    "x": 570,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "arm-e",
+    "label": "🇪 Brazo E: Divertido\naccionado: 19, μ=0.49",
+    "x": 750,
+    "y": 290,
+    "w": 150
+   },
+   {
+    "id": "epsilon-greedy",
+    "label": "🎲 Epsilon-Greedy\nε=0.1 explorar\n0.9 mejor brazo",
+    "x": 60,
+    "y": 410,
+    "w": 185
+   },
+   {
+    "id": "ucb",
+    "label": "📈 UCB1\nμ + √(2·ln t / n)\nbono de optimismo",
+    "x": 360,
+    "y": 410,
+    "w": 185
+   },
+   {
+    "id": "thompson",
+    "label": "🔔 Thompson Sampling\nmuestrear Beta(α, β)\nelegir la muestra máxima",
+    "x": 660,
+    "y": 410,
+    "w": 185
+   },
+   {
+    "id": "selected-arm",
+    "label": "👆 Accionar el brazo seleccionado\nServir la variante al siguiente ticket",
+    "x": 380,
+    "y": 530,
+    "w": 230
+   },
+   {
+    "id": "reward-signal",
+    "label": "💰 Señal de recompensa\nResuelto +1, escalado 0",
+    "x": 380,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "regret-tracker",
+    "label": "📉 Seguimiento del arrepentimiento\nArrepentimiento acumulado frente al\nbrazo óptimo: 3.2%",
+    "x": 90,
+    "y": 650,
+    "w": 190
+   },
+   {
+    "id": "posterior-update",
+    "label": "🔧 Actualización de la posterior\nBeta(α+1, β) en caso de éxito",
+    "x": 680,
+    "y": 650,
+    "w": 210
+   },
+   {
+    "id": "best-arm",
+    "label": "🏆 Ganador: Brazo C\n87% de resolución, +23% frente a la línea base",
+    "x": 380,
+    "y": 770,
+    "w": 270
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-agent",
+    "s": "optimization-goal",
+    "t": "bandit-agent",
+    "label": ""
+   },
+   {
+    "id": "agent-arm-a",
+    "s": "bandit-agent",
+    "t": "arm-a",
+    "label": ""
+   },
+   {
+    "id": "agent-arm-b",
+    "s": "bandit-agent",
+    "t": "arm-b",
+    "label": ""
+   },
+   {
+    "id": "agent-arm-c",
+    "s": "bandit-agent",
+    "t": "arm-c",
+    "label": ""
+   },
+   {
+    "id": "agent-arm-d",
+    "s": "bandit-agent",
+    "t": "arm-d",
+    "label": ""
+   },
+   {
+    "id": "agent-arm-e",
+    "s": "bandit-agent",
+    "t": "arm-e",
+    "label": ""
+   },
+   {
+    "id": "arm-a-epsilon",
+    "s": "arm-a",
+    "t": "epsilon-greedy",
+    "label": ""
+   },
+   {
+    "id": "arm-c-ucb",
+    "s": "arm-c",
+    "t": "ucb",
+    "label": ""
+   },
+   {
+    "id": "arm-e-thompson",
+    "s": "arm-e",
+    "t": "thompson",
+    "label": ""
+   },
+   {
+    "id": "epsilon-select",
+    "s": "epsilon-greedy",
+    "t": "selected-arm",
+    "label": ""
+   },
+   {
+    "id": "ucb-select",
+    "s": "ucb",
+    "t": "selected-arm",
+    "label": ""
+   },
+   {
+    "id": "thompson-select",
+    "s": "thompson",
+    "t": "selected-arm",
+    "label": ""
+   },
+   {
+    "id": "select-reward",
+    "s": "selected-arm",
+    "t": "reward-signal",
+    "label": "Resultado"
+   },
+   {
+    "id": "reward-regret",
+    "s": "reward-signal",
+    "t": "regret-tracker",
+    "label": ""
+   },
+   {
+    "id": "reward-posterior",
+    "s": "reward-signal",
+    "t": "posterior-update",
+    "label": "Actualizar"
+   },
+   {
+    "id": "posterior-agent",
+    "s": "posterior-update",
+    "t": "bandit-agent",
+    "label": "Siguiente ronda (bucle)"
+   },
+   {
+    "id": "reward-best",
+    "s": "reward-signal",
+    "t": "best-arm",
+    "label": "Convergió"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Plantear el equilibrio",
+    "description": "El agente debe maximizar la tasa de resolución entre cinco variantes de prompt sin desperdiciar demasiados tickets en brazos débiles.",
+    "input": "",
+    "nodes": [
+     "optimization-goal",
+     "bandit-agent"
+    ],
+    "edges": [
+     "goal-agent"
+    ]
+   },
+   {
+    "title": "Revisar los brazos",
+    "description": "Cada brazo lleva sus estadísticas acumuladas: cantidad de veces accionado y recompensa media estimada, desde el Brazo C con 0.87 hasta el Brazo E con 0.49.",
+    "input": "",
+    "nodes": [
+     "bandit-agent",
+     "arm-a",
+     "arm-b",
+     "arm-c",
+     "arm-d",
+     "arm-e"
+    ],
+    "edges": [
+     "agent-arm-a",
+     "agent-arm-b",
+     "agent-arm-c",
+     "agent-arm-d",
+     "agent-arm-e"
+    ]
+   },
+   {
+    "title": "Aplicar una estrategia de selección",
+    "description": "Epsilon-greedy explora el 10% del tiempo, UCB1 agrega un bono de optimismo para los brazos poco accionados y Thompson sampling toma muestras de la posterior Beta de cada brazo.",
+    "input": "",
+    "nodes": [
+     "arm-a",
+     "arm-c",
+     "arm-e",
+     "epsilon-greedy",
+     "ucb",
+     "thompson"
+    ],
+    "edges": [
+     "arm-a-epsilon",
+     "arm-c-ucb",
+     "arm-e-thompson"
+    ]
+   },
+   {
+    "title": "Accionar el brazo elegido",
+    "description": "La estrategia elige una variante, que se sirve al siguiente ticket de soporte entrante.",
+    "input": "",
+    "nodes": [
+     "epsilon-greedy",
+     "ucb",
+     "thompson",
+     "selected-arm"
+    ],
+    "edges": [
+     "epsilon-select",
+     "ucb-select",
+     "thompson-select"
+    ]
+   },
+   {
+    "title": "Observar la recompensa",
+    "description": "El ticket se resuelve (+1) o se escala (0), lo que da una única recompensa binaria para esta ronda.",
+    "input": "",
+    "nodes": [
+     "selected-arm",
+     "reward-signal"
+    ],
+    "edges": [
+     "select-reward"
+    ]
+   },
+   {
+    "title": "Seguir el arrepentimiento y actualizar las posteriores",
+    "description": "El arrepentimiento acumulado frente al brazo óptimo se mantiene en 3.2%, y la posterior Beta del brazo accionado se actualiza con el resultado observado.",
+    "input": "",
+    "nodes": [
+     "reward-signal",
+     "regret-tracker",
+     "posterior-update"
+    ],
+    "edges": [
+     "reward-regret",
+     "reward-posterior"
+    ]
+   },
+   {
+    "title": "Volver a la siguiente ronda",
+    "description": "Las posteriores actualizadas retroalimentan al agente, que con el tiempo desplaza más selecciones hacia los brazos más fuertes.",
+    "input": "",
+    "nodes": [
+     "posterior-update",
+     "bandit-agent"
+    ],
+    "edges": [
+     "posterior-agent"
+    ]
+   },
+   {
+    "title": "Converger en el ganador",
+    "description": "Tras suficientes rondas, el agente se queda con el Brazo C con 87% de resolución, una mejora del 23% sobre el prompt de línea base.",
+    "input": "",
+    "nodes": [
+     "reward-signal",
+     "best-arm"
+    ],
+    "edges": [
+     "reward-best"
+    ]
+   }
+  ]
+ }
+}

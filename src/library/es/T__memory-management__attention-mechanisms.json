@@ -1,0 +1,374 @@
+{
+ "cat": "memory-management",
+ "slug": "attention-mechanisms",
+ "name": "Attention Mechanisms",
+ "icon": "👁️",
+ "complexity": "high",
+ "description": "Enfoque selectivo en la información relevante para el contexto actual",
+ "features": [
+  "Puntuación de relevancia",
+  "Atención dinámica",
+  "Conciencia del contexto",
+  "Procesamiento eficiente"
+ ],
+ "tldr": {
+  "what": "Puntúa la información almacenada según su relevancia para la consulta actual y luego recupera solo los elementos con puntuación alta para reducir la carga de procesamiento.",
+  "when": "Grandes almacenes de memoria donde la mayor parte del contenido es irrelevante para cada consulta, y donde importan la latencia o el costo en tokens.",
+  "watchOut": "Las puntuaciones de atención pueden pasar por alto sistemáticamente contexto importante si las señales de relevancia están mal calibradas o sesgadas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Mecanismos de atención",
+  "description": "Enfoque selectivo en la información relevante mediante una puntuación de atención dinámica, que permite un procesamiento eficiente al priorizar los datos más importantes según el contexto.",
+  "nodes": [
+   {
+    "id": "query-processor",
+    "label": "Procesador de consultas",
+    "x": 50,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "intent-analyzer",
+    "label": "Analizador de intención",
+    "x": 250,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "keyword-extractor",
+    "label": "Extractor de palabras clave",
+    "x": 450,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "memory-scanner",
+    "label": "Escáner de memoria",
+    "x": 150,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "content-indexer",
+    "label": "Indexador de contenido",
+    "x": 350,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "candidate-pool",
+    "label": "Pool de candidatos",
+    "x": 550,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "similarity-calculator",
+    "label": "Calculador de similitud",
+    "x": 100,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "temporal-scorer",
+    "label": "Puntuador temporal",
+    "x": 300,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "context-scorer",
+    "label": "Puntuador de contexto",
+    "x": 500,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "attention-aggregator",
+    "label": "Agregador de atención",
+    "x": 300,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "softmax-normalizer",
+    "label": "Normalizador softmax",
+    "x": 500,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "weight-adjuster",
+    "label": "Ajustador de pesos",
+    "x": 700,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "attention-filter",
+    "label": "Filtro de atención",
+    "x": 500,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "priority-ranker",
+    "label": "Ordenador por prioridad",
+    "x": 700,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "context-assembler",
+    "label": "Ensamblador de contexto",
+    "x": 500,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "attention-tracker",
+    "label": "Rastreador de atención",
+    "x": 700,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "response-generator",
+    "label": "Generador de respuestas",
+    "x": 500,
+    "y": 1050,
+    "w": 180
+   },
+   {
+    "id": "attention-interface",
+    "label": "Interfaz de atención",
+    "x": 700,
+    "y": 1050,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-to-intent",
+    "s": "query-processor",
+    "t": "intent-analyzer",
+    "label": "consulta en bruto"
+   },
+   {
+    "id": "intent-to-keywords",
+    "s": "intent-analyzer",
+    "t": "keyword-extractor",
+    "label": "análisis de intención"
+   },
+   {
+    "id": "keywords-to-scanner",
+    "s": "keyword-extractor",
+    "t": "memory-scanner",
+    "label": "palabras clave"
+   },
+   {
+    "id": "scanner-to-indexer",
+    "s": "memory-scanner",
+    "t": "content-indexer",
+    "label": "contenido escaneado"
+   },
+   {
+    "id": "indexer-to-pool",
+    "s": "content-indexer",
+    "t": "candidate-pool",
+    "label": "elementos indexados"
+   },
+   {
+    "id": "pool-to-similarity",
+    "s": "candidate-pool",
+    "t": "similarity-calculator",
+    "label": "candidatos"
+   },
+   {
+    "id": "pool-to-temporal",
+    "s": "candidate-pool",
+    "t": "temporal-scorer",
+    "label": "candidatos"
+   },
+   {
+    "id": "pool-to-context",
+    "s": "candidate-pool",
+    "t": "context-scorer",
+    "label": "candidatos"
+   },
+   {
+    "id": "similarity-to-aggregator",
+    "s": "similarity-calculator",
+    "t": "attention-aggregator",
+    "label": "puntuaciones de similitud"
+   },
+   {
+    "id": "temporal-to-aggregator",
+    "s": "temporal-scorer",
+    "t": "attention-aggregator",
+    "label": "puntuaciones temporales"
+   },
+   {
+    "id": "context-to-aggregator",
+    "s": "context-scorer",
+    "t": "attention-aggregator",
+    "label": "puntuaciones de contexto"
+   },
+   {
+    "id": "aggregator-to-softmax",
+    "s": "attention-aggregator",
+    "t": "softmax-normalizer",
+    "label": "puntuaciones en bruto"
+   },
+   {
+    "id": "softmax-to-adjuster",
+    "s": "softmax-normalizer",
+    "t": "weight-adjuster",
+    "label": "pesos normalizados"
+   },
+   {
+    "id": "adjuster-to-filter",
+    "s": "weight-adjuster",
+    "t": "attention-filter",
+    "label": "pesos ajustados"
+   },
+   {
+    "id": "filter-to-ranker",
+    "s": "attention-filter",
+    "t": "priority-ranker",
+    "label": "elementos filtrados"
+   },
+   {
+    "id": "ranker-to-assembler",
+    "s": "priority-ranker",
+    "t": "context-assembler",
+    "label": "contexto ordenado"
+   },
+   {
+    "id": "assembler-to-tracker",
+    "s": "context-assembler",
+    "t": "attention-tracker",
+    "label": "contexto ensamblado"
+   },
+   {
+    "id": "tracker-to-generator",
+    "s": "attention-tracker",
+    "t": "response-generator",
+    "label": "datos de atención"
+   },
+   {
+    "id": "generator-to-interface",
+    "s": "response-generator",
+    "t": "attention-interface",
+    "label": "respuesta mejorada"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Procesamiento de la consulta y análisis de intención",
+    "description": "Procesa la consulta entrante y extrae la intención, las palabras clave y los requisitos de contexto",
+    "input": "Consulta del usuario o solicitud del sistema",
+    "nodes": [
+     "query-processor",
+     "intent-analyzer",
+     "keyword-extractor"
+    ],
+    "edges": [
+     "query-to-intent",
+     "intent-to-keywords"
+    ]
+   },
+   {
+    "title": "Escaneo del contenido de memoria",
+    "description": "Escanea el contenido de memoria disponible y prepara la información candidata para la puntuación de atención",
+    "input": "Representación de la consulta + elementos de memoria disponibles",
+    "nodes": [
+     "memory-scanner",
+     "content-indexer",
+     "candidate-pool"
+    ],
+    "edges": [
+     "keywords-to-scanner",
+     "scanner-to-indexer",
+     "indexer-to-pool"
+    ]
+   },
+   {
+    "title": "Puntuación de atención multidimensional",
+    "description": "Calcula las puntuaciones de atención usando similitud semántica, relevancia temporal e importancia contextual",
+    "input": "Consulta + elementos de información candidatos",
+    "nodes": [
+     "similarity-calculator",
+     "temporal-scorer",
+     "context-scorer",
+     "attention-aggregator"
+    ],
+    "edges": [
+     "pool-to-similarity",
+     "pool-to-temporal",
+     "pool-to-context",
+     "similarity-to-aggregator",
+     "temporal-to-aggregator",
+     "context-to-aggregator"
+    ]
+   },
+   {
+    "title": "Ponderación dinámica de la atención",
+    "description": "Aplica normalización softmax y ponderación dinámica según la complejidad de la consulta y el contexto",
+    "input": "Puntuaciones de atención en bruto + métricas de complejidad de la consulta",
+    "nodes": [
+     "attention-aggregator",
+     "softmax-normalizer",
+     "weight-adjuster"
+    ],
+    "edges": [
+     "aggregator-to-softmax",
+     "softmax-to-adjuster"
+    ]
+   },
+   {
+    "title": "Filtrado selectivo de información",
+    "description": "Filtra y prioriza la información según los pesos de atención y los valores umbral",
+    "input": "Pesos de atención + información candidata",
+    "nodes": [
+     "weight-adjuster",
+     "attention-filter",
+     "priority-ranker"
+    ],
+    "edges": [
+     "adjuster-to-filter",
+     "filter-to-ranker"
+    ]
+   },
+   {
+    "title": "Ensamblaje de información contextual",
+    "description": "Ensambla la información seleccionada en un contexto coherente, manteniendo el orden basado en la atención",
+    "input": "Información priorizada + pesos de atención",
+    "nodes": [
+     "priority-ranker",
+     "context-assembler",
+     "attention-tracker"
+    ],
+    "edges": [
+     "ranker-to-assembler",
+     "assembler-to-tracker"
+    ]
+   },
+   {
+    "title": "Generación de salida guiada por la atención",
+    "description": "Genera la respuesta usando el contexto ponderado por la atención, preservando el foco",
+    "input": "Contexto estructurado + consulta original",
+    "nodes": [
+     "attention-tracker",
+     "response-generator",
+     "attention-interface"
+    ],
+    "edges": [
+     "tracker-to-generator",
+     "generator-to-interface"
+    ]
+   }
+  ]
+ }
+}

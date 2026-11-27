@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "agent-status-activity-patterns",
+ "name": "Agent Status & Activity UI Patterns(ASP)",
+ "icon": "⚡",
+ "complexity": "medium",
+ "description": "Elementos de interfaz que muestran las actividades del agente en tiempo real, sus estados de razonamiento y su estado operativo para que el usuario esté al tanto",
+ "features": [
+  "Indicadores de actividad y visualizaciones de progreso en tiempo real",
+  "Animaciones de estado de razonamiento y pantallas de procesamiento",
+  "Insignias de estado del agente con métricas de salud operativa",
+  "Indicadores de tareas en segundo plano y gestión de colas"
+ ],
+ "tldr": {
+  "what": "Muestra las actividades del agente en tiempo real, sus estados de razonamiento y su salud operativa mediante indicadores animados, barras de progreso e insignias de estado.",
+  "when": "Tareas de agente de larga duración donde los usuarios necesitan visibilidad sobre lo que hace el agente y confianza en que no se ha estancado.",
+  "watchOut": "Las actualizaciones de UI demasiado detalladas o frecuentes pueden distraer a los usuarios o generar una falsa urgencia sin mejorar los resultados reales de la tarea."
+ },
+ "overview": {
+  "pattern": "Indicadores visuales en tiempo real que muestran las actividades y el estado operativo del agente",
+  "why": "Los usuarios necesitan transparencia sobre el progreso del agente para generar confianza y saber cuándo es necesario intervenir",
+  "insight": "Muestra no solo que el agente está trabajando, sino específicamente qué está haciendo y cuánto podría tardar",
+  "impl": [
+   {
+    "t": "Estados",
+    "d": "Define los estados de razonamiento, procesamiento, espera y completado"
+   },
+   {
+    "t": "Indicadores visuales",
+    "d": "Íconos animados, barras de progreso e insignias de estado"
+   },
+   {
+    "t": "Actualizaciones en tiempo real",
+    "d": "WebSocket o polling para cambios de estado en vivo"
+   },
+   {
+    "t": "Seguimiento del progreso",
+    "d": "Muestra porcentajes solo cuando se conoce el trabajo total; de lo contrario, muestra la etapa actual"
+   },
+   {
+    "t": "Registros de actividad",
+    "d": "Historial con marcas de tiempo de las acciones del agente"
+   }
+  ],
+  "example": "Razonando 🧠 → Procesando ⚙️ → Buscando 🔍 → Completado ✅",
+  "dos": [
+   "Muestra los cambios de estado significativos con prontitud, sin parpadeos rápidos",
+   "Usa íconos y animaciones consistentes en todos los estados",
+   "Ofrece descripciones significativas de las actividades en curso",
+   "Muestra barras de progreso para las tareas de larga duración",
+   "Incluye tiempos estimados de finalización cuando sea posible"
+  ],
+  "donts": [
+   "Usar estados genéricos de \"cargando\" sin contexto",
+   "Mostrar parpadeos rápidos de estado o animaciones bruscas",
+   "Ocultar al usuario los estados de error críticos",
+   "Dejar a los usuarios adivinando qué está haciendo el agente",
+   "Abrumar con demasiados indicadores de estado simultáneos"
+  ],
+  "use": [
+   "Tareas de agente de larga duración (>2 segundos)",
+   "Flujos de trabajo de múltiples pasos con dependencias",
+   "Tareas de procesamiento en segundo plano",
+   "Los usuarios necesitan visibilidad del progreso"
+  ],
+  "avoid": [
+   "Respuestas instantáneas (<500ms)",
+   "Acciones de confirmación simples",
+   "Pantallas de información estática",
+   "Operaciones de un solo paso"
+  ],
+  "metrics": [
+   {
+    "n": "Claridad del estado",
+    "d": "Comprensión del usuario sobre la actividad del agente"
+   },
+   {
+    "n": "Latencia de actualización",
+    "d": "Tiempo entre el cambio de estado y la actualización de la UI"
+   },
+   {
+    "n": "Precisión del progreso",
+    "d": "Tiempo estimado vs tiempo real de finalización"
+   },
+   {
+    "n": "Interrupciones del usuario",
+    "d": "Frecuencia de intervenciones innecesarias del usuario"
+   },
+   {
+    "n": "Recuperación de errores",
+    "d": "Tasa de éxito en el manejo de estados fallidos"
+   },
+   {
+    "n": "Generación de confianza",
+    "d": "Confianza del usuario en la fiabilidad del agente"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Procesamiento de documentos",
+    "d": "Muestra las etapas de análisis sintáctico → análisis → resumen → finalización"
+   },
+   {
+    "n": "Análisis de datos",
+    "d": "Muestra el estado de carga → procesamiento → cálculo → visualización"
+   },
+   {
+    "n": "Operaciones de búsqueda",
+    "d": "Indica consulta → filtrado → ranking → presentación de resultados"
+   },
+   {
+    "n": "Tareas en segundo plano",
+    "d": "Monitorea operaciones de sincronización de email, respaldo o limpieza"
+   },
+   {
+    "n": "Sistemas multiagente",
+    "d": "Sigue el estado de múltiples agentes que trabajan en paralelo"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Agent Status & Activity UI",
+  "description": "Elementos de interfaz en tiempo real que muestran los estados operativos del agente, sus procesos de razonamiento y las actividades del sistema con una latencia de actualización <100ms, para que el usuario esté al tanto con transparencia",
+  "nodes": [
+   {
+    "id": "agent-transparency-challenge",
+    "label": "👁️ Desafío de transparencia del agente\n\"¿Cómo ofrecer visibilidad en tiempo real\nsobre las actividades del agente, sus estados de razonamiento\ny su estado operativo?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "status-activity-framework",
+    "label": "📊 Framework de estado y actividad\n\"Monitoreo en tiempo real:\n• Indicadores operativos\n• Visualización de la actividad\n• Seguimiento del progreso\n• Monitoreo de salud\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "status-indicators",
+    "label": "🚦 Indicadores de estado\n\"Visualización de estados:\n• Sistemas de codificación por color\n• Diferenciación por forma\n• Patrones de animación\n• Actualizaciones <100ms\"",
+    "x": 200,
+    "y": 350,
+    "w": 230
+   },
+   {
+    "id": "real-time-updates",
+    "label": "⚡ Actualizaciones en tiempo real\n\"Sincronización en vivo:\n• Conexiones WebSocket\n• Actualizaciones basadas en eventos\n• UI optimista\n• Polling como respaldo\"",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "activity-visualization",
+    "label": "🎬 Visualización de la actividad\n\"Visualización del proceso:\n• Procesos de razonamiento\n• Árboles de decisión\n• Vistas de línea de tiempo\n• Divulgación progresiva\"",
+    "x": 600,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "thinking-process-ui",
+    "label": "🧠 UI del proceso de razonamiento\n\"Visualización cognitiva:\n• Pasos de razonamiento\n• Intervalos de confianza\n• Agregación de evidencia\n• Streaming con LangGraph\"",
+    "x": 750,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "multi-agent-coordination",
+    "label": "🤖 Coordinación multiagente\n\"Vista general del sistema:\n• Jerarquías de agentes\n• Flujos de comunicación\n• Asignación de recursos\n• Distribución de tareas\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "progress-indicators",
+    "label": "📈 Indicadores de progreso\n\"Seguimiento de tareas:\n• Barras de progreso contextuales\n• Estimación de tiempo\n• Indicadores de múltiples etapas\n• Pronósticos de finalización\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "error-recovery-displays",
+    "label": "🔧 Pantallas de recuperación de errores\n\"Manejo de fallos:\n• Jerarquía de estados de error\n• Indicadores de recuperación\n• Mecanismos de reintento\n• Estado del rollback\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "performance-monitoring",
+    "label": "📊 Monitoreo del rendimiento\n\"Salud del sistema:\n• Uso de recursos\n• Límites de tasa de la API\n• Profundidad de la cola\n• Métricas de salud\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "notification-systems",
+    "label": "🔔 Sistemas de notificación\n\"Jerarquía de alertas:\n• Alertas críticas\n• Filtrado inteligente\n• Momento adaptativo\n• Prevención de la fatiga\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "mobile-responsive-design",
+    "label": "📱 Diseño responsivo para móviles\n\"Multiplataforma:\n• Optimización táctil\n• Disposiciones adaptativas\n• Navegación por gestos\n• Cache sin conexión\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "monitoring-principle",
+    "label": "🎯 Principio de monitoreo del estado del agente\n\"Los indicadores de estado en tiempo real con actualizaciones <100ms ofrecen visibilidad transparente\nLa visualización del proceso de razonamiento genera confianza mediante la transparencia del razonamiento\nLas notificaciones multimodales aseguran que el usuario esté al tanto sin fatiga\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "agent-transparency-challenge",
+    "t": "status-activity-framework",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e2",
+    "s": "status-activity-framework",
+    "t": "status-indicators",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "status-activity-framework",
+    "t": "activity-visualization",
+    "label": "muestra"
+   },
+   {
+    "id": "e4",
+    "s": "status-activity-framework",
+    "t": "multi-agent-coordination",
+    "label": "coordina"
+   },
+   {
+    "id": "e5",
+    "s": "status-indicators",
+    "t": "real-time-updates",
+    "label": "impulsado por"
+   },
+   {
+    "id": "e6",
+    "s": "activity-visualization",
+    "t": "thinking-process-ui",
+    "label": "incluye"
+   },
+   {
+    "id": "e7",
+    "s": "multi-agent-coordination",
+    "t": "progress-indicators",
+    "label": "hace seguimiento mediante"
+   },
+   {
+    "id": "e8",
+    "s": "multi-agent-coordination",
+    "t": "error-recovery-displays",
+    "label": "maneja mediante"
+   },
+   {
+    "id": "e9",
+    "s": "real-time-updates",
+    "t": "progress-indicators",
+    "label": "permite"
+   },
+   {
+    "id": "e10",
+    "s": "thinking-process-ui",
+    "t": "error-recovery-displays",
+    "label": "soporta"
+   },
+   {
+    "id": "e11",
+    "s": "progress-indicators",
+    "t": "performance-monitoring",
+    "label": "alimenta"
+   },
+   {
+    "id": "e12",
+    "s": "error-recovery-displays",
+    "t": "notification-systems",
+    "label": "activa"
+   },
+   {
+    "id": "e13",
+    "s": "performance-monitoring",
+    "t": "mobile-responsive-design",
+    "label": "optimizado para"
+   },
+   {
+    "id": "e14",
+    "s": "notification-systems",
+    "t": "mobile-responsive-design",
+    "label": "adaptado para"
+   },
+   {
+    "id": "e15",
+    "s": "mobile-responsive-design",
+    "t": "monitoring-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de transparencia del agente",
+    "description": "¿Cómo pueden las interfaces ofrecer visibilidad en tiempo real sobre las actividades del agente, sus estados de razonamiento y su estado operativo para generar confianza y conciencia en el usuario?",
+    "input": "",
+    "nodes": [
+     "agent-transparency-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de estado y actividad",
+    "description": "Un framework de monitoreo en tiempo real aborda el desafío mediante indicadores operativos, visualización de la actividad, seguimiento del progreso y sistemas integrales de monitoreo de salud.",
+    "input": "",
+    "nodes": [
+     "status-activity-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Indicadores de estado y visualización de la actividad",
+    "description": "Los sistemas codificados por color con diferenciación por forma logran actualizaciones <100ms mediante conexiones WebSocket. Las visualizaciones de actividad incluyen procesos de razonamiento, árboles de decisión y streaming con LangGraph.",
+    "input": "",
+    "nodes": [
+     "status-indicators",
+     "real-time-updates",
+     "activity-visualization",
+     "thinking-process-ui"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Coordinación multiagente y progreso",
+    "description": "La vista general del sistema muestra las jerarquías de agentes y los flujos de comunicación. Los indicadores de progreso ofrecen seguimiento contextual, mientras que las pantallas de recuperación de errores manejan los estados de fallo con mecanismos de reintento.",
+    "input": "",
+    "nodes": [
+     "multi-agent-coordination",
+     "progress-indicators",
+     "error-recovery-displays"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Sistemas de rendimiento y notificación",
+    "description": "El monitoreo de salud sigue el uso de recursos y los límites de la API. Una jerarquía inteligente de notificaciones evita la fatiga mediante un momento adaptativo y filtrado contextual.",
+    "input": "",
+    "nodes": [
+     "performance-monitoring",
+     "notification-systems"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Implementación responsiva para móviles",
+    "description": "Diseño multiplataforma con optimización táctil y disposiciones adaptativas. La transparencia en tiempo real con visualización del proceso de razonamiento genera confianza al mantener al usuario plenamente al tanto.",
+    "input": "",
+    "nodes": [
+     "mobile-responsive-design",
+     "monitoring-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

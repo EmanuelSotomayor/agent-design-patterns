@@ -1,0 +1,381 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "role-based-teamwork",
+ "name": "Role-Based Teamwork",
+ "icon": "👥",
+ "complexity": "medium",
+ "description": "Equipos de agentes estructurados con roles y responsabilidades definidos",
+ "features": [
+  "Definiciones claras de roles",
+  "Estructuras de equipo jerárquicas",
+  "Patrones de delegación de tareas",
+  "Capacidades específicas por rol",
+  "Protocolos de coordinación del equipo",
+  "Responsabilidad por el desempeño"
+ ],
+ "tldr": {
+  "what": "Asigna roles distintos a los agentes con capacidades y responsabilidades específicas, coordinando su trabajo mediante traspasos definidos y patrones de delegación.",
+  "when": "Proyectos complejos que requieren experiencia especializada donde distintos agentes necesitan una responsabilidad clara y ejecución de tareas secuencial o en paralelo.",
+  "watchOut": "Los límites de los roles se convierten en cuellos de botella rígidos; los agentes se bloquean esperando a quienes ocupan un rol en lugar de adaptarse cuando alguien no está disponible o está sobrecargado."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Role-Based Teamwork",
+  "description": "Equipos de agentes estructurados donde a cada miembro se le asigna un rol, un objetivo y una historia de fondo explícitos (al estilo de CrewAI), que colaboran mediante traspasos claros y responsabilidad compartida para entregar un proyecto.",
+  "nodes": [
+   {
+    "id": "project-brief",
+    "label": "📋 Brief del proyecto\n\"Construir un dashboard de analítica de clientes\"",
+    "x": 350,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "crew-manager",
+    "label": "👥 Gerente del equipo\nArma el equipo y asigna roles",
+    "x": 360,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "pm-agent",
+    "label": "🎯 Product Manager\nObjetivo: Definir requisitos\nHistoria: 10 años como líder de producto",
+    "x": 20,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "architect-agent",
+    "label": "🏛️ Arquitecto\nObjetivo: Diseñar el sistema\nHistoria: Diseñador de sistemas senior",
+    "x": 210,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "developer-agent",
+    "label": "💻 Desarrollador\nObjetivo: Implementar funcionalidades\nHistoria: Ingeniero full-stack",
+    "x": 400,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "qa-agent",
+    "label": "🧪 Ingeniero de QA\nObjetivo: Validar la calidad\nHistoria: Experto en automatización de pruebas",
+    "x": 590,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "devops-agent",
+    "label": "🚀 DevOps\nObjetivo: Desplegar y monitorear\nHistoria: Veterano en SRE",
+    "x": 780,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "user-stories",
+    "label": "📝 Historias de usuario\nRequisitos del dashboard",
+    "x": 20,
+    "y": 430,
+    "w": 170
+   },
+   {
+    "id": "tech-design",
+    "label": "📐 Diseño técnico\nArquitectura de componentes",
+    "x": 210,
+    "y": 430,
+    "w": 170
+   },
+   {
+    "id": "feature-code",
+    "label": "⚙️ Código de la funcionalidad\nImplementación del dashboard",
+    "x": 400,
+    "y": 430,
+    "w": 170
+   },
+   {
+    "id": "test-report",
+    "label": "✅ Reporte de pruebas\n42 pruebas aprobadas",
+    "x": 590,
+    "y": 430,
+    "w": 170
+   },
+   {
+    "id": "deployment",
+    "label": "📦 Despliegue\nLanzamiento a producción",
+    "x": 780,
+    "y": 430,
+    "w": 170
+   },
+   {
+    "id": "shared-board",
+    "label": "📊 Tablero compartido del proyecto\nEstado, responsables, traspasos",
+    "x": 220,
+    "y": 570,
+    "w": 220
+   },
+   {
+    "id": "handoff-protocol",
+    "label": "🤝 Protocolo de traspaso\nCompuerta de entrega entre roles",
+    "x": 500,
+    "y": 570,
+    "w": 220
+   },
+   {
+    "id": "delivered",
+    "label": "✨ Dashboard entregado\nFuncionalidad de analítica en producción",
+    "x": 360,
+    "y": 700,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "brief-manager",
+    "s": "project-brief",
+    "t": "crew-manager",
+    "label": ""
+   },
+   {
+    "id": "manager-pm",
+    "s": "crew-manager",
+    "t": "pm-agent",
+    "label": "Asignar rol"
+   },
+   {
+    "id": "manager-architect",
+    "s": "crew-manager",
+    "t": "architect-agent",
+    "label": "Asignar rol"
+   },
+   {
+    "id": "manager-developer",
+    "s": "crew-manager",
+    "t": "developer-agent",
+    "label": "Asignar rol"
+   },
+   {
+    "id": "manager-qa",
+    "s": "crew-manager",
+    "t": "qa-agent",
+    "label": "Asignar rol"
+   },
+   {
+    "id": "manager-devops",
+    "s": "crew-manager",
+    "t": "devops-agent",
+    "label": "Asignar rol"
+   },
+   {
+    "id": "pm-stories",
+    "s": "pm-agent",
+    "t": "user-stories",
+    "label": "Produce"
+   },
+   {
+    "id": "architect-design",
+    "s": "architect-agent",
+    "t": "tech-design",
+    "label": "Produce"
+   },
+   {
+    "id": "developer-code",
+    "s": "developer-agent",
+    "t": "feature-code",
+    "label": "Produce"
+   },
+   {
+    "id": "qa-report",
+    "s": "qa-agent",
+    "t": "test-report",
+    "label": "Produce"
+   },
+   {
+    "id": "devops-deploy",
+    "s": "devops-agent",
+    "t": "deployment",
+    "label": "Produce"
+   },
+   {
+    "id": "stories-design",
+    "s": "user-stories",
+    "t": "tech-design",
+    "label": "Traspaso"
+   },
+   {
+    "id": "design-code",
+    "s": "tech-design",
+    "t": "feature-code",
+    "label": "Traspaso"
+   },
+   {
+    "id": "code-report",
+    "s": "feature-code",
+    "t": "test-report",
+    "label": "Traspaso"
+   },
+   {
+    "id": "report-deploy",
+    "s": "test-report",
+    "t": "deployment",
+    "label": "Traspaso"
+   },
+   {
+    "id": "pm-board",
+    "s": "pm-agent",
+    "t": "shared-board",
+    "label": "Estado"
+   },
+   {
+    "id": "developer-board",
+    "s": "developer-agent",
+    "t": "shared-board",
+    "label": "Estado"
+   },
+   {
+    "id": "devops-board",
+    "s": "devops-agent",
+    "t": "shared-board",
+    "label": "Estado"
+   },
+   {
+    "id": "board-handoff",
+    "s": "shared-board",
+    "t": "handoff-protocol",
+    "label": ""
+   },
+   {
+    "id": "deploy-delivered",
+    "s": "deployment",
+    "t": "delivered",
+    "label": ""
+   },
+   {
+    "id": "handoff-delivered",
+    "s": "handoff-protocol",
+    "t": "delivered",
+    "label": "Verificar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Brief del proyecto",
+    "description": "Llega un entregable multifuncional que ningún rol puede completar por sí solo.",
+    "input": "",
+    "nodes": [
+     "project-brief"
+    ],
+    "edges": [
+     "brief-manager"
+    ]
+   },
+   {
+    "title": "Armado del equipo",
+    "description": "El gerente del equipo instancia cada agente con un rol, un objetivo y una historia de fondo explícitos.",
+    "input": "",
+    "nodes": [
+     "crew-manager",
+     "pm-agent",
+     "architect-agent",
+     "developer-agent",
+     "qa-agent",
+     "devops-agent"
+    ],
+    "edges": [
+     "manager-pm",
+     "manager-architect",
+     "manager-developer",
+     "manager-qa",
+     "manager-devops"
+    ]
+   },
+   {
+    "title": "Definición de requisitos",
+    "description": "El Product Manager es responsable del alcance y convierte el brief en historias de usuario concretas.",
+    "input": "",
+    "nodes": [
+     "pm-agent",
+     "user-stories"
+    ],
+    "edges": [
+     "pm-stories"
+    ]
+   },
+   {
+    "title": "Traspaso a arquitectura",
+    "description": "Las historias de usuario se entregan al Arquitecto, que diseña la estructura de componentes.",
+    "input": "",
+    "nodes": [
+     "user-stories",
+     "architect-agent",
+     "tech-design"
+    ],
+    "edges": [
+     "stories-design",
+     "architect-design"
+    ]
+   },
+   {
+    "title": "Traspaso a implementación",
+    "description": "El Desarrollador recibe el diseño e implementa las funcionalidades del dashboard.",
+    "input": "",
+    "nodes": [
+     "tech-design",
+     "developer-agent",
+     "feature-code"
+    ],
+    "edges": [
+     "design-code",
+     "developer-code"
+    ]
+   },
+   {
+    "title": "Traspaso a calidad",
+    "description": "QA toma el código de la funcionalidad, ejecuta la suite y produce un reporte de pruebas validado.",
+    "input": "",
+    "nodes": [
+     "feature-code",
+     "qa-agent",
+     "test-report"
+    ],
+    "edges": [
+     "code-report",
+     "qa-report"
+    ]
+   },
+   {
+    "title": "Traspaso a despliegue",
+    "description": "DevOps despliega la versión validada a producción.",
+    "input": "",
+    "nodes": [
+     "test-report",
+     "devops-agent",
+     "deployment"
+    ],
+    "edges": [
+     "report-deploy",
+     "devops-deploy"
+    ]
+   },
+   {
+    "title": "Coordinación y entrega",
+    "description": "El tablero compartido y el protocolo de traspaso mantienen a cada rol responsable hasta la entrega.",
+    "input": "",
+    "nodes": [
+     "shared-board",
+     "handoff-protocol",
+     "deployment",
+     "delivered"
+    ],
+    "edges": [
+     "pm-board",
+     "developer-board",
+     "devops-board",
+     "board-handoff",
+     "deploy-delivered",
+     "handoff-delivered"
+    ]
+   }
+  ]
+ }
+}

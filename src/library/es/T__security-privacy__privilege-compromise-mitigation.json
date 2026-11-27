@@ -1,0 +1,321 @@
+{
+ "cat": "security-privacy",
+ "slug": "privilege-compromise-mitigation",
+ "name": "Privilege Compromise Mitigation Pattern(PCM)",
+ "icon": "👤",
+ "complexity": "high",
+ "description": "Evita la escalada de privilegios y las operaciones no autorizadas mediante un control de acceso estricto",
+ "features": [
+  "Control de acceso basado en roles (RBAC)",
+  "Aplicación de la separación de identidades",
+  "Principio de mínimo privilegio",
+  "Reducción dinámica de privilegios",
+  "Monitoreo del uso de privilegios",
+  "Arquitectura zero-trust"
+ ],
+ "tldr": {
+  "what": "Aplica control de acceso basado en roles con separación de identidades, mínimo privilegio por defecto y monitoreo continuo de las operaciones del agente frente a los niveles de autorización del usuario.",
+  "when": "Sistemas multiusuario donde los agentes acceden a datos sensibles, realizan transacciones financieras u operan entre departamentos con distintos requisitos de autorización.",
+  "watchOut": "Las reglas de privilegios demasiado granulares crean cuellos de botella; los agentes fallan en silencio o piden confirmación a los usuarios una y otra vez, degradando la usabilidad más rápido de lo que mejora la seguridad."
+ },
+ "overview": {
+  "pattern": "Evita la escalada de privilegios mediante RBAC, separación de identidades y reducción dinámica de privilegios",
+  "why": "La herencia de privilegios del agente permite el movimiento lateral; los límites estrictos evitan el compromiso",
+  "insight": "Identidad separada + mínimo privilegio + límites de tiempo + zero trust = operaciones seguras",
+  "impl": [
+   {
+    "t": "Separar identidades",
+    "d": "Identidad del agente ≠ identidad del usuario"
+   },
+   {
+    "t": "Aplicar RBAC",
+    "d": "Permisos basados en roles, no en usuarios"
+   },
+   {
+    "t": "Mínimo privilegio",
+    "d": "Permisos mínimos para cada operación"
+   },
+   {
+    "t": "Reducción dinámica",
+    "d": "Reduce los privilegios según el contexto"
+   },
+   {
+    "t": "Zero Trust",
+    "d": "Verifica cada acción, no confíes en nada"
+   }
+  ],
+  "example": "identity_separation → role_assignment → permission_check → context_evaluation → access_decision",
+  "dos": [
+   "Implementa una separación estricta de identidades entre agentes y usuarios",
+   "Usa expiración y renovación de privilegios basadas en tiempo",
+   "Aplica límites de permisos conscientes del contexto",
+   "Monitorea los patrones de uso de privilegios para detectar anomalías",
+   "Exige aprobación de múltiples factores para operaciones de alto valor"
+  ],
+  "donts": [
+   "Dejar que los agentes hereden automáticamente todos los privilegios del usuario",
+   "Otorgar permisos elevados permanentes",
+   "Omitir las verificaciones de privilegios en operaciones \"de confianza\"",
+   "Permitir la acumulación de privilegios con el tiempo",
+   "Ignorar patrones inusuales de escalada de privilegios"
+  ],
+  "use": [
+   "Despliegues de IA empresarial",
+   "Plataformas multiusuario",
+   "Acceso a datos sensibles",
+   "Sistemas sujetos a regulación de cumplimiento"
+  ],
+  "avoid": [
+   "Sistemas locales de un solo usuario",
+   "Aplicaciones de solo lectura",
+   "Entornos aislados",
+   "Solo operaciones sin privilegios"
+  ],
+  "metrics": [
+   {
+    "n": "Intentos de escalada",
+    "d": "Solicitudes de privilegios no autorizadas por día"
+   },
+   {
+    "n": "Duración de los privilegios",
+    "d": "Minutos promedio antes de la reducción"
+   },
+   {
+    "n": "Tasa de aprobación",
+    "d": "% de operaciones de alto riesgo aprobadas"
+   },
+   {
+    "n": "Violaciones de identidad",
+    "d": "Intentos de suplantación de agentes"
+   },
+   {
+    "n": "Puntaje de cumplimiento",
+    "d": "% de operaciones dentro de la política"
+   },
+   {
+    "n": "Pista de auditoría",
+    "d": "Cobertura completa del historial de privilegios"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Sistemas financieros",
+    "d": "Evitar operaciones, transferencias o accesos a cuentas no autorizados"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Asegurar que el acceso a PHI siga el principio de mínimo necesario"
+   },
+   {
+    "n": "Automatización empresarial",
+    "d": "Controlar la administración de sistemas sin derechos completos de administrador"
+   },
+   {
+    "n": "IA gubernamental",
+    "d": "Mantener niveles de habilitación y restricciones de necesidad de saber"
+   },
+   {
+    "n": "Plataformas cloud",
+    "d": "Evitar el movimiento lateral y el abuso de recursos en sistemas multi-tenant"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Privilege Compromise Mitigation Pattern",
+  "description": "Evita ataques de escalada de privilegios mediante el principio de mínimo privilegio, controles de acceso dinámicos y monitoreo continuo de privilegios",
+  "nodes": [
+   {
+    "id": "privilege-attack",
+    "label": "🎯 Ataque de escalada de privilegios\n\"Agente comprometido mediante phishing\nEl atacante intenta acceder a funciones de administrador\ny a datos financieros sensibles\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "no-controls",
+    "label": "⚠️ Sin controles de privilegios\n\"El agente tiene permisos amplios\nAcceso irrestricto al sistema\nSin monitoreo\"",
+    "x": 200,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "full-access",
+    "label": "🔓 Acceso irrestricto\n\"Puede leer todas las bases de datos\nModificar la configuración del sistema\nAcceder a paneles de administración\"",
+    "x": 200,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "data-breach",
+    "label": "💀 Compromiso total\n\"Datos financieros robados\nBackdoors instalados en el sistema\nDatos de clientes expuestos\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "privilege-controls",
+    "label": "🛡️ Controles de privilegios activos\n\"Principio de mínimo privilegio\nGestión dinámica de accesos\nMonitoreo continuo\"",
+    "x": 600,
+    "y": 200,
+    "w": 220
+   },
+   {
+    "id": "access-validation",
+    "label": "🔍 Validación de acceso\n\"Solicitud: acceso al panel de administración\n• Rol requerido: Finance Admin\n• Rol del agente: Basic User\n• Resultado: ACCESO DENEGADO\"",
+    "x": 600,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "anomaly-detected",
+    "label": "🚨 Detección de anomalías\n\"Patrones de acceso inusuales detectados\nIntento de escalada de privilegios\nContención automática activada\"",
+    "x": 600,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "containment",
+    "label": "🔒 Contención automática\n\"Privilegios del agente revocados\nActividad sospechosa registrada\nEquipo de seguridad alertado\"",
+    "x": 600,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "protection-principle",
+    "label": "🎯 Principio de mínimo privilegio\n\"Otorga los permisos mínimos necesarios\nMonitorea todo uso de privilegios\nRevoca el acceso ante sospechas\"",
+    "x": 400,
+    "y": 800,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "privilege-attack",
+    "t": "no-controls",
+    "label": "ataca el sistema desprotegido"
+   },
+   {
+    "id": "e2",
+    "s": "privilege-attack",
+    "t": "privilege-controls",
+    "label": "ataca el sistema protegido"
+   },
+   {
+    "id": "e3",
+    "s": "no-controls",
+    "t": "full-access",
+    "label": "otorga permisos amplios"
+   },
+   {
+    "id": "e4",
+    "s": "full-access",
+    "t": "data-breach",
+    "label": "permite el compromiso total"
+   },
+   {
+    "id": "e5",
+    "s": "privilege-controls",
+    "t": "access-validation",
+    "label": "valida todas las solicitudes"
+   },
+   {
+    "id": "e6",
+    "s": "access-validation",
+    "t": "anomaly-detected",
+    "label": "patrón sospechoso identificado"
+   },
+   {
+    "id": "e7",
+    "s": "anomaly-detected",
+    "t": "containment",
+    "label": "activa la contención"
+   },
+   {
+    "id": "e8",
+    "s": "data-breach",
+    "t": "protection-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e9",
+    "s": "containment",
+    "t": "protection-principle",
+    "label": "protección exitosa"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Escenario de ataque de escalada de privilegios",
+    "description": "El agente queda comprometido por un ataque de phishing. El atacante ahora intenta explotar los privilegios del agente para acceder a funciones de administrador y robar datos financieros sensibles.",
+    "input": "",
+    "nodes": [
+     "privilege-attack"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Dos posturas de seguridad: protegido vs. desprotegido",
+    "description": "El mismo ataque apunta a dos sistemas distintos: uno sin controles de privilegios (izquierda) vs. uno con mitigación integral del compromiso de privilegios (derecha).",
+    "input": "",
+    "nodes": [
+     "no-controls",
+     "privilege-controls"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Sistema desprotegido: los permisos amplios permiten la brecha",
+    "description": "El sistema sin controles de privilegios otorga al agente acceso irrestricto a bases de datos, paneles de administración y configuración del sistema, lo que permite un compromiso total.",
+    "input": "",
+    "nodes": [
+     "full-access",
+     "data-breach"
+    ],
+    "edges": [
+     "e3",
+     "e4"
+    ]
+   },
+   {
+    "title": "Sistema protegido: la validación de acceso bloquea la escalada",
+    "description": "Los controles de privilegios aplican el principio de mínimo privilegio y validan que un agente con rol de usuario básico no pueda acceder a funciones de administrador. El acceso se deniega por privilegios de rol insuficientes.",
+    "input": "",
+    "nodes": [
+     "access-validation"
+    ],
+    "edges": [
+     "e5"
+    ]
+   },
+   {
+    "title": "Detección de anomalías y alerta",
+    "description": "El monitoreo continuo detecta patrones de acceso inusuales e intentos de escalada de privilegios, identifica el intento de compromiso y activa la respuesta de seguridad.",
+    "input": "",
+    "nodes": [
+     "anomaly-detected"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Contención automática y protección exitosa",
+    "description": "El sistema revoca automáticamente los privilegios del agente, registra la actividad sospechosa y alerta al equipo de seguridad. El ataque queda contenido y se demuestra la efectividad del principio de mínimo privilegio.",
+    "input": "",
+    "nodes": [
+     "containment",
+     "protection-principle"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9"
+    ]
+   }
+  ]
+ }
+}

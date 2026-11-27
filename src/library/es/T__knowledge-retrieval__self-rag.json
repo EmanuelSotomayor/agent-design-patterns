@@ -1,0 +1,345 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "self-rag",
+ "name": "Self-RAG(SRAG)",
+ "icon": "🪞",
+ "complexity": "high",
+ "description": "RAG autorreflexivo que determina de forma adaptativa si la recuperación es necesaria y evalúa la calidad de lo recuperado mediante tokens de reflexión",
+ "features": [
+  "Predicción de la necesidad de recuperación",
+  "Evaluación del contenido recuperado",
+  "Evaluación de la calidad de la salida",
+  "Mecanismos de autocorrección",
+  "Tokens de reflexión",
+  "Estrategias de recuperación adaptativas"
+ ],
+ "tldr": {
+  "what": "El agente decide si recuperar conocimiento externo, evalúa la calidad del contenido recuperado y valora su propia salida antes de responder, usando tokens de reflexión para guiar estas decisiones.",
+  "when": "Tareas que requieren precisión factual donde la confianza del agente varía, o donde el costo de recuperación importa y quieres omitir búsquedas innecesarias.",
+  "watchOut": "Los tokens de reflexión agregan latencia y costo; una mala calibración hace que el agente recupere cuando no debería u omita la recuperación cuando sí debería hacerla."
+ },
+ "overview": {
+  "pattern": "Sistema RAG con decisiones de recuperación adaptativas y autorreflexión mediante tokens de reflexión entrenados para evaluar la calidad",
+  "why": "Mejora la precisión factual y reduce las alucinaciones mediante autocrítica iterativa y recuperación selectiva de conocimiento",
+  "insight": "Los tokens de reflexión ([Retrieve], [IsRel], [IsSup], [IsUse]) permiten a los modelos evaluar la necesidad de recuperación y la calidad de la respuesta",
+  "impl": [
+   {
+    "t": "Compuerta de recuperación",
+    "d": "Evalúa si se necesita conocimiento externo para la consulta"
+   },
+   {
+    "t": "Recuperar y ordenar",
+    "d": "Obtiene pasajes relevantes y aplica reranking neuronal"
+   },
+   {
+    "t": "Generar borrador",
+    "d": "Crea una respuesta inicial usando el contexto recuperado"
+   },
+   {
+    "t": "Autocrítica",
+    "d": "Usa tokens de reflexión para evaluar la calidad de la respuesta"
+   },
+   {
+    "t": "Refinar la salida",
+    "d": "Mejora de forma iterativa según la autoevaluación"
+   }
+  ],
+  "example": "query → retrieval_gate → retrieve → generate → self_critique → [refine] → final_response",
+  "dos": [
+   "Entrena modelos con tokens de reflexión ([Retrieve], [IsRel], [IsSup], [IsUse])",
+   "Implementa la predicción de la necesidad de recuperación para evitar contexto innecesario",
+   "Usa umbrales de confianza calibrados para disparar el refinamiento",
+   "Exige citas con fundamentación en evidencia",
+   "Guarda en cache las salidas de reflexión y los resultados de recuperación para mayor eficiencia"
+  ],
+  "donts": [
+   "Permitir tokens de reflexión sin restricciones que se vuelven verbosos",
+   "Omitir la validación de la calibración de la autocrítica frente a datos de referencia",
+   "Crear bucles de refinamiento infinitos sin límite de iteraciones",
+   "Depender únicamente de la autoevaluación sin validación externa",
+   "Ignorar el costo computacional de varias rondas de generación"
+  ],
+  "use": [
+   "La precisión factual y la verificabilidad son requisitos críticos",
+   "La experiencia en el dominio requiere equilibrar el conocimiento paramétrico y el recuperado",
+   "Las aplicaciones necesitan calibración de la confianza y cuantificación de la incertidumbre",
+   "Decisiones de alto impacto que requieren razonamiento explicable y citas",
+   "Tareas intensivas en conocimiento en dominios médicos, legales o científicos"
+  ],
+  "avoid": [
+   "Consultas simples donde el RAG estándar ofrece precisión suficiente",
+   "Aplicaciones en tiempo real con restricciones estrictas de latencia",
+   "Entornos con recursos limitados que restringen varias rondas de generación",
+   "Dominios sin datos de entrenamiento suficientes para una autocrítica confiable",
+   "Aplicaciones donde la sobrecarga de las citas es innecesaria"
+  ],
+  "metrics": [
+   {
+    "n": "Fidelidad de la respuesta",
+    "d": "Precisión factual y coherencia con la evidencia recuperada"
+   },
+   {
+    "n": "Calibración de la reflexión",
+    "d": "Correlación entre los puntajes de confianza y la precisión real"
+   },
+   {
+    "n": "Precisión de la recuperación",
+    "d": "Proporción de pasajes recuperados que son realmente útiles"
+   },
+   {
+    "n": "Cobertura de citas",
+    "d": "Porcentaje de afirmaciones respaldadas por evidencia recuperada"
+   },
+   {
+    "n": "Efectividad del refinamiento",
+    "d": "Mejora de calidad mediante autocorrección iterativa"
+   },
+   {
+    "n": "Eficiencia computacional",
+    "d": "Ganancia de calidad por cada token o llamada de recuperación adicional"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Preguntas y respuestas médicas",
+    "d": "Apoyo a decisiones clínicas que requiere alta precisión y respuestas basadas en evidencia"
+   },
+   {
+    "n": "Investigación legal",
+    "d": "Análisis de jurisprudencia con requisitos de citas y evaluación de la confianza"
+   },
+   {
+    "n": "Revisión de literatura científica",
+    "d": "Síntesis de investigaciones con atribución de fuentes y cuantificación de la incertidumbre"
+   },
+   {
+    "n": "Análisis financiero",
+    "d": "Investigación de inversiones que requiere equilibrar conocimiento paramétrico y datos de mercado en tiempo real"
+   },
+   {
+    "n": "Contenido educativo",
+    "d": "Tutoría académica con información verificada y seguimiento de la confianza en el aprendizaje"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Self-RAG (Self-Reflective Retrieve-Augmented Generation)",
+  "description": "Sistema RAG mejorado con capacidades de autorreflexión que evalúa cuándo recuperar información, valora la calidad de la recuperación y valida la precisión de las respuestas generadas.",
+  "nodes": [
+   {
+    "id": "user-query",
+    "label": "❓ Consulta del usuario\n\"¿Cuál es la capital\nde Francia?\"",
+    "x": 400,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "self-reflection-1",
+    "label": "🤔 Autorreflexión\n\"¿Necesito recuperar\npara esta pregunta?\"\n[Retrieve] = No",
+    "x": 400,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "direct-generation",
+    "label": "🤖 Generación directa\n\"París es la capital\nde Francia\"",
+    "x": 200,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "complex-query",
+    "label": "❓ Consulta compleja\n\"Tasas de eficacia más\nrecientes de vacunas\ncontra COVID-19 en 2024\"",
+    "x": 600,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "self-reflection-2",
+    "label": "🤔 Autorreflexión\n\"¿Necesito recuperar?\"\n[Retrieve] = Sí\n(Se necesita información actual)",
+    "x": 600,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "retrieval",
+    "label": "📚 Recuperación\nObtiene estudios recientes\ny datos de salud",
+    "x": 600,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "relevance-check",
+    "label": "✓ Verificación de relevancia\n\"¿Los documentos son relevantes?\"\n[IsRel] = Parcialmente\n(Algunos desactualizados)",
+    "x": 600,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "additional-retrieval",
+    "label": "🔄 Recuperación adicional\nObtiene estudios\nmás recientes de 2024",
+    "x": 800,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "generation",
+    "label": "🤖 Generación\n\"Tasas de eficacia 2024:\nPfizer 95%, Moderna 94%\"",
+    "x": 600,
+    "y": 550,
+    "w": 220
+   },
+   {
+    "id": "utility-check",
+    "label": "🎯 Verificación de utilidad\n\"¿La respuesta está respaldada?\"\n[IsSupp] = Sí\n[IsUse] = Sí",
+    "x": 600,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "final-answer",
+    "label": "✅ Respuesta final\nRespuesta de alta confianza\ncon atribución de fuentes",
+    "x": 400,
+    "y": 750,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "user-query",
+    "t": "self-reflection-1",
+    "label": "reflexionar"
+   },
+   {
+    "id": "e2",
+    "s": "self-reflection-1",
+    "t": "direct-generation",
+    "label": "[No Retrieve]"
+   },
+   {
+    "id": "e3",
+    "s": "complex-query",
+    "t": "self-reflection-2",
+    "label": "reflexionar"
+   },
+   {
+    "id": "e4",
+    "s": "self-reflection-2",
+    "t": "retrieval",
+    "label": "[Retrieve]"
+   },
+   {
+    "id": "e5",
+    "s": "retrieval",
+    "t": "relevance-check",
+    "label": "evaluar"
+   },
+   {
+    "id": "e6",
+    "s": "relevance-check",
+    "t": "additional-retrieval",
+    "label": "[IsRel] = Parcial"
+   },
+   {
+    "id": "e7",
+    "s": "additional-retrieval",
+    "t": "generation",
+    "label": "contexto enriquecido"
+   },
+   {
+    "id": "e8",
+    "s": "relevance-check",
+    "t": "generation",
+    "label": "[IsRel] = Sí"
+   },
+   {
+    "id": "e9",
+    "s": "generation",
+    "t": "utility-check",
+    "label": "validar"
+   },
+   {
+    "id": "e10",
+    "s": "utility-check",
+    "t": "final-answer",
+    "label": "[IsSupp] & [IsUse]"
+   },
+   {
+    "id": "e11",
+    "s": "direct-generation",
+    "t": "final-answer",
+    "label": "respuesta simple"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Autorreflexión sobre la necesidad de recuperación",
+    "description": "El modelo evalúa si se necesita conocimiento externo. Las preguntas factuales simples (como 'capital de Francia') reciben el token [Retrieve] = No.",
+    "input": "",
+    "nodes": [
+     "user-query",
+     "self-reflection-1"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Ruta directa vs aumentada con recuperación",
+    "description": "Para consultas simples, genera directamente a partir del conocimiento paramétrico. Para temas complejos o actuales, dispara la recuperación con el token [Retrieve] = Sí.",
+    "input": "",
+    "nodes": [
+     "direct-generation",
+     "complex-query",
+     "self-reflection-2"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Evaluación de la calidad de la recuperación",
+    "description": "Después de la recuperación, el modelo reflexiona sobre la relevancia de los documentos usando tokens [IsRel]. Los documentos parcialmente relevantes disparan una recuperación adicional dirigida.",
+    "input": "",
+    "nodes": [
+     "retrieval",
+     "relevance-check",
+     "additional-retrieval"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Generación de la respuesta con autoevaluación",
+    "description": "Genera la respuesta a partir del contexto recuperado y luego se autoevalúa con los tokens [IsSupp] (respaldada por evidencia) e [IsUse] (útil para el usuario).",
+    "input": "",
+    "nodes": [
+     "generation",
+     "utility-check"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Respuesta final con confianza",
+    "description": "Solo las salidas que pasan todas las verificaciones de reflexión ([IsSupp] = Sí, [IsUse] = Sí) se convierten en la respuesta final de alta confianza.",
+    "input": "",
+    "nodes": [
+     "final-answer"
+    ],
+    "edges": [
+     "e10",
+     "e11"
+    ]
+   }
+  ]
+ }
+}

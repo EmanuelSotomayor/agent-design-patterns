@@ -1,0 +1,422 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "human-on-the-loop",
+ "name": "Human On the Loop(HOTL)",
+ "icon": "👁️",
+ "complexity": "high",
+ "description": "Supervisión humana de sistemas de IA autónomos con la capacidad de monitorear, intervenir o tomar el control cuando sea necesario",
+ "features": [
+  "Monitoreo y observación continuos",
+  "Intervención basada en excepciones",
+  "Capacidades de anulación y toma de control",
+  "Dashboards de monitoreo del rendimiento",
+  "Sistemas de alertas automatizadas",
+  "Interfaces de control supervisor"
+ ],
+ "tldr": {
+  "what": "El sistema de IA opera de forma autónoma mientras los humanos monitorean dashboards e intervienen solo cuando las excepciones disparan alertas o se necesita una anulación manual.",
+  "when": "Dominios de alto riesgo donde la velocidad autónoma importa, pero los modos de falla poco frecuentes representan un riesgo inaceptable y los humanos pueden responder a tiempo de forma realista.",
+  "watchOut": "Los humanos a menudo pasan por alto alertas o no intervienen con decisión durante crisis que evolucionan rápido, especialmente después de largos períodos de monitoreo sin incidentes."
+ },
+ "overview": {
+  "pattern": "Supervisión humana de sistemas de IA autónomos con capacidades de monitoreo e intervención",
+  "why": "Permite una operación autónoma de alta velocidad mientras se mantiene el control humano y la supervisión de seguridad para los casos límite",
+  "insight": "Los humanos supervisan en lugar de participar, e intervienen solo cuando la IA se encuentra con situaciones excepcionales",
+  "impl": [
+   {
+    "t": "Configurar el monitoreo",
+    "d": "Crea dashboards en tiempo real y sistemas de alertas"
+   },
+   {
+    "t": "Definir límites",
+    "d": "Establece parámetros operativos y límites de riesgo"
+   },
+   {
+    "t": "Detección de excepciones",
+    "d": "Configura alertas de anomalías y umbrales"
+   },
+   {
+    "t": "Controles de anulación",
+    "d": "Construye mecanismos de intervención y toma de control"
+   },
+   {
+    "t": "Reanudar la automatización",
+    "d": "Permite un regreso fluido a la operación autónoma"
+   }
+  ],
+  "example": "autonomous_operation → monitor_dashboard → exception_alert → human_override → resume_autonomy",
+  "dos": [
+   "Diseña dashboards de monitoreo en tiempo real completos",
+   "Establece límites operativos y parámetros de riesgo claros",
+   "Implementa mecanismos de anulación rápidos e intuitivos",
+   "Proporciona información contextual para las decisiones humanas",
+   "Prueba regularmente los procedimientos de toma de control de emergencia"
+  ],
+  "donts": [
+   "Abrumar a los operadores con demasiadas alertas",
+   "Diseñar interfaces de intervención demasiado complejas",
+   "Permitir la operación autónoma sin límites claros",
+   "Omitir la capacitación de los operadores en los procedimientos de anulación",
+   "Ignorar las limitaciones de carga de trabajo y atención de los humanos"
+  ],
+  "use": [
+   "Operaciones autónomas de alta velocidad",
+   "IA confiable con casos límite ocasionales",
+   "Requisitos de supervisión",
+   "Necesidad de capacidad de intervención de emergencia"
+  ],
+  "avoid": [
+   "Se necesita toma de decisiones humana continua",
+   "Sistemas de IA poco confiables o no probados",
+   "Requisitos legales de aprobación humana activa",
+   "Interacciones con clientes de alto contacto"
+  ],
+  "metrics": [
+   {
+    "n": "Tiempo de operación autónoma",
+    "d": "Porcentaje del tiempo funcionando sin intervención"
+   },
+   {
+    "n": "Tiempo medio de detección",
+    "d": "Tiempo promedio para identificar anomalías"
+   },
+   {
+    "n": "Tiempo de respuesta de la intervención",
+    "d": "Tiempo desde la alerta hasta la acción humana"
+   },
+   {
+    "n": "Tasa de falsas alertas",
+    "d": "Porcentaje de alertas humanas innecesarias"
+   },
+   {
+    "n": "Tasa de tomas de control exitosas",
+    "d": "Porcentaje de intervenciones humanas exitosas"
+   },
+   {
+    "n": "Tiempo de regreso a la autonomía",
+    "d": "Tiempo para reanudar la operación autónoma"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Vehículos autónomos",
+    "d": "La IA conduce normalmente y un supervisor humano está listo para tomar el control en emergencias con un tiempo de respuesta de 200ms"
+   },
+   {
+    "n": "Trading algorítmico",
+    "d": "La IA ejecuta miles de operaciones de forma autónoma y el trader monitorea e interviene durante la volatilidad del mercado"
+   },
+   {
+    "n": "Automatización de la manufactura",
+    "d": "La IA controla la línea de producción y los operadores humanos monitorean la calidad e intervienen ante eventos inusuales"
+   },
+   {
+    "n": "Control de tráfico aéreo",
+    "d": "La IA gestiona los patrones de vuelo rutinarios y los controladores supervisan e intervienen ante situaciones climáticas complejas"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "La IA modera automáticamente las violaciones claras y los moderadores humanos supervisan los casos límite y las actualizaciones de políticas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Human-on-the-Loop (HOTL) Pattern",
+  "description": "Framework de supervisión para agentes de IA autónomos que permite un control humano estratégico manteniendo la autonomía del agente, lo que acorta el camino de la excepción a la decisión con un 94% de satisfacción mediante protocolos estructurados de monitoreo e intervención",
+  "nodes": [
+   {
+    "id": "oversight-challenge",
+    "label": "🎯 Desafío de supervisión de agentes autónomos\n\"¿Cómo mantener el control humano y la rendición de cuentas\nmientras se permite que los agentes autónomos operen\nde forma eficiente a escala sin microgestión?\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "traditional-approaches",
+    "label": "❌ Enfoques tradicionales\n\"Modelos de control binarios:\n• Automatización total (sin supervisión)\n• Human-in-the-Loop (cuellos de botella)\n• Solo monitoreo reactivo\"",
+    "x": 150,
+    "y": 200,
+    "w": 240
+   },
+   {
+    "id": "hotl-framework",
+    "label": "🎛️ Framework de supervisión HOTL\n\"Enfoque de supervisión estratégica:\n• Operación autónoma por defecto\n• Monitoreo e intervención humana\n• Control basado en escalamiento\"",
+    "x": 650,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "hitl-vs-hotl",
+    "label": "🔄 Distinción entre HITL y HOTL\n\"HITL: El humano participa en cada decisión\nHOTL: El humano supervisa las decisiones autónomas\nClave: Supervisión vs. Participación\"",
+    "x": 400,
+    "y": 350,
+    "w": 280
+   },
+   {
+    "id": "monitoring-architecture",
+    "label": "📊 Arquitectura de monitoreo en tiempo real\n\"Componentes de observabilidad:\n• Dashboards de rendimiento\n• Detección de anomalías de comportamiento\n• Métricas de calibración de confianza\n• Niveles de autonomía del agente\"",
+    "x": 200,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "intervention-protocols",
+    "label": "🚨 Protocolos de intervención\n\"Disparadores de escalamiento:\n• Incumplimiento de umbrales de confianza\n• Patrones de comportamiento anómalos\n• Puntos de decisión de alto riesgo\n• Degradación del rendimiento\"",
+    "x": 600,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "emergency-controls",
+    "label": "🛑 Parada de emergencia y toma de control\n\"Mecanismos de seguridad:\n• Circuit breakers\n• Sistemas de anulación humana\n• Degradación controlada\n• Preservación del estado\"",
+    "x": 100,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "audit-compliance",
+    "label": "📋 Monitoreo de auditoría y cumplimiento\n\"Supervisión regulatoria:\n• Registros de auditoría de decisiones\n• Reportes de cumplimiento\n• Logs de evaluación de riesgos\n• Seguimiento de la rendición de cuentas\"",
+    "x": 400,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "trust-calibration",
+    "label": "⚖️ Sistema de calibración de confianza\n\"Confianza humano-agente:\n• Niveles de supervisión adaptativos\n• Confianza basada en el rendimiento\n• Mecanismos de transparencia\n• Bucles de feedback de calibración\"",
+    "x": 700,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "production-implementations",
+    "label": "🏭 Implementaciones en producción\n\"Despliegues reales:\n• Bots de atención al cliente (escalamiento por excepciones)\n• Agentes de trading (riesgo en tiempo real)\n• Agentes de programación (controles de calidad)\n• Monitoreo en salud\"",
+    "x": 200,
+    "y": 800,
+    "w": 260
+   },
+   {
+    "id": "autonomy-metrics",
+    "label": "📈 Métricas de autonomía y supervisión\n\"Indicadores de rendimiento:\n• Porcentaje de autonomía del agente\n• Frecuencia de intervención\n• Efectividad de la supervisión\n• Carga cognitiva humana\"",
+    "x": 600,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "strategic-oversight",
+    "label": "🎯 Principio de supervisión estratégica\n\"Los humanos fijan los objetivos estratégicos y los límites mientras los agentes ejecutan de forma autónoma\nLa supervisión reemplaza la microgestión, permitiendo tanto escala como control\nLa calibración de confianza asegura una colaboración humano-agente adecuada\"",
+    "x": 400,
+    "y": 950,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "oversight-challenge",
+    "t": "traditional-approaches",
+    "label": "soluciones inadecuadas"
+   },
+   {
+    "id": "e2",
+    "s": "oversight-challenge",
+    "t": "hotl-framework",
+    "label": "solución HOTL"
+   },
+   {
+    "id": "e3",
+    "s": "hotl-framework",
+    "t": "hitl-vs-hotl",
+    "label": "aclara el enfoque"
+   },
+   {
+    "id": "e4",
+    "s": "hotl-framework",
+    "t": "monitoring-architecture",
+    "label": "implementa el monitoreo"
+   },
+   {
+    "id": "e5",
+    "s": "hotl-framework",
+    "t": "intervention-protocols",
+    "label": "define las intervenciones"
+   },
+   {
+    "id": "e6",
+    "s": "monitoring-architecture",
+    "t": "intervention-protocols",
+    "label": "dispara el escalamiento"
+   },
+   {
+    "id": "e7",
+    "s": "intervention-protocols",
+    "t": "emergency-controls",
+    "label": "escala a"
+   },
+   {
+    "id": "e8",
+    "s": "monitoring-architecture",
+    "t": "audit-compliance",
+    "label": "proporciona logs"
+   },
+   {
+    "id": "e9",
+    "s": "intervention-protocols",
+    "t": "trust-calibration",
+    "label": "informa la confianza"
+   },
+   {
+    "id": "e10",
+    "s": "monitoring-architecture",
+    "t": "trust-calibration",
+    "label": "alimenta la calibración"
+   },
+   {
+    "id": "e11",
+    "s": "emergency-controls",
+    "t": "audit-compliance",
+    "label": "registra acciones"
+   },
+   {
+    "id": "e12",
+    "s": "trust-calibration",
+    "t": "audit-compliance",
+    "label": "valida la confianza"
+   },
+   {
+    "id": "e13",
+    "s": "emergency-controls",
+    "t": "production-implementations",
+    "label": "habilita el despliegue"
+   },
+   {
+    "id": "e14",
+    "s": "audit-compliance",
+    "t": "production-implementations",
+    "label": "valida el despliegue"
+   },
+   {
+    "id": "e15",
+    "s": "trust-calibration",
+    "t": "production-implementations",
+    "label": "optimiza el rendimiento"
+   },
+   {
+    "id": "e16",
+    "s": "production-implementations",
+    "t": "autonomy-metrics",
+    "label": "genera métricas"
+   },
+   {
+    "id": "e17",
+    "s": "autonomy-metrics",
+    "t": "trust-calibration",
+    "label": "informa la calibración"
+   },
+   {
+    "id": "e18",
+    "s": "production-implementations",
+    "t": "strategic-oversight",
+    "label": "demuestra la efectividad"
+   },
+   {
+    "id": "e19",
+    "s": "autonomy-metrics",
+    "t": "strategic-oversight",
+    "label": "valida el enfoque"
+   },
+   {
+    "id": "e20",
+    "s": "traditional-approaches",
+    "t": "strategic-oversight",
+    "label": "demuestra la necesidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de supervisión de agentes autónomos",
+    "description": "Las organizaciones necesitan mantener el control humano y la rendición de cuentas mientras permiten que los agentes autónomos operen de forma eficiente a escala, evitando tanto los riesgos de la automatización total como los cuellos de botella humanos.",
+    "input": "",
+    "nodes": [
+     "oversight-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "HOTL vs. enfoques tradicionales",
+    "description": "Los modelos binarios tradicionales (automatización total o human-in-the-loop) generan problemas. HOTL ofrece una supervisión que distingue entre supervisar y participar, permitiendo la operación autónoma con control humano estratégico.",
+    "input": "",
+    "nodes": [
+     "traditional-approaches",
+     "hotl-framework",
+     "hitl-vs-hotl"
+    ],
+    "edges": [
+     "e1",
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Arquitectura central de HOTL: monitoreo e intervención",
+    "description": "HOTL implementa dashboards de monitoreo en tiempo real con detección de anomalías de comportamiento, junto con protocolos de intervención basados en escalamiento que se disparan por umbrales de confianza, niveles de riesgo y degradación del rendimiento.",
+    "input": "",
+    "nodes": [
+     "monitoring-architecture",
+     "intervention-protocols"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Sistemas de seguridad y gobernanza",
+    "description": "Los mecanismos de parada de emergencia, los registros de auditoría y los sistemas de calibración de confianza garantizan la seguridad y el cumplimiento. Los circuit breakers permiten la anulación humana manteniendo la transparencia y la rendición de cuentas mediante un logging exhaustivo.",
+    "input": "",
+    "nodes": [
+     "emergency-controls",
+     "audit-compliance",
+     "trust-calibration"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Despliegues en producción y métricas",
+    "description": "Las implementaciones reales de HOTL en atención al cliente, trading y agentes de programación demuestran su efectividad. Las métricas de autonomía miden la efectividad de la supervisión y la optimización de la carga cognitiva humana.",
+    "input": "",
+    "nodes": [
+     "production-implementations",
+     "autonomy-metrics"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15",
+     "e16",
+     "e17"
+    ]
+   },
+   {
+    "title": "Principio de supervisión estratégica",
+    "description": "HOTL permite que los humanos fijen objetivos estratégicos y límites mientras los agentes ejecutan de forma autónoma. La supervisión reemplaza la microgestión, logrando tanto escala como control mediante una confianza calibrada y una colaboración humano-agente adecuada.",
+    "input": "",
+    "nodes": [
+     "strategic-oversight"
+    ],
+    "edges": [
+     "e18",
+     "e19",
+     "e20"
+    ]
+   }
+  ]
+ }
+}

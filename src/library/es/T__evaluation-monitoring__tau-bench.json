@@ -1,0 +1,373 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "tau-bench",
+ "name": "tau-bench (Tool-Agent-User)(TAU)",
+ "icon": "🛫",
+ "complexity": "high",
+ "description": "Benchmark que ubica al agente entre un usuario humano simulado y un conjunto de APIs de dominio (retail, aerolínea), mientras debe cumplir un documento de políticas escrito. En lugar de revisar una sola respuesta, compara el estado final de la base de datos con un estado objetivo tras la conversación completa. Su métrica distintiva es pass^k, la probabilidad de tener éxito en los k intentos independientes de la misma tarea, que expone fallas de consistencia que los puntajes promediados de pass@1 ocultan.",
+ "features": [
+  "El agente media entre un usuario simulado (impulsado por un LLM) y las APIs del dominio",
+  "Dos dominios: retail y aerolínea, cada uno con herramientas y un documento de políticas escrito",
+  "Puntúa el estado final de la base de datos frente a un estado objetivo, no solo la respuesta de texto",
+  "Métrica de confiabilidad pass^k sobre k intentos independientes de la misma tarea",
+  "Pruebas de cumplimiento de políticas: el agente debe seguir las reglas del dominio bajo presión del usuario",
+  "tau2-bench amplía el escenario con un dominio de telecomunicaciones de control dual y una simulación de usuario más robusta"
+ ],
+ "tldr": {
+  "what": "Evalúa agentes simulando una conversación usuario-agente-API y puntuando el estado final de la base de datos frente al estado objetivo en varios intentos independientes para medir la consistencia.",
+  "when": "Probar si los agentes siguen de forma confiable las políticas del dominio bajo presión del usuario mientras manipulan el estado real del sistema en flujos de trabajo de retail, aerolínea o telecomunicaciones.",
+  "watchOut": "La alta varianza en los puntajes de pass^k puede ocultar que un agente acierta una vez por suerte pero falla sistemáticamente; se requieren muchos intentos para detectar la fragilidad real."
+ },
+ "overview": null,
+ "flow": {
+  "title": "tau-bench (Tool-Agent-User)",
+  "description": "El agente se ubica entre un usuario humano simulado y las APIs del dominio de aerolínea mientras cumple un documento de políticas escrito. Debe reunir la información que el usuario revela gradualmente, seguir la política y confirmar el cambio. El éxito se puntúa comparando el estado final de la base de datos con un estado objetivo, y pass^k se calcula sobre 8 intentos independientes para exponer fallas de consistencia.",
+  "nodes": [
+   {
+    "id": "task-goal",
+    "label": "🎯 Tarea + estado objetivo\n\"Cambia mi vuelo a uno\nmás temprano hoy\"\nObjetivo: nuevo vuelo + cargo de tarifa",
+    "x": 320,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "simulated-user",
+    "label": "🧑 Usuario simulado\nImpulsado por un LLM, revela\ninformación solo cuando se le pide",
+    "x": 20,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente bajo prueba\nMedia entre usuario + APIs\nbajo la política",
+    "x": 320,
+    "y": 160,
+    "w": 220
+   },
+   {
+    "id": "policy-doc",
+    "label": "📜 Política de la aerolínea\nEconómica modificable,\nse cobra la diferencia de tarifa,\neconómica básica bloqueada",
+    "x": 640,
+    "y": 160,
+    "w": 210
+   },
+   {
+    "id": "turn1",
+    "label": "💬 Turno 1\n\"Necesito cambiar\nmi vuelo\"",
+    "x": 20,
+    "y": 290,
+    "w": 180
+   },
+   {
+    "id": "turn2",
+    "label": "💬 Turno 3\nDa la referencia de reserva\ncuando se le pide",
+    "x": 220,
+    "y": 290,
+    "w": 180
+   },
+   {
+    "id": "turn3",
+    "label": "💬 Turno 5\nIndica la salida\nmás temprana preferida",
+    "x": 420,
+    "y": 290,
+    "w": 180
+   },
+   {
+    "id": "domain-apis",
+    "label": "🛫 APIs de la aerolínea\nget_reservation,\nupdate_reservation",
+    "x": 680,
+    "y": 300,
+    "w": 200
+   },
+   {
+    "id": "tool-lookup",
+    "label": "🔎 get_reservation\nObtiene la clase tarifaria\n+ el vuelo actual",
+    "x": 40,
+    "y": 410,
+    "w": 190
+   },
+   {
+    "id": "policy-check",
+    "label": "⚖️ Verificación de política\n¿Económica básica? Denegar.\nSi no, modificable",
+    "x": 290,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "confirm-fare",
+    "label": "💬 Confirmar diferencia de tarifa\nEl agente informa el cargo,\nespera el consentimiento del usuario",
+    "x": 540,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "tool-update",
+    "label": "✍️ update_reservation\nReserva el vuelo más temprano,\naplica el cargo de tarifa",
+    "x": 300,
+    "y": 520,
+    "w": 210
+   },
+   {
+    "id": "db-state",
+    "label": "🗄️ Estado final de la BD\nNuevo vuelo reservado\n+ cargo de tarifa de $80",
+    "x": 40,
+    "y": 630,
+    "w": 200
+   },
+   {
+    "id": "state-compare",
+    "label": "🔀 Comparación de estados\n¿BD final == BD objetivo?",
+    "x": 320,
+    "y": 630,
+    "w": 210
+   },
+   {
+    "id": "trial-result",
+    "label": "✅ Resultado del intento\nCoincide -> aprobado\n(este intento individual)",
+    "x": 620,
+    "y": 630,
+    "w": 190
+   },
+   {
+    "id": "passk-eval",
+    "label": "🔁 Evaluación pass^k\nEjecuta 8 intentos independientes\nde la misma tarea",
+    "x": 320,
+    "y": 730,
+    "w": 230
+   },
+   {
+    "id": "passk-result",
+    "label": "📉 Confiabilidad\npass^1 ~61% -> pass^8 ~25%\nbrecha de consistencia expuesta",
+    "x": 300,
+    "y": 820,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-agent",
+    "s": "task-goal",
+    "t": "agent",
+    "label": "tarea + estado objetivo"
+   },
+   {
+    "id": "e-policy-agent",
+    "s": "policy-doc",
+    "t": "agent",
+    "label": "reglas de la política"
+   },
+   {
+    "id": "e-user-agent",
+    "s": "simulated-user",
+    "t": "agent",
+    "label": "diálogo en vivo"
+   },
+   {
+    "id": "e-user-turn1",
+    "s": "simulated-user",
+    "t": "turn1",
+    "label": ""
+   },
+   {
+    "id": "e-turn1-turn2",
+    "s": "turn1",
+    "t": "turn2",
+    "label": "cuando se le pide"
+   },
+   {
+    "id": "e-turn2-turn3",
+    "s": "turn2",
+    "t": "turn3",
+    "label": "cuando se le pide"
+   },
+   {
+    "id": "e-turn3-agent",
+    "s": "turn3",
+    "t": "agent",
+    "label": "información reunida"
+   },
+   {
+    "id": "e-agent-lookup",
+    "s": "agent",
+    "t": "tool-lookup",
+    "label": "consultar la reserva"
+   },
+   {
+    "id": "e-apis-lookup",
+    "s": "domain-apis",
+    "t": "tool-lookup",
+    "label": "API de la aerolínea"
+   },
+   {
+    "id": "e-lookup-policy",
+    "s": "tool-lookup",
+    "t": "policy-check",
+    "label": "clase tarifaria"
+   },
+   {
+    "id": "e-policy-confirm",
+    "s": "policy-check",
+    "t": "confirm-fare",
+    "label": "modificable"
+   },
+   {
+    "id": "e-confirm-update",
+    "s": "confirm-fare",
+    "t": "tool-update",
+    "label": "el usuario acepta"
+   },
+   {
+    "id": "e-apis-update",
+    "s": "domain-apis",
+    "t": "tool-update",
+    "label": "API de la aerolínea"
+   },
+   {
+    "id": "e-update-db",
+    "s": "tool-update",
+    "t": "db-state",
+    "label": "confirmar el cambio"
+   },
+   {
+    "id": "e-db-compare",
+    "s": "db-state",
+    "t": "state-compare",
+    "label": ""
+   },
+   {
+    "id": "e-goal-compare",
+    "s": "task-goal",
+    "t": "state-compare",
+    "label": "estado objetivo"
+   },
+   {
+    "id": "e-compare-trial",
+    "s": "state-compare",
+    "t": "trial-result",
+    "label": "coincide"
+   },
+   {
+    "id": "e-trial-passk",
+    "s": "trial-result",
+    "t": "passk-eval",
+    "label": "repetir x8"
+   },
+   {
+    "id": "e-passk-result",
+    "s": "passk-eval",
+    "t": "passk-result",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea, política y herramientas cargadas",
+    "description": "El agente recibe una tarea de cambio de vuelo con un estado objetivo oculto de la base de datos, una política escrita de la aerolínea que debe cumplir y acceso a las APIs de la aerolínea. El usuario es simulado por un LLM.",
+    "input": "",
+    "nodes": [
+     "task-goal",
+     "agent",
+     "policy-doc",
+     "domain-apis"
+    ],
+    "edges": [
+     "e-task-agent",
+     "e-policy-agent"
+    ]
+   },
+   {
+    "title": "El usuario revela información gradualmente",
+    "description": "El usuario simulado no entrega todo de una vez. Expresa su intención y luego proporciona la referencia de reserva y la salida preferida solo cuando el agente lo pide explícitamente, imitando una llamada real de soporte.",
+    "input": "",
+    "nodes": [
+     "simulated-user",
+     "turn1",
+     "turn2",
+     "turn3",
+     "agent"
+    ],
+    "edges": [
+     "e-user-agent",
+     "e-user-turn1",
+     "e-turn1-turn2",
+     "e-turn2-turn3",
+     "e-turn3-agent"
+    ]
+   },
+   {
+    "title": "Consultar la reserva",
+    "description": "El agente llama a get_reservation en la API de la aerolínea para obtener el vuelo actual y la clase tarifaria, los datos que necesita para aplicar la política correctamente.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "tool-lookup",
+     "domain-apis"
+    ],
+    "edges": [
+     "e-agent-lookup",
+     "e-apis-lookup"
+    ]
+   },
+   {
+    "title": "Aplicar la política y confirmar la tarifa",
+    "description": "La política se verifica contra la clase tarifaria. La económica básica se denegaría de inmediato; aquí el boleto es modificable, así que el agente informa la diferencia de tarifa y espera el consentimiento del usuario antes de actuar.",
+    "input": "",
+    "nodes": [
+     "tool-lookup",
+     "policy-check",
+     "confirm-fare"
+    ],
+    "edges": [
+     "e-lookup-policy",
+     "e-policy-confirm"
+    ]
+   },
+   {
+    "title": "Confirmar el cambio",
+    "description": "Con el consentimiento otorgado, el agente llama a update_reservation para reservar el vuelo más temprano y aplicar el cargo de tarifa, escribiendo el cambio en la base de datos del dominio.",
+    "input": "",
+    "nodes": [
+     "confirm-fare",
+     "tool-update",
+     "domain-apis",
+     "db-state"
+    ],
+    "edges": [
+     "e-confirm-update",
+     "e-apis-update",
+     "e-update-db"
+    ]
+   },
+   {
+    "title": "Puntuar el estado final frente al objetivo",
+    "description": "En lugar de calificar la respuesta de texto, tau-bench compara el estado final de la base de datos con el estado objetivo. El nuevo vuelo más el cargo de tarifa correcto coinciden con el objetivo, así que este intento individual se aprueba.",
+    "input": "",
+    "nodes": [
+     "db-state",
+     "task-goal",
+     "state-compare",
+     "trial-result"
+    ],
+    "edges": [
+     "e-db-compare",
+     "e-goal-compare",
+     "e-compare-trial"
+    ]
+   },
+   {
+    "title": "pass^k sobre 8 intentos",
+    "description": "La misma tarea se ejecuta 8 veces de forma independiente. pass^k reporta la probabilidad de tener éxito en los k intentos. El pass^1 de ~61% de GPT-4o en retail cae a ~25% en pass^8, la brecha de consistencia que los puntajes promediados de pass@1 ocultan.",
+    "input": "",
+    "nodes": [
+     "trial-result",
+     "passk-eval",
+     "passk-result"
+    ],
+    "edges": [
+     "e-trial-passk",
+     "e-passk-result"
+    ]
+   }
+  ]
+ }
+}

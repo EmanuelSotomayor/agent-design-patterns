@@ -1,0 +1,669 @@
+{
+ "cat": "memory-management",
+ "slug": "memory-consolidation",
+ "name": "Memory Consolidation",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Proceso de fortalecer y organizar los recuerdos a lo largo del tiempo",
+ "features": [
+  "Extracción de patrones",
+  "Eliminación de redundancias",
+  "Ponderación por importancia",
+  "Formación de esquemas"
+ ],
+ "tldr": {
+  "what": "Extrae periódicamente patrones de las interacciones en bruto, elimina duplicados, pondera por importancia y forma estructuras de conocimiento reutilizables.",
+  "when": "Agentes de larga duración que acumulan miles de interacciones, donde el almacenamiento en bruto se vuelve inmanejable y la recuperación se ralentiza.",
+  "watchOut": "Una consolidación agresiva pierde matices; puedes descartar casos límite o patrones minoritarios que importan para decisiones específicas."
+ },
+ "overview": {
+  "pattern": "Proceso de fortalecer y organizar los recuerdos a lo largo del tiempo mediante la extracción de patrones y la formación de esquemas",
+  "why": "Optimización del almacenamiento, mejor recuperación, reconocimiento de patrones, abstracción de conocimiento a partir de experiencias",
+  "insight": "Fragmentos de memoria → Extracción de patrones → Eliminación de redundancias → Formación de esquemas → Conocimiento organizado",
+  "impl": [
+   {
+    "t": "Recolectar fragmentos",
+    "d": "Reúne fragmentos de memoria y experiencias a lo largo del tiempo"
+   },
+   {
+    "t": "Extraer patrones",
+    "d": "Identifica temas y relaciones recurrentes"
+   },
+   {
+    "t": "Eliminar redundancias",
+    "d": "Elimina la información duplicada y superpuesta"
+   },
+   {
+    "t": "Formar esquemas",
+    "d": "Crea estructuras de conocimiento abstractas"
+   },
+   {
+    "t": "Validar la calidad",
+    "d": "Prueba la precisión de recuperación de la memoria consolidada"
+   }
+  ],
+  "example": "fragment_collection → pattern_extraction → redundancy_removal → schema_formation → quality_validation",
+  "dos": [
+   "Programa la consolidación en períodos de baja actividad para minimizar las interferencias",
+   "Usa una consolidación incremental de varias pasadas para distintos niveles de complejidad",
+   "Implementa la validación de calidad mediante pruebas de recuperación",
+   "Conserva los detalles críticos mientras generalizas los patrones comunes",
+   "Monitorea el ROI de la consolidación: costo de procesamiento vs. ahorro a largo plazo"
+  ],
+  "donts": [
+   "Consolidar en exceso y perder detalles específicos importantes",
+   "Ignorar los aspectos temporales: parte de la información depende del tiempo",
+   "Consolidar sin mecanismos de rollback ante problemas de calidad",
+   "Aplicar la consolidación a patrones que cambian con frecuencia",
+   "Dejar que los procesos de consolidación se vuelvan más costosos que el almacenamiento original"
+  ],
+  "use": [
+   "Grandes volúmenes de datos experienciales que se acumulan",
+   "Sistemas de larga duración con crecimiento de memoria",
+   "Sistemas de aprendizaje que extraen patrones generalizables",
+   "Optimización del almacenamiento con preservación de patrones",
+   "Gestión del conocimiento que requiere organización"
+  ],
+  "avoid": [
+   "Aplicaciones en tiempo real con latencia estricta",
+   "Conjuntos de datos de memoria pequeños (< 10K entradas)",
+   "Se requiere conservar la información exacta",
+   "Entornos que cambian con frecuencia",
+   "Presupuestos de procesamiento con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de compresión",
+    "d": "Reducción del almacenamiento conservando la calidad"
+   },
+   {
+    "n": "Calidad de los patrones",
+    "d": "Precisión/exhaustividad de los patrones extraídos"
+   },
+   {
+    "n": "Preservación de la recuperación",
+    "d": "% de precisión mantenida después de la consolidación"
+   },
+   {
+    "n": "Eficiencia de procesamiento",
+    "d": "Costo de consolidación vs. tamaño de la memoria"
+   },
+   {
+    "n": "Pérdida de información",
+    "d": "% de detalles críticos perdidos durante el proceso"
+   },
+   {
+    "n": "Utilidad de los esquemas",
+    "d": "Efectividad para tareas de razonamiento futuras"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Memoria de atención al cliente",
+    "d": "Consolida patrones de interacción en plantillas de servicio (reducción del almacenamiento del 40-70%, resolución más rápida)"
+   },
+   {
+    "n": "Sistemas de aprendizaje",
+    "d": "Extrae conocimiento generalizable a partir de experiencias de entrenamiento específicas (aprendizaje continuo sin olvido catastrófico)"
+   },
+   {
+    "n": "Plataformas de investigación",
+    "d": "Organiza los hallazgos de la recolección de datos a gran escala en insights accionables (automatización de revisiones bibliográficas)"
+   },
+   {
+    "n": "Motores de personalización",
+    "d": "Consolida el comportamiento del usuario en modelos de preferencias (reconocimiento y predicción de patrones de comportamiento)"
+   },
+   {
+    "n": "Conocimiento empresarial",
+    "d": "Transforma las experiencias de negocio acumuladas en mejores prácticas operativas (preservación de la memoria institucional)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Consolidación de memoria",
+  "description": "Motor que procesa los recuerdos en bruto mediante análisis de patrones, compresión, abstracción e integración en esquemas de conocimiento estructurados, con control de calidad y optimización del almacenamiento.",
+  "nodes": [
+   {
+    "id": "raw-memories",
+    "label": "🧠 Recuerdos en bruto\nFlujo de experiencias e interacciones",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "consolidation-engine",
+    "label": "⚙️ Motor de consolidación\nProcesamiento y optimización de la memoria",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "pattern-analyzer",
+    "label": "🔍 Analizador de patrones\nPatrones recurrentes\nClústeres temáticos",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "similarity-detector",
+    "label": "🎯 Detector de similitud\nCoincidencia semántica\nSimilitud estructural",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "redundancy-filter",
+    "label": "🔄 Filtro de redundancia\nDetección de duplicados\nFusión de recuerdos",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "importance-scorer",
+    "label": "⭐ Evaluador de importancia\nPonderación por relevancia\nEvaluación de utilidad",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "episodic-fragments",
+    "label": "📅 Fragmentos episódicos\nEventos específicos\nCon marca de tiempo",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "semantic-concepts",
+    "label": "💡 Conceptos semánticos\nConocimiento abstracto\nPrincipios generales",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "procedural-patterns",
+    "label": "⚡ Patrones procedimentales\nSecuencias de acciones\nComportamientos aprendidos",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "emotional-tags",
+    "label": "❤️ Etiquetas emocionales\nMarcadores afectivos\nIndicadores de relevancia",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "contextual-links",
+    "label": "🔗 Vínculos contextuales\nAsociaciones\nRelaciones",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "compression-stage",
+    "label": "🗜️ Compresión\nReducir redundancias\nFusionar lo similar",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "abstraction-stage",
+    "label": "📐 Abstracción\nExtraer principios\nGeneralizar patrones",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "integration-stage",
+    "label": "🧩 Integración\nConectar conocimiento\nConstruir esquemas",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "prioritization-stage",
+    "label": "📊 Priorización\nOrdenar por importancia\nAsignar recursos",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "conceptual-schemas",
+    "label": "🏗️ Esquemas conceptuales\nMarcos organizados\nModelos mentales",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "narrative-structures",
+    "label": "📖 Estructuras narrativas\nHistorias coherentes\nCadenas causales",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "knowledge-graphs",
+    "label": "🕸️ Grafos de conocimiento\nHechos interconectados\nRedes relacionales",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "skill-hierarchies",
+    "label": "🎯 Jerarquías de habilidades\nCapacidades en capas\nÁrboles de competencias",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "fast-retrieval",
+    "label": "⚡ Recuperación rápida\nAcceso indexado\nPatrones en cache",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "sparse-encoding",
+    "label": "💾 Codificación dispersa\nAlmacenamiento eficiente\nFormato comprimido",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "associative-links",
+    "label": "🔀 Vínculos asociativos\nReferencias cruzadas\nPistas de recuperación",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "decay-management",
+    "label": "📉 Gestión del decaimiento\nCurva del olvido\nCiclos de actualización",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "coherence-check",
+    "label": "✅ Verificación de coherencia\nValidación de consistencia",
+    "x": 150,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "completeness-verify",
+    "label": "📋 Completitud\nDetección de vacíos",
+    "x": 320,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "accuracy-assessment",
+    "label": "🎯 Precisión\nCorrección de errores",
+    "x": 490,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "utility-evaluation",
+    "label": "💡 Utilidad\nPuntuación de utilidad",
+    "x": 660,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "consolidated-memory",
+    "label": "✨ Memoria consolidada\nBase de conocimiento optimizada, estructurada y accesible",
+    "x": 400,
+    "y": 1000,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "raw-engine",
+    "s": "raw-memories",
+    "t": "consolidation-engine",
+    "label": ""
+   },
+   {
+    "id": "engine-pattern",
+    "s": "consolidation-engine",
+    "t": "pattern-analyzer",
+    "label": "Analizar"
+   },
+   {
+    "id": "engine-similarity",
+    "s": "consolidation-engine",
+    "t": "similarity-detector",
+    "label": "Detectar"
+   },
+   {
+    "id": "engine-redundancy",
+    "s": "consolidation-engine",
+    "t": "redundancy-filter",
+    "label": "Filtrar"
+   },
+   {
+    "id": "engine-importance",
+    "s": "consolidation-engine",
+    "t": "importance-scorer",
+    "label": "Puntuar"
+   },
+   {
+    "id": "pattern-episodic",
+    "s": "pattern-analyzer",
+    "t": "episodic-fragments",
+    "label": ""
+   },
+   {
+    "id": "pattern-semantic",
+    "s": "pattern-analyzer",
+    "t": "semantic-concepts",
+    "label": ""
+   },
+   {
+    "id": "similarity-procedural",
+    "s": "similarity-detector",
+    "t": "procedural-patterns",
+    "label": ""
+   },
+   {
+    "id": "importance-emotional",
+    "s": "importance-scorer",
+    "t": "emotional-tags",
+    "label": ""
+   },
+   {
+    "id": "redundancy-contextual",
+    "s": "redundancy-filter",
+    "t": "contextual-links",
+    "label": ""
+   },
+   {
+    "id": "episodic-compression",
+    "s": "episodic-fragments",
+    "t": "compression-stage",
+    "label": ""
+   },
+   {
+    "id": "semantic-abstraction",
+    "s": "semantic-concepts",
+    "t": "abstraction-stage",
+    "label": ""
+   },
+   {
+    "id": "procedural-integration",
+    "s": "procedural-patterns",
+    "t": "integration-stage",
+    "label": ""
+   },
+   {
+    "id": "emotional-prioritization",
+    "s": "emotional-tags",
+    "t": "prioritization-stage",
+    "label": ""
+   },
+   {
+    "id": "contextual-integration",
+    "s": "contextual-links",
+    "t": "integration-stage",
+    "label": ""
+   },
+   {
+    "id": "compression-conceptual",
+    "s": "compression-stage",
+    "t": "conceptual-schemas",
+    "label": ""
+   },
+   {
+    "id": "abstraction-narrative",
+    "s": "abstraction-stage",
+    "t": "narrative-structures",
+    "label": ""
+   },
+   {
+    "id": "integration-knowledge",
+    "s": "integration-stage",
+    "t": "knowledge-graphs",
+    "label": ""
+   },
+   {
+    "id": "prioritization-skill",
+    "s": "prioritization-stage",
+    "t": "skill-hierarchies",
+    "label": ""
+   },
+   {
+    "id": "conceptual-fast",
+    "s": "conceptual-schemas",
+    "t": "fast-retrieval",
+    "label": ""
+   },
+   {
+    "id": "narrative-sparse",
+    "s": "narrative-structures",
+    "t": "sparse-encoding",
+    "label": ""
+   },
+   {
+    "id": "knowledge-associative",
+    "s": "knowledge-graphs",
+    "t": "associative-links",
+    "label": ""
+   },
+   {
+    "id": "skill-decay",
+    "s": "skill-hierarchies",
+    "t": "decay-management",
+    "label": ""
+   },
+   {
+    "id": "fast-coherence",
+    "s": "fast-retrieval",
+    "t": "coherence-check",
+    "label": ""
+   },
+   {
+    "id": "sparse-completeness",
+    "s": "sparse-encoding",
+    "t": "completeness-verify",
+    "label": ""
+   },
+   {
+    "id": "associative-accuracy",
+    "s": "associative-links",
+    "t": "accuracy-assessment",
+    "label": ""
+   },
+   {
+    "id": "decay-utility",
+    "s": "decay-management",
+    "t": "utility-evaluation",
+    "label": ""
+   },
+   {
+    "id": "coherence-output",
+    "s": "coherence-check",
+    "t": "consolidated-memory",
+    "label": ""
+   },
+   {
+    "id": "completeness-output",
+    "s": "completeness-verify",
+    "t": "consolidated-memory",
+    "label": ""
+   },
+   {
+    "id": "accuracy-output",
+    "s": "accuracy-assessment",
+    "t": "consolidated-memory",
+    "label": ""
+   },
+   {
+    "id": "utility-output",
+    "s": "utility-evaluation",
+    "t": "consolidated-memory",
+    "label": ""
+   },
+   {
+    "id": "consolidated-feedback",
+    "s": "consolidated-memory",
+    "t": "consolidation-engine",
+    "label": "Feedback"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada de memoria en bruto",
+    "description": "Llega un flujo de experiencias e interacciones",
+    "input": "",
+    "nodes": [
+     "raw-memories",
+     "consolidation-engine"
+    ],
+    "edges": [
+     "raw-engine"
+    ]
+   },
+   {
+    "title": "Análisis de la memoria",
+    "description": "Analiza patrones, similitud, redundancia e importancia",
+    "input": "",
+    "nodes": [
+     "consolidation-engine",
+     "pattern-analyzer",
+     "similarity-detector",
+     "redundancy-filter",
+     "importance-scorer"
+    ],
+    "edges": [
+     "engine-pattern",
+     "engine-similarity",
+     "engine-redundancy",
+     "engine-importance"
+    ]
+   },
+   {
+    "title": "Extracción de componentes",
+    "description": "Descompone en componentes episódicos, semánticos, procedimentales y emocionales",
+    "input": "",
+    "nodes": [
+     "episodic-fragments",
+     "semantic-concepts",
+     "procedural-patterns",
+     "emotional-tags",
+     "contextual-links"
+    ],
+    "edges": [
+     "pattern-episodic",
+     "pattern-semantic",
+     "similarity-procedural",
+     "importance-emotional",
+     "redundancy-contextual"
+    ]
+   },
+   {
+    "title": "Procesamiento de consolidación",
+    "description": "Compresión, abstracción, integración y priorización",
+    "input": "",
+    "nodes": [
+     "compression-stage",
+     "abstraction-stage",
+     "integration-stage",
+     "prioritization-stage"
+    ],
+    "edges": [
+     "episodic-compression",
+     "semantic-abstraction",
+     "procedural-integration",
+     "emotional-prioritization",
+     "contextual-integration"
+    ]
+   },
+   {
+    "title": "Formación de esquemas",
+    "description": "Construye esquemas conceptuales, narrativas, grafos de conocimiento y jerarquías de habilidades",
+    "input": "",
+    "nodes": [
+     "conceptual-schemas",
+     "narrative-structures",
+     "knowledge-graphs",
+     "skill-hierarchies"
+    ],
+    "edges": [
+     "compression-conceptual",
+     "abstraction-narrative",
+     "integration-knowledge",
+     "prioritization-skill"
+    ]
+   },
+   {
+    "title": "Optimización del almacenamiento",
+    "description": "Optimiza para recuperación rápida, codificación dispersa y acceso asociativo",
+    "input": "",
+    "nodes": [
+     "fast-retrieval",
+     "sparse-encoding",
+     "associative-links",
+     "decay-management"
+    ],
+    "edges": [
+     "conceptual-fast",
+     "narrative-sparse",
+     "knowledge-associative",
+     "skill-decay"
+    ]
+   },
+   {
+    "title": "Control de calidad",
+    "description": "Verifica coherencia, completitud, precisión y utilidad",
+    "input": "",
+    "nodes": [
+     "coherence-check",
+     "completeness-verify",
+     "accuracy-assessment",
+     "utility-evaluation"
+    ],
+    "edges": [
+     "fast-coherence",
+     "sparse-completeness",
+     "associative-accuracy",
+     "decay-utility"
+    ]
+   },
+   {
+    "title": "Salida consolidada",
+    "description": "Memoria consolidada final lista para el almacenamiento a largo plazo",
+    "input": "",
+    "nodes": [
+     "coherence-check",
+     "completeness-verify",
+     "accuracy-assessment",
+     "utility-evaluation",
+     "consolidated-memory"
+    ],
+    "edges": [
+     "coherence-output",
+     "completeness-output",
+     "accuracy-output",
+     "utility-output"
+    ]
+   },
+   {
+    "title": "Ciclo de feedback",
+    "description": "Aprende de la efectividad de la consolidación",
+    "input": "",
+    "nodes": [
+     "consolidated-memory",
+     "consolidation-engine"
+    ],
+    "edges": [
+     "consolidated-feedback"
+    ]
+   }
+  ]
+ }
+}

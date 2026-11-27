@@ -1,0 +1,429 @@
+{
+ "cat": "prompt-chaining",
+ "slug": "parallel-synthesis",
+ "name": "Parallel Synthesis",
+ "icon": "🧩",
+ "complexity": "high",
+ "description": "Técnica avanzada que orquesta múltiples flujos de procesamiento en paralelo con resolución inteligente de conflictos y agregación ponderada por calidad, lo que permite sintetizar perspectivas diversas en salidas coherentes y completas; es crucial para la investigación y la construcción de consenso",
+ "features": [
+  "Procesamiento en múltiples flujos",
+  "Fusión inteligente de resultados",
+  "Estrategias de resolución de conflictos",
+  "Agregación ponderada por calidad"
+ ],
+ "tldr": {
+  "what": "Ejecuta varios análisis independientes en paralelo, pondera los resultados según su confiabilidad, resuelve conflictos y fusiona las salidas en una síntesis coherente.",
+  "when": "Combinación de fuentes de datos o perspectivas diversas donde ningún flujo es autoritativo y las contradicciones requieren una resolución explícita.",
+  "watchOut": "Los esquemas de ponderación y las reglas de resolución de conflictos se vuelven arbitrarios con facilidad; los pesos mal alineados pueden opacar puntos de vista minoritarios válidos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón de síntesis en paralelo",
+  "description": "Muestra cómo varios flujos de procesamiento en paralelo se combinan en salidas unificadas y completas",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Tarea de investigación\n\"Análisis de mercado completo para una startup de IA\"",
+    "x": 500,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "stream-a",
+    "label": "Flujo A\nAnálisis de datos de encuestas",
+    "x": 200,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "stream-b",
+    "label": "Flujo B\nInteligencia competitiva",
+    "x": 400,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "stream-c",
+    "label": "Flujo C\nAnálisis de tendencias de la industria",
+    "x": 600,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "stream-d",
+    "label": "Flujo D\nEntrevistas con clientes",
+    "x": 800,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "output-a",
+    "label": "Datos de tamaño de mercado\n• TAM: $50B\n• Crecimiento: 25% anual\n• Confianza: 85%",
+    "x": 200,
+    "y": 350,
+    "w": 140
+   },
+   {
+    "id": "output-b",
+    "label": "Panorama competitivo\n• 15 competidores directos\n• Mercado fragmentado\n• Confianza: 90%",
+    "x": 400,
+    "y": 350,
+    "w": 140
+   },
+   {
+    "id": "output-c",
+    "label": "Tendencias tecnológicas\n• Adopción de IA +40%\n• Estrategia cloud-first\n• Confianza: 75%",
+    "x": 600,
+    "y": 350,
+    "w": 140
+   },
+   {
+    "id": "output-d",
+    "label": "Hallazgos sobre clientes\n• Punto de dolor: Integración\n• Presupuesto: $50K promedio\n• Confianza: 95%",
+    "x": 800,
+    "y": 350,
+    "w": 140
+   },
+   {
+    "id": "weight-analysis",
+    "label": "Análisis de pesos\nEvaluar confiabilidad y relevancia",
+    "x": 350,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "theme-identification",
+    "label": "Identificación de temas\nEncontrar patrones comunes",
+    "x": 550,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "conflict-resolution",
+    "label": "Resolución de conflictos\nConciliar contradicciones",
+    "x": 450,
+    "y": 630,
+    "w": 180
+   },
+   {
+    "id": "synthesis",
+    "label": "Síntesis unificada\nGenerar hallazgos integrados",
+    "x": 500,
+    "y": 760,
+    "w": 200
+   },
+   {
+    "id": "weights",
+    "label": "Pesos de los flujos\nA: 0.85 (alta conf.)\nB: 0.90 (verificado)\nC: 0.75 (emergente)\nD: 0.95 (directo)",
+    "x": 100,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "themes",
+    "label": "Temas comunes\n• Crecimiento del mercado\n• Desafíos de integración\n• Sensibilidad al precio",
+    "x": 750,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "conflicts",
+    "label": "Conflictos encontrados\n• Estimaciones del tamaño de mercado\n• Intensidad competitiva\n• Plazo de adopción",
+    "x": 700,
+    "y": 630,
+    "w": 140
+   },
+   {
+    "id": "final-report",
+    "label": "Informe de mercado completo\nHallazgos ponderados con puntajes de confianza",
+    "x": 500,
+    "y": 900,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-a",
+    "s": "input",
+    "t": "stream-a",
+    "label": ""
+   },
+   {
+    "id": "e-input-b",
+    "s": "input",
+    "t": "stream-b",
+    "label": ""
+   },
+   {
+    "id": "e-input-c",
+    "s": "input",
+    "t": "stream-c",
+    "label": ""
+   },
+   {
+    "id": "e-input-d",
+    "s": "input",
+    "t": "stream-d",
+    "label": ""
+   },
+   {
+    "id": "e-a-output",
+    "s": "stream-a",
+    "t": "output-a",
+    "label": ""
+   },
+   {
+    "id": "e-b-output",
+    "s": "stream-b",
+    "t": "output-b",
+    "label": ""
+   },
+   {
+    "id": "e-c-output",
+    "s": "stream-c",
+    "t": "output-c",
+    "label": ""
+   },
+   {
+    "id": "e-d-output",
+    "s": "stream-d",
+    "t": "output-d",
+    "label": ""
+   },
+   {
+    "id": "e-output-a-weight",
+    "s": "output-a",
+    "t": "weight-analysis",
+    "label": ""
+   },
+   {
+    "id": "e-output-b-weight",
+    "s": "output-b",
+    "t": "weight-analysis",
+    "label": ""
+   },
+   {
+    "id": "e-output-c-theme",
+    "s": "output-c",
+    "t": "theme-identification",
+    "label": ""
+   },
+   {
+    "id": "e-output-d-theme",
+    "s": "output-d",
+    "t": "theme-identification",
+    "label": ""
+   },
+   {
+    "id": "e-weight-conflict",
+    "s": "weight-analysis",
+    "t": "conflict-resolution",
+    "label": ""
+   },
+   {
+    "id": "e-theme-conflict",
+    "s": "theme-identification",
+    "t": "conflict-resolution",
+    "label": ""
+   },
+   {
+    "id": "e-conflict-synthesis",
+    "s": "conflict-resolution",
+    "t": "synthesis",
+    "label": ""
+   },
+   {
+    "id": "e-synthesis-final",
+    "s": "synthesis",
+    "t": "final-report",
+    "label": ""
+   },
+   {
+    "id": "e-weights-weight-analysis",
+    "s": "weights",
+    "t": "weight-analysis",
+    "label": ""
+   },
+   {
+    "id": "e-themes-theme-id",
+    "s": "themes",
+    "t": "theme-identification",
+    "label": ""
+   },
+   {
+    "id": "e-conflicts-conflict-res",
+    "s": "conflicts",
+    "t": "conflict-resolution",
+    "label": ""
+   },
+   {
+    "id": "e-output-a-theme",
+    "s": "output-a",
+    "t": "theme-identification",
+    "label": ""
+   },
+   {
+    "id": "e-output-c-weight",
+    "s": "output-c",
+    "t": "weight-analysis",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Definición de la tarea",
+    "description": "Define una tarea de investigación compleja que se beneficie de múltiples perspectivas analíticas.",
+    "input": "Crea un análisis de mercado completo para una startup de IA que entra en el sector de automatización empresarial.",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Despliegue de flujos en paralelo",
+    "description": "Lanza varios flujos de análisis independientes para reunir distintos tipos de datos.",
+    "input": "Despliega 4 flujos en paralelo: análisis de encuestas, investigación de competidores, análisis de tendencias y entrevistas con clientes",
+    "nodes": [
+     "input",
+     "stream-a",
+     "stream-b",
+     "stream-c",
+     "stream-d"
+    ],
+    "edges": [
+     "e-input-a",
+     "e-input-b",
+     "e-input-c",
+     "e-input-d"
+    ]
+   },
+   {
+    "title": "Flujo A: Análisis de datos de encuestas",
+    "description": "Análisis cuantitativo de encuestas de mercado e informes de la industria.",
+    "input": "Analiza más de 500 respuestas de encuestas empresariales y 12 informes de la industria",
+    "nodes": [
+     "stream-a",
+     "output-a"
+    ],
+    "edges": [
+     "e-a-output"
+    ]
+   },
+   {
+    "title": "Flujo B: Inteligencia competitiva",
+    "description": "Análisis del panorama competitivo y del posicionamiento en el mercado.",
+    "input": "Investiga 15 competidores directos y 30 actores adyacentes",
+    "nodes": [
+     "stream-b",
+     "output-b"
+    ],
+    "edges": [
+     "e-b-output"
+    ]
+   },
+   {
+    "title": "Flujo C: Análisis de tendencias de la industria",
+    "description": "Análisis de las tendencias tecnológicas y de mercado que afectan al sector.",
+    "input": "Analiza los patrones de adopción tecnológica y los pronósticos de la industria",
+    "nodes": [
+     "stream-c",
+     "output-c"
+    ],
+    "edges": [
+     "e-c-output"
+    ]
+   },
+   {
+    "title": "Flujo D: Hallazgos de entrevistas con clientes",
+    "description": "Hallazgos cualitativos de conversaciones directas con clientes.",
+    "input": "Realiza 25 entrevistas en profundidad con clientes objetivo",
+    "nodes": [
+     "stream-d",
+     "output-d"
+    ],
+    "edges": [
+     "e-d-output"
+    ]
+   },
+   {
+    "title": "Análisis de pesos",
+    "description": "Evalúa la confiabilidad y relevancia de los hallazgos de cada flujo.",
+    "input": "Evalúa los niveles de confianza, los tamaños de muestra y la calidad de los datos",
+    "nodes": [
+     "weight-analysis",
+     "weights"
+    ],
+    "edges": [
+     "e-output-a-weight",
+     "e-output-b-weight",
+     "e-weights-weight-analysis"
+    ]
+   },
+   {
+    "title": "Identificación de temas",
+    "description": "Identifica patrones y temas comunes en todos los flujos.",
+    "input": "Analiza los hallazgos de forma cruzada para identificar temas recurrentes",
+    "nodes": [
+     "theme-identification",
+     "themes"
+    ],
+    "edges": [
+     "e-output-c-theme",
+     "e-output-d-theme",
+     "e-themes-theme-id"
+    ]
+   },
+   {
+    "title": "Resolución de conflictos",
+    "description": "Identifica y resuelve las contradicciones entre los distintos flujos.",
+    "input": "Aborda las discrepancias en las estimaciones del tamaño de mercado y en la intensidad competitiva",
+    "nodes": [
+     "conflict-resolution",
+     "conflicts"
+    ],
+    "edges": [
+     "e-weight-conflict",
+     "e-theme-conflict",
+     "e-conflicts-conflict-res"
+    ]
+   },
+   {
+    "title": "Síntesis entre flujos",
+    "description": "Muestra cómo los hallazgos de distintos flujos se enriquecen mutuamente.",
+    "input": "Permite que los datos cuantitativos validen los hallazgos cualitativos y viceversa",
+    "nodes": [
+     "output-a",
+     "output-c",
+     "weight-analysis",
+     "theme-identification"
+    ],
+    "edges": [
+     "e-output-a-theme",
+     "e-output-c-weight"
+    ]
+   },
+   {
+    "title": "Generación de la síntesis unificada",
+    "description": "Combina todos los hallazgos ponderados y conciliados en un análisis completo.",
+    "input": "Integra los hallazgos ponderados con los conflictos resueltos y los temas comunes",
+    "nodes": [
+     "synthesis"
+    ],
+    "edges": [
+     "e-conflict-synthesis"
+    ]
+   },
+   {
+    "title": "Informe de mercado completo",
+    "description": "Entrega el análisis integrado final con puntajes de confianza y recomendaciones.",
+    "input": "",
+    "nodes": [
+     "final-report"
+    ],
+    "edges": [
+     "e-synthesis-final"
+    ]
+   }
+  ]
+ }
+}

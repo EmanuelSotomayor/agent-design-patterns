@@ -1,0 +1,724 @@
+{
+ "cat": "tool-use",
+ "slug": "function-calling",
+ "name": "Function Calling",
+ "icon": "📞",
+ "complexity": "medium",
+ "description": "Interfaz estructurada para que la IA invoque funciones y APIs externas",
+ "features": [
+  "Definiciones de funciones basadas en esquemas",
+  "Validación de parámetros",
+  "Manejo de valores de retorno",
+  "Gestión de errores"
+ ],
+ "tldr": {
+  "what": "La IA invoca funciones externas mediante esquemas estructurados, pasando parámetros validados y recibiendo respuestas tipadas.",
+  "when": "Tareas que requieren datos en tiempo real, cálculos o cambios de estado que el modelo no puede realizar internamente.",
+  "watchOut": "Los modelos pueden alucinar llamadas a funciones con nombres incorrectos, parámetros faltantes o valores de argumentos imposibles."
+ },
+ "overview": {
+  "pattern": "Permite que la IA invoque funciones y APIs externas mediante esquemas estructurados",
+  "why": "Supera las limitaciones de conocimiento del LLM y permite acceso a datos en tiempo real, acciones externas y cálculos precisos",
+  "insight": "Llamadas a funciones guiadas por esquemas, con validación de parámetros, ejecución en paralelo y controles de seguridad",
+  "impl": [
+   {
+    "t": "Definir esquema",
+    "d": "Esquema JSON con parámetros y tipos"
+   },
+   {
+    "t": "Registrar herramientas",
+    "d": "Agrega al registro de funciones con autenticación"
+   },
+   {
+    "t": "Validar parámetros",
+    "d": "Sanea y valida todas las entradas"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Llama a la API con timeouts y reintentos"
+   },
+   {
+    "t": "Procesar resultados",
+    "d": "Normaliza e integra las respuestas"
+   }
+  ],
+  "example": "get_weather(location=\"NYC\", units=\"celsius\") → {\"temp\": 18, \"condition\": \"cloudy\"}",
+  "dos": [
+   "Escribe descripciones detalladas de las funciones (mínimo 3-4 oraciones o más)",
+   "Usa esquemas JSON estrictos con validación de campos obligatorios/opcionales",
+   "Implementa el saneamiento de parámetros y la prevención de ataques de inyección",
+   "Agrega timeouts, reintentos con backoff exponencial y circuit breakers",
+   "Usa ejecución en paralelo para llamadas a funciones independientes",
+   "Guarda en cache los resultados de funciones deterministas para optimizar costos"
+  ],
+  "donts": [
+   "Usar descripciones de funciones vagas que provocan parámetros alucinados",
+   "Permitir llamadas en paralelo ilimitadas sin limitación de tasa",
+   "Reintentar operaciones no idempotentes después de timeouts",
+   "Exponer credenciales de API o secretos en texto plano en las llamadas a funciones",
+   "Omitir la validación de entradas y el escaneo de seguridad"
+  ],
+  "use": [
+   "Se necesitan datos en tiempo real posteriores al corte de entrenamiento del modelo",
+   "Se requieren integraciones con APIs externas o consultas a bases de datos",
+   "Se deben realizar cálculos precisos o ejecutar código",
+   "Disparar acciones en sistemas externos (correo, agenda)"
+  ],
+  "avoid": [
+   "La información está disponible en el conocimiento del modelo con calidad aceptable",
+   "Requisitos estrictos de tiempo real donde la sobrecarga de las herramientas incumple los SLOs",
+   "Acciones irreversibles de alto riesgo sin aprobación humana",
+   "Tareas simples que se resuelven con generación de texto básica"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión en la selección de funciones",
+    "d": "% de herramientas correctas elegidas del registro"
+   },
+   {
+    "n": "Tasa de extracción de parámetros",
+    "d": "% de parámetros obligatorios identificados correctamente"
+   },
+   {
+    "n": "Éxito en la validación de esquemas",
+    "d": "% de llamadas que pasan las verificaciones de validación"
+   },
+   {
+    "n": "Tasa de éxito de la API",
+    "d": "% de llamadas exitosas a funciones externas"
+   },
+   {
+    "n": "Eficiencia de la ejecución en paralelo",
+    "d": "Reducción de latencia vs. ejecución secuencial"
+   },
+   {
+    "n": "Optimización del uso de tokens",
+    "d": "Tokens de contexto por llamada a función"
+   },
+   {
+    "n": "Tasa de incidentes de seguridad",
+    "d": "Intentos de inyección/XSS bloqueados"
+   },
+   {
+    "n": "Costo por tarea",
+    "d": "Costo total: modelo + API + infraestructura"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Clima y datos en tiempo real",
+    "d": "get_weather(\"NYC\") → condiciones actuales para la toma de decisiones"
+   },
+   {
+    "n": "Integración con calendario",
+    "d": "schedule_meeting(time, attendees) → flujos de trabajo de agendamiento automatizado"
+   },
+   {
+    "n": "Operaciones de base de datos",
+    "d": "query_db(table, filters) → recuperación y actualización dinámica de datos"
+   },
+   {
+    "n": "Ejecución de código",
+    "d": "run_python(code) → tareas computacionales y análisis de datos"
+   },
+   {
+    "n": "Correo y comunicaciones",
+    "d": "send_email(to, subject, body) → notificaciones automatizadas"
+   },
+   {
+    "n": "Búsqueda web",
+    "d": "search_web(query) → recuperación de información en tiempo real"
+   },
+   {
+    "n": "Operaciones con archivos",
+    "d": "read_file(path), write_file(path, content) → procesamiento de documentos"
+   },
+   {
+    "n": "Integraciones con APIs",
+    "d": "call_api(endpoint, params) → interacciones con servicios externos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Function Calling Pattern",
+  "description": "Demuestra la interacción estructurada entre la IA y las herramientas mediante function calling, con validación de parámetros, ejecución y procesamiento de resultados",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "Solicitud del usuario\n\"¿Cómo está el clima en NYC? Y agenda una reunión\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "intent-analyzer",
+    "label": "Analizador de intención\nIdentifica las funciones necesarias",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "function-registry",
+    "label": "Registro de funciones\nCatálogo de herramientas disponibles",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "weather-function",
+    "label": "Función de clima\nget_weather(location, units)",
+    "x": 150,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "calendar-function",
+    "label": "Función de calendario\nschedule_meeting(time, attendees)",
+    "x": 350,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "email-function",
+    "label": "Función de correo\nsend_email(to, subject, body)",
+    "x": 550,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "search-function",
+    "label": "Función de búsqueda\nweb_search(query, limit)",
+    "x": 750,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "database-function",
+    "label": "Función de base de datos\nquery_db(table, conditions)",
+    "x": 950,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "function-selector",
+    "label": "Selector de funciones\nElige: clima + calendario",
+    "x": 300,
+    "y": 620,
+    "w": 180
+   },
+   {
+    "id": "parameter-extractor",
+    "label": "Extractor de parámetros\nExtrae los argumentos de la función",
+    "x": 700,
+    "y": 620,
+    "w": 180
+   },
+   {
+    "id": "param-validator",
+    "label": "Validador de parámetros\nValida los esquemas de entrada",
+    "x": 500,
+    "y": 760,
+    "w": 200
+   },
+   {
+    "id": "weather-call",
+    "label": "Llamada a la API de clima\nlocation: \"NYC\", units: \"celsius\"",
+    "x": 250,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "calendar-call",
+    "label": "Llamada a la API de calendario\ntime: \"2024-01-15 14:00\"",
+    "x": 750,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "execution-engine",
+    "label": "Motor de ejecución\nGestiona llamadas concurrentes",
+    "x": 500,
+    "y": 1040,
+    "w": 200
+   },
+   {
+    "id": "weather-response",
+    "label": "Respuesta de clima\n{\"temp\": 18, \"condition\": \"cloudy\"}",
+    "x": 250,
+    "y": 1180,
+    "w": 180
+   },
+   {
+    "id": "calendar-response",
+    "label": "Respuesta de calendario\n{\"id\": \"mtg_123\", \"status\": \"scheduled\"}",
+    "x": 750,
+    "y": 1180,
+    "w": 180
+   },
+   {
+    "id": "result-synthesizer",
+    "label": "Sintetizador de resultados\nCombina las salidas de las funciones",
+    "x": 500,
+    "y": 1320,
+    "w": 200
+   },
+   {
+    "id": "schema-validator",
+    "label": "Validador de esquemas\nDefiniciones de funciones",
+    "x": 200,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "auth-manager",
+    "label": "Gestor de autenticación\nCredenciales de API",
+    "x": 800,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "rate-limiter",
+    "label": "Limitador de tasa\nGestión de cuotas de API",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "error-handler",
+    "label": "Manejador de errores\nGestión de excepciones",
+    "x": 900,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "cache-manager",
+    "label": "Gestor de cache\nCache de respuestas",
+    "x": 100,
+    "y": 900,
+    "w": 140
+   },
+   {
+    "id": "retry-mechanism",
+    "label": "Mecanismo de reintentos\nRecuperación ante fallos",
+    "x": 900,
+    "y": 900,
+    "w": 140
+   },
+   {
+    "id": "performance-monitor",
+    "label": "Monitor de rendimiento\n• Llamadas a funciones: 2\\n• Tasa de éxito: 100%\\n• Latencia promedio: 245ms\\n• Aciertos de cache: 15%\\n• Límite de tasa: 85/100",
+    "x": 50,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "security-scanner",
+    "label": "Escáner de seguridad\n• Saneamiento de entradas: ✓\\n• Inyección SQL: Ninguna\\n• Intentos de XSS: Ninguno\\n• Validación de autenticación: ✓\\n• Permisos: Válidos",
+    "x": 1100,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "logging-system",
+    "label": "Sistema de logging\nCaptura del registro de auditoría",
+    "x": 100,
+    "y": 1180,
+    "w": 140
+   },
+   {
+    "id": "response-formatter",
+    "label": "Formateador de respuestas\nSalida amigable para el usuario",
+    "x": 900,
+    "y": 1180,
+    "w": 140
+   },
+   {
+    "id": "final-response",
+    "label": "Respuesta final\n\"Clima: 18°C nublado. Reunión agendada para las 2PM.\"",
+    "x": 500,
+    "y": 1460,
+    "w": 200
+   },
+   {
+    "id": "analytics-collector",
+    "label": "Recolector de analíticas\nMétricas de uso",
+    "x": 200,
+    "y": 1460,
+    "w": 160
+   },
+   {
+    "id": "registry-updater",
+    "label": "Actualizador del registro\nEstadísticas de uso de funciones",
+    "x": 800,
+    "y": 1460,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-user-intent",
+    "s": "user-request",
+    "t": "intent-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-intent-registry",
+    "s": "intent-analyzer",
+    "t": "function-registry",
+    "label": ""
+   },
+   {
+    "id": "e-registry-schema",
+    "s": "function-registry",
+    "t": "schema-validator",
+    "label": ""
+   },
+   {
+    "id": "e-registry-auth",
+    "s": "function-registry",
+    "t": "auth-manager",
+    "label": ""
+   },
+   {
+    "id": "e-registry-weather",
+    "s": "function-registry",
+    "t": "weather-function",
+    "label": "Descubrir"
+   },
+   {
+    "id": "e-registry-calendar",
+    "s": "function-registry",
+    "t": "calendar-function",
+    "label": "Descubrir"
+   },
+   {
+    "id": "e-registry-email",
+    "s": "function-registry",
+    "t": "email-function",
+    "label": "Descubrir"
+   },
+   {
+    "id": "e-registry-search",
+    "s": "function-registry",
+    "t": "search-function",
+    "label": "Descubrir"
+   },
+   {
+    "id": "e-registry-database",
+    "s": "function-registry",
+    "t": "database-function",
+    "label": "Descubrir"
+   },
+   {
+    "id": "e-weather-selector",
+    "s": "weather-function",
+    "t": "function-selector",
+    "label": ""
+   },
+   {
+    "id": "e-calendar-selector",
+    "s": "calendar-function",
+    "t": "function-selector",
+    "label": ""
+   },
+   {
+    "id": "e-selector-extractor",
+    "s": "function-selector",
+    "t": "parameter-extractor",
+    "label": ""
+   },
+   {
+    "id": "e-extractor-validator",
+    "s": "parameter-extractor",
+    "t": "param-validator",
+    "label": ""
+   },
+   {
+    "id": "e-validator-rate",
+    "s": "param-validator",
+    "t": "rate-limiter",
+    "label": ""
+   },
+   {
+    "id": "e-validator-error",
+    "s": "param-validator",
+    "t": "error-handler",
+    "label": ""
+   },
+   {
+    "id": "e-validator-weather-call",
+    "s": "param-validator",
+    "t": "weather-call",
+    "label": ""
+   },
+   {
+    "id": "e-validator-calendar-call",
+    "s": "param-validator",
+    "t": "calendar-call",
+    "label": ""
+   },
+   {
+    "id": "e-weather-call-engine",
+    "s": "weather-call",
+    "t": "execution-engine",
+    "label": ""
+   },
+   {
+    "id": "e-calendar-call-engine",
+    "s": "calendar-call",
+    "t": "execution-engine",
+    "label": ""
+   },
+   {
+    "id": "e-engine-weather-response",
+    "s": "execution-engine",
+    "t": "weather-response",
+    "label": ""
+   },
+   {
+    "id": "e-engine-calendar-response",
+    "s": "execution-engine",
+    "t": "calendar-response",
+    "label": ""
+   },
+   {
+    "id": "e-weather-response-synthesizer",
+    "s": "weather-response",
+    "t": "result-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "e-calendar-response-synthesizer",
+    "s": "calendar-response",
+    "t": "result-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "e-synthesizer-final",
+    "s": "result-synthesizer",
+    "t": "final-response",
+    "label": ""
+   },
+   {
+    "id": "e-cache-weather-call",
+    "s": "cache-manager",
+    "t": "weather-call",
+    "label": ""
+   },
+   {
+    "id": "e-retry-calendar-call",
+    "s": "retry-mechanism",
+    "t": "calendar-call",
+    "label": ""
+   },
+   {
+    "id": "e-weather-response-logging",
+    "s": "weather-response",
+    "t": "logging-system",
+    "label": ""
+   },
+   {
+    "id": "e-calendar-response-formatter",
+    "s": "calendar-response",
+    "t": "response-formatter",
+    "label": ""
+   },
+   {
+    "id": "e-final-analytics",
+    "s": "final-response",
+    "t": "analytics-collector",
+    "label": ""
+   },
+   {
+    "id": "e-final-registry-update",
+    "s": "final-response",
+    "t": "registry-updater",
+    "label": ""
+   },
+   {
+    "id": "e-perf-weather",
+    "s": "performance-monitor",
+    "t": "weather-function",
+    "label": ""
+   },
+   {
+    "id": "e-security-database",
+    "s": "security-scanner",
+    "t": "database-function",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis de la solicitud del usuario",
+    "description": "Analiza la solicitud del usuario para identificar las llamadas a funciones y las interacciones con herramientas necesarias.",
+    "input": "Solicitud del usuario: \"¿Cómo está el clima en NYC? Y agenda una reunión para las 2PM de hoy\"",
+    "nodes": [
+     "user-request"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Reconocimiento y análisis de intención",
+    "description": "Interpreta la intención del usuario para identificar qué funciones deben llamarse.",
+    "input": "Análisis de intención: identificar los requisitos de consulta del clima y de agendamiento en el calendario",
+    "nodes": [
+     "user-request",
+     "intent-analyzer"
+    ],
+    "edges": [
+     "e-user-intent"
+    ]
+   },
+   {
+    "title": "Acceso al registro de funciones",
+    "description": "Accede al registro de funciones para descubrir las herramientas disponibles y sus esquemas.",
+    "input": "Consulta al registro: buscar las funciones de clima y calendario con sus esquemas",
+    "nodes": [
+     "function-registry",
+     "schema-validator",
+     "auth-manager"
+    ],
+    "edges": [
+     "e-intent-registry",
+     "e-registry-schema",
+     "e-registry-auth"
+    ]
+   },
+   {
+    "title": "Descubrimiento y enumeración de funciones",
+    "description": "Descubre y enumera todas las funciones disponibles en el registro.",
+    "input": "Descubrimiento de funciones: identificar las herramientas disponibles y sus capacidades",
+    "nodes": [
+     "weather-function",
+     "calendar-function",
+     "email-function",
+     "search-function",
+     "database-function"
+    ],
+    "edges": [
+     "e-registry-weather",
+     "e-registry-calendar",
+     "e-registry-email",
+     "e-registry-search",
+     "e-registry-database"
+    ]
+   },
+   {
+    "title": "Selección de funciones y extracción de parámetros",
+    "description": "Selecciona las funciones necesarias y extrae los parámetros de la entrada del usuario.",
+    "input": "Selección de funciones: elegir las funciones de clima y calendario, y extraer los parámetros de la solicitud del usuario",
+    "nodes": [
+     "function-selector",
+     "parameter-extractor"
+    ],
+    "edges": [
+     "e-weather-selector",
+     "e-calendar-selector",
+     "e-selector-extractor"
+    ]
+   },
+   {
+    "title": "Validación de parámetros y verificaciones de seguridad",
+    "description": "Valida los parámetros de las funciones contra los esquemas y realiza verificaciones de seguridad.",
+    "input": "Validación de parámetros: revisar esquemas, sanear entradas, validar restricciones de seguridad",
+    "nodes": [
+     "param-validator",
+     "rate-limiter",
+     "error-handler"
+    ],
+    "edges": [
+     "e-extractor-validator",
+     "e-validator-rate",
+     "e-validator-error"
+    ]
+   },
+   {
+    "title": "Preparación de la ejecución de funciones",
+    "description": "Prepara e inicia las llamadas a funciones con parámetros validados.",
+    "input": "Ejecución de funciones: preparar las llamadas a la API con parámetros validados y autenticación",
+    "nodes": [
+     "weather-call",
+     "calendar-call"
+    ],
+    "edges": [
+     "e-validator-weather-call",
+     "e-validator-calendar-call"
+    ]
+   },
+   {
+    "title": "Ejecución concurrente de funciones",
+    "description": "Ejecuta ambas llamadas a funciones de forma concurrente mediante el motor de ejecución.",
+    "input": "Ejecución concurrente: ejecutar simultáneamente las llamadas a las APIs de clima y calendario",
+    "nodes": [
+     "execution-engine",
+     "cache-manager",
+     "retry-mechanism"
+    ],
+    "edges": [
+     "e-weather-call-engine",
+     "e-calendar-call-engine",
+     "e-cache-weather-call",
+     "e-retry-calendar-call"
+    ]
+   },
+   {
+    "title": "Procesamiento de respuestas de funciones",
+    "description": "Procesa y valida las respuestas de ambas llamadas a funciones.",
+    "input": "Procesamiento de respuestas: manejar las respuestas de la API y validar los datos devueltos",
+    "nodes": [
+     "weather-response",
+     "calendar-response",
+     "logging-system",
+     "response-formatter"
+    ],
+    "edges": [
+     "e-engine-weather-response",
+     "e-engine-calendar-response",
+     "e-weather-response-logging",
+     "e-calendar-response-formatter"
+    ]
+   },
+   {
+    "title": "Síntesis e integración de resultados",
+    "description": "Combina los resultados de las funciones en una respuesta coherente para el usuario.",
+    "input": "Síntesis de resultados: combinar los datos de clima y calendario en una respuesta unificada para el usuario",
+    "nodes": [
+     "result-synthesizer"
+    ],
+    "edges": [
+     "e-weather-response-synthesizer",
+     "e-calendar-response-synthesizer"
+    ]
+   },
+   {
+    "title": "Entrega de la respuesta y analíticas",
+    "description": "Entrega la respuesta final al usuario y recolecta analíticas de uso.",
+    "input": "Entrega de la respuesta: proporcionar la respuesta final al usuario y actualizar las métricas de uso",
+    "nodes": [
+     "final-response",
+     "performance-monitor",
+     "security-scanner"
+    ],
+    "edges": [
+     "e-synthesizer-final",
+     "e-perf-weather",
+     "e-security-database"
+    ]
+   },
+   {
+    "title": "Finalización del Function Calling Pattern",
+    "description": "Completa el ciclo de function calling con la recolección de analíticas y las actualizaciones del registro.",
+    "input": "",
+    "nodes": [
+     "analytics-collector",
+     "registry-updater"
+    ],
+    "edges": [
+     "e-final-analytics",
+     "e-final-registry-update"
+    ]
+   }
+  ]
+ }
+}

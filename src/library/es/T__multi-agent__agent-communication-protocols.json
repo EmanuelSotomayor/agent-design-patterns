@@ -1,0 +1,703 @@
+{
+ "cat": "multi-agent",
+ "slug": "agent-communication-protocols",
+ "name": "Agent Communication Protocols",
+ "icon": "📡",
+ "complexity": "medium",
+ "description": "Mecanismos de comunicación estandarizados para la interacción entre agentes, incluidos el paso de mensajes, publicación-suscripción y patrones orientados a eventos",
+ "features": [
+  "Mensajería asíncrona",
+  "Enrutamiento basado en tópicos",
+  "Encolado de mensajes",
+  "Difusión de eventos",
+  "Garantías de entrega",
+  "Gestión de suscriptores",
+  "Filtrado de mensajes",
+  "Distribución escalable"
+ ],
+ "tldr": {
+  "what": "Los agentes intercambian trabajo mediante colas de mensajes, tópicos o eventos en lugar de llamadas directas, lo que permite un desacoplamiento asíncrono y un enrutamiento selectivo.",
+  "when": "Varios agentes deben coordinarse sin bloquearse, o algunos agentes necesitan reaccionar de forma independiente a eventos publicados por otros.",
+  "watchOut": "El orden de los mensajes y las garantías de entrega se vuelven críticos; los mensajes perdidos o retrasados pueden romper silenciosamente los flujos de trabajo posteriores sin señales evidentes de falla."
+ },
+ "overview": {
+  "pattern": "Protocolos de comunicación integrales para la interacción entre agentes, incluidos REST APIs, gRPC, GraphQL, WebSocket, SSE y colas de mensajes",
+  "why": "Permite una comunicación síncrona/asíncrona flexible, actualizaciones en tiempo real, transferencia de datos eficiente y coordinación multiprotocolo escalable",
+  "insight": "Soporte multiprotocolo + interfaces estandarizadas + capacidades en tiempo real = comunicación robusta entre agentes",
+  "impl": [
+   {
+    "t": "Elegir el tipo de protocolo",
+    "d": "Selecciona REST, gRPC, GraphQL, WebSocket, SSE o Message Queue según las necesidades"
+   },
+   {
+    "t": "Definir el esquema de la interfaz",
+    "d": "Diseña contratos de API, esquemas de mensajes o estructuras de eventos con versionado"
+   },
+   {
+    "t": "Configurar la infraestructura",
+    "d": "Despliega API gateways, message brokers, balanceadores de carga y monitoreo"
+   },
+   {
+    "t": "Implementar la comunicación",
+    "d": "Agrega manejadores de protocolo, manejo de errores, autenticación y limitación de tasa"
+   },
+   {
+    "t": "Monitorear y optimizar",
+    "d": "Haz seguimiento de la latencia, el throughput, las tasas de error y la salud de las conexiones"
+   }
+  ],
+  "example": "REST API ↔ gRPC ↔ GraphQL ↔ WebSocket ↔ Message Queue → Red de agentes multiprotocolo",
+  "dos": [
+   "Elige el protocolo adecuado: REST para CRUD, gRPC para rendimiento, GraphQL para flexibilidad",
+   "Usa WebSocket para comunicación bidireccional en tiempo real y SSE para actualizaciones enviadas desde el servidor",
+   "Implementa un versionado de API adecuado, evolución de esquemas y compatibilidad hacia atrás",
+   "Agrega manejo de errores integral, timeouts, circuit breakers y lógica de reintentos",
+   "Usa Protocol Buffers para la eficiencia de gRPC y especificaciones OpenAPI para documentar REST",
+   "Implementa autenticación (OAuth2, JWT) y limitación de tasa en todos los protocolos"
+  ],
+  "donts": [
+   "Usar un solo protocolo: distintos casos de uso requieren distintos patrones de comunicación",
+   "Ignorar la gestión de conexiones en WebSocket y la limpieza adecuada de los streams SSE",
+   "Omitir el balanceo de carga y el descubrimiento de servicios en redes de agentes distribuidas",
+   "Usar REST para comunicación en tiempo real o gRPC para operaciones CRUD simples",
+   "Permitir consultas GraphQL sin límites o sin protecciones de límite de profundidad"
+  ],
+  "use": [
+   "Redes de agentes multiprotocolo que requieren patrones de comunicación flexibles",
+   "Colaboración en tiempo real con comunicación bidireccional por WebSocket",
+   "Servicios de agentes RESTful con operaciones CRUD estándar y semántica HTTP",
+   "Llamadas entre agentes de alto rendimiento usando gRPC y Protocol Buffers",
+   "Necesidades de consultas de datos complejas con las capacidades de consulta flexibles de GraphQL",
+   "Notificaciones enviadas desde el servidor y actualizaciones en vivo usando streams SSE"
+  ],
+  "avoid": [
+   "Sistemas simples de un solo protocolo donde la complejidad es innecesaria",
+   "Entornos con restricciones de red estrictas que bloquean múltiples puertos",
+   "Sistemas legados incapaces de soportar implementaciones de protocolos modernos",
+   "Dispositivos ultrarrestringidos con capacidades de procesamiento mínimas",
+   "Aplicaciones con necesidades de comunicación punto a punto extremadamente simples"
+  ],
+  "metrics": [
+   {
+    "n": "Throughput de mensajes",
+    "d": "Mensajes por segundo procesados por el sistema de comunicación"
+   },
+   {
+    "n": "Latencia de entrega",
+    "d": "Tiempo P50/P95 desde el envío del mensaje hasta su procesamiento por el agente"
+   },
+   {
+    "n": "Tasa de entrega exitosa",
+    "d": "Porcentaje de mensajes entregados y confirmados correctamente"
+   },
+   {
+    "n": "Profundidad de la cola",
+    "d": "Acumulación promedio y máxima de mensajes por tópico/cola"
+   },
+   {
+    "n": "Concurrencia de procesamiento",
+    "d": "Número de manejadores de mensajes en paralelo por agente"
+   },
+   {
+    "n": "Utilización de la red",
+    "d": "Uso de ancho de banda y eficiencia de las conexiones entre agentes"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Ecosistema de agentes empresariales",
+    "d": "Comunicación multiprotocolo con REST APIs para la gestión, gRPC para llamadas de rendimiento crítico y WebSocket para la coordinación en tiempo real"
+   },
+   {
+    "n": "Plataformas de trading en tiempo real",
+    "d": "WebSocket para datos de mercado en vivo, REST para la gestión de órdenes, GraphQL para consultas complejas de portafolio y colas de mensajes para la liquidación"
+   },
+   {
+    "n": "Asistentes de IA interactivos",
+    "d": "SSE para respuestas en streaming, WebSocket para el flujo conversacional, REST para la gestión de sesiones y GraphQL para la recuperación de contexto"
+   },
+   {
+    "n": "Redes de vehículos autónomos",
+    "d": "gRPC para datos de sensores de baja latencia, MQTT para telemetría, REST para las APIs de gestión de flota y WebSocket para la coordinación en tiempo real"
+   },
+   {
+    "n": "Sistemas de investigación multiagente",
+    "d": "GraphQL para consultas de datos flexibles, gRPC para tareas de cómputo intensivo, REST para la gestión de recursos y SSE para el streaming del progreso"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Agent Communication Protocols",
+  "description": "Frameworks de comunicación estandarizados que usan FIPA-ACL, KQML y otros protocolos para permitir un intercambio de mensajes estructurado, seguro y confiable entre agentes distribuidos.",
+  "nodes": [
+   {
+    "id": "communication-task",
+    "label": "🎯 Tarea de comunicación\n\"Coordinar un pipeline de procesamiento de datos multiagente\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "protocol-stack",
+    "label": "📚 Pila de protocolos\nACL / FIPA / KQML",
+    "x": 375,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "sender-agent",
+    "label": "📤 Agente emisor\nProductor de datos\nProtocolo: FIPA-ACL",
+    "x": 100,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "receiver-agent",
+    "label": "📥 Agente receptor\nConsumidor de datos\nProtocolo: FIPA-ACL",
+    "x": 650,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "broker-agent",
+    "label": "🔄 Agente broker\nEnrutador de mensajes\nProtocolo: KQML",
+    "x": 375,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "performative-types",
+    "label": "💬 Performativas\n• INFORM\n• REQUEST\n• QUERY\n• PROPOSE\n• ACCEPT",
+    "x": 100,
+    "y": 380,
+    "w": 140
+   },
+   {
+    "id": "message-structure",
+    "label": "📋 Estructura del mensaje\n• ID del emisor\n• ID del receptor\n• Contenido\n• Ontología\n• Protocolo",
+    "x": 250,
+    "y": 380,
+    "w": 140
+   },
+   {
+    "id": "content-language",
+    "label": "🗣️ Lenguaje de contenido\n• JSON-LD\n• RDF\n• SL (semántico)\n• XML",
+    "x": 400,
+    "y": 380,
+    "w": 140
+   },
+   {
+    "id": "conversation-id",
+    "label": "🔖 Conversación\n• ID: conv-2024-01\n• Seguimiento de hilos\n• Cadenas de respuesta",
+    "x": 550,
+    "y": 380,
+    "w": 140
+   },
+   {
+    "id": "ontology-ref",
+    "label": "📖 Ontología\n• Vocabulario del dominio\n• Semántica compartida\n• Definiciones de términos",
+    "x": 700,
+    "y": 380,
+    "w": 140
+   },
+   {
+    "id": "request-response",
+    "label": "↔️ Solicitud-respuesta\nIntercambio síncrono",
+    "x": 50,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "publish-subscribe",
+    "label": "📢 Publicación-suscripción\nDifusión de eventos",
+    "x": 220,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "contract-net",
+    "label": "📜 Contract Net\nProtocolo de licitación de tareas",
+    "x": 390,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "auction-protocol",
+    "label": "🏆 Protocolo de subasta\nLicitación competitiva",
+    "x": 560,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "negotiation-protocol",
+    "label": "🤝 Negociación\nAcuerdo iterativo",
+    "x": 730,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "message-queue",
+    "label": "📬 Cola de mensajes\nProcesamiento FIFO\nBúfer: 1000 msgs",
+    "x": 150,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "flow-controller",
+    "label": "🎛️ Controlador de flujo\nLimitación de tasa\nEnrutamiento por prioridad",
+    "x": 320,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "ack-handler",
+    "label": "✅ Manejador de ACK\nConfirmación de entrega\nLógica de reintentos",
+    "x": 490,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "timeout-manager",
+    "label": "⏱️ Gestor de timeouts\nPlazos de respuesta\nDetección de fallas",
+    "x": 660,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "authentication",
+    "label": "🔐 Autenticación\nIdentidad del agente\nFirmas digitales",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "encryption",
+    "label": "🔒 Cifrado\nTLS/SSL\nSeguridad de extremo a extremo",
+    "x": 270,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "schema-validator",
+    "label": "📏 Validador de esquemas\nFormato del mensaje\nCumplimiento de la ontología",
+    "x": 440,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "audit-log",
+    "label": "📝 Registro de auditoría\nTraza de la comunicación\nRegistro de cumplimiento",
+    "x": 610,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "http-transport",
+    "label": "🌐 HTTP/REST\nBasado en web",
+    "x": 150,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "websocket-transport",
+    "label": "🔌 WebSocket\nTiempo real",
+    "x": 290,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "mqtt-transport",
+    "label": "📡 MQTT\nMensajería IoT",
+    "x": 430,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "grpc-transport",
+    "label": "⚡ gRPC\nAlto rendimiento",
+    "x": 570,
+    "y": 880,
+    "w": 140
+   },
+   {
+    "id": "successful-comm",
+    "label": "✨ Comunicación exitosa\nPipeline coordinado con entrega garantizada",
+    "x": 400,
+    "y": 1000,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-protocol",
+    "s": "communication-task",
+    "t": "protocol-stack",
+    "label": ""
+   },
+   {
+    "id": "protocol-sender",
+    "s": "protocol-stack",
+    "t": "sender-agent",
+    "label": "Inicializar"
+   },
+   {
+    "id": "protocol-broker",
+    "s": "protocol-stack",
+    "t": "broker-agent",
+    "label": "Configurar"
+   },
+   {
+    "id": "protocol-receiver",
+    "s": "protocol-stack",
+    "t": "receiver-agent",
+    "label": "Inicializar"
+   },
+   {
+    "id": "sender-broker",
+    "s": "sender-agent",
+    "t": "broker-agent",
+    "label": "INFORM"
+   },
+   {
+    "id": "broker-receiver",
+    "s": "broker-agent",
+    "t": "receiver-agent",
+    "label": "FORWARD"
+   },
+   {
+    "id": "receiver-broker-ack",
+    "s": "receiver-agent",
+    "t": "broker-agent",
+    "label": "ACK"
+   },
+   {
+    "id": "broker-sender-ack",
+    "s": "broker-agent",
+    "t": "sender-agent",
+    "label": "CONFIRM"
+   },
+   {
+    "id": "sender-performative",
+    "s": "sender-agent",
+    "t": "performative-types",
+    "label": ""
+   },
+   {
+    "id": "sender-structure",
+    "s": "sender-agent",
+    "t": "message-structure",
+    "label": ""
+   },
+   {
+    "id": "broker-language",
+    "s": "broker-agent",
+    "t": "content-language",
+    "label": ""
+   },
+   {
+    "id": "broker-conversation",
+    "s": "broker-agent",
+    "t": "conversation-id",
+    "label": ""
+   },
+   {
+    "id": "receiver-ontology",
+    "s": "receiver-agent",
+    "t": "ontology-ref",
+    "label": ""
+   },
+   {
+    "id": "performative-request",
+    "s": "performative-types",
+    "t": "request-response",
+    "label": ""
+   },
+   {
+    "id": "structure-publish",
+    "s": "message-structure",
+    "t": "publish-subscribe",
+    "label": ""
+   },
+   {
+    "id": "language-contract",
+    "s": "content-language",
+    "t": "contract-net",
+    "label": ""
+   },
+   {
+    "id": "conversation-auction",
+    "s": "conversation-id",
+    "t": "auction-protocol",
+    "label": ""
+   },
+   {
+    "id": "ontology-negotiation",
+    "s": "ontology-ref",
+    "t": "negotiation-protocol",
+    "label": ""
+   },
+   {
+    "id": "request-queue",
+    "s": "request-response",
+    "t": "message-queue",
+    "label": ""
+   },
+   {
+    "id": "publish-flow",
+    "s": "publish-subscribe",
+    "t": "flow-controller",
+    "label": ""
+   },
+   {
+    "id": "contract-ack",
+    "s": "contract-net",
+    "t": "ack-handler",
+    "label": ""
+   },
+   {
+    "id": "auction-timeout",
+    "s": "auction-protocol",
+    "t": "timeout-manager",
+    "label": ""
+   },
+   {
+    "id": "queue-auth",
+    "s": "message-queue",
+    "t": "authentication",
+    "label": ""
+   },
+   {
+    "id": "flow-encrypt",
+    "s": "flow-controller",
+    "t": "encryption",
+    "label": ""
+   },
+   {
+    "id": "ack-validate",
+    "s": "ack-handler",
+    "t": "schema-validator",
+    "label": ""
+   },
+   {
+    "id": "timeout-audit",
+    "s": "timeout-manager",
+    "t": "audit-log",
+    "label": ""
+   },
+   {
+    "id": "auth-http",
+    "s": "authentication",
+    "t": "http-transport",
+    "label": ""
+   },
+   {
+    "id": "encrypt-websocket",
+    "s": "encryption",
+    "t": "websocket-transport",
+    "label": ""
+   },
+   {
+    "id": "validate-mqtt",
+    "s": "schema-validator",
+    "t": "mqtt-transport",
+    "label": ""
+   },
+   {
+    "id": "audit-grpc",
+    "s": "audit-log",
+    "t": "grpc-transport",
+    "label": ""
+   },
+   {
+    "id": "http-success",
+    "s": "http-transport",
+    "t": "successful-comm",
+    "label": ""
+   },
+   {
+    "id": "websocket-success",
+    "s": "websocket-transport",
+    "t": "successful-comm",
+    "label": ""
+   },
+   {
+    "id": "mqtt-success",
+    "s": "mqtt-transport",
+    "t": "successful-comm",
+    "label": ""
+   },
+   {
+    "id": "grpc-success",
+    "s": "grpc-transport",
+    "t": "successful-comm",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Inicialización de la comunicación",
+    "description": "Configura la pila de protocolos e inicializa los agentes",
+    "input": "",
+    "nodes": [
+     "communication-task",
+     "protocol-stack"
+    ],
+    "edges": [
+     "task-protocol"
+    ]
+   },
+   {
+    "title": "Configuración de agentes",
+    "description": "Configura los agentes con los protocolos adecuados",
+    "input": "",
+    "nodes": [
+     "protocol-stack",
+     "sender-agent",
+     "broker-agent",
+     "receiver-agent"
+    ],
+    "edges": [
+     "protocol-sender",
+     "protocol-broker",
+     "protocol-receiver"
+    ]
+   },
+   {
+    "title": "Construcción del mensaje",
+    "description": "Construye el mensaje con performativas y estructura",
+    "input": "",
+    "nodes": [
+     "sender-agent",
+     "performative-types",
+     "message-structure",
+     "content-language",
+     "conversation-id",
+     "ontology-ref"
+    ],
+    "edges": [
+     "sender-performative",
+     "sender-structure",
+     "broker-language",
+     "broker-conversation",
+     "receiver-ontology"
+    ]
+   },
+   {
+    "title": "Transmisión del mensaje",
+    "description": "Envía el mensaje a través del broker hasta el receptor",
+    "input": "",
+    "nodes": [
+     "sender-agent",
+     "broker-agent",
+     "receiver-agent"
+    ],
+    "edges": [
+     "sender-broker",
+     "broker-receiver"
+    ]
+   },
+   {
+    "title": "Flujo de confirmación",
+    "description": "Confirma la entrega del mensaje con ACK",
+    "input": "",
+    "nodes": [
+     "receiver-agent",
+     "broker-agent",
+     "sender-agent"
+    ],
+    "edges": [
+     "receiver-broker-ack",
+     "broker-sender-ack"
+    ]
+   },
+   {
+    "title": "Patrones de protocolo",
+    "description": "Aplica patrones de comunicación según el caso de uso",
+    "input": "",
+    "nodes": [
+     "request-response",
+     "publish-subscribe",
+     "contract-net",
+     "auction-protocol",
+     "negotiation-protocol"
+    ],
+    "edges": [
+     "performative-request",
+     "structure-publish",
+     "language-contract",
+     "conversation-auction",
+     "ontology-negotiation"
+    ]
+   },
+   {
+    "title": "Control de flujo",
+    "description": "Gestiona el flujo y la entrega de mensajes",
+    "input": "",
+    "nodes": [
+     "message-queue",
+     "flow-controller",
+     "ack-handler",
+     "timeout-manager"
+    ],
+    "edges": [
+     "request-queue",
+     "publish-flow",
+     "contract-ack",
+     "auction-timeout"
+    ]
+   },
+   {
+    "title": "Capa de seguridad",
+    "description": "Aplica autenticación, cifrado y validación",
+    "input": "",
+    "nodes": [
+     "authentication",
+     "encryption",
+     "schema-validator",
+     "audit-log"
+    ],
+    "edges": [
+     "queue-auth",
+     "flow-encrypt",
+     "ack-validate",
+     "timeout-audit"
+    ]
+   },
+   {
+    "title": "Selección del transporte",
+    "description": "Elige el protocolo de transporte adecuado",
+    "input": "",
+    "nodes": [
+     "http-transport",
+     "websocket-transport",
+     "mqtt-transport",
+     "grpc-transport"
+    ],
+    "edges": [
+     "auth-http",
+     "encrypt-websocket",
+     "validate-mqtt",
+     "audit-grpc"
+    ]
+   },
+   {
+    "title": "Comunicación exitosa",
+    "description": "Coordinación completa del pipeline con entrega garantizada",
+    "input": "",
+    "nodes": [
+     "successful-comm",
+     "http-transport",
+     "websocket-transport",
+     "mqtt-transport",
+     "grpc-transport"
+    ],
+    "edges": [
+     "http-success",
+     "websocket-success",
+     "mqtt-success",
+     "grpc-success"
+    ]
+   }
+  ]
+ }
+}

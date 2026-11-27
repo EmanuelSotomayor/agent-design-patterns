@@ -1,0 +1,414 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "agent-collaboration-ux",
+ "name": "Agent Collaboration UX(ACX)",
+ "icon": "🤝",
+ "complexity": "high",
+ "description": "Patrones de experiencia de usuario para la coordinación multiagente, los traspasos y los flujos de trabajo colaborativos con orquestación transparente",
+ "features": [
+  "Interfaces de traspaso entre agentes fluidas que preservan el contexto",
+  "Dashboards de coordinación multiagente y visualización de estado",
+  "Indicadores de especialización que muestran las áreas de experiencia de cada agente",
+  "Seguimiento y transparencia del progreso de los flujos de trabajo colaborativos"
+ ],
+ "tldr": {
+  "what": "Muestra múltiples agentes trabajando juntos con traspasos claros, actualizaciones de estado e insignias de especialización para que los usuarios vean quién hace qué y por qué.",
+  "when": "Flujos de trabajo complejos que requieren distintos agentes expertos, donde los usuarios necesitan confiar en que el trabajo está coordinado y que nada queda sin atender.",
+  "watchOut": "Los dashboards demasiado detallados confunden a los usuarios; mantén la visibilidad enfocada en decisiones y bloqueos, no en cada cambio de estado interno de los agentes."
+ },
+ "overview": {
+  "pattern": "Interfaces de coordinación multiagente con traspasos fluidos, orquestación transparente y colaboración entre agentes especializados",
+  "why": "Habilita flujos de trabajo empresariales complejos, reduce la sobrecarga de coordinación y ofrece automatización escalable con supervisión humana integrada",
+  "insight": "Disparadores de traspaso basados en la complejidad que preservan el contexto: la coordinación se vuelve transparente y manejable a escala empresarial",
+  "impl": [
+   {
+    "t": "Diseñar la red de agentes",
+    "d": "Definir los roles especializados de los agentes, sus capacidades y la jerarquía de coordinación"
+   },
+   {
+    "t": "Implementar la lógica de traspaso",
+    "d": "Construir mecanismos de traspaso que preserven el contexto con umbrales de complejidad"
+   },
+   {
+    "t": "Crear el dashboard de coordinación",
+    "d": "Desarrollar visualización de estado en tiempo real y controles de orquestación"
+   },
+   {
+    "t": "Construir la capa de transparencia",
+    "d": "Agregar indicadores visuales de actividades de los agentes, traspasos y puntos de decisión"
+   },
+   {
+    "t": "Probar y optimizar",
+    "d": "Validar los flujos de coordinación y optimizar el momento de los traspasos con feedback de usuarios"
+   }
+  ],
+  "example": "agent_mapping → handoff_implementation → dashboard_creation → transparency_design → flow_optimization",
+  "dos": [
+   "Implementa disparadores de traspaso basados en la complejidad para evitar sistemas rígidos basados en reglas",
+   "Preserva todo el contexto de la conversación durante los traspasos entre agentes",
+   "Usa consistencia visual en los dashboards de coordinación y los indicadores de estado",
+   "Ofrece transparencia en tiempo real de las actividades y la toma de decisiones de los agentes",
+   "Diseña tanto para patrones de coordinación centralizados como descentralizados",
+   "Incluye puntos de intervención con humano en el bucle para decisiones de alto impacto",
+   "Implementa indicadores de especialización que muestren las áreas de experiencia de los agentes"
+  ],
+  "donts": [
+   "Obligar a los clientes a repetir información durante los traspasos entre agentes",
+   "Ocultar la complejidad de la coordinación entre agentes sin ofrecer opciones de transparencia",
+   "Usar soluciones de un solo agente para flujos de trabajo colaborativos inherentemente de varios pasos",
+   "Implementar traspasos sin un razonamiento claro ni feedback para el usuario",
+   "Ignorar la gestión del estado en arquitecturas multiagente distribuidas"
+  ],
+  "use": [
+   "Flujos de trabajo complejos que requieren experiencia especializada de agentes",
+   "Automatización empresarial que abarca múltiples sistemas y equipos",
+   "Tareas que necesitan procesamiento y coordinación distribuidos",
+   "Escenarios de alto impacto que requieren supervisión humana integrada",
+   "Sistemas escalables con distintos niveles de complejidad",
+   "Procesos interfuncionales que requieren conocimiento específico del dominio"
+  ],
+  "avoid": [
+   "Tareas simples de un solo paso que puede manejar un agente",
+   "Aplicaciones en tiempo real que requieren respuestas inmediatas",
+   "Recursos limitados que no pueden sostener una infraestructura multiagente",
+   "Casos de uso donde la sobrecarga de coordinación supera los beneficios",
+   "Entornos muy regulados con responsabilidad estricta en un único punto"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de traspasos",
+    "d": "% de transiciones entre agentes exitosas que preservan el contexto"
+   },
+   {
+    "n": "Eficiencia en la finalización de tareas",
+    "d": "Tiempo para completar flujos de trabajo multiagente frente a la línea base de un solo agente"
+   },
+   {
+    "n": "Puntuación de transparencia de la coordinación",
+    "d": "Comprensión del usuario sobre las actividades y la toma de decisiones de los agentes"
+   },
+   {
+    "n": "Equilibrio de utilización de agentes",
+    "d": "Distribución de la carga de trabajo entre agentes especializados"
+   },
+   {
+    "n": "Tiempo de recuperación ante errores",
+    "d": "Tiempo para resolver fallas de coordinación y restablecer el flujo de trabajo"
+   },
+   {
+    "n": "Frecuencia de intervención del usuario",
+    "d": "% de flujos de trabajo que requieren supervisión o corrección humana"
+   },
+   {
+    "n": "Índice de escalabilidad",
+    "d": "Degradación del rendimiento a medida que crece la red de agentes"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Atención al cliente",
+    "d": "Agente de triaje → agentes especializados técnicos/de facturación/de escalamiento → traspaso a humano"
+   },
+   {
+    "n": "Automatización empresarial",
+    "d": "Orquestador de tareas → agentes especializados de flujo de trabajo → agentes de aseguramiento de calidad"
+   },
+   {
+    "n": "Creación de contenido",
+    "d": "Agente de investigación → agente de redacción → agente de edición → agente de revisión → publicación"
+   },
+   {
+    "n": "Coordinación en salud",
+    "d": "Agente de admisión → agente de diagnóstico → planificación del tratamiento → consulta con especialistas"
+   },
+   {
+    "n": "Servicios financieros",
+    "d": "Evaluación de riesgo → verificación de cumplimiento → flujo de aprobación → agentes de ejecución"
+   },
+   {
+    "n": "Desarrollo de software",
+    "d": "Agente de requisitos → agente de diseño → implementación → pruebas → despliegue"
+   },
+   {
+    "n": "Cadena de suministro",
+    "d": "Pronóstico de demanda → compras → inventario → logística → agentes de atención al cliente"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Agent Collaboration UX",
+  "description": "Patrones de interfaz para personas que trabajan junto a múltiples agentes coordinados: asignación de roles visible, espacios de trabajo compartidos, atribución de actividades y puntos de intervención que mantienen orientado al humano mientras un equipo de agentes trabaja en paralelo.",
+  "nodes": [
+   {
+    "id": "user-goal",
+    "label": "🎯 Objetivo del usuario\n\"Lanzar la página del producto:\ntextos, revisión de diseño y configuración de analítica\"",
+    "x": 360,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "team-panel",
+    "label": "👥 Panel del equipo de agentes\nRoles, estado y responsabilidades\nvisibles de un vistazo",
+    "x": 360,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "copy-agent",
+    "label": "✍️ Agente de textos\nRedactando los textos de la página\nEstado: Trabajando",
+    "x": 60,
+    "y": 270,
+    "w": 180
+   },
+   {
+    "id": "design-agent",
+    "label": "🎨 Agente de diseño\nRevisando especificaciones de layout\nEstado: Trabajando",
+    "x": 360,
+    "y": 270,
+    "w": 180
+   },
+   {
+    "id": "analytics-agent",
+    "label": "📈 Agente de analítica\nPlanificando el seguimiento de eventos\nEstado: Esperando los textos",
+    "x": 660,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "shared-workspace",
+    "label": "🗂️ Espacio de trabajo compartido\nDocumento en vivo con atribución\npor agente e historial de cambios",
+    "x": 360,
+    "y": 400,
+    "w": 260
+   },
+   {
+    "id": "activity-feed",
+    "label": "📜 Feed de actividad\n\"El agente de textos redactó la sección hero\"\n\"El agente de diseño señaló un problema de contraste\"",
+    "x": 60,
+    "y": 400,
+    "w": 240
+   },
+   {
+    "id": "conflict-surface",
+    "label": "⚠️ Conflicto expuesto\nLa longitud del texto supera\nla especificación de diseño en un 40%",
+    "x": 680,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "intervention-point",
+    "label": "🧑‍💻 Punto de intervención humana\n¿Aprobar textos más cortos o\nampliar el bloque de diseño?",
+    "x": 520,
+    "y": 520,
+    "w": 250
+   },
+   {
+    "id": "user-decision",
+    "label": "✅ Decisión del usuario\n\"Acorta el texto,\nmantén el layout\"",
+    "x": 520,
+    "y": 630,
+    "w": 200
+   },
+   {
+    "id": "replan",
+    "label": "🔁 Replanificación del equipo\nEl agente de textos revisa;\nel agente de analítica se desbloquea",
+    "x": 200,
+    "y": 630,
+    "w": 220
+   },
+   {
+    "id": "final-review",
+    "label": "📋 Resumen de revisión final\nContribuciones de cada agente listadas\ncon diffs y justificación",
+    "x": 360,
+    "y": 740,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-to-panel",
+    "s": "user-goal",
+    "t": "team-panel",
+    "label": ""
+   },
+   {
+    "id": "panel-to-copy",
+    "s": "team-panel",
+    "t": "copy-agent",
+    "label": "asignar"
+   },
+   {
+    "id": "panel-to-design",
+    "s": "team-panel",
+    "t": "design-agent",
+    "label": "asignar"
+   },
+   {
+    "id": "panel-to-analytics",
+    "s": "team-panel",
+    "t": "analytics-agent",
+    "label": "asignar"
+   },
+   {
+    "id": "copy-to-workspace",
+    "s": "copy-agent",
+    "t": "shared-workspace",
+    "label": ""
+   },
+   {
+    "id": "design-to-workspace",
+    "s": "design-agent",
+    "t": "shared-workspace",
+    "label": ""
+   },
+   {
+    "id": "workspace-to-feed",
+    "s": "shared-workspace",
+    "t": "activity-feed",
+    "label": "atribución"
+   },
+   {
+    "id": "design-to-conflict",
+    "s": "design-agent",
+    "t": "conflict-surface",
+    "label": ""
+   },
+   {
+    "id": "conflict-to-intervention",
+    "s": "conflict-surface",
+    "t": "intervention-point",
+    "label": ""
+   },
+   {
+    "id": "intervention-to-decision",
+    "s": "intervention-point",
+    "t": "user-decision",
+    "label": ""
+   },
+   {
+    "id": "decision-to-replan",
+    "s": "user-decision",
+    "t": "replan",
+    "label": ""
+   },
+   {
+    "id": "replan-to-copy",
+    "s": "replan",
+    "t": "copy-agent",
+    "label": "revisar"
+   },
+   {
+    "id": "replan-to-analytics",
+    "s": "replan",
+    "t": "analytics-agent",
+    "label": "desbloquear"
+   },
+   {
+    "id": "workspace-to-review",
+    "s": "shared-workspace",
+    "t": "final-review",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrega del objetivo",
+    "description": "El usuario plantea un objetivo de varias partes; el panel del equipo muestra qué agente es responsable de cada parte antes de que empiece cualquier trabajo",
+    "input": "",
+    "nodes": [
+     "user-goal",
+     "team-panel"
+    ],
+    "edges": [
+     "goal-to-panel"
+    ]
+   },
+   {
+    "title": "Asignación de roles",
+    "description": "Los agentes de textos, diseño y analítica reciben asignaciones acotadas con indicadores de estado visibles",
+    "input": "",
+    "nodes": [
+     "team-panel",
+     "copy-agent",
+     "design-agent",
+     "analytics-agent"
+    ],
+    "edges": [
+     "panel-to-copy",
+     "panel-to-design",
+     "panel-to-analytics"
+    ]
+   },
+   {
+    "title": "Trabajo en paralelo con atribución",
+    "description": "Los agentes contribuyen a un espacio de trabajo compartido; cada cambio se atribuye y se transmite al feed de actividad",
+    "input": "",
+    "nodes": [
+     "copy-agent",
+     "design-agent",
+     "shared-workspace",
+     "activity-feed"
+    ],
+    "edges": [
+     "copy-to-workspace",
+     "design-to-workspace",
+     "workspace-to-feed"
+    ]
+   },
+   {
+    "title": "Exposición de conflictos",
+    "description": "El agente de diseño detecta que el texto rompe la especificación del layout; el conflicto se expone en lugar de resolverse en silencio",
+    "input": "",
+    "nodes": [
+     "design-agent",
+     "conflict-surface"
+    ],
+    "edges": [
+     "design-to-conflict"
+    ]
+   },
+   {
+    "title": "Intervención humana",
+    "description": "La UI presenta una decisión acotada con ambas opciones y sus consecuencias; el humano sigue siendo el árbitro",
+    "input": "",
+    "nodes": [
+     "conflict-surface",
+     "intervention-point",
+     "user-decision"
+    ],
+    "edges": [
+     "conflict-to-intervention",
+     "intervention-to-decision"
+    ]
+   },
+   {
+    "title": "Replanificación del equipo",
+    "description": "La decisión se propaga: el agente de textos revisa y el agente de analítica bloqueado queda liberado",
+    "input": "",
+    "nodes": [
+     "user-decision",
+     "replan",
+     "copy-agent",
+     "analytics-agent"
+    ],
+    "edges": [
+     "decision-to-replan",
+     "replan-to-copy",
+     "replan-to-analytics"
+    ]
+   },
+   {
+    "title": "Resultado revisable",
+    "description": "El resumen final lista la contribución de cada agente con diffs y justificación, lo que mantiene la colaboración auditable",
+    "input": "",
+    "nodes": [
+     "shared-workspace",
+     "final-review"
+    ],
+    "edges": [
+     "workspace-to-review"
+    ]
+   }
+  ]
+ }
+}

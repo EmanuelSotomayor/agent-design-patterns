@@ -1,0 +1,324 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "terminal-bench",
+ "name": "Terminal-Bench(TB)",
+ "icon": "⌨️",
+ "complexity": "high",
+ "description": "Tareas difíciles de línea de comandos en entornos aislados, cada una con una solución escrita por una persona y tests que deciden si el agente realmente terminó.",
+ "features": [
+  "Un contenedor por tarea, para que las ejecuciones no se contaminen entre sí",
+  "Cada tarea incluye una solución de referencia escrita por una persona",
+  "Se verifica con tests y no inspeccionando la transcripción",
+  "Extraídas de trabajo real de infraestructura, datos y depuración",
+  "Deliberadamente difícil: los sistemas de frontera siguen lejos de resolverlo",
+  "Independiente del harness, por lo que se miden juntos el agente y su andamiaje"
+ ],
+ "tldr": {
+  "what": "Plantea tareas difíciles de línea de comandos en contenedores aislados, cada una con una solución escrita por una persona y tests que deciden después si el trabajo realmente se terminó.",
+  "when": "Estás evaluando agentes que hacen trabajo de infraestructura, build o depuración en una shell, y necesitas que la corrección se decida en lugar de juzgarse.",
+  "watchOut": "El puntaje identifica a un modelo y a un harness juntos: los mismos pesos bajo un andamiaje más débil se rinden justo donde uno más fuerte lee el error y se recupera."
+ },
+ "overview": {
+  "pattern": "Tareas difíciles de línea de comandos en contenedores aislados, cada una con una solución escrita por una persona y tests que deciden si el trabajo se terminó",
+  "why": "La terminal es donde realmente ocurre el trabajo de infraestructura y datos, y es uno de los pocos entornos donde la corrección se puede decidir en lugar de juzgar",
+  "insight": "Como la interfaz es genérica, el harness se mide junto con el modelo: el mismo modelo obtiene puntajes distintos bajo dos andamiajes",
+  "impl": [
+   {
+    "t": "Descargar",
+    "d": "Obtén la imagen de la tarea para que el entorno sea idéntico byte a byte en cada ejecución"
+   },
+   {
+    "t": "Instruir",
+    "d": "Entrega el enunciado de la tarea y una shell, sin indicar cuáles son los archivos relevantes"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Deja que el agente explore, edite y ejecute dentro de un presupuesto de pasos y tiempo"
+   },
+   {
+    "t": "Probar",
+    "d": "Ejecuta la suite provista por la tarea en una shell nueva después de que el agente se detiene"
+   },
+   {
+    "t": "Atribuir",
+    "d": "Registra el modelo y el harness juntos, ya que es el par lo que produjo el puntaje"
+   }
+  ],
+  "example": "terminal_bench = TerminalBench(task=\"fix-broken-build\", agent=my_harness, timeout_s=900)",
+  "dos": [
+   "Reporta el harness junto con el modelo, porque el benchmark mide ambos",
+   "Ejecuta cada tarea en su propio contenedor para que ninguna ejecución contamine a otra",
+   "Conserva la transcripción: cómo se recupera un agente de un comando fallido es lo interesante",
+   "Trata la solución de referencia como prueba de que la tarea es alcanzable, nunca como una pista para el agente",
+   "Espera puntajes absolutos bajos y fíjate en la variación más que en el nivel"
+  ],
+  "donts": [
+   "Otorgar crédito parcial: la suite pasa o no pasa, y suavizar eso elimina la señal",
+   "Comparar un resultado de Terminal-Bench 2.0 con uno de 1.0",
+   "Generalizar un puntaje de terminal a trabajo de agentes que no se puede verificar con aserciones",
+   "Permitir que el agente acceda a la red salvo que la tarea lo requiera, lo que vuelve irreproducibles las ejecuciones",
+   "Interpretar un timeout como incapacidad sin revisar si el agente estaba en un bucle"
+  ],
+  "use": [
+   "Evaluar agentes que hacen trabajo de infraestructura, build, datos o depuración en una shell",
+   "Comparar harnesses de agentes sobre un modelo fijo, donde el andamiaje es la variable",
+   "Necesitas una corrección decidible en lugar de un juicio con calificación",
+   "La reproducibilidad importa más que la variedad de tipos de tarea"
+  ],
+  "avoid": [
+   "El trabajo objetivo es gráfico, donde OSWorld es el entorno adecuado",
+   "Necesitas muchas pruebas a bajo costo: estas tareas son deliberadamente largas",
+   "La pregunta es de conocimiento y no de ejecución",
+   "Tu agente de todos modos no tiene acceso a una shell en producción"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de resolución",
+    "d": "Fracción de tareas cuya suite de tests provista pasa al final"
+   },
+   {
+    "n": "Delta de harness",
+    "d": "Diferencia de puntaje entre dos andamiajes que ejecutan el mismo modelo"
+   },
+   {
+    "n": "Tasa de recuperación",
+    "d": "Ejecuciones que llegaron a un estado aprobado después de un comando fallido al inicio"
+   },
+   {
+    "n": "Comandos hasta completar",
+    "d": "Acciones usadas frente a la solución de referencia humana"
+   },
+   {
+    "n": "Proporción de timeouts",
+    "d": "Ejecuciones que agotaron el presupuesto, separando los bucles de la dificultad"
+   },
+   {
+    "n": "Acciones destructivas",
+    "d": "Ejecuciones que dañaron el entorno de forma irrecuperable"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Evaluación de agentes de CLI",
+    "d": "el sustituto más cercano disponible al trabajo real en terminal"
+   },
+   {
+    "n": "Comparación de harnesses",
+    "d": "aislar la calidad del andamiaje manteniendo fijo el modelo"
+   },
+   {
+    "n": "Puertas de regresión",
+    "d": "una suite reproducible que puede bloquear un release"
+   },
+   {
+    "n": "Análisis de recuperación",
+    "d": "estudiar qué hace un agente después de un comando que no hizo nada"
+   },
+   {
+    "n": "Preparación para automatización DevOps",
+    "d": "evidencia antes de otorgar acceso a una shell en serio"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Terminal-Bench: verificación por tests, no por transcripción",
+  "description": "Un contenedor por tarea, una solución de referencia escrita por una persona y una suite de tests que se ejecuta después de que el agente se detiene y decide si realmente se logró algo",
+  "nodes": [
+   {
+    "id": "authored-task",
+    "label": "✍️ Tarea escrita por una persona\n\"Alguien hizo este trabajo primero,\nescribió la solución\ny luego escribió tests para ella.\"",
+    "x": 400,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "container",
+    "label": "📦 Contenedor aislado\n\"Un entorno nuevo por tarea.\nNo se arrastra estado,\nnada se filtra entre ejecuciones.\"",
+    "x": 400,
+    "y": 190,
+    "w": 300
+   },
+   {
+    "id": "shell",
+    "label": "⌨️ Una shell, y nada más\n\"Esa es toda la interfaz.\nSin pistas sobre cuál de los\ncuarenta archivos es el roto.\"",
+    "x": 400,
+    "y": 340,
+    "w": 300
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente bajo prueba\n\"Explora, edita, ejecuta cosas.\nEl andamiaje alrededor del modelo\ntambién se está midiendo.\"",
+    "x": 130,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "reference",
+    "label": "📋 Solución de referencia\n\"Prueba de que la tarea es posible,\ny la razón por la que se sabe\nque los tests se pueden pasar.\"",
+    "x": 670,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "tests",
+    "label": "🧪 Tests ejecutados en una shell nueva\n\"Después de que el agente se detiene.\nLa suite pasa o no pasa.\nEl progreso parcial vale cero.\"",
+    "x": 400,
+    "y": 650,
+    "w": 300
+   },
+   {
+    "id": "strength",
+    "label": "💪 Por qué una terminal es ideal\n\"Cada efecto se puede inspeccionar y\ncada tarea es reproducible\ndirectamente desde la imagen.\"",
+    "x": 120,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "limit",
+    "label": "⚠️ Y por qué ese es el límite\n\"Solo puede plantear problemas que\nse puedan verificar con aserciones. La mayor\nparte del trabajo de agentes no es así.\"",
+    "x": 620,
+    "y": 800,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "authored-task",
+    "t": "container",
+    "label": ""
+   },
+   {
+    "id": "e2",
+    "s": "authored-task",
+    "t": "reference",
+    "label": ""
+   },
+   {
+    "id": "e3",
+    "s": "container",
+    "t": "shell",
+    "label": ""
+   },
+   {
+    "id": "e4",
+    "s": "shell",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "e5",
+    "s": "agent",
+    "t": "tests",
+    "label": ""
+   },
+   {
+    "id": "e6",
+    "s": "reference",
+    "t": "tests",
+    "label": ""
+   },
+   {
+    "id": "e7",
+    "s": "tests",
+    "t": "strength",
+    "label": ""
+   },
+   {
+    "id": "e8",
+    "s": "tests",
+    "t": "limit",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Alguien hizo el trabajo primero",
+    "description": "Cada tarea comienza con una persona que la resuelve, escribe la solución y luego escribe tests contra esa solución. Se sabe que los tests se pueden pasar porque alguien los pasó.",
+    "input": "",
+    "nodes": [
+     "authored-task"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Un contenedor por tarea",
+    "description": "Cada tarea recibe un entorno nuevo construido a partir de una imagen. No entra nada de una ejecución anterior y no sale nada, que es lo que hace comparable un puntaje de hace seis meses con uno de hoy.",
+    "input": "",
+    "nodes": [
+     "container"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "La interfaz es una shell",
+    "description": "Sin descripciones de herramientas, sin representación estructurada de la tarea, sin indicación de cuál de los cuarenta archivos es el roto. El agente recibe lo mismo que un ingeniero cuando entra por ssh a una máquina.",
+    "input": "",
+    "nodes": [
+     "shell"
+    ],
+    "edges": [
+     "e3"
+    ]
+   },
+   {
+    "title": "El andamiaje también está bajo prueba",
+    "description": "Como la interfaz es genérica, lo que se mide es el sistema completo: el modelo, el bucle a su alrededor y cómo se recupera de un comando que no hizo nada. Dos harnesses con el mismo modelo obtienen puntajes distintos.",
+    "input": "",
+    "nodes": [
+     "agent"
+    ],
+    "edges": [
+     "e4"
+    ]
+   },
+   {
+    "title": "La solución de referencia nunca se muestra",
+    "description": "Existe para demostrar que la tarea es alcanzable y para anclar los tests. El agente nunca la ve, así que restringe al benchmark y no al intento.",
+    "input": "",
+    "nodes": [
+     "reference"
+    ],
+    "edges": [
+     "e2",
+     "e6"
+    ]
+   },
+   {
+    "title": "Los tests deciden, en una shell nueva",
+    "description": "Cuando el agente se detiene, se ejecuta la suite. Pasa o no pasa. No hay crédito por una explicación convincente ni por avanzar la mayor parte del camino, una regla más dura que la que aplica la mayoría de los benchmarks.",
+    "input": "",
+    "nodes": [
+     "tests"
+    ],
+    "edges": [
+     "e5"
+    ]
+   },
+   {
+    "title": "Por qué la terminal es un terreno tan bueno",
+    "description": "Cada efecto se puede inspeccionar, cada entorno es reproducible desde su imagen y la corrección es decidible. Pocos entornos te dan las tres cosas.",
+    "input": "",
+    "nodes": [
+     "strength"
+    ],
+    "edges": [
+     "e7"
+    ]
+   },
+   {
+    "title": "Lo cual es exactamente su limitación",
+    "description": "Un benchmark construido sobre corrección decidible solo puede plantear problemas decidibles. La mayor parte de lo que se pide a los agentes en producción no se puede verificar con aserciones, y nada de eso aparece en el puntaje.",
+    "input": "",
+    "nodes": [
+     "limit"
+    ],
+    "edges": [
+     "e8"
+    ]
+   }
+  ]
+ }
+}

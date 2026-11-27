@@ -1,0 +1,381 @@
+{
+ "cat": "security-privacy",
+ "slug": "local-distant-agent-data-protection",
+ "name": "Local-Distant Agent Data Protection Pattern(LDADP)",
+ "icon": "🌐",
+ "complexity": "high",
+ "description": "Arquitectura agéntica distribuida que combina agentes de procesamiento locales con agentes de agregación remotos, usando técnicas avanzadas de anonimización para una IA que preserva la privacidad",
+ "features": [
+  "Procesamiento en agentes locales con aislamiento de datos en el dispositivo",
+  "Agregación en agentes remotos con aprendizaje federado",
+  "Mecanismos de privacidad diferencial para las actualizaciones del modelo",
+  "Anonimización e inyección de ruido en tiempo real",
+  "Preferencias de privacidad individualizadas por agente",
+  "Computación segura multiparte para la agregación"
+ ],
+ "tldr": {
+  "what": "Procesa los datos sensibles localmente en agentes aislados y luego agrega lo aprendido en agentes remotos usando privacidad diferencial y computación segura multiparte.",
+  "when": "Sistemas con múltiples sedes que manejan datos regulados, donde la información en bruto no puede salir de los límites locales pero se deben extraer insights colectivos.",
+  "watchOut": "El ruido de la privacidad diferencial se acumula entre rondas, lo que degrada la precisión del modelo más rápido que el entrenamiento centralizado y agrega una complejidad operativa considerable."
+ },
+ "overview": {
+  "pattern": "Arquitectura distribuida donde los agentes locales procesan datos sensibles en el dispositivo mientras los agentes remotos coordinan el aprendizaje federado mediante anonimización avanzada y privacidad diferencial",
+  "why": "Permite la colaboración de IA entre múltiples partes sin exponer datos sensibles en bruto, cumpliendo la normativa y manteniendo la efectividad del modelo",
+  "insight": "Aislamiento local + privacidad diferencial + agregación federada → IA agéntica que preserva la privacidad con un riesgo de reidentificación <0.001%",
+  "impl": [
+   {
+    "t": "Configuración de agentes locales",
+    "d": "Despliega agentes de procesamiento en el dispositivo con aislamiento de datos"
+   },
+   {
+    "t": "Mecanismos de privacidad",
+    "d": "Implementa privacidad diferencial y anonimización"
+   },
+   {
+    "t": "Agregador remoto",
+    "d": "Configura el agente de coordinación del aprendizaje federado"
+   },
+   {
+    "t": "Comunicación segura",
+    "d": "Establece canales cifrados entre agentes"
+   },
+   {
+    "t": "Verificación de privacidad",
+    "d": "Valida la anonimización y las garantías de privacidad"
+   }
+  ],
+  "example": "local_agent_setup → privacy_mechanisms → distant_aggregator → secure_communication → privacy_verification",
+  "dos": [
+   "Mantén los datos sensibles en bruto aislados en los agentes de procesamiento locales",
+   "Aplica ruido de privacidad diferencial antes de cualquier transmisión de datos",
+   "Implementa presupuestos de privacidad individualizados por agente",
+   "Usa computación segura multiparte para la agregación",
+   "Verifica las garantías de privacidad antes de aceptar actualizaciones del modelo"
+  ],
+  "donts": [
+   "Transmitir datos en bruto entre agentes locales y remotos",
+   "Usar parámetros de privacidad fijos para todos los agentes",
+   "Omitir la verificación de anonimización en las actualizaciones del modelo",
+   "Permitir la comunicación directa entre agentes locales",
+   "Ignorar las advertencias de agotamiento del presupuesto de privacidad"
+  ],
+  "use": [
+   "Colaboración entre múltiples partes con datos sensibles",
+   "Requisitos de cumplimiento normativo (HIPAA, GDPR)",
+   "Desarrollo de IA entre organizaciones",
+   "Aplicaciones críticas en privacidad"
+  ],
+  "avoid": [
+   "Despliegues dentro de una sola organización",
+   "Procesamiento de datasets públicos",
+   "Requisitos de tiempo real y baja latencia",
+   "Aplicaciones con datos no sensibles"
+  ],
+  "metrics": [
+   {
+    "n": "Uso del presupuesto de privacidad",
+    "d": "% de epsilon consumido entre todos los agentes"
+   },
+   {
+    "n": "Riesgo de reidentificación",
+    "d": "Probabilidad de reidentificación de datos (objetivo <0.001%)"
+   },
+   {
+    "n": "Compromiso en la precisión del modelo",
+    "d": "% de precisión frente al enfoque centralizado"
+   },
+   {
+    "n": "Latencia del procesamiento local",
+    "d": "Tiempo de cómputo en el dispositivo (ms)"
+   },
+   {
+    "n": "Convergencia federada",
+    "d": "Rondas necesarias para la convergencia del modelo"
+   },
+   {
+    "n": "Sobrecarga de comunicación",
+    "d": "% de reducción frente a compartir datos en bruto"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Salud",
+    "d": "Aprendizaje federado entre varios hospitales con aislamiento de datos de pacientes y privacidad diferencial"
+   },
+   {
+    "n": "Finanzas",
+    "d": "Detección de fraude entre bancos con anonimización de transacciones y agregación segura"
+   },
+   {
+    "n": "Ciudades inteligentes",
+    "d": "Optimización del tráfico usando datos ciudadanos con procesamiento local y preservación de la privacidad"
+   },
+   {
+    "n": "Manufactura",
+    "d": "Colaboración en IoT industrial con protección de datos propietarios e insights federados"
+   },
+   {
+    "n": "Investigación",
+    "d": "Estudios entre múltiples instituciones con anonimización de datos sensibles y análisis que preserva la privacidad"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Local-Distant Agent Data Protection",
+  "description": "Arquitectura agéntica distribuida que combina agentes de procesamiento locales con agentes de agregación remotos, usando técnicas avanzadas de anonimización para una IA que preserva la privacidad",
+  "nodes": [
+   {
+    "id": "healthcare-ai-network",
+    "label": "🏥 Red de IA en salud\n\"Más de 1000 hospitales quieren colaborar\nen una IA para tratamiento del cáncer sin\ncompartir datos de pacientes\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "privacy-collaboration-challenge",
+    "label": "⚖️ Dilema entre privacidad y colaboración\n\"Se necesitan insights agregados de\ntodos los hospitales, pero no se pueden compartir\ndatos de pacientes en bruto\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "centralized-sharing",
+    "label": "❌ Intercambio centralizado de datos\n\"Todos los hospitales envían datos de pacientes\na un sistema central de entrenamiento de IA\n(Violación de la privacidad)\"",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "privacy-violations",
+    "label": "🚨 Violaciones masivas de privacidad\n\"Más de 1M de registros de pacientes expuestos\nSe pierde el cumplimiento de HIPAA\nInvestigaciones regulatorias\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "legal-consequences",
+    "label": "⚖️ Consecuencias legales\n\"$500M en multas\nDemandas de pacientes\nSe cancela el proyecto de colaboración\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "local-distant-architecture",
+    "label": "🏗️ Arquitectura local-remota\n\"Sistema de agentes distribuido:\n• Agentes de procesamiento locales\n• Anonimización avanzada\n• Agentes de agregación remotos\"",
+    "x": 650,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "local-processing-agents",
+    "label": "📱 Agentes de procesamiento locales\n\"En cada hospital:\n• Procesar datos de pacientes en bruto\n• Extraer patrones estadísticos\n• Aplicar privacidad diferencial\"",
+    "x": 500,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "anonymization-layer",
+    "label": "🔒 Anonimización avanzada\n\"Protección con múltiples técnicas:\n• K-anonimato (k=10)\n• Privacidad diferencial (ε=0.1)\n• Cifrado homomórfico\"",
+    "x": 650,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "distant-aggregation-agents",
+    "label": "🌐 Agentes de agregación remotos\n\"Agentes en la nube:\n• Reciben patrones anonimizados\n• Agregan entre hospitales\n• Generan insights globales\"",
+    "x": 800,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "privacy-preserving-insights",
+    "label": "🎯 Insights que preservan la privacidad\n\"Patrones globales de tratamiento del cáncer\nidentificados sin exponer\ndatos de ningún paciente individual\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "collaborative-success",
+    "label": "🏆 Éxito colaborativo\n\"1000 hospitales contribuyen de forma segura\nLa IA mejora los resultados de los tratamientos\nSe mantiene el cumplimiento de privacidad\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "distributed-protection-principle",
+    "label": "🎯 Principio de protección distribuida\n\"Mantén los datos en bruto en local y comparte insights globalmente\nProcesamiento local + agregación remota\nPreserva la privacidad y permite la colaboración\"",
+    "x": 400,
+    "y": 950,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "healthcare-ai-network",
+    "t": "privacy-collaboration-challenge",
+    "label": "quiere colaborar de forma segura"
+   },
+   {
+    "id": "e2",
+    "s": "privacy-collaboration-challenge",
+    "t": "centralized-sharing",
+    "label": "enfoque centralizado"
+   },
+   {
+    "id": "e3",
+    "s": "privacy-collaboration-challenge",
+    "t": "local-distant-architecture",
+    "label": "enfoque distribuido"
+   },
+   {
+    "id": "e4",
+    "s": "centralized-sharing",
+    "t": "privacy-violations",
+    "label": "expone datos de pacientes"
+   },
+   {
+    "id": "e5",
+    "s": "privacy-violations",
+    "t": "legal-consequences",
+    "label": "desencadena acciones legales"
+   },
+   {
+    "id": "e6",
+    "s": "local-distant-architecture",
+    "t": "local-processing-agents",
+    "label": "despliega agentes locales"
+   },
+   {
+    "id": "e7",
+    "s": "local-distant-architecture",
+    "t": "anonymization-layer",
+    "label": "implementa la anonimización"
+   },
+   {
+    "id": "e8",
+    "s": "local-distant-architecture",
+    "t": "distant-aggregation-agents",
+    "label": "despliega agentes remotos"
+   },
+   {
+    "id": "e9",
+    "s": "local-processing-agents",
+    "t": "anonymization-layer",
+    "label": "envía patrones a"
+   },
+   {
+    "id": "e10",
+    "s": "anonymization-layer",
+    "t": "distant-aggregation-agents",
+    "label": "datos protegidos hacia"
+   },
+   {
+    "id": "e11",
+    "s": "distant-aggregation-agents",
+    "t": "privacy-preserving-insights",
+    "label": "genera insights"
+   },
+   {
+    "id": "e12",
+    "s": "privacy-preserving-insights",
+    "t": "collaborative-success",
+    "label": "habilita la colaboración"
+   },
+   {
+    "id": "e13",
+    "s": "legal-consequences",
+    "t": "distributed-protection-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e14",
+    "s": "collaborative-success",
+    "t": "distributed-protection-principle",
+    "label": "demuestra la efectividad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de colaboración de IA en salud",
+    "description": "Más de 1000 hospitales quieren colaborar en una IA para tratamiento del cáncer que mejore los resultados de los pacientes, pero no pueden compartir datos de pacientes en bruto debido a regulaciones de privacidad y consideraciones éticas.",
+    "input": "",
+    "nodes": [
+     "healthcare-ai-network",
+     "privacy-collaboration-challenge"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de colaboración",
+    "description": "El dilema entre privacidad y colaboración se aborda mediante el intercambio centralizado de datos (todos los hospitales envían datos de pacientes) frente a una arquitectura distribuida de agentes locales y remotos.",
+    "input": "",
+    "nodes": [
+     "centralized-sharing",
+     "local-distant-architecture"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Enfoque centralizado: violaciones masivas de privacidad",
+    "description": "El intercambio centralizado expone más de 1M de registros de pacientes, incumple HIPAA y desencadena investigaciones regulatorias, lo que deriva en multas de $500M y la cancelación del proyecto.",
+    "input": "",
+    "nodes": [
+     "privacy-violations",
+     "legal-consequences"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Despliegue de la arquitectura distribuida",
+    "description": "La arquitectura local-remota despliega tres componentes: agentes de procesamiento locales en los hospitales, una capa de anonimización avanzada y agentes de agregación remotos en la nube.",
+    "input": "",
+    "nodes": [
+     "local-processing-agents",
+     "anonymization-layer",
+     "distant-aggregation-agents"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Flujo de datos que preserva la privacidad",
+    "description": "Los agentes locales procesan los datos de pacientes en bruto y extraen patrones estadísticos, la capa de anonimización aplica múltiples técnicas de protección y los agentes remotos agregan los insights anonimizados.",
+    "input": "",
+    "nodes": [
+     "privacy-preserving-insights"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Éxito colaborativo y principio central",
+    "description": "1000 hospitales contribuyen de forma segura manteniendo el cumplimiento de privacidad, lo que demuestra que el procesamiento local + la agregación remota permiten la colaboración global sin comprometer la privacidad individual.",
+    "input": "",
+    "nodes": [
+     "collaborative-success",
+     "distributed-protection-principle"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

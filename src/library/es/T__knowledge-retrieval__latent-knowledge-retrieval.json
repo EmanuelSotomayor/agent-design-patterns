@@ -1,0 +1,493 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "latent-knowledge-retrieval",
+ "name": "Latent Knowledge Retrieval(LKR)",
+ "icon": "🔍",
+ "complexity": "high",
+ "description": "Recupera información a partir de patrones de razonamiento abstractos en lugar de consultas explícitas en sistemas de IA agéntica multiagente",
+ "features": [
+  "Acceso al conocimiento basado en patrones",
+  "Razonamiento implícito entre agentes",
+  "Puntuación de relevancia contextual",
+  "Coincidencia de conceptos abstractos",
+  "Síntesis dinámica del conocimiento",
+  "Navegación latente multidimensional",
+  "Descubrimiento de conclusiones emergentes",
+  "Cadenas de razonamiento analógico"
+ ],
+ "tldr": {
+  "what": "Recupera conocimiento infiriendo patrones de razonamiento abstractos entre agentes en lugar de buscar coincidencias de palabras clave explícitas, y sintetiza conclusiones a partir de relaciones conceptuales latentes.",
+  "when": "Sistemas multiagente que abordan problemas abiertos en los que el conocimiento relevante abarca dominios desconectados y las conexiones implícitas importan más que las coincidencias directas.",
+  "watchOut": "Alto costo computacional y fragilidad: los agentes pueden recuperar con confianza conocimiento plausible pero incorrecto cuando los patrones latentes no se alinean realmente con la verdad de referencia."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Recuperación de conocimiento latente en sistemas multiagente",
+  "description": "Descubrimiento de conocimiento basado en patrones abstractos que trasciende la coincidencia explícita de palabras clave mediante razonamiento implícito",
+  "nodes": [
+   {
+    "id": "human-query",
+    "label": "Consulta humana\\nDesafío o pregunta inicial",
+    "x": 100,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "pattern-abstractor",
+    "label": "Abstractor de patrones\\nIdentifica patrones de razonamiento abstractos",
+    "x": 350,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "abstract-pattern-1",
+    "label": "Patrón abstracto 1\\nRegulación térmica en sistemas complejos",
+    "x": 350,
+    "y": 100,
+    "w": 160
+   },
+   {
+    "id": "abstract-pattern-2",
+    "label": "Patrón abstracto 2\\nSoluciones distribuidas vs centralizadas",
+    "x": 550,
+    "y": 100,
+    "w": 160
+   },
+   {
+    "id": "research-agent",
+    "label": "Agente de investigación\\nEspecialista en patrones biomiméticos",
+    "x": 650,
+    "y": 200,
+    "w": 150
+   },
+   {
+    "id": "analysis-agent",
+    "label": "Agente de análisis\\nDinámica de sistemas y redes",
+    "x": 650,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "innovation-agent",
+    "label": "Agente de innovación\\nDinámica de fases y materiales",
+    "x": 650,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "systems-agent",
+    "label": "Agente de sistemas\\nEspecialista en sistemas adaptativos",
+    "x": 650,
+    "y": 500,
+    "w": 150
+   },
+   {
+    "id": "biomimetic-cluster",
+    "label": "Clúster biomimético\\nSistemas naturales de enfriamiento y regulación",
+    "x": 900,
+    "y": 150,
+    "w": 160
+   },
+   {
+    "id": "network-cluster",
+    "label": "Clúster de sistemas en red\\nPatrones de inteligencia distribuida",
+    "x": 900,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "thermal-cluster",
+    "label": "Clúster de dinámica térmica\\nCambio de fase y gestión del calor",
+    "x": 900,
+    "y": 350,
+    "w": 160
+   },
+   {
+    "id": "adaptive-cluster",
+    "label": "Clúster de sistemas adaptativos\\nPatrones de respuesta al entorno",
+    "x": 900,
+    "y": 450,
+    "w": 160
+   },
+   {
+    "id": "latent-navigator",
+    "label": "Navegador latente\\nRazonamiento implícito y conexiones analógicas",
+    "x": 350,
+    "y": 400,
+    "w": 170
+   },
+   {
+    "id": "cross-domain-bridge",
+    "label": "Puente entre dominios\\nConecta patrones entre disciplinas",
+    "x": 1150,
+    "y": 300,
+    "w": 160
+   },
+   {
+    "id": "pattern-synthesizer",
+    "label": "Sintetizador de patrones\\nCombina múltiples conceptos latentes",
+    "x": 1400,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "synthesis-engine",
+    "label": "Motor de síntesis\\nIntegra los patrones en marcos",
+    "x": 1400,
+    "y": 350,
+    "w": 160
+   },
+   {
+    "id": "insight-generator",
+    "label": "Generador de conclusiones\\nGenera innovaciones disruptivas",
+    "x": 1650,
+    "y": 275,
+    "w": 160
+   },
+   {
+    "id": "novel-solution",
+    "label": "Solución novedosa\\nResultado de innovación disruptiva",
+    "x": 1900,
+    "y": 275,
+    "w": 150
+   },
+   {
+    "id": "validation-engine",
+    "label": "Motor de validación\\nValida y puntúa las innovaciones",
+    "x": 1650,
+    "y": 150,
+    "w": 160
+   },
+   {
+    "id": "innovation-expander",
+    "label": "Expansor de innovación\\nExplora implicaciones adicionales",
+    "x": 1650,
+    "y": 400,
+    "w": 160
+   },
+   {
+    "id": "breakthrough-catalog",
+    "label": "Catálogo de avances\\nAlmacena patrones y conclusiones",
+    "x": 1900,
+    "y": 400,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-to-abstractor",
+    "s": "human-query",
+    "t": "pattern-abstractor",
+    "label": ""
+   },
+   {
+    "id": "abstractor-to-pattern1",
+    "s": "pattern-abstractor",
+    "t": "abstract-pattern-1",
+    "label": ""
+   },
+   {
+    "id": "abstractor-to-pattern2",
+    "s": "pattern-abstractor",
+    "t": "abstract-pattern-2",
+    "label": ""
+   },
+   {
+    "id": "abstractor-to-research",
+    "s": "pattern-abstractor",
+    "t": "research-agent",
+    "label": ""
+   },
+   {
+    "id": "abstractor-to-analysis",
+    "s": "pattern-abstractor",
+    "t": "analysis-agent",
+    "label": ""
+   },
+   {
+    "id": "abstractor-to-innovation",
+    "s": "pattern-abstractor",
+    "t": "innovation-agent",
+    "label": ""
+   },
+   {
+    "id": "abstractor-to-systems",
+    "s": "pattern-abstractor",
+    "t": "systems-agent",
+    "label": ""
+   },
+   {
+    "id": "research-to-biomimetic",
+    "s": "research-agent",
+    "t": "biomimetic-cluster",
+    "label": ""
+   },
+   {
+    "id": "analysis-to-network",
+    "s": "analysis-agent",
+    "t": "network-cluster",
+    "label": ""
+   },
+   {
+    "id": "innovation-to-thermal",
+    "s": "innovation-agent",
+    "t": "thermal-cluster",
+    "label": ""
+   },
+   {
+    "id": "systems-to-adaptive",
+    "s": "systems-agent",
+    "t": "adaptive-cluster",
+    "label": ""
+   },
+   {
+    "id": "query-to-navigator",
+    "s": "human-query",
+    "t": "latent-navigator",
+    "label": ""
+   },
+   {
+    "id": "navigator-to-biomimetic",
+    "s": "latent-navigator",
+    "t": "biomimetic-cluster",
+    "label": ""
+   },
+   {
+    "id": "navigator-to-network",
+    "s": "latent-navigator",
+    "t": "network-cluster",
+    "label": ""
+   },
+   {
+    "id": "navigator-to-thermal",
+    "s": "latent-navigator",
+    "t": "thermal-cluster",
+    "label": ""
+   },
+   {
+    "id": "navigator-to-adaptive",
+    "s": "latent-navigator",
+    "t": "adaptive-cluster",
+    "label": ""
+   },
+   {
+    "id": "biomimetic-to-bridge",
+    "s": "biomimetic-cluster",
+    "t": "cross-domain-bridge",
+    "label": ""
+   },
+   {
+    "id": "network-to-bridge",
+    "s": "network-cluster",
+    "t": "cross-domain-bridge",
+    "label": ""
+   },
+   {
+    "id": "thermal-to-bridge",
+    "s": "thermal-cluster",
+    "t": "cross-domain-bridge",
+    "label": ""
+   },
+   {
+    "id": "adaptive-to-bridge",
+    "s": "adaptive-cluster",
+    "t": "cross-domain-bridge",
+    "label": ""
+   },
+   {
+    "id": "clusters-to-synthesizer",
+    "s": "biomimetic-cluster",
+    "t": "pattern-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "network-to-synthesizer",
+    "s": "network-cluster",
+    "t": "pattern-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "thermal-to-synthesizer",
+    "s": "thermal-cluster",
+    "t": "pattern-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "adaptive-to-synthesizer",
+    "s": "adaptive-cluster",
+    "t": "pattern-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "synthesizer-to-engine",
+    "s": "pattern-synthesizer",
+    "t": "synthesis-engine",
+    "label": ""
+   },
+   {
+    "id": "engine-to-insight",
+    "s": "synthesis-engine",
+    "t": "insight-generator",
+    "label": ""
+   },
+   {
+    "id": "bridge-to-insight",
+    "s": "cross-domain-bridge",
+    "t": "insight-generator",
+    "label": ""
+   },
+   {
+    "id": "insight-to-solution",
+    "s": "insight-generator",
+    "t": "novel-solution",
+    "label": ""
+   },
+   {
+    "id": "solution-to-validation",
+    "s": "novel-solution",
+    "t": "validation-engine",
+    "label": ""
+   },
+   {
+    "id": "validation-to-expander",
+    "s": "validation-engine",
+    "t": "innovation-expander",
+    "label": ""
+   },
+   {
+    "id": "expander-to-catalog",
+    "s": "innovation-expander",
+    "t": "breakthrough-catalog",
+    "label": ""
+   },
+   {
+    "id": "catalog-to-navigator",
+    "s": "breakthrough-catalog",
+    "t": "latent-navigator",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis abstracto de la consulta",
+    "description": "El sistema analiza la consulta humana para identificar los patrones de razonamiento abstractos subyacentes",
+    "input": "Consulta humana: \"¿Cómo podemos resolver el efecto de isla de calor urbana?\"",
+    "nodes": [
+     "human-query",
+     "pattern-abstractor",
+     "abstract-pattern-1"
+    ],
+    "edges": [
+     "query-to-abstractor"
+    ]
+   },
+   {
+    "title": "Exploración del espacio de patrones multidimensional",
+    "description": "Múltiples agentes especializados exploran distintas dimensiones del espacio de patrones abstractos",
+    "input": "",
+    "nodes": [
+     "pattern-abstractor",
+     "research-agent",
+     "analysis-agent",
+     "innovation-agent",
+     "systems-agent"
+    ],
+    "edges": [
+     "abstractor-to-research",
+     "abstractor-to-analysis",
+     "abstractor-to-innovation",
+     "abstractor-to-systems"
+    ]
+   },
+   {
+    "title": "Descubrimiento de conceptos latentes",
+    "description": "Los agentes descubren conexiones inesperadas mediante la navegación del espacio latente más allá del conocimiento explícito",
+    "input": "",
+    "nodes": [
+     "research-agent",
+     "analysis-agent",
+     "innovation-agent",
+     "systems-agent",
+     "biomimetic-cluster",
+     "network-cluster",
+     "thermal-cluster",
+     "adaptive-cluster"
+    ],
+    "edges": [
+     "research-to-biomimetic",
+     "analysis-to-network",
+     "innovation-to-thermal",
+     "systems-to-adaptive"
+    ]
+   },
+   {
+    "title": "Navegación por razonamiento implícito",
+    "description": "El navegador latente descubre conexiones no evidentes mediante patrones de razonamiento analógico",
+    "input": "",
+    "nodes": [
+     "latent-navigator",
+     "biomimetic-cluster",
+     "network-cluster",
+     "thermal-cluster",
+     "adaptive-cluster",
+     "cross-domain-bridge"
+    ],
+    "edges": [
+     "navigator-to-biomimetic",
+     "navigator-to-network",
+     "navigator-to-thermal",
+     "navigator-to-adaptive"
+    ]
+   },
+   {
+    "title": "Síntesis de múltiples patrones",
+    "description": "El sintetizador de patrones combina múltiples conceptos latentes en marcos novedosos e integrados",
+    "input": "",
+    "nodes": [
+     "pattern-synthesizer",
+     "biomimetic-cluster",
+     "network-cluster",
+     "thermal-cluster",
+     "adaptive-cluster",
+     "synthesis-engine"
+    ],
+    "edges": [
+     "clusters-to-synthesizer",
+     "synthesizer-to-engine"
+    ]
+   },
+   {
+    "title": "Generación de conclusiones emergentes",
+    "description": "El sistema genera innovaciones disruptivas que trascienden la consulta original mediante la abstracción de patrones",
+    "input": "",
+    "nodes": [
+     "synthesis-engine",
+     "insight-generator",
+     "cross-domain-bridge",
+     "novel-solution"
+    ],
+    "edges": [
+     "engine-to-insight",
+     "bridge-to-insight",
+     "insight-to-solution"
+    ]
+   },
+   {
+    "title": "Validación y expansión de la innovación",
+    "description": "El sistema valida las conclusiones novedosas y explora implicaciones adicionales mediante una exploración latente continua",
+    "input": "",
+    "nodes": [
+     "novel-solution",
+     "validation-engine",
+     "innovation-expander",
+     "breakthrough-catalog"
+    ],
+    "edges": [
+     "solution-to-validation",
+     "validation-to-expander",
+     "expander-to-catalog"
+    ]
+   }
+  ]
+ }
+}

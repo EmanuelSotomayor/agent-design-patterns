@@ -1,0 +1,382 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "cyberseceval3",
+ "name": "CybersecEval 3(CSE3)",
+ "icon": "🔒",
+ "complexity": "high",
+ "description": "El benchmark integral de ciberseguridad de Meta para evaluar los riesgos de seguridad de los agentes LLM en entornos autónomos y multiagente.",
+ "features": [
+  "Evaluación de riesgos de ciberseguridad",
+  "Pruebas de seguridad de agentes autónomos",
+  "Evaluación de seguridad multiagente",
+  "Protocolos de detección de vulnerabilidades",
+  "Verificación del cumplimiento de seguridad",
+  "Modelado de amenazas para agentes de IA"
+ ],
+ "tldr": {
+  "what": "Somete a los agentes LLM a pruebas de seguridad estructuradas en los dominios de código, datos, control de acceso, inyección e ingeniería social para cuantificar su exposición a vulnerabilidades.",
+  "when": "Despliegue de sistemas autónomos o multiagente cuya postura de seguridad debe medirse antes de pasar a producción y cuyo cumplimiento requiere evidencia documentada.",
+  "watchOut": "La alta complejidad y el costo hacen que los resultados puedan quedar rezagados respecto del panorama real de amenazas; las puntuaciones pueden generar una falsa confianza si no se combinan con red-teaming."
+ },
+ "overview": {
+  "pattern": "El benchmark integral de ciberseguridad de Meta que evalúa 8 riesgos en escenarios autónomos y multiagente",
+  "why": "Evalúa capacidades ofensivas como la ingeniería social, el descubrimiento de vulnerabilidades y las operaciones cibernéticas autónomas",
+  "insight": "CyberSecEval 3 informó que Llama 3 405B superó en un 23% a su línea base comercial en explotación de vulnerabilidades, usando Llama Guard 3 para la mitigación",
+  "impl": [
+   {
+    "t": "Configuración inicial",
+    "d": "Instala el framework CybersecEval 3 y sus dependencias"
+   },
+   {
+    "t": "Configurar",
+    "d": "Configura las 8 categorías de evaluación de riesgos"
+   },
+   {
+    "t": "Probar",
+    "d": "Ejecuta escenarios de seguridad autónomos y multiagente"
+   },
+   {
+    "t": "Proteger",
+    "d": "Despliega Llama Guard 3 para mitigar riesgos"
+   },
+   {
+    "t": "Analizar",
+    "d": "Revisa las evaluaciones de capacidades ofensivas/defensivas"
+   }
+  ],
+  "example": "cybersec_eval = CybersecEval3(model=llm, risks=all_8, guardrails=llama_guard_3)",
+  "dos": [
+   "Prueba en las 8 categorías de riesgo para una evaluación de seguridad integral",
+   "Despliega Llama Guard 3 para detectar y bloquear solicitudes de ayuda para ciberataques",
+   "Evalúa las capacidades ofensivas tanto autónomas como multiagente",
+   "Monitorea la generación de ataques de ingeniería social y spear-phishing",
+   "Evalúa las capacidades de descubrimiento y explotación de vulnerabilidades"
+  ],
+  "donts": [
+   "Desplegar modelos sin guardrails ni sistemas de monitoreo adecuados",
+   "Ignorar los riesgos para terceros derivados de operaciones ofensivas autónomas",
+   "Omitir la evaluación de las capacidades de escalado de operaciones cibernéticas manuales",
+   "Pasar por alto los riesgos de seguridad para desarrolladores de aplicaciones y usuarios finales",
+   "Suponer que las capacidades ofensivas no se usarán indebidamente sin mitigación"
+  ],
+  "use": [
+   "Evaluación de seguridad de agentes LLM autónomos",
+   "Evaluación de riesgos de ciberseguridad en sistemas multiagente",
+   "Validación de seguridad de LLMs antes del despliegue",
+   "Implementación de guardrails y estrategias de mitigación de riesgos",
+   "Investigación sobre capacidades ofensivas y defensivas de la IA"
+  ],
+  "avoid": [
+   "Benchmarking de rendimiento general (sin enfoque en seguridad)",
+   "Modelos sin consideraciones de riesgo de ciberseguridad",
+   "Entornos sin un monitoreo de seguridad adecuado",
+   "Investigación académica sin supervisión ética",
+   "Sistemas que no requieren evaluación de seguridad autónoma"
+  ],
+  "metrics": [
+   {
+    "n": "Puntuación de riesgo para terceros",
+    "d": "Evaluación en 4 categorías de capacidades ofensivas"
+   },
+   {
+    "n": "Riesgo para desarrolladores/usuarios finales",
+    "d": "Riesgos de seguridad para desarrolladores de aplicaciones y usuarios"
+   },
+   {
+    "n": "Capacidad de hacking autónomo",
+    "d": "Tasa de éxito en desafíos de operaciones cibernéticas autónomas"
+   },
+   {
+    "n": "Tasa de descubrimiento de vulnerabilidades",
+    "d": "Eficacia para encontrar y explotar vulnerabilidades de software"
+   },
+   {
+    "n": "Éxito en ingeniería social",
+    "d": "Capacidad de generar ataques de spear-phishing persuasivos"
+   },
+   {
+    "n": "Eficacia de los guardrails",
+    "d": "Tasa de éxito de detección y bloqueo de Llama Guard 3"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación de seguridad",
+    "d": "Reproducir el resultado informado por CyberSecEval 3 para Llama 3 405B (23% por encima de su línea base GPT-4 Turbo)"
+   },
+   {
+    "n": "Mitigación de riesgos",
+    "d": "Desplegar Llama Guard 3 para detectar y bloquear solicitudes de ayuda para ciberataques en producción"
+   },
+   {
+    "n": "Seguridad de agentes autónomos",
+    "d": "Probar frameworks multiagente en busca de capacidades de operaciones cibernéticas ofensivas"
+   },
+   {
+    "n": "Evaluación de ingeniería social",
+    "d": "Evaluar la generación de ataques de spear-phishing y los riesgos de engaño personalizado"
+   },
+   {
+    "n": "Seguridad empresarial",
+    "d": "Validación de ciberseguridad antes del despliegue de aplicaciones y servicios basados en LLM"
+   }
+  ]
+ },
+ "flow": {
+  "title": "CybersecEval 3: patrón de evaluación de seguridad de LLMs",
+  "description": "El framework integral de evaluación de ciberseguridad de Meta AI que evalúa 8 categorías de riesgo en capacidades ofensivas y defensivas, con estudios con humanos en condiciones reales y pruebas de eficacia de los guardrails",
+  "nodes": [
+   {
+    "id": "cybersecurity-risk-challenge",
+    "label": "🛡️ Desafío de riesgo de ciberseguridad en LLMs\n\"¿Cómo medir y mitigar empíricamente\nlos riesgos de ciberseguridad y las capacidades\nofensivas de los LLMs en escenarios reales?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "cyberseceval3-framework",
+    "label": "🔍 Framework CybersecEval 3\n\"Benchmark de seguridad integral:\n• 8 categorías de riesgo evaluadas\n• Capacidades ofensivas y defensivas\n• Estudios con humanos en condiciones reales\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "eight-risk-categories",
+    "label": "📊 Sistema de 8 categorías de riesgo\n\"Evaluación integral de amenazas:\n• Riesgos para terceros\n• Riesgos para desarrolladores/usuarios finales\n• Evaluación de capacidades ofensivas\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "third-party-risks",
+    "label": "🎯 Riesgos para terceros (1-4)\n\"• Ingeniería social automatizada\n• Escalado de operaciones ofensivas\n• Operaciones cibernéticas autónomas\n• Descubrimiento/explotación de vulnerabilidades\"",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "developer-user-risks",
+    "label": "⚠️ Riesgos para desarrolladores/usuarios (5-8)\n\"• Ataques de prompt injection\n• Ejecución de código malicioso\n• Facilitación de ciberataques\n• Sugerencias de código inseguro\"",
+    "x": 350,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "human-uplift-study",
+    "label": "👥 Estudio de mejora humana\n\"62 empleados de Meta evaluados:\n• 31 expertos en seguridad\n• 31 no expertos con perfil técnico\n• Desafíos CTF de Hack The Box\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "two-stage-evaluation",
+    "label": "⚙️ Proceso de evaluación en dos etapas\n\"Etapas de 1 hora cada una:\n• Etapa 1: sin asistencia del LLM\n• Etapa 2: con Llama 3 405B\n• Medición de la tasa de completitud de CTF\"",
+    "x": 600,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "offensive-capabilities-findings",
+    "label": "🔍 Hallazgos sobre capacidades ofensivas\n\"Mejora limitada en ciberataques:\n• 22% de mejora en novatos\n• Sin mejora en expertos\n• Ningún novato tuvo éxito total\"",
+    "x": 200,
+    "y": 650,
+    "w": 230
+   },
+   {
+    "id": "phishing-automation-results",
+    "label": "📧 Resultados de automatización de phishing\n\"Capacidades de Llama 3 405B:\n• Ataques moderadamente persuasivos\n• Spear-phishing de múltiples turnos\n• Comparable a GPT-4 Turbo\"",
+    "x": 450,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "guardrail-protection-system",
+    "label": "🛡️ Sistema de protección con guardrails\n\"Defensa de tres capas:\n• PromptGuard (detección de inyección)\n• CodeShield (bloqueo de código inseguro)\n• LlamaGuard 3 (prevención de intención maliciosa)\"",
+    "x": 700,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "risk-mitigation-effectiveness",
+    "label": "✅ Eficacia de la mitigación de riesgos\n\"Los guardrails reducen significativamente:\n• La generación de código malicioso\n• Las tasas de éxito de prompt injection\n• La amplificación de capacidades ofensivas\"",
+    "x": 400,
+    "y": 800,
+    "w": 270
+   },
+   {
+    "id": "cybersecurity-evaluation-principle",
+    "label": "🎯 Principio de evaluación de ciberseguridad en LLMs\n\"La evaluación empírica de riesgos con estudios humanos revela\nque las capacidades ofensivas de los LLMs existen pero son limitadas y mitigables\nLos guardrails multicapa brindan una protección eficaz\"",
+    "x": 400,
+    "y": 950,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "cybersecurity-risk-challenge",
+    "t": "cyberseceval3-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "cyberseceval3-framework",
+    "t": "eight-risk-categories",
+    "label": "implementa 8 categorías"
+   },
+   {
+    "id": "e3",
+    "s": "cyberseceval3-framework",
+    "t": "human-uplift-study",
+    "label": "realiza estudio con humanos"
+   },
+   {
+    "id": "e4",
+    "s": "eight-risk-categories",
+    "t": "third-party-risks",
+    "label": "incluye riesgos ofensivos"
+   },
+   {
+    "id": "e5",
+    "s": "eight-risk-categories",
+    "t": "developer-user-risks",
+    "label": "incluye riesgos de desarrollo"
+   },
+   {
+    "id": "e6",
+    "s": "human-uplift-study",
+    "t": "two-stage-evaluation",
+    "label": "usa la metodología"
+   },
+   {
+    "id": "e7",
+    "s": "third-party-risks",
+    "t": "offensive-capabilities-findings",
+    "label": "evaluado mediante"
+   },
+   {
+    "id": "e8",
+    "s": "third-party-risks",
+    "t": "phishing-automation-results",
+    "label": "revela capacidades"
+   },
+   {
+    "id": "e9",
+    "s": "two-stage-evaluation",
+    "t": "offensive-capabilities-findings",
+    "label": "mide la mejora"
+   },
+   {
+    "id": "e10",
+    "s": "developer-user-risks",
+    "t": "guardrail-protection-system",
+    "label": "mitigado por"
+   },
+   {
+    "id": "e11",
+    "s": "offensive-capabilities-findings",
+    "t": "risk-mitigation-effectiveness",
+    "label": "orienta la mitigación"
+   },
+   {
+    "id": "e12",
+    "s": "phishing-automation-results",
+    "t": "risk-mitigation-effectiveness",
+    "label": "guía la protección"
+   },
+   {
+    "id": "e13",
+    "s": "guardrail-protection-system",
+    "t": "risk-mitigation-effectiveness",
+    "label": "logra eficacia"
+   },
+   {
+    "id": "e14",
+    "s": "risk-mitigation-effectiveness",
+    "t": "cybersecurity-evaluation-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de evaluación de riesgos de ciberseguridad en LLMs",
+    "description": "¿Cómo podemos medir y mitigar empíricamente los riesgos de ciberseguridad y las capacidades ofensivas de los LLMs en escenarios reales, más allá de las evaluaciones teóricas?",
+    "input": "",
+    "nodes": [
+     "cybersecurity-risk-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework integral CybersecEval 3",
+    "description": "El enfoque sistemático de Meta AI despliega un benchmark de seguridad integral con evaluación de 8 categorías de riesgo que cubre capacidades ofensivas y defensivas mediante estudios con humanos en condiciones reales.",
+    "input": "",
+    "nodes": [
+     "cyberseceval3-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "8 categorías de riesgo y metodología de estudio con humanos",
+    "description": "El framework implementa una evaluación integral de amenazas que abarca los riesgos para terceros (operaciones ofensivas, ingeniería social) y los riesgos para desarrolladores/usuarios (prompt injection, código inseguro), con un estudio sobre 62 empleados de Meta.",
+    "input": "",
+    "nodes": [
+     "eight-risk-categories",
+     "third-party-risks",
+     "developer-user-risks",
+     "human-uplift-study"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Proceso de evaluación en dos etapas",
+    "description": "El estudio con humanos usa una metodología rigurosa: etapas de 1 hora con y sin asistencia de Llama 3 405B en desafíos CTF de Hack The Box, midiendo las tasas de completitud de expertos en seguridad y novatos.",
+    "input": "",
+    "nodes": [
+     "two-stage-evaluation"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Hallazgos mixtos sobre capacidades ofensivas",
+    "description": "La evaluación revela una mejora ofensiva limitada gracias al LLM: 22% de mejora en novatos, ninguna mejora en expertos y ningún novato con éxito total, pero demuestra una automatización de phishing moderadamente persuasiva comparable a GPT-4 Turbo.",
+    "input": "",
+    "nodes": [
+     "offensive-capabilities-findings",
+     "phishing-automation-results"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Mitigación de riesgos multicapa eficaz",
+    "description": "El sistema de guardrails de tres capas (PromptGuard, CodeShield, LlamaGuard 3) reduce significativamente la generación de código malicioso y los ataques de prompt injection, lo que demuestra que la evaluación empírica de riesgos revela capacidades ofensivas de los LLMs limitadas pero mitigables.",
+    "input": "",
+    "nodes": [
+     "guardrail-protection-system",
+     "risk-mitigation-effectiveness",
+     "cybersecurity-evaluation-principle"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

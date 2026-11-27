@@ -1,0 +1,673 @@
+{
+ "cat": "memory-management",
+ "slug": "working-memory-patterns",
+ "name": "Working Memory Patterns(WMP)",
+ "icon": "🧮",
+ "complexity": "medium",
+ "description": "Gestión de contexto a corto plazo para el procesamiento cognitivo activo",
+ "features": [
+  "Gestión de capacidad limitada",
+  "Mantenimiento activo de la información",
+  "Retención basada en prioridades",
+  "Actualizaciones de contexto en tiempo real"
+ ],
+ "tldr": {
+  "what": "Mantiene un conjunto limitado de hechos y objetivos activos durante la resolución de problemas, descartando o archivando los elementos de menor prioridad a medida que se llena la capacidad.",
+  "when": "Tareas de varios pasos en las que el agente debe seguir resultados intermedios, objetivos actuales y restricciones sin releer el contexto completo en cada paso.",
+  "watchOut": "Los agentes suelen retener demasiada información o la equivocada, lo que hace que los pasos posteriores hagan referencia a datos obsoletos o pierdan restricciones críticas."
+ },
+ "overview": {
+  "pattern": "Memoria activa de capacidad limitada para el procesamiento cognitivo, con control de atención y supresión de interferencias",
+  "why": "Permite razonamiento complejo, tareas de varios pasos y procesamiento cognitivo en tiempo real dentro de restricciones de recursos acotadas",
+  "insight": "Ejecutivo central + Capacidad limitada (4±1 chunks) + Control de atención + Mantenimiento temporal → Procesamiento cognitivo similar al humano",
+  "impl": [
+   {
+    "t": "Definir capacidad",
+    "d": "Define los límites de la memoria de trabajo (4±1 chunks para tareas complejas)"
+   },
+   {
+    "t": "Controlar la atención",
+    "d": "Implementa un ejecutivo central para el filtrado selectivo de información"
+   },
+   {
+    "t": "Gestionar el contenido",
+    "d": "Carga, mantén, actualiza y limpia la información de forma dinámica"
+   },
+   {
+    "t": "Suprimir interferencias",
+    "d": "Bloquea la información irrelevante y gestiona los conflictos"
+   },
+   {
+    "t": "Coordinar agentes",
+    "d": "Sincroniza la memoria de trabajo en todo el sistema multiagente"
+   }
+  ],
+  "example": "capacity_limits → attention_control → content_management → interference_suppression → agent_coordination",
+  "dos": [
+   "Usa una capacidad de 4±1 elementos para tareas complejas (Cowan, 2001) frente a 7±2 para elementos simples",
+   "Implementa un ejecutivo central para el control de atención y el cambio de tareas",
+   "Usa estrategias de chunking para agrupar eficazmente la información relacionada",
+   "Aplica mecanismos de repaso para evitar el decaimiento de 15-30 segundos",
+   "Monitorea la carga cognitiva e implementa descarga cuando te acerques a los límites"
+  ],
+  "donts": [
+   "Ignorar las diferencias individuales de capacidad de memoria de trabajo entre agentes",
+   "Dejar que la información irrelevante consuma memoria de trabajo sin filtrarla",
+   "Asumir capacidad ilimitada: las restricciones de la memoria de trabajo son cruciales",
+   "Olvidar implementar la supresión de interferencias para la información en competencia",
+   "Pasar por alto la dinámica temporal: la información decae sin mantenimiento"
+  ],
+  "use": [
+   "Razonamiento complejo de varios pasos que requiere mantener información activa",
+   "Sistemas interactivos con actualizaciones dinámicas de información",
+   "Coordinación multiagente que necesita un estado cognitivo compartido",
+   "Tareas de planificación con múltiples restricciones y objetivos",
+   "Sistemas de aprendizaje que integran conocimiento nuevo con el existente"
+  ],
+  "avoid": [
+   "Operaciones de consulta simples sin manipulación",
+   "Procesamiento por batch sin interacción en tiempo real",
+   "Escenarios con recursos computacionales ilimitados",
+   "Operaciones sin estado y sin persistencia temporal",
+   "Tareas de un solo paso sin complejidad cognitiva"
+  ],
+  "metrics": [
+   {
+    "n": "Utilización de la capacidad",
+    "d": "Chunks efectivos mantenidos vs. límite teórico"
+   },
+   {
+    "n": "Persistencia de la información",
+    "d": "% de información retenida durante el procesamiento de la tarea"
+   },
+   {
+    "n": "Resistencia a la interferencia",
+    "d": "Tasa de éxito al suprimir información irrelevante"
+   },
+   {
+    "n": "Eficiencia del chunking",
+    "d": "Compresión de información mediante organización"
+   },
+   {
+    "n": "Calidad del control de atención",
+    "d": "Precisión de los mecanismos de filtrado selectivo"
+   },
+   {
+    "n": "Sincronización multiagente",
+    "d": "Consistencia de los estados compartidos de memoria de trabajo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Resolución de problemas de varios pasos",
+    "d": "Razonamiento matemático, depuración de código, análisis científico (mantener resultados intermedios entre pasos de razonamiento)"
+   },
+   {
+    "n": "Sistemas de diálogo interactivo",
+    "d": "Gestión del contexto de la conversación, seguimiento de la intención del usuario (actualizaciones dinámicas de información dentro de los límites cognitivos)"
+   },
+   {
+    "n": "Coordinación multiagente",
+    "d": "Estado compartido de la tarea, resolución distribuida de problemas (memoria de trabajo sincronizada en la red de agentes)"
+   },
+   {
+    "n": "Planificación y toma de decisiones",
+    "d": "Gestión de objetivos, satisfacción de restricciones, asignación de recursos (manejar múltiples factores dentro de los límites de capacidad)"
+   },
+   {
+    "n": "Aprendizaje y adaptación",
+    "d": "Integración de conocimiento, adquisición de habilidades, formación de conceptos (manipulación activa de información nueva con el conocimiento existente)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Working Memory Patterns",
+  "description": "Sistema de gestión de memoria activa para mantener y manipular información durante tareas complejas de resolución de problemas, con asignación de recursos basada en la atención y seguimiento de restricciones.",
+  "nodes": [
+   {
+    "id": "task-input",
+    "label": "🎯 Entrada de la tarea\n\"Resolver un problema complejo mientras se siguen las restricciones\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "working-memory-core",
+    "label": "🧠 Núcleo de memoria de trabajo\nCapacidad de 7±2 elementos",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "attention-filter",
+    "label": "🔍 Filtro de atención\nEvaluación de relevancia\nDetección de prioridad",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "focus-controller",
+    "label": "🎯 Controlador de foco\nAtención selectiva\nSupresión de distracciones",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "capacity-monitor",
+    "label": "📊 Monitor de capacidad\nSeguimiento de carga\nDetección de desbordamiento",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "refresh-system",
+    "label": "🔄 Sistema de refresco\nMantenimiento activo\nPrevención del decaimiento",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "phonological-loop",
+    "label": "🗣️ Bucle fonológico\nInformación verbal\nHabla interna",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "visuospatial-sketchpad",
+    "label": "👁️ Agenda visoespacial\nImágenes visuales\nRelaciones espaciales",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "episodic-buffer",
+    "label": "📚 Búfer episódico\nInformación integrada\nVinculación multimodal",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "central-executive",
+    "label": "⚙️ Ejecutivo central\nCoordinación\nCambio de tareas",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "goal-stack",
+    "label": "🎯 Pila de objetivos\nObjetivos activos\nSubtareas",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "chunking-processor",
+    "label": "🔢 Chunking\nAgrupar elementos relacionados\nAmpliar la capacidad",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "rehearsal-loop",
+    "label": "🔁 Bucle de repaso\nRepaso de mantenimiento\nRepaso elaborativo",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "updating-mechanism",
+    "label": "🔄 Actualización\nReemplazar información antigua\nMantener la relevancia",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "switching-control",
+    "label": "🔀 Cambio de tareas\nCambio de contexto\nReconfiguración del conjunto",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "proactive-interference",
+    "label": "⬅️ Interferencia proactiva\nLa información antigua perturba la nueva",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "retroactive-interference",
+    "label": "➡️ Interferencia retroactiva\nLa información nueva perturba la antigua",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "interference-resolution",
+    "label": "🛡️ Resolución de interferencias\nDetección de conflictos\nSupresión",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "cognitive-control",
+    "label": "🎮 Control cognitivo\nInhibición\nFlexibilidad",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "intrinsic-load",
+    "label": "📏 Carga intrínseca\nComplejidad de la tarea\nDificultad inherente",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "extraneous-load",
+    "label": "🌀 Carga extrínseca\nProcesamiento irrelevante\nDiseño deficiente",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "germane-load",
+    "label": "💡 Carga pertinente\nConstrucción de esquemas\nProcesamiento profundo",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "load-balancing",
+    "label": "⚖️ Balanceo de carga\nDistribución óptima\nAsignación de recursos",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "dual-coding",
+    "label": "🎨 Codificación dual\nVerbal + visual\nCodificación mejorada",
+    "x": 150,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "external-aids",
+    "label": "📝 Ayudas externas\nToma de notas\nDiagramas",
+    "x": 350,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "metacognitive-monitoring",
+    "label": "🔍 Metacognición\nAutomonitoreo\nSelección de estrategias",
+    "x": 550,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "optimized-processing",
+    "label": "✨ Procesamiento optimizado\nUso eficiente de la memoria de trabajo para tareas complejas",
+    "x": 400,
+    "y": 1000,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-core",
+    "s": "task-input",
+    "t": "working-memory-core",
+    "label": ""
+   },
+   {
+    "id": "core-attention",
+    "s": "working-memory-core",
+    "t": "attention-filter",
+    "label": "Filtrar"
+   },
+   {
+    "id": "core-focus",
+    "s": "working-memory-core",
+    "t": "focus-controller",
+    "label": "Enfocar"
+   },
+   {
+    "id": "core-capacity",
+    "s": "working-memory-core",
+    "t": "capacity-monitor",
+    "label": "Monitorear"
+   },
+   {
+    "id": "core-refresh",
+    "s": "working-memory-core",
+    "t": "refresh-system",
+    "label": "Refrescar"
+   },
+   {
+    "id": "attention-phonological",
+    "s": "attention-filter",
+    "t": "phonological-loop",
+    "label": ""
+   },
+   {
+    "id": "focus-visuospatial",
+    "s": "focus-controller",
+    "t": "visuospatial-sketchpad",
+    "label": ""
+   },
+   {
+    "id": "capacity-episodic",
+    "s": "capacity-monitor",
+    "t": "episodic-buffer",
+    "label": ""
+   },
+   {
+    "id": "refresh-executive",
+    "s": "refresh-system",
+    "t": "central-executive",
+    "label": ""
+   },
+   {
+    "id": "executive-goals",
+    "s": "central-executive",
+    "t": "goal-stack",
+    "label": ""
+   },
+   {
+    "id": "phonological-chunking",
+    "s": "phonological-loop",
+    "t": "chunking-processor",
+    "label": ""
+   },
+   {
+    "id": "visuospatial-rehearsal",
+    "s": "visuospatial-sketchpad",
+    "t": "rehearsal-loop",
+    "label": ""
+   },
+   {
+    "id": "episodic-updating",
+    "s": "episodic-buffer",
+    "t": "updating-mechanism",
+    "label": ""
+   },
+   {
+    "id": "goals-switching",
+    "s": "goal-stack",
+    "t": "switching-control",
+    "label": ""
+   },
+   {
+    "id": "chunking-proactive",
+    "s": "chunking-processor",
+    "t": "proactive-interference",
+    "label": ""
+   },
+   {
+    "id": "rehearsal-retroactive",
+    "s": "rehearsal-loop",
+    "t": "retroactive-interference",
+    "label": ""
+   },
+   {
+    "id": "updating-resolution",
+    "s": "updating-mechanism",
+    "t": "interference-resolution",
+    "label": ""
+   },
+   {
+    "id": "switching-control",
+    "s": "switching-control",
+    "t": "cognitive-control",
+    "label": ""
+   },
+   {
+    "id": "proactive-intrinsic",
+    "s": "proactive-interference",
+    "t": "intrinsic-load",
+    "label": ""
+   },
+   {
+    "id": "retroactive-extraneous",
+    "s": "retroactive-interference",
+    "t": "extraneous-load",
+    "label": ""
+   },
+   {
+    "id": "resolution-germane",
+    "s": "interference-resolution",
+    "t": "germane-load",
+    "label": ""
+   },
+   {
+    "id": "cognitive-balancing",
+    "s": "cognitive-control",
+    "t": "load-balancing",
+    "label": ""
+   },
+   {
+    "id": "intrinsic-dual",
+    "s": "intrinsic-load",
+    "t": "dual-coding",
+    "label": ""
+   },
+   {
+    "id": "extraneous-external",
+    "s": "extraneous-load",
+    "t": "external-aids",
+    "label": ""
+   },
+   {
+    "id": "germane-metacognitive",
+    "s": "germane-load",
+    "t": "metacognitive-monitoring",
+    "label": ""
+   },
+   {
+    "id": "balancing-dual",
+    "s": "load-balancing",
+    "t": "dual-coding",
+    "label": ""
+   },
+   {
+    "id": "balancing-external",
+    "s": "load-balancing",
+    "t": "external-aids",
+    "label": ""
+   },
+   {
+    "id": "balancing-metacognitive",
+    "s": "load-balancing",
+    "t": "metacognitive-monitoring",
+    "label": ""
+   },
+   {
+    "id": "dual-output",
+    "s": "dual-coding",
+    "t": "optimized-processing",
+    "label": ""
+   },
+   {
+    "id": "external-output",
+    "s": "external-aids",
+    "t": "optimized-processing",
+    "label": ""
+   },
+   {
+    "id": "metacognitive-output",
+    "s": "metacognitive-monitoring",
+    "t": "optimized-processing",
+    "label": ""
+   },
+   {
+    "id": "output-feedback",
+    "s": "optimized-processing",
+    "t": "working-memory-core",
+    "label": "Feedback"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada de la tarea",
+    "description": "Tarea compleja que requiere memoria de trabajo",
+    "input": "",
+    "nodes": [
+     "task-input",
+     "working-memory-core"
+    ],
+    "edges": [
+     "input-core"
+    ]
+   },
+   {
+    "title": "Control de atención",
+    "description": "Filtrando y enfocándose en la información relevante",
+    "input": "",
+    "nodes": [
+     "working-memory-core",
+     "attention-filter",
+     "focus-controller",
+     "capacity-monitor",
+     "refresh-system"
+    ],
+    "edges": [
+     "core-attention",
+     "core-focus",
+     "core-capacity",
+     "core-refresh"
+    ]
+   },
+   {
+    "title": "Componentes de memoria",
+    "description": "Distribuyendo la información entre los subsistemas de memoria de trabajo",
+    "input": "",
+    "nodes": [
+     "phonological-loop",
+     "visuospatial-sketchpad",
+     "episodic-buffer",
+     "central-executive",
+     "goal-stack"
+    ],
+    "edges": [
+     "attention-phonological",
+     "focus-visuospatial",
+     "capacity-episodic",
+     "refresh-executive",
+     "executive-goals"
+    ]
+   },
+   {
+    "title": "Estrategias de procesamiento",
+    "description": "Aplicando chunking, repaso, actualización y cambio de tareas",
+    "input": "",
+    "nodes": [
+     "chunking-processor",
+     "rehearsal-loop",
+     "updating-mechanism",
+     "switching-control"
+    ],
+    "edges": [
+     "phonological-chunking",
+     "visuospatial-rehearsal",
+     "episodic-updating",
+     "goals-switching"
+    ]
+   },
+   {
+    "title": "Gestión de interferencias",
+    "description": "Manejando la interferencia proactiva y retroactiva",
+    "input": "",
+    "nodes": [
+     "proactive-interference",
+     "retroactive-interference",
+     "interference-resolution",
+     "cognitive-control"
+    ],
+    "edges": [
+     "chunking-proactive",
+     "rehearsal-retroactive",
+     "updating-resolution",
+     "switching-control"
+    ]
+   },
+   {
+    "title": "Carga cognitiva",
+    "description": "Gestionando la carga intrínseca, extrínseca y pertinente",
+    "input": "",
+    "nodes": [
+     "intrinsic-load",
+     "extraneous-load",
+     "germane-load",
+     "load-balancing"
+    ],
+    "edges": [
+     "proactive-intrinsic",
+     "retroactive-extraneous",
+     "resolution-germane",
+     "cognitive-balancing"
+    ]
+   },
+   {
+    "title": "Distribución de carga",
+    "description": "Equilibrando la carga cognitiva entre recursos",
+    "input": "",
+    "nodes": [
+     "load-balancing",
+     "dual-coding",
+     "external-aids",
+     "metacognitive-monitoring"
+    ],
+    "edges": [
+     "balancing-dual",
+     "balancing-external",
+     "balancing-metacognitive"
+    ]
+   },
+   {
+    "title": "Optimización del rendimiento",
+    "description": "Aplicando estrategias de optimización",
+    "input": "",
+    "nodes": [
+     "dual-coding",
+     "external-aids",
+     "metacognitive-monitoring"
+    ],
+    "edges": [
+     "intrinsic-dual",
+     "extraneous-external",
+     "germane-metacognitive"
+    ]
+   },
+   {
+    "title": "Salida optimizada",
+    "description": "Logrando un uso eficiente de la memoria de trabajo",
+    "input": "",
+    "nodes": [
+     "dual-coding",
+     "external-aids",
+     "metacognitive-monitoring",
+     "optimized-processing"
+    ],
+    "edges": [
+     "dual-output",
+     "external-output",
+     "metacognitive-output"
+    ]
+   },
+   {
+    "title": "Bucle de feedback",
+    "description": "Aprendiendo del rendimiento para mejorar el procesamiento futuro",
+    "input": "",
+    "nodes": [
+     "optimized-processing",
+     "working-memory-core"
+    ],
+    "edges": [
+     "output-feedback"
+    ]
+   }
+  ]
+ }
+}

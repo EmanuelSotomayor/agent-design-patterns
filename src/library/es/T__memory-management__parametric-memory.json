@@ -1,0 +1,712 @@
+{
+ "cat": "memory-management",
+ "slug": "parametric-memory",
+ "name": "Parametric Memory(PM)",
+ "icon": "🧠",
+ "complexity": "medium",
+ "description": "Conocimiento almacenado implícitamente en los parámetros del modelo, que permite una recuperación de conocimiento rápida y sin contexto para sistemas de IA agéntica multiagente",
+ "features": [
+  "Conocimiento incrustado en los pesos del modelo",
+  "Recuperación rápida sin contexto",
+  "Representación semántica del conocimiento",
+  "Almacenamiento eficiente en parámetros",
+  "Transferencia de conocimiento entre dominios",
+  "Patrones de razonamiento implícitos",
+  "Base de conocimiento preentrenada",
+  "Conocimiento compartido entre múltiples agentes"
+ ],
+ "tldr": {
+  "what": "Almacena conocimiento del dominio en los pesos del modelo durante el entrenamiento, lo que permite a los agentes recuperar hechos y patrones sin contexto explícito ni sistemas de recuperación.",
+  "when": "Sistemas multiagente en los que los agentes necesitan un acceso rápido y compartido a conocimiento común sin consultar bases de datos externas ni pasar ventanas de contexto grandes.",
+  "watchOut": "El conocimiento se vuelve obsoleto o incorrecto si el modelo base está desactualizado, y no puedes actualizar ni corregir fácilmente hechos específicos sin volver a entrenar."
+ },
+ "overview": {
+  "pattern": "Conocimiento almacenado implícitamente en los parámetros del modelo, que permite un acceso rápido y sin contexto",
+  "why": "Recuperación en menos de un milisegundo, sin dependencias externas, consistente entre agentes y escalable a más de 1000 agentes",
+  "insight": "Conocimiento preentrenado → especialización con PEFT → parámetros base compartidos en la red de agentes",
+  "impl": [
+   {
+    "t": "Preentrenar",
+    "d": "Incrusta el conocimiento del dominio en los pesos del modelo"
+   },
+   {
+    "t": "Hacer fine-tuning",
+    "d": "Usa métodos PEFT (LoRA, QLoRA) para mayor eficiencia"
+   },
+   {
+    "t": "Especializar",
+    "d": "Crea ramas de parámetros específicas para cada agente"
+   },
+   {
+    "t": "Compartir la base",
+    "d": "Base común en toda la red de agentes"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Haz seguimiento del acceso al conocimiento y del uso de parámetros"
+   }
+  ],
+  "example": "base_llm → domain_finetune → agent_specialization → shared_deployment",
+  "dos": [
+   "Usa fine-tuning eficiente en parámetros (LoRA, QLoRA, MoRA)",
+   "Comparte los parámetros base en toda la red de agentes para mantener la consistencia",
+   "Monitorea los patrones de especialización de parámetros para el almacenamiento de conocimiento",
+   "Implementa la consolidación del conocimiento para evitar la sobrecarga de parámetros",
+   "Versiona los parámetros del modelo para poder hacer rollback"
+  ],
+  "donts": [
+   "Reentrenar todos los parámetros para incorporar conocimiento nuevo (costoso y riesgoso)",
+   "Almacenar información sensible al tiempo en la memoria paramétrica",
+   "Ignorar las fechas de corte del conocimiento y la degradación de la precisión factual",
+   "Desplegar sin redundancia de parámetros para la tolerancia a fallos",
+   "Mezclar versiones de parámetros incompatibles entre instancias de agentes"
+  ],
+  "use": [
+   "Se requiere conocimiento del dominio estable",
+   "La velocidad de inferencia es crítica",
+   "Se necesita consistencia entre múltiples agentes",
+   "Escenarios de despliegue offline",
+   "Aplicaciones sensibles al costo"
+  ],
+  "avoid": [
+   "Información que cambia rápidamente",
+   "Actualizaciones de cumplimiento normativo",
+   "Integración de datos en tiempo real",
+   "Personalización específica por usuario",
+   "Actualizaciones frecuentes del conocimiento"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión del conocimiento",
+    "d": "% de respuestas factuales correctas"
+   },
+   {
+    "n": "Velocidad de inferencia",
+    "d": "Tasa de generación en tokens/segundo"
+   },
+   {
+    "n": "Eficiencia de parámetros",
+    "d": "Relación conocimiento/parámetros"
+   },
+   {
+    "n": "Puntaje de consistencia",
+    "d": "Similitud de respuestas entre agentes"
+   },
+   {
+    "n": "Huella de memoria",
+    "d": "GB requeridos por agente"
+   },
+   {
+    "n": "Costo de actualización",
+    "d": "$ por ciclo de actualización del conocimiento"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Agentes de investigación científica",
+    "d": "Conocimiento de física, química y biología incrustado (consistente en más de 100 agentes)"
+   },
+   {
+    "n": "Análisis de documentos legales",
+    "d": "Jurisprudencia, leyes y procedimientos en los parámetros (acceso instantáneo, sin BD externa)"
+   },
+   {
+    "n": "Apoyo al diagnóstico médico",
+    "d": "Conocimiento médico, interacciones de fármacos, síntomas (cumple con HIPAA, offline)"
+   },
+   {
+    "n": "Análisis financiero",
+    "d": "Fundamentos de mercado, principios contables, regulaciones (inferencia en tiempo real)"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Lenguajes de programación, frameworks, buenas prácticas (consistencia entre lenguajes)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Memoria paramétrica",
+  "description": "Sistema de almacenamiento de conocimiento en el que la información se codifica directamente en los parámetros del modelo, lo que permite un acceso rápido al conocimiento aprendido sin búsquedas en memoria externa.",
+  "nodes": [
+   {
+    "id": "knowledge-query",
+    "label": "🎯 Consulta de conocimiento\n\"¿Cuáles son los principios clave de la computación cuántica?\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "llm-core",
+    "label": "🧠 Núcleo del LLM\n175B parámetros\nConocimiento codificado en los pesos",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "embedding-layer",
+    "label": "📊 Capa de embeddings\nMapeo token → vector\nVocabulario de 50K",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "attention-layers",
+    "label": "🔍 Capas de atención\nCabezas de self-attention\nReconocimiento de patrones",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "ffn-layers",
+    "label": "🔄 Capas FFN\nRedes feed-forward\nAlmacenamiento de conocimiento",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "output-layer",
+    "label": "📤 Capa de salida\nGeneración de logits\nPredicción de tokens",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "factual-knowledge",
+    "label": "📚 Conocimiento factual\n• Fechas históricas\n• Hechos científicos\n• Relaciones entre entidades",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "procedural-knowledge",
+    "label": "⚙️ Conocimiento procedimental\n• Pasos de cómo hacer algo\n• Algoritmos\n• Métodos",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "linguistic-knowledge",
+    "label": "🗣️ Conocimiento lingüístico\n• Reglas gramaticales\n• Patrones sintácticos\n• Semántica",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "domain-knowledge",
+    "label": "🎓 Conocimiento del dominio\n• Términos médicos\n• Conceptos legales\n• Especificaciones técnicas",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "common-sense",
+    "label": "💡 Sentido común\n• Causa-efecto\n• Intuición física\n• Normas sociales",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "agent-1",
+    "label": "🤖 Agente de investigación\nAccede al conocimiento científico",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "agent-2",
+    "label": "🤖 Agente de análisis\nAccede a patrones analíticos",
+    "x": 300,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "agent-3",
+    "label": "🤖 Agente de redacción\nAccede a patrones del lenguaje",
+    "x": 500,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "agent-4",
+    "label": "🤖 Agente de validación\nAccede a datos de verificación de hechos",
+    "x": 700,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "forward-pass",
+    "label": "➡️ Forward pass\nFlujo de activaciones\nLatencia de ~50ms",
+    "x": 150,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "pattern-matching",
+    "label": "🎯 Coincidencia de patrones\nActivación de pesos\nRecuerdo sin contexto",
+    "x": 320,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "parallel-access",
+    "label": "⚡ Acceso en paralelo\nMúltiples agentes\nSin interferencia",
+    "x": 490,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "gradient-flow",
+    "label": "📈 Flujo de gradientes\nRutas de conocimiento\nIntensidad de activación",
+    "x": 660,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "instant-access",
+    "label": "⚡ Acceso instantáneo\nNo requiere recuperación\nComplejidad O(1)",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "context-independence",
+    "label": "🔓 Sin contexto\nNo requiere prompt\nActivación directa",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "scalable-sharing",
+    "label": "📊 Compartición escalable\nAgentes ilimitados\nSin copias en memoria",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "integrated-reasoning",
+    "label": "🧩 Integrado\nRazonamiento fluido\nSin búsquedas externas",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "hallucination-risk",
+    "label": "⚠️ Riesgo de alucinación\nPosible confabulación",
+    "x": 150,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "update-challenge",
+    "label": "🔄 Desafío de actualización\nRequiere reentrenamiento",
+    "x": 320,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "fact-verification",
+    "label": "✅ Verificación de hechos\nRequiere contrastar",
+    "x": 490,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "hybrid-approach",
+    "label": "🔀 Solución híbrida\n+ Memoria no paramétrica",
+    "x": 660,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "knowledge-output",
+    "label": "✨ Conocimiento recuperado\nPrincipios de computación cuántica extraídos de los parámetros",
+    "x": 400,
+    "y": 1000,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-core",
+    "s": "knowledge-query",
+    "t": "llm-core",
+    "label": ""
+   },
+   {
+    "id": "core-embedding",
+    "s": "llm-core",
+    "t": "embedding-layer",
+    "label": "Codificar"
+   },
+   {
+    "id": "embedding-attention",
+    "s": "embedding-layer",
+    "t": "attention-layers",
+    "label": ""
+   },
+   {
+    "id": "attention-ffn",
+    "s": "attention-layers",
+    "t": "ffn-layers",
+    "label": ""
+   },
+   {
+    "id": "ffn-output",
+    "s": "ffn-layers",
+    "t": "output-layer",
+    "label": ""
+   },
+   {
+    "id": "factual-embedding",
+    "s": "factual-knowledge",
+    "t": "embedding-layer",
+    "label": ""
+   },
+   {
+    "id": "procedural-attention",
+    "s": "procedural-knowledge",
+    "t": "attention-layers",
+    "label": ""
+   },
+   {
+    "id": "linguistic-attention",
+    "s": "linguistic-knowledge",
+    "t": "attention-layers",
+    "label": ""
+   },
+   {
+    "id": "domain-ffn",
+    "s": "domain-knowledge",
+    "t": "ffn-layers",
+    "label": ""
+   },
+   {
+    "id": "common-ffn",
+    "s": "common-sense",
+    "t": "ffn-layers",
+    "label": ""
+   },
+   {
+    "id": "agent1-core",
+    "s": "agent-1",
+    "t": "llm-core",
+    "label": "Acceder"
+   },
+   {
+    "id": "agent2-core",
+    "s": "agent-2",
+    "t": "llm-core",
+    "label": "Acceder"
+   },
+   {
+    "id": "agent3-core",
+    "s": "agent-3",
+    "t": "llm-core",
+    "label": "Acceder"
+   },
+   {
+    "id": "agent4-core",
+    "s": "agent-4",
+    "t": "llm-core",
+    "label": "Acceder"
+   },
+   {
+    "id": "agent1-factual",
+    "s": "agent-1",
+    "t": "factual-knowledge",
+    "label": ""
+   },
+   {
+    "id": "agent2-procedural",
+    "s": "agent-2",
+    "t": "procedural-knowledge",
+    "label": ""
+   },
+   {
+    "id": "agent3-linguistic",
+    "s": "agent-3",
+    "t": "linguistic-knowledge",
+    "label": ""
+   },
+   {
+    "id": "agent4-domain",
+    "s": "agent-4",
+    "t": "domain-knowledge",
+    "label": ""
+   },
+   {
+    "id": "agent1-forward",
+    "s": "agent-1",
+    "t": "forward-pass",
+    "label": ""
+   },
+   {
+    "id": "agent2-pattern",
+    "s": "agent-2",
+    "t": "pattern-matching",
+    "label": ""
+   },
+   {
+    "id": "agent3-parallel",
+    "s": "agent-3",
+    "t": "parallel-access",
+    "label": ""
+   },
+   {
+    "id": "agent4-gradient",
+    "s": "agent-4",
+    "t": "gradient-flow",
+    "label": ""
+   },
+   {
+    "id": "forward-instant",
+    "s": "forward-pass",
+    "t": "instant-access",
+    "label": ""
+   },
+   {
+    "id": "pattern-context",
+    "s": "pattern-matching",
+    "t": "context-independence",
+    "label": ""
+   },
+   {
+    "id": "parallel-scalable",
+    "s": "parallel-access",
+    "t": "scalable-sharing",
+    "label": ""
+   },
+   {
+    "id": "gradient-integrated",
+    "s": "gradient-flow",
+    "t": "integrated-reasoning",
+    "label": ""
+   },
+   {
+    "id": "instant-hallucination",
+    "s": "instant-access",
+    "t": "hallucination-risk",
+    "label": "Riesgo"
+   },
+   {
+    "id": "context-update",
+    "s": "context-independence",
+    "t": "update-challenge",
+    "label": "Problema"
+   },
+   {
+    "id": "scalable-verification",
+    "s": "scalable-sharing",
+    "t": "fact-verification",
+    "label": "Necesidad"
+   },
+   {
+    "id": "hallucination-hybrid",
+    "s": "hallucination-risk",
+    "t": "hybrid-approach",
+    "label": "Resolver"
+   },
+   {
+    "id": "update-hybrid",
+    "s": "update-challenge",
+    "t": "hybrid-approach",
+    "label": "Resolver"
+   },
+   {
+    "id": "verification-hybrid",
+    "s": "fact-verification",
+    "t": "hybrid-approach",
+    "label": "Resolver"
+   },
+   {
+    "id": "output-knowledge",
+    "s": "output-layer",
+    "t": "knowledge-output",
+    "label": ""
+   },
+   {
+    "id": "integrated-output",
+    "s": "integrated-reasoning",
+    "t": "knowledge-output",
+    "label": ""
+   },
+   {
+    "id": "hybrid-output",
+    "s": "hybrid-approach",
+    "t": "knowledge-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta de conocimiento",
+    "description": "Consulta sobre los principios de la computación cuántica",
+    "input": "",
+    "nodes": [
+     "knowledge-query",
+     "llm-core"
+    ],
+    "edges": [
+     "query-core"
+    ]
+   },
+   {
+    "title": "Activación de parámetros",
+    "description": "La consulta fluye a través de las capas del modelo",
+    "input": "",
+    "nodes": [
+     "llm-core",
+     "embedding-layer",
+     "attention-layers",
+     "ffn-layers",
+     "output-layer"
+    ],
+    "edges": [
+     "core-embedding",
+     "embedding-attention",
+     "attention-ffn",
+     "ffn-output"
+    ]
+   },
+   {
+    "title": "Codificación del conocimiento",
+    "description": "Distintos tipos de conocimiento almacenados en los parámetros",
+    "input": "",
+    "nodes": [
+     "factual-knowledge",
+     "procedural-knowledge",
+     "linguistic-knowledge",
+     "domain-knowledge",
+     "common-sense"
+    ],
+    "edges": [
+     "factual-embedding",
+     "procedural-attention",
+     "linguistic-attention",
+     "domain-ffn",
+     "common-ffn"
+    ]
+   },
+   {
+    "title": "Acceso multiagente",
+    "description": "Múltiples agentes acceden a la memoria paramétrica compartida",
+    "input": "",
+    "nodes": [
+     "agent-1",
+     "agent-2",
+     "agent-3",
+     "agent-4",
+     "llm-core"
+    ],
+    "edges": [
+     "agent1-core",
+     "agent2-core",
+     "agent3-core",
+     "agent4-core"
+    ]
+   },
+   {
+    "title": "Recuperación de conocimiento",
+    "description": "Los agentes recuperan tipos específicos de conocimiento",
+    "input": "",
+    "nodes": [
+     "agent-1",
+     "agent-2",
+     "agent-3",
+     "agent-4",
+     "factual-knowledge",
+     "procedural-knowledge",
+     "linguistic-knowledge",
+     "domain-knowledge"
+    ],
+    "edges": [
+     "agent1-factual",
+     "agent2-procedural",
+     "agent3-linguistic",
+     "agent4-domain"
+    ]
+   },
+   {
+    "title": "Mecanismos de recuperación",
+    "description": "Acceso rápido, en paralelo y sin contexto",
+    "input": "",
+    "nodes": [
+     "forward-pass",
+     "pattern-matching",
+     "parallel-access",
+     "gradient-flow"
+    ],
+    "edges": [
+     "agent1-forward",
+     "agent2-pattern",
+     "agent3-parallel",
+     "agent4-gradient"
+    ]
+   },
+   {
+    "title": "Ventajas de rendimiento",
+    "description": "Acceso al conocimiento instantáneo, escalable e integrado",
+    "input": "",
+    "nodes": [
+     "instant-access",
+     "context-independence",
+     "scalable-sharing",
+     "integrated-reasoning"
+    ],
+    "edges": [
+     "forward-instant",
+     "pattern-context",
+     "parallel-scalable",
+     "gradient-integrated"
+    ]
+   },
+   {
+    "title": "Limitaciones identificadas",
+    "description": "Riesgo de alucinación, desafíos de actualización, necesidad de verificación",
+    "input": "",
+    "nodes": [
+     "hallucination-risk",
+     "update-challenge",
+     "fact-verification"
+    ],
+    "edges": [
+     "instant-hallucination",
+     "context-update",
+     "scalable-verification"
+    ]
+   },
+   {
+    "title": "Mitigación híbrida",
+    "description": "Combínala con memoria no paramétrica para mayor robustez",
+    "input": "",
+    "nodes": [
+     "hybrid-approach",
+     "hallucination-risk",
+     "update-challenge",
+     "fact-verification"
+    ],
+    "edges": [
+     "hallucination-hybrid",
+     "update-hybrid",
+     "verification-hybrid"
+    ]
+   },
+   {
+    "title": "Salida de conocimiento",
+    "description": "Conocimiento de computación cuántica recuperado con éxito",
+    "input": "",
+    "nodes": [
+     "output-layer",
+     "integrated-reasoning",
+     "hybrid-approach",
+     "knowledge-output"
+    ],
+    "edges": [
+     "output-knowledge",
+     "integrated-output",
+     "hybrid-output"
+    ]
+   }
+  ]
+ }
+}

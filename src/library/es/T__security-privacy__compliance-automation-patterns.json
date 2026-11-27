@@ -1,0 +1,336 @@
+{
+ "cat": "security-privacy",
+ "slug": "compliance-automation-patterns",
+ "name": "Compliance Automation Patterns(CAP)",
+ "icon": "📋",
+ "complexity": "high",
+ "description": "Aplicación automatizada del cumplimiento de GDPR, HIPAA, SOX y otras regulaciones",
+ "features": [
+  "Verificación automatizada del cumplimiento",
+  "Mapeo de marcos regulatorios",
+  "Generación de registros de auditoría",
+  "Automatización de la gobernanza de datos",
+  "Integración de la evaluación de riesgos",
+  "Monitoreo continuo del cumplimiento"
+ ],
+ "tldr": {
+  "what": "Aplica automáticamente las reglas regulatorias clasificando los datos, mapeándolos a marcos de cumplimiento y generando registros de auditoría durante las operaciones.",
+  "when": "Organizaciones que manejan datos regulados (personales, de salud, financieros) en múltiples jurisdicciones y necesitan verificar el cumplimiento de forma continua.",
+  "watchOut": "La aplicación automatizada puede bloquear operaciones legítimas si las reglas están mal configuradas, generando falsos positivos que detienen los flujos de trabajo."
+ },
+ "overview": {
+  "pattern": "Aplicación automatizada del cumplimiento de GDPR, HIPAA, SOX y múltiples regulaciones con monitoreo en tiempo real",
+  "why": "Asegura la adherencia regulatoria, reduce el trabajo manual de cumplimiento, previene infracciones y facilita estar preparado para auditorías",
+  "insight": "Clasificación automatizada + aplicación de políticas + registros de auditoría → cumplimiento regulatorio continuo",
+  "impl": [
+   {
+    "t": "Clasificación de datos",
+    "d": "Categorización automatizada de datos regulados"
+   },
+   {
+    "t": "Mapeo de políticas",
+    "d": "De los requisitos del marco a los controles"
+   },
+   {
+    "t": "Aplicación en tiempo real",
+    "d": "Verificación continua del cumplimiento"
+   },
+   {
+    "t": "Generación de registros de auditoría",
+    "d": "Logging integral de la actividad"
+   },
+   {
+    "t": "Automatización de reportes",
+    "d": "Preparación de presentaciones regulatorias"
+   }
+  ],
+  "example": "data_classification → policy_mapping → enforcement_engine → audit_logging → compliance_reporting",
+  "dos": [
+   "Implementa clasificación automatizada de datos para múltiples regulaciones",
+   "Crea registros de auditoría completos para todas las operaciones de datos",
+   "Usa motores de políticas para aplicar el cumplimiento en tiempo real",
+   "Mantén actualizados los mapeos de los marcos regulatorios",
+   "Genera reportes y dashboards de cumplimiento automatizados"
+  ],
+  "donts": [
+   "Depender de procesos manuales de cumplimiento para datos críticos",
+   "Omitir la verificación del consentimiento para el procesamiento de datos personales",
+   "Ignorar las restricciones a las transferencias internacionales de datos",
+   "Retrasar la implementación de cambios regulatorios",
+   "Almacenar los logs de cumplimiento sin cifrado"
+  ],
+  "use": [
+   "Industrias reguladas (salud, finanzas)",
+   "Despliegues de IA empresariales",
+   "Procesamiento internacional de datos",
+   "Entornos con múltiples regulaciones"
+  ],
+  "avoid": [
+   "Aplicaciones internas simples",
+   "Procesamiento de datos no regulados",
+   "Fases de desarrollo de prototipos",
+   "Despliegues en una sola jurisdicción"
+  ],
+  "metrics": [
+   {
+    "n": "Puntuación de cumplimiento",
+    "d": "% de adherencia a los marcos regulatorios"
+   },
+   {
+    "n": "Reducción de hallazgos de auditoría",
+    "d": "Disminución de las infracciones de cumplimiento"
+   },
+   {
+    "n": "Cobertura de automatización",
+    "d": "% de procesos de cumplimiento automatizados"
+   },
+   {
+    "n": "Tiempo de respuesta",
+    "d": "Tiempo para atender cambios regulatorios"
+   },
+   {
+    "n": "Derechos de los titulares de datos",
+    "d": "Tasa de atención de solicitudes de usuarios"
+   },
+   {
+    "n": "Cumplimiento transfronterizo",
+    "d": "Tasa de cumplimiento en transferencias internacionales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA en salud",
+    "d": "Cumplimiento de HIPAA, protección de PHI, aplicación del acceso mínimo necesario"
+   },
+   {
+    "n": "Servicios financieros",
+    "d": "Controles SOX, cumplimiento de PCI DSS, monitoreo contra el lavado de dinero"
+   },
+   {
+    "n": "Operaciones en la UE",
+    "d": "Procesamiento de datos según GDPR, gestión del consentimiento, automatización del derecho de supresión"
+   },
+   {
+    "n": "Multinacional",
+    "d": "Transferencias transfronterizas, decisiones de adecuación, normas corporativas vinculantes"
+   },
+   {
+    "n": "Gobierno",
+    "d": "Cumplimiento de FedRAMP, controles de seguridad, requisitos de monitoreo continuo"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Compliance Automation",
+  "description": "Aplicación automatizada de los requisitos de cumplimiento regulatorio, incluyendo GDPR, HIPAA y SOX, mediante verificación de políticas en tiempo real, registros de auditoría y prevención de infracciones",
+  "nodes": [
+   {
+    "id": "healthcare-ai-system",
+    "label": "🏥 Sistema de IA en salud\n\"Asistente de diagnóstico de pacientes que procesa\nhistoriales médicos sensibles bajo\nlas regulaciones de HIPAA, GDPR y FDA\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "compliance-challenge",
+    "label": "📋 Cumplimiento de múltiples regulaciones\n\"Debe cumplir simultáneamente con:\n• HIPAA (privacidad de la salud en EE. UU.)\n• GDPR (protección de datos en la UE)\n• FDA (reglas de dispositivos médicos)\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "manual-compliance",
+    "label": "📝 Proceso manual de cumplimiento\n\"Revisores humanos verifican\ncada decisión de la IA frente a\nlos requisitos regulatorios\"",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "human-errors",
+    "label": "❌ Errores humanos de cumplimiento\n\"Infracciones de privacidad no detectadas\nAplicación inconsistente de políticas\nRespuesta lenta a las infracciones\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "regulatory-violations",
+    "label": "🚨 Infracciones regulatorias\n\"Violación de HIPAA: multa de $1.5M\nInfracción de GDPR: sanción de €4M\nCarta de advertencia de la FDA emitida\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "automated-compliance",
+    "label": "🤖 Sistema de cumplimiento automatizado\n\"Aplicación de políticas en tiempo real:\n• Verificaciones de privacidad de HIPAA\n• Validación del consentimiento según GDPR\n• Requisitos de auditoría de la FDA\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "policy-enforcement",
+    "label": "🛡️ Aplicación de políticas en tiempo real\n\"Solicitud de diagnóstico de IA:\n✓ HIPAA: Mínimo necesario\n✓ GDPR: Existe consentimiento válido\n✓ FDA: Registro de auditoría generado\"",
+    "x": 650,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "automated-remediation",
+    "label": "⚡ Remediación automatizada\n\"Infracción detectada:\n• Bloquear la acción no conforme\n• Generar un reporte de incidente\n• Notificar al equipo de cumplimiento\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "continuous-monitoring",
+    "label": "📊 Monitoreo continuo del cumplimiento\n\"Supervisión regulatoria 24/7\nReportes de auditoría automatizados\nGarantía proactiva del cumplimiento\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "automation-principle",
+    "label": "🎯 Principio de la automatización del cumplimiento\n\"Las regulaciones son código, no lineamientos\nLa automatización asegura la consistencia\nLa aplicación en tiempo real previene infracciones\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "healthcare-ai-system",
+    "t": "compliance-challenge",
+    "label": "debe cumplir con múltiples regulaciones"
+   },
+   {
+    "id": "e2",
+    "s": "compliance-challenge",
+    "t": "manual-compliance",
+    "label": "enfoque manual"
+   },
+   {
+    "id": "e3",
+    "s": "compliance-challenge",
+    "t": "automated-compliance",
+    "label": "enfoque automatizado"
+   },
+   {
+    "id": "e4",
+    "s": "manual-compliance",
+    "t": "human-errors",
+    "label": "propenso a errores"
+   },
+   {
+    "id": "e5",
+    "s": "human-errors",
+    "t": "regulatory-violations",
+    "label": "conduce a infracciones"
+   },
+   {
+    "id": "e6",
+    "s": "automated-compliance",
+    "t": "policy-enforcement",
+    "label": "aplica políticas"
+   },
+   {
+    "id": "e7",
+    "s": "policy-enforcement",
+    "t": "automated-remediation",
+    "label": "detecta infracciones"
+   },
+   {
+    "id": "e8",
+    "s": "automated-remediation",
+    "t": "continuous-monitoring",
+    "label": "habilita el monitoreo"
+   },
+   {
+    "id": "e9",
+    "s": "regulatory-violations",
+    "t": "automation-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e10",
+    "s": "continuous-monitoring",
+    "t": "automation-principle",
+    "label": "habilita el cumplimiento"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Sistema de IA en salud con múltiples regulaciones",
+    "description": "Un asistente de IA en salud que procesa historiales médicos sensibles debe cumplir simultáneamente con las regulaciones de HIPAA (privacidad de la salud en EE. UU.), GDPR (protección de datos en la UE) y FDA (dispositivos médicos).",
+    "input": "",
+    "nodes": [
+     "healthcare-ai-system"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Desafío complejo de cumplimiento",
+    "description": "El sistema enfrenta requisitos regulatorios superpuestos y a veces contradictorios que deben aplicarse de forma consistente en todas las operaciones de IA y actividades de procesamiento de datos.",
+    "input": "",
+    "nodes": [
+     "compliance-challenge"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de cumplimiento: manual vs automatizado",
+    "description": "Cumplimiento regulatorio gestionado mediante un proceso de revisión humana manual (izquierda) frente a un sistema de cumplimiento automatizado (derecha) con aplicación de políticas en tiempo real.",
+    "input": "",
+    "nodes": [
+     "manual-compliance",
+     "automated-compliance"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Proceso manual: errores humanos e infracciones",
+    "description": "Los revisores humanos pasan por alto infracciones de privacidad, aplican las políticas de forma inconsistente y responden con lentitud a las violaciones, lo que genera multas y sanciones regulatorias significativas.",
+    "input": "",
+    "nodes": [
+     "human-errors",
+     "regulatory-violations"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Aplicación automatizada: verificación de políticas en tiempo real",
+    "description": "El sistema automatizado verifica en tiempo real cada solicitud de diagnóstico de IA frente al mínimo necesario de HIPAA, la validez del consentimiento según GDPR y los requisitos de auditoría de la FDA.",
+    "input": "",
+    "nodes": [
+     "policy-enforcement"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Cumplimiento continuo y principio central",
+    "description": "El sistema ofrece remediación automatizada, monitoreo continuo y garantía proactiva del cumplimiento, demostrando que las regulaciones deben tratarse como código ejecutable y no como lineamientos.",
+    "input": "",
+    "nodes": [
+     "automated-remediation",
+     "continuous-monitoring",
+     "automation-principle"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   }
+  ]
+ }
+}

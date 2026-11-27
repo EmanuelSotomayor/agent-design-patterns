@@ -1,0 +1,355 @@
+{
+ "cat": "context-management",
+ "slug": "context-editing-tool-clearing",
+ "name": "Context Editing & Tool-Result Clearing(CETC)",
+ "icon": "🧹",
+ "complexity": "medium",
+ "description": "Una primitiva a nivel de harness o de API que expulsa automáticamente el contenido obsoleto de la ventana de contexto activa cuando supera un umbral de tokens, con mayor frecuencia reemplazando de forma quirúrgica los bloques tool_result antiguos por marcadores breves, mientras mantiene intacto el registro tool_use correspondiente. Como las lecturas de archivos, los resultados de búsqueda y los volcados de API se pueden volver a obtener, se descartan sin costo de inferencia y se vuelven a traer solo si un turno posterior realmente los necesita, lo que mantiene estable el prefijo del KV-cache y contrarresta la degradación del contexto (context rot) en bucles largos. Anthropic lo ofrece como clear_tool_uses_20250919 y compact_20260112, con una reducción reportada de ~84% de tokens en una evaluación de búsqueda web de 100 turnos y una mejora de rendimiento del 29-39%. Se distingue de `context-compress-patterns`: el clearing expulsa sin pérdida resultados en bruto que se pueden volver a obtener en lugar de resumirlos con pérdida; a diferencia de `filesystem-as-context`, no necesita un paso explícito de descarga a disco; y a diferencia de `memory-forgetting-policies`, no trata del decaimiento de la memoria a largo plazo, sino de podar la ventana de trabajo.",
+ "features": [
+  "La expulsión activada por umbral se dispara automáticamente al alcanzar un presupuesto configurado de tokens de entrada",
+  "Limpia quirúrgicamente los bloques tool_result más antiguos, reemplazando su contenido por un marcador breve",
+  "Mantiene el registro de la llamada tool_use para que la transcripción siga siendo coherente y se pueda volver a invocar",
+  "Cero costo de inferencia: la expulsión es una edición del harness, no una pasada de resumen del modelo",
+  "Recuperable por diseño: el agente vuelve a ejecutar la herramienta solo cuando necesita los datos otra vez",
+  "Preserva el prefijo del KV-cache en los turnos anteriores para que los tokens en cache sigan siendo baratos"
+ ],
+ "tldr": {
+  "what": "Elimina automáticamente del contexto el contenido de los resultados de herramientas antiguos cuando se acercan los límites de tokens, reemplazándolos por marcadores y conservando los registros de las llamadas a herramientas.",
+  "when": "Bucles de agente de larga duración donde los resultados de herramientas se acumulan más rápido de lo que se consumen y siguen siendo recuperables desde fuentes externas.",
+  "watchOut": "Si se necesita un resultado limpiado sin volver a ejecutar la herramienta, el marcador rompe la coherencia de la transcripción y obliga a volver a obtenerlo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Edición de contexto y limpieza de resultados de herramientas",
+  "description": "Una primitiva a nivel de harness o de API que vigila la ventana de contexto activa y, al alcanzar un umbral de tokens, reemplaza quirúrgicamente el contenido de los tool_result más antiguos por marcadores breves, manteniendo intacto el registro tool_use. Los datos recuperables se expulsan sin costo de inferencia y se vuelven a traer solo bajo demanda, lo que mantiene estable el prefijo del KV-cache y contrarresta la degradación del contexto en bucles largos.",
+  "nodes": [
+   {
+    "id": "user-task",
+    "label": "🎯 Tarea del usuario\n\"Elige una base de datos vectorial\" - bucle de investigación de 100 turnos",
+    "x": 380,
+    "y": 0,
+    "w": 300
+   },
+   {
+    "id": "agent-loop",
+    "label": "🔁 Bucle del agente\nCada turno llama a una herramienta y agrega un tool_result",
+    "x": 390,
+    "y": 100,
+    "w": 280
+   },
+   {
+    "id": "tool-search",
+    "label": "🔎 web_search\nresultado del turno 3: 16k tokens",
+    "x": 60,
+    "y": 210,
+    "w": 220
+   },
+   {
+    "id": "tool-fetch",
+    "label": "📄 fetch_page\nresultado del turno 5: 23k tokens",
+    "x": 330,
+    "y": 210,
+    "w": 220
+   },
+   {
+    "id": "tool-read",
+    "label": "🗂️ read_file\nresultado del turno 11: 22k tokens",
+    "x": 600,
+    "y": 210,
+    "w": 220
+   },
+   {
+    "id": "context-meter",
+    "label": "📊 Ventana de contexto\n94k / 100k, llenándose con bloques tool_result en bruto",
+    "x": 360,
+    "y": 330,
+    "w": 320
+   },
+   {
+    "id": "baseline-rot",
+    "label": "🚫 Línea base sin limpieza\nConserva todos los resultados, se desborda, el contexto se degrada, la precisión cae",
+    "x": 740,
+    "y": 450,
+    "w": 230
+   },
+   {
+    "id": "threshold",
+    "label": "⚠️ Se alcanzó el umbral de tokens\nEl harness activa clear_tool_uses_20250919",
+    "x": 360,
+    "y": 450,
+    "w": 300
+   },
+   {
+    "id": "context-editor",
+    "label": "🧹 Editor de contexto\nPrimitiva del harness/API, sin llamada al modelo",
+    "x": 370,
+    "y": 560,
+    "w": 300
+   },
+   {
+    "id": "clear-action",
+    "label": "✂️ Limpia los tool_results más antiguos\nCambia el contenido por marcadores, conserva el registro tool_use",
+    "x": 350,
+    "y": 670,
+    "w": 340
+   },
+   {
+    "id": "placeholder",
+    "label": "🗂️ Bloque marcador\n[limpiado, recuperable vía read_file] ~40 tokens",
+    "x": 60,
+    "y": 790,
+    "w": 250
+   },
+   {
+    "id": "reduced-window",
+    "label": "📉 Contexto 94k -> 15k\n~84% de reducción, prefijo del KV-cache intacto, 0 costo de inferencia",
+    "x": 380,
+    "y": 790,
+    "w": 300
+   },
+   {
+    "id": "refetch",
+    "label": "🔄 Recuperación bajo demanda\nVuelve a ejecutar la herramienta solo si un turno posterior necesita los datos",
+    "x": 60,
+    "y": 900,
+    "w": 250
+   },
+   {
+    "id": "continue-loop",
+    "label": "✅ El bucle continúa más allá del turno 100\nSin degradación del contexto, las respuestas siguen siendo precisas",
+    "x": 400,
+    "y": 910,
+    "w": 280
+   },
+   {
+    "id": "output",
+    "label": "✨ Tarea completada\n~84% menos tokens, 29-39% de mejora de rendimiento",
+    "x": 380,
+    "y": 1020,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-loop",
+    "s": "user-task",
+    "t": "agent-loop",
+    "label": ""
+   },
+   {
+    "id": "e-loop-search",
+    "s": "agent-loop",
+    "t": "tool-search",
+    "label": "llama"
+   },
+   {
+    "id": "e-loop-fetch",
+    "s": "agent-loop",
+    "t": "tool-fetch",
+    "label": "llama"
+   },
+   {
+    "id": "e-loop-read",
+    "s": "agent-loop",
+    "t": "tool-read",
+    "label": "llama"
+   },
+   {
+    "id": "e-search-meter",
+    "s": "tool-search",
+    "t": "context-meter",
+    "label": "agrega"
+   },
+   {
+    "id": "e-fetch-meter",
+    "s": "tool-fetch",
+    "t": "context-meter",
+    "label": "agrega"
+   },
+   {
+    "id": "e-read-meter",
+    "s": "tool-read",
+    "t": "context-meter",
+    "label": "agrega"
+   },
+   {
+    "id": "e-meter-threshold",
+    "s": "context-meter",
+    "t": "threshold",
+    "label": "94k tokens"
+   },
+   {
+    "id": "e-meter-baseline",
+    "s": "context-meter",
+    "t": "baseline-rot",
+    "label": "si nunca se limpia"
+   },
+   {
+    "id": "e-threshold-editor",
+    "s": "threshold",
+    "t": "context-editor",
+    "label": ""
+   },
+   {
+    "id": "e-editor-clear",
+    "s": "context-editor",
+    "t": "clear-action",
+    "label": ""
+   },
+   {
+    "id": "e-clear-placeholder",
+    "s": "clear-action",
+    "t": "placeholder",
+    "label": "resultados más antiguos"
+   },
+   {
+    "id": "e-clear-reduced",
+    "s": "clear-action",
+    "t": "reduced-window",
+    "label": "expulsados"
+   },
+   {
+    "id": "e-placeholder-refetch",
+    "s": "placeholder",
+    "t": "refetch",
+    "label": "bajo demanda"
+   },
+   {
+    "id": "e-reduced-continue",
+    "s": "reduced-window",
+    "t": "continue-loop",
+    "label": ""
+   },
+   {
+    "id": "e-refetch-continue",
+    "s": "refetch",
+    "t": "continue-loop",
+    "label": "reinyecta"
+   },
+   {
+    "id": "e-continue-output",
+    "s": "continue-loop",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Comienza un bucle largo del agente",
+    "description": "Un agente de investigación inicia un bucle de largo horizonte para elegir una base de datos vectorial. En cada turno llama a una herramienta y agrega el resultado al contexto en curso.",
+    "input": "",
+    "nodes": [
+     "user-task",
+     "agent-loop"
+    ],
+    "edges": [
+     "e-task-loop"
+    ]
+   },
+   {
+    "title": "Se acumulan resultados de herramientas pesados",
+    "description": "Los resultados de búsqueda, las páginas obtenidas y las lecturas de archivos devuelven contenidos grandes y recuperables (de 16k a 23k tokens) que se apilan turno tras turno.",
+    "input": "",
+    "nodes": [
+     "agent-loop",
+     "tool-search",
+     "tool-fetch",
+     "tool-read"
+    ],
+    "edges": [
+     "e-loop-search",
+     "e-loop-fetch",
+     "e-loop-read"
+    ]
+   },
+   {
+    "title": "La ventana de contexto se llena",
+    "description": "Los bloques tool_result en bruto llevan la ventana activa a 94k de un presupuesto de 100k. Si no se controla, este camino lleva al desbordamiento y a la degradación del contexto.",
+    "input": "",
+    "nodes": [
+     "tool-search",
+     "tool-fetch",
+     "tool-read",
+     "context-meter",
+     "baseline-rot"
+    ],
+    "edges": [
+     "e-search-meter",
+     "e-fetch-meter",
+     "e-read-meter",
+     "e-meter-baseline"
+    ]
+   },
+   {
+    "title": "El umbral activa la edición de contexto",
+    "description": "El harness vigila los tokens de entrada y, al llegar al disparador de 94k, ejecuta clear_tool_uses_20250919 en lugar de dejar que la ventana se desborde como en la línea base sin limpieza.",
+    "input": "",
+    "nodes": [
+     "context-meter",
+     "threshold",
+     "baseline-rot"
+    ],
+    "edges": [
+     "e-meter-threshold",
+     "e-meter-baseline"
+    ]
+   },
+   {
+    "title": "El editor se ejecuta sin llamar al modelo",
+    "description": "El editor de contexto es una primitiva del harness/API, no una pasada de resumen, por lo que la expulsión cuesta cero tokens de inferencia.",
+    "input": "",
+    "nodes": [
+     "threshold",
+     "context-editor",
+     "clear-action"
+    ],
+    "edges": [
+     "e-threshold-editor",
+     "e-editor-clear"
+    ]
+   },
+   {
+    "title": "Los marcadores reemplazan el contenido, se conserva tool_use",
+    "description": "El contenido de los tool_result más antiguos se convierte en marcadores de ~40 tokens mientras los registros tool_use correspondientes permanecen en su lugar, así que el contexto baja de 94k a unos 15k y el prefijo del KV-cache se mantiene activo.",
+    "input": "",
+    "nodes": [
+     "clear-action",
+     "placeholder",
+     "reduced-window"
+    ],
+    "edges": [
+     "e-clear-placeholder",
+     "e-clear-reduced"
+    ]
+   },
+   {
+    "title": "Recuperación bajo demanda, el bucle continúa",
+    "description": "Cuando un turno posterior necesita una página limpiada, el agente simplemente vuelve a ejecutar la herramienta y la reinyecta. No se perdió nada, así que el bucle supera el turno 100 sin degradación.",
+    "input": "",
+    "nodes": [
+     "placeholder",
+     "refetch",
+     "reduced-window",
+     "continue-loop"
+    ],
+    "edges": [
+     "e-placeholder-refetch",
+     "e-reduced-continue",
+     "e-refetch-continue"
+    ]
+   },
+   {
+    "title": "La tarea se completa sin degradación del contexto",
+    "description": "Reportado en una evaluación de búsqueda web de 100 turnos: aproximadamente 84% de reducción de tokens y una mejora de rendimiento del 29-39% frente a conservar todos los resultados en bruto.",
+    "input": "",
+    "nodes": [
+     "continue-loop",
+     "output"
+    ],
+    "edges": [
+     "e-continue-output"
+    ]
+   }
+  ]
+ }
+}

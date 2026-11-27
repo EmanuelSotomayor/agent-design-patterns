@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "monitoring-control-patterns",
+ "name": "Monitoring and Control Patterns(MON)",
+ "icon": "🎛️",
+ "complexity": "high",
+ "description": "Interfaces estilo centro de control para la supervisión de agentes en tiempo real, capacidades de intervención y monitoreo del sistema",
+ "features": [
+  "Monitoreo del estado de los agentes en tiempo real con manejo de excepciones",
+  "Dashboards de centro de control para redes de agentes complejas",
+  "Mecanismos de intervención con controles de iniciar/detener/pausar",
+  "Detección de anomalías con sistemas de alertas proactivos"
+ ],
+ "tldr": {
+  "what": "Ofrece dashboards en tiempo real que muestran el estado de los agentes, las métricas de rendimiento y las anomalías, con controles para pausar, detener o intervenir en los flujos de trabajo en ejecución.",
+  "when": "Sistemas multiagente o tareas de larga duración en los que las personas necesitan visibilidad del progreso y la posibilidad de detener o redirigir las operaciones a mitad de la ejecución.",
+  "watchOut": "La fatiga de alertas por exceso de notificaciones puede hacer que los operadores pasen por alto anomalías reales o ignoren estados críticos del sistema."
+ },
+ "overview": {
+  "pattern": "Interfaces estilo centro de control para la supervisión e intervención de agentes en tiempo real",
+  "why": "Los sistemas de agentes complejos necesitan monitoreo centralizado y capacidades de intervención rápida",
+  "insight": "Diseña dashboards jerárquicos con alertas basadas en excepciones y mecanismos de control claros",
+  "impl": [
+   {
+    "t": "Diseño del dashboard",
+    "d": "Jerarquía de información de varios niveles, del resumen al detalle"
+   },
+   {
+    "t": "Monitoreo en tiempo real",
+    "d": "Estado de los agentes, métricas de rendimiento y alertas en vivo"
+   },
+   {
+    "t": "Interfaz de control",
+    "d": "Controles de iniciar/detener/pausar con feedback claro"
+   },
+   {
+    "t": "Manejo de excepciones",
+    "d": "Alertas automatizadas y puntos de intervención manual"
+   },
+   {
+    "t": "Registro de auditoría",
+    "d": "Logging completo de todas las acciones de control"
+   }
+  ],
+  "example": "agent_network → status_dashboard → anomaly_detected → alert + intervention_options",
+  "dos": [
+   "Diseña una jerarquía visual clara, de la vista general al detalle",
+   "Implementa actualizaciones en tiempo real con latencia mínima",
+   "Ofrece parada/pausa de emergencia para todas las operaciones",
+   "Usa una codificación de colores consistente para los indicadores de estado",
+   "Incluye alertas y recomendaciones sensibles al contexto"
+  ],
+  "donts": [
+   "Abrumar a los operadores con demasiados datos en tiempo real",
+   "Ocultar controles críticos detrás de varios niveles de navegación",
+   "Usar indicadores de estado confusos o ambiguos",
+   "Implementar controles sin confirmación para acciones destructivas",
+   "Ignorar los requisitos de accesibilidad en interfaces de misión crítica"
+  ],
+  "use": [
+   "Gestión de sistemas multiagente complejos",
+   "Operaciones de misión crítica o de alto riesgo",
+   "Sistemas que requieren cumplimiento regulatorio",
+   "Despliegues de agentes a escala empresarial"
+  ],
+  "avoid": [
+   "Aplicaciones simples de un solo agente",
+   "Entornos de prototipo o de desarrollo",
+   "Operaciones de bajo riesgo y no críticas",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Confiabilidad del sistema",
+    "d": "Porcentaje de disponibilidad y tiempo medio de recuperación"
+   },
+   {
+    "n": "Tiempo de respuesta a alertas",
+    "d": "Tiempo desde la detección de una anomalía hasta la respuesta humana"
+   },
+   {
+    "n": "Precisión de las intervenciones",
+    "d": "% de intervenciones adecuadas vs. innecesarias"
+   },
+   {
+    "n": "Eficiencia del operador",
+    "d": "Tareas gestionadas por operador y tasas de error"
+   },
+   {
+    "n": "Usabilidad del dashboard",
+    "d": "Tiempo para encontrar información y completar acciones"
+   },
+   {
+    "n": "Visibilidad del sistema",
+    "d": "% del estado del sistema observable a través de la interfaz"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Redes de agentes empresariales",
+    "d": "Monitorea cientos de agentes con vistas de estado jerárquicas"
+   },
+   {
+    "n": "Supervisión de sistemas críticos",
+    "d": "Monitoreo en tiempo real de operaciones de IA críticas para la seguridad"
+   },
+   {
+    "n": "Despliegues en producción",
+    "d": "Dashboard de rendimiento, errores y uso de recursos de los agentes"
+   },
+   {
+    "n": "Monitoreo del cumplimiento",
+    "d": "Registros de auditoría y logs de control para requisitos regulatorios"
+   },
+   {
+    "n": "Respuesta a emergencias",
+    "d": "Capacidades de intervención rápida ante anomalías del sistema"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Monitoring and Control Patterns",
+  "description": "Interfaces estilo centro de control para la supervisión de agentes en tiempo real, capacidades de intervención y monitoreo del sistema con latencia de actualización <100ms y orquestación a escala empresarial",
+  "nodes": [
+   {
+    "id": "agent-oversight-challenge",
+    "label": "🎯 Desafío de supervisión de agentes\n\"¿Cómo monitorear y controlar\nsistemas de agentes complejos en\ntiempo real a escala empresarial?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "mission-control-framework",
+    "label": "🚀 Framework de centro de control\n\"Diseño de centro de mando:\n• Arquitectura del dashboard\n• Monitoreo en tiempo real\n• Controles de intervención\n• Orquestación del sistema\"",
+    "x": 400,
+    "y": 200,
+    "w": 290
+   },
+   {
+    "id": "dashboard-architecture",
+    "label": "📊 Arquitectura del dashboard\n\"Jerarquía de información:\n• Monitoreo en una sola pantalla\n• Vistas de detalle de varios niveles\n• Interfaz centralizada\n• Equilibrio de densidad visual\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "layout-principles",
+    "label": "📐 Principios de layout\n\"Base del diseño:\n• Información jerárquica\n• Vista general del panorama\n• Tendencias históricas\n• Cumplimiento de objetivos\"",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "real-time-monitoring",
+    "label": "⚡ Monitoreo en tiempo real\n\"Supervisión en vivo:\n• Actualizaciones <100ms\n• Conexiones WebSocket\n• Golden signals\n• Observabilidad en varias capas\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "health-monitoring",
+    "label": "💓 Monitoreo de salud\n\"Signos vitales del sistema:\n• Latencia y tráfico\n• Tasas de error\n• Saturación de recursos\n• Métricas de calidad del modelo\"",
+    "x": 750,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "intervention-controls",
+    "label": "🛑 Controles de intervención\n\"Sistemas de emergencia:\n• Paradas inmediatas\n• Apagado selectivo\n• Mecanismos de rollback\n• Puertas de confirmación\"",
+    "x": 400,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "multi-agent-orchestration",
+    "label": "🎼 Orquestación multiagente\n\"Patrones de coordinación:\n• Pipelines secuenciales\n• Ejecución concurrente\n• Gestión de traspasos\n• Asignación de recursos\"",
+    "x": 200,
+    "y": 800,
+    "w": 260
+   },
+   {
+    "id": "alert-systems",
+    "label": "🚨 Sistemas de alertas\n\"Notificaciones inteligentes:\n• Jerarquía de severidad\n• Filtrado inteligente\n• Prevención de la fatiga\n• Enrutamiento multicanal\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "performance-metrics",
+    "label": "📈 Métricas de rendimiento\n\"Seguimiento integral:\n• Métricas operativas\n• Evaluación de calidad\n• KPIs de negocio\n• Analítica predictiva\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "enterprise-integration",
+    "label": "🏢 Integración empresarial\n\"Conectividad del sistema:\n• OpenTelemetry\n• Prometheus/Grafana\n• Integración con SIEM\n• Acceso basado en roles\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "production-deployments",
+    "label": "🌐 Despliegues en producción\n\"Escala empresarial:\n• Azure AI Foundry\n• Miles de agentes\n• Múltiples entornos\n• Operación 24/7\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "control-principle",
+    "label": "🎯 Principio del centro de control\n\"La supervisión centralizada con actualizaciones <100ms permite gestionar agentes en tiempo real\nLos controles de intervención jerárquicos garantizan la seguridad y la confiabilidad del sistema\nLa integración empresarial ofrece un monitoreo integral a escala\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "agent-oversight-challenge",
+    "t": "mission-control-framework",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e2",
+    "s": "mission-control-framework",
+    "t": "dashboard-architecture",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "mission-control-framework",
+    "t": "real-time-monitoring",
+    "label": "proporciona"
+   },
+   {
+    "id": "e4",
+    "s": "mission-control-framework",
+    "t": "intervention-controls",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "dashboard-architecture",
+    "t": "layout-principles",
+    "label": "basado en"
+   },
+   {
+    "id": "e6",
+    "s": "real-time-monitoring",
+    "t": "health-monitoring",
+    "label": "incluye"
+   },
+   {
+    "id": "e7",
+    "s": "intervention-controls",
+    "t": "multi-agent-orchestration",
+    "label": "coordina"
+   },
+   {
+    "id": "e8",
+    "s": "intervention-controls",
+    "t": "alert-systems",
+    "label": "dispara"
+   },
+   {
+    "id": "e9",
+    "s": "layout-principles",
+    "t": "multi-agent-orchestration",
+    "label": "guía"
+   },
+   {
+    "id": "e10",
+    "s": "health-monitoring",
+    "t": "alert-systems",
+    "label": "alimenta"
+   },
+   {
+    "id": "e11",
+    "s": "multi-agent-orchestration",
+    "t": "performance-metrics",
+    "label": "medido por"
+   },
+   {
+    "id": "e12",
+    "s": "alert-systems",
+    "t": "enterprise-integration",
+    "label": "enrutado vía"
+   },
+   {
+    "id": "e13",
+    "s": "performance-metrics",
+    "t": "production-deployments",
+    "label": "desplegado en"
+   },
+   {
+    "id": "e14",
+    "s": "enterprise-integration",
+    "t": "production-deployments",
+    "label": "habilita"
+   },
+   {
+    "id": "e15",
+    "s": "production-deployments",
+    "t": "control-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de supervisión de agentes",
+    "description": "¿Cómo se pueden monitorear y controlar sistemas de agentes complejos en tiempo real a escala empresarial, garantizando la seguridad, la confiabilidad y la eficiencia operativa?",
+    "input": "",
+    "nodes": [
+     "agent-oversight-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de centro de control",
+    "description": "El diseño de centro de mando aborda el desafío mediante la arquitectura del dashboard, capacidades de monitoreo en tiempo real, controles de intervención y mecanismos integrales de orquestación del sistema.",
+    "input": "",
+    "nodes": [
+     "mission-control-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Arquitectura del dashboard y monitoreo en tiempo real",
+    "description": "La jerarquía de información permite monitorear en una sola pantalla con vistas de detalle de varios niveles. El monitoreo en tiempo real ofrece actualizaciones <100ms mediante conexiones WebSocket con seguimiento de los Golden Signals.",
+    "input": "",
+    "nodes": [
+     "dashboard-architecture",
+     "layout-principles",
+     "real-time-monitoring",
+     "health-monitoring"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Controles de intervención y orquestación",
+    "description": "Los sistemas de emergencia ofrecen paradas inmediatas y mecanismos de rollback con puertas de confirmación. La orquestación multiagente coordina pipelines secuenciales y patrones de ejecución concurrente.",
+    "input": "",
+    "nodes": [
+     "intervention-controls",
+     "multi-agent-orchestration",
+     "alert-systems"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Métricas de rendimiento e integración empresarial",
+    "description": "El seguimiento integral incluye métricas operativas, evaluación de calidad y KPIs de negocio. La integración empresarial soporta OpenTelemetry, sistemas SIEM y control de acceso basado en roles.",
+    "input": "",
+    "nodes": [
+     "performance-metrics",
+     "enterprise-integration"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Validación a escala de producción",
+    "description": "Azure AI Foundry y plataformas similares gestionan miles de agentes en despliegues de múltiples entornos. La supervisión centralizada con controles jerárquicos garantiza operaciones confiables 24/7 a escala.",
+    "input": "",
+    "nodes": [
+     "production-deployments",
+     "control-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

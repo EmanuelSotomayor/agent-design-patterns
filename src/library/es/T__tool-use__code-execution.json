@@ -1,0 +1,629 @@
+{
+ "cat": "tool-use",
+ "slug": "code-execution",
+ "name": "Code Execution",
+ "icon": "💻",
+ "complexity": "high",
+ "description": "Ejecuta de forma segura código generado por el LLM en entornos aislados para cálculos y procesamiento de datos",
+ "features": [
+  "Generación dinámica de código",
+  "Entornos de ejecución seguros",
+  "Soporte para múltiples lenguajes",
+  "Validación de resultados",
+  "Manejo de errores y depuración",
+  "Gestión de recursos"
+ ],
+ "tldr": {
+  "what": "Genera código a partir de prompts, lo ejecuta en sandboxes aislados y captura la salida y los errores para que el agente los procese.",
+  "when": "Tareas que requieren cálculos, transformación de datos, procesamiento de archivos o verificación donde el razonamiento del LLM por sí solo no basta.",
+  "watchOut": "Los sandboxes pueden filtrar recursos o fallar en silencio; valida siempre la lógica del código generado antes de ejecutarlo y fija timeouts estrictos."
+ },
+ "overview": {
+  "pattern": "Ejecuta de forma segura código generado por el LLM en entornos microVM aislados",
+  "why": "Los LLM pueden generar código para cálculos, análisis de datos y algoritmos, pero requieren una ejecución segura porque la salida puede ser maliciosa o tener errores",
+  "insight": "Trata el código del LLM como no confiable: usa microVMs Firecracker para aislamiento por hardware con arranque en <125ms",
+  "impl": [
+   {
+    "t": "Generar código",
+    "d": "Crear scripts mínimos y específicos"
+   },
+   {
+    "t": "Escaneo de seguridad",
+    "d": "Análisis estático y validación de imports"
+   },
+   {
+    "t": "Lanzar microVM",
+    "d": "Iniciar microVM Firecracker (<125ms)"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Correr en un kernel aislado con límites"
+   },
+   {
+    "t": "Procesar resultados",
+    "d": "Capturar salidas y destruir la microVM"
+   }
+  ],
+  "example": "Usuario: \"Calcula fibonacci(20)\" → Generar Python → Validar imports → Lanzar Firecracker → Devolver: 6765",
+  "dos": [
+   "Usa microVMs Firecracker para un aislamiento impuesto por hardware",
+   "Implementa seguridad a nivel de VM con kernels dedicados por ejecución",
+   "Aprovecha el hipervisor KVM con <5 MiB de sobrecarga de memoria por microVM",
+   "Usa el proceso jailer para un aislamiento adicional con cgroups/namespaces",
+   "Destruye las microVMs después de cada ejecución para un aislamiento perfecto",
+   "Mantén un pool de microVMs precalentadas para arrancar en <125ms"
+  ],
+  "donts": [
+   "Depender solo de contenedores para código no confiable (riesgo de kernel compartido)",
+   "Usar VMs tradicionales (minutos de arranque vs. 125ms de una microVM)",
+   "Omitir la virtualización por hardware en límites de seguridad críticos",
+   "Reutilizar microVMs entre distintos contextos de ejecución",
+   "Habilitar dispositivos innecesarios (mantén una interfaz virtio mínima)"
+  ],
+  "use": [
+   "Código no confiable/generado por IA que requiere el máximo aislamiento de seguridad",
+   "Entornos multi-tenant donde el aislamiento a nivel de kernel es crítico",
+   "Cargas serverless en producción que necesitan arranques en frío de <125ms",
+   "Cómputo de alta densidad que requiere miles de contextos de ejecución aislados"
+  ],
+  "avoid": [
+   "Cálculos simples que se pueden resolver solo con el razonamiento del LLM",
+   "Entornos donde el aislamiento por contenedores es suficiente (código confiable)",
+   "Dispositivos edge con recursos limitados sin soporte de virtualización KVM",
+   "Aplicaciones legacy que requieren emulación completa de hardware o soporte de BIOS"
+  ],
+  "metrics": [
+   {
+    "n": "Tiempo de arranque de la microVM",
+    "d": "<125ms hasta el espacio de usuario (vs. minutos en VMs)"
+   },
+   {
+    "n": "Tasa de aislamiento de seguridad",
+    "d": "Barreras de VM por hardware + aislamiento de procesos (objetivo: 100%)"
+   },
+   {
+    "n": "Densidad de recursos",
+    "d": "Miles de microVMs por host con <5 MiB de sobrecarga"
+   },
+   {
+    "n": "Sobrecarga de rendimiento",
+    "d": ">95% del rendimiento bare-metal en la microVM"
+   },
+   {
+    "n": "Tasa de creación",
+    "d": "Hasta 150 microVMs/segundo por host"
+   },
+   {
+    "n": "Elasticidad de memoria",
+    "d": "Mejora de 2-3 órdenes de magnitud con Faascale"
+   },
+   {
+    "n": "Tasa de incidentes de seguridad",
+    "d": "Escapes de VM + compromisos del kernel (objetivo: 0%)"
+   },
+   {
+    "n": "Eficiencia de costos",
+    "d": "Reducción del 35-40% frente a la infraestructura de VMs tradicional"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Funciones serverless",
+    "d": "Ejecución al estilo AWS Lambda con microVMs Firecracker"
+   },
+   {
+    "n": "Ejecución de código no confiable",
+    "d": "Código de agentes de IA en kernels aislados (CI/CD, notebooks)"
+   },
+   {
+    "n": "Plataformas multi-tenant",
+    "d": "microVMs separadas por cliente con aislamiento por hardware"
+   },
+   {
+    "n": "Mejora de seguridad de contenedores",
+    "d": "Reemplazar Docker por microVMs en cargas críticas"
+   },
+   {
+    "n": "Edge computing",
+    "d": "VMs livianas para despliegue en el edge con sobrecarga mínima"
+   },
+   {
+    "n": "Entornos de desarrollo",
+    "d": "Entornos de desarrollo instantáneos con aislamiento a nivel de VM"
+   },
+   {
+    "n": "Procesamiento batch",
+    "d": "Cómputo de alta densidad con miles de microVMs por host"
+   },
+   {
+    "n": "Investigación de seguridad",
+    "d": "Análisis de malware en entornos desechables aislados por hardware"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Code Execution",
+  "description": "Muestra la generación, validación y ejecución segura de código en entornos sandbox con soporte para múltiples lenguajes",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "Solicitud del usuario\n\"Calcula la varianza del portafolio para estas acciones\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "code-generator",
+    "label": "Generador de código\nAnaliza la solicitud y genera código",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "language-detector",
+    "label": "Detector de lenguaje\nDetermina el lenguaje óptimo",
+    "x": 300,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "code-validator",
+    "label": "Validador de código\nVerificaciones de sintaxis y seguridad",
+    "x": 700,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "python-env",
+    "label": "Entorno Python\nPython 3.11 + NumPy/Pandas",
+    "x": 150,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "javascript-env",
+    "label": "Entorno JavaScript\nNode.js 18 + librerías",
+    "x": 350,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "r-env",
+    "label": "Entorno R\nR 4.3 + tidyverse",
+    "x": 550,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "sql-env",
+    "label": "Entorno SQL\nSQLite + extensiones",
+    "x": 750,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "rust-env",
+    "label": "Entorno Rust\nRust 1.75 + Cargo",
+    "x": 950,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "sandbox-manager",
+    "label": "Gestor de sandbox\nEntorno de ejecución aislado",
+    "x": 500,
+    "y": 620,
+    "w": 200
+   },
+   {
+    "id": "security-scanner",
+    "label": "Escáner de seguridad\n• Detección de inyección de código\n• Análisis de patrones maliciosos\n• Validación de imports\n• Filtrado de llamadas al sistema",
+    "x": 200,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "resource-limiter",
+    "label": "Limitador de recursos\n• CPU: 2 núcleos máx.\n• Memoria: límite de 1GB\n• Disco: 100MB temporales\n• Red: restringida",
+    "x": 800,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "code-executor",
+    "label": "Ejecutor de código\nEjecuta en un entorno sandbox",
+    "x": 500,
+    "y": 760,
+    "w": 200
+   },
+   {
+    "id": "execution-monitor",
+    "label": "Monitor de ejecución\n• Uso de recursos en tiempo real\n• Métricas de rendimiento\n• Detección de errores\n• Gestión de timeouts",
+    "x": 250,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "output-capture",
+    "label": "Captura de salida\n• Flujos STDOUT/STDERR\n• Valores de retorno\n• Manejo de excepciones\n• Serialización de resultados",
+    "x": 750,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "result-processor",
+    "label": "Procesador de resultados\nProcesa y formatea la salida",
+    "x": 500,
+    "y": 900,
+    "w": 200
+   },
+   {
+    "id": "output-formatter",
+    "label": "Formateador de salida\nFormatea para presentar al usuario",
+    "x": 300,
+    "y": 1040,
+    "w": 180
+   },
+   {
+    "id": "error-handler",
+    "label": "Manejador de errores\nManeja los errores de ejecución",
+    "x": 700,
+    "y": 1040,
+    "w": 180
+   },
+   {
+    "id": "cleanup-manager",
+    "label": "Gestor de limpieza\nElimina archivos temporales",
+    "x": 100,
+    "y": 900,
+    "w": 160
+   },
+   {
+    "id": "audit-logger",
+    "label": "Logger de auditoría\nRegistra los intentos de ejecución",
+    "x": 900,
+    "y": 900,
+    "w": 160
+   },
+   {
+    "id": "result-cache",
+    "label": "Cache de resultados\nCachea los resultados de ejecución",
+    "x": 100,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "final-response",
+    "label": "Respuesta final\n\"Varianza del portafolio: 0.0234 (2.34%)\"",
+    "x": 500,
+    "y": 1180,
+    "w": 200
+   },
+   {
+    "id": "performance-metrics",
+    "label": "Métricas de rendimiento\n• Tiempo de ejecución: 1.2s\n• Memoria usada: 45MB\n• Uso de CPU: 23%\n• Acierto de cache: No",
+    "x": 150,
+    "y": 1180,
+    "w": 160
+   },
+   {
+    "id": "security-report",
+    "label": "Informe de seguridad\n• Amenazas detectadas: 0\n• Imports seguros: ✓\n• Sin llamadas al sistema: ✓\n• Sandbox intacto: ✓",
+    "x": 850,
+    "y": 1180,
+    "w": 160
+   },
+   {
+    "id": "generated-code",
+    "label": "Código generado\nimport numpy as np\nstocks = [0.12, 0.08, 0.15]\nvariance = np.var(stocks)\nprint(f\"Variance: {variance:.4f}\")",
+    "x": 500,
+    "y": 1320,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-user-generator",
+    "s": "user-request",
+    "t": "code-generator",
+    "label": ""
+   },
+   {
+    "id": "e-generator-detector",
+    "s": "code-generator",
+    "t": "language-detector",
+    "label": ""
+   },
+   {
+    "id": "e-generator-validator",
+    "s": "code-generator",
+    "t": "code-validator",
+    "label": ""
+   },
+   {
+    "id": "e-generator-security",
+    "s": "code-generator",
+    "t": "security-scanner",
+    "label": ""
+   },
+   {
+    "id": "e-validator-limiter",
+    "s": "code-validator",
+    "t": "resource-limiter",
+    "label": ""
+   },
+   {
+    "id": "e-detector-python",
+    "s": "language-detector",
+    "t": "python-env",
+    "label": "Seleccionar"
+   },
+   {
+    "id": "e-detector-javascript",
+    "s": "language-detector",
+    "t": "javascript-env",
+    "label": "Disponible"
+   },
+   {
+    "id": "e-detector-r",
+    "s": "language-detector",
+    "t": "r-env",
+    "label": "Disponible"
+   },
+   {
+    "id": "e-detector-sql",
+    "s": "language-detector",
+    "t": "sql-env",
+    "label": "Disponible"
+   },
+   {
+    "id": "e-detector-rust",
+    "s": "language-detector",
+    "t": "rust-env",
+    "label": "Disponible"
+   },
+   {
+    "id": "e-python-sandbox",
+    "s": "python-env",
+    "t": "sandbox-manager",
+    "label": ""
+   },
+   {
+    "id": "e-validator-sandbox",
+    "s": "code-validator",
+    "t": "sandbox-manager",
+    "label": ""
+   },
+   {
+    "id": "e-cache-sandbox",
+    "s": "result-cache",
+    "t": "sandbox-manager",
+    "label": ""
+   },
+   {
+    "id": "e-sandbox-executor",
+    "s": "sandbox-manager",
+    "t": "code-executor",
+    "label": ""
+   },
+   {
+    "id": "e-monitor-executor",
+    "s": "execution-monitor",
+    "t": "code-executor",
+    "label": ""
+   },
+   {
+    "id": "e-executor-capture",
+    "s": "code-executor",
+    "t": "output-capture",
+    "label": ""
+   },
+   {
+    "id": "e-executor-processor",
+    "s": "code-executor",
+    "t": "result-processor",
+    "label": ""
+   },
+   {
+    "id": "e-capture-processor",
+    "s": "output-capture",
+    "t": "result-processor",
+    "label": ""
+   },
+   {
+    "id": "e-processor-formatter",
+    "s": "result-processor",
+    "t": "output-formatter",
+    "label": ""
+   },
+   {
+    "id": "e-processor-error",
+    "s": "result-processor",
+    "t": "error-handler",
+    "label": ""
+   },
+   {
+    "id": "e-executor-cleanup",
+    "s": "code-executor",
+    "t": "cleanup-manager",
+    "label": ""
+   },
+   {
+    "id": "e-executor-audit",
+    "s": "code-executor",
+    "t": "audit-logger",
+    "label": ""
+   },
+   {
+    "id": "e-formatter-final",
+    "s": "output-formatter",
+    "t": "final-response",
+    "label": ""
+   },
+   {
+    "id": "e-error-final",
+    "s": "error-handler",
+    "t": "final-response",
+    "label": ""
+   },
+   {
+    "id": "e-monitor-metrics",
+    "s": "execution-monitor",
+    "t": "performance-metrics",
+    "label": ""
+   },
+   {
+    "id": "e-security-report",
+    "s": "security-scanner",
+    "t": "security-report",
+    "label": ""
+   },
+   {
+    "id": "e-final-code",
+    "s": "final-response",
+    "t": "generated-code",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis de la solicitud del usuario",
+    "description": "Analiza la solicitud del usuario para entender los requisitos de cómputo y generar el código adecuado.",
+    "input": "Solicitud del usuario: \"Calcula la varianza del portafolio para estas acciones: AAPL (12%), GOOGL (8%), MSFT (15%)\"",
+    "nodes": [
+     "user-request"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Generación y análisis de código",
+    "description": "Genera código según los requisitos del usuario y lo prepara para la validación.",
+    "input": "Generación de código: analizar requisitos y crear una solución ejecutable",
+    "nodes": [
+     "user-request",
+     "code-generator"
+    ],
+    "edges": [
+     "e-user-generator"
+    ]
+   },
+   {
+    "title": "Detección de lenguaje y escaneo de seguridad",
+    "description": "Determina el lenguaje de programación óptimo y realiza un análisis de seguridad.",
+    "input": "Detección de lenguaje: analizar los requisitos de la tarea y realizar el control de seguridad",
+    "nodes": [
+     "code-generator",
+     "language-detector",
+     "security-scanner"
+    ],
+    "edges": [
+     "e-generator-detector",
+     "e-generator-security"
+    ]
+   },
+   {
+    "title": "Validación de código y preparación del entorno",
+    "description": "Valida la sintaxis del código generado y prepara el entorno de ejecución.",
+    "input": "Validación de código: verificación de sintaxis y preparación del entorno",
+    "nodes": [
+     "code-validator",
+     "resource-limiter",
+     "python-env"
+    ],
+    "edges": [
+     "e-generator-validator",
+     "e-validator-limiter",
+     "e-detector-python"
+    ]
+   },
+   {
+    "title": "Limitación de recursos y preparación del sandbox",
+    "description": "Configura los límites de recursos y prepara el entorno de ejecución aislado.",
+    "input": "Configuración de recursos: fijar límites y preparar el entorno sandbox",
+    "nodes": [
+     "resource-limiter",
+     "sandbox-manager",
+     "result-cache"
+    ],
+    "edges": [
+     "e-validator-limiter",
+     "e-validator-sandbox",
+     "e-cache-sandbox"
+    ]
+   },
+   {
+    "title": "Inicio de la ejecución del código",
+    "description": "Comienza la ejecución del código dentro del entorno sandbox protegido.",
+    "input": "Ejecución de código: correr el código Python generado en el sandbox",
+    "nodes": [
+     "sandbox-manager",
+     "code-executor",
+     "execution-monitor"
+    ],
+    "edges": [
+     "e-sandbox-executor",
+     "e-monitor-executor"
+    ]
+   },
+   {
+    "title": "Captura de salida y procesamiento de resultados",
+    "description": "Captura la salida de la ejecución y procesa los resultados para presentarlos al usuario.",
+    "input": "Procesamiento de salida: capturar resultados y manejar posibles errores",
+    "nodes": [
+     "code-executor",
+     "output-capture",
+     "result-processor"
+    ],
+    "edges": [
+     "e-executor-capture",
+     "e-executor-processor",
+     "e-capture-processor"
+    ]
+   },
+   {
+    "title": "Formateo de salida y manejo de errores",
+    "description": "Formatea los resultados para presentarlos al usuario y maneja posibles errores.",
+    "input": "Formateo de resultados: preparar la salida final y verificar errores",
+    "nodes": [
+     "result-processor",
+     "output-formatter",
+     "error-handler"
+    ],
+    "edges": [
+     "e-processor-formatter",
+     "e-processor-error"
+    ]
+   },
+   {
+    "title": "Limpieza del sistema y logging de auditoría",
+    "description": "Limpia los recursos temporales y registra los detalles de ejecución para auditoría.",
+    "input": "Limpieza y auditoría: eliminar archivos temporales y registrar la actividad de ejecución",
+    "nodes": [
+     "cleanup-manager",
+     "audit-logger",
+     "performance-metrics"
+    ],
+    "edges": [
+     "e-executor-cleanup",
+     "e-executor-audit",
+     "e-monitor-metrics"
+    ]
+   },
+   {
+    "title": "Respuesta final e informe de seguridad",
+    "description": "Entrega los resultados finales al usuario con un informe completo de seguridad y rendimiento.",
+    "input": "Entrega final: proporcionar resultados y generar informes completos",
+    "nodes": [
+     "final-response",
+     "security-report",
+     "generated-code"
+    ],
+    "edges": [
+     "e-formatter-final",
+     "e-security-report",
+     "e-final-code"
+    ]
+   }
+  ]
+ }
+}

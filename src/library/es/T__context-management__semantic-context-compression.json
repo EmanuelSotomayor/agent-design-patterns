@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "semantic-context-compression",
+ "name": "Semantic Context Compression(SCC)",
+ "icon": "🧬",
+ "complexity": "high",
+ "description": "Compresión semántica impulsada por IA que usa aprendizaje de retículos de información y compresión con pérdida preservando el significado",
+ "features": [
+  "Aprendizaje de retículos de información para la abstracción semántica",
+  "Compresión con pérdida con preservación semántica",
+  "Capacidades de compresión semántica intermodal",
+  "Optimización del contexto orientada a la tarea"
+ ],
+ "tldr": {
+  "what": "Reduce el tamaño del contexto agrupando información semánticamente similar y abstrayendo conceptos, mientras preserva el significado relevante para la tarea.",
+  "when": "Documentos largos o entradas multimodales donde los límites de tokens obligan a elegir y las relaciones semánticas importan más que la redacción exacta.",
+  "watchOut": "La compresión con pérdida corre el riesgo de descartar silenciosamente detalles críticos para tu tarea específica, generando salidas seguras pero incorrectas."
+ },
+ "overview": {
+  "pattern": "Compresión semántica impulsada por IA que usa aprendizaje de retículos de información y compresión con pérdida preservando el significado",
+  "why": "Logra la máxima compresión manteniendo la integridad semántica mediante una comprensión avanzada, impulsada por IA, de las relaciones del contenido",
+  "insight": "El aprendizaje de retículos de información permite una compresión inteligente que preserva las relaciones semánticas y la consistencia intermodal",
+  "impl": [
+   {
+    "t": "Aprendizaje de retículos",
+    "d": "Construir un retículo de información a partir de relaciones semánticas"
+   },
+   {
+    "t": "Abstracción de conceptos",
+    "d": "Extraer representaciones jerárquicas de conceptos"
+   },
+   {
+    "t": "Compresión con pérdida",
+    "d": "Aplicar algoritmos de compresión con conciencia semántica"
+   },
+   {
+    "t": "Fusión intermodal",
+    "d": "Integrar representaciones semánticas multimodales"
+   },
+   {
+    "t": "Validación de fidelidad",
+    "d": "Verificar la preservación semántica y la calidad"
+   }
+  ],
+  "example": "build_lattice → abstract_concepts → compress_semantically → fuse_modalities → validate_fidelity",
+  "dos": [
+   "Construye grafos de relaciones semánticas antes de comprimir",
+   "Usa abstracción jerárquica de conceptos para una mejor compresión",
+   "Preserva las relaciones causales y lógicas durante la compresión",
+   "Implementa alineación semántica intermodal",
+   "Valida la fidelidad semántica con múltiples métricas"
+  ],
+  "donts": [
+   "Comprimir sin entender las dependencias semánticas",
+   "Aplicar compresión uniforme a distintos tipos de conceptos",
+   "Ignorar la consistencia semántica intermodal",
+   "Omitir la validación de la integridad semántica comprimida",
+   "Usar tasas de compresión que destruyen el significado esencial"
+  ],
+  "use": [
+   "Compresión avanzada con altos requisitos de fidelidad",
+   "Necesidades de preservación semántica multimodal",
+   "Aplicaciones de investigación que requieren integridad semántica",
+   "Compresión de bases de conocimiento a gran escala"
+  ],
+  "avoid": [
+   "Requisitos simples de compresión de texto",
+   "Procesamiento en tiempo real con restricciones estrictas de latencia",
+   "Recursos computacionales limitados",
+   "Aplicaciones donde cualquier pérdida de información es inaceptable"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de compresión",
+    "d": "Factor de mejora de la densidad semántica"
+   },
+   {
+    "n": "Fidelidad semántica",
+    "d": "% de puntuación de preservación del significado"
+   },
+   {
+    "n": "Consistencia intermodal",
+    "d": "% de alineación entre modalidades"
+   },
+   {
+    "n": "Preservación de conceptos",
+    "d": "% de conceptos abstractos retenidos"
+   },
+   {
+    "n": "Integridad de relaciones",
+    "d": "% de relaciones semánticas mantenidas"
+   },
+   {
+    "n": "Calidad de reconstrucción",
+    "d": "Similitud semántica con el original"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Compresión de conocimiento de investigación",
+    "d": "analyze_papers → build_concept_lattice → abstract_hierarchically → compress_semantically → validate_integrity"
+   },
+   {
+    "n": "Compresión de contenido multimodal",
+    "d": "text_image_fusion → semantic_alignment → cross_modal_compression → unified_representation → quality_assessment"
+   },
+   {
+    "n": "Bases de conocimiento a gran escala",
+    "d": "entity_relationships → concept_abstraction → hierarchical_compression → semantic_validation → efficiency_optimization"
+   },
+   {
+    "n": "Procesamiento de literatura científica",
+    "d": "extract_concepts → relationship_mapping → semantic_clustering → intelligent_compression → knowledge_distillation"
+   },
+   {
+    "n": "Gestión del conocimiento empresarial",
+    "d": "domain_knowledge → semantic_modeling → abstract_compression → cross_reference_preservation → access_optimization"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Semantic Context Compression",
+  "description": "Compresión que preserva el significado usando chunking semántico, agrupamiento por similitud y segmentación del discurso, logrando una compresión de 6-8x mientras mantiene la fidelidad semántica",
+  "nodes": [
+   {
+    "id": "semantic-compression-challenge",
+    "label": "🧩 Desafío de la compresión semántica\n\"¿Cómo comprimir el contexto 6-8x\npreservando el significado semántico\ny la coherencia del discurso?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "semantic-compression-framework",
+    "label": "🎯 Framework de compresión semántica\n\"Reducción basada en el significado:\n• Chunking semántico\n• Agrupamiento por similitud\n• Segmentación por temas\n• Densidad de información\"",
+    "x": 400,
+    "y": 200,
+    "w": 290
+   },
+   {
+    "id": "semantic-chunking",
+    "label": "🗺️ Chunking semántico\n\"Unidades de significado:\n• Embeddings de oraciones\n• Similitud coseno\n• Detección de puntos de corte\n• Segmentos coherentes\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "late-chunking",
+    "label": "🕰️ Late Chunking\n\"División consciente del contexto:\n• Ventanas de 8192 tokens\n• Chunks del tamaño de un párrafo\n• Modelos de contexto largo\n• Tamaño óptimo\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "similarity-clustering",
+    "label": "🌐 Agrupamiento por similitud\n\"Detección de temas:\n• Agrupamiento basado en grafos\n• Agrupamiento espectral\n• Métodos aglomerativos\n• Selección de centroides\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "chunkkv-approach",
+    "label": "📦 Método ChunkKV\n\"Preservación semántica:\n• Agrupar tokens como unidades\n• Preservar/descartar completos\n• Menor pérdida L1\n• Mejores patrones de atención\"",
+    "x": 750,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "discourse-segmentation",
+    "label": "📜 Segmentación del discurso\n\"Estructura jerárquica:\n• Límites de temas\n• Detección de cliques\n• Temas secuenciales\n• Temáticas coherentes\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "information-density",
+    "label": "📏 Densidad de información\n\"Métricas de compresión:\n• Tasa de compresión 6:1\n• Densidad semántica 6x\n• Métrica SrCr\n• Puntuaciones ERE/SRE\"",
+    "x": 200,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "meaning-preservation",
+    "label": "🔒 Preservación del significado\n\"Fidelidad semántica:\n• Información clave retenida\n• Preservación de la intención\n• Relaciones de contexto\n• Capacidad de razonamiento\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "recursive-chunking",
+    "label": "🔁 Chunking recursivo\n\"División óptima:\n• 30-50% mejor precisión\n• 10-20% de solapamiento\n• Contexto crítico para decisiones\n• Límites adaptativos\"",
+    "x": 200,
+    "y": 950,
+    "w": 250
+   },
+   {
+    "id": "embedding-optimization",
+    "label": "🎯 Optimización de embeddings\n\"Calidad de vectores:\n• Modelos MiniLM/SBERT\n• Embeddings normalizados\n• Ventanas de contexto\n• CLIP para multimodal\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "performance-results",
+    "label": "📊 Resultados de rendimiento\n\"Logros de compresión:\n• Reducción de texto 6-8x\n• Retención del significado, puntuada por corpus\n• 2x precisión de recuperación\n• Menor costo de inferencia\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "semantic-principle",
+    "label": "🎯 Principio de la compresión semántica\n\"La compresión consciente del significado supera al truncamiento ingenuo\nLos límites semánticos preservan la coherencia del discurso\nLa optimización de la densidad de información permite una compresión extrema\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "semantic-compression-challenge",
+    "t": "semantic-compression-framework",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e2",
+    "s": "semantic-compression-framework",
+    "t": "semantic-chunking",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "semantic-compression-framework",
+    "t": "similarity-clustering",
+    "label": "aplica"
+   },
+   {
+    "id": "e4",
+    "s": "semantic-compression-framework",
+    "t": "discourse-segmentation",
+    "label": "utiliza"
+   },
+   {
+    "id": "e5",
+    "s": "semantic-chunking",
+    "t": "late-chunking",
+    "label": "avanza a"
+   },
+   {
+    "id": "e6",
+    "s": "similarity-clustering",
+    "t": "chunkkv-approach",
+    "label": "habilita"
+   },
+   {
+    "id": "e7",
+    "s": "discourse-segmentation",
+    "t": "information-density",
+    "label": "optimiza"
+   },
+   {
+    "id": "e8",
+    "s": "discourse-segmentation",
+    "t": "meaning-preservation",
+    "label": "mantiene"
+   },
+   {
+    "id": "e9",
+    "s": "late-chunking",
+    "t": "recursive-chunking",
+    "label": "se combina con"
+   },
+   {
+    "id": "e10",
+    "s": "chunkkv-approach",
+    "t": "embedding-optimization",
+    "label": "mejorado por"
+   },
+   {
+    "id": "e11",
+    "s": "information-density",
+    "t": "recursive-chunking",
+    "label": "guía"
+   },
+   {
+    "id": "e12",
+    "s": "meaning-preservation",
+    "t": "embedding-optimization",
+    "label": "requiere"
+   },
+   {
+    "id": "e13",
+    "s": "recursive-chunking",
+    "t": "performance-results",
+    "label": "logra"
+   },
+   {
+    "id": "e14",
+    "s": "embedding-optimization",
+    "t": "performance-results",
+    "label": "contribuye a"
+   },
+   {
+    "id": "e15",
+    "s": "performance-results",
+    "t": "semantic-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la compresión semántica",
+    "description": "¿Cómo podemos comprimir el contexto 6-8x preservando el significado semántico, la coherencia del discurso y la información necesaria para tareas de razonamiento complejas?",
+    "input": "",
+    "nodes": [
+     "semantic-compression-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de compresión semántica",
+    "description": "Un framework de reducción basado en el significado aborda el desafío mediante chunking semántico para obtener unidades coherentes, agrupamiento por similitud para detectar temas y segmentación del discurso que mantiene la densidad de información.",
+    "input": "",
+    "nodes": [
+     "semantic-compression-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Chunking semántico y agrupamiento",
+    "description": "El chunking semántico usa embeddings de oraciones y similitud coseno para detectar puntos de corte, mientras que el agrupamiento por similitud aplica métodos basados en grafos y espectrales para detectar temas y seleccionar centroides.",
+    "input": "",
+    "nodes": [
+     "semantic-chunking",
+     "late-chunking",
+     "similarity-clustering",
+     "chunkkv-approach"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Segmentación y preservación del discurso",
+    "description": "La segmentación jerárquica del discurso identifica límites de temas mediante detección de cliques manteniendo temáticas coherentes, y optimiza la densidad de información hasta una densidad semántica de 6x mientras preserva la información clave y la intención.",
+    "input": "",
+    "nodes": [
+     "discourse-segmentation",
+     "information-density",
+     "meaning-preservation"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Técnicas de optimización avanzadas",
+    "description": "El chunking recursivo con 10-20% de solapamiento mejora la precisión, mientras que la optimización de embeddings con modelos MiniLM/SBERT y vectores normalizados asegura representaciones de calidad.",
+    "input": "",
+    "nodes": [
+     "recursive-chunking",
+     "embedding-optimization"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Resultados de rendimiento y validación",
+    "description": "Alcanza una reducción de texto de 6-8x conservando el significado, con mejor precisión de recuperación, lo que demuestra que la compresión consciente del significado con límites semánticos supera al truncamiento ingenuo y permite una compresión extrema.",
+    "input": "",
+    "nodes": [
+     "performance-results",
+     "semantic-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

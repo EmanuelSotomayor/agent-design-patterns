@@ -1,0 +1,697 @@
+{
+ "cat": "memory-management",
+ "slug": "contextual-structured-memory",
+ "name": "Contextual Structured Memory(CSM)",
+ "icon": "🏗️",
+ "complexity": "high",
+ "description": "Memoria organizada en formatos predefinidos e interpretables que admiten razonamiento simbólico y consultas precisas para sistemas de IA agéntica multiagente",
+ "features": [
+  "Esquemas de memoria predefinidos",
+  "Soporte para razonamiento simbólico",
+  "Capacidades de consulta precisa",
+  "Grafos de conocimiento estructurados"
+ ],
+ "tldr": {
+  "what": "Organiza la memoria del agente en esquemas predefinidos con razonamiento simbólico y consultas precisas, lo que permite grafos de conocimiento estructurados en lugar de texto no estructurado.",
+  "when": "Sistemas multiagente que necesitan recuperación exacta de hechos, filtrado entre muchas entidades o razonamiento sobre las relaciones entre datos estructurados.",
+  "watchOut": "El diseño de esquemas se convierte en un cuello de botella; las estructuras rígidas se rompen cuando los datos del mundo real no encajan en las categorías predefinidas o cuando cambian los requisitos."
+ },
+ "overview": {
+  "pattern": "Memoria organizada en formatos predefinidos e interpretables que admiten razonamiento simbólico y consultas precisas",
+  "why": "Consultas precisas, razonamiento con lógica formal, integridad de los datos y acceso consistente al conocimiento estructurado",
+  "insight": "Esquemas + grafos de conocimiento + consultas estructuradas + lógica simbólica → razonamiento preciso y consistencia",
+  "impl": [
+   {
+    "t": "Definir esquemas",
+    "d": "Crea estructuras y formatos de memoria predefinidos"
+   },
+   {
+    "t": "Construir el grafo",
+    "d": "Implementa un grafo de conocimiento con relaciones tipadas"
+   },
+   {
+    "t": "Habilitar consultas",
+    "d": "Admite consultas estructuradas precisas al estilo SQL"
+   },
+   {
+    "t": "Agregar razonamiento",
+    "d": "Implementa lógica simbólica y reglas de inferencia"
+   },
+   {
+    "t": "Compartir la estructura",
+    "d": "Habilita el acceso al conocimiento estructurado entre agentes"
+   }
+  ],
+  "example": "schema_design → knowledge_graph → structured_queries → symbolic_reasoning → cross_agent_sharing",
+  "dos": [
+   "Usa esquemas estandarizados (JSON Schema, RDF, OWL) para lograr consistencia",
+   "Implementa capacidades de consulta precisa con filtros estructurados",
+   "Habilita el razonamiento simbólico con reglas de lógica formal",
+   "Mantén la integridad referencial en los grafos de conocimiento",
+   "Versiona los esquemas y mantén la compatibilidad hacia atrás"
+  ],
+  "donts": [
+   "Estructurar en exceso datos flexibles que se benefician de esquemas laxos",
+   "Crear esquemas excesivamente complejos y difíciles de entender",
+   "Ignorar las estrategias de evolución y migración de esquemas",
+   "Usar memoria estructurada para contenido no estructurado y muy dinámico",
+   "Olvidar validar la integridad de los datos al actualizar las estructuras"
+  ],
+  "use": [
+   "Se necesita modelar relaciones complejas del dominio",
+   "Se requieren consultas y razonamiento precisos",
+   "Se necesitan lógica formal y razonamiento simbólico",
+   "La integridad y la consistencia de los datos son críticas",
+   "Compartir conocimiento entre agentes es importante"
+  ],
+  "avoid": [
+   "Necesidades simples de almacenamiento key-value",
+   "Contenido no estructurado y muy dinámico",
+   "Prototipado rápido con requisitos cambiantes",
+   "Tareas de procesamiento de lenguaje natural",
+   "Escenarios de datos en streaming en tiempo real"
+  ],
+  "metrics": [
+   {
+    "n": "Cobertura del esquema",
+    "d": "% de conceptos del dominio modelados correctamente"
+   },
+   {
+    "n": "Precisión de las consultas",
+    "d": "Exactitud de los resultados de las consultas estructuradas"
+   },
+   {
+    "n": "Corrección del razonamiento",
+    "d": "% de inferencias lógicas válidas"
+   },
+   {
+    "n": "Integridad de los datos",
+    "d": "Puntuación de consistencia referencial"
+   },
+   {
+    "n": "Uso del esquema",
+    "d": "% de campos del esquema usados activamente"
+   },
+   {
+    "n": "Consistencia entre agentes",
+    "d": "Tasa de alineación de la estructura compartida"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis financiero",
+    "d": "Estados financieros, ratios y regulaciones de empresas en esquemas estructurados (consultas al estilo SQL: \"SELECT companies WHERE pe_ratio < 25 AND sector = 'technology'\")"
+   },
+   {
+    "n": "Sistemas legales",
+    "d": "Leyes, casos y precedentes con modelado formal de relaciones (razonamiento legal complejo y búsqueda de precedentes)"
+   },
+   {
+    "n": "Bases de datos científicas",
+    "d": "Datos de investigación con ontologías estandarizadas y consultas precisas (ciencia de materiales, descubrimiento de fármacos)"
+   },
+   {
+    "n": "Planificación de recursos empresariales",
+    "d": "Entidades, procesos y relaciones de negocio en esquemas formales (inventario, optimización de la cadena de suministro)"
+   },
+   {
+    "n": "Historias clínicas",
+    "d": "Datos de pacientes, tratamientos y resultados con ontologías médicas (sistemas de apoyo a la decisión clínica)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Memoria contextual estructurada",
+  "description": "Sistema de organización de memoria basado en esquemas que almacena información en estructuras predefinidas con relaciones, índices y metadatos para lograr consultas eficientes y una recuperación contextual.",
+  "nodes": [
+   {
+    "id": "multi-agent-query",
+    "label": "🤖 Consulta multiagente\n\"Encuentra todas las interacciones con clientes que mencionen preocupaciones de precios en el Q3\"",
+    "x": 400,
+    "y": 50,
+    "w": 420
+   },
+   {
+    "id": "structured-memory-core",
+    "label": "🧠 Núcleo de memoria estructurada\nOrganización basada en esquemas",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "entity-schema",
+    "label": "👤 Esquema de entidades\nClientes, agentes\nProductos, servicios",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "event-schema",
+    "label": "📅 Esquema de eventos\nInteracciones, transacciones\nActividades con marca de tiempo",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "relation-schema",
+    "label": "🔗 Esquema de relaciones\nRelaciones entre entidades\nConexiones causales",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "context-schema",
+    "label": "🌐 Esquema de contexto\nEstado del entorno\nReglas de negocio",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "graph-database",
+    "label": "🕸️ Base de datos de grafos\nNodos y aristas\nNeo4j/Neptune",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "document-store",
+    "label": "📄 Almacén de documentos\nDocumentos JSON/BSON\nMongoDB/Cosmos",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "time-series-db",
+    "label": "📈 Base de datos de series temporales\nDatos temporales\nInfluxDB/Timescale",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "vector-store",
+    "label": "🎯 Almacén vectorial\nEmbeddings\nPinecone/Weaviate",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "knowledge-graph",
+    "label": "🧬 Grafo de conocimiento\nOntologías\nRDF/OWL",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "query-parser",
+    "label": "🔍 Intérprete de consultas\nLenguaje natural a consulta estructurada",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "schema-mapper",
+    "label": "🗺️ Mapeador de esquemas\nMapeo de la consulta al esquema",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "context-resolver",
+    "label": "🎯 Resolutor de contexto\nResuelve ambigüedades",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "query-optimizer",
+    "label": "⚡ Optimizador de consultas\nPlanificación de la ejecución",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "rule-engine",
+    "label": "📐 Motor de reglas\nLógica de negocio\nReglas de inferencia",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "constraint-solver",
+    "label": "🔒 Solucionador de restricciones\nReglas de validación\nVerificaciones de consistencia",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "inference-engine",
+    "label": "💡 Motor de inferencia\nRazonamiento deductivo\nCoincidencia de patrones",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "semantic-reasoner",
+    "label": "🧩 Razonador semántico\nBasado en ontologías\nRelaciones entre conceptos",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "distributed-query",
+    "label": "🌍 Consulta distribuida\nEjecución entre almacenes",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "join-processor",
+    "label": "🔀 Procesador de joins\nJoins de múltiples fuentes",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "aggregation-engine",
+    "label": "📊 Agregación\nResumen\nAgrupación",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "result-formatter",
+    "label": "📝 Formateador de resultados\nSalida estructurada",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "schema-evolution",
+    "label": "🔄 Evolución de esquemas\nGestión de versiones",
+    "x": 150,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "index-optimization",
+    "label": "📇 Optimización de índices\nRendimiento de consultas",
+    "x": 350,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "cache-management",
+    "label": "💨 Gestión del cache\nConsultas frecuentes",
+    "x": 550,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "structured-results",
+    "label": "✨ Resultados estructurados\n15 interacciones con clientes encontradas\nPreocupaciones de precios: impacto de $2.3M\nQ3 2024 | Ordenado por gravedad",
+    "x": 400,
+    "y": 1000,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-core",
+    "s": "multi-agent-query",
+    "t": "structured-memory-core",
+    "label": ""
+   },
+   {
+    "id": "core-entity",
+    "s": "structured-memory-core",
+    "t": "entity-schema",
+    "label": "Definir"
+   },
+   {
+    "id": "core-event",
+    "s": "structured-memory-core",
+    "t": "event-schema",
+    "label": "Definir"
+   },
+   {
+    "id": "core-relation",
+    "s": "structured-memory-core",
+    "t": "relation-schema",
+    "label": "Definir"
+   },
+   {
+    "id": "core-context",
+    "s": "structured-memory-core",
+    "t": "context-schema",
+    "label": "Definir"
+   },
+   {
+    "id": "entity-graph",
+    "s": "entity-schema",
+    "t": "graph-database",
+    "label": ""
+   },
+   {
+    "id": "event-document",
+    "s": "event-schema",
+    "t": "document-store",
+    "label": ""
+   },
+   {
+    "id": "event-timeseries",
+    "s": "event-schema",
+    "t": "time-series-db",
+    "label": ""
+   },
+   {
+    "id": "context-vector",
+    "s": "context-schema",
+    "t": "vector-store",
+    "label": ""
+   },
+   {
+    "id": "relation-knowledge",
+    "s": "relation-schema",
+    "t": "knowledge-graph",
+    "label": ""
+   },
+   {
+    "id": "core-parser",
+    "s": "structured-memory-core",
+    "t": "query-parser",
+    "label": ""
+   },
+   {
+    "id": "parser-mapper",
+    "s": "query-parser",
+    "t": "schema-mapper",
+    "label": ""
+   },
+   {
+    "id": "mapper-resolver",
+    "s": "schema-mapper",
+    "t": "context-resolver",
+    "label": ""
+   },
+   {
+    "id": "resolver-optimizer",
+    "s": "context-resolver",
+    "t": "query-optimizer",
+    "label": ""
+   },
+   {
+    "id": "graph-rule",
+    "s": "graph-database",
+    "t": "rule-engine",
+    "label": ""
+   },
+   {
+    "id": "document-constraint",
+    "s": "document-store",
+    "t": "constraint-solver",
+    "label": ""
+   },
+   {
+    "id": "timeseries-inference",
+    "s": "time-series-db",
+    "t": "inference-engine",
+    "label": ""
+   },
+   {
+    "id": "knowledge-semantic",
+    "s": "knowledge-graph",
+    "t": "semantic-reasoner",
+    "label": ""
+   },
+   {
+    "id": "optimizer-distributed",
+    "s": "query-optimizer",
+    "t": "distributed-query",
+    "label": ""
+   },
+   {
+    "id": "distributed-join",
+    "s": "distributed-query",
+    "t": "join-processor",
+    "label": ""
+   },
+   {
+    "id": "join-aggregation",
+    "s": "join-processor",
+    "t": "aggregation-engine",
+    "label": ""
+   },
+   {
+    "id": "aggregation-formatter",
+    "s": "aggregation-engine",
+    "t": "result-formatter",
+    "label": ""
+   },
+   {
+    "id": "rule-distributed",
+    "s": "rule-engine",
+    "t": "distributed-query",
+    "label": ""
+   },
+   {
+    "id": "constraint-join",
+    "s": "constraint-solver",
+    "t": "join-processor",
+    "label": ""
+   },
+   {
+    "id": "inference-aggregation",
+    "s": "inference-engine",
+    "t": "aggregation-engine",
+    "label": ""
+   },
+   {
+    "id": "semantic-formatter",
+    "s": "semantic-reasoner",
+    "t": "result-formatter",
+    "label": ""
+   },
+   {
+    "id": "entity-evolution",
+    "s": "entity-schema",
+    "t": "schema-evolution",
+    "label": ""
+   },
+   {
+    "id": "graph-index",
+    "s": "graph-database",
+    "t": "index-optimization",
+    "label": ""
+   },
+   {
+    "id": "distributed-cache",
+    "s": "distributed-query",
+    "t": "cache-management",
+    "label": ""
+   },
+   {
+    "id": "evolution-results",
+    "s": "schema-evolution",
+    "t": "structured-results",
+    "label": ""
+   },
+   {
+    "id": "index-results",
+    "s": "index-optimization",
+    "t": "structured-results",
+    "label": ""
+   },
+   {
+    "id": "cache-results",
+    "s": "cache-management",
+    "t": "structured-results",
+    "label": ""
+   },
+   {
+    "id": "formatter-results",
+    "s": "result-formatter",
+    "t": "structured-results",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta multiagente",
+    "description": "Consulta estructurada compleja de múltiples agentes",
+    "input": "",
+    "nodes": [
+     "multi-agent-query",
+     "structured-memory-core"
+    ],
+    "edges": [
+     "query-core"
+    ]
+   },
+   {
+    "title": "Definición de esquemas",
+    "description": "Organización de la memoria en esquemas estructurados",
+    "input": "",
+    "nodes": [
+     "structured-memory-core",
+     "entity-schema",
+     "event-schema",
+     "relation-schema",
+     "context-schema"
+    ],
+    "edges": [
+     "core-entity",
+     "core-event",
+     "core-relation",
+     "core-context"
+    ]
+   },
+   {
+    "title": "Almacenamiento estructurado",
+    "description": "Mapeo de los esquemas a sistemas de almacenamiento especializados",
+    "input": "",
+    "nodes": [
+     "entity-schema",
+     "event-schema",
+     "relation-schema",
+     "context-schema",
+     "graph-database",
+     "document-store",
+     "time-series-db",
+     "vector-store",
+     "knowledge-graph"
+    ],
+    "edges": [
+     "entity-graph",
+     "event-document",
+     "event-timeseries",
+     "context-vector",
+     "relation-knowledge"
+    ]
+   },
+   {
+    "title": "Procesamiento de la consulta",
+    "description": "Interpretación y optimización de la consulta estructurada",
+    "input": "",
+    "nodes": [
+     "query-parser",
+     "schema-mapper",
+     "context-resolver",
+     "query-optimizer"
+    ],
+    "edges": [
+     "core-parser",
+     "parser-mapper",
+     "mapper-resolver",
+     "resolver-optimizer"
+    ]
+   },
+   {
+    "title": "Razonamiento simbólico",
+    "description": "Aplicación de reglas e inferencia sobre datos estructurados",
+    "input": "",
+    "nodes": [
+     "rule-engine",
+     "constraint-solver",
+     "inference-engine",
+     "semantic-reasoner"
+    ],
+    "edges": [
+     "graph-rule",
+     "document-constraint",
+     "timeseries-inference",
+     "knowledge-semantic"
+    ]
+   },
+   {
+    "title": "Ejecución distribuida",
+    "description": "Ejecución de la consulta en múltiples sistemas de almacenamiento",
+    "input": "",
+    "nodes": [
+     "distributed-query",
+     "graph-database",
+     "document-store",
+     "time-series-db",
+     "knowledge-graph"
+    ],
+    "edges": [
+     "optimizer-distributed"
+    ]
+   },
+   {
+    "title": "Procesamiento de joins",
+    "description": "Unión de resultados de distintas fuentes",
+    "input": "",
+    "nodes": [
+     "distributed-query",
+     "join-processor",
+     "constraint-solver"
+    ],
+    "edges": [
+     "distributed-join",
+     "constraint-join"
+    ]
+   },
+   {
+    "title": "Agregación",
+    "description": "Agregación y resumen de los resultados",
+    "input": "",
+    "nodes": [
+     "join-processor",
+     "aggregation-engine",
+     "inference-engine"
+    ],
+    "edges": [
+     "join-aggregation",
+     "inference-aggregation"
+    ]
+   },
+   {
+    "title": "Formateo de resultados",
+    "description": "Formateo de los resultados en una salida estructurada",
+    "input": "",
+    "nodes": [
+     "aggregation-engine",
+     "result-formatter",
+     "semantic-reasoner"
+    ],
+    "edges": [
+     "aggregation-formatter",
+     "semantic-formatter"
+    ]
+   },
+   {
+    "title": "Gestión de memoria",
+    "description": "Optimización de esquemas, índices y caches",
+    "input": "",
+    "nodes": [
+     "schema-evolution",
+     "index-optimization",
+     "cache-management"
+    ],
+    "edges": [
+     "entity-evolution",
+     "graph-index",
+     "distributed-cache"
+    ]
+   },
+   {
+    "title": "Resultados estructurados",
+    "description": "Entrega de resultados de consulta precisos e interpretables",
+    "input": "",
+    "nodes": [
+     "result-formatter",
+     "schema-evolution",
+     "index-optimization",
+     "cache-management",
+     "structured-results"
+    ],
+    "edges": [
+     "formatter-results",
+     "evolution-results",
+     "index-results",
+     "cache-results"
+    ]
+   }
+  ]
+ }
+}

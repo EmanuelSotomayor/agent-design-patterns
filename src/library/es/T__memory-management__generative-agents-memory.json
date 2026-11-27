@@ -1,0 +1,341 @@
+{
+ "cat": "memory-management",
+ "slug": "generative-agents-memory",
+ "name": "Generative Agents Memory(GAM)",
+ "icon": "🏘️",
+ "complexity": "high",
+ "description": "Dale a un agente un flujo de memoria de observaciones con marca de tiempo que se recupera mediante una puntuación ponderada de recencia, importancia y relevancia, en lugar de solo por similitud. Periódicamente el agente reflexiona: sintetiza ideas de nivel superior a partir de los recuerdos recientes y las vuelve a escribir en el flujo para que guíen la planificación futura. Este es el diseño del estudio de generative agents de Stanford (Smallville).",
+ "features": [
+  "Flujo de memoria de observaciones de solo anexado",
+  "Puntuación por recencia, importancia y relevancia",
+  "Decaimiento exponencial de la recencia según el último acceso",
+  "Puntajes de importancia (intensidad emocional) calificados por el LLM",
+  "Reflexión periódica en ideas de nivel superior",
+  "Las reflexiones alimentan la planificación y el comportamiento"
+ ],
+ "tldr": {
+  "what": "Mantiene un flujo de observaciones con marca de tiempo puntuadas por recencia, importancia y relevancia; periódicamente sintetiza ideas y las devuelve al flujo para orientar las decisiones futuras.",
+  "when": "Agentes de larga duración que necesitan aprender patrones de interacciones pasadas y adaptar su comportamiento según el contexto acumulado durante horas o días.",
+  "watchOut": "La síntesis de reflexiones puede alucinar patrones o desviar el comportamiento del agente de su intención original si la puntuación de importancia carece de un anclaje claro."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Generative Agents Memory",
+  "description": "Un flujo de memoria de observaciones con marca de tiempo que se recupera ponderando recencia, importancia y relevancia. La reflexión periódica sintetiza ideas de nivel superior y las devuelve al flujo, y luego estas guían la planificación. Es el diseño de generative agents de Stanford (Smallville).",
+  "nodes": [
+   {
+    "id": "observation-in",
+    "label": "👀 Observaciones\nLlegan a lo largo del día",
+    "x": 60,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "memory-stream",
+    "label": "🧾 Flujo de memoria\nSolo anexado, con marca de tiempo",
+    "x": 340,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "mem1",
+    "label": "📌 Lun 08:12\n\"Movió la reunión de las 4pm a las 9am\"",
+    "x": 40,
+    "y": 180,
+    "w": 190
+   },
+   {
+    "id": "mem2",
+    "label": "📌 Mar 08:40\n\"Rechazó una invitación a las 5pm\"",
+    "x": 250,
+    "y": 180,
+    "w": 190
+   },
+   {
+    "id": "mem3",
+    "label": "📌 Mié 07:55\n\"Respondió un correo a las 7:55am\"",
+    "x": 460,
+    "y": 180,
+    "w": 190
+   },
+   {
+    "id": "mem4",
+    "label": "📌 Mié 16:30\n\"Reprogramó una llamada tardía\"",
+    "x": 670,
+    "y": 180,
+    "w": 190
+   },
+   {
+    "id": "query",
+    "label": "❓ Consulta\n\"¿Cuándo programar la\nrevisión de diseño?\"",
+    "x": 60,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "retrieval-scorer",
+    "label": "⚖️ Puntuador de recuperación\npuntaje = recencia + importancia\n+ relevancia",
+    "x": 340,
+    "y": 320,
+    "w": 240
+   },
+   {
+    "id": "recency-score",
+    "label": "⏱️ Recencia\nDecaimiento 0.99^horas",
+    "x": 180,
+    "y": 450,
+    "w": 170
+   },
+   {
+    "id": "importance-score",
+    "label": "💥 Importancia\nIntensidad 1-10",
+    "x": 380,
+    "y": 450,
+    "w": 170
+   },
+   {
+    "id": "relevance-score",
+    "label": "🎯 Relevancia\nSimilitud coseno con la consulta",
+    "x": 580,
+    "y": 450,
+    "w": 170
+   },
+   {
+    "id": "reflection",
+    "label": "💭 Reflexión\n\"¿Qué puedo concluir?\"",
+    "x": 200,
+    "y": 580,
+    "w": 210
+   },
+   {
+    "id": "insight",
+    "label": "✨ Idea sintetizada\n\"Prefiere las mañanas,\nevita después de las 4pm\"",
+    "x": 470,
+    "y": 580,
+    "w": 230
+   },
+   {
+    "id": "planner",
+    "label": "🗓️ Planificador\nUsa la idea + los recuerdos principales",
+    "x": 340,
+    "y": 700,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✅ Propone 9:30am\ncon el razonamiento",
+    "x": 620,
+    "y": 700,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "obs-stream",
+    "s": "observation-in",
+    "t": "memory-stream",
+    "label": "anexar"
+   },
+   {
+    "id": "stream-mem1",
+    "s": "memory-stream",
+    "t": "mem1",
+    "label": ""
+   },
+   {
+    "id": "stream-mem2",
+    "s": "memory-stream",
+    "t": "mem2",
+    "label": ""
+   },
+   {
+    "id": "stream-mem3",
+    "s": "memory-stream",
+    "t": "mem3",
+    "label": ""
+   },
+   {
+    "id": "stream-mem4",
+    "s": "memory-stream",
+    "t": "mem4",
+    "label": ""
+   },
+   {
+    "id": "query-scorer",
+    "s": "query",
+    "t": "retrieval-scorer",
+    "label": ""
+   },
+   {
+    "id": "stream-scorer",
+    "s": "memory-stream",
+    "t": "retrieval-scorer",
+    "label": "candidatos"
+   },
+   {
+    "id": "scorer-recency",
+    "s": "retrieval-scorer",
+    "t": "recency-score",
+    "label": ""
+   },
+   {
+    "id": "scorer-importance",
+    "s": "retrieval-scorer",
+    "t": "importance-score",
+    "label": ""
+   },
+   {
+    "id": "scorer-relevance",
+    "s": "retrieval-scorer",
+    "t": "relevance-score",
+    "label": ""
+   },
+   {
+    "id": "recency-reflection",
+    "s": "recency-score",
+    "t": "reflection",
+    "label": "recuerdos principales"
+   },
+   {
+    "id": "importance-reflection",
+    "s": "importance-score",
+    "t": "reflection",
+    "label": ""
+   },
+   {
+    "id": "relevance-reflection",
+    "s": "relevance-score",
+    "t": "reflection",
+    "label": ""
+   },
+   {
+    "id": "reflection-insight",
+    "s": "reflection",
+    "t": "insight",
+    "label": "sintetizar"
+   },
+   {
+    "id": "insight-writeback",
+    "s": "insight",
+    "t": "memory-stream",
+    "label": "reescribir"
+   },
+   {
+    "id": "insight-planner",
+    "s": "insight",
+    "t": "planner",
+    "label": ""
+   },
+   {
+    "id": "scorer-planner",
+    "s": "retrieval-scorer",
+    "t": "planner",
+    "label": "recuperados"
+   },
+   {
+    "id": "planner-output",
+    "s": "planner",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Las observaciones se anexan al flujo",
+    "description": "A lo largo del día, las observaciones con marca de tiempo se anexan a un flujo de memoria de solo anexado: reuniones movidas, invitaciones rechazadas, respuestas tempranas a correos.",
+    "input": "",
+    "nodes": [
+     "observation-in",
+     "memory-stream",
+     "mem1",
+     "mem2",
+     "mem3",
+     "mem4"
+    ],
+    "edges": [
+     "obs-stream",
+     "stream-mem1",
+     "stream-mem2",
+     "stream-mem3",
+     "stream-mem4"
+    ]
+   },
+   {
+    "title": "La consulta activa la recuperación",
+    "description": "La pregunta \"¿Cuándo programar la revisión de diseño?\" activa el puntuador de recuperación sobre los recuerdos candidatos del flujo.",
+    "input": "",
+    "nodes": [
+     "query",
+     "retrieval-scorer",
+     "memory-stream"
+    ],
+    "edges": [
+     "query-scorer",
+     "stream-scorer"
+    ]
+   },
+   {
+    "title": "Puntuar por recencia, importancia y relevancia",
+    "description": "Cada recuerdo se puntúa: decaimiento exponencial de la recencia, importancia calificada por el LLM (intensidad 1-10) y relevancia coseno respecto de la consulta. Las tres se combinan en un solo puntaje.",
+    "input": "",
+    "nodes": [
+     "retrieval-scorer",
+     "recency-score",
+     "importance-score",
+     "relevance-score"
+    ],
+    "edges": [
+     "scorer-recency",
+     "scorer-importance",
+     "scorer-relevance"
+    ]
+   },
+   {
+    "title": "La reflexión sintetiza una idea",
+    "description": "Cuando la importancia acumulada supera un umbral, la reflexión pregunta \"¿Qué puedo concluir?\" sobre los recuerdos principales y sintetiza: \"El usuario prefiere las mañanas y evita después de las 4pm.\"",
+    "input": "",
+    "nodes": [
+     "recency-score",
+     "importance-score",
+     "relevance-score",
+     "reflection",
+     "insight"
+    ],
+    "edges": [
+     "recency-reflection",
+     "importance-reflection",
+     "relevance-reflection",
+     "reflection-insight"
+    ]
+   },
+   {
+    "title": "La idea se vuelve a escribir en el flujo",
+    "description": "La idea sintetizada se vuelve a escribir en el flujo de memoria como un recuerdo de alta importancia, de modo que la recuperación futura muestre la conclusión y no solo los eventos en bruto.",
+    "input": "",
+    "nodes": [
+     "insight",
+     "memory-stream"
+    ],
+    "edges": [
+     "insight-writeback"
+    ]
+   },
+   {
+    "title": "La planificación usa la idea y los recuerdos",
+    "description": "El planificador combina la idea sintetizada con los recuerdos recuperados directamente para proponer las 9:30am y explicar el razonamiento, lo que produce un comportamiento creíble a largo plazo.",
+    "input": "",
+    "nodes": [
+     "insight",
+     "retrieval-scorer",
+     "planner",
+     "output"
+    ],
+    "edges": [
+     "insight-planner",
+     "scorer-planner",
+     "planner-output"
+    ]
+   }
+  ]
+ }
+}

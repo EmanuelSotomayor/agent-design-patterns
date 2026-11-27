@@ -1,0 +1,415 @@
+{
+ "cat": "prompt-chaining",
+ "slug": "parallel-chaining",
+ "name": "Parallel Chaining",
+ "icon": "⚡",
+ "complexity": "medium",
+ "description": "Ejecuta varios prompts independientes de forma concurrente y combina sus salidas de manera inteligente, lo que permite un procesamiento más rápido y un análisis desde múltiples perspectivas que aprovecha el cómputo paralelo para tareas complejas que requieren puntos de vista o fuentes de datos diversos",
+ "features": [
+  "Ejecución concurrente de prompts",
+  "Estrategias de agregación de resultados",
+  "Balanceo de carga y escalado",
+  "Mecanismos de resolución de conflictos"
+ ],
+ "tldr": {
+  "what": "Ejecuta varios prompts independientes al mismo tiempo y luego combina sus salidas en un único resultado.",
+  "when": "Tareas que necesitan perspectivas o fuentes de datos diversas, donde esperar a que termine una cadena antes de iniciar otra desperdicia tiempo.",
+  "watchOut": "Combinar salidas contradictorias de cadenas paralelas a menudo requiere intervención manual o una regla de agregación clara."
+ },
+ "overview": {
+  "pattern": "Ejecuta varias tareas independientes de forma concurrente para reducir la latencia",
+  "why": "Reduce drásticamente el tiempo real en operaciones limitadas por E/S y permite el análisis desde múltiples perspectivas",
+  "insight": "Distribuir (fan-out) tareas independientes → agregar resultados con estrategias de votación/fusión/síntesis",
+  "impl": [
+   {
+    "t": "Descomponer",
+    "d": "Identifica subtareas independientes"
+   },
+   {
+    "t": "Diseñar E/S",
+    "d": "Esquemas consistentes para las ramas"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Ejecuta las ramas de forma concurrente"
+   },
+   {
+    "t": "Agregar",
+    "d": "Vota/fusiona/sintetiza los resultados"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Haz seguimiento de la latencia, el costo y el nivel de acuerdo"
+   }
+  ],
+  "example": "search_news AND search_social AND search_web → aggregate → synthesize",
+  "dos": [
+   "Usa salidas estructuradas (JSON) para una agregación consistente",
+   "Implementa timeouts y manejo de resultados parciales",
+   "Usa modelos más pequeños para las ramas paralelas y uno más potente para la fusión",
+   "Agrupa las solicitudes en batch y respeta los límites de tasa",
+   "Guarda en cache los resultados de las ramas deterministas"
+  ],
+  "donts": [
+   "Paralelizar tareas dependientes",
+   "Ignorar los límites de tasa o la capacidad de ráfaga",
+   "Paralelizar en exceso tareas simples",
+   "Omitir el manejo de errores ante fallas parciales",
+   "Usar datos verbosos y no estructurados entre etapas"
+  ],
+  "use": [
+   "Múltiples consultas independientes (APIs, bases de datos)",
+   "Tareas de análisis desde múltiples perspectivas",
+   "Operaciones limitadas por E/S con latencia",
+   "Escenarios de construcción de consenso"
+  ],
+  "avoid": [
+   "Existen dependencias secuenciales",
+   "Tareas simples de un solo paso",
+   "Se aplican límites de tasa estrictos",
+   "La consistencia importa más que la velocidad"
+  ],
+  "metrics": [
+   {
+    "n": "Aceleración en tiempo real",
+    "d": "Tiempo frente a la línea base secuencial"
+   },
+   {
+    "n": "Throughput",
+    "d": "Tareas/minuto con concurrencia"
+   },
+   {
+    "n": "Puntuación de acuerdo",
+    "d": "% de consenso entre ramas"
+   },
+   {
+    "n": "Eficiencia de costos",
+    "d": "Total de tokens × tarifas del modelo"
+   },
+   {
+    "n": "Tasa de éxito",
+    "d": "% de ramas completadas"
+   },
+   {
+    "n": "Latencia P95",
+    "d": "Tiempo de finalización de la cola"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación multifuente",
+    "d": "noticias + académico + redes sociales → sintetizar hallazgos"
+   },
+   {
+    "n": "Generación de contenido",
+    "d": "titular + cuerpo + imagen + CTA → email completo"
+   },
+   {
+    "n": "Validación de datos",
+    "d": "formato + reglas de negocio + APIs externas → aprobado/rechazado"
+   },
+   {
+    "n": "Ideación creativa",
+    "d": "3 modelos generan opciones → seleccionar la mejor"
+   },
+   {
+    "n": "Planificación de viajes",
+    "d": "vuelos + hoteles + eventos + restaurantes → itinerario"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Parallel Chaining",
+  "description": "Demuestra la ejecución concurrente de varios prompts con agregación de resultados",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud de entrada\n\"Análisis de mercado para un nuevo producto de IA\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "dispatcher",
+    "label": "Despachador de tareas\nDistribuir a cadenas paralelas",
+    "x": 400,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "chain1",
+    "label": "Cadena A: Análisis de competidores\nAnalizar competidores del mercado",
+    "x": 100,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "chain2",
+    "label": "Cadena B: Demografía objetivo\nIdentificar segmentos de usuarios",
+    "x": 300,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "chain3",
+    "label": "Cadena C: Tendencias del mercado\nAnalizar tendencias de la industria",
+    "x": 500,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "chain4",
+    "label": "Cadena D: Regulación\nRequisitos de cumplimiento",
+    "x": 700,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "result1",
+    "label": "Resultados de competidores\n• OpenAI: valoración de $80B\n• Anthropic: valoración de $15B\n• Google: domina las búsquedas",
+    "x": 100,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "result2",
+    "label": "Resultados demográficos\n• Desarrolladores: 40%\n• Empresas: 35%\n• Investigadores: 25%",
+    "x": 300,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "result3",
+    "label": "Resultados de tendencias\n• Adopción de IA: +300%\n• Demanda de automatización: alta\n• Preocupaciones de privacidad: en aumento",
+    "x": 500,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "result4",
+    "label": "Resultados regulatorios\n• Se necesita cumplimiento de GDPR\n• Requisitos de la AI Act\n• Localización de datos",
+    "x": 700,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "aggregator",
+    "label": "Agregador de resultados\nCombinar todos los insights",
+    "x": 400,
+    "y": 570,
+    "w": 200
+   },
+   {
+    "id": "synthesis",
+    "label": "Reporte de análisis de mercado\nInsights integrales",
+    "x": 400,
+    "y": 700,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-dispatcher",
+    "s": "input",
+    "t": "dispatcher",
+    "label": ""
+   },
+   {
+    "id": "e-dispatcher-chain1",
+    "s": "dispatcher",
+    "t": "chain1",
+    "label": ""
+   },
+   {
+    "id": "e-dispatcher-chain2",
+    "s": "dispatcher",
+    "t": "chain2",
+    "label": ""
+   },
+   {
+    "id": "e-dispatcher-chain3",
+    "s": "dispatcher",
+    "t": "chain3",
+    "label": ""
+   },
+   {
+    "id": "e-dispatcher-chain4",
+    "s": "dispatcher",
+    "t": "chain4",
+    "label": ""
+   },
+   {
+    "id": "e-chain1-result1",
+    "s": "chain1",
+    "t": "result1",
+    "label": ""
+   },
+   {
+    "id": "e-chain2-result2",
+    "s": "chain2",
+    "t": "result2",
+    "label": ""
+   },
+   {
+    "id": "e-chain3-result3",
+    "s": "chain3",
+    "t": "result3",
+    "label": ""
+   },
+   {
+    "id": "e-chain4-result4",
+    "s": "chain4",
+    "t": "result4",
+    "label": ""
+   },
+   {
+    "id": "e-result1-aggregator",
+    "s": "result1",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-result2-aggregator",
+    "s": "result2",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-result3-aggregator",
+    "s": "result3",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-result4-aggregator",
+    "s": "result4",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-aggregator-synthesis",
+    "s": "aggregator",
+    "t": "synthesis",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud de análisis de mercado",
+    "description": "El usuario solicita un análisis de mercado integral que requiere investigar varias áreas simultáneamente.",
+    "input": "Realiza un análisis de mercado integral para nuestro nuevo asistente de productividad impulsado por IA dirigido a clientes empresariales.",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Distribución de tareas",
+    "description": "El despachador identifica áreas de investigación paralelas y distribuye las tareas a cadenas especializadas de forma simultánea.",
+    "input": "Desglose de tareas:\n• Análisis del panorama de competidores\n• Investigación de la demografía objetivo\n• Análisis de tendencias del mercado\n• Revisión del cumplimiento regulatorio",
+    "nodes": [
+     "input",
+     "dispatcher"
+    ],
+    "edges": [
+     "e-input-dispatcher"
+    ]
+   },
+   {
+    "title": "Activación de cadenas paralelas",
+    "description": "Las cuatro cadenas especializadas comienzan a procesar sus áreas de investigación asignadas de forma concurrente.",
+    "input": "",
+    "nodes": [
+     "dispatcher",
+     "chain1",
+     "chain2",
+     "chain3",
+     "chain4"
+    ],
+    "edges": [
+     "e-dispatcher-chain1",
+     "e-dispatcher-chain2",
+     "e-dispatcher-chain3",
+     "e-dispatcher-chain4"
+    ]
+   },
+   {
+    "title": "Análisis de competidores completo",
+    "description": "La cadena A completa la investigación de competidores y aporta insights sobre el posicionamiento en el mercado.",
+    "input": "",
+    "nodes": [
+     "chain1",
+     "result1"
+    ],
+    "edges": [
+     "e-chain1-result1"
+    ]
+   },
+   {
+    "title": "Análisis demográfico completo",
+    "description": "La cadena B termina la investigación del público objetivo y segmenta a los usuarios potenciales.",
+    "input": "",
+    "nodes": [
+     "chain2",
+     "result2"
+    ],
+    "edges": [
+     "e-chain2-result2"
+    ]
+   },
+   {
+    "title": "Análisis de tendencias del mercado completo",
+    "description": "La cadena C entrega un análisis integral de tendencias de la industria y proyecciones de crecimiento.",
+    "input": "",
+    "nodes": [
+     "chain3",
+     "result3"
+    ],
+    "edges": [
+     "e-chain3-result3"
+    ]
+   },
+   {
+    "title": "Análisis regulatorio completo",
+    "description": "La cadena D completa la revisión del cumplimiento y del panorama regulatorio.",
+    "input": "",
+    "nodes": [
+     "chain4",
+     "result4"
+    ],
+    "edges": [
+     "e-chain4-result4"
+    ]
+   },
+   {
+    "title": "Agregación de resultados",
+    "description": "Se recopilan los resultados de todas las cadenas paralelas y se preparan para sintetizarlos en un reporte integral.",
+    "input": "Agregando resultados de todas las cadenas paralelas:\n• Datos del análisis de competidores\n• Insights de la demografía objetivo\n• Proyecciones de tendencias del mercado\n• Requisitos de cumplimiento regulatorio",
+    "nodes": [
+     "result1",
+     "result2",
+     "result3",
+     "result4",
+     "aggregator"
+    ],
+    "edges": [
+     "e-result1-aggregator",
+     "e-result2-aggregator",
+     "e-result3-aggregator",
+     "e-result4-aggregator"
+    ]
+   },
+   {
+    "title": "Análisis de mercado integral",
+    "description": "La síntesis final combina toda la investigación paralela en inteligencia de mercado accionable.",
+    "input": "",
+    "nodes": [
+     "synthesis"
+    ],
+    "edges": [
+     "e-aggregator-synthesis"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,231 @@
+{
+ "cat": "context-orchestration",
+ "slug": "dynamic-context-assembly",
+ "name": "Dynamic Context Assembly(DCA)",
+ "icon": "🔧",
+ "complexity": "high",
+ "description": "Composición inteligente y en tiempo real del contexto a partir de múltiples fuentes, basada en el análisis de la consulta y la puntuación de relevancia",
+ "features": [
+  "Fusión de contexto de múltiples fuentes",
+  "Puntuación de relevancia en tiempo real",
+  "Selección adaptativa del contexto",
+  "Mecanismos de enrutamiento contextual",
+  "Priorización basada en la calidad",
+  "Optimización dinámica de la ventana de contexto"
+ ],
+ "tldr": {
+  "what": "Analiza las consultas entrantes para identificar los dominios relevantes y luego ensambla el contexto a partir de múltiples fuentes ordenadas por puntuación de relevancia antes de generar las respuestas.",
+  "when": "Consultas complejas que abarcan múltiples dominios, donde incluir todo el contexto disponible superaría los límites de tokens o degradaría la calidad de la respuesta.",
+  "watchOut": "Los errores en la puntuación de relevancia hacen que se excluya información crítica, lo que deja puntos ciegos cuya existencia el modelo desconoce."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Flujo de Dynamic Context Assembly",
+  "description": "Composición inteligente en tiempo real del contexto a partir de múltiples fuentes, basada en el análisis de la consulta y la puntuación de relevancia",
+  "nodes": [
+   {
+    "id": "query",
+    "label": "Consulta de entrada\n\"Cuántica + Seguridad cripto\"",
+    "x": 50,
+    "y": 100,
+    "w": 180
+   },
+   {
+    "id": "analysis",
+    "label": "Análisis de la consulta\nExtracción de dominios y análisis de intención",
+    "x": 300,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "source-quantum",
+    "label": "Investigación cuántica\nArtículos y estudios",
+    "x": 50,
+    "y": 250,
+    "w": 150
+   },
+   {
+    "id": "source-crypto",
+    "label": "Seguridad cripto\nBase de datos de seguridad",
+    "x": 230,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "source-blockchain",
+    "label": "KB de blockchain\nBase de conocimiento",
+    "x": 410,
+    "y": 250,
+    "w": 150
+   },
+   {
+    "id": "source-news",
+    "label": "Noticias en tiempo real\nFeed en vivo",
+    "x": 590,
+    "y": 280,
+    "w": 150
+   },
+   {
+    "id": "scoring",
+    "label": "Puntuación de relevancia\nAnálisis de calidad, relevancia y actualidad",
+    "x": 300,
+    "y": 400,
+    "w": 220
+   },
+   {
+    "id": "assembly",
+    "label": "Ensamblaje del contexto\nCreación de la ventana de contexto óptima",
+    "x": 600,
+    "y": 400,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "Contexto optimizado\nListo para la generación",
+    "x": 850,
+    "y": 100,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-analysis",
+    "s": "query",
+    "t": "analysis",
+    "label": ""
+   },
+   {
+    "id": "analysis-quantum",
+    "s": "analysis",
+    "t": "source-quantum",
+    "label": ""
+   },
+   {
+    "id": "analysis-crypto",
+    "s": "analysis",
+    "t": "source-crypto",
+    "label": ""
+   },
+   {
+    "id": "analysis-blockchain",
+    "s": "analysis",
+    "t": "source-blockchain",
+    "label": ""
+   },
+   {
+    "id": "analysis-news",
+    "s": "analysis",
+    "t": "source-news",
+    "label": ""
+   },
+   {
+    "id": "quantum-scoring",
+    "s": "source-quantum",
+    "t": "scoring",
+    "label": ""
+   },
+   {
+    "id": "crypto-scoring",
+    "s": "source-crypto",
+    "t": "scoring",
+    "label": ""
+   },
+   {
+    "id": "blockchain-scoring",
+    "s": "source-blockchain",
+    "t": "scoring",
+    "label": ""
+   },
+   {
+    "id": "news-scoring",
+    "s": "source-news",
+    "t": "scoring",
+    "label": ""
+   },
+   {
+    "id": "scoring-assembly",
+    "s": "scoring",
+    "t": "assembly",
+    "label": ""
+   },
+   {
+    "id": "assembly-output",
+    "s": "assembly",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis de la consulta",
+    "description": "Analiza la consulta entrante para comprender los dominios, la complejidad, la intención y la experiencia requerida",
+    "input": "¿Cómo afectan los avances en computación cuántica a la seguridad de las criptomonedas?",
+    "nodes": [
+     "query",
+     "analysis"
+    ],
+    "edges": [
+     "query-analysis"
+    ]
+   },
+   {
+    "title": "Identificación de fuentes",
+    "description": "Identifica todas las fuentes de contexto disponibles que podrían ser relevantes para la consulta",
+    "input": "",
+    "nodes": [
+     "analysis",
+     "source-quantum",
+     "source-crypto",
+     "source-blockchain",
+     "source-news"
+    ],
+    "edges": [
+     "analysis-quantum",
+     "analysis-crypto",
+     "analysis-blockchain",
+     "analysis-news"
+    ]
+   },
+   {
+    "title": "Puntuación de relevancia",
+    "description": "Puntúa cada fuente según su relevancia, calidad, actualidad y alineación con los requisitos de la consulta",
+    "input": "",
+    "nodes": [
+     "source-quantum",
+     "source-crypto",
+     "source-blockchain",
+     "scoring"
+    ],
+    "edges": [
+     "quantum-scoring",
+     "crypto-scoring",
+     "blockchain-scoring"
+    ]
+   },
+   {
+    "title": "Ensamblaje del contexto",
+    "description": "Ensambla la ventana de contexto óptima asignando espacio según las puntuaciones de relevancia y las métricas de calidad",
+    "input": "",
+    "nodes": [
+     "scoring",
+     "assembly"
+    ],
+    "edges": [
+     "scoring-assembly"
+    ]
+   },
+   {
+    "title": "Contexto optimizado listo",
+    "description": "El contexto está ensamblado de forma óptima y listo para la generación, con un 98% de cobertura de relevancia",
+    "input": "",
+    "nodes": [
+     "assembly",
+     "output"
+    ],
+    "edges": [
+     "assembly-output"
+    ]
+   }
+  ]
+ }
+}

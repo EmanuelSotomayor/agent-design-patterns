@@ -1,0 +1,326 @@
+{
+ "cat": "routing",
+ "slug": "llm-based-routing",
+ "name": "LLM-based Routing(LBR)",
+ "icon": "🧭",
+ "complexity": "medium",
+ "description": "Un sistema inteligente de distribución de consultas que usa un enrutador LLM especializado para analizar las solicitudes entrantes y enrutarlas dinámicamente al modelo, endpoint de API o pipeline de procesamiento más adecuado según las características de la consulta, lo que garantiza un uso óptimo de los recursos y una buena calidad de respuesta mediante la clasificación de intención y la correspondencia de capacidades",
+ "features": [
+  "Clasificación de intención y comprensión de consultas",
+  "Orquestación de múltiples modelos con conocimiento de sus capacidades",
+  "Optimización de costo-rendimiento mediante enrutamiento inteligente",
+  "Enrutamiento sensible a la latencia para aplicaciones en tiempo real",
+  "Mecanismos de respaldo y degradación controlada",
+  "Pruebas A/B y monitoreo del rendimiento",
+  "Reglas de enrutamiento personalizadas y lógica específica del dominio",
+  "Balanceo de carga entre instancias del modelo"
+ ],
+ "tldr": {
+  "what": "Enruta las solicitudes entrantes a distintos modelos o endpoints analizando la intención de la consulta y comparándola con las capacidades conocidas.",
+  "when": "Sistemas con múltiples modelos, APIs o pipelines especializados donde distintos tipos de solicitud necesitan distintos caminos de procesamiento.",
+  "watchOut": "Una clasificación errónea del enrutador envía solicitudes a endpoints equivocados, lo que puede degradar la calidad o requerir un manejo de respaldo costoso."
+ },
+ "overview": {
+  "pattern": "Usa un LLM para analizar la entrada y determinar dinámicamente el camino de enrutamiento",
+  "why": "Maneja decisiones de enrutamiento complejas y con matices que las reglas simples no pueden capturar",
+  "insight": "Ingeniería de prompts + salidas estructuradas = clasificación de intención confiable",
+  "impl": [
+   {
+    "t": "Analizar",
+    "d": "Pide al LLM que clasifique la intención/categoría"
+   },
+   {
+    "t": "Extraer",
+    "d": "Parsea la salida estructurada (JSON/enum)"
+   },
+   {
+    "t": "Mapear",
+    "d": "Decisión de ruta → manejador/agente"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Invoca el flujo de trabajo seleccionado"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Haz seguimiento de la precisión y la latencia del enrutamiento"
+   }
+  ],
+  "example": "analyze_query → \"category: booking\" → booking_agent.invoke(query)",
+  "dos": [
+   "Usa salidas estructuradas (modo JSON) para un parseo determinista",
+   "Incluye ejemplos claros en el prompt de enrutamiento",
+   "Implementa rutas de respaldo para clasificaciones poco claras",
+   "Guarda en cache las decisiones de enrutamiento para consultas idénticas",
+   "Usa temperature=0 para un enrutamiento consistente"
+  ],
+  "donts": [
+   "Depender del parseo de texto libre para enrutar",
+   "Omitir la validación de la salida de enrutamiento del LLM",
+   "Usar una temperatura alta para las decisiones de enrutamiento",
+   "Ignorar casos límite y entradas ambiguas",
+   "Enrutar sin umbrales de confianza"
+  ],
+  "use": [
+   "Se necesita una clasificación de intención compleja",
+   "Se requiere comprensión del lenguaje natural",
+   "Reglas de enrutamiento dinámicas que evolucionan",
+   "Criterios de enrutamiento multidimensionales"
+  ],
+  "avoid": [
+   "Basta con un enrutamiento simple por palabras clave",
+   "Requisitos de latencia ultrabaja (<100ms)",
+   "El enrutamiento determinista es obligatorio",
+   "Las restricciones de costo son estrictas"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión del enrutamiento",
+    "d": "% de consultas enrutadas correctamente"
+   },
+   {
+    "n": "Tiempo de clasificación",
+    "d": "Latencia de enrutamiento P50/P95"
+   },
+   {
+    "n": "Tasa de ambigüedad",
+    "d": "% de consultas que necesitan aclaración"
+   },
+   {
+    "n": "Costo por ruta",
+    "d": "Tokens del LLM × precio"
+   },
+   {
+    "n": "Tasa de respaldo",
+    "d": "% enrutado al manejador por defecto"
+   },
+   {
+    "n": "Tasa de aciertos de cache",
+    "d": "% de decisiones de enrutamiento reutilizadas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Atención al cliente",
+    "d": "analizar intención → enrutar al especialista de ventas/técnico/facturación"
+   },
+   {
+    "n": "Agentes con múltiples herramientas",
+    "d": "parsear solicitud → seleccionar la herramienta/API adecuada"
+   },
+   {
+    "n": "Procesamiento de documentos",
+    "d": "clasificar tipo → aplicar el parser/flujo de trabajo correcto"
+   },
+   {
+    "n": "Enrutamiento de consultas",
+    "d": "entender la complejidad → enrutar a un modelo rápido/potente"
+   },
+   {
+    "n": "Selección de flujo de trabajo",
+    "d": "analizar tarea → elegir ejecución secuencial/paralela"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón LLM-Based Routing",
+  "description": "Demuestra un enrutamiento inteligente que usa un LLM para la clasificación de intención y la toma de decisiones",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Consulta entrante\n\"Me cobraron dos veces en la tarjeta de crédito\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "llm-router",
+    "label": "🧠 Enrutador LLM\nClasificación y análisis de intención",
+    "x": 375,
+    "y": 180,
+    "w": 300
+   },
+   {
+    "id": "intent-analysis",
+    "label": "Análisis de intención\n• Categoría: Facturación\n• Urgencia: Alta\n• Confianza: 92%",
+    "x": 50,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "billing-route",
+    "label": "💳 Equipo de facturación\nProblemas de pagos y suscripciones",
+    "x": 100,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "technical-route",
+    "label": "🔧 Soporte técnico\nProblemas y bugs del producto",
+    "x": 350,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "sales-route",
+    "label": "📦 Equipo de ventas\nPrecios y upgrades",
+    "x": 600,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "billing-processor",
+    "label": "Procesar solicitud de facturación\n• Verificar el cobro duplicado\n• Iniciar el reembolso\n• Enviar confirmación",
+    "x": 100,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "Respuesta al usuario\n\"Reembolso iniciado por el cobro duplicado\"",
+    "x": 400,
+    "y": 680,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-llm",
+    "s": "input",
+    "t": "llm-router",
+    "label": ""
+   },
+   {
+    "id": "e-llm-analysis",
+    "s": "llm-router",
+    "t": "intent-analysis",
+    "label": "Analizar"
+   },
+   {
+    "id": "e-llm-billing",
+    "s": "llm-router",
+    "t": "billing-route",
+    "label": "92% de confianza"
+   },
+   {
+    "id": "e-llm-technical",
+    "s": "llm-router",
+    "t": "technical-route",
+    "label": "5% de confianza"
+   },
+   {
+    "id": "e-llm-sales",
+    "s": "llm-router",
+    "t": "sales-route",
+    "label": "3% de confianza"
+   },
+   {
+    "id": "e-billing-processor",
+    "s": "billing-route",
+    "t": "billing-processor",
+    "label": ""
+   },
+   {
+    "id": "e-processor-output",
+    "s": "billing-processor",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta recibida",
+    "description": "El usuario envía una consulta que debe enrutarse al manejador adecuado.",
+    "input": "Consulta del usuario: \"Me cobraron dos veces en la tarjeta de crédito por la misma suscripción\"",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Activación del enrutador LLM",
+    "description": "El enrutador LLM recibe la consulta y comienza el análisis para determinar la ruta adecuada.",
+    "input": "Consulta enviada al LLM con el prompt de enrutamiento:\n\"Clasifica esta consulta en una de: facturación, técnico, ventas, seguridad, general\"",
+    "nodes": [
+     "input",
+     "llm-router"
+    ],
+    "edges": [
+     "e-input-llm"
+    ]
+   },
+   {
+    "title": "Clasificación de intención",
+    "description": "El LLM analiza la consulta para extraer la intención, la categoría y el nivel de urgencia.",
+    "input": "",
+    "nodes": [
+     "llm-router",
+     "intent-analysis"
+    ],
+    "edges": [
+     "e-llm-analysis"
+    ]
+   },
+   {
+    "title": "Decisión de enrutamiento",
+    "description": "Con base en la clasificación, el enrutador evalúa todas las rutas posibles con puntuaciones de confianza.",
+    "input": "",
+    "nodes": [
+     "llm-router",
+     "billing-route",
+     "technical-route",
+     "sales-route"
+    ],
+    "edges": [
+     "e-llm-billing",
+     "e-llm-technical",
+     "e-llm-sales"
+    ]
+   },
+   {
+    "title": "Selección de la ruta",
+    "description": "Se selecciona la ruta con mayor confianza y se reenvía la consulta.",
+    "input": "Consulta reenviada al equipo de facturación con contexto:\n• Consulta original\n• Resultados de la clasificación\n• Nivel de urgencia",
+    "nodes": [
+     "billing-route"
+    ],
+    "edges": [
+     "e-llm-billing"
+    ]
+   },
+   {
+    "title": "Procesamiento especializado",
+    "description": "El manejador del equipo de facturación procesa la solicitud con lógica específica del dominio.",
+    "input": "",
+    "nodes": [
+     "billing-route",
+     "billing-processor"
+    ],
+    "edges": [
+     "e-billing-processor"
+    ]
+   },
+   {
+    "title": "Generación de la respuesta",
+    "description": "El resultado procesado se formatea y se envía de vuelta al usuario.",
+    "input": "",
+    "nodes": [
+     "billing-processor",
+     "output"
+    ],
+    "edges": [
+     "e-processor-output"
+    ]
+   },
+   {
+    "title": "Variaciones del patrón",
+    "description": "El enrutador LLM se adapta a distintos tipos de consulta y siempre selecciona el manejador más adecuado.",
+    "input": "",
+    "nodes": [
+     "llm-router"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}

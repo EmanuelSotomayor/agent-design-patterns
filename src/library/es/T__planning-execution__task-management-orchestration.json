@@ -1,0 +1,646 @@
+{
+ "cat": "planning-execution",
+ "slug": "task-management-orchestration",
+ "name": "Task Management & Orchestration(TMO)",
+ "icon": "✅",
+ "complexity": "medium",
+ "description": "Descomposición sistemática de tareas, seguimiento del progreso y gestión adaptativa de flujos de trabajo para procesos complejos de varios pasos",
+ "features": [
+  "Descomposición dinámica de tareas",
+  "Seguimiento del estado del progreso",
+  "Gestión de dependencias",
+  "Orquestación por prioridades",
+  "Adaptación en tiempo real",
+  "Validación de la finalización",
+  "Detección de cuellos de botella",
+  "Coordinación de la ejecución en paralelo"
+ ],
+ "tldr": {
+  "what": "Descompone el trabajo complejo en tareas con seguimiento, dependencias, prioridades y estado, y las ejecuta en orden mientras detecta cuellos de botella.",
+  "when": "Proyectos de varios pasos donde las tareas dependen de salidas anteriores, el progreso necesita visibilidad y el orden de ejecución importa.",
+  "watchOut": "El costo de mantener el estado de las tareas puede superar el beneficio en flujos de trabajo lineales simples; la desincronización del estado provoca fallas en cascada."
+ },
+ "overview": {
+  "pattern": "Descomposición sistemática de tareas, seguimiento del progreso y gestión adaptativa de flujos de trabajo para procesos complejos de varios pasos",
+  "why": "Reduce la carga cognitiva, asegura la visibilidad del progreso, evita la duplicación del trabajo y permite una coordinación adaptativa en flujos de trabajo complejos",
+  "insight": "Registro de tareas + seguimiento del estado + gestión de dependencias + priorización adaptativa = ejecución organizada",
+  "impl": [
+   {
+    "t": "Inicializar",
+    "d": "Crea un registro de tareas con un esquema de seguimiento de estado"
+   },
+   {
+    "t": "Descomponer",
+    "d": "Divide los objetivos complejos en tareas accionables"
+   },
+   {
+    "t": "Orquestar",
+    "d": "Gestiona las dependencias, las prioridades y el flujo de ejecución"
+   },
+   {
+    "t": "Hacer seguimiento",
+    "d": "Monitorea el progreso y actualiza dinámicamente el estado de las tareas"
+   },
+   {
+    "t": "Adaptar",
+    "d": "Replanifica y vuelve a priorizar según el progreso y los cambios"
+   }
+  ],
+  "example": "task_registry.init() → decompose_goal() → orchestrate_workflow() → track_progress() → adapt_plan()",
+  "dos": [
+   "Usa un esquema claro de estados de tarea (pending/in_progress/completed/blocked)",
+   "Implementa seguimiento de dependencias y bloqueo/desbloqueo automático",
+   "Diseña una puntuación de prioridad adaptativa basada en plazos e impacto",
+   "Haz seguimiento de las métricas de finalización de tareas e identifica cuellos de botella",
+   "Implementa visibilidad del progreso y actualizaciones de estado en tiempo real",
+   "Usa operaciones atómicas sobre las tareas para evitar la corrupción del estado",
+   "Diseña para la ejecución de tareas en paralelo siempre que sea posible",
+   "Implementa mecanismos de rollback para secuencias de tareas fallidas"
+  ],
+  "donts": [
+   "Crear tareas demasiado granulares que aumenten la carga de gestión",
+   "Ignorar las dependencias entre tareas, lo que provoca bloqueos en la ejecución",
+   "Usar prioridades estáticas sin considerar los cambios de contexto",
+   "Omitir la validación de los criterios de finalización de las tareas",
+   "Permitir inconsistencias en el estado de las tareas entre operaciones concurrentes",
+   "Olvidar implementar el manejo de timeouts para tareas atascadas"
+  ],
+  "use": [
+   "Flujos de trabajo complejos de varios pasos con dependencias",
+   "Procesos iterativos de desarrollo y refinamiento",
+   "Proyectos que requieren visibilidad del progreso y reportes",
+   "Trabajo colaborativo que necesita coordinación",
+   "Entornos dinámicos con prioridades cambiantes",
+   "Procesos críticos para la calidad con checkpoints de validación"
+  ],
+  "avoid": [
+   "Secuencias lineales simples sin dependencias",
+   "Tareas únicas sin patrones repetitivos",
+   "Sistemas en tiempo real donde la sobrecarga de las tareas es prohibitiva",
+   "Flujos de trabajo muy predecibles y sin variabilidad",
+   "Entornos con recursos limitados",
+   "Tareas que se manejan mejor como operaciones atómicas"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de finalización de tareas",
+    "d": "% de tareas completadas frente a creadas a lo largo del tiempo"
+   },
+   {
+    "n": "Tiempo de ciclo",
+    "d": "Tiempo promedio desde la creación de la tarea hasta su finalización"
+   },
+   {
+    "n": "Resolución de dependencias",
+    "d": "% de conflictos de dependencias resueltos automáticamente"
+   },
+   {
+    "n": "Detección de cuellos de botella",
+    "d": "Tiempo para identificar y resolver cuellos de botella del flujo de trabajo"
+   },
+   {
+    "n": "Precisión de las prioridades",
+    "d": "% de tareas de alta prioridad completadas a tiempo"
+   },
+   {
+    "n": "Eficiencia del paralelismo",
+    "d": "% de tareas ejecutadas en paralelo frente a en secuencia"
+   },
+   {
+    "n": "Replanificación adaptativa",
+    "d": "Tasa de éxito de los ajustes dinámicos del plan"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Desarrollo de software",
+    "d": "Planificación de sprints, desglose de funcionalidades, seguimiento del progreso y coordinación de releases con gestión automatizada de dependencias"
+   },
+   {
+    "n": "Proyectos de investigación",
+    "d": "Fases de revisión bibliográfica, recolección de datos, análisis y redacción con programación adaptativa y seguimiento de hitos"
+   },
+   {
+    "n": "Creación de contenido",
+    "d": "Flujos de trabajo de investigación, borrador, edición, revisión y publicación con controles de calidad y coordinación de líneas paralelas"
+   },
+   {
+    "n": "Automatización de procesos de negocio",
+    "d": "Flujos de aprobación de varios pasos, verificaciones de cumplimiento y coordinación de partes interesadas con visibilidad en tiempo real"
+   },
+   {
+    "n": "Desarrollo de modelos de IA",
+    "d": "Preparación de datos, entrenamiento, validación, despliegue y monitoreo con seguimiento de experimentos y capacidad de rollback"
+   },
+   {
+    "n": "Gestión de proyectos",
+    "d": "Asignación de recursos, gestión de cronogramas, evaluación de riesgos y seguimiento de entregables con repriorización dinámica"
+   },
+   {
+    "n": "Aseguramiento de la calidad",
+    "d": "Planificación de pruebas, ejecución, seguimiento y resolución de defectos con regresión automatizada y análisis de cobertura"
+   },
+   {
+    "n": "Planificación de eventos",
+    "d": "Coordinación de proveedores, gestión de cronogramas, logística y planificación de contingencias con actualizaciones de estado en tiempo real"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Task Management & Orchestration",
+  "description": "Sistema de orquestación integral que divide solicitudes complejas en tareas manejables, coordina la ejecución entre varios agentes y gestiona dependencias y flujos de trabajo.",
+  "nodes": [
+   {
+    "id": "complex-request",
+    "label": "🎯 Solicitud compleja\n\"Construir un sistema de recomendación con un pipeline de ML\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "orchestrator",
+    "label": "🎼 Orquestador de tareas\nCentro de coordinación",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "task-analyzer",
+    "label": "🔍 Analizador de tareas\nDescompone y prioriza",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "dependency-mapper",
+    "label": "🗺️ Mapeador de dependencias\nIdentifica las relaciones entre tareas",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "resource-scheduler",
+    "label": "📅 Programador de recursos\nAsigna agentes y recursos",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "progress-tracker",
+    "label": "📊 Rastreador de progreso\nMonitorea el estado de finalización",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "task-queue",
+    "label": "📋 Cola de tareas\n• Recolección de datos (pendiente)\n• Ingeniería de características (pendiente)\n• Entrenamiento del modelo (pendiente)\n• Desarrollo de la API (pendiente)",
+    "x": 200,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "active-task-1",
+    "label": "⚡ Activa: Recolección de datos\nAgente: DataAgent\nProgreso: 75%",
+    "x": 450,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "active-task-2",
+    "label": "⚡ Activa: Configurar infraestructura\nAgente: DevOpsAgent\nProgreso: 100%",
+    "x": 650,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "data-agent",
+    "label": "🤖 Agente de datos\nRecolecta y preprocesa datos",
+    "x": 50,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "ml-agent",
+    "label": "🧠 Agente de ML\nEntrena y evalúa modelos",
+    "x": 200,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "devops-agent",
+    "label": "⚙️ Agente de DevOps\nConfigura la infraestructura",
+    "x": 350,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "api-agent",
+    "label": "🌐 Agente de API\nConstruye endpoints REST",
+    "x": 500,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "test-agent",
+    "label": "🧪 Agente de pruebas\nValida y prueba el sistema",
+    "x": 650,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "checkpoint-manager",
+    "label": "💾 Gestor de checkpoints\nGuarda los estados de progreso",
+    "x": 100,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "error-handler",
+    "label": "🚨 Manejador de errores\nGestiona fallas y reintentos",
+    "x": 300,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "adaptive-replanner",
+    "label": "🔄 Replanificador adaptativo\nAjusta el flujo de trabajo dinámicamente",
+    "x": 500,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "quality-gate",
+    "label": "✅ Control de calidad\nValida las salidas de las tareas",
+    "x": 700,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "result-aggregator",
+    "label": "🔗 Agregador de resultados\nCombina las salidas de las tareas",
+    "x": 300,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "report-generator",
+    "label": "📝 Generador de reportes\nCrea reportes de estado",
+    "x": 500,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "output",
+    "label": "✨ Sistema completado\nSistema de recomendación completamente desplegado",
+    "x": 400,
+    "y": 900,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-orchestrator",
+    "s": "complex-request",
+    "t": "orchestrator",
+    "label": ""
+   },
+   {
+    "id": "orchestrator-analyzer",
+    "s": "orchestrator",
+    "t": "task-analyzer",
+    "label": "Analizar"
+   },
+   {
+    "id": "orchestrator-dependency",
+    "s": "orchestrator",
+    "t": "dependency-mapper",
+    "label": "Mapear"
+   },
+   {
+    "id": "orchestrator-scheduler",
+    "s": "orchestrator",
+    "t": "resource-scheduler",
+    "label": "Programar"
+   },
+   {
+    "id": "orchestrator-tracker",
+    "s": "orchestrator",
+    "t": "progress-tracker",
+    "label": "Seguir"
+   },
+   {
+    "id": "analyzer-queue",
+    "s": "task-analyzer",
+    "t": "task-queue",
+    "label": "Encolar tareas"
+   },
+   {
+    "id": "dependency-queue",
+    "s": "dependency-mapper",
+    "t": "task-queue",
+    "label": "Ordenar tareas"
+   },
+   {
+    "id": "scheduler-active1",
+    "s": "resource-scheduler",
+    "t": "active-task-1",
+    "label": "Asignar"
+   },
+   {
+    "id": "scheduler-active2",
+    "s": "resource-scheduler",
+    "t": "active-task-2",
+    "label": "Asignar"
+   },
+   {
+    "id": "queue-active1",
+    "s": "task-queue",
+    "t": "active-task-1",
+    "label": "Desencolar"
+   },
+   {
+    "id": "active1-data",
+    "s": "active-task-1",
+    "t": "data-agent",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "active2-devops",
+    "s": "active-task-2",
+    "t": "devops-agent",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "data-tracker",
+    "s": "data-agent",
+    "t": "progress-tracker",
+    "label": "Actualizar"
+   },
+   {
+    "id": "ml-tracker",
+    "s": "ml-agent",
+    "t": "progress-tracker",
+    "label": "Actualizar"
+   },
+   {
+    "id": "devops-tracker",
+    "s": "devops-agent",
+    "t": "progress-tracker",
+    "label": "Actualizar"
+   },
+   {
+    "id": "api-tracker",
+    "s": "api-agent",
+    "t": "progress-tracker",
+    "label": "Actualizar"
+   },
+   {
+    "id": "test-tracker",
+    "s": "test-agent",
+    "t": "progress-tracker",
+    "label": "Actualizar"
+   },
+   {
+    "id": "tracker-checkpoint",
+    "s": "progress-tracker",
+    "t": "checkpoint-manager",
+    "label": "Guardar estado"
+   },
+   {
+    "id": "agents-error",
+    "s": "data-agent",
+    "t": "error-handler",
+    "label": "Si hay error"
+   },
+   {
+    "id": "error-replanner",
+    "s": "error-handler",
+    "t": "adaptive-replanner",
+    "label": "Activar"
+   },
+   {
+    "id": "replanner-orchestrator",
+    "s": "adaptive-replanner",
+    "t": "orchestrator",
+    "label": "Replanificar"
+   },
+   {
+    "id": "agents-quality",
+    "s": "api-agent",
+    "t": "quality-gate",
+    "label": "Validar"
+   },
+   {
+    "id": "quality-aggregator",
+    "s": "quality-gate",
+    "t": "result-aggregator",
+    "label": "Aprobado"
+   },
+   {
+    "id": "checkpoint-aggregator",
+    "s": "checkpoint-manager",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "aggregator-report",
+    "s": "result-aggregator",
+    "t": "report-generator",
+    "label": ""
+   },
+   {
+    "id": "report-output",
+    "s": "report-generator",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "aggregator-output",
+    "s": "result-aggregator",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada de la solicitud compleja",
+    "description": "Recibe una solicitud compleja de varios pasos que requiere orquestación",
+    "input": "",
+    "nodes": [
+     "complex-request"
+    ],
+    "edges": [
+     "request-orchestrator"
+    ]
+   },
+   {
+    "title": "Inicializar la orquestación",
+    "description": "El orquestador analiza la solicitud e inicializa los sistemas de gestión",
+    "input": "",
+    "nodes": [
+     "orchestrator",
+     "task-analyzer",
+     "dependency-mapper",
+     "resource-scheduler",
+     "progress-tracker"
+    ],
+    "edges": [
+     "orchestrator-analyzer",
+     "orchestrator-dependency",
+     "orchestrator-scheduler",
+     "orchestrator-tracker"
+    ]
+   },
+   {
+    "title": "Descomposición de tareas",
+    "description": "Divide la solicitud compleja en tareas manejables con dependencias",
+    "input": "",
+    "nodes": [
+     "task-analyzer",
+     "dependency-mapper",
+     "task-queue"
+    ],
+    "edges": [
+     "analyzer-queue",
+     "dependency-queue"
+    ]
+   },
+   {
+    "title": "Asignación de recursos",
+    "description": "Programa las tareas y las asigna a agentes especializados",
+    "input": "",
+    "nodes": [
+     "resource-scheduler",
+     "task-queue",
+     "active-task-1",
+     "active-task-2"
+    ],
+    "edges": [
+     "scheduler-active1",
+     "scheduler-active2",
+     "queue-active1"
+    ]
+   },
+   {
+    "title": "Ejecución en paralelo",
+    "description": "Varios agentes trabajan en tareas de forma concurrente",
+    "input": "",
+    "nodes": [
+     "active-task-1",
+     "active-task-2",
+     "data-agent",
+     "devops-agent"
+    ],
+    "edges": [
+     "active1-data",
+     "active2-devops"
+    ]
+   },
+   {
+    "title": "Monitoreo del progreso",
+    "description": "Hace seguimiento de la finalización de tareas y actualiza las métricas de progreso",
+    "input": "",
+    "nodes": [
+     "data-agent",
+     "devops-agent",
+     "progress-tracker"
+    ],
+    "edges": [
+     "data-tracker",
+     "devops-tracker"
+    ]
+   },
+   {
+    "title": "Guardado de checkpoints",
+    "description": "Guarda el estado del progreso para la recuperación y el seguimiento",
+    "input": "",
+    "nodes": [
+     "progress-tracker",
+     "checkpoint-manager"
+    ],
+    "edges": [
+     "tracker-checkpoint"
+    ]
+   },
+   {
+    "title": "Manejo de errores",
+    "description": "Detecta y maneja fallas de tareas con lógica de reintentos",
+    "input": "",
+    "nodes": [
+     "data-agent",
+     "error-handler",
+     "adaptive-replanner"
+    ],
+    "edges": [
+     "agents-error",
+     "error-replanner"
+    ]
+   },
+   {
+    "title": "Replanificación adaptativa",
+    "description": "Ajusta dinámicamente el flujo de trabajo según las fallas o los cambios",
+    "input": "",
+    "nodes": [
+     "adaptive-replanner",
+     "orchestrator"
+    ],
+    "edges": [
+     "replanner-orchestrator"
+    ]
+   },
+   {
+    "title": "Validación de calidad",
+    "description": "Valida que las salidas de las tareas cumplan los estándares de calidad",
+    "input": "",
+    "nodes": [
+     "api-agent",
+     "quality-gate"
+    ],
+    "edges": [
+     "agents-quality"
+    ]
+   },
+   {
+    "title": "Agregación de resultados",
+    "description": "Combina las salidas de todas las tareas completadas",
+    "input": "",
+    "nodes": [
+     "quality-gate",
+     "checkpoint-manager",
+     "result-aggregator"
+    ],
+    "edges": [
+     "quality-aggregator",
+     "checkpoint-aggregator"
+    ]
+   },
+   {
+    "title": "Generación de reportes",
+    "description": "Genera reportes completos de estado y finalización",
+    "input": "",
+    "nodes": [
+     "result-aggregator",
+     "report-generator"
+    ],
+    "edges": [
+     "aggregator-report"
+    ]
+   },
+   {
+    "title": "Salida final",
+    "description": "Entrega el sistema completado con documentación completa",
+    "input": "",
+    "nodes": [
+     "report-generator",
+     "result-aggregator",
+     "output"
+    ],
+    "edges": [
+     "report-output",
+     "aggregator-output"
+    ]
+   }
+  ]
+ }
+}

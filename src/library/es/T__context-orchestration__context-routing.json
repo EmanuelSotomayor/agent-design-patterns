@@ -1,0 +1,379 @@
+{
+ "cat": "context-orchestration",
+ "slug": "context-routing",
+ "name": "Intelligent Context Routing(ICR)",
+ "icon": "🎯",
+ "complexity": "medium",
+ "description": "Enrutamiento dinámico de la información contextual hacia los componentes de procesamiento más adecuados según la coincidencia de capacidades",
+ "features": [
+  "Enrutamiento basado en capacidades",
+  "Balanceo de carga",
+  "Descomposición del contexto",
+  "Manejo de prioridades",
+  "Mecanismos de respaldo",
+  "Optimización del rendimiento"
+ ],
+ "tldr": {
+  "what": "Enruta el contexto entrante hacia agentes especializados según el tipo de contenido, el idioma, el dominio y la coincidencia de capacidades, con cadenas de respaldo cuando fallan las rutas principales.",
+  "when": "Solicitudes multimodales o de varios dominios en las que distintos componentes manejan mejor distintos tipos de contenido o áreas de especialización que un único procesador.",
+  "watchOut": "Las decisiones de enrutamiento agregan latencia y pueden enrutar mal si los metadatos de capacidades quedan desactualizados o no reflejan el rendimiento real de los agentes."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Enrutamiento inteligente del contexto",
+  "description": "Un agente enrutador divide una queja de cliente con modalidades mixtas en porciones de contexto tipadas, puntúa la relevancia de cada una y luego la dirige al especialista más adecuado dentro de restricciones de presupuesto de tokens y de tiempo. Los agentes sobrecargados disparan un reenrutamiento de respaldo, y los resultados se vuelven a ensamblar en una única resolución.",
+  "nodes": [
+   {
+    "id": "incoming-context",
+    "label": "📥 Contexto entrante\nQueja: texto + imágenes + video\nEn español · prioridad alta · SLA de 2h",
+    "x": 330,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "router-agent",
+    "label": "🎯 Enrutador de contexto\nAsigna cada porción a un especialista",
+    "x": 360,
+    "y": 155,
+    "w": 260
+   },
+   {
+    "id": "context-decomposer",
+    "label": "✂️ Descomponedor de contexto\nDivide en porciones tipadas",
+    "x": 370,
+    "y": 250,
+    "w": 230
+   },
+   {
+    "id": "relevance-scorer",
+    "label": "📊 Evaluador de relevancia\nOrdena las porciones por valor para la tarea",
+    "x": 20,
+    "y": 360,
+    "w": 200
+   },
+   {
+    "id": "budget-manager",
+    "label": "💰 Gestor de presupuesto\nPresupuesto de tokens + tiempo por ruta",
+    "x": 250,
+    "y": 360,
+    "w": 200
+   },
+   {
+    "id": "load-balancer",
+    "label": "⚖️ Balanceador de carga\nVerifica la capacidad de los agentes",
+    "x": 480,
+    "y": 360,
+    "w": 200
+   },
+   {
+    "id": "fallback-router",
+    "label": "🚨 Enrutador de respaldo\nReenruta el excedente al respaldo",
+    "x": 710,
+    "y": 360,
+    "w": 200
+   },
+   {
+    "id": "text-slice",
+    "label": "📝 Porción de texto\nCuerpo de la queja en español",
+    "x": 60,
+    "y": 480,
+    "w": 190
+   },
+   {
+    "id": "image-slice",
+    "label": "🖼️ Porción de imagen\nCapturas de pantalla del error",
+    "x": 360,
+    "y": 480,
+    "w": 190
+   },
+   {
+    "id": "video-slice",
+    "label": "🎬 Porción de video\nGrabación de pantalla",
+    "x": 660,
+    "y": 480,
+    "w": 190
+   },
+   {
+    "id": "text-specialist",
+    "label": "🗣️ Especialista en texto\nEspañol nativo + dominio técnico",
+    "x": 20,
+    "y": 600,
+    "w": 185
+   },
+   {
+    "id": "image-analyzer",
+    "label": "👁️ Analizador de imágenes\nVisión + OCR · 80% de carga",
+    "x": 250,
+    "y": 600,
+    "w": 185
+   },
+   {
+    "id": "video-processor",
+    "label": "🎞️ Procesador de video\nTranscripción + análisis visual",
+    "x": 480,
+    "y": 600,
+    "w": 185
+   },
+   {
+    "id": "tech-support",
+    "label": "🛠️ Soporte técnico\nResolución por experto del dominio",
+    "x": 710,
+    "y": 600,
+    "w": 185
+   },
+   {
+    "id": "result-aggregator",
+    "label": "🧩 Agregador de resultados\nCombina las salidas de los especialistas",
+    "x": 330,
+    "y": 710,
+    "w": 240
+   },
+   {
+    "id": "resolution",
+    "label": "✅ Resolución\n96% de precisión · respondida dentro del SLA",
+    "x": 350,
+    "y": 795,
+    "w": 270
+   }
+  ],
+  "edges": [
+   {
+    "id": "context-router",
+    "s": "incoming-context",
+    "t": "router-agent",
+    "label": ""
+   },
+   {
+    "id": "router-decomposer",
+    "s": "router-agent",
+    "t": "context-decomposer",
+    "label": "Descomponer"
+   },
+   {
+    "id": "decomposer-relevance",
+    "s": "context-decomposer",
+    "t": "relevance-scorer",
+    "label": "Puntuar porciones"
+   },
+   {
+    "id": "decomposer-budget",
+    "s": "context-decomposer",
+    "t": "budget-manager",
+    "label": "Asignar"
+   },
+   {
+    "id": "relevance-text",
+    "s": "relevance-scorer",
+    "t": "text-slice",
+    "label": ""
+   },
+   {
+    "id": "relevance-image",
+    "s": "relevance-scorer",
+    "t": "image-slice",
+    "label": ""
+   },
+   {
+    "id": "relevance-video",
+    "s": "relevance-scorer",
+    "t": "video-slice",
+    "label": ""
+   },
+   {
+    "id": "budget-load",
+    "s": "budget-manager",
+    "t": "load-balancer",
+    "label": "Presupuesto"
+   },
+   {
+    "id": "load-fallback",
+    "s": "load-balancer",
+    "t": "fallback-router",
+    "label": "Excedente"
+   },
+   {
+    "id": "text-textspec",
+    "s": "text-slice",
+    "t": "text-specialist",
+    "label": "Enrutar"
+   },
+   {
+    "id": "image-imageanalyzer",
+    "s": "image-slice",
+    "t": "image-analyzer",
+    "label": "Enrutar"
+   },
+   {
+    "id": "video-videoproc",
+    "s": "video-slice",
+    "t": "video-processor",
+    "label": "Enrutar"
+   },
+   {
+    "id": "load-image-monitor",
+    "s": "load-balancer",
+    "t": "image-analyzer",
+    "label": "Capacidad 80%"
+   },
+   {
+    "id": "fallback-aggregator",
+    "s": "fallback-router",
+    "t": "result-aggregator",
+    "label": "Resultado secundario"
+   },
+   {
+    "id": "textspec-tech",
+    "s": "text-specialist",
+    "t": "tech-support",
+    "label": ""
+   },
+   {
+    "id": "imageanalyzer-tech",
+    "s": "image-analyzer",
+    "t": "tech-support",
+    "label": ""
+   },
+   {
+    "id": "videoproc-tech",
+    "s": "video-processor",
+    "t": "tech-support",
+    "label": ""
+   },
+   {
+    "id": "tech-aggregator",
+    "s": "tech-support",
+    "t": "result-aggregator",
+    "label": "Resolver"
+   },
+   {
+    "id": "aggregator-resolution",
+    "s": "result-aggregator",
+    "t": "resolution",
+    "label": "Entregar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Contexto mixto entrante",
+    "description": "Llega una queja de cliente en español, de alta prioridad, que combina texto, imágenes y video con un SLA de dos horas, más de lo que cualquier agente individual maneja bien.",
+    "input": "",
+    "nodes": [
+     "incoming-context",
+     "router-agent"
+    ],
+    "edges": [
+     "context-router"
+    ]
+   },
+   {
+    "title": "Descomposición del contexto",
+    "description": "El enrutador entrega el contenido al descomponedor, que lo divide en porciones tipadas para que cada modalidad pueda enrutarse de forma independiente.",
+    "input": "",
+    "nodes": [
+     "router-agent",
+     "context-decomposer"
+    ],
+    "edges": [
+     "router-decomposer"
+    ]
+   },
+   {
+    "title": "Puntuación de relevancia",
+    "description": "El evaluador de relevancia ordena cada porción según cuánto contribuye a resolver la queja, y produce porciones priorizadas de texto, imagen y video.",
+    "input": "",
+    "nodes": [
+     "context-decomposer",
+     "relevance-scorer",
+     "text-slice",
+     "image-slice",
+     "video-slice"
+    ],
+    "edges": [
+     "decomposer-relevance",
+     "relevance-text",
+     "relevance-image",
+     "relevance-video"
+    ]
+   },
+   {
+    "title": "Presupuesto y balanceo de carga",
+    "description": "El gestor de presupuesto fija límites de tokens y de tiempo por ruta, mientras el balanceador de carga verifica la capacidad de los agentes y prepara el enrutador de respaldo para el excedente.",
+    "input": "",
+    "nodes": [
+     "context-decomposer",
+     "budget-manager",
+     "load-balancer",
+     "fallback-router"
+    ],
+    "edges": [
+     "decomposer-budget",
+     "budget-load",
+     "load-fallback"
+    ]
+   },
+   {
+    "title": "Enrutamiento basado en capacidades",
+    "description": "Cada porción se enruta al especialista más adecuado: el texto en español al especialista en texto, las capturas de pantalla al analizador de imágenes y la grabación al procesador de video.",
+    "input": "",
+    "nodes": [
+     "text-slice",
+     "image-slice",
+     "video-slice",
+     "text-specialist",
+     "image-analyzer",
+     "video-processor"
+    ],
+    "edges": [
+     "text-textspec",
+     "image-imageanalyzer",
+     "video-videoproc"
+    ]
+   },
+   {
+    "title": "Respaldo ante el excedente",
+    "description": "El balanceador de carga detecta que el analizador de imágenes ya está al 80% de su capacidad, así que el enrutador de respaldo pone en marcha un procesamiento secundario y envía su resultado al agregador.",
+    "input": "",
+    "nodes": [
+     "load-balancer",
+     "image-analyzer",
+     "fallback-router",
+     "result-aggregator"
+    ],
+    "edges": [
+     "load-image-monitor",
+     "fallback-aggregator"
+    ]
+   },
+   {
+    "title": "Resolución en el dominio",
+    "description": "Una vez analizadas todas las porciones, los especialistas pasan sus hallazgos a soporte técnico, el experto del dominio que determina la resolución real.",
+    "input": "",
+    "nodes": [
+     "text-specialist",
+     "image-analyzer",
+     "video-processor",
+     "tech-support"
+    ],
+    "edges": [
+     "textspec-tech",
+     "imageanalyzer-tech",
+     "videoproc-tech"
+    ]
+   },
+   {
+    "title": "Respuesta agregada",
+    "description": "El agregador combina las salidas de los especialistas y del respaldo en una única respuesta, entregada con holgura dentro del SLA de dos horas.",
+    "input": "",
+    "nodes": [
+     "tech-support",
+     "result-aggregator",
+     "resolution"
+    ],
+    "edges": [
+     "tech-aggregator",
+     "aggregator-resolution"
+    ]
+   }
+  ]
+ }
+}

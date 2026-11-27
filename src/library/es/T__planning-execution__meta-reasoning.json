@@ -1,0 +1,626 @@
+{
+ "cat": "planning-execution",
+ "slug": "meta-reasoning",
+ "name": "Meta-Reasoning(MR)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Razonamiento de orden superior sobre los procesos de razonamiento, incluyendo la selección y el monitoreo de estrategias",
+ "features": [
+  "Selección de estrategias de razonamiento",
+  "Coordinación del razonamiento en múltiples niveles",
+  "Monitoreo del rendimiento de las estrategias",
+  "Cambio dinámico de estrategia",
+  "Transferencia de estrategias entre dominios",
+  "Monitoreo metacognitivo"
+ ],
+ "tldr": {
+  "what": "El agente monitorea y selecciona sus propias estrategias de razonamiento, cambiando de enfoque según el tipo de tarea y el feedback de rendimiento.",
+  "when": "Problemas complejos de múltiples dominios donde distintas subtareas necesitan distintos métodos de razonamiento y el agente debe adaptarse a mitad de la ejecución.",
+  "watchOut": "La sobrecarga de seleccionar y monitorear estrategias puede superar el ahorro de elegir un mejor enfoque, especialmente en tareas simples o con restricciones de tiempo."
+ },
+ "overview": {
+  "pattern": "Sistema de IA que monitorea y optimiza sus propios procesos de razonamiento",
+  "why": "Habilita inteligencia adaptativa, selección de estrategias y automejora en dominios complejos",
+  "insight": "Arquitectura de tres capas: ejecución a nivel de objeto → capa de monitoreo → capa de metarrazonamiento para la selección óptima de estrategias",
+  "impl": [
+   {
+    "t": "Capa de monitoreo",
+    "d": "Registrar el rendimiento, los recursos y la calidad de las decisiones"
+   },
+   {
+    "t": "Evaluar la estrategia",
+    "d": "Evaluar la eficacia del enfoque de razonamiento actual"
+   },
+   {
+    "t": "Seleccionar el método",
+    "d": "Elegir la estrategia de razonamiento óptima para la tarea"
+   },
+   {
+    "t": "Ejecutar y monitorear",
+    "d": "Aplicar la estrategia mientras se registra el progreso"
+   },
+   {
+    "t": "Adaptar y aprender",
+    "d": "Cambiar de estrategia si es necesario, actualizar las preferencias"
+   }
+  ],
+  "example": "detect_problem → assess_confidence → select_strategy → execute → monitor → adapt",
+  "dos": [
+   "Implementa una arquitectura de tres capas: Objeto → Monitoreo → Meta",
+   "Registra puntuaciones de confianza y métricas de calidad de las decisiones",
+   "Usa una selección de estrategias basada en las características de la tarea",
+   "Monitorea el uso de recursos y la eficiencia computacional",
+   "Construye un historial de rendimiento de las estrategias para aprender",
+   "Implementa un manejo de fallas y una recuperación ordenados"
+  ],
+  "donts": [
+   "Agregar metarrazonamiento a cada tarea simple (sobrecarga)",
+   "Ignorar el costo computacional de la capa de metarrazonamiento",
+   "Usar una confianza genérica sin calibración por dominio",
+   "No cambiar de estrategia cuando el rendimiento es claramente deficiente",
+   "Implementar sin preguntas metacognitivas claras"
+  ],
+  "use": [
+   "Problemas complejos de múltiples dominios",
+   "Entornos inciertos o dinámicos",
+   "Hay múltiples estrategias de razonamiento disponibles",
+   "Necesidad de inteligencia adaptativa",
+   "Decisiones de misión crítica",
+   "Escenarios con recursos limitados"
+  ],
+  "avoid": [
+   "Tareas simples y bien definidas",
+   "Requisitos de baja latencia en tiempo real",
+   "Existe una única estrategia óptima",
+   "Recursos computacionales limitados",
+   "Entornos deterministas",
+   "Sistemas básicos de consulta-respuesta"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión en la selección de estrategias",
+    "d": "% de veces que se elige la estrategia óptima"
+   },
+   {
+    "n": "Tasa de finalización de tareas",
+    "d": "% de tareas completadas con éxito"
+   },
+   {
+    "n": "Puntuación de calidad de las decisiones",
+    "d": "Calidad ponderada del resultado (0-1)"
+   },
+   {
+    "n": "Velocidad de adaptación",
+    "d": "Tiempo para cambiar de estrategia"
+   },
+   {
+    "n": "Eficiencia de recursos",
+    "d": "Performance/computational_cost"
+   },
+   {
+    "n": "Calibración de la confianza",
+    "d": "Tasa de éxito predicha frente a la real"
+   },
+   {
+    "n": "Tasa de aprendizaje",
+    "d": "Mejora de las estrategias con el tiempo"
+   },
+   {
+    "n": "Sobrecarga del metarrazonamiento",
+    "d": "% de cómputo adicional frente al enfoque directo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Sistemas autónomos",
+    "d": "Autos autónomos que se adaptan a las condiciones del clima y del tráfico"
+   },
+   {
+    "n": "Diagnóstico médico",
+    "d": "Cambiar entre enfoques de diagnóstico según los síntomas"
+   },
+   {
+    "n": "Trading financiero",
+    "d": "Adaptar estrategias según la volatilidad del mercado"
+   },
+   {
+    "n": "IA multimodal",
+    "d": "Elegir entre estrategias de procesamiento de visión, texto y audio"
+   },
+   {
+    "n": "Asistencia en investigación",
+    "d": "Seleccionar métodos de búsqueda/análisis según el tipo de consulta"
+   },
+   {
+    "n": "Juegos",
+    "d": "Selección dinámica de estrategias según el comportamiento del oponente"
+   },
+   {
+    "n": "Robótica",
+    "d": "Adaptar estrategias de manipulación según las propiedades del objeto"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "Estrategias de enrutamiento según la complejidad del problema"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Meta-Reasoning",
+  "description": "Razonamiento de orden superior sobre los propios procesos de razonamiento, que permite a los agentes monitorear, evaluar y optimizar sus propias estrategias de razonamiento y enfoques de toma de decisiones.",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "🎯 Entrada de un problema complejo",
+    "x": 400,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "meta-controller",
+    "label": "🧠 Controlador de metarrazonamiento",
+    "x": 350,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "problem-analysis",
+    "label": "🔍 Análisis del problema\nEvaluación de la complejidad, identificación del dominio",
+    "x": 100,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "strategy-selection",
+    "label": "📋 Selección de estrategia\nElegir el enfoque de razonamiento",
+    "x": 350,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "resource-allocation",
+    "label": "⚡ Asignación de recursos\nTiempo, cómputo, memoria",
+    "x": 600,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "cot-strategy",
+    "label": "💭 Chain of Thought\nPara razonamiento secuencial",
+    "x": 50,
+    "y": 380,
+    "w": 150
+   },
+   {
+    "id": "tot-strategy",
+    "label": "🌳 Tree of Thoughts\nPara problemas de exploración",
+    "x": 200,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "debate-strategy",
+    "label": "⚖️ Chain of Debates\nPara decisiones con matices",
+    "x": 350,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "react-strategy",
+    "label": "🔄 Patrón ReAct\nPara tareas que usan herramientas",
+    "x": 500,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "custom-strategy",
+    "label": "🎨 Estrategia personalizada\nEnfoque específico del dominio",
+    "x": 650,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "execution",
+    "label": "⚙️ Ejecución de la estrategia\nEjecutar el enfoque seleccionado",
+    "x": 350,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "progress-monitor",
+    "label": "📊 Monitoreo del progreso\nRegistrar resultados intermedios",
+    "x": 100,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "adaptation",
+    "label": "🔄 Adaptación dinámica\nAjustar la estrategia si es necesario",
+    "x": 350,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "cross-validation",
+    "label": "✅ Validación cruzada\nVerificar la calidad del razonamiento",
+    "x": 600,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "result-synthesis",
+    "label": "🔗 Síntesis de resultados\nCombinar hallazgos",
+    "x": 350,
+    "y": 720,
+    "w": 200
+   },
+   {
+    "id": "confidence-assessment",
+    "label": "📈 Evaluación de la confianza\nEvaluar la calidad de la solución",
+    "x": 100,
+    "y": 820,
+    "w": 200
+   },
+   {
+    "id": "explanation-generation",
+    "label": "📝 Generación de explicaciones\nJustificar la ruta de razonamiento",
+    "x": 350,
+    "y": 820,
+    "w": 200
+   },
+   {
+    "id": "learning-update",
+    "label": "🎓 Actualización del aprendizaje\nMejorar las selecciones futuras",
+    "x": 600,
+    "y": 820,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "✨ Solución con metahallazgos",
+    "x": 350,
+    "y": 940,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-meta",
+    "s": "input",
+    "t": "meta-controller",
+    "label": ""
+   },
+   {
+    "id": "meta-analysis",
+    "s": "meta-controller",
+    "t": "problem-analysis",
+    "label": "Analizar"
+   },
+   {
+    "id": "meta-strategy",
+    "s": "meta-controller",
+    "t": "strategy-selection",
+    "label": "Seleccionar"
+   },
+   {
+    "id": "meta-resource",
+    "s": "meta-controller",
+    "t": "resource-allocation",
+    "label": "Asignar"
+   },
+   {
+    "id": "analysis-strategy",
+    "s": "problem-analysis",
+    "t": "strategy-selection",
+    "label": ""
+   },
+   {
+    "id": "strategy-cot",
+    "s": "strategy-selection",
+    "t": "cot-strategy",
+    "label": "Secuencial"
+   },
+   {
+    "id": "strategy-tot",
+    "s": "strategy-selection",
+    "t": "tot-strategy",
+    "label": "Exploratorio"
+   },
+   {
+    "id": "strategy-debate",
+    "s": "strategy-selection",
+    "t": "debate-strategy",
+    "label": "Con matices"
+   },
+   {
+    "id": "strategy-react",
+    "s": "strategy-selection",
+    "t": "react-strategy",
+    "label": "Interactivo"
+   },
+   {
+    "id": "strategy-custom",
+    "s": "strategy-selection",
+    "t": "custom-strategy",
+    "label": "Especializado"
+   },
+   {
+    "id": "cot-execution",
+    "s": "cot-strategy",
+    "t": "execution",
+    "label": ""
+   },
+   {
+    "id": "tot-execution",
+    "s": "tot-strategy",
+    "t": "execution",
+    "label": ""
+   },
+   {
+    "id": "debate-execution",
+    "s": "debate-strategy",
+    "t": "execution",
+    "label": ""
+   },
+   {
+    "id": "react-execution",
+    "s": "react-strategy",
+    "t": "execution",
+    "label": ""
+   },
+   {
+    "id": "custom-execution",
+    "s": "custom-strategy",
+    "t": "execution",
+    "label": ""
+   },
+   {
+    "id": "resource-execution",
+    "s": "resource-allocation",
+    "t": "execution",
+    "label": ""
+   },
+   {
+    "id": "execution-monitor",
+    "s": "execution",
+    "t": "progress-monitor",
+    "label": "Registrar"
+   },
+   {
+    "id": "execution-adapt",
+    "s": "execution",
+    "t": "adaptation",
+    "label": "Ajustar"
+   },
+   {
+    "id": "execution-validate",
+    "s": "execution",
+    "t": "cross-validation",
+    "label": "Verificar"
+   },
+   {
+    "id": "monitor-adapt",
+    "s": "progress-monitor",
+    "t": "adaptation",
+    "label": ""
+   },
+   {
+    "id": "adapt-execution",
+    "s": "adaptation",
+    "t": "execution",
+    "label": "Reintentar"
+   },
+   {
+    "id": "adapt-meta",
+    "s": "adaptation",
+    "t": "meta-controller",
+    "label": "Escalar"
+   },
+   {
+    "id": "monitor-synthesis",
+    "s": "progress-monitor",
+    "t": "result-synthesis",
+    "label": ""
+   },
+   {
+    "id": "adapt-synthesis",
+    "s": "adaptation",
+    "t": "result-synthesis",
+    "label": ""
+   },
+   {
+    "id": "validate-synthesis",
+    "s": "cross-validation",
+    "t": "result-synthesis",
+    "label": ""
+   },
+   {
+    "id": "synthesis-confidence",
+    "s": "result-synthesis",
+    "t": "confidence-assessment",
+    "label": ""
+   },
+   {
+    "id": "synthesis-explanation",
+    "s": "result-synthesis",
+    "t": "explanation-generation",
+    "label": ""
+   },
+   {
+    "id": "synthesis-learning",
+    "s": "result-synthesis",
+    "t": "learning-update",
+    "label": ""
+   },
+   {
+    "id": "confidence-output",
+    "s": "confidence-assessment",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "explanation-output",
+    "s": "explanation-generation",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "learning-output",
+    "s": "learning-update",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "learning-meta",
+    "s": "learning-update",
+    "t": "meta-controller",
+    "label": "Mejorar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada del problema",
+    "description": "Problema complejo que requiere un razonamiento sofisticado",
+    "input": "",
+    "nodes": [
+     "input"
+    ],
+    "edges": [
+     "input-meta"
+    ]
+   },
+   {
+    "title": "Análisis a nivel meta",
+    "description": "El controlador analiza las características y los requisitos del problema",
+    "input": "",
+    "nodes": [
+     "meta-controller",
+     "problem-analysis",
+     "strategy-selection",
+     "resource-allocation"
+    ],
+    "edges": [
+     "meta-analysis",
+     "meta-strategy",
+     "meta-resource",
+     "analysis-strategy"
+    ]
+   },
+   {
+    "title": "Selección de estrategia",
+    "description": "Elegir la estrategia de razonamiento óptima según el tipo de problema",
+    "input": "",
+    "nodes": [
+     "strategy-selection",
+     "cot-strategy",
+     "tot-strategy",
+     "debate-strategy",
+     "react-strategy",
+     "custom-strategy"
+    ],
+    "edges": [
+     "strategy-cot",
+     "strategy-tot",
+     "strategy-debate",
+     "strategy-react",
+     "strategy-custom"
+    ]
+   },
+   {
+    "title": "Ejecución de la estrategia",
+    "description": "Ejecutar el enfoque de razonamiento seleccionado con los recursos asignados",
+    "input": "",
+    "nodes": [
+     "execution",
+     "debate-strategy"
+    ],
+    "edges": [
+     "debate-execution",
+     "resource-execution"
+    ]
+   },
+   {
+    "title": "Monitoreo en tiempo de ejecución",
+    "description": "Monitorear el progreso y adaptar la estrategia si es necesario",
+    "input": "",
+    "nodes": [
+     "progress-monitor",
+     "adaptation",
+     "cross-validation"
+    ],
+    "edges": [
+     "execution-monitor",
+     "execution-adapt",
+     "execution-validate",
+     "monitor-adapt"
+    ]
+   },
+   {
+    "title": "Adaptación dinámica",
+    "description": "Ajustar el enfoque o escalar al metacontrolador si se detectan problemas",
+    "input": "",
+    "nodes": [
+     "adaptation",
+     "meta-controller"
+    ],
+    "edges": [
+     "adapt-execution",
+     "adapt-meta"
+    ]
+   },
+   {
+    "title": "Síntesis de resultados",
+    "description": "Combinar los hallazgos de la ejecución y el monitoreo",
+    "input": "",
+    "nodes": [
+     "result-synthesis"
+    ],
+    "edges": [
+     "monitor-synthesis",
+     "adapt-synthesis",
+     "validate-synthesis"
+    ]
+   },
+   {
+    "title": "Evaluación de la calidad",
+    "description": "Evaluar la confianza, generar explicaciones, actualizar el aprendizaje",
+    "input": "",
+    "nodes": [
+     "confidence-assessment",
+     "explanation-generation",
+     "learning-update"
+    ],
+    "edges": [
+     "synthesis-confidence",
+     "synthesis-explanation",
+     "synthesis-learning"
+    ]
+   },
+   {
+    "title": "Salida final",
+    "description": "Entregar la solución con metahallazgos y puntuaciones de confianza",
+    "input": "",
+    "nodes": [
+     "output"
+    ],
+    "edges": [
+     "confidence-output",
+     "explanation-output",
+     "learning-output"
+    ]
+   },
+   {
+    "title": "Feedback de aprendizaje",
+    "description": "Actualizar el metacontrolador con los hallazgos aprendidos para problemas futuros",
+    "input": "",
+    "nodes": [
+     "learning-update",
+     "meta-controller"
+    ],
+    "edges": [
+     "learning-meta"
+    ]
+   }
+  ]
+ }
+}

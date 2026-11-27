@@ -1,0 +1,342 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "deep-research-agent",
+ "name": "Deep Research Agent(DRA)",
+ "icon": "🔬",
+ "complexity": "high",
+ "description": "Una arquitectura de investigación compuesta y de largo horizonte que aclara la intención del usuario, redacta un plan de investigación explícito y luego ejecuta un bucle iterativo de búsqueda, lectura y evaluación de vacíos sobre muchas fuentes (a menudo mediante subagentes en paralelo) antes de sintetizar un único informe extenso con atribución de citas en línea. Es el arquetipo ensamblado detrás de OpenAI Deep Research, Gemini Deep Research y Anthropic Research, y cuenta con su propia literatura de revisión. Se diferencia de `agentic-rag-systems`, que aplica decisiones de recuperación dentro de un único pipeline en lugar de ejecutar una síntesis de informe de varias rondas guiada por un plan. Se diferencia de `supervisor-worker-pattern`, que es una orquestación genérica sin plan, verificación de vacíos ni pasada de citas propios de la investigación.",
+ "features": [
+  "Aclaración explícita de la intención antes de planificar",
+  "Plan de investigación redactado que descompone la pregunta",
+  "Bucle iterativo de búsqueda, lectura y evaluación de vacíos",
+  "Subagentes en paralelo que exploran subpreguntas separadas",
+  "Replanificación adaptativa que cambia de rumbo según los hallazgos",
+  "Síntesis extensa con atribución de citas en línea"
+ ],
+ "tldr": {
+  "what": "Aclara la intención, redacta un plan de investigación y luego busca, lee y evalúa vacíos de forma iterativa en distintas fuentes antes de sintetizar un informe con citas.",
+  "when": "Preguntas de investigación con múltiples fuentes que requieren exploración adaptativa, verificación explícita de vacíos y atribución trazable antes de entregar una síntesis integral.",
+  "watchOut": "Alto costo en tokens y latencia por las múltiples rondas, las búsquedas en paralelo y la replanificación; la precisión de las citas se degrada si las fuentes no se rastrean con cuidado en cada iteración del bucle."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Agente de investigación profunda",
+  "description": "Una arquitectura de investigación de largo horizonte que aclara la intención, redacta un plan explícito, ejecuta un bucle iterativo de búsqueda, lectura y evaluación de vacíos sobre muchas fuentes con subagentes en paralelo y luego sintetiza un único informe con citas. Se muestra con una pregunta de análisis de mercado que deriva en una segunda ronda de investigación.",
+  "nodes": [
+   {
+    "id": "query",
+    "label": "🎯 Consulta de investigación\n\"Panorama competitivo de los asistentes\nde programación con IA en empresas (2026)\"",
+    "x": 340,
+    "y": 40,
+    "w": 320
+   },
+   {
+    "id": "clarify",
+    "label": "❓ Aclarar la intención\n\"¿Solo empresas? ¿Precios,\nfuncionalidades o adopción?\"",
+    "x": 360,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "plan",
+    "label": "📝 Plan de investigación\nSubpregunta A: actores establecidos + precios\nSubpregunta B: adopción + cambio de proveedor\nSubpregunta C: diferenciación",
+    "x": 360,
+    "y": 250,
+    "w": 260
+   },
+   {
+    "id": "lead-agent",
+    "label": "🧭 Agente líder\nOrquesta + delega\n(ventanas de contexto separadas)",
+    "x": 370,
+    "y": 370,
+    "w": 240
+   },
+   {
+    "id": "subagent-a",
+    "label": "🔎 Subagente A\nBusca actores establecidos\n+ páginas de precios",
+    "x": 40,
+    "y": 480,
+    "w": 200
+   },
+   {
+    "id": "subagent-b",
+    "label": "🔎 Subagente B\nNotas de analistas\n+ transcripciones de resultados financieros",
+    "x": 360,
+    "y": 480,
+    "w": 200
+   },
+   {
+    "id": "subagent-c",
+    "label": "🔎 Subagente C\nEncuestas a desarrolladores\n+ benchmarks",
+    "x": 680,
+    "y": 480,
+    "w": 200
+   },
+   {
+    "id": "sources-a",
+    "label": "📄 14 fuentes\nleídas + extraídas",
+    "x": 60,
+    "y": 580,
+    "w": 160
+   },
+   {
+    "id": "sources-b",
+    "label": "📄 11 fuentes\nleídas + extraídas",
+    "x": 380,
+    "y": 580,
+    "w": 160
+   },
+   {
+    "id": "sources-c",
+    "label": "📄 9 fuentes\nleídas + extraídas",
+    "x": 700,
+    "y": 580,
+    "w": 160
+   },
+   {
+    "id": "gap-eval",
+    "label": "🧩 Evaluación de vacíos\nCombina hallazgos, detecta faltantes\n\"Falta el cumplimiento como factor de compra\"",
+    "x": 280,
+    "y": 680,
+    "w": 240
+   },
+   {
+    "id": "second-round",
+    "label": "🔁 Segunda ronda\nSubagente D: compras\n+ SOC 2 -> 6 fuentes",
+    "x": 640,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "synthesis",
+    "label": "🧠 Síntesis\nMapa de mercado, tabla de precios,\nimpulsores de adopción, riesgos",
+    "x": 200,
+    "y": 790,
+    "w": 220
+   },
+   {
+    "id": "citation",
+    "label": "🔗 Pasada de citas\nAtribuye cada afirmación\n(40 fuentes en total)",
+    "x": 520,
+    "y": 790,
+    "w": 220
+   },
+   {
+    "id": "report",
+    "label": "📊 Informe con citas\nAnálisis extenso y estructurado\ncon matriz competitiva",
+    "x": 360,
+    "y": 890,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-clarify",
+    "s": "query",
+    "t": "clarify",
+    "label": ""
+   },
+   {
+    "id": "clarify-plan",
+    "s": "clarify",
+    "t": "plan",
+    "label": "Confirmado"
+   },
+   {
+    "id": "plan-lead",
+    "s": "plan",
+    "t": "lead-agent",
+    "label": ""
+   },
+   {
+    "id": "lead-suba",
+    "s": "lead-agent",
+    "t": "subagent-a",
+    "label": "Subpregunta A"
+   },
+   {
+    "id": "lead-subb",
+    "s": "lead-agent",
+    "t": "subagent-b",
+    "label": "Subpregunta B"
+   },
+   {
+    "id": "lead-subc",
+    "s": "lead-agent",
+    "t": "subagent-c",
+    "label": "Subpregunta C"
+   },
+   {
+    "id": "suba-srca",
+    "s": "subagent-a",
+    "t": "sources-a",
+    "label": ""
+   },
+   {
+    "id": "subb-srcb",
+    "s": "subagent-b",
+    "t": "sources-b",
+    "label": ""
+   },
+   {
+    "id": "subc-srcc",
+    "s": "subagent-c",
+    "t": "sources-c",
+    "label": ""
+   },
+   {
+    "id": "srca-gap",
+    "s": "sources-a",
+    "t": "gap-eval",
+    "label": ""
+   },
+   {
+    "id": "srcb-gap",
+    "s": "sources-b",
+    "t": "gap-eval",
+    "label": ""
+   },
+   {
+    "id": "srcc-gap",
+    "s": "sources-c",
+    "t": "gap-eval",
+    "label": ""
+   },
+   {
+    "id": "gap-second",
+    "s": "gap-eval",
+    "t": "second-round",
+    "label": "Vacío detectado"
+   },
+   {
+    "id": "second-synthesis",
+    "s": "second-round",
+    "t": "synthesis",
+    "label": "+6 fuentes"
+   },
+   {
+    "id": "gap-synthesis",
+    "s": "gap-eval",
+    "t": "synthesis",
+    "label": "Hallazgos combinados"
+   },
+   {
+    "id": "synthesis-citation",
+    "s": "synthesis",
+    "t": "citation",
+    "label": ""
+   },
+   {
+    "id": "citation-report",
+    "s": "citation",
+    "t": "report",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Aclaración de la intención",
+    "description": "El agente hace una pregunta aclaratoria antes de comprometerse, y acota una solicitud poco especificada al segmento empresarial, tres dimensiones y un horizonte de 12 meses.",
+    "input": "",
+    "nodes": [
+     "query",
+     "clarify"
+    ],
+    "edges": [
+     "query-clarify"
+    ]
+   },
+   {
+    "title": "Plan de investigación",
+    "description": "El agente redacta un plan explícito que descompone la pregunta en tres subpreguntas que cubren a los actores establecidos, la adopción y la diferenciación.",
+    "input": "",
+    "nodes": [
+     "clarify",
+     "plan"
+    ],
+    "edges": [
+     "clarify-plan"
+    ]
+   },
+   {
+    "title": "Recuperación en paralelo",
+    "description": "El agente líder lanza tres subagentes en ventanas de contexto separadas, y cada uno busca y lee sobre una subpregunta distinta en muchas fuentes.",
+    "input": "",
+    "nodes": [
+     "lead-agent",
+     "subagent-a",
+     "subagent-b",
+     "subagent-c",
+     "sources-a",
+     "sources-b",
+     "sources-c"
+    ],
+    "edges": [
+     "plan-lead",
+     "lead-suba",
+     "lead-subb",
+     "lead-subc",
+     "suba-srca",
+     "subb-srcb",
+     "subc-srcc"
+    ]
+   },
+   {
+    "title": "Evaluación de vacíos",
+    "description": "El agente líder combina las 34 fuentes recopiladas y evalúa la cobertura, detectando un ángulo faltante: la seguridad y el cumplimiento como factor de compra.",
+    "input": "",
+    "nodes": [
+     "sources-a",
+     "sources-b",
+     "sources-c",
+     "gap-eval"
+    ],
+    "edges": [
+     "srca-gap",
+     "srcb-gap",
+     "srcc-gap"
+    ]
+   },
+   {
+    "title": "Segunda ronda de investigación",
+    "description": "El vacío detectado dispara una segunda ronda adaptativa: un nuevo subagente investiga compras y SOC 2, cambiando el plan según los hallazgos en lugar de seguir un pipeline fijo.",
+    "input": "",
+    "nodes": [
+     "gap-eval",
+     "second-round"
+    ],
+    "edges": [
+     "gap-second"
+    ]
+   },
+   {
+    "title": "Síntesis",
+    "description": "Los hallazgos combinados y las fuentes de la segunda ronda se sintetizan en un análisis extenso y estructurado con un mapa de mercado, una tabla de precios, impulsores de adopción y riesgos.",
+    "input": "",
+    "nodes": [
+     "gap-eval",
+     "second-round",
+     "synthesis"
+    ],
+    "edges": [
+     "gap-synthesis",
+     "second-synthesis"
+    ]
+   },
+   {
+    "title": "Citas e informe",
+    "description": "Una pasada final de citas atribuye cada afirmación a una de las 40 fuentes y produce un informe con citas y una matriz competitiva.",
+    "input": "",
+    "nodes": [
+     "synthesis",
+     "citation",
+     "report"
+    ],
+    "edges": [
+     "synthesis-citation",
+     "citation-report"
+    ]
+   }
+  ]
+ }
+}

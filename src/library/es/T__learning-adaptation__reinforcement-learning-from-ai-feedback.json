@@ -1,0 +1,479 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "reinforcement-learning-from-ai-feedback",
+ "name": "Reinforcement Learning from AI Feedback(RLAIF)",
+ "icon": "🤖",
+ "complexity": "high",
+ "description": "Entrenamiento de una política a partir de juicios de preferencia producidos por un evaluador de IA bajo criterios y supervisión definidos por humanos",
+ "features": [
+  "Juicios de preferencia generados por IA",
+  "Criterios de evaluación definidos por humanos",
+  "Calibración del evaluador frente a humanos",
+  "Variantes con modelo de recompensa o feedback directo",
+  "Optimización de la política con controles de deriva",
+  "Auditoría humana independiente"
+ ],
+ "tldr": {
+  "what": "Entrena una política usando juicios de preferencia de un evaluador de IA que opera bajo criterios definidos por humanos, con auditoría humana para detectar la deriva del evaluador.",
+  "when": "Necesitas escalar el etiquetado de preferencias más allá de la capacidad humana manteniendo la alineación con los valores humanos en una tarea específica.",
+  "watchOut": "El evaluador de IA puede desviarse silenciosamente de la rúbrica o amplificar sesgos humanos incorporados en el conjunto de calibración, corrompiendo toda la ejecución del entrenamiento."
+ },
+ "overview": {
+  "pattern": "Usa modelos de IA para generar feedback y preferencias para el entrenamiento, reemplazando o complementando la evaluación humana",
+  "why": "Escala el aprendizaje de preferencias más allá de la capacidad humana, reduce los costos de anotación y permite ciclos de iteración rápidos",
+  "insight": "Los evaluadores de IA pueden proporcionar feedback consistente y escalable cuando están correctamente alineados con los valores y principios humanos",
+  "impl": [
+   {
+    "t": "SFT",
+    "d": "Fine-tuning supervisado con demostraciones"
+   },
+   {
+    "t": "Juez de IA",
+    "d": "Entrena o usa un modelo de IA para generar feedback"
+   },
+   {
+    "t": "Generar",
+    "d": "Crea pares de preferencias usando el evaluador de IA"
+   },
+   {
+    "t": "Entrenar RM",
+    "d": "Entrena el modelo de recompensa con preferencias generadas por IA"
+   },
+   {
+    "t": "PPO",
+    "d": "Optimización de la política con recompensas derivadas de IA"
+   }
+  ],
+  "example": "sft_model + ai_judge → ai_preferences → reward_model → rlhf_training → aligned_model",
+  "dos": [
+   "Valida la calidad del feedback de IA frente a muestras de juicio humano",
+   "Usa principios constitucionales para guiar la generación de feedback de IA",
+   "Implementa procesos de crítica y revisión en varias rondas",
+   "Monitorea los sesgos y errores sistemáticos del feedback de IA",
+   "Combina el feedback de IA con mecanismos de supervisión humana",
+   "Usa evaluadores de IA diversos para reducir el sesgo de un solo modelo"
+  ],
+  "donts": [
+   "Depender únicamente del feedback de IA sin validación humana",
+   "Usar evaluadores de IA sesgados o mal alineados",
+   "Ignorar las limitaciones de escalabilidad de la generación de feedback de IA",
+   "Omitir las pruebas de manipulación y explotación del modelo de recompensa",
+   "Aplicarlo sin considerar criterios de evaluación específicos del dominio"
+  ],
+  "use": [
+   "El feedback humano es costoso o lento de obtener",
+   "Necesitas escalar el aprendizaje de preferencias más allá de la capacidad humana",
+   "Los evaluadores de IA pueden entrenarse de forma confiable en el dominio",
+   "Los principios constitucionales pueden guiar la evaluación",
+   "Los ciclos de mejora iterativa resultan beneficiosos"
+  ],
+  "avoid": [
+   "El juicio humano está fácilmente disponible y es asequible",
+   "Decisiones de alto riesgo que requieren supervisión humana",
+   "Los evaluadores de IA muestran sesgos significativos o poca confiabilidad",
+   "El dominio requiere una comprensión cultural matizada",
+   "Los bucles de feedback en tiempo real son críticos"
+  ],
+  "metrics": [
+   {
+    "n": "Concordancia IA-humano",
+    "d": "Correlación entre las evaluaciones de la IA y las humanas"
+   },
+   {
+    "n": "Eficiencia de escalado",
+    "d": "Reducción de costos frente a RLHF solo con humanos"
+   },
+   {
+    "n": "Calidad del feedback",
+    "d": "Consistencia y confiabilidad de los juicios de la IA"
+   },
+   {
+    "n": "Detección de sesgos",
+    "d": "Errores sistemáticos en los patrones de evaluación de la IA"
+   },
+   {
+    "n": "Rendimiento final",
+    "d": "Calidad de finalización de tareas frente a las líneas base"
+   },
+   {
+    "n": "Velocidad de iteración",
+    "d": "Ciclos de entrenamiento por unidad de tiempo frente a RLHF"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Moderación de contenido a gran escala",
+    "d": "Usa feedback de IA para entrenar sistemas de moderación a escala"
+   },
+   {
+    "n": "Evaluación de la calidad del código",
+    "d": "Feedback impulsado por IA sobre buenas prácticas de programación y detección de bugs"
+   },
+   {
+    "n": "Evaluación de contenido creativo",
+    "d": "Escala los juicios de calidad artística y creativa usando críticos de IA"
+   },
+   {
+    "n": "Evaluación de contenido educativo",
+    "d": "Sistemas automatizados de calificación y feedback para materiales de aprendizaje"
+   },
+   {
+    "n": "Entrenamiento de atención al cliente",
+    "d": "Escala los datos de entrenamiento para la calidad de las interacciones con clientes"
+   },
+   {
+    "n": "Revisión de escritura científica",
+    "d": "Sistemas de revisión por pares y evaluación de calidad asistidos por IA"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Reinforcement Learning from AI Feedback",
+  "description": "Enfoque de entrenamiento que usa modelos de IA para proporcionar feedback en lugar de evaluadores humanos, lo que permite mejorar el comportamiento del agente de forma escalable mediante evaluación automatizada y aprendizaje de preferencias.",
+  "nodes": [
+   {
+    "id": "writing-task",
+    "label": "📝 Tarea: Escribir descripción de producto\n\"Crea una descripción atractiva para unos audífonos inalámbricos\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "student-model",
+    "label": "🤖 Modelo de política\n(en entrenamiento)\nGenera intentos",
+    "x": 100,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "attempt-1",
+    "label": "📄 Intento 1\n\"Buenos audífonos.\nBuen sonido.\nCómpralos.\"",
+    "x": 50,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "attempt-2",
+    "label": "📄 Intento 2\n\"Audio premium\ncon agudos nítidos\ny graves profundos\"",
+    "x": 200,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "attempt-3",
+    "label": "📄 Intento 3\n\"Vive la música\ncomo nunca antes\ncon 30 horas de batería\"",
+    "x": 350,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "teacher-model",
+    "label": "⚖️ Evaluador / Etiquetador de IA\n(guiado por rúbrica)\n(nivel de capacidad validado)",
+    "x": 600,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "evaluation-criteria",
+    "label": "📋 Criterios de evaluación\n• Lenguaje atractivo\n• Características destacadas\n• Beneficios para el cliente\n• Llamado a la acción",
+    "x": 550,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "score-1",
+    "label": "❌ Puntaje: 2/10\nDemasiado básico\nSin detalles\nPoco atractivo",
+    "x": 50,
+    "y": 420,
+    "w": 140
+   },
+   {
+    "id": "score-2",
+    "label": "⭐ Puntaje: 7/10\nBuenas características\nFaltan beneficios\nFalta el CTA",
+    "x": 200,
+    "y": 420,
+    "w": 140
+   },
+   {
+    "id": "score-3",
+    "label": "✅ Puntaje: 9/10\nAtractivo\nEnfocado en beneficios\nExcelentes características",
+    "x": 350,
+    "y": 420,
+    "w": 140
+   },
+   {
+    "id": "preference-data",
+    "label": "📊 Datos de preferencia\nIntento 3 > Intento 2 > Intento 1",
+    "x": 200,
+    "y": 540,
+    "w": 250
+   },
+   {
+    "id": "reward-signal",
+    "label": "🎯 Señal de recompensa\n¡Sin necesidad de humanos!\nSolo feedback de IA",
+    "x": 500,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "policy-update",
+    "label": "🔄 Actualización de la política\nAprende qué hace\nuna buena descripción",
+    "x": 310,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "final-output",
+    "label": "✨ Salida final\n\"Transforma tu experiencia auditiva con nuestros audífonos\ninalámbricos premium. Disfruta 30 horas de audio nítido,\ncancelación activa de ruido y una comodidad que dura todo el día.\n¡Ordena ahora y obtén envío gratis!\"",
+    "x": 175,
+    "y": 760,
+    "w": 450
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-student",
+    "s": "writing-task",
+    "t": "student-model",
+    "label": ""
+   },
+   {
+    "id": "task-teacher",
+    "s": "writing-task",
+    "t": "teacher-model",
+    "label": ""
+   },
+   {
+    "id": "student-attempt1",
+    "s": "student-model",
+    "t": "attempt-1",
+    "label": ""
+   },
+   {
+    "id": "student-attempt2",
+    "s": "student-model",
+    "t": "attempt-2",
+    "label": ""
+   },
+   {
+    "id": "student-attempt3",
+    "s": "student-model",
+    "t": "attempt-3",
+    "label": ""
+   },
+   {
+    "id": "teacher-criteria",
+    "s": "teacher-model",
+    "t": "evaluation-criteria",
+    "label": ""
+   },
+   {
+    "id": "attempt1-score1",
+    "s": "attempt-1",
+    "t": "score-1",
+    "label": ""
+   },
+   {
+    "id": "attempt2-score2",
+    "s": "attempt-2",
+    "t": "score-2",
+    "label": ""
+   },
+   {
+    "id": "attempt3-score3",
+    "s": "attempt-3",
+    "t": "score-3",
+    "label": ""
+   },
+   {
+    "id": "criteria-score1",
+    "s": "evaluation-criteria",
+    "t": "score-1",
+    "label": ""
+   },
+   {
+    "id": "criteria-score2",
+    "s": "evaluation-criteria",
+    "t": "score-2",
+    "label": ""
+   },
+   {
+    "id": "criteria-score3",
+    "s": "evaluation-criteria",
+    "t": "score-3",
+    "label": ""
+   },
+   {
+    "id": "scores-preference",
+    "s": "score-2",
+    "t": "preference-data",
+    "label": ""
+   },
+   {
+    "id": "score1-preference",
+    "s": "score-1",
+    "t": "preference-data",
+    "label": ""
+   },
+   {
+    "id": "score3-preference",
+    "s": "score-3",
+    "t": "preference-data",
+    "label": ""
+   },
+   {
+    "id": "preference-reward",
+    "s": "preference-data",
+    "t": "reward-signal",
+    "label": ""
+   },
+   {
+    "id": "reward-policy",
+    "s": "reward-signal",
+    "t": "policy-update",
+    "label": ""
+   },
+   {
+    "id": "policy-student",
+    "s": "policy-update",
+    "t": "student-model",
+    "label": "Mejorar"
+   },
+   {
+    "id": "policy-final",
+    "s": "policy-update",
+    "t": "final-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea de escritura",
+    "description": "Crear una descripción de producto atractiva para unos audífonos",
+    "input": "",
+    "nodes": [
+     "writing-task"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Dos modelos",
+    "description": "El modelo estudiante aprende, el modelo maestro evalúa",
+    "input": "",
+    "nodes": [
+     "writing-task",
+     "student-model",
+     "teacher-model"
+    ],
+    "edges": [
+     "task-student",
+     "task-teacher"
+    ]
+   },
+   {
+    "title": "Intentos del estudiante",
+    "description": "El estudiante genera varios intentos de descripción",
+    "input": "",
+    "nodes": [
+     "student-model",
+     "attempt-1",
+     "attempt-2",
+     "attempt-3"
+    ],
+    "edges": [
+     "student-attempt1",
+     "student-attempt2",
+     "student-attempt3"
+    ]
+   },
+   {
+    "title": "Evaluación del maestro",
+    "description": "La IA maestra evalúa cada intento usando los criterios",
+    "input": "",
+    "nodes": [
+     "teacher-model",
+     "evaluation-criteria",
+     "attempt-1",
+     "attempt-2",
+     "attempt-3"
+    ],
+    "edges": [
+     "teacher-criteria"
+    ]
+   },
+   {
+    "title": "Puntuación de la IA",
+    "description": "El maestro asigna puntajes: 2/10, 7/10, 9/10",
+    "input": "",
+    "nodes": [
+     "evaluation-criteria",
+     "score-1",
+     "score-2",
+     "score-3"
+    ],
+    "edges": [
+     "attempt1-score1",
+     "attempt2-score2",
+     "attempt3-score3",
+     "criteria-score1",
+     "criteria-score2",
+     "criteria-score3"
+    ]
+   },
+   {
+    "title": "Generar preferencias",
+    "description": "Convierte los puntajes en rankings de preferencia",
+    "input": "",
+    "nodes": [
+     "score-1",
+     "score-2",
+     "score-3",
+     "preference-data"
+    ],
+    "edges": [
+     "score1-preference",
+     "scores-preference",
+     "score3-preference"
+    ]
+   },
+   {
+    "title": "Señal de recompensa solo de IA",
+    "description": "Sin necesidad de humanos: el feedback de IA se convierte en recompensa",
+    "input": "",
+    "nodes": [
+     "preference-data",
+     "reward-signal"
+    ],
+    "edges": [
+     "preference-reward"
+    ]
+   },
+   {
+    "title": "Actualización de la política",
+    "description": "El estudiante aprende qué hace una buena descripción",
+    "input": "",
+    "nodes": [
+     "reward-signal",
+     "policy-update",
+     "student-model"
+    ],
+    "edges": [
+     "reward-policy",
+     "policy-student"
+    ]
+   },
+   {
+    "title": "Salida mejorada",
+    "description": "El estudiante ahora escribe descripciones profesionales",
+    "input": "",
+    "nodes": [
+     "policy-update",
+     "final-output"
+    ],
+    "edges": [
+     "policy-final"
+    ]
+   }
+  ]
+ }
+}

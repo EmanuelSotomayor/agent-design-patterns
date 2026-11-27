@@ -1,0 +1,350 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "realtime-voice-agents",
+ "name": "Realtime Voice Agents(RVA)",
+ "icon": "🎙️",
+ "complexity": "high",
+ "description": "Agentes de voz de baja latencia construidos sobre modelos de voz a voz en una única sesión de streaming, que reemplazan el pipeline tradicional de voz a texto, luego LLM y luego texto a voz. Un solo modelo razona directamente sobre el audio, por lo que las respuestas llegan lo bastante rápido como para sentirse como una conversación natural, con detección de turnos, interrupción (barge-in), llamadas a herramientas en medio de la conversación, guardrails y traspasos gestionados dentro de la sesión en vivo.",
+ "features": [
+  "Un único modelo de voz a voz en lugar de un pipeline encadenado de STT a LLM a TTS",
+  "Detección de actividad de voz y detección de turnos del lado del servidor para una alternancia natural de turnos",
+  "Manejo de interrupciones (barge-in): el usuario puede interrumpir y el agente corta su propia voz",
+  "Llamadas a herramientas y verificaciones de guardrails en medio de la conversación sin salir del flujo de audio",
+  "Traspasos de agente a agente y de agente a humano ante disparadores de políticas durante una llamada en vivo",
+  "Integración con telefonía y SIP para soporte telefónico y llamadas salientes"
+ ],
+ "tldr": {
+  "what": "Procesa la entrada hablada y genera la salida hablada mediante un único modelo de streaming, lo que permite interrupciones y llamadas a herramientas sin salir del flujo de audio.",
+  "when": "Soporte telefónico, atención al cliente o cualquier interacción que requiera el ritmo de una conversación natural y una latencia de respuesta menor a 200ms.",
+  "watchOut": "Los picos de latencia por llamadas a herramientas, caídas de red o errores de VAD rompen la ilusión de naturalidad y frustran a los usuarios que esperan una conversación en tiempo real."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Realtime Voice Agents",
+  "description": "Un agente de soporte telefónico de baja latencia construido sobre un único modelo de voz a voz en una sesión de streaming. La detección de turnos y la detección de actividad de voz guían una alternancia natural de turnos; quien llama interrumpe a mitad de frase y el agente corta su propia voz; una llamada a una herramienta se ejecuta en medio del diálogo sin salir del flujo de audio; y un guardrail de políticas dispara un traspaso por SIP a una persona.",
+  "nodes": [
+   {
+    "id": "caller",
+    "label": "📞 Cliente que llama\n\"¿Dónde está mi pedido 5567?\"",
+    "x": 300,
+    "y": 40,
+    "w": 240
+   },
+   {
+    "id": "telephony-gateway",
+    "label": "☎️ Telefonía / gateway SIP\nConecta la llamada telefónica\ncon la sesión en tiempo real",
+    "x": 300,
+    "y": 150,
+    "w": 230
+   },
+   {
+    "id": "streaming-session",
+    "label": "🔊 Sesión de streaming\nUn flujo de audio persistente,\nen ambas direcciones",
+    "x": 620,
+    "y": 150,
+    "w": 210
+   },
+   {
+    "id": "s2s-model",
+    "label": "🎙️ Modelo de voz a voz\nRazona directamente sobre el audio\n(sin STT -> LLM -> TTS)",
+    "x": 300,
+    "y": 260,
+    "w": 250
+   },
+   {
+    "id": "vad-turn",
+    "label": "🕒 VAD / detección de turnos\nDetecta quién está hablando\ny cuándo termina un turno",
+    "x": 640,
+    "y": 270,
+    "w": 210
+   },
+   {
+    "id": "agent-greeting",
+    "label": "🗣️ Saludo del agente\n\"Gracias por llamar, ¿en qué\npuedo ayudarte para...\"",
+    "x": 30,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "barge-in",
+    "label": "✋ Barge-in\nEl cliente empieza a hablar\nencima del agente",
+    "x": 30,
+    "y": 380,
+    "w": 190
+   },
+   {
+    "id": "truncate",
+    "label": "⏹️ Cortar la salida\nEl agente corta su propio audio\nen ~200ms",
+    "x": 290,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "tool-order-lookup",
+    "label": "🔎 Herramienta lookup_order\nLlamada en medio del diálogo,\nid: \"5567\"",
+    "x": 560,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "tool-result",
+    "label": "📦 Resultado de la herramienta\nestado: en tránsito,\nETA: mañana",
+    "x": 600,
+    "y": 490,
+    "w": 190
+   },
+   {
+    "id": "spoken-response",
+    "label": "🗣️ Respuesta hablada\nDice la ETA con naturalidad,\nsin latencia robótica",
+    "x": 320,
+    "y": 490,
+    "w": 200
+   },
+   {
+    "id": "guardrail",
+    "label": "🛡️ Guardrail de políticas\nCliente: \"reembolso de más de $500\"\nregla: requiere una persona",
+    "x": 320,
+    "y": 590,
+    "w": 220
+   },
+   {
+    "id": "handoff",
+    "label": "🔀 Traspaso\nSe dispara la política,\nse escala a un especialista",
+    "x": 320,
+    "y": 690,
+    "w": 210
+   },
+   {
+    "id": "sip-transfer",
+    "label": "☎️ Transferencia SIP\nPasa la llamada + todo\nel contexto de la conversación",
+    "x": 40,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "latency-note",
+    "label": "⚡ Latencia\n~600ms de voz a voz\nvs. ~2.5s con pipeline",
+    "x": 620,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "human-agent",
+    "label": "🧑‍💼 Especialista humano\nRetoma con el contexto,\nel cliente nunca repite",
+    "x": 320,
+    "y": 790,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-caller-gateway",
+    "s": "caller",
+    "t": "telephony-gateway",
+    "label": "llamada SIP"
+   },
+   {
+    "id": "e-gateway-session",
+    "s": "telephony-gateway",
+    "t": "streaming-session",
+    "label": "flujo de audio"
+   },
+   {
+    "id": "e-session-model",
+    "s": "streaming-session",
+    "t": "s2s-model",
+    "label": "entrada/salida en streaming"
+   },
+   {
+    "id": "e-model-vad",
+    "s": "s2s-model",
+    "t": "vad-turn",
+    "label": "detección de turnos"
+   },
+   {
+    "id": "e-model-greeting",
+    "s": "s2s-model",
+    "t": "agent-greeting",
+    "label": "hablando"
+   },
+   {
+    "id": "e-vad-bargein",
+    "s": "vad-turn",
+    "t": "barge-in",
+    "label": "el cliente habla"
+   },
+   {
+    "id": "e-bargein-truncate",
+    "s": "barge-in",
+    "t": "truncate",
+    "label": "interrumpir"
+   },
+   {
+    "id": "e-greeting-truncate",
+    "s": "agent-greeting",
+    "t": "truncate",
+    "label": "cortar a mitad de palabra"
+   },
+   {
+    "id": "e-truncate-model",
+    "s": "truncate",
+    "t": "s2s-model",
+    "label": "vuelve a escuchar"
+   },
+   {
+    "id": "e-model-tool",
+    "s": "s2s-model",
+    "t": "tool-order-lookup",
+    "label": "llamada a herramienta en medio del diálogo"
+   },
+   {
+    "id": "e-tool-result",
+    "s": "tool-order-lookup",
+    "t": "tool-result",
+    "label": "devuelve"
+   },
+   {
+    "id": "e-result-spoken",
+    "s": "tool-result",
+    "t": "spoken-response",
+    "label": "decir el resultado"
+   },
+   {
+    "id": "e-spoken-guardrail",
+    "s": "spoken-response",
+    "t": "guardrail",
+    "label": "siguiente turno del cliente"
+   },
+   {
+    "id": "e-guardrail-handoff",
+    "s": "guardrail",
+    "t": "handoff",
+    "label": "disparador de política"
+   },
+   {
+    "id": "e-handoff-sip",
+    "s": "handoff",
+    "t": "sip-transfer",
+    "label": "transferir"
+   },
+   {
+    "id": "e-sip-human",
+    "s": "sip-transfer",
+    "t": "human-agent",
+    "label": "conectar"
+   },
+   {
+    "id": "e-model-latency",
+    "s": "s2s-model",
+    "t": "latency-note",
+    "label": "medido"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El cliente llama",
+    "description": "Una llamada telefónica llega al agente a través de un gateway SIP, que la conecta con una única sesión de streaming persistente. El audio fluye directamente a un modelo de voz a voz en lugar de a un pipeline encadenado de transcribir-razonar-sintetizar.",
+    "input": "",
+    "nodes": [
+     "caller",
+     "telephony-gateway",
+     "streaming-session",
+     "s2s-model"
+    ],
+    "edges": [
+     "e-caller-gateway",
+     "e-gateway-session",
+     "e-session-model"
+    ]
+   },
+   {
+    "title": "Detección de turnos en un flujo en vivo",
+    "description": "El modelo empieza a decir su saludo mientras la detección de actividad de voz y la detección de turnos del lado del servidor monitorean continuamente quién tiene la palabra en el flujo de audio abierto.",
+    "input": "",
+    "nodes": [
+     "s2s-model",
+     "vad-turn",
+     "agent-greeting"
+    ],
+    "edges": [
+     "e-model-vad",
+     "e-model-greeting"
+    ]
+   },
+   {
+    "title": "Interrupción (barge-in)",
+    "description": "El cliente empieza a hablar encima del saludo. La detección de turnos marca la superposición como un barge-in, y el agente corta su propia salida de audio en unos 200ms en lugar de seguir hablando por encima del cliente.",
+    "input": "",
+    "nodes": [
+     "vad-turn",
+     "barge-in",
+     "agent-greeting",
+     "truncate",
+     "s2s-model"
+    ],
+    "edges": [
+     "e-vad-bargein",
+     "e-bargein-truncate",
+     "e-greeting-truncate",
+     "e-truncate-model"
+    ]
+   },
+   {
+    "title": "Llamada a herramienta en medio del diálogo",
+    "description": "Tras escuchar \"dónde está el pedido 5567\", el modelo llama a la herramienta lookup_order sin pausar la sesión. La herramienta devuelve el estado \"en tránsito\" con una ETA, que el agente luego comunica de forma conversacional.",
+    "input": "",
+    "nodes": [
+     "s2s-model",
+     "tool-order-lookup",
+     "tool-result",
+     "spoken-response"
+    ],
+    "edges": [
+     "e-model-tool",
+     "e-tool-result",
+     "e-result-spoken"
+    ]
+   },
+   {
+    "title": "El guardrail se dispara por política",
+    "description": "El cliente escala a un reembolso de más de $500. Un guardrail de políticas en vivo reconoce que esto supera lo que el agente puede autorizar y marca el turno para un traspaso, todo dentro de la llamada en curso.",
+    "input": "",
+    "nodes": [
+     "spoken-response",
+     "guardrail",
+     "handoff"
+    ],
+    "edges": [
+     "e-spoken-guardrail",
+     "e-guardrail-handoff"
+    ]
+   },
+   {
+    "title": "Traspaso por SIP a una persona",
+    "description": "El traspaso transfiere la llamada por SIP a un especialista humano, llevando todo el contexto de la conversación para que el cliente no tenga que repetir nada.",
+    "input": "",
+    "nodes": [
+     "handoff",
+     "sip-transfer",
+     "human-agent"
+    ],
+    "edges": [
+     "e-handoff-sip",
+     "e-sip-human"
+    ]
+   },
+   {
+    "title": "Por qué voz a voz",
+    "description": "Como un solo modelo razona directamente sobre el audio, la latencia de voz a voz ronda los 600ms frente a aproximadamente 2.5s de un pipeline separado de STT, luego LLM y luego TTS, y eso es lo que hace que la interrupción y la alternancia natural de turnos se sientan reales.",
+    "input": "",
+    "nodes": [
+     "s2s-model",
+     "latency-note"
+    ],
+    "edges": [
+     "e-model-latency"
+    ]
+   }
+  ]
+ }
+}

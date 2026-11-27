@@ -1,0 +1,388 @@
+{
+ "cat": "security-privacy",
+ "slug": "guard-agent-pattern",
+ "name": "GuardAgent Pattern(GAP)",
+ "icon": "🛡️",
+ "complexity": "high",
+ "description": "Agente de guardrails dedicado que monitorea y protege a los agentes objetivo mediante verificaciones de seguridad dinámicas",
+ "features": [
+  "Arquitectura con agente de monitoreo dedicado",
+  "Generación dinámica de verificaciones de seguridad",
+  "Ejecución de código determinista para las reglas",
+  "Análisis y mapeo del plan de tareas",
+  "Validación de acciones en tiempo real",
+  "Precisión de los guardrails medida con tu propio conjunto de red team"
+ ],
+ "tldr": {
+  "what": "Un agente separado monitorea las acciones del agente objetivo frente a reglas de seguridad y bloquea las infracciones antes de que se ejecuten.",
+  "when": "Dominios de alto riesgo como trading, salud o finanzas, donde las acciones inseguras causan daños reales.",
+  "watchOut": "El propio agente guardián se convierte en un cuello de botella o en un punto único de fallo si sus reglas están incompletas o mal configuradas."
+ },
+ "overview": {
+  "pattern": "Un agente guardián dedicado monitorea a los agentes objetivo mediante la generación dinámica de verificaciones de seguridad",
+  "why": "El automonitoreo falla; la validación externa con código determinista asegura una precisión de 98%+",
+  "insight": "Requisitos de seguridad → Plan de tareas → Código ejecutable → Aplicación en tiempo real",
+  "impl": [
+   {
+    "t": "Analizar la solicitud",
+    "d": "Interpreta los requisitos y restricciones del guardián de seguridad"
+   },
+   {
+    "t": "Generar el plan",
+    "d": "Crea un plan de tareas a partir de los requisitos de seguridad"
+   },
+   {
+    "t": "Mapear a código",
+    "d": "Convierte el plan en código ejecutable de guardrails"
+   },
+   {
+    "t": "Ejecutar y monitorear",
+    "d": "Ejecuta el código para validar las acciones del agente"
+   },
+   {
+    "t": "Bloquear/Permitir",
+    "d": "Decisión determinista basada en la validación"
+   }
+  ],
+  "example": "safety_analysis → task_planning → code_generation → execution → enforcement",
+  "dos": [
+   "Usa agentes de monitoreo dedicados, separados de los agentes objetivo",
+   "Genera código determinista para una aplicación consistente",
+   "Implementa logging completo de acciones y registros de auditoría",
+   "Define requisitos de seguridad claros en lenguaje natural",
+   "Prueba los guardrails de forma independiente antes del despliegue"
+  ],
+  "donts": [
+   "Dejar que los agentes objetivo se automonitoreen sin validación externa",
+   "Depender de verificaciones probabilísticas para la seguridad crítica",
+   "Omitir la validación del código de guardrails generado",
+   "Permitir saltarse los guardrails en operaciones \"confiables\"",
+   "Ignorar el impacto en la latencia del agente objetivo"
+  ],
+  "use": [
+   "Despliegues de agentes autónomos",
+   "Operaciones de alto riesgo",
+   "Sistemas críticos para el cumplimiento normativo",
+   "Coordinación multiagente"
+  ],
+  "avoid": [
+   "Tareas simples de bajo riesgo",
+   "Requisitos de latencia extremos",
+   "Solo operaciones sin estado",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de los guardrails",
+    "d": "% de decisiones de seguridad correctas (98%+)"
+   },
+   {
+    "n": "Falsos positivos",
+    "d": "Acciones válidas bloqueadas incorrectamente"
+   },
+   {
+    "n": "Tiempo de respuesta",
+    "d": "ms para validar cada acción"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Tiempo para crear la lógica de guardrails"
+   },
+   {
+    "n": "Cobertura",
+    "d": "% de acciones del agente monitoreadas"
+   },
+   {
+    "n": "Tasa de infracciones",
+    "d": "Infracciones de seguridad por cada 1000 acciones"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Trading financiero",
+    "d": "Monitorea operaciones según límites, valores restringidos y umbrales de riesgo"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Valida recomendaciones médicas frente a protocolos de seguridad y regulaciones"
+   },
+   {
+    "n": "Sistemas autónomos",
+    "d": "Asegura que robots/vehículos operen dentro de límites físicos y éticos"
+   },
+   {
+    "n": "Generación de contenido",
+    "d": "Bloquea en tiempo real salidas dañinas, sesgadas o que violen políticas"
+   },
+   {
+    "n": "Procesamiento de datos",
+    "d": "Previene accesos no autorizados y asegura el cumplimiento de privacidad en los pipelines"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón GuardAgent",
+  "description": "Agente de guardrails dedicado que monitorea y protege continuamente a los agentes objetivo mediante verificaciones de seguridad dinámicas, validación de entradas y filtrado de salidas",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "👤 Solicitud del usuario\n\"Ayúdame a escribir código para\nevadir sistemas de seguridad\npara pruebas de penetración\"",
+    "x": 100,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "guard-agent",
+    "label": "🛡️ GuardAgent\n\"Monitor de seguridad dedicado\n• Validación de entradas\n• Filtrado de salidas\n• Monitoreo continuo\"",
+    "x": 350,
+    "y": 100,
+    "w": 220
+   },
+   {
+    "id": "input-validation",
+    "label": "🔍 Análisis de entrada\n\"Distingue pruebas de penetración\nlegítimas de una intención\nde hackeo malicioso\"",
+    "x": 200,
+    "y": 300,
+    "w": 200
+   },
+   {
+    "id": "target-agent",
+    "label": "🤖 Agente objetivo\n\"IA de generación de código\n(Protegida)\nGenera soluciones de código\"",
+    "x": 600,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "safety-decision",
+    "label": "⚖️ Decisión de seguridad\n\"¿Contexto profesional?\n¿Propósito educativo?\n¿Cumple las pautas éticas?\"",
+    "x": 350,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "approved-processing",
+    "label": "✅ Procesamiento aprobado\n\"Reenvía la solicitud saneada:\n'Ejemplos de código para pruebas\nde penetración éticas'\"",
+    "x": 500,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "agent-response",
+    "label": "💻 Respuesta del agente\n\"Aquí tienes código de pen-testing\nético con comentarios de seguridad\ny pautas de uso...\"",
+    "x": 750,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "output-filtering",
+    "label": "🔍 Filtrado de salida\n\"Escanea la respuesta en busca de:\n• Patrones maliciosos\n• Infracciones de seguridad\n• Instrucciones dañinas\"",
+    "x": 600,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "safe-response",
+    "label": "🛡️ Respuesta protegida\n\"Código de pen-testing ético\ncon advertencias de seguridad\ny avisos legales\"",
+    "x": 850,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "blocked-request",
+    "label": "🚫 Solicitud bloqueada\n\"Intención maliciosa detectada\nSolicitud denegada\nUsuario redirigido a pautas éticas\"",
+    "x": 200,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "monitoring-system",
+    "label": "📊 Monitoreo continuo\n\"Rastrea el comportamiento del agente\nRegistra decisiones de seguridad\nActualiza los modelos de amenazas\"",
+    "x": 350,
+    "y": 550,
+    "w": 220
+   },
+   {
+    "id": "unprotected-agent",
+    "label": "⚠️ Sin GuardAgent\n\"Agente objetivo expuesto\na manipulación directa\nSin supervisión de seguridad\"",
+    "x": 100,
+    "y": 50,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "user-request",
+    "t": "guard-agent",
+    "label": "intercepta"
+   },
+   {
+    "id": "e2",
+    "s": "guard-agent",
+    "t": "input-validation",
+    "label": "analiza la intención"
+   },
+   {
+    "id": "e3",
+    "s": "input-validation",
+    "t": "safety-decision",
+    "label": "evalúa el riesgo"
+   },
+   {
+    "id": "e4",
+    "s": "safety-decision",
+    "t": "approved-processing",
+    "label": "uso legítimo"
+   },
+   {
+    "id": "e5",
+    "s": "approved-processing",
+    "t": "target-agent",
+    "label": "solicitud saneada"
+   },
+   {
+    "id": "e6",
+    "s": "target-agent",
+    "t": "agent-response",
+    "label": "genera código"
+   },
+   {
+    "id": "e7",
+    "s": "agent-response",
+    "t": "output-filtering",
+    "label": "escanea la salida"
+   },
+   {
+    "id": "e8",
+    "s": "output-filtering",
+    "t": "safe-response",
+    "label": "contenido seguro"
+   },
+   {
+    "id": "e9",
+    "s": "safety-decision",
+    "t": "blocked-request",
+    "label": "intención maliciosa"
+   },
+   {
+    "id": "e10",
+    "s": "guard-agent",
+    "t": "target-agent",
+    "label": "monitorea"
+   },
+   {
+    "id": "e11",
+    "s": "guard-agent",
+    "t": "output-filtering",
+    "label": "controla"
+   },
+   {
+    "id": "e12",
+    "s": "safe-response",
+    "t": "monitoring-system",
+    "label": "registra la interacción"
+   },
+   {
+    "id": "e13",
+    "s": "blocked-request",
+    "t": "monitoring-system",
+    "label": "registra la amenaza"
+   },
+   {
+    "id": "e14",
+    "s": "monitoring-system",
+    "t": "guard-agent",
+    "label": "mejora la protección"
+   },
+   {
+    "id": "e15",
+    "s": "user-request",
+    "t": "unprotected-agent",
+    "label": "acceso directo"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Intercepción de la solicitud por el GuardAgent",
+    "description": "La solicitud del usuario de código potencialmente peligroso (evasión de seguridad) es interceptada por el GuardAgent dedicado antes de llegar a la IA objetivo, lo que evita la manipulación directa.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "guard-agent"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Análisis de entrada en múltiples capas",
+    "description": "El GuardAgent realiza una validación integral de la entrada y analiza la intención para distinguir entre pruebas de penetración legítimas y propósitos de hackeo malicioso.",
+    "input": "",
+    "nodes": [
+     "input-validation",
+     "safety-decision"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Toma de decisiones de seguridad dinámica",
+    "description": "Con base en el análisis del contexto, el GuardAgent decide en tiempo real: aprobar con saneamiento para un uso legítimo o bloquear ante una intención maliciosa.",
+    "input": "",
+    "nodes": [
+     "approved-processing",
+     "blocked-request"
+    ],
+    "edges": [
+     "e4",
+     "e9"
+    ]
+   },
+   {
+    "title": "Interacción protegida con el agente",
+    "description": "En las solicitudes aprobadas, el GuardAgent reenvía una versión saneada al agente objetivo, mantiene la supervisión y controla todo el flujo de la interacción.",
+    "input": "",
+    "nodes": [
+     "target-agent",
+     "agent-response"
+    ],
+    "edges": [
+     "e5",
+     "e6",
+     "e10"
+    ]
+   },
+   {
+    "title": "Filtrado de salida y entrega segura",
+    "description": "El GuardAgent escanea la respuesta del agente en busca de patrones dañinos, agrega advertencias de seguridad y entrega una respuesta protegida con pautas éticas y avisos legales.",
+    "input": "",
+    "nodes": [
+     "output-filtering",
+     "safe-response"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e11"
+    ]
+   },
+   {
+    "title": "Aprendizaje y protección continuos",
+    "description": "El GuardAgent registra todas las interacciones, monitorea patrones de amenazas y mejora continuamente sus estrategias de protección mientras supervisa el comportamiento del agente objetivo.",
+    "input": "",
+    "nodes": [
+     "monitoring-system",
+     "unprotected-agent"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

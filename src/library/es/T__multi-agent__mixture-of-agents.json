@@ -1,0 +1,340 @@
+{
+ "cat": "multi-agent",
+ "slug": "mixture-of-agents",
+ "name": "Mixture of Agents(MoA)",
+ "icon": "🧅",
+ "complexity": "high",
+ "description": "Ensamble por capas en el que varios agentes LLM proponentes de cada capa reciben todas las respuestas de la capa anterior como contexto auxiliar y refinan iterativamente sus respuestas antes de que un agregador final las sintetice. Como los modelos producen mejores respuestas cuando ven las de sus pares, una pila de proponentes de código abierto puede superar a un único modelo de frontera.",
+ "features": [
+  "Arquitectura por capas de proponentes y agregador",
+  "Cada capa se condiciona con todas las salidas de la capa anterior",
+  "Refinamiento iterativo entre modelos",
+  "El agregador sintetiza la mejor respuesta combinada",
+  "Funciona con modelos de código abierto heterogéneos",
+  "Aprovecha la colaboratividad de los modelos (los pares mejoran la salida)"
+ ],
+ "tldr": {
+  "what": "Una pila de agentes LLM refina iterativamente las respuestas condicionando cada capa con todas las salidas de la capa anterior y luego las agrega en una respuesta final.",
+  "when": "Problemas complejos en los que perspectivas diversas de modelos mejoran la calidad y en los que modelos de código abierto combinados pueden igualar o superar el rendimiento de un modelo de frontera.",
+  "watchOut": "La latencia y el costo crecen linealmente con las capas y los proponentes; los rendimientos decrecientes suelen estancarse después de 2-3 capas, lo que desperdicia cómputo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Mixture of Agents (MoA)",
+  "description": "Ensamble por capas en el que cada capa de agentes LLM proponentes ve todas las salidas de la capa anterior como contexto auxiliar y refina la respuesta, antes de que un agregador final sintetice lo mejor de todas las respuestas. Los proponentes de código abierto organizados en capas pueden superar a un único modelo de frontera en AlpacaEval 2.0 (65.1% vs 57.5%).",
+  "nodes": [
+   {
+    "id": "prompt",
+    "label": "🎯 Prompt\n\"Redacta un plan de salida al mercado para una app de notas de reuniones con IA\"",
+    "x": 300,
+    "y": 30,
+    "w": 340
+   },
+   {
+    "id": "l1-a",
+    "label": "🤖 Proponente 1a\nQwen1.5-110B\nEnfoque: PLG + embudo freemium",
+    "x": 40,
+    "y": 160,
+    "w": 210
+   },
+   {
+    "id": "l1-b",
+    "label": "🤖 Proponente 1b\nLlama-3-70B\nEnfoque: integraciones con Zoom / Slack",
+    "x": 340,
+    "y": 160,
+    "w": 210
+   },
+   {
+    "id": "l1-c",
+    "label": "🤖 Proponente 1c\nMixtral-8x22B\nEnfoque: seguridad + cumplimiento normativo",
+    "x": 640,
+    "y": 160,
+    "w": 210
+   },
+   {
+    "id": "aux1",
+    "label": "🧅 Contexto auxiliar 1\nLos 3 borradores de la capa 1 concatenados",
+    "x": 320,
+    "y": 280,
+    "w": 300
+   },
+   {
+    "id": "l2-a",
+    "label": "🤖 Proponente 2a\nCombina PLG + integraciones\nAgrega niveles de precios",
+    "x": 40,
+    "y": 380,
+    "w": 210
+   },
+   {
+    "id": "l2-b",
+    "label": "🤖 Proponente 2b\nCubre vacíos, agrega ICP\ny mezcla de canales",
+    "x": 340,
+    "y": 380,
+    "w": 210
+   },
+   {
+    "id": "l2-c",
+    "label": "🤖 Proponente 2c\nIncorpora el cumplimiento\npara el nivel empresarial",
+    "x": 640,
+    "y": 380,
+    "w": 210
+   },
+   {
+    "id": "aux2",
+    "label": "🧅 Contexto auxiliar 2\nLas 3 respuestas de la capa 2 concatenadas",
+    "x": 320,
+    "y": 500,
+    "w": 300
+   },
+   {
+    "id": "l3-a",
+    "label": "🤖 Proponente 3a\nConcilia contradicciones",
+    "x": 40,
+    "y": 600,
+    "w": 210
+   },
+   {
+    "id": "l3-b",
+    "label": "🤖 Proponente 3b\nAjusta la secuencia de fases",
+    "x": 340,
+    "y": 600,
+    "w": 210
+   },
+   {
+    "id": "l3-c",
+    "label": "🤖 Proponente 3c\nAgrega métricas de éxito / KPIs",
+    "x": 640,
+    "y": 600,
+    "w": 210
+   },
+   {
+    "id": "aggregator",
+    "label": "🧠 Agregador\nSintetiza un único plan con lo mejor de todos",
+    "x": 310,
+    "y": 700,
+    "w": 320
+   },
+   {
+    "id": "output",
+    "label": "✨ Plan final\nDespliegue por fases, ICP, precios, KPIs\nMoA 65.1% vs GPT-4o 57.5% (AlpacaEval 2.0)",
+    "x": 300,
+    "y": 790,
+    "w": 340
+   }
+  ],
+  "edges": [
+   {
+    "id": "prompt-l1a",
+    "s": "prompt",
+    "t": "l1-a",
+    "label": ""
+   },
+   {
+    "id": "prompt-l1b",
+    "s": "prompt",
+    "t": "l1-b",
+    "label": ""
+   },
+   {
+    "id": "prompt-l1c",
+    "s": "prompt",
+    "t": "l1-c",
+    "label": ""
+   },
+   {
+    "id": "l1a-aux1",
+    "s": "l1-a",
+    "t": "aux1",
+    "label": ""
+   },
+   {
+    "id": "l1b-aux1",
+    "s": "l1-b",
+    "t": "aux1",
+    "label": ""
+   },
+   {
+    "id": "l1c-aux1",
+    "s": "l1-c",
+    "t": "aux1",
+    "label": ""
+   },
+   {
+    "id": "aux1-l2a",
+    "s": "aux1",
+    "t": "l2-a",
+    "label": "ve todo"
+   },
+   {
+    "id": "aux1-l2b",
+    "s": "aux1",
+    "t": "l2-b",
+    "label": "ve todo"
+   },
+   {
+    "id": "aux1-l2c",
+    "s": "aux1",
+    "t": "l2-c",
+    "label": "ve todo"
+   },
+   {
+    "id": "l2a-aux2",
+    "s": "l2-a",
+    "t": "aux2",
+    "label": ""
+   },
+   {
+    "id": "l2b-aux2",
+    "s": "l2-b",
+    "t": "aux2",
+    "label": ""
+   },
+   {
+    "id": "l2c-aux2",
+    "s": "l2-c",
+    "t": "aux2",
+    "label": ""
+   },
+   {
+    "id": "aux2-l3a",
+    "s": "aux2",
+    "t": "l3-a",
+    "label": "ve todo"
+   },
+   {
+    "id": "aux2-l3b",
+    "s": "aux2",
+    "t": "l3-b",
+    "label": "ve todo"
+   },
+   {
+    "id": "aux2-l3c",
+    "s": "aux2",
+    "t": "l3-c",
+    "label": "ve todo"
+   },
+   {
+    "id": "l3a-agg",
+    "s": "l3-a",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "l3b-agg",
+    "s": "l3-b",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "l3c-agg",
+    "s": "l3-c",
+    "t": "aggregator",
+    "label": ""
+   },
+   {
+    "id": "agg-output",
+    "s": "aggregator",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Prompt recibido",
+    "description": "Un único prompt difícil entra en la pila MoA. El mismo prompt se envía a todos los proponentes de la capa 1.",
+    "input": "",
+    "nodes": [
+     "prompt"
+    ],
+    "edges": [
+     "prompt-l1a",
+     "prompt-l1b",
+     "prompt-l1c"
+    ]
+   },
+   {
+    "title": "Capa 1: borradores independientes",
+    "description": "Tres proponentes de código abierto heterogéneos responden de forma independiente, cada uno enfatizando un enfoque distinto (PLG, integraciones, cumplimiento).",
+    "input": "",
+    "nodes": [
+     "l1-a",
+     "l1-b",
+     "l1-c"
+    ],
+    "edges": [
+     "l1a-aux1",
+     "l1b-aux1",
+     "l1c-aux1"
+    ]
+   },
+   {
+    "title": "Concatenar las salidas de la capa 1",
+    "description": "Los tres borradores de la capa 1 se concatenan en un contexto auxiliar que se mostrará a la siguiente capa.",
+    "input": "",
+    "nodes": [
+     "aux1"
+    ],
+    "edges": [
+     "aux1-l2a",
+     "aux1-l2b",
+     "aux1-l2c"
+    ]
+   },
+   {
+    "title": "Capa 2: refinar con las respuestas de los pares",
+    "description": "Cada proponente de la capa 2 ve TODAS las respuestas de la capa 1 y las refina: combina PLG con integraciones, agrega niveles de precios e ICP, e incorpora el cumplimiento.",
+    "input": "",
+    "nodes": [
+     "l2-a",
+     "l2-b",
+     "l2-c",
+     "aux1"
+    ],
+    "edges": [
+     "l2a-aux2",
+     "l2b-aux2",
+     "l2c-aux2"
+    ]
+   },
+   {
+    "title": "Capa 3: refinamiento final",
+    "description": "Las salidas de la capa 2 se concatenan y se pasan a la capa 3, que concilia contradicciones, ajusta la secuencia de fases y agrega KPIs.",
+    "input": "",
+    "nodes": [
+     "aux2",
+     "l3-a",
+     "l3-b",
+     "l3-c"
+    ],
+    "edges": [
+     "aux2-l3a",
+     "aux2-l3b",
+     "aux2-l3c",
+     "l3a-agg",
+     "l3b-agg",
+     "l3c-agg"
+    ]
+   },
+   {
+    "title": "Agregar",
+    "description": "El agregador lee la última capa de propuestas y sintetiza un único plan con lo mejor de todas, en lugar de elegir una sola.",
+    "input": "",
+    "nodes": [
+     "aggregator"
+    ],
+    "edges": [
+     "agg-output"
+    ]
+   },
+   {
+    "title": "Respuesta final",
+    "description": "Se devuelve el plan sintetizado. En el paper de MoA, esta disposición por capas de modelos abiertos alcanzó un 65.1% de LC win rate en AlpacaEval 2.0, frente a un 57.5% de GPT-4 Omni.",
+    "input": "",
+    "nodes": [
+     "output"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}

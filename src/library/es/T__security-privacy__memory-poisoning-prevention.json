@@ -1,0 +1,403 @@
+{
+ "cat": "security-privacy",
+ "slug": "memory-poisoning-prevention",
+ "name": "Memory Poisoning Prevention Pattern(MPP)",
+ "icon": "🧪",
+ "complexity": "high",
+ "description": "Protege los sistemas de memoria del agente contra la manipulación maliciosa y la corrupción gradual",
+ "features": [
+  "Validación de la memoria persistente",
+  "Verificación de la integridad del estado",
+  "Firma criptográfica de las actualizaciones",
+  "Saneamiento periódico de la memoria",
+  "Detección de anomalías en los patrones de memoria",
+  "Mecanismos de rollback para estados corruptos"
+ ],
+ "tldr": {
+  "what": "Valida las actualizaciones de memoria con firma criptográfica, detecta anomalías y revierte el estado corrupto para evitar la manipulación maliciosa del conocimiento del agente.",
+  "when": "Agentes que almacenan datos de usuario o patrones aprendidos que un atacante podría envenenar para cambiar su comportamiento, sus decisiones o sus salidas con el tiempo.",
+  "watchOut": "La sobrecarga de la validación constante y de los mecanismos de rollback puede ralentizar mucho el tiempo de respuesta con alto volumen o restricciones de tiempo real."
+ },
+ "overview": {
+  "pattern": "Protege la memoria del agente contra la manipulación maliciosa mediante validación, firma y verificaciones de integridad",
+  "why": "Las memorias envenenadas provocan una corrupción gradual del comportamiento; la prevención asegura la confiabilidad a largo plazo",
+  "insight": "Firma criptográfica + detección de anomalías + saneamiento periódico = memoria resistente a la manipulación",
+  "impl": [
+   {
+    "t": "Validar la entrada",
+    "d": "Busca intentos de inyección y manipulación"
+   },
+   {
+    "t": "Firmar actualizaciones",
+    "d": "Firmas criptográficas en las escrituras de memoria"
+   },
+   {
+    "t": "Verificar la integridad",
+    "d": "Árboles de Merkle y checksums para los chunks"
+   },
+   {
+    "t": "Detectar anomalías",
+    "d": "Puntúa los patrones en busca de cambios inusuales"
+   },
+   {
+    "t": "Sanear y respaldar",
+    "d": "Consolidación periódica y puntos de recuperación"
+   }
+  ],
+  "example": "input_validation → signature_verification → integrity_check → anomaly_detection → sanitization",
+  "dos": [
+   "Implementa firma criptográfica para todas las actualizaciones de memoria",
+   "Usa árboles de Merkle para una verificación de integridad eficiente",
+   "Mantén logs de auditoría inmutables de las operaciones de memoria",
+   "Realiza consolidación y poda periódicas de la memoria",
+   "Crea respaldos diferenciales para poder hacer rollback"
+  ],
+  "donts": [
+   "Permitir escrituras directas en memoria sin validación",
+   "Confiar en el contenido de la memoria sin verificarlo",
+   "Omitir la detección de anomalías para fuentes \"confiables\"",
+   "Almacenar datos sensibles sin cifrar",
+   "Ignorar entradas contradictorias o en conflicto"
+  ],
+  "use": [
+   "Agentes conversacionales de larga duración",
+   "Sistemas de IA persistentes",
+   "Entornos multiusuario",
+   "Aplicaciones que dependen de la memoria"
+  ],
+  "avoid": [
+   "Solo operaciones sin estado",
+   "Interacciones de una sola sesión",
+   "Sistemas de memoria de solo lectura",
+   "Despliegues efímeros"
+  ],
+  "metrics": [
+   {
+    "n": "Inyecciones bloqueadas",
+    "d": "Intentos maliciosos evitados por mes"
+   },
+   {
+    "n": "Integridad de la memoria",
+    "d": "% de chunks de memoria verificados"
+   },
+   {
+    "n": "Tasa de memorias falsas",
+    "d": "Entradas incorrectas detectadas"
+   },
+   {
+    "n": "Tiempo de recuperación",
+    "d": "Minutos para restaurar tras una corrupción"
+   },
+   {
+    "n": "Latencia de validación",
+    "d": "ms por operación de memoria"
+   },
+   {
+    "n": "Eficiencia de almacenamiento",
+    "d": "Tasa de compresión tras el saneamiento"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Atención al cliente",
+    "d": "Evita la manipulación de preferencias y la inyección de historial falso"
+   },
+   {
+    "n": "Asistentes personales",
+    "d": "Protege los datos del usuario contra la corrupción adversarial de la memoria"
+   },
+   {
+    "n": "IA empresarial",
+    "d": "Asegura la integridad de la base de conocimiento del negocio entre sesiones"
+   },
+   {
+    "n": "Bots educativos",
+    "d": "Mantiene un progreso de aprendizaje preciso y sin manipulaciones"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Protege el historial de interacciones del paciente contra actualizaciones maliciosas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de prevención del envenenamiento de memoria",
+  "description": "Protege los sistemas de memoria del agente contra la manipulación maliciosa y la corrupción gradual mediante validación, checksums y mecanismos de detección de manipulaciones",
+  "nodes": [
+   {
+    "id": "agent-memory",
+    "label": "🧠 Sistema de memoria del agente\n\"Almacena experiencias,\npatrones aprendidos\ny contextos de decisión\"",
+    "x": 400,
+    "y": 100,
+    "w": 220
+   },
+   {
+    "id": "legitimate-input",
+    "label": "✅ Experiencia legítima\n\"El usuario completó\nla tarea con éxito usando\nel método X\"",
+    "x": 150,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "poisoning-attempt",
+    "label": "💀 Intento de envenenamiento\n\"Memoria falsa inyectada:\n'El método Y siempre es el mejor'\n(En realidad es dañino)\"",
+    "x": 650,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "validation-gateway",
+    "label": "🛡️ Puerta de validación\n\"Valida todas las actualizaciones\nde memoria antes de almacenarlas:\n• Verificación de la fuente\n• Integridad del contenido\n• Consistencia de patrones\"",
+    "x": 400,
+    "y": 300,
+    "w": 250
+   },
+   {
+    "id": "source-verification",
+    "label": "🔍 Verificación de la fuente\n\"¿La fuente de la memoria\nes confiable y auténtica?\nVerifica la procedencia\"",
+    "x": 200,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "content-analysis",
+    "label": "📊 Análisis del contenido\n\"¿El contenido de la memoria\nentra en conflicto con hechos\nestablecidos? Detección de anomalías\"",
+    "x": 400,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "consistency-check",
+    "label": "⚖️ Verificación de consistencia\n\"¿La nueva memoria\ncontradice los patrones\nde conocimiento existentes?\"",
+    "x": 600,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "protected-storage",
+    "label": "🔒 Almacenamiento protegido\n\"Almacena la memoria legítima\ncon hash criptográfico\ny marca de tiempo\"",
+    "x": 200,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "quarantine",
+    "label": "🚨 Zona de cuarentena\n\"Aísla la memoria\nsospechosa para analizarla\nEvita la contaminación\"",
+    "x": 600,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "memory-retrieval",
+    "label": "📚 Recuperación de memoria\n\"Al acceder a las memorias,\nverifica los hashes de integridad\ny busca corrupción\"",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "corruption-detected",
+    "label": "⚠️ Corrupción detectada\n\"¡El hash de la memoria no coincide!\nPosible manipulación\nInicia una investigación\"",
+    "x": 150,
+    "y": 750,
+    "w": 200
+   },
+   {
+    "id": "memory-verified",
+    "label": "✅ Memoria verificada\n\"El hash coincide\nContenido auténtico\nSegura para usar\"",
+    "x": 650,
+    "y": 750,
+    "w": 160
+   },
+   {
+    "id": "memory-recovery",
+    "label": "🔄 Recuperación de la memoria\n\"Restaura desde un respaldo\nlimpio si se detecta\ncorrupción. Reconstruye la confianza.\"",
+    "x": 400,
+    "y": 850,
+    "w": 200
+   },
+   {
+    "id": "vulnerable-system",
+    "label": "⚠️ Sin protección\n\"La memoria acepta cualquier entrada\nSin validación\nCorrupción gradual\nDecisiones comprometidas\"",
+    "x": 800,
+    "y": 300,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "legitimate-input",
+    "t": "validation-gateway",
+    "label": "validar"
+   },
+   {
+    "id": "e2",
+    "s": "poisoning-attempt",
+    "t": "validation-gateway",
+    "label": "interceptar"
+   },
+   {
+    "id": "e3",
+    "s": "validation-gateway",
+    "t": "source-verification",
+    "label": "verificar la fuente"
+   },
+   {
+    "id": "e4",
+    "s": "validation-gateway",
+    "t": "content-analysis",
+    "label": "analizar el contenido"
+   },
+   {
+    "id": "e5",
+    "s": "validation-gateway",
+    "t": "consistency-check",
+    "label": "verificar la consistencia"
+   },
+   {
+    "id": "e6",
+    "s": "source-verification",
+    "t": "protected-storage",
+    "label": "fuente confiable"
+   },
+   {
+    "id": "e7",
+    "s": "content-analysis",
+    "t": "protected-storage",
+    "label": "contenido limpio"
+   },
+   {
+    "id": "e8",
+    "s": "consistency-check",
+    "t": "quarantine",
+    "label": "inconsistente"
+   },
+   {
+    "id": "e9",
+    "s": "protected-storage",
+    "t": "agent-memory",
+    "label": "almacenamiento seguro"
+   },
+   {
+    "id": "e10",
+    "s": "agent-memory",
+    "t": "memory-retrieval",
+    "label": "acceder"
+   },
+   {
+    "id": "e11",
+    "s": "memory-retrieval",
+    "t": "corruption-detected",
+    "label": "hash no coincide"
+   },
+   {
+    "id": "e12",
+    "s": "memory-retrieval",
+    "t": "memory-verified",
+    "label": "hash verificado"
+   },
+   {
+    "id": "e13",
+    "s": "corruption-detected",
+    "t": "memory-recovery",
+    "label": "iniciar recuperación"
+   },
+   {
+    "id": "e14",
+    "s": "memory-recovery",
+    "t": "agent-memory",
+    "label": "restaurar respaldo limpio"
+   },
+   {
+    "id": "e15",
+    "s": "poisoning-attempt",
+    "t": "vulnerable-system",
+    "label": "acceso directo"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Intentos de actualización de memoria",
+    "description": "El sistema de memoria del agente recibe tanto experiencias legítimas como intentos de inyección maliciosa que buscan corromper el conocimiento almacenado con información falsa o dañina.",
+    "input": "",
+    "nodes": [
+     "agent-memory",
+     "legitimate-input",
+     "poisoning-attempt"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Intercepción en la puerta de validación",
+    "description": "Todas las actualizaciones de memoria deben pasar por una puerta de validación que realiza verificaciones exhaustivas antes de permitir el almacenamiento, lo que impide la manipulación directa de la memoria.",
+    "input": "",
+    "nodes": [
+     "validation-gateway"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Proceso de validación multicapa",
+    "description": "El sistema realiza tres validaciones críticas: verificación de la fuente (¿origen confiable?), análisis del contenido (detección de anomalías) y verificaciones de consistencia (¿conflictos con el conocimiento existente?).",
+    "input": "",
+    "nodes": [
+     "source-verification",
+     "content-analysis",
+     "consistency-check"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Almacenamiento seguro vs cuarentena",
+    "description": "Las memorias legítimas se almacenan con protección criptográfica, mientras que el contenido sospechoso se pone en cuarentena para su análisis, evitando que contamine la memoria limpia.",
+    "input": "",
+    "nodes": [
+     "protected-storage",
+     "quarantine"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Verificación de integridad al momento de la recuperación",
+    "description": "Al acceder a las memorias, el sistema verifica los hashes criptográficos para detectar manipulaciones: las memorias corruptas inician la recuperación y las verificadas se usan con seguridad.",
+    "input": "",
+    "nodes": [
+     "memory-retrieval",
+     "corruption-detected",
+     "memory-verified"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Recuperación vs sistemas vulnerables",
+    "description": "El sistema protegido puede restaurar desde respaldos limpios cuando detecta corrupción, mientras que los sistemas sin protección aceptan directamente la entrada maliciosa, lo que lleva a un compromiso gradual.",
+    "input": "",
+    "nodes": [
+     "memory-recovery",
+     "vulnerable-system"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

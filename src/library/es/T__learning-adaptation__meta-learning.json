@@ -1,0 +1,391 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "meta-learning",
+ "name": "Meta-Learning Systems(MLS)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Optimiza sobre una distribución de tareas para que un modelo pueda adaptarse a una nueva tarea relacionada con datos limitados",
+ "features": [
+  "Modelado de la distribución de tareas",
+  "Episodios de soporte y consulta",
+  "Meta-aprendizaje basado en gradientes",
+  "Optimización agnóstica al modelo",
+  "Evaluación de transferencia entre tareas",
+  "Adaptación few-shot"
+ ],
+ "tldr": {
+  "what": "Entrena un modelo en muchas tareas relacionadas para que se adapte rápidamente a tareas nuevas usando solo unos pocos ejemplos y pasos de gradiente.",
+  "when": "Aprendizaje few-shot cuando tienes muchas tareas similares pero pocos datos etiquetados por cada tarea nueva en el despliegue.",
+  "watchOut": "Requiere distribuciones de tareas cuidadosamente seleccionadas; un mal muestreo de tareas o tareas de meta-entrenamiento y meta-prueba desalineadas arruinan el rendimiento."
+ },
+ "overview": {
+  "pattern": "Aprender a aprender: adquirir meta-conocimiento que permita una adaptación rápida a tareas nuevas con datos mínimos",
+  "why": "Permite el aprendizaje few-shot, la adaptación rápida a dominios y una transferencia eficiente de conocimiento entre tareas relacionadas",
+  "insight": "Los modelos aprenden procedimientos de optimización y sesgos inductivos que generalizan entre distribuciones de tareas",
+  "impl": [
+   {
+    "t": "Tareas",
+    "d": "Define una distribución de tareas de aprendizaje relacionadas"
+   },
+   {
+    "t": "Meta-entrenar",
+    "d": "Aprende a adaptarse rápidamente en toda la distribución de tareas"
+   },
+   {
+    "t": "Conjunto de soporte",
+    "d": "Proporciona pocos ejemplos de la nueva tarea objetivo"
+   },
+   {
+    "t": "Adaptar",
+    "d": "Se especializa rápidamente en la nueva tarea usando el meta-conocimiento"
+   },
+   {
+    "t": "Consulta",
+    "d": "Realiza la tarea objetivo con ejemplos mínimos"
+   }
+  ],
+  "example": "task_distribution → meta_model → support_examples → adapted_model → predictions",
+  "dos": [
+   "Diseña distribuciones de tareas de meta-entrenamiento diversas",
+   "Equilibra la complejidad y la similitud de las tareas en el meta-entrenamiento",
+   "Usa particiones adecuadas de tareas en entrenamiento/validación/prueba",
+   "Vigila el sobreajuste a las tareas de meta-entrenamiento",
+   "Implementa enfoques basados en gradientes y sin gradientes",
+   "Haz seguimiento de la velocidad de adaptación y de las métricas de rendimiento final"
+  ],
+  "donts": [
+   "Usar tareas idénticas en el meta-entrenamiento y la meta-prueba",
+   "Ignorar la sobrecarga computacional de la meta-optimización",
+   "Aplicarlo a dominios con diversidad de tareas insuficiente",
+   "Omitir estudios de ablación sobre los componentes de meta-aprendizaje",
+   "Usar tamaños de conjunto de soporte inadecuados para la evaluación"
+  ],
+  "use": [
+   "Muchas tareas relacionadas, cada una con datos limitados",
+   "Se necesita una adaptación rápida a dominios nuevos",
+   "Las tareas comparten una estructura o patrones subyacentes",
+   "Los requisitos de aprendizaje few-shot son críticos",
+   "El dominio tiene una distribución natural de tareas"
+  ],
+  "avoid": [
+   "Una sola tarea con abundantes datos de entrenamiento",
+   "Las tareas no tienen ninguna relación entre sí",
+   "Las restricciones de inferencia en tiempo real son severas",
+   "Recursos computacionales limitados para el meta-entrenamiento",
+   "La distribución de tareas está mal definida"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión few-shot",
+    "d": "Rendimiento con K ejemplos por clase"
+   },
+   {
+    "n": "Velocidad de adaptación",
+    "d": "Pasos de gradiente hasta la convergencia"
+   },
+   {
+    "n": "Eficiencia de transferencia",
+    "d": "Rendimiento frente a la línea base en tareas nuevas"
+   },
+   {
+    "n": "Meta-generalización",
+    "d": "Rendimiento en tipos de tareas no vistos"
+   },
+   {
+    "n": "Eficiencia de muestras",
+    "d": "Ejemplos necesarios para alcanzar el rendimiento objetivo"
+   },
+   {
+    "n": "Costo computacional",
+    "d": "FLOPs para el meta-entrenamiento y la adaptación"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Clasificación few-shot",
+    "d": "Reconocimiento de imágenes con pocos ejemplos etiquetados por clase"
+   },
+   {
+    "n": "Adaptación de dominio",
+    "d": "Adapta rápidamente modelos a dominios nuevos con datos mínimos"
+   },
+   {
+    "n": "Búsqueda de arquitecturas neuronales",
+    "d": "Aprende a diseñar arquitecturas para tareas nuevas"
+   },
+   {
+    "n": "Optimización de hiperparámetros",
+    "d": "Aprende hiperparámetros óptimos entre familias de tareas"
+   },
+   {
+    "n": "Aprendizaje por refuerzo",
+    "d": "Adaptación rápida a nuevos entornos y estructuras de recompensa"
+   },
+   {
+    "n": "Procesamiento de lenguaje natural",
+    "d": "Clasificación de texto few-shot y reconocimiento de entidades nombradas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Sistemas de meta-aprendizaje",
+  "description": "Aprender a aprender de forma eficiente adaptándose rápidamente a tareas nuevas mediante experiencia previa, aprendizaje few-shot y representaciones de conocimiento transferibles.",
+  "nodes": [
+   {
+    "id": "new-task",
+    "label": "🎯 Tarea nueva\n\"Clasificar aves con solo 5 ejemplos:\npetirrojo, gorrión, águila, búho, pingüino\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "past-task-1",
+    "label": "📚 Tarea anterior 1\nRazas de perros:\n5 ejemplos → 95% de precisión",
+    "x": 50,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "past-task-2",
+    "label": "📚 Tarea anterior 2\nTipos de autos:\n5 ejemplos → 92% de precisión",
+    "x": 230,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "past-task-3",
+    "label": "📚 Tarea anterior 3\nFlores:\n5 ejemplos → 94% de precisión",
+    "x": 410,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "past-task-4",
+    "label": "📚 Tarea anterior 4\nFrutas:\n5 ejemplos → 96% de precisión",
+    "x": 590,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "meta-knowledge",
+    "label": "🧠 Meta-conocimiento\n\"Cómo aprender a partir de pocos ejemplos\"",
+    "x": 320,
+    "y": 300,
+    "w": 250
+   },
+   {
+    "id": "bird-examples",
+    "label": "🐦 5 ejemplos de aves\n• Petirrojo: pequeño, pecho rojo\n• Águila: grande, depredadora\n• Búho: nocturno, cabeza redonda",
+    "x": 100,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "fast-adaptation",
+    "label": "⚡ Adaptación rápida\n3 pasos de gradiente\nUsando el meta-conocimiento",
+    "x": 350,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "feature-extraction",
+    "label": "🔍 Aprender características\n• Patrones de tamaño\n• Pistas del hábitat\n• Rasgos físicos",
+    "x": 580,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "test-bird",
+    "label": "❓ Prueba: ave nueva\n\"Pequeña, amarilla, canta\"",
+    "x": 250,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "prediction",
+    "label": "✅ Predicción\n\"Canario - 89% de confianza\"",
+    "x": 500,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "success",
+    "label": "🎉 ¡Éxito!\n¡Aprendió a clasificar aves con solo 5 ejemplos\nen apenas 3 actualizaciones de gradiente!",
+    "x": 400,
+    "y": 660,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "task1-meta",
+    "s": "past-task-1",
+    "t": "meta-knowledge",
+    "label": ""
+   },
+   {
+    "id": "task2-meta",
+    "s": "past-task-2",
+    "t": "meta-knowledge",
+    "label": ""
+   },
+   {
+    "id": "task3-meta",
+    "s": "past-task-3",
+    "t": "meta-knowledge",
+    "label": ""
+   },
+   {
+    "id": "task4-meta",
+    "s": "past-task-4",
+    "t": "meta-knowledge",
+    "label": ""
+   },
+   {
+    "id": "new-examples",
+    "s": "new-task",
+    "t": "bird-examples",
+    "label": ""
+   },
+   {
+    "id": "examples-adapt",
+    "s": "bird-examples",
+    "t": "fast-adaptation",
+    "label": ""
+   },
+   {
+    "id": "meta-adapt",
+    "s": "meta-knowledge",
+    "t": "fast-adaptation",
+    "label": "Guía"
+   },
+   {
+    "id": "adapt-features",
+    "s": "fast-adaptation",
+    "t": "feature-extraction",
+    "label": ""
+   },
+   {
+    "id": "features-test",
+    "s": "feature-extraction",
+    "t": "test-bird",
+    "label": ""
+   },
+   {
+    "id": "test-predict",
+    "s": "test-bird",
+    "t": "prediction",
+    "label": ""
+   },
+   {
+    "id": "predict-success",
+    "s": "prediction",
+    "t": "success",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea nueva: clasificar aves",
+    "description": "Se necesita aprender a clasificar aves con solo 5 ejemplos",
+    "input": "",
+    "nodes": [
+     "new-task"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Meta-conocimiento de tareas anteriores",
+    "description": "El modelo aprendió \"cómo aprender\" a partir de perros, autos, flores y frutas",
+    "input": "",
+    "nodes": [
+     "past-task-1",
+     "past-task-2",
+     "past-task-3",
+     "past-task-4",
+     "meta-knowledge"
+    ],
+    "edges": [
+     "task1-meta",
+     "task2-meta",
+     "task3-meta",
+     "task4-meta"
+    ]
+   },
+   {
+    "title": "Proporcionar 5 ejemplos de aves",
+    "description": "Muestra al modelo solo 5 ejemplos de aves con sus etiquetas",
+    "input": "",
+    "nodes": [
+     "new-task",
+     "bird-examples"
+    ],
+    "edges": [
+     "new-examples"
+    ]
+   },
+   {
+    "title": "Adaptación rápida",
+    "description": "Usa el meta-conocimiento para adaptarse en solo 3 pasos de gradiente",
+    "input": "",
+    "nodes": [
+     "bird-examples",
+     "meta-knowledge",
+     "fast-adaptation"
+    ],
+    "edges": [
+     "examples-adapt",
+     "meta-adapt"
+    ]
+   },
+   {
+    "title": "Extraer características de las aves",
+    "description": "Aprende rápidamente las características relevantes: tamaño, hábitat, rasgos físicos",
+    "input": "",
+    "nodes": [
+     "fast-adaptation",
+     "feature-extraction"
+    ],
+    "edges": [
+     "adapt-features"
+    ]
+   },
+   {
+    "title": "Probar con un ave nueva",
+    "description": "Presenta la descripción de un ave nueva para clasificarla",
+    "input": "",
+    "nodes": [
+     "feature-extraction",
+     "test-bird"
+    ],
+    "edges": [
+     "features-test"
+    ]
+   },
+   {
+    "title": "Hacer la predicción",
+    "description": "Clasifica el ave nueva con alta confianza",
+    "input": "",
+    "nodes": [
+     "test-bird",
+     "prediction"
+    ],
+    "edges": [
+     "test-predict"
+    ]
+   },
+   {
+    "title": "¡Éxito!",
+    "description": "Aprendió a clasificar aves a partir de solo 5 ejemplos en 3 actualizaciones",
+    "input": "",
+    "nodes": [
+     "prediction",
+     "success"
+    ],
+    "edges": [
+     "predict-success"
+    ]
+   }
+  ]
+ }
+}

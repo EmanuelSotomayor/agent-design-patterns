@@ -1,0 +1,342 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "federated-orchestration",
+ "name": "Federated Orchestration(FO)",
+ "icon": "🌐",
+ "complexity": "high",
+ "description": "Coordina el procesamiento de IA entre dispositivos edge distribuidos preservando la privacidad de los datos",
+ "features": [
+  "Entrenamiento descentralizado de modelos",
+  "Agregación que preserva la privacidad",
+  "Coordinación de dispositivos heterogéneos",
+  "Comunicación eficiente en ancho de banda",
+  "Integración de privacidad diferencial",
+  "Federación tolerante a fallos"
+ ],
+ "tldr": {
+  "what": "Coordina el entrenamiento de modelos entre dispositivos distribuidos compartiendo actualizaciones de pesos en lugar de datos en bruto, y luego agrega las actualizaciones en un punto central.",
+  "when": "Colaboración de datos entre múltiples partes donde las regulaciones de privacidad o la sensibilidad de los datos impiden centralizar los datos en bruto antes de procesarlos.",
+  "watchOut": "La sobrecarga de comunicación y las demoras de sincronización entre dispositivos a menudo superan los beneficios de privacidad; planifica para una latencia considerable y fallas parciales de dispositivos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Federated Orchestration",
+  "description": "Coordina el entrenamiento de IA entre organizaciones independientes para que los datos en bruto nunca salgan de cada sede. Solo se comparten actualizaciones del modelo protegidas por privacidad, que se agregan de forma segura en un modelo global mejorado; se ilustra con una red de hospitales que entrena una IA de diagnóstico.",
+  "nodes": [
+   {
+    "id": "global-model",
+    "label": "🧠 Modelo global v3\nIA de diagnóstico base",
+    "x": 380,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "coordinator",
+    "label": "🌐 Coordinador de la federación\nOrquesta las rondas de entrenamiento",
+    "x": 380,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "hospital-a",
+    "label": "🏥 Hospital A\nCohorte local: 12k pacientes",
+    "x": 100,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "hospital-b",
+    "label": "🏥 Hospital B\nCohorte local: 8k pacientes",
+    "x": 370,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "hospital-c",
+    "label": "🏥 Hospital C\nCohorte local: 15k pacientes",
+    "x": 640,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "data-a",
+    "label": "🔒 Datos privados A\nNunca salen de las instalaciones",
+    "x": 100,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "data-b",
+    "label": "🔒 Datos privados B\nNunca salen de las instalaciones",
+    "x": 370,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "data-c",
+    "label": "🔒 Datos privados C\nNunca salen de las instalaciones",
+    "x": 640,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "update-a",
+    "label": "📊 Actualización de pesos A\nSolo gradientes, sin datos",
+    "x": 100,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "update-b",
+    "label": "📊 Actualización de pesos B\nSolo gradientes, sin datos",
+    "x": 370,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "update-c",
+    "label": "📊 Actualización de pesos C\nSolo gradientes, sin datos",
+    "x": 640,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "diff-privacy",
+    "label": "🕶️ Privacidad diferencial\nRuido agregado, epsilon = 1.0",
+    "x": 370,
+    "y": 620,
+    "w": 240
+   },
+   {
+    "id": "secure-aggregation",
+    "label": "🔐 Agregación segura\nSuma ponderada cifrada",
+    "x": 370,
+    "y": 710,
+    "w": 240
+   },
+   {
+    "id": "global-update",
+    "label": "✨ Modelo global actualizado\n+40% de precisión diagnóstica",
+    "x": 370,
+    "y": 800,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "global-coordinator",
+    "s": "global-model",
+    "t": "coordinator",
+    "label": ""
+   },
+   {
+    "id": "coord-a",
+    "s": "coordinator",
+    "t": "hospital-a",
+    "label": "distribuir"
+   },
+   {
+    "id": "coord-b",
+    "s": "coordinator",
+    "t": "hospital-b",
+    "label": "distribuir"
+   },
+   {
+    "id": "coord-c",
+    "s": "coordinator",
+    "t": "hospital-c",
+    "label": "distribuir"
+   },
+   {
+    "id": "a-data",
+    "s": "hospital-a",
+    "t": "data-a",
+    "label": "entrenar en local"
+   },
+   {
+    "id": "b-data",
+    "s": "hospital-b",
+    "t": "data-b",
+    "label": "entrenar en local"
+   },
+   {
+    "id": "c-data",
+    "s": "hospital-c",
+    "t": "data-c",
+    "label": "entrenar en local"
+   },
+   {
+    "id": "data-a-update",
+    "s": "data-a",
+    "t": "update-a",
+    "label": "calcular"
+   },
+   {
+    "id": "data-b-update",
+    "s": "data-b",
+    "t": "update-b",
+    "label": "calcular"
+   },
+   {
+    "id": "data-c-update",
+    "s": "data-c",
+    "t": "update-c",
+    "label": "calcular"
+   },
+   {
+    "id": "update-a-dp",
+    "s": "update-a",
+    "t": "diff-privacy",
+    "label": ""
+   },
+   {
+    "id": "update-b-dp",
+    "s": "update-b",
+    "t": "diff-privacy",
+    "label": ""
+   },
+   {
+    "id": "update-c-dp",
+    "s": "update-c",
+    "t": "diff-privacy",
+    "label": ""
+   },
+   {
+    "id": "dp-agg",
+    "s": "diff-privacy",
+    "t": "secure-aggregation",
+    "label": ""
+   },
+   {
+    "id": "agg-global",
+    "s": "secure-aggregation",
+    "t": "global-update",
+    "label": ""
+   },
+   {
+    "id": "global-round",
+    "s": "global-update",
+    "t": "coordinator",
+    "label": "siguiente ronda"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Inicialización del modelo global",
+    "description": "El coordinador inicia una ronda de entrenamiento a partir del modelo de diagnóstico global actual.",
+    "input": "",
+    "nodes": [
+     "global-model",
+     "coordinator"
+    ],
+    "edges": [
+     "global-coordinator"
+    ]
+   },
+   {
+    "title": "Distribución del modelo",
+    "description": "El coordinador distribuye pesos del modelo idénticos a cada hospital participante.",
+    "input": "",
+    "nodes": [
+     "coordinator",
+     "hospital-a",
+     "hospital-b",
+     "hospital-c"
+    ],
+    "edges": [
+     "coord-a",
+     "coord-b",
+     "coord-c"
+    ]
+   },
+   {
+    "title": "Entrenamiento local privado",
+    "description": "Cada hospital entrena con su propia cohorte de pacientes; los datos en bruto nunca salen de las instalaciones.",
+    "input": "",
+    "nodes": [
+     "hospital-a",
+     "hospital-b",
+     "hospital-c",
+     "data-a",
+     "data-b",
+     "data-c"
+    ],
+    "edges": [
+     "a-data",
+     "b-data",
+     "c-data"
+    ]
+   },
+   {
+    "title": "Cálculo de la actualización de pesos",
+    "description": "El entrenamiento local produce actualizaciones de gradientes que transmiten el aprendizaje pero ningún dato identificable.",
+    "input": "",
+    "nodes": [
+     "data-a",
+     "data-b",
+     "data-c",
+     "update-a",
+     "update-b",
+     "update-c"
+    ],
+    "edges": [
+     "data-a-update",
+     "data-b-update",
+     "data-c-update"
+    ]
+   },
+   {
+    "title": "Privacidad diferencial",
+    "description": "Se agrega ruido calibrado a las actualizaciones para que no se pueda inferir a ningún paciente individual a partir de ellas.",
+    "input": "",
+    "nodes": [
+     "update-a",
+     "update-b",
+     "update-c",
+     "diff-privacy"
+    ],
+    "edges": [
+     "update-a-dp",
+     "update-b-dp",
+     "update-c-dp"
+    ]
+   },
+   {
+    "title": "Agregación segura",
+    "description": "Las actualizaciones se combinan bajo cifrado, de modo que el coordinador solo ve el agregado y nunca las contribuciones individuales.",
+    "input": "",
+    "nodes": [
+     "diff-privacy",
+     "secure-aggregation"
+    ],
+    "edges": [
+     "dp-agg"
+    ]
+   },
+   {
+    "title": "Actualización del modelo global",
+    "description": "La actualización agregada produce un modelo global mejorado con una precisión diagnóstica sustancialmente mayor.",
+    "input": "",
+    "nodes": [
+     "secure-aggregation",
+     "global-update"
+    ],
+    "edges": [
+     "agg-global"
+    ]
+   },
+   {
+    "title": "Siguiente ronda de la federación",
+    "description": "El modelo mejorado se redistribuye y el ciclo que preserva la privacidad se repite en cada periodo.",
+    "input": "",
+    "nodes": [
+     "global-update",
+     "coordinator"
+    ],
+    "edges": [
+     "global-round"
+    ]
+   }
+  ]
+ }
+}

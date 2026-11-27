@@ -1,0 +1,509 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "memory-based-learning",
+ "name": "Memory-Based Learning(MBL)",
+ "icon": "🧳",
+ "complexity": "medium",
+ "description": "Mejora el comportamiento del agente recuperando y reutilizando experiencias almacenadas en el momento de decidir, en lugar de actualizar los pesos del modelo. Las interacciones pasadas, sus resultados y el feedback de los usuarios se indexan como memorias y se recuperan por similitud para orientar nuevas decisiones, lo que permite una personalización continua sin reentrenamiento.",
+ "features": [
+  "Almacenamiento de experiencias etiquetadas con resultados y feedback",
+  "Recuperación por similitud en el momento de decidir",
+  "Reutilización de soluciones pasadas ponderada por sus resultados",
+  "Personalización continua sin reentrenar el modelo",
+  "Razonamiento basado en casos sobre episodios acumulados"
+ ],
+ "tldr": {
+  "what": "Almacena interacciones pasadas con sus resultados y feedback, y luego recupera casos similares en el momento de decidir para orientar nuevas elecciones sin reentrenar el modelo.",
+  "when": "La personalización importa a lo largo de interacciones repetidas y puedes capturar señales de feedback confiables para ponderar qué experiencias pasadas reutilizar.",
+  "watchOut": "La calidad de la recuperación se degrada bruscamente si las memorias carecen de etiquetas claras de resultado o si la búsqueda por similitud trae casos pasados irrelevantes a las decisiones actuales."
+ },
+ "overview": {
+  "pattern": "Aprende almacenando, recuperando y adaptando a partir de un banco de memoria de experiencias y ejemplos pasados",
+  "why": "Permite el aprendizaje few-shot, evita el olvido catastrófico y favorece la personalización mediante la experiencia acumulada",
+  "insight": "Los sistemas de memoria eficaces combinan almacenamiento eficiente, recuperación inteligente e integración adaptativa de las experiencias pasadas",
+  "impl": [
+   {
+    "t": "Almacenar",
+    "d": "Construye un banco de memoria de experiencias, ejemplos o patrones"
+   },
+   {
+    "t": "Indexar",
+    "d": "Crea un mecanismo de recuperación eficiente (embeddings, claves)"
+   },
+   {
+    "t": "Recuperar",
+    "d": "Encuentra memorias relevantes según el contexto actual"
+   },
+   {
+    "t": "Adaptar",
+    "d": "Usa las memorias recuperadas para informar las predicciones actuales"
+   },
+   {
+    "t": "Actualizar",
+    "d": "Agrega nuevas experiencias y gestiona la capacidad de la memoria"
+   }
+  ],
+  "example": "experience_bank + query → similarity_search → relevant_memories → adapted_response",
+  "dos": [
+   "Usa búsqueda de similitud eficiente (FAISS, vecinos más cercanos aproximados)",
+   "Implementa mecanismos de consolidación y olvido de memoria",
+   "Almacena ejemplos positivos y negativos para aprender mejor",
+   "Usa estructuras de memoria jerárquicas para distintas escalas de tiempo",
+   "Aplica técnicas de repetición de memoria (replay) para evitar el olvido catastrófico",
+   "Implementa una capacidad de memoria adaptativa basada en la importancia"
+  ],
+  "donts": [
+   "Almacenar memorias sin considerar la eficiencia de recuperación",
+   "Usar memoria ilimitada sin estrategias de poda",
+   "Ignorar los problemas de calidad y redundancia de la memoria",
+   "Aplicarlo sin métricas de similitud adecuadas para el dominio",
+   "Descuidar las consideraciones de privacidad y seguridad de los datos almacenados"
+  ],
+  "use": [
+   "Escenarios de aprendizaje few-shot con datos de entrenamiento limitados",
+   "Entornos no estacionarios que requieren repetición de experiencias",
+   "Tareas que se benefician del razonamiento analógico y el aprendizaje basado en casos",
+   "Necesidad de mantener conocimiento a largo plazo y evitar el olvido",
+   "La personalización requiere almacenar experiencias específicas de cada usuario"
+  ],
+  "avoid": [
+   "Los costos de almacenamiento y recuperación de memoria son prohibitivos",
+   "La tarea tiene abundantes datos de entrenamiento y patrones estables",
+   "Las restricciones de tiempo real impiden consultar la memoria",
+   "Las regulaciones de privacidad restringen el almacenamiento de datos",
+   "Reconocimiento de patrones simple sin necesidad de ejemplos"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de recuperación",
+    "d": "Precisión/exhaustividad (precision/recall) de la recuperación de memorias relevantes"
+   },
+   {
+    "n": "Utilización de la memoria",
+    "d": "Uso efectivo de las experiencias almacenadas"
+   },
+   {
+    "n": "Velocidad de adaptación",
+    "d": "Mejora de la velocidad de aprendizaje gracias a la memoria"
+   },
+   {
+    "n": "Eficiencia de la memoria",
+    "d": "Costo de almacenamiento vs ganancia de rendimiento"
+   },
+   {
+    "n": "Resistencia al olvido",
+    "d": "Retención del conocimiento a lo largo del tiempo"
+   },
+   {
+    "n": "Latencia de recuperación",
+    "d": "Tiempo para encontrar y usar memorias relevantes"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Aprendizaje few-shot",
+    "d": "Aprende nuevas tareas a partir de ejemplos mínimos usando la memoria de casos similares"
+   },
+   {
+    "n": "Recomendaciones personalizadas",
+    "d": "Almacena las preferencias y patrones de comportamiento del usuario para personalizar"
+   },
+   {
+    "n": "Aprendizaje permanente",
+    "d": "Mantiene el conocimiento a lo largo de múltiples tareas sin olvido catastrófico"
+   },
+   {
+    "n": "Razonamiento basado en casos",
+    "d": "Resuelve problemas nuevos recuperando y adaptando soluciones pasadas similares"
+   },
+   {
+    "n": "Búsqueda de arquitecturas neuronales",
+    "d": "Recuerda arquitecturas y patrones de diseño prometedores"
+   },
+   {
+    "n": "Aprendizaje continuo",
+    "d": "Repite experiencias importantes para mantener el rendimiento en tareas antiguas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Aprendizaje basado en memoria",
+  "description": "Un patrón de aprendizaje de agentes que aprovecha experiencias y memorias almacenadas para mejorar la toma de decisiones y la personalización con el tiempo",
+  "nodes": [
+   {
+    "id": "travel-assistant",
+    "label": "✈️ Asistente de viajes con IA\nAyuda a los usuarios a planificar viajes según experiencias pasadas",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "memory-bank",
+    "label": "🧠 Banco de memoria\nMiles de experiencias de viajes pasados almacenadas",
+    "x": 400,
+    "y": 150,
+    "w": 300
+   },
+   {
+    "id": "experience-1",
+    "label": "📍 Memoria #1\nUsuario: \"Vacaciones de playa\"\nLugar: Bali\nResultado: ¡Le encantó! 5⭐",
+    "x": 50,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "experience-2",
+    "label": "📍 Memoria #2\nUsuario: \"Escapada a la ciudad\"\nLugar: París\nResultado: Demasiada gente 2⭐",
+    "x": 230,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "experience-3",
+    "label": "📍 Memoria #3\nUsuario: \"Viaje de aventura\"\nLugar: Nepal\nResultado: ¡Increíble! 5⭐",
+    "x": 410,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "experience-4",
+    "label": "📍 Memoria #4\nUsuario: \"Vacaciones en familia\"\nLugar: Disney\nResultado: Niños felices 4⭐",
+    "x": 590,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "experience-5",
+    "label": "📍 Memoria #5\nUsuario: \"Retiro tranquilo\"\nLugar: Japón\nResultado: ¡Perfecto! 5⭐",
+    "x": 770,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "new-query",
+    "label": "💬 Nueva consulta del usuario\n\"Quiero unas vacaciones de playa relajantes,\nno muy turísticas, con buena comida\"",
+    "x": 400,
+    "y": 370,
+    "w": 350
+   },
+   {
+    "id": "similarity-search",
+    "label": "🔍 Búsqueda por similitud\nEncuentra viajes pasados similares\nPlaya + Relajante",
+    "x": 150,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "pattern-matching",
+    "label": "🎯 Coincidencia de patrones\nBali: Playa ✓ Relajante ✓\nParís: Ciudad ✗\nJapón: Relajante ✓",
+    "x": 350,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "outcome-analysis",
+    "label": "📊 Análisis de resultados\nBali: éxito 5⭐\nA usuarios similares les encantó\nSe mencionó la buena comida",
+    "x": 550,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "combine-memories",
+    "label": "🔄 Combina memorias\nBali (playa) + Japón (tranquilo)\n= Sugerencia: Islas Gili",
+    "x": 250,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "avoid-mistakes",
+    "label": "⚠️ Evita errores pasados\nParís tenía demasiada gente\nEvitar temporada alta\nSugerir temporada baja",
+    "x": 500,
+    "y": 580,
+    "w": 180
+   },
+   {
+    "id": "personalized-rec",
+    "label": "✨ Recomendación personalizada\n\"¡Prueba las Islas Gili, Indonesia!\n• Más tranquilas que Bali\n• Playas hermosas\n• Mariscos increíbles\n• Mejor en abril (temporada baja)\"",
+    "x": 400,
+    "y": 690,
+    "w": 350
+   },
+   {
+    "id": "user-feedback",
+    "label": "📝 El usuario viaja y regresa\n\"¡Las Islas Gili fueron perfectas!\"\nCalificación 5⭐",
+    "x": 200,
+    "y": 800,
+    "w": 180
+   },
+   {
+    "id": "store-memory",
+    "label": "💾 Almacena nueva memoria\nConsulta + Recomendación\n+ Resultado = Aprendizaje",
+    "x": 450,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "improved-system",
+    "label": "🎉 Asistente más inteligente\nAhora sabe: \"playa relajante\" → ¡Islas Gili funciona!\n¡Mejora con cada viaje!",
+    "x": 400,
+    "y": 900,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "assistant-memory",
+    "s": "travel-assistant",
+    "t": "memory-bank",
+    "label": ""
+   },
+   {
+    "id": "memory-exp1",
+    "s": "memory-bank",
+    "t": "experience-1",
+    "label": ""
+   },
+   {
+    "id": "memory-exp2",
+    "s": "memory-bank",
+    "t": "experience-2",
+    "label": ""
+   },
+   {
+    "id": "memory-exp3",
+    "s": "memory-bank",
+    "t": "experience-3",
+    "label": ""
+   },
+   {
+    "id": "memory-exp4",
+    "s": "memory-bank",
+    "t": "experience-4",
+    "label": ""
+   },
+   {
+    "id": "memory-exp5",
+    "s": "memory-bank",
+    "t": "experience-5",
+    "label": ""
+   },
+   {
+    "id": "assistant-query",
+    "s": "travel-assistant",
+    "t": "new-query",
+    "label": ""
+   },
+   {
+    "id": "query-similarity",
+    "s": "new-query",
+    "t": "similarity-search",
+    "label": ""
+   },
+   {
+    "id": "similarity-pattern",
+    "s": "similarity-search",
+    "t": "pattern-matching",
+    "label": ""
+   },
+   {
+    "id": "pattern-outcome",
+    "s": "pattern-matching",
+    "t": "outcome-analysis",
+    "label": ""
+   },
+   {
+    "id": "exp1-similarity",
+    "s": "experience-1",
+    "t": "similarity-search",
+    "label": ""
+   },
+   {
+    "id": "exp5-similarity",
+    "s": "experience-5",
+    "t": "similarity-search",
+    "label": ""
+   },
+   {
+    "id": "outcome-combine",
+    "s": "outcome-analysis",
+    "t": "combine-memories",
+    "label": ""
+   },
+   {
+    "id": "pattern-avoid",
+    "s": "pattern-matching",
+    "t": "avoid-mistakes",
+    "label": ""
+   },
+   {
+    "id": "combine-rec",
+    "s": "combine-memories",
+    "t": "personalized-rec",
+    "label": ""
+   },
+   {
+    "id": "avoid-rec",
+    "s": "avoid-mistakes",
+    "t": "personalized-rec",
+    "label": ""
+   },
+   {
+    "id": "rec-feedback",
+    "s": "personalized-rec",
+    "t": "user-feedback",
+    "label": ""
+   },
+   {
+    "id": "feedback-store",
+    "s": "user-feedback",
+    "t": "store-memory",
+    "label": ""
+   },
+   {
+    "id": "store-bank",
+    "s": "store-memory",
+    "t": "memory-bank",
+    "label": "Actualizar"
+   },
+   {
+    "id": "store-improved",
+    "s": "store-memory",
+    "t": "improved-system",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Asistente de viajes con IA",
+    "description": "Ayuda a planificar viajes usando experiencias pasadas",
+    "input": "",
+    "nodes": [
+     "travel-assistant",
+     "memory-bank"
+    ],
+    "edges": [
+     "assistant-memory"
+    ]
+   },
+   {
+    "title": "Banco de memoria",
+    "description": "Almacena miles de experiencias de viajes pasados con sus resultados",
+    "input": "",
+    "nodes": [
+     "memory-bank",
+     "experience-1",
+     "experience-2",
+     "experience-3",
+     "experience-4",
+     "experience-5"
+    ],
+    "edges": [
+     "memory-exp1",
+     "memory-exp2",
+     "memory-exp3",
+     "memory-exp4",
+     "memory-exp5"
+    ]
+   },
+   {
+    "title": "Nueva consulta del usuario",
+    "description": "El usuario quiere unas vacaciones de playa relajantes, no turísticas",
+    "input": "",
+    "nodes": [
+     "travel-assistant",
+     "new-query"
+    ],
+    "edges": [
+     "assistant-query"
+    ]
+   },
+   {
+    "title": "Recuperación de memoria",
+    "description": "Busca viajes similares, encuentra coincidencias de patrones, analiza resultados",
+    "input": "",
+    "nodes": [
+     "new-query",
+     "similarity-search",
+     "pattern-matching",
+     "outcome-analysis",
+     "experience-1",
+     "experience-5"
+    ],
+    "edges": [
+     "query-similarity",
+     "similarity-pattern",
+     "pattern-outcome",
+     "exp1-similarity",
+     "exp5-similarity"
+    ]
+   },
+   {
+    "title": "Aprende de las memorias",
+    "description": "Combina viajes exitosos, evita errores pasados",
+    "input": "",
+    "nodes": [
+     "outcome-analysis",
+     "pattern-matching",
+     "combine-memories",
+     "avoid-mistakes"
+    ],
+    "edges": [
+     "outcome-combine",
+     "pattern-avoid"
+    ]
+   },
+   {
+    "title": "Genera la recomendación",
+    "description": "Sugiere las Islas Gili según los patrones de memoria",
+    "input": "",
+    "nodes": [
+     "combine-memories",
+     "avoid-mistakes",
+     "personalized-rec"
+    ],
+    "edges": [
+     "combine-rec",
+     "avoid-rec"
+    ]
+   },
+   {
+    "title": "Feedback del usuario",
+    "description": "Al usuario le encantan las Islas Gili y las califica con 5 estrellas",
+    "input": "",
+    "nodes": [
+     "personalized-rec",
+     "user-feedback",
+     "store-memory"
+    ],
+    "edges": [
+     "rec-feedback",
+     "feedback-store"
+    ]
+   },
+   {
+    "title": "Almacena nueva memoria",
+    "description": "Agrega esta experiencia exitosa al banco de memoria",
+    "input": "",
+    "nodes": [
+     "store-memory",
+     "memory-bank"
+    ],
+    "edges": [
+     "store-bank"
+    ]
+   },
+   {
+    "title": "Sistema mejorado",
+    "description": "¡El asistente se vuelve más inteligente con cada viaje!",
+    "input": "",
+    "nodes": [
+     "store-memory",
+     "improved-system"
+    ],
+    "edges": [
+     "store-improved"
+    ]
+   }
+  ]
+ }
+}

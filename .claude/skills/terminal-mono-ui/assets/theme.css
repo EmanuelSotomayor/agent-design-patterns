@@ -1,0 +1,230 @@
+/* =====================================================================
+   terminal-mono-ui · theme.css
+   Sistema de diseño de estética terminal: monoespaciado, modo oscuro,
+   paneles técnicos con marcas de esquina, un único acento verde.
+   Todas las clases usan el prefijo t- para no chocar con el proyecto.
+   Uso: copiar este archivo + la carpeta fonts/ y enlazarlo.
+   ===================================================================== */
+
+/* ---------- 1. Fuentes (auto-hospedadas, OFL 1.1) ---------- */
+@font-face{font-family:"Space Mono";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/space-mono-400.woff2") format("woff2");}
+@font-face{font-family:"Space Mono";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/space-mono-700.woff2") format("woff2");}
+@font-face{font-family:"JetBrains Mono";font-weight:400 700;font-style:normal;font-display:swap;src:url("fonts/jetbrains-mono.woff2") format("woff2");}
+
+/* ---------- 2. Tokens ---------- */
+:root{
+  /* acento y estados */
+  --t-primary:#37F712;          /* activo, foco, resaltado, CTA principal (13.9:1 sobre surface) */
+  --t-on-primary:#031003;       /* texto sobre fondo primary */
+  --t-primary-hover:#7DFF63;
+  --t-secondary:#00A6F4;        /* enlaces, rutas, info (7.4:1) */
+  --t-warning:#FE9900;          /* avisos, decisiones, reintentos (9.4:1) */
+  --t-danger:#FF2157;           /* errores, "antes", anti-señales (5.4:1) */
+  --t-success:#00C24A;          /* salidas / resultados (8.5:1) */
+
+  /* superficies (de más profunda a más alta) */
+  --t-surface-deep:#020403;     /* terminales, código, inputs */
+  --t-surface:#050806;          /* fondo de página */
+  --t-panel:#090E0A;            /* paneles */
+  --t-panel-high:#0D140E;       /* hover / elementos internos */
+  --t-outline:#1B2A1D;          /* bordes por defecto */
+  --t-outline-strong:#2B4430;   /* bordes punteados, separadores, hover */
+
+  /* texto */
+  --t-text:#D9E8D6;             /* principal (15.8:1) */
+  --t-text-2:#A3B3A0;           /* secundario (9.1:1) */
+  --t-text-3:#7F907C;           /* metadatos (5.9:1) */
+  --t-text-faint:#4D5F4B;       /* SOLO decorativo: números de línea, timestamps (2.9:1) */
+
+  /* tipos de nodo en diagramas */
+  --t-node-input:#8C9A89; --t-node-llm:#00A6F4; --t-node-llm-light:#2DE2C5; --t-node-tool:#B47CFF;
+  --t-node-human:#FF4FA3; --t-node-decision:#FE9900; --t-node-output:#00C24A;
+  --t-edge:#2F4A33;
+
+  /* tipografía */
+  --t-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --t-display:"Space Mono","JetBrains Mono",ui-monospace,monospace;
+
+  /* espacio (base 4px) */
+  --t-s1:4px; --t-s2:8px; --t-s3:12px; --t-s4:16px; --t-s5:18px; --t-s6:22px; --t-s7:26px; --t-s8:44px;
+
+  /* movimiento */
+  --t-dur-state:120ms; --t-dur-tick:560ms; --t-dur-step:4200ms;
+}
+
+/* ---------- 3. Base ---------- */
+.t-root,.t-root *{box-sizing:border-box;}
+.t-root{background:var(--t-surface);color:var(--t-text);font-family:var(--t-mono);font-size:13px;line-height:1.6;}
+.t-root ::selection{background:var(--t-primary);color:#000;}
+.t-root :focus-visible{outline:2px solid var(--t-primary);outline-offset:2px;}
+.t-root h1,.t-root h2,.t-root h3{font-family:var(--t-display);letter-spacing:-.2px;margin:0;}
+.t-root a:not([class]){color:var(--t-secondary);}   /* enlaces de texto; los componentes <a> definen su propio color */
+.t-root code{background:var(--t-surface-deep);color:#9CFF7D;padding:1px 5px;font-size:12px;}
+.t-muted{color:var(--t-text-2);} .t-dim{color:var(--t-text-3);} .t-acc{color:var(--t-primary);}
+
+/* ---------- 4. Marca y navegación ---------- */
+.t-brand{display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none;}
+.t-brand .t-logo{width:38px;height:38px;display:grid;place-items:center;font-weight:700;font-size:15px;color:var(--t-primary);
+  background:var(--t-surface);border:1px solid var(--t-outline-strong);border-radius:6px;}
+.t-brand h1{font-size:19px;}
+
+.t-tabs{display:flex;flex-wrap:wrap;gap:6px;}
+.t-tab{text-decoration:none;font:700 12px var(--t-mono);padding:7px 11px;background:var(--t-panel);border:1px solid var(--t-outline);color:var(--t-text-2);cursor:pointer;}
+.t-tab:hover{border-color:var(--t-outline-strong);color:var(--t-text);}
+.t-tab .t-n{color:var(--t-text-3);font-size:11px;margin-right:7px;}
+.t-tab[aria-current="page"],.t-tab.is-active{background:var(--t-primary);border-color:var(--t-primary);color:var(--t-on-primary);}
+.t-tab[aria-current="page"] .t-n,.t-tab.is-active .t-n{color:var(--t-on-primary);opacity:.75;}
+
+/* prompt de ruta: muestra dónde está el usuario */
+.t-pathbar{font-size:12px;color:var(--t-text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.t-pathbar .u{color:var(--t-primary);} .t-pathbar .p{color:var(--t-secondary);} .t-pathbar .c{color:var(--t-text-3);}
+
+/* barra de estado */
+.t-status{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:11.5px;color:var(--t-text-2);
+  border:1px solid var(--t-outline);border-left:3px solid var(--t-primary);background:var(--t-panel);padding:7px 12px;}
+.t-status .t-led{width:8px;height:8px;border-radius:50%;background:var(--t-primary);box-shadow:0 0 8px var(--t-primary);}
+.t-status .t-sep{color:var(--t-outline-strong);} .t-status b{color:var(--t-text);}
+.t-status .t-right{margin-left:auto;color:var(--t-text-3);}
+
+/* ---------- 5. Layout ---------- */
+.t-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--t-s5);}
+.t-grid > *{min-width:0;}
+@media (max-width:980px){.t-grid{grid-template-columns:minmax(0,1fr);}.t-grid > *{grid-column:1/-1 !important;}}
+
+/* encabezado de sección: // 01  Título  -------------  meta */
+.t-sech{display:flex;align-items:baseline;gap:14px;margin:var(--t-s8) 0 var(--t-s4);font-family:var(--t-display);}
+.t-sech .t-n{color:var(--t-primary);font-size:13px;} .t-sech h2,.t-sech h3{font-size:20px;}
+.t-sech .t-rule{flex:1;border-bottom:1px dashed var(--t-outline-strong);transform:translateY(-4px);}
+.t-sech .t-meta{font:11px var(--t-mono);color:var(--t-text-3);}
+
+/* ---------- 6. Panel con marcas de esquina ---------- */
+.t-panel{position:relative;background:var(--t-panel);border:1px solid var(--t-outline);padding:16px 18px;}
+.t-panel::before,.t-panel::after{content:"";position:absolute;width:10px;height:10px;border:solid var(--t-primary);pointer-events:none;}
+.t-panel::before{top:-1px;left:-1px;border-width:2px 0 0 2px;}
+.t-panel::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
+.t-panel.is-link{cursor:pointer;transition:border-color var(--t-dur-state),background var(--t-dur-state);}
+.t-panel.is-link:hover{border-color:var(--t-outline-strong);background:var(--t-panel-high);}
+.t-ptitle{display:flex;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--t-text-3);border-bottom:1px dashed var(--t-outline-strong);padding-bottom:8px;margin-bottom:12px;}
+.t-ptitle b{color:var(--t-primary);}
+/* título de tarjeta estilo comentario: // TÍTULO */
+.t-card-title{font:700 11.5px var(--t-mono);letter-spacing:1.2px;text-transform:uppercase;color:var(--t-text-3);margin:0 0 8px;}
+.t-card-title::before{content:"// ";color:var(--t-primary);}
+
+/* ---------- 7. Botones, chips, badges, kbd, inputs ---------- */
+.t-btn{font:700 13px var(--t-mono);cursor:pointer;padding:11px 16px;min-height:44px;background:transparent;color:var(--t-text);
+  border:1px solid var(--t-outline-strong);border-radius:0;transition:color var(--t-dur-state),border-color var(--t-dur-state),background var(--t-dur-state);}
+.t-btn:hover{border-color:var(--t-primary);color:var(--t-primary);}
+.t-btn.is-primary{background:var(--t-primary);border-color:var(--t-primary);color:var(--t-on-primary);}
+.t-btn.is-primary:hover{background:var(--t-primary-hover);color:var(--t-on-primary);}
+.t-btn.is-sm{font-size:12px;padding:6px 10px;min-height:36px;}
+.t-btn .t-k{opacity:.7;margin-right:6px;}
+.t-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+.t-chip{font:12px var(--t-mono);padding:6px 11px;border:1px solid var(--t-outline-strong);color:var(--t-text-2);background:transparent;cursor:pointer;}
+.t-chip:hover{border-color:var(--t-primary);color:var(--t-primary);} .t-chip small{color:var(--t-text-3);margin-left:3px;}
+
+.t-badge{display:inline-block;font:10.5px var(--t-mono);padding:3px 8px;border:1px solid var(--t-outline-strong);color:var(--t-text-2);}
+.t-badge.is-info{color:var(--t-secondary);border-color:#00A6F455;}
+.t-badge.is-ok{color:var(--t-primary);border-color:#37F71255;}
+.t-badge.is-warn{color:var(--t-warning);border-color:#6b4a10;}
+.t-badge.is-err{color:var(--t-danger);border-color:#5a1a26;}
+.t-badge.is-tool{color:var(--t-node-tool);border-color:#B47CFF55;}
+
+.t-root kbd,.t-kbd{font:11px var(--t-mono);color:var(--t-text);background:var(--t-panel-high);border:1px solid var(--t-outline-strong);border-bottom-width:2px;padding:1px 6px;}
+
+.t-input{font:13.5px var(--t-mono);width:100%;background:var(--t-surface-deep);border:1px solid var(--t-outline-strong);color:var(--t-text);padding:10px 14px;outline:none;}
+.t-input:focus{border-color:var(--t-primary);}
+.t-input::placeholder{color:var(--t-text-3);}
+
+.t-seg{display:flex;gap:6px;flex-wrap:wrap;}
+.t-seg > *{font:700 12px var(--t-mono);padding:8px 14px;background:var(--t-panel);border:1px solid var(--t-outline);color:var(--t-text-2);cursor:pointer;}
+.t-seg > .is-on{background:var(--t-primary);border-color:var(--t-primary);color:var(--t-on-primary);}
+
+/* pestañas de detalle: [1] resumen  [2] flujo */
+.t-dtabs{display:flex;gap:8px;border-bottom:1px dashed var(--t-outline-strong);}
+.t-dtab{font:700 12.5px var(--t-mono);padding:10px 16px;color:var(--t-text-2);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;}
+.t-dtab.is-on{color:var(--t-primary);border-bottom-color:var(--t-primary);}
+
+/* ---------- 8. Terminal / log ---------- */
+.t-term{background:var(--t-surface-deep);border:1px solid var(--t-outline-strong);display:flex;flex-direction:column;}
+.t-term-bar{display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid var(--t-outline-strong);font-size:11px;color:var(--t-text-3);}
+.t-term-bar .t-dots{display:flex;gap:5px;} .t-term-bar .t-dots i{width:9px;height:9px;border:1px solid var(--t-outline-strong);display:block;}
+.t-term-bar .t-name{color:var(--t-text-2);} .t-term-bar .t-btn{margin-left:auto;}
+.t-log{margin:0;padding:12px 14px;font:12px/1.7 var(--t-mono);white-space:pre-wrap;color:var(--t-text-2);}
+.t-log .ts{color:var(--t-text-faint);} .t-log .ok{color:var(--t-primary);} .t-log .in{color:var(--t-secondary);}
+.t-log .wr{color:var(--t-warning);} .t-log .er{color:var(--t-danger);} .t-log .hl{color:var(--t-text);font-weight:700;}
+.t-cursor{display:inline-block;width:.5em;height:.82em;background:var(--t-primary);margin-left:6px;vertical-align:-.06em;animation:t-blink 1.1s steps(1) infinite;}
+@keyframes t-blink{50%{opacity:0}}
+
+/* ---------- 9. Datos ---------- */
+.t-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border:1px solid var(--t-outline);}
+.t-stats > div{padding:14px;border-right:1px solid var(--t-outline);border-bottom:1px solid var(--t-outline);background:var(--t-panel);}
+.t-stats .v{font:700 32px/1.05 var(--t-display);color:var(--t-primary);}
+.t-stats .l{font-size:11px;color:var(--t-text-2);text-transform:uppercase;letter-spacing:.8px;}
+
+.t-tree{margin:0;font-size:12.5px;line-height:1.75;color:var(--t-text-2);overflow-x:auto;}
+.t-tree .d{color:var(--t-text);font-weight:700;} .t-tree .br{color:var(--t-outline-strong);}
+.t-tree .f{color:var(--t-secondary);} .t-tree .n,.t-tree .c{color:var(--t-text-3);}
+
+.t-keys{width:100%;border-collapse:collapse;font-size:12.5px;}
+.t-keys td{padding:7px 8px;border-bottom:1px dashed var(--t-outline);color:var(--t-text-2);vertical-align:top;}
+.t-keys td:first-child{white-space:nowrap;width:1%;}
+
+/* listas con marcadores de terminal */
+.t-list-ok,.t-list-bad{margin:0;padding-left:18px;}
+.t-list-ok li::marker{content:"+ ";color:var(--t-primary);}
+.t-list-bad li::marker{content:"- ";color:var(--t-danger);}
+
+/* antes / después */
+.t-bc{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media (max-width:560px){.t-bc{grid-template-columns:1fr;}}
+.t-before,.t-after{padding:9px 11px;font-size:12px;line-height:1.4;}
+.t-before{background:#140709;border:1px solid #5a1a26;} .t-after{background:#06140a;border:1px solid #1f5c2a;}
+.t-before h4,.t-after h4{margin:0 0 5px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;}
+.t-before h4{color:var(--t-danger);} .t-after h4{color:var(--t-primary);}
+
+/* ---------- 10. Código ---------- */
+.t-code{background:var(--t-surface-deep);border:1px solid var(--t-outline);overflow:auto;max-height:600px;font:11.5px/1.55 var(--t-mono);}
+.t-code .ln-row{display:flex;white-space:pre;min-width:max-content;position:relative;}
+.t-code .ln{flex:0 0 auto;width:44px;text-align:right;padding-right:12px;margin-right:12px;color:var(--t-text-faint);
+  border-right:1px solid var(--t-outline);user-select:none;}
+.t-code .lc{color:#C4D6C0;padding-right:16px;}
+.t-code .ln-row.is-hl{background:#0F2A10;} .t-code .ln-row.is-hl .ln{color:var(--t-primary);font-weight:700;}
+.t-code .ln-row.is-hl .lc{color:#F0FFF0;}
+.t-code .ln-row.is-hl::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--t-primary);}
+.tk-kw{color:#00A6F4;} .tk-str{color:#9CFF7D;} .tk-cm{color:#5F7A5C;font-style:italic;} .tk-num,.tk-dec{color:#FE9900;} .tk-fn{color:#2DE2C5;}
+
+/* ---------- 11. Diagramas (SVG + foreignObject) ---------- */
+.t-node{width:100%;height:100%;box-sizing:border-box;border-radius:2px;border:1.5px solid var(--t-outline-strong);
+  border-left:4px solid var(--t-node-llm-light);background:var(--t-panel-high);padding:8px 12px;overflow:hidden;font-family:var(--t-mono);cursor:pointer;}
+.t-node .nt{font-size:12px;font-weight:700;line-height:17px;color:var(--t-text);overflow-wrap:anywhere;}
+.t-node .ns{font-size:11px;line-height:15px;color:var(--t-text-2);margin-top:4px;overflow-wrap:anywhere;}
+.t-node .nm{font-size:9.5px;margin-top:5px;color:var(--t-text-3);letter-spacing:.3px;text-transform:uppercase;}
+.t-node.is-input{border-left-color:var(--t-node-input);} .t-node.is-llm{border-left-color:var(--t-node-llm);}
+.t-node.is-tool{border-left-color:var(--t-node-tool);} .t-node.is-human{border-left-color:var(--t-node-human);}
+.t-node.is-decision{border-left-color:var(--t-node-decision);} .t-node.is-output{border-left-color:var(--t-node-output);}
+.t-node.is-note{background:#1D1608;border:1px dashed #7A5A14;color:#FFD28A;}
+.t-node.is-active{border-color:var(--t-primary);box-shadow:0 0 0 1px var(--t-primary),0 0 18px #37F71244;}
+.t-node.is-active .nt{color:var(--t-primary);}
+.t-edge{stroke:var(--t-edge);stroke-width:2;fill:none;marker-end:url(#t-ah);}
+.t-edge.is-active{stroke:var(--t-primary);stroke-width:2.6;marker-end:url(#t-ah-a);}
+.t-ahead{fill:var(--t-edge);} .t-ahead-a{fill:var(--t-primary);}
+.t-edge-label{font:700 10.5px var(--t-mono);fill:var(--t-text);}
+.t-edge-plate{fill:var(--t-surface-deep);stroke:var(--t-outline-strong);}
+.t-flowdot{fill:#DFFFD6;filter:drop-shadow(0 0 5px var(--t-primary));}
+.t-lifeline{stroke:var(--t-outline-strong);stroke-width:1.5;stroke-dasharray:5 5;}
+
+/* ---------- 12. Controles de reproducción ---------- */
+.t-progress{flex:1;min-width:120px;height:6px;background:var(--t-outline);cursor:pointer;}
+.t-progress .fill{height:100%;background:var(--t-primary);}
+.t-dots-steps{display:flex;gap:5px;flex-wrap:wrap;}
+.t-dots-steps i{width:10px;height:10px;background:var(--t-outline-strong);cursor:pointer;display:block;}
+.t-dots-steps i.is-done{background:#1F5C1A;}
+.t-dots-steps i.is-on{background:var(--t-primary);outline:2px solid #37F71255;outline-offset:2px;}
+
+/* ---------- 13. Accesibilidad ---------- */
+@media (prefers-reduced-motion: reduce){
+  .t-cursor{animation:none;}
+  .t-root *{transition:none !important;}
+}

@@ -1,0 +1,336 @@
+{
+ "cat": "security-privacy",
+ "slug": "confidential-computing-patterns",
+ "name": "Confidential Computing Patterns(CCP)",
+ "icon": "🔒",
+ "complexity": "high",
+ "description": "Entornos de ejecución confiables (TEE) basados en hardware que protegen a los agentes de IA y el procesamiento de datos en entornos no confiables",
+ "features": [
+  "Entornos de ejecución confiables verificados por hardware",
+  "Atestación remota y verificación de integridad",
+  "Cifrado y aislamiento de memoria",
+  "Soporte para múltiples frameworks (Enarx, Gramine, Occlum)",
+  "Compatibilidad de TEE multiplataforma",
+  "Mitigación de ataques de canal lateral"
+ ],
+ "tldr": {
+  "what": "Ejecuta el código de los agentes de IA y el procesamiento de datos dentro de entornos de ejecución confiables aislados por hardware que cifran la memoria e impiden el acceso no autorizado.",
+  "when": "Agentes que manejan datos sensibles en entornos de nube no confiables o que colaboran entre organizaciones competidoras que no pueden compartir información en bruto.",
+  "watchOut": "La sobrecarga de los TEE, la complejidad de la atestación y la visibilidad limitada para depurar suelen hacer que el despliegue y la resolución de problemas sean bastante más difíciles que en entornos estándar."
+ },
+ "overview": {
+  "pattern": "Entornos de ejecución confiables (TEE) basados en hardware que protegen a los agentes de IA y el procesamiento de datos en entornos no confiables",
+  "why": "Brinda seguridad verificada por hardware, permite la colaboración entre múltiples partes, protege algoritmos propietarios y asegura el cumplimiento normativo",
+  "insight": "TEE de hardware + atestación remota + comunicación cifrada → procesamiento de IA confidencial y verificable",
+  "impl": [
+   {
+    "t": "Selección del TEE",
+    "d": "Elige Intel SGX, AMD SEV-SNP o Intel TDX"
+   },
+   {
+    "t": "Configuración del framework",
+    "d": "Despliega el runtime de Enarx, Gramine u Occlum"
+   },
+   {
+    "t": "Enclave del agente",
+    "d": "Empaqueta los agentes de IA en un entorno de ejecución confiable"
+   },
+   {
+    "t": "Atestación remota",
+    "d": "Verifica la integridad y autenticidad del enclave"
+   },
+   {
+    "t": "Comunicación segura",
+    "d": "Canales cifrados entre enclaves"
+   }
+  ],
+  "example": "tee_selection → framework_setup → agent_enclave → remote_attestation → secure_communication",
+  "dos": [
+   "Usa TEE basados en hardware para obtener las máximas garantías de seguridad",
+   "Implementa atestación remota para verificar los enclaves",
+   "Elige el framework adecuado según los requisitos de rendimiento",
+   "Cifra todos los datos en tránsito entre enclaves",
+   "Monitorea el uso de recursos de los enclaves y los ataques de canal lateral"
+  ],
+  "donts": [
+   "Confiar en enclaves sin una verificación de atestación adecuada",
+   "Guardar secretos en memoria del enclave sin cifrar",
+   "Ignorar la sobrecarga de rendimiento de la computación confidencial",
+   "Usar Intel SGX, ya obsoleto, en despliegues nuevos",
+   "Omitir las actualizaciones de seguridad de los frameworks de TEE"
+  ],
+  "use": [
+   "Colaboración de IA agéntica entre múltiples partes",
+   "Requisitos de procesamiento de datos sensibles",
+   "Entornos de nube no confiables",
+   "Exigencias de cumplimiento normativo"
+  ],
+  "avoid": [
+   "Procesamiento exclusivo de datos públicos",
+   "Aplicaciones en tiempo real críticas en latencia",
+   "Dispositivos edge con recursos limitados",
+   "Entornos confiables de un solo inquilino"
+  ],
+  "metrics": [
+   {
+    "n": "Integridad del enclave",
+    "d": "Tasa de verificaciones de atestación exitosas"
+   },
+   {
+    "n": "Sobrecarga de rendimiento",
+    "d": "Factor de ralentización del cómputo (1.5-30x)"
+   },
+   {
+    "n": "Protección de memoria",
+    "d": "% de datos protegidos en la memoria del TEE"
+   },
+   {
+    "n": "Resistencia a canales laterales",
+    "d": "Efectividad de la mitigación de ataques"
+   },
+   {
+    "n": "Factor de escalabilidad",
+    "d": "Máximo de enclaves concurrentes soportados"
+   },
+   {
+    "n": "Compatibilidad del framework",
+    "d": "% de aplicaciones que funcionan sin modificaciones"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA federada",
+    "d": "Entrenamiento de ML entre varios hospitales con privacidad de pacientes en enclaves TEE"
+   },
+   {
+    "n": "Trading financiero",
+    "d": "Algoritmos de alta frecuencia protegidos contra la manipulación del mercado"
+   },
+   {
+    "n": "Colaboración multiagente",
+    "d": "Intercambio de inteligencia competitiva sin exponer datos"
+   },
+   {
+    "n": "IA en el edge",
+    "d": "Toma de decisiones de vehículos autónomos con protección de algoritmos propietarios"
+   },
+   {
+    "n": "IA gubernamental",
+    "d": "Procesamiento de datos clasificados con límites de seguridad verificados por hardware"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Confidential Computing Patterns",
+  "description": "Entornos de ejecución confiables (TEE) basados en hardware que protegen a los agentes de IA y el procesamiento de datos en entornos de nube no confiables mediante enclaves seguros",
+  "nodes": [
+   {
+    "id": "cloud-ai-processing",
+    "label": "☁️ IA en nube multiinquilino\n\"Agente de IA financiero que procesa\nalgoritmos de trading sensibles y\ndatos de clientes en una nube compartida\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "trust-challenge",
+    "label": "🤔 Desafío de confianza en la nube\n\"No se puede confiar al proveedor de nube\nalgoritmos propietarios\nni datos sensibles de clientes\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "traditional-cloud",
+    "label": "⚠️ Despliegue tradicional en la nube\n\"Código y datos visibles para:\n• Administradores de la nube\n• Otros inquilinos\n• Personal interno malicioso\"",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "data-exposure",
+    "label": "👀 Exposición total de datos\n\"Algoritmos de trading visibles\nDatos de clientes accesibles\nPropiedad intelectual robada\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "competitive-loss",
+    "label": "📉 Desventaja competitiva\n\"Estrategias propietarias copiadas\nInfracciones regulatorias\nPérdida de confianza de los clientes\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "confidential-computing",
+    "label": "🛡️ Computación confidencial\n\"TEE basado en hardware:\n• Enclave Intel SGX\n• Cifrado AMD SEV\n• Protección ARM TrustZone\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "secure-enclave",
+    "label": "🔒 Ejecución en enclave seguro\n\"Código del agente de IA cifrado\nMemoria protegida por hardware\nNi siquiera el hipervisor puede acceder\"",
+    "x": 650,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "attestation-verification",
+    "label": "✅ Atestación remota\n\"Prueba criptográfica de que:\n• Se verificó la integridad del código\n• Se confirmó el entorno seguro\n• No se detectó manipulación\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "protected-processing",
+    "label": "🔐 Procesamiento protegido\n\"Los algoritmos siguen siendo confidenciales\nDatos cifrados en memoria\nResultados verificablemente seguros\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "confidential-principle",
+    "label": "🎯 Principio de la computación confidencial\n\"Protege los datos en uso, no solo en reposo\nRaíces de confianza en hardware\nComputa sin comprometer\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "cloud-ai-processing",
+    "t": "trust-challenge",
+    "label": "no se puede confiar en el entorno de nube"
+   },
+   {
+    "id": "e2",
+    "s": "trust-challenge",
+    "t": "traditional-cloud",
+    "label": "despliegue tradicional"
+   },
+   {
+    "id": "e3",
+    "s": "trust-challenge",
+    "t": "confidential-computing",
+    "label": "computación confidencial"
+   },
+   {
+    "id": "e4",
+    "s": "traditional-cloud",
+    "t": "data-exposure",
+    "label": "expone datos sensibles"
+   },
+   {
+    "id": "e5",
+    "s": "data-exposure",
+    "t": "competitive-loss",
+    "label": "provoca daños al negocio"
+   },
+   {
+    "id": "e6",
+    "s": "confidential-computing",
+    "t": "secure-enclave",
+    "label": "crea un entorno seguro"
+   },
+   {
+    "id": "e7",
+    "s": "secure-enclave",
+    "t": "attestation-verification",
+    "label": "proporciona atestación"
+   },
+   {
+    "id": "e8",
+    "s": "attestation-verification",
+    "t": "protected-processing",
+    "label": "habilita el cómputo seguro"
+   },
+   {
+    "id": "e9",
+    "s": "competitive-loss",
+    "t": "confidential-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e10",
+    "s": "protected-processing",
+    "t": "confidential-principle",
+    "label": "logra el objetivo de protección"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de despliegue de IA en nube multiinquilino",
+    "description": "Un agente de IA financiero debe procesar algoritmos de trading sensibles y datos de clientes en un entorno de nube compartido, lo que genera desafíos fundamentales de confianza.",
+    "input": "",
+    "nodes": [
+     "cloud-ai-processing"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Dilema de confianza en la nube",
+    "description": "No se puede confiar al proveedor de nube los algoritmos propietarios ni los datos sensibles de clientes, debido al posible acceso de administradores, otros inquilinos y personal interno malicioso.",
+    "input": "",
+    "nodes": [
+     "trust-challenge"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de despliegue: tradicional vs. confidencial",
+    "description": "El mismo procesamiento de IA se maneja mediante un despliegue tradicional en la nube (izquierda) con visibilidad total frente a la computación confidencial (derecha) con protección basada en hardware.",
+    "input": "",
+    "nodes": [
+     "traditional-cloud",
+     "confidential-computing"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Nube tradicional: riesgo de exposición total",
+    "description": "El despliegue estándar expone los algoritmos de trading, los datos de clientes y la propiedad intelectual a los administradores de la nube, a otros inquilinos y a posibles atacantes.",
+    "input": "",
+    "nodes": [
+     "data-exposure",
+     "competitive-loss"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Computación confidencial: ejecución protegida por hardware",
+    "description": "El TEE crea un enclave seguro donde el código del agente de IA está cifrado, la memoria está protegida por hardware y ni siquiera el hipervisor puede acceder a los datos sensibles.",
+    "input": "",
+    "nodes": [
+     "secure-enclave"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Éxito de la atestación y del procesamiento protegido",
+    "description": "La atestación remota proporciona una prueba criptográfica de la ejecución segura, lo que permite un procesamiento protegido donde los algoritmos siguen siendo confidenciales y los datos permanecen cifrados en memoria.",
+    "input": "",
+    "nodes": [
+     "attestation-verification",
+     "protected-processing",
+     "confidential-principle"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   }
+  ]
+ }
+}

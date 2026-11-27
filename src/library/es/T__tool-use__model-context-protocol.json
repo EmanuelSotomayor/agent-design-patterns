@@ -1,0 +1,514 @@
+{
+ "cat": "tool-use",
+ "slug": "model-context-protocol",
+ "name": "Model Context Protocol(MCP)",
+ "icon": "🔌",
+ "complexity": "high",
+ "description": "Protocolo estandarizado para compartir contexto y capacidades entre modelos de IA y herramientas",
+ "features": [
+  "Intercambio de contexto estandarizado",
+  "Descubrimiento de capacidades de herramientas",
+  "Interoperabilidad entre modelos",
+  "Gestión del estado de la sesión"
+ ],
+ "tldr": {
+  "what": "Protocolo estandarizado que permite a los modelos de IA descubrir, describir y usar herramientas mediante el intercambio estructurado de contexto y capacidades.",
+  "when": "Sistemas que necesitan que múltiples modelos compartan herramientas, mantengan el estado de la sesión o se pasen trabajo entre distintos servicios de IA.",
+  "watchOut": "La sobrecarga del protocolo y las incompatibilidades de versión entre las implementaciones de cliente y servidor pueden degradar o romper silenciosamente la disponibilidad de herramientas."
+ },
+ "overview": {
+  "pattern": "Estandariza el intercambio de contexto y la integración de herramientas en aplicaciones de IA mediante el protocolo JSON-RPC",
+  "why": "Permite una interoperabilidad fluida entre modelos de IA y herramientas/fuentes de datos externas en distintas plataformas",
+  "insight": "Estándar abierto que resuelve el problema de integración N×M: más de 1000 servidores disponibles, adoptado por OpenAI/GitHub",
+  "impl": [
+   {
+    "t": "Elegir el transporte",
+    "d": "stdio (local) o HTTP/SSE (remoto)"
+   },
+   {
+    "t": "Inicializar la sesión",
+    "d": "Negociación y descubrimiento de capacidades"
+   },
+   {
+    "t": "Descubrir herramientas",
+    "d": "Lista las herramientas, recursos y prompts disponibles"
+   },
+   {
+    "t": "Invocar herramientas",
+    "d": "Llamadas JSON-RPC con parámetros tipados"
+   },
+   {
+    "t": "Manejar recursos",
+    "d": "Usa handles en lugar de incrustar el contenido"
+   }
+  ],
+  "example": "El cliente se conecta → initialize() → list_tools() → call_tool(\"github_search\") → get_resource(handle)",
+  "dos": [
+   "Usa JSON Schema para todos los parámetros de herramientas y la validación de respuestas",
+   "Implementa OAuth 2.1 con PKCE para una autenticación segura",
+   "Usa handles de recursos en lugar de incluir contenido grande en línea",
+   "Implementa streaming para salidas grandes con control de contrapresión",
+   "Versiona las capacidades y mantén la compatibilidad con versiones anteriores",
+   "Aplica el principio de mínimo privilegio para delimitar el acceso a los servidores"
+  ],
+  "donts": [
+   "Pasar tokens a través de los servidores (antipatrón de token passthrough)",
+   "Omitir la validación del servidor (vulnerable a ataques de suplantación)",
+   "Incrustar documentos grandes en los prompts en lugar de usar handles",
+   "Desplegar sin pruebas de conformidad (riesgo de deriva del esquema)",
+   "Ignorar los códigos de error estructurados para un manejo adecuado de alternativas"
+  ],
+  "use": [
+   "Sistemas de agentes con múltiples herramientas que requieren una integración estandarizada",
+   "Copilotos empresariales que necesitan acceso unificado a fuentes de datos",
+   "IDE/herramientas de desarrollo que requieren descubrimiento dinámico de capacidades",
+   "Aplicaciones de IA multiplataforma que necesitan interoperabilidad"
+  ],
+  "avoid": [
+   "Integraciones únicas y estáticas de herramientas donde basta con function calling",
+   "Rutas de ultra baja latencia que no pueden permitirse la sobrecarga del protocolo",
+   "Aplicaciones simples sin necesidades complejas de orquestación de herramientas",
+   "Entornos donde no es viable desplegar procesos de servidor"
+  ],
+  "metrics": [
+   {
+    "n": "Latencia por salto de herramienta",
+    "d": "218ms en promedio (estudio de Li & Xie 2025)"
+   },
+   {
+    "n": "Eficiencia de integración",
+    "d": "Mejora del 25-40% frente a implementaciones personalizadas"
+   },
+   {
+    "n": "Tasa de fallos del protocolo",
+    "d": "0.7% (principalmente por parámetros que no coinciden)"
+   },
+   {
+    "n": "Reducción del tiempo de desarrollo",
+    "d": "Despliegue de proyectos un 50% más rápido"
+   },
+   {
+    "n": "Optimización de costos",
+    "d": "Reducción del 30% en los costos de integración"
+   },
+   {
+    "n": "Establecimiento de la sesión",
+    "d": "Descubrimiento y negociación de capacidades en menos de un segundo"
+   },
+   {
+    "n": "Tasa de incidentes de seguridad",
+    "d": "Suplantación de tokens y ataques de confused deputy"
+   },
+   {
+    "n": "Crecimiento del ecosistema",
+    "d": "Más de 1000 servidores MCP de la comunidad (2025)"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Integración con Claude Desktop",
+    "d": "Instalación de servidores MCP con un clic mediante Desktop Extensions"
+   },
+   {
+    "n": "Desarrollo en GitHub",
+    "d": "CI/CD, issues y PR con una reducción del 35% en la latencia de revisión de código"
+   },
+   {
+    "n": "Copilotos empresariales",
+    "d": "Acceso unificado a sistemas de CRM, HRIS, nómina y contabilidad"
+   },
+   {
+    "n": "Asistentes de IDE",
+    "d": "Sistema de archivos, VCS y documentación con contexto en tiempo real"
+   },
+   {
+    "n": "Procesamiento de documentos",
+    "d": "Reducción del 60-80% en el tiempo de procesamiento con handles de recursos"
+   },
+   {
+    "n": "Sistemas multiagente",
+    "d": "Intercambio estandarizado de herramientas entre agentes autónomos"
+   },
+   {
+    "n": "Sistemas RAG",
+    "d": "Recuperación de documentos y metadatos mediante referencias eficientes por handle"
+   },
+   {
+    "n": "Control de dispositivos IoT",
+    "d": "Automatización en lenguaje natural en ecosistemas de dispositivos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Model Context Protocol (MCP)",
+  "description": "Demuestra un protocolo estandarizado para compartir contexto y capacidades entre modelos de IA y herramientas/sistemas externos",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "Solicitud del usuario\n\"Busca tutoriales de Python y crea un plan de estudio\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "mcp-client",
+    "label": "🤖 Cliente MCP\n(Aplicación host de Claude/GPT)",
+    "x": 375,
+    "y": 160,
+    "w": 300
+   },
+   {
+    "id": "protocol-layer",
+    "label": "🔌 Capa del protocolo MCP\nJSON-RPC sobre stdio/SSE",
+    "x": 375,
+    "y": 280,
+    "w": 300
+   },
+   {
+    "id": "web-search-server",
+    "label": "🔍 Servidor de búsqueda web\nAPI de Google/Bing\nServidor MCP",
+    "x": 50,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "database-server",
+    "label": "🗄️ Servidor de base de datos\nPostgreSQL\nServidor MCP",
+    "x": 250,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "file-system-server",
+    "label": "📁 Servidor de sistema de archivos\nArchivos locales\nServidor MCP",
+    "x": 450,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "github-server",
+    "label": "🐙 Servidor de GitHub\nRepositorios\nServidor MCP",
+    "x": 650,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "context-state",
+    "label": "📋 Estado del contexto\n• ID de sesión: sess_789\n• Historial: 5 mensajes\n• Preferencias del usuario: Python, principiante\n• Herramientas activas: 4",
+    "x": 50,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "capabilities-registry",
+    "label": "🛠️ Registro de capacidades\n• search(): búsqueda web\n• query(): consultas SQL\n• read(): acceso a archivos\n• clone(): operaciones de Git",
+    "x": 700,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "tool-discovery",
+    "label": "🔎 Descubrimiento de herramientas\ntools/list → Herramientas disponibles\ntools/call → Ejecutar",
+    "x": 150,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "resource-access",
+    "label": "📚 Acceso a recursos\nresources/list → Disponibles\nresources/read → Contenido",
+    "x": 375,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "prompt-enhancement",
+    "label": "✨ Mejora de prompts\nprompts/list → Plantillas\nprompts/get → Obtener",
+    "x": 600,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "execution-plan",
+    "label": "📝 Plan de ejecución\n1. Buscar tutoriales\n2. Guardar en la base de datos\n3. Generar el plan de estudio\n4. Escribir en un archivo",
+    "x": 375,
+    "y": 640,
+    "w": 250
+   },
+   {
+    "id": "response-aggregation",
+    "label": "🔄 Agregación de respuestas\nCombina los resultados de múltiples servidores",
+    "x": 375,
+    "y": 760,
+    "w": 280
+   },
+   {
+    "id": "final-output",
+    "label": "✅ Salida final\nPlan de estudio creado con 10 tutoriales\nGuardado en la base de datos y en un archivo",
+    "x": 375,
+    "y": 880,
+    "w": 300
+   },
+   {
+    "id": "protocol-messages",
+    "label": "📨 Mensajes del protocolo\n• initialize\n• tools/list\n• tools/call\n• resources/read\n• completion/create",
+    "x": 850,
+    "y": 280,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-user-client",
+    "s": "user-request",
+    "t": "mcp-client",
+    "label": ""
+   },
+   {
+    "id": "e-client-protocol",
+    "s": "mcp-client",
+    "t": "protocol-layer",
+    "label": ""
+   },
+   {
+    "id": "e-client-context",
+    "s": "mcp-client",
+    "t": "context-state",
+    "label": ""
+   },
+   {
+    "id": "e-client-capabilities",
+    "s": "mcp-client",
+    "t": "capabilities-registry",
+    "label": ""
+   },
+   {
+    "id": "e-protocol-messages",
+    "s": "protocol-layer",
+    "t": "protocol-messages",
+    "label": ""
+   },
+   {
+    "id": "e-protocol-web",
+    "s": "protocol-layer",
+    "t": "web-search-server",
+    "label": "JSON-RPC"
+   },
+   {
+    "id": "e-protocol-db",
+    "s": "protocol-layer",
+    "t": "database-server",
+    "label": "JSON-RPC"
+   },
+   {
+    "id": "e-protocol-files",
+    "s": "protocol-layer",
+    "t": "file-system-server",
+    "label": "JSON-RPC"
+   },
+   {
+    "id": "e-protocol-github",
+    "s": "protocol-layer",
+    "t": "github-server",
+    "label": "JSON-RPC"
+   },
+   {
+    "id": "e-web-discovery",
+    "s": "web-search-server",
+    "t": "tool-discovery",
+    "label": ""
+   },
+   {
+    "id": "e-db-discovery",
+    "s": "database-server",
+    "t": "tool-discovery",
+    "label": ""
+   },
+   {
+    "id": "e-files-resources",
+    "s": "file-system-server",
+    "t": "resource-access",
+    "label": ""
+   },
+   {
+    "id": "e-github-prompt",
+    "s": "github-server",
+    "t": "prompt-enhancement",
+    "label": ""
+   },
+   {
+    "id": "e-discovery-plan",
+    "s": "tool-discovery",
+    "t": "execution-plan",
+    "label": ""
+   },
+   {
+    "id": "e-resources-plan",
+    "s": "resource-access",
+    "t": "execution-plan",
+    "label": ""
+   },
+   {
+    "id": "e-prompt-plan",
+    "s": "prompt-enhancement",
+    "t": "execution-plan",
+    "label": ""
+   },
+   {
+    "id": "e-plan-aggregation",
+    "s": "execution-plan",
+    "t": "response-aggregation",
+    "label": ""
+   },
+   {
+    "id": "e-aggregation-output",
+    "s": "response-aggregation",
+    "t": "final-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud del usuario",
+    "description": "El usuario hace una solicitud que requiere múltiples herramientas y recursos.",
+    "input": "Usuario: \"Busca tutoriales de Python y crea un plan de estudio\"\n\nEsta solicitud requiere:\n• Capacidades de búsqueda web\n• Almacenamiento en base de datos\n• Acceso al sistema de archivos\n• Generación de contenido",
+    "nodes": [
+     "user-request"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Inicialización del cliente MCP",
+    "description": "La aplicación host del LLM se inicializa como cliente MCP.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "mcp-client",
+     "context-state",
+     "capabilities-registry"
+    ],
+    "edges": [
+     "e-user-client",
+     "e-client-context",
+     "e-client-capabilities"
+    ]
+   },
+   {
+    "title": "Conexión de la capa del protocolo",
+    "description": "Establece conexiones JSON-RPC con los servidores MCP.",
+    "input": "",
+    "nodes": [
+     "mcp-client",
+     "protocol-layer",
+     "protocol-messages"
+    ],
+    "edges": [
+     "e-client-protocol",
+     "e-protocol-messages"
+    ]
+   },
+   {
+    "title": "Conectarse a los servidores MCP",
+    "description": "La capa del protocolo se conecta a todos los servidores MCP configurados.",
+    "input": "",
+    "nodes": [
+     "protocol-layer",
+     "web-search-server",
+     "database-server",
+     "file-system-server",
+     "github-server"
+    ],
+    "edges": [
+     "e-protocol-web",
+     "e-protocol-db",
+     "e-protocol-files",
+     "e-protocol-github"
+    ]
+   },
+   {
+    "title": "Descubrimiento de herramientas",
+    "description": "El cliente descubre las herramientas disponibles en los servidores conectados.",
+    "input": "",
+    "nodes": [
+     "web-search-server",
+     "database-server",
+     "tool-discovery"
+    ],
+    "edges": [
+     "e-web-discovery",
+     "e-db-discovery"
+    ]
+   },
+   {
+    "title": "Descubrimiento de recursos y prompts",
+    "description": "Descubre los recursos y las plantillas de prompts disponibles.",
+    "input": "",
+    "nodes": [
+     "file-system-server",
+     "github-server",
+     "resource-access",
+     "prompt-enhancement"
+    ],
+    "edges": [
+     "e-files-resources",
+     "e-github-prompt"
+    ]
+   },
+   {
+    "title": "Crear el plan de ejecución",
+    "description": "El LLM crea un plan usando las herramientas y los recursos descubiertos.",
+    "input": "",
+    "nodes": [
+     "tool-discovery",
+     "resource-access",
+     "prompt-enhancement",
+     "execution-plan"
+    ],
+    "edges": [
+     "e-discovery-plan",
+     "e-resources-plan",
+     "e-prompt-plan"
+    ]
+   },
+   {
+    "title": "Ejecutar las llamadas a herramientas",
+    "description": "Ejecuta el plan llamando a las herramientas a través de MCP.",
+    "input": "",
+    "nodes": [
+     "execution-plan",
+     "web-search-server",
+     "database-server",
+     "file-system-server"
+    ],
+    "edges": [
+     "e-protocol-web",
+     "e-protocol-db",
+     "e-protocol-files"
+    ]
+   },
+   {
+    "title": "Agregar las respuestas",
+    "description": "Combina los resultados de múltiples llamadas a herramientas.",
+    "input": "",
+    "nodes": [
+     "execution-plan",
+     "response-aggregation"
+    ],
+    "edges": [
+     "e-plan-aggregation"
+    ]
+   },
+   {
+    "title": "Respuesta final",
+    "description": "Devuelve una respuesta consolidada al usuario.",
+    "input": "",
+    "nodes": [
+     "response-aggregation",
+     "final-output"
+    ],
+    "edges": [
+     "e-aggregation-output"
+    ]
+   }
+  ]
+ }
+}

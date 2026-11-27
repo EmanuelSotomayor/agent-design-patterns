@@ -1,0 +1,328 @@
+{
+ "cat": "tool-use",
+ "slug": "agent-skills",
+ "name": "Agent Skills(AS)",
+ "icon": "🧩",
+ "complexity": "medium",
+ "description": "Capacidades empaquetadas como carpetas autocontenidas. Cada skill es un archivo SKILL.md con frontmatter YAML (nombre y descripción), además de scripts y recursos opcionales. Los agentes descubren las skills por sus metadatos y las cargan en tres niveles de divulgación progresiva: leen el nombre y la descripción para juzgar su relevancia, cargan el SKILL.md completo una vez activada y luego ejecutan los scripts y recursos incluidos según se necesiten. Esto mantiene el contexto pequeño mientras expone muchas capacidades, y el formato es un estándar abierto adoptado por distintos proveedores.",
+ "features": [
+  "Carpeta autocontenida con SKILL.md, scripts y recursos",
+  "Los metadatos del frontmatter YAML (name, description) impulsan el descubrimiento",
+  "Divulgación progresiva en tres niveles: metadatos, instrucciones completas, archivos incluidos",
+  "Solo el contenido completo de la skill activa entra en la ventana de contexto",
+  "Los scripts ejecutables incluidos realizan trabajo determinista fuera del modelo",
+  "Formato abierto y multiproveedor, portable entre agentes"
+ ],
+ "tldr": {
+  "what": "Empaqueta las capacidades del agente como carpetas autocontenidas con metadatos, instrucciones y scripts. Los agentes cargan en el contexto solo el contenido de la skill activa y mantienen un índice liviano de todas las skills disponibles.",
+  "when": "Cuando los agentes necesitan acceder a muchas herramientas pero tienen una ventana de contexto limitada, o cuando las skills deben ser portables entre distintas plataformas de agentes y proveedores.",
+  "watchOut": "Los scripts pueden fallar en silencio o producir salidas inesperadas si el agente malinterpreta las precondiciones de la skill o no respeta los formatos de entrada."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Agent Skills",
+  "description": "Las capacidades se empaquetan como carpetas autocontenidas, cada una con un archivo SKILL.md con frontmatter YAML, además de scripts y recursos opcionales. El agente descubre las skills por sus metadatos y las carga en tres niveles de divulgación progresiva, de modo que la ventana de contexto contiene solo la skill activa en lugar de todas las instaladas.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea\nCompleta este formulario fiscal en PDF\nusando los valores de mis notas",
+    "x": 350,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente\n50 skills instaladas",
+    "x": 360,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "registry",
+    "label": "🗂️ Registro de skills\n50 skills, solo nombres + descripciones\n(~30 tokens cada una)",
+    "x": 650,
+    "y": 150,
+    "w": 230
+   },
+   {
+    "id": "discover",
+    "label": "🔍 Nivel 1: Descubrir\nRevisa los metadatos en busca de coincidencias",
+    "x": 360,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "skill-pdf",
+    "label": "🧩 pdf-form\ndesc: completa campos de formularios PDF\nCOINCIDE",
+    "x": 90,
+    "y": 360,
+    "w": 170
+   },
+   {
+    "id": "skill-xlsx",
+    "label": "🧩 xlsx-report\ncrea hojas de cálculo",
+    "x": 300,
+    "y": 360,
+    "w": 160
+   },
+   {
+    "id": "skill-email",
+    "label": "🧩 email-send\nenvía un correo",
+    "x": 510,
+    "y": 360,
+    "w": 160
+   },
+   {
+    "id": "skill-more",
+    "label": "🧩 +47 más\nsin cargar",
+    "x": 720,
+    "y": 360,
+    "w": 160
+   },
+   {
+    "id": "activate",
+    "label": "📖 Nivel 2: Activar\nCarga pdf-form/SKILL.md\ninstrucciones completas",
+    "x": 360,
+    "y": 470,
+    "w": 220
+   },
+   {
+    "id": "skill-md",
+    "label": "📄 SKILL.md\nFrontmatter YAML + pasos",
+    "x": 660,
+    "y": 470,
+    "w": 220
+   },
+   {
+    "id": "resources",
+    "label": "📎 Recursos incluidos\nfield-map.json, plantilla",
+    "x": 90,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "script",
+    "label": "🐍 fill_form.py\nEscritor determinista de campos",
+    "x": 660,
+    "y": 580,
+    "w": 220
+   },
+   {
+    "id": "execute",
+    "label": "⚙️ Nivel 3: Ejecutar\nEjecuta el fill_form.py incluido",
+    "x": 360,
+    "y": 690,
+    "w": 220
+   },
+   {
+    "id": "context-monitor",
+    "label": "📊 Presupuesto de contexto\n~1.5K tokens usados,\nno ~40K para las 50",
+    "x": 660,
+    "y": 690,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "🎉 Formulario completado\nEl contexto se mantuvo pequeño",
+    "x": 360,
+    "y": 790,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-agent",
+    "s": "task",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-discover",
+    "s": "agent",
+    "t": "discover",
+    "label": "Nivel 1"
+   },
+   {
+    "id": "e-discover-registry",
+    "s": "discover",
+    "t": "registry",
+    "label": "Revisar metadatos"
+   },
+   {
+    "id": "e-discover-pdf",
+    "s": "discover",
+    "t": "skill-pdf",
+    "label": "Coincide"
+   },
+   {
+    "id": "e-discover-xlsx",
+    "s": "discover",
+    "t": "skill-xlsx",
+    "label": "No coincide"
+   },
+   {
+    "id": "e-discover-email",
+    "s": "discover",
+    "t": "skill-email",
+    "label": "No coincide"
+   },
+   {
+    "id": "e-discover-more",
+    "s": "discover",
+    "t": "skill-more",
+    "label": "Omitida"
+   },
+   {
+    "id": "e-pdf-activate",
+    "s": "skill-pdf",
+    "t": "activate",
+    "label": "Activar"
+   },
+   {
+    "id": "e-activate-skillmd",
+    "s": "activate",
+    "t": "skill-md",
+    "label": "Cargar SKILL.md"
+   },
+   {
+    "id": "e-activate-execute",
+    "s": "activate",
+    "t": "execute",
+    "label": "Nivel 3"
+   },
+   {
+    "id": "e-skillmd-execute",
+    "s": "skill-md",
+    "t": "execute",
+    "label": "Instrucciones"
+   },
+   {
+    "id": "e-execute-script",
+    "s": "execute",
+    "t": "script",
+    "label": "Ejecutar script"
+   },
+   {
+    "id": "e-execute-resources",
+    "s": "execute",
+    "t": "resources",
+    "label": "Usar recursos"
+   },
+   {
+    "id": "e-execute-monitor",
+    "s": "execute",
+    "t": "context-monitor",
+    "label": "Presupuesto de tokens"
+   },
+   {
+    "id": "e-script-output",
+    "s": "script",
+    "t": "output",
+    "label": "Formulario completado"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea y skills instaladas",
+    "description": "El agente tiene 50 skills instaladas, pero solo sus nombres y descripciones están en el contexto. El registro guarda el resto en disco.",
+    "input": "",
+    "nodes": [
+     "task",
+     "agent",
+     "registry"
+    ],
+    "edges": [
+     "e-task-agent"
+    ]
+   },
+   {
+    "title": "Nivel 1: Descubrir por metadatos",
+    "description": "El agente revisa solo el nombre y la descripción de cada skill para decidir cuál es relevante para la tarea.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "discover",
+     "registry"
+    ],
+    "edges": [
+     "e-agent-discover",
+     "e-discover-registry"
+    ]
+   },
+   {
+    "title": "Elegir la skill correcta",
+    "description": "La skill pdf-form coincide con la tarea del formulario PDF. Las otras 49 skills siguen sin cargarse, lo que mantiene el contexto pequeño.",
+    "input": "",
+    "nodes": [
+     "discover",
+     "skill-pdf",
+     "skill-xlsx",
+     "skill-email",
+     "skill-more"
+    ],
+    "edges": [
+     "e-discover-pdf",
+     "e-discover-xlsx",
+     "e-discover-email",
+     "e-discover-more"
+    ]
+   },
+   {
+    "title": "Nivel 2: Activar",
+    "description": "Recién ahora se carga en la ventana de contexto el SKILL.md completo, con su frontmatter YAML y sus instrucciones paso a paso.",
+    "input": "",
+    "nodes": [
+     "skill-pdf",
+     "activate",
+     "skill-md"
+    ],
+    "edges": [
+     "e-pdf-activate",
+     "e-activate-skillmd"
+    ]
+   },
+   {
+    "title": "Nivel 3: Ejecutar el script incluido",
+    "description": "Las instrucciones de la skill ejecutan el script fill_form.py incluido sobre los recursos incluidos. El modelo nunca analiza los bytes crudos del PDF.",
+    "input": "",
+    "nodes": [
+     "activate",
+     "skill-md",
+     "execute",
+     "script",
+     "resources"
+    ],
+    "edges": [
+     "e-activate-execute",
+     "e-skillmd-execute",
+     "e-execute-script",
+     "e-execute-resources"
+    ]
+   },
+   {
+    "title": "El contexto se mantiene pequeño",
+    "description": "Como solo se cargó por completo una skill y el trabajo pesado se ejecutó en un script, la tarea usó aproximadamente 1.5K tokens en lugar de ~40K para las 50 skills.",
+    "input": "",
+    "nodes": [
+     "execute",
+     "context-monitor"
+    ],
+    "edges": [
+     "e-execute-monitor"
+    ]
+   },
+   {
+    "title": "Formulario completado",
+    "description": "El script determinista devuelve el formulario completado y la tarea termina.",
+    "input": "",
+    "nodes": [
+     "script",
+     "output"
+    ],
+    "edges": [
+     "e-script-output"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,378 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "privacy-by-design-principles",
+ "name": "Privacy-by-Design Principles(PbD)",
+ "icon": "🛡️",
+ "complexity": "high",
+ "description": "Principios fundamentales de privacidad integrados en la arquitectura del sistema de agentes desde su concepción, que garantizan una protección de datos proactiva, el empoderamiento del usuario y el cumplimiento regulatorio mediante el diseño, y no como una implementación tardía.",
+ "features": [
+  "Proactivo, no reactivo: los riesgos de privacidad se previenen en el diseño",
+  "La privacidad como configuración por defecto, sin que el usuario tenga que hacer nada",
+  "Minimización de datos y limitación de propósito integradas en los flujos",
+  "Protección de extremo a extremo durante todo el ciclo de vida, desde la recolección hasta la eliminación"
+ ],
+ "tldr": {
+  "what": "Integra controles de privacidad en la arquitectura del agente desde el inicio: minimización de datos, procesamiento en el dispositivo por defecto, puntos de consentimiento y eliminación automática según el ciclo de vida.",
+  "when": "Sistemas que manejan datos sensibles de usuarios (financieros, de salud, personales) donde el cumplimiento regulatorio y la confianza del usuario son requisitos de negocio innegociables.",
+  "watchOut": "Alto costo de diseño inicial; adaptar la privacidad más tarde es mucho más caro que incorporarla desde el principio, y un modelado de amenazas incompleto deja brechas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Privacy-by-Design Principles for Agent Systems",
+  "description": "Principios fundamentales de privacidad integrados en la arquitectura del sistema de agentes desde su concepción, que garantizan una protección de datos proactiva, el empoderamiento del usuario y el cumplimiento regulatorio mediante el diseño, y no como una implementación tardía",
+  "nodes": [
+   {
+    "id": "user-agent-interaction",
+    "label": "👤 Interacción usuario-agente\n\"Necesito ayuda para gestionar mis finanzas,\nanaliza mis patrones de gasto\ny sugiere optimizaciones del presupuesto\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "data-collection-challenge",
+    "label": "💳 Requisitos de datos financieros\n\"El agente necesita acceso a transacciones bancarias,\nestados de tarjetas de crédito, cuentas de inversión\ny datos de comportamiento de gasto personal\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "traditional-approach",
+    "label": "📊 Enfoque tradicional centrado en los datos\n\"Recolectar todos los datos financieros disponibles\nPermisos y accesos amplios\nRetener los datos indefinidamente\"",
+    "x": 100,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "privacy-risks",
+    "label": "⚠️ Riesgos de privacidad\n\"Recolección excesiva de datos\nPolíticas de retención poco claras\nSin mecanismos de control del usuario\"",
+    "x": 100,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "compliance-issues",
+    "label": "🚨 Vulnerabilidades de cumplimiento\n\"Violaciones de GDPR/CCPA\nSin derechos de los titulares de datos\nCorrecciones de privacidad retroactivas\"",
+    "x": 100,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "privacy-by-design",
+    "label": "🛡️ Framework de Privacy-by-Design\n\"Protección proactiva de la privacidad\nPrivacidad como configuración por defecto\nArquitectura de privacidad de extremo a extremo\"",
+    "x": 400,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "data-minimization",
+    "label": "📏 Minimización de datos\n\"Recolectar solo las categorías de transacciones\ny los montos de gasto necesarios\npara el análisis del presupuesto\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "purpose-limitation",
+    "label": "🎯 Limitación de propósito\n\"Datos usados solo para el propósito\ndeclarado de optimizar el presupuesto\nSin usos secundarios\"",
+    "x": 400,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "transparency",
+    "label": "🔍 Transparencia\n\"Visualización clara del flujo de datos\nDivulgación del procesamiento en tiempo real\nAvisos de privacidad fáciles de entender\"",
+    "x": 650,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "user-control",
+    "label": "🎛️ Control del usuario\n\"Mecanismos de consentimiento granulares\nEliminación de datos bajo demanda\nDerechos de acceso y portabilidad\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "privacy-by-default",
+    "label": "🔒 Privacidad por defecto\n\"Configuración de privacidad más estricta\nModelo de opt-in, no de opt-out\nProtección de datos automática\"",
+    "x": 400,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "embedded-privacy",
+    "label": "🏗️ Privacidad integrada en el diseño\n\"Base de arquitectura de seguridad\nAlgoritmos que preservan la privacidad\nMecanismos de protección incorporados\"",
+    "x": 650,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "full-functionality",
+    "label": "⚡ Funcionalidad completa\n\"Privacidad sin concesiones\nTodas las funciones siguen disponibles\nSin sacrificar utilidad por privacidad\"",
+    "x": 325,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "regulatory-compliance",
+    "label": "📋 Cumplimiento regulatorio\n\"Cumplimiento del Artículo 25 de GDPR\nPrivacy-by-design según CCPA\nConformidad con la EU AI Act\"",
+    "x": 700,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "user-trust",
+    "label": "🤝 Confianza y adopción del usuario\n\"Prácticas de datos transparentes\nEmpoderamiento del usuario\nReputación de privacidad ante todo\"",
+    "x": 700,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "competitive-advantage",
+    "label": "🚀 Ventaja competitiva\n\"La privacidad como diferenciador\nMenores costos de cumplimiento\nArquitectura preparada para el futuro\"",
+    "x": 700,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "privacy-principle",
+    "label": "🎯 Principio central de Privacy-by-Design\n\"La privacidad debe integrarse en el diseño desde el inicio,\nno añadirse como una idea tardía.\nProtección proactiva mediante decisiones de arquitectura.\"",
+    "x": 400,
+    "y": 950,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "user-agent-interaction",
+    "t": "data-collection-challenge",
+    "label": "requiere acceso a datos sensibles"
+   },
+   {
+    "id": "e2",
+    "s": "data-collection-challenge",
+    "t": "traditional-approach",
+    "label": "enfoque centrado en los datos"
+   },
+   {
+    "id": "e3",
+    "s": "data-collection-challenge",
+    "t": "privacy-by-design",
+    "label": "enfoque centrado en la privacidad"
+   },
+   {
+    "id": "e4",
+    "s": "data-collection-challenge",
+    "t": "regulatory-compliance",
+    "label": "enfoque guiado por el cumplimiento"
+   },
+   {
+    "id": "e5",
+    "s": "traditional-approach",
+    "t": "privacy-risks",
+    "label": "crea vulnerabilidades"
+   },
+   {
+    "id": "e6",
+    "s": "privacy-risks",
+    "t": "compliance-issues",
+    "label": "conduce a violaciones"
+   },
+   {
+    "id": "e7",
+    "s": "privacy-by-design",
+    "t": "data-minimization",
+    "label": "principio 1"
+   },
+   {
+    "id": "e8",
+    "s": "privacy-by-design",
+    "t": "purpose-limitation",
+    "label": "principio 2"
+   },
+   {
+    "id": "e9",
+    "s": "privacy-by-design",
+    "t": "transparency",
+    "label": "principio 3"
+   },
+   {
+    "id": "e10",
+    "s": "data-minimization",
+    "t": "user-control",
+    "label": "habilita el principio 4"
+   },
+   {
+    "id": "e11",
+    "s": "purpose-limitation",
+    "t": "privacy-by-default",
+    "label": "respalda el principio 5"
+   },
+   {
+    "id": "e12",
+    "s": "transparency",
+    "t": "embedded-privacy",
+    "label": "requiere el principio 6"
+   },
+   {
+    "id": "e13",
+    "s": "user-control",
+    "t": "full-functionality",
+    "label": "mantiene el principio 7"
+   },
+   {
+    "id": "e14",
+    "s": "privacy-by-default",
+    "t": "full-functionality",
+    "label": "preserva la usabilidad"
+   },
+   {
+    "id": "e15",
+    "s": "embedded-privacy",
+    "t": "full-functionality",
+    "label": "asegura el rendimiento"
+   },
+   {
+    "id": "e16",
+    "s": "regulatory-compliance",
+    "t": "user-trust",
+    "label": "genera confianza"
+   },
+   {
+    "id": "e17",
+    "s": "user-trust",
+    "t": "competitive-advantage",
+    "label": "crea valor de mercado"
+   },
+   {
+    "id": "e18",
+    "s": "compliance-issues",
+    "t": "privacy-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e19",
+    "s": "full-functionality",
+    "t": "privacy-principle",
+    "label": "demuestra la efectividad"
+   },
+   {
+    "id": "e20",
+    "s": "competitive-advantage",
+    "t": "privacy-principle",
+    "label": "valida el enfoque"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud de datos financieros del usuario",
+    "description": "El usuario solicita un análisis financiero al agente de IA, lo que crea la necesidad de acceder a datos sensibles bancarios, de tarjetas de crédito y de inversiones para recomendar optimizaciones del presupuesto.",
+    "input": "",
+    "nodes": [
+     "user-agent-interaction",
+     "data-collection-challenge"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Tres enfoques de diseño para el manejo de datos",
+    "description": "Los mismos requisitos de datos abordados mediante la recolección tradicional centrada en los datos (izquierda), el framework de privacy-by-design (centro) y el diseño guiado por el cumplimiento regulatorio (derecha).",
+    "input": "",
+    "nodes": [
+     "traditional-approach",
+     "privacy-by-design",
+     "regulatory-compliance"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4"
+    ]
+   },
+   {
+    "title": "Enfoque tradicional: riesgos de privacidad y problemas de cumplimiento",
+    "description": "El enfoque centrado en los datos recolecta información excesiva con permisos amplios, lo que crea vulnerabilidades de privacidad que conducen a violaciones de GDPR/CCPA y a costosas correcciones retroactivas.",
+    "input": "",
+    "nodes": [
+     "privacy-risks",
+     "compliance-issues"
+    ],
+    "edges": [
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Privacy-by-Design: los siete principios fundamentales",
+    "description": "El framework de privacy-by-design implementa siete principios centrales: minimización de datos (recolectar solo los datos de transacciones necesarios), limitación de propósito (solo análisis del presupuesto) y transparencia (visualización clara del flujo de datos).",
+    "input": "",
+    "nodes": [
+     "data-minimization",
+     "purpose-limitation",
+     "transparency"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Control del usuario, privacidad por defecto y protección integrada",
+    "description": "Los principios restantes garantizan el control del usuario (consentimiento granular y derechos de eliminación), la privacidad por defecto (la configuración más estricta de forma automática) y la privacidad integrada en el diseño de la arquitectura.",
+    "input": "",
+    "nodes": [
+     "user-control",
+     "privacy-by-default",
+     "embedded-privacy"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Funcionalidad completa sin sacrificar la privacidad",
+    "description": "Los siete principios convergen para ofrecer la funcionalidad completa del agente manteniendo la protección de la privacidad, lo que demuestra que la seguridad y la usabilidad pueden coexistir con un diseño adecuado.",
+    "input": "",
+    "nodes": [
+     "full-functionality"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Cumplimiento regulatorio y ventaja competitiva",
+    "description": "Privacy-by-design logra de forma natural el cumplimiento del Artículo 25 de GDPR y de CCPA, generando una confianza del usuario que crea ventaja competitiva gracias a una reputación de privacidad ante todo.",
+    "input": "",
+    "nodes": [
+     "user-trust",
+     "competitive-advantage"
+    ],
+    "edges": [
+     "e16",
+     "e17"
+    ]
+   },
+   {
+    "title": "Principio central: la privacidad como base, no como idea tardía",
+    "description": "Privacy-by-design demuestra que la privacidad debe integrarse desde la concepción de la arquitectura, no adaptarse más tarde, creando una protección proactiva mediante decisiones de diseño fundamentales.",
+    "input": "",
+    "nodes": [
+     "privacy-principle"
+    ],
+    "edges": [
+     "e18",
+     "e19",
+     "e20"
+    ]
+   }
+  ]
+ }
+}

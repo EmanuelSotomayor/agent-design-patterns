@@ -1,0 +1,426 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "causal-reasoning",
+ "name": "Causal Reasoning(CR)",
+ "icon": "⚡",
+ "complexity": "high",
+ "description": "Establece y sigue relaciones explícitas de causa y efecto",
+ "features": [
+  "Construcción de cadenas de causa y efecto",
+  "Identificación de la causa raíz",
+  "Planificación de intervenciones",
+  "Pensamiento contrafactual",
+  "Modelado de relaciones temporales",
+  "Comprensión de mecanismos"
+ ],
+ "tldr": {
+  "what": "Rastrea los efectos hacia atrás a través de capas de causas, identifica las causas raíz y modela contrafactuales para planificar intervenciones.",
+  "when": "Problemas con múltiples factores contribuyentes, donde los síntomas superficiales ocultan mecanismos subyacentes que debes corregir.",
+  "watchOut": "Las cadenas causales son especulativas; las correlaciones que identificas pueden no reflejar una causalidad real sin una validación del dominio."
+ },
+ "overview": {
+  "pattern": "Razonamiento sobre relaciones de causa y efecto, mecanismos e intervenciones para entender cómo los cambios producen resultados",
+  "why": "Permite la predicción, la explicación y la toma de decisiones al comprender la estructura causal subyacente de los sistemas",
+  "insight": "Identificar causas → Comprender mecanismos → Controlar factores de confusión → Predecir intervenciones → Analizar contrafactuales",
+  "impl": [
+   {
+    "t": "Modelo causal",
+    "d": "Identifica las variables y las posibles relaciones causales"
+   },
+   {
+    "t": "Análisis de mecanismos",
+    "d": "Comprende cómo las causas producen efectos"
+   },
+   {
+    "t": "Control de factores de confusión",
+    "d": "Ten en cuenta las explicaciones alternativas"
+   },
+   {
+    "t": "Razonamiento intervencional",
+    "d": "Predice los resultados de acciones hipotéticas"
+   },
+   {
+    "t": "Análisis contrafactual",
+    "d": "Considera qué pasaría si las condiciones cambiaran"
+   }
+  ],
+  "example": "X causa Y → Mecanismo: X→M→Y → Controlar Z → Predecir: do(X) → Contrafactual: X=0?",
+  "dos": [
+   "Distingue explícitamente entre correlación y causalidad",
+   "Identifica mecanismos y vías causales plausibles",
+   "Considera variables de confusión y explicaciones alternativas",
+   "Usa el pensamiento intervencional (¿qué pasa si cambiamos X?)",
+   "Aplica la precedencia temporal (las causas preceden a los efectos)"
+  ],
+  "donts": [
+   "Asumir que la correlación implica causalidad",
+   "Ignorar posibles factores de confusión",
+   "Usar razonamiento post hoc sin un mecanismo",
+   "Hacer afirmaciones causales sin evidencia suficiente",
+   "Simplificar en exceso sistemas causales complejos"
+  ],
+  "use": [
+   "Comprender relaciones de causa y efecto",
+   "Predecir los resultados de intervenciones",
+   "Análisis de causa raíz y resolución de problemas",
+   "Análisis de políticas y toma de decisiones",
+   "Explicación científica y construcción de teorías"
+  ],
+  "avoid": [
+   "Tareas puramente descriptivas o de clasificación",
+   "Cuando solo hay datos correlacionales disponibles",
+   "Problemas simples de reconocimiento de patrones",
+   "Cuando los mecanismos causales son imposibles de conocer",
+   "Sistemas en tiempo real que requieren respuestas inmediatas"
+  ],
+  "metrics": [
+   {
+    "n": "Validez causal",
+    "d": "Precisión de las relaciones de causa y efecto identificadas"
+   },
+   {
+    "n": "Plausibilidad del mecanismo",
+    "d": "Razonabilidad de las vías causales propuestas"
+   },
+   {
+    "n": "Detección de factores de confusión",
+    "d": "Identificación de explicaciones alternativas"
+   },
+   {
+    "n": "Predicción de intervenciones",
+    "d": "Precisión de los resultados predichos a partir de acciones"
+   },
+   {
+    "n": "Razonamiento contrafactual",
+    "d": "Calidad del análisis de escenarios hipotéticos"
+   },
+   {
+    "n": "Integración de evidencia",
+    "d": "Síntesis de múltiples fuentes para las afirmaciones causales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Diagnóstico médico",
+    "d": "Síntomas → Mecanismo de la enfermedad → Intervención terapéutica → Recuperación prevista"
+   },
+   {
+    "n": "Análisis de negocio",
+    "d": "Inversión en marketing → Mecanismo de adquisición de clientes → Impacto en ingresos → Optimización del ROI"
+   },
+   {
+    "n": "Depuración de software",
+    "d": "Síntomas del error → Identificación de la causa raíz → Corrección del código → Restauración del sistema"
+   },
+   {
+    "n": "Análisis de políticas",
+    "d": "Regulación → Mecanismo de cambio de comportamiento → Efectos económicos → Consecuencias no deseadas"
+   },
+   {
+    "n": "Investigación científica",
+    "d": "Hipótesis → Diseño experimental → Inferencia causal → Validación de la teoría"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Causal Reasoning",
+  "description": "Establece y sigue relaciones explícitas de causa y efecto para comprender mecanismos, predecir resultados y diseñar intervenciones eficaces",
+  "nodes": [
+   {
+    "id": "observation",
+    "label": "📊 Observación\n\"Las ventas cayeron 30%\ntras el rediseño del sitio web\nel mes pasado\"",
+    "x": 400,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "correlation-vs-causation",
+    "label": "🤔 Análisis inicial\n\"Se observa correlación, pero\n¿el rediseño es la CAUSA\no solo una coincidencia?\"",
+    "x": 400,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "website-cause",
+    "label": "💻 Hipótesis del rediseño\n\"La nueva UI confundió a los usuarios\n→ Menos compras\"",
+    "x": 200,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "external-cause",
+    "label": "🌍 Factores externos\n\"Recesión económica\n→ Menor gasto\"",
+    "x": 400,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "competitor-cause",
+    "label": "🏪 Competencia\n\"Un rival lanzó una oferta\n→ Fuga de clientes\"",
+    "x": 600,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "mechanism-analysis",
+    "label": "🔍 Análisis de mecanismos\n\"¿CÓMO podría el rediseño\ncausar la caída de ventas?\n¿Cuál es la vía?\"",
+    "x": 400,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "ui-confusion",
+    "label": "😵 Confusión del usuario\n\"El nuevo botón de pago\nes difícil de encontrar\"",
+    "x": 150,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "cart-abandonment",
+    "label": "🛒 Abandono del carrito\n\"Los usuarios se rinden\nen el pago\"",
+    "x": 300,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "lost-sales",
+    "label": "📉 Ventas perdidas\n\"Carritos abandonados\n= Ingresos perdidos\"",
+    "x": 450,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "counterfactual",
+    "label": "🔄 Contrafactual\n\"¿Y si NO hubiéramos\nrediseñado? ¿Las ventas\nhabrían caído igual?\"",
+    "x": 650,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "intervention-design",
+    "label": "⚡ Diseño de la intervención\n\"Si la confusión con la UI causa\nla caída, corregir la UI\ndebería recuperar las ventas\"",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "ab-test",
+    "label": "🧪 Prueba A/B\n\"UI antigua vs. UI nueva\ncon tráfico dividido 50/50\"",
+    "x": 200,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "results",
+    "label": "📈 Resultados\n\"UI antigua: 2,1% de conversión\nUI nueva: 1,5% de conversión\n¡Causalidad confirmada!\"",
+    "x": 400,
+    "y": 750,
+    "w": 200
+   },
+   {
+    "id": "causal-model",
+    "label": "🎯 Modelo causal\n\"Rediseño → Confusión con la UI\n→ Abandono del carrito\n→ Caída de ventas\"",
+    "x": 600,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "external-validation",
+    "label": "✅ Verificación externa\n\"Economía estable,\ncompetidor sin movimientos\n→ Descarta alternativas\"",
+    "x": 100,
+    "y": 400,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "observation",
+    "t": "correlation-vs-causation",
+    "label": "analizar"
+   },
+   {
+    "id": "e2a",
+    "s": "correlation-vs-causation",
+    "t": "website-cause",
+    "label": "hipótesis 1"
+   },
+   {
+    "id": "e2b",
+    "s": "correlation-vs-causation",
+    "t": "external-cause",
+    "label": "hipótesis 2"
+   },
+   {
+    "id": "e2c",
+    "s": "correlation-vs-causation",
+    "t": "competitor-cause",
+    "label": "hipótesis 3"
+   },
+   {
+    "id": "e3",
+    "s": "website-cause",
+    "t": "mechanism-analysis",
+    "label": "explorar mecanismo"
+   },
+   {
+    "id": "e4a",
+    "s": "mechanism-analysis",
+    "t": "ui-confusion",
+    "label": "paso 1"
+   },
+   {
+    "id": "e4b",
+    "s": "ui-confusion",
+    "t": "cart-abandonment",
+    "label": "causa"
+   },
+   {
+    "id": "e4c",
+    "s": "cart-abandonment",
+    "t": "lost-sales",
+    "label": "resulta en"
+   },
+   {
+    "id": "e5",
+    "s": "mechanism-analysis",
+    "t": "counterfactual",
+    "label": "considerar alternativa"
+   },
+   {
+    "id": "e6",
+    "s": "external-cause",
+    "t": "external-validation",
+    "label": "verificar"
+   },
+   {
+    "id": "e7",
+    "s": "competitor-cause",
+    "t": "external-validation",
+    "label": "verificar"
+   },
+   {
+    "id": "e8a",
+    "s": "lost-sales",
+    "t": "intervention-design",
+    "label": "diseñar corrección"
+   },
+   {
+    "id": "e8b",
+    "s": "counterfactual",
+    "t": "intervention-design",
+    "label": "informar diseño"
+   },
+   {
+    "id": "e8c",
+    "s": "external-validation",
+    "t": "intervention-design",
+    "label": "confirmar foco"
+   },
+   {
+    "id": "e9a",
+    "s": "intervention-design",
+    "t": "ab-test",
+    "label": "probar hipótesis"
+   },
+   {
+    "id": "e9b",
+    "s": "intervention-design",
+    "t": "results",
+    "label": "medir"
+   },
+   {
+    "id": "e10",
+    "s": "ab-test",
+    "t": "results",
+    "label": "generar"
+   },
+   {
+    "id": "e11",
+    "s": "results",
+    "t": "causal-model",
+    "label": "confirmar modelo"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Distinción entre correlación y causalidad",
+    "description": "Observa la caída de ventas tras el rediseño del sitio web, pero cuestiona si la correlación implica causalidad. Genera varias hipótesis en competencia: el sitio web, factores externos o la competencia.",
+    "input": "",
+    "nodes": [
+     "observation",
+     "correlation-vs-causation",
+     "website-cause",
+     "external-cause",
+     "competitor-cause"
+    ],
+    "edges": [
+     "e1",
+     "e2a",
+     "e2b",
+     "e2c"
+    ]
+   },
+   {
+    "title": "Exploración del mecanismo causal",
+    "description": "Va más allá de la correlación para explorar CÓMO el rediseño podría causar la caída de ventas. Mapea una vía causal detallada: confusión con la UI → abandono del carrito → ventas perdidas.",
+    "input": "",
+    "nodes": [
+     "mechanism-analysis",
+     "ui-confusion",
+     "cart-abandonment",
+     "lost-sales"
+    ],
+    "edges": [
+     "e3",
+     "e4a",
+     "e4b",
+     "e4c"
+    ]
+   },
+   {
+    "title": "Validación contrafactual y de alternativas",
+    "description": "Considera el contrafactual (¿y si no hubiera habido rediseño?) y valida que los factores externos (economía, competencia) quedan descartados como causas principales.",
+    "input": "",
+    "nodes": [
+     "counterfactual",
+     "external-validation"
+    ],
+    "edges": [
+     "e5",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Diseño de la intervención causal",
+    "description": "Usa la comprensión causal para diseñar una intervención dirigida: si la confusión con la UI causa el problema, corregir la UI debería recuperar el rendimiento de ventas.",
+    "input": "",
+    "nodes": [
+     "intervention-design"
+    ],
+    "edges": [
+     "e8a",
+     "e8b",
+     "e8c"
+    ]
+   },
+   {
+    "title": "Prueba de la hipótesis causal",
+    "description": "Pone a prueba el modelo causal con un experimento A/B que compara la UI antigua con la nueva. Los resultados confirman la causalidad: conversión de 2,1% con la UI antigua vs. 1,5% con la nueva, lo que valida la cadena causal.",
+    "input": "",
+    "nodes": [
+     "ab-test",
+     "results",
+     "causal-model"
+    ],
+    "edges": [
+     "e9a",
+     "e9b",
+     "e10",
+     "e11"
+    ]
+   }
+  ]
+ }
+}

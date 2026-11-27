@@ -1,0 +1,351 @@
+{
+ "cat": "prioritization",
+ "slug": "multi-criteria-decision",
+ "name": "Multi-Criteria Decision Analysis(MCDA)",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "Framework avanzado de toma de decisiones para elecciones complejas con múltiples objetivos en competencia",
+ "features": [
+  "Analytical Hierarchy Process",
+  "Metodología TOPSIS",
+  "Integración de lógica difusa",
+  "Comparaciones por pares",
+  "Verificación de consistencia",
+  "Soporte para decisiones grupales"
+ ],
+ "tldr": {
+  "what": "Puntúa alternativas frente a criterios ponderados usando comparaciones por pares y verificaciones de consistencia para clasificar decisiones complejas con múltiples partes interesadas.",
+  "when": "Elegir entre 3 o más opciones con prioridades en conflicto, múltiples partes interesadas y criterios que no se pueden reducir a una sola métrica.",
+  "watchOut": "Los pesos y las puntuaciones son subjetivos; pequeños cambios en la ponderación de los criterios pueden invertir la clasificación final, ocultando el verdadero factor de decisión."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Multi-Criteria Decision Analysis",
+  "description": "Un agente de compras selecciona un proveedor de nube para un compromiso de cargas de trabajo de IA de $2M/año. Deriva los pesos de los criterios con comparaciones por pares de AHP (razón de consistencia 0.08) y luego clasifica a AWS, Azure y GCP con la puntuación de distancia al ideal de TOPSIS.",
+  "nodes": [
+   {
+    "id": "decision-request",
+    "label": "🎯 Solicitud de decisión\nSeleccionar proveedor de nube para cargas de trabajo de IA\n$2M/año, compromiso a 5 años",
+    "x": 330,
+    "y": 40,
+    "w": 310
+   },
+   {
+    "id": "mcda-agent",
+    "label": "🤖 Agente MCDA\nPonderación AHP + clasificación TOPSIS",
+    "x": 355,
+    "y": 160,
+    "w": 270
+   },
+   {
+    "id": "tech-criterion",
+    "label": "⚙️ Técnico\nIA/ML, cómputo, integración",
+    "x": 20,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "cost-criterion",
+    "label": "💰 Costo\nPrecio base + escalado",
+    "x": 230,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "security-criterion",
+    "label": "🔒 Seguridad\nProtección de datos + cumplimiento",
+    "x": 440,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "support-criterion",
+    "label": "🤝 Soporte\nSLA + soporte técnico",
+    "x": 650,
+    "y": 280,
+    "w": 170
+   },
+   {
+    "id": "ahp-weights",
+    "label": "🧮 Pesos AHP por pares\nTéc 40 / Costo 25 / Seg 20 / Sop 15\nRazón de consistencia: 0.08 (< 0.10 OK)",
+    "x": 120,
+    "y": 400,
+    "w": 260
+   },
+   {
+    "id": "topsis-engine",
+    "label": "📐 Motor TOPSIS\nDistancia al ideal y al anti-ideal\nCoeficiente de cercanía relativa",
+    "x": 500,
+    "y": 400,
+    "w": 250
+   },
+   {
+    "id": "vendor-aws",
+    "label": "🟠 AWS\nTéc 9.2 / Costo 6.8 / Seg 8.4 / Sop 9.1\nCercanía: 0.763",
+    "x": 60,
+    "y": 540,
+    "w": 220
+   },
+   {
+    "id": "vendor-azure",
+    "label": "🔵 Azure\nTéc 8.1 / Costo 7.9 / Seg 9.0 / Sop 8.2\nCercanía: 0.673",
+    "x": 340,
+    "y": 540,
+    "w": 220
+   },
+   {
+    "id": "vendor-gcp",
+    "label": "🟢 GCP\nTéc 7.6 / Costo 8.8 / Seg 7.1 / Sop 7.3\nCercanía: 0.528",
+    "x": 620,
+    "y": 540,
+    "w": 220
+   },
+   {
+    "id": "ranked-decision",
+    "label": "🏆 Decisión clasificada\nAWS 0.763 > Azure 0.673 > GCP 0.528",
+    "x": 130,
+    "y": 660,
+    "w": 260
+   },
+   {
+    "id": "sensitivity-check",
+    "label": "📊 Análisis de sensibilidad\nSi el peso del costo sube a 40%, Azure queda primero",
+    "x": 560,
+    "y": 660,
+    "w": 250
+   },
+   {
+    "id": "final-selection",
+    "label": "📤 Selección final\nAWS como principal, Azure para cargas de trabajo de cumplimiento",
+    "x": 300,
+    "y": 780,
+    "w": 310
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-agent",
+    "s": "decision-request",
+    "t": "mcda-agent",
+    "label": ""
+   },
+   {
+    "id": "agent-tech",
+    "s": "mcda-agent",
+    "t": "tech-criterion",
+    "label": ""
+   },
+   {
+    "id": "agent-cost",
+    "s": "mcda-agent",
+    "t": "cost-criterion",
+    "label": ""
+   },
+   {
+    "id": "agent-security",
+    "s": "mcda-agent",
+    "t": "security-criterion",
+    "label": ""
+   },
+   {
+    "id": "agent-support",
+    "s": "mcda-agent",
+    "t": "support-criterion",
+    "label": ""
+   },
+   {
+    "id": "tech-ahp",
+    "s": "tech-criterion",
+    "t": "ahp-weights",
+    "label": ""
+   },
+   {
+    "id": "cost-ahp",
+    "s": "cost-criterion",
+    "t": "ahp-weights",
+    "label": ""
+   },
+   {
+    "id": "security-ahp",
+    "s": "security-criterion",
+    "t": "ahp-weights",
+    "label": ""
+   },
+   {
+    "id": "support-ahp",
+    "s": "support-criterion",
+    "t": "ahp-weights",
+    "label": ""
+   },
+   {
+    "id": "ahp-topsis",
+    "s": "ahp-weights",
+    "t": "topsis-engine",
+    "label": "pesos"
+   },
+   {
+    "id": "topsis-aws",
+    "s": "topsis-engine",
+    "t": "vendor-aws",
+    "label": "puntuar"
+   },
+   {
+    "id": "topsis-azure",
+    "s": "topsis-engine",
+    "t": "vendor-azure",
+    "label": "puntuar"
+   },
+   {
+    "id": "topsis-gcp",
+    "s": "topsis-engine",
+    "t": "vendor-gcp",
+    "label": "puntuar"
+   },
+   {
+    "id": "aws-ranked",
+    "s": "vendor-aws",
+    "t": "ranked-decision",
+    "label": ""
+   },
+   {
+    "id": "azure-ranked",
+    "s": "vendor-azure",
+    "t": "ranked-decision",
+    "label": ""
+   },
+   {
+    "id": "gcp-ranked",
+    "s": "vendor-gcp",
+    "t": "ranked-decision",
+    "label": ""
+   },
+   {
+    "id": "ranked-sensitivity",
+    "s": "ranked-decision",
+    "t": "sensitivity-check",
+    "label": "probar pesos"
+   },
+   {
+    "id": "sensitivity-decision",
+    "s": "sensitivity-check",
+    "t": "ranked-decision",
+    "label": "AWS robusto 82%"
+   },
+   {
+    "id": "ranked-output",
+    "s": "ranked-decision",
+    "t": "final-selection",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Plantear la decisión",
+    "description": "El agente asume un problema de compras de alto riesgo: elegir un proveedor de nube para cargas de trabajo de IA bajo un compromiso de $2M/año a 5 años.",
+    "input": "",
+    "nodes": [
+     "decision-request",
+     "mcda-agent"
+    ],
+    "edges": [
+     "request-agent"
+    ]
+   },
+   {
+    "title": "Construir la jerarquía de criterios",
+    "description": "Cuatro criterios de nivel superior estructuran la elección: capacidad técnica, costo, seguridad y cumplimiento, y soporte y confiabilidad.",
+    "input": "",
+    "nodes": [
+     "mcda-agent",
+     "tech-criterion",
+     "cost-criterion",
+     "security-criterion",
+     "support-criterion"
+    ],
+    "edges": [
+     "agent-tech",
+     "agent-cost",
+     "agent-security",
+     "agent-support"
+    ]
+   },
+   {
+    "title": "Derivar los pesos AHP",
+    "description": "Las comparaciones por pares producen pesos de Técnico 40%, Costo 25%, Seguridad 20%, Soporte 15%. La razón de consistencia es 0.08, por debajo del umbral de 0.10, por lo que los juicios se aceptan.",
+    "input": "",
+    "nodes": [
+     "tech-criterion",
+     "cost-criterion",
+     "security-criterion",
+     "support-criterion",
+     "ahp-weights"
+    ],
+    "edges": [
+     "tech-ahp",
+     "cost-ahp",
+     "security-ahp",
+     "support-ahp"
+    ]
+   },
+   {
+    "title": "Ejecutar la puntuación TOPSIS",
+    "description": "La matriz de decisión ponderada se normaliza y luego cada proveedor se mide por su distancia a las soluciones ideal y anti-ideal para producir un coeficiente de cercanía relativa.",
+    "input": "",
+    "nodes": [
+     "ahp-weights",
+     "topsis-engine",
+     "vendor-aws",
+     "vendor-azure",
+     "vendor-gcp"
+    ],
+    "edges": [
+     "ahp-topsis",
+     "topsis-aws",
+     "topsis-azure",
+     "topsis-gcp"
+    ]
+   },
+   {
+    "title": "Clasificar a los proveedores",
+    "description": "Los coeficientes de cercanía clasifican las alternativas: AWS 0.763, Azure 0.673, GCP 0.528.",
+    "input": "",
+    "nodes": [
+     "vendor-aws",
+     "vendor-azure",
+     "vendor-gcp",
+     "ranked-decision"
+    ],
+    "edges": [
+     "aws-ranked",
+     "azure-ranked",
+     "gcp-ranked"
+    ]
+   },
+   {
+    "title": "Análisis de sensibilidad",
+    "description": "El agente somete los pesos a pruebas de estrés. AWS se mantiene primero en el 82% de los escenarios, pero subir el peso del costo a 40% le da el primer lugar a Azure, lo que señala la disyuntiva clave.",
+    "input": "",
+    "nodes": [
+     "ranked-decision",
+     "sensitivity-check"
+    ],
+    "edges": [
+     "ranked-sensitivity",
+     "sensitivity-decision"
+    ]
+   },
+   {
+    "title": "Confirmar la selección",
+    "description": "El agente recomienda AWS como proveedor principal y reserva Azure para las cargas de trabajo sensibles al cumplimiento, donde su puntuación de seguridad es la más alta.",
+    "input": "",
+    "nodes": [
+     "ranked-decision",
+     "final-selection"
+    ],
+    "edges": [
+     "ranked-output"
+    ]
+   }
+  ]
+ }
+}

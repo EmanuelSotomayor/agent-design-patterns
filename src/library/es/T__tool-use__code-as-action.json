@@ -1,0 +1,319 @@
+{
+ "cat": "tool-use",
+ "slug": "code-as-action",
+ "name": "Code as Action (CodeAct)(CA)",
+ "icon": "🐍",
+ "complexity": "high",
+ "description": "En lugar de emitir una llamada a herramienta en JSON por turno, el espacio de acción del agente es código ejecutable que orquesta herramientas con bucles, condicionales y variables. Un solo bloque de código puede llamar a muchas herramientas, ramificarse según los resultados y mantener los datos intermedios en el entorno de ejecución en lugar de devolver cada resultado a través de la ventana de contexto. Anthropic reporta una reducción de tokens de aproximadamente el 98 por ciento en algunos flujos de trabajo con múltiples herramientas cuando las herramientas se llaman desde código mediante MCP.",
+ "features": [
+  "El espacio de acción es código ejecutable, no una sola llamada JSON",
+  "Bucles, condicionales y variables componen muchas llamadas a herramientas por turno",
+  "Los resultados intermedios permanecen en el entorno de ejecución, no en la ventana de contexto",
+  "Menos idas y vueltas con el modelo en trabajos de múltiples pasos y herramientas",
+  "Gran reducción de tokens en flujos de trabajo con uso intensivo de herramientas (hasta ~98 por ciento reportado)",
+  "Herramientas expuestas al código (por ejemplo, mediante MCP) con resultados filtrados antes de devolverse"
+ ],
+ "tldr": {
+  "what": "El agente escribe código ejecutable que llama a múltiples herramientas con bucles, condicionales y variables en un solo turno, manteniendo los resultados intermedios en el entorno de ejecución.",
+  "when": "Flujos de trabajo con múltiples herramientas, iteración, ramificaciones o estado que de otro modo requerirían muchas idas y vueltas secuenciales con el modelo y pasadas por la ventana de contexto.",
+  "watchOut": "Los errores de ejecución del código detienen todo el flujo de trabajo; el agente debe depurar y reintentar, y la sobrecarga del sandbox puede anular el ahorro de tokens en tareas simples."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Code as Action (CodeAct)",
+  "description": "El agente expresa su acción como código ejecutable que orquesta herramientas con bucles, condicionales y variables, en lugar de una llamada a herramienta en JSON por turno. Los resultados intermedios permanecen en el entorno de ejecución en lugar de la ventana de contexto, así que un solo script puede procesar cientos de filas y devolver solo un resumen.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea\nPara 500 pedidos: buscar el cliente,\ncalcular el impuesto, totalizar los vencidos",
+    "x": 340,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente CodeAct\nespacio de acción = código ejecutable",
+    "x": 360,
+    "y": 140,
+    "w": 260
+   },
+   {
+    "id": "compare-json",
+    "label": "🐌 Forma con llamadas JSON\n20+ llamadas secuenciales,\ncada resultado -> ventana de contexto",
+    "x": 660,
+    "y": 140,
+    "w": 230
+   },
+   {
+    "id": "code-block",
+    "label": "🐍 Acción con código\nun solo script de Python:\nbucle + condicionales + variables",
+    "x": 350,
+    "y": 250,
+    "w": 260
+   },
+   {
+    "id": "runtime",
+    "label": "⚙️ Entorno de ejecución\nejecuta el script",
+    "x": 360,
+    "y": 360,
+    "w": 240
+   },
+   {
+    "id": "tool-csv",
+    "label": "🧩 read_csv\n500 filas cargadas",
+    "x": 60,
+    "y": 470,
+    "w": 180
+   },
+   {
+    "id": "loop",
+    "label": "🔁 for r in rows\n500 iteraciones en el entorno de ejecución",
+    "x": 360,
+    "y": 470,
+    "w": 200
+   },
+   {
+    "id": "intermediate",
+    "label": "📦 Datos intermedios\n500 registros de clientes\npermanecen en la memoria de ejecución",
+    "x": 650,
+    "y": 470,
+    "w": 230
+   },
+   {
+    "id": "tool-customer",
+    "label": "🧩 get_customer(id)\nllamada por fila",
+    "x": 60,
+    "y": 580,
+    "w": 210
+   },
+   {
+    "id": "tool-tax",
+    "label": "🧩 compute_tax(amount, region)\nllamada por fila",
+    "x": 300,
+    "y": 580,
+    "w": 230
+   },
+   {
+    "id": "filter",
+    "label": "🔎 if due < today\nacumular el total",
+    "x": 560,
+    "y": 580,
+    "w": 180
+   },
+   {
+    "id": "token-monitor",
+    "label": "📉 Tokens\nsolo se devuelve el total final,\n~98% de reducción",
+    "x": 150,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "result",
+    "label": "🧮 total = $84,210",
+    "x": 430,
+    "y": 680,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "🎉 Un turno, 3 herramientas\n500 filas, solo el resumen",
+    "x": 350,
+    "y": 780,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-agent",
+    "s": "task",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-compare",
+    "s": "agent",
+    "t": "compare-json",
+    "label": "Evitar"
+   },
+   {
+    "id": "e-agent-code",
+    "s": "agent",
+    "t": "code-block",
+    "label": "Escribir código"
+   },
+   {
+    "id": "e-code-runtime",
+    "s": "code-block",
+    "t": "runtime",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "e-runtime-csv",
+    "s": "runtime",
+    "t": "tool-csv",
+    "label": "read_csv"
+   },
+   {
+    "id": "e-runtime-loop",
+    "s": "runtime",
+    "t": "loop",
+    "label": "Iterar"
+   },
+   {
+    "id": "e-csv-loop",
+    "s": "tool-csv",
+    "t": "loop",
+    "label": "500 filas"
+   },
+   {
+    "id": "e-loop-customer",
+    "s": "loop",
+    "t": "tool-customer",
+    "label": "por fila"
+   },
+   {
+    "id": "e-loop-tax",
+    "s": "loop",
+    "t": "tool-tax",
+    "label": "por fila"
+   },
+   {
+    "id": "e-customer-inter",
+    "s": "tool-customer",
+    "t": "intermediate",
+    "label": "registros"
+   },
+   {
+    "id": "e-tax-filter",
+    "s": "tool-tax",
+    "t": "filter",
+    "label": "monto + impuesto"
+   },
+   {
+    "id": "e-inter-filter",
+    "s": "intermediate",
+    "t": "filter",
+    "label": "permanece en ejecución"
+   },
+   {
+    "id": "e-filter-result",
+    "s": "filter",
+    "t": "result",
+    "label": "acumular"
+   },
+   {
+    "id": "e-filter-monitor",
+    "s": "filter",
+    "t": "token-monitor",
+    "label": "solo sale el total"
+   },
+   {
+    "id": "e-result-output",
+    "s": "result",
+    "t": "output",
+    "label": "Devolver resumen"
+   }
+  ],
+  "steps": [
+   {
+    "title": "La tarea y dos opciones",
+    "description": "El agente podría responder con más de 20 llamadas secuenciales a herramientas en JSON, con cada resultado regresando por la ventana de contexto, pero eso es lento y consume muchos tokens.",
+    "input": "",
+    "nodes": [
+     "task",
+     "agent",
+     "compare-json"
+    ],
+    "edges": [
+     "e-task-agent",
+     "e-agent-compare"
+    ]
+   },
+   {
+    "title": "Escribir una sola acción con código",
+    "description": "En cambio, el agente emite un solo script de Python cuyos bucles, condicionales y variables orquestan las herramientas.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "code-block"
+    ],
+    "edges": [
+     "e-agent-code"
+    ]
+   },
+   {
+    "title": "Ejecutar en el entorno de ejecución",
+    "description": "El entorno de ejecución corre el script. Llama a read_csv una vez para cargar 500 filas y empieza a iterar sobre ellas.",
+    "input": "",
+    "nodes": [
+     "code-block",
+     "runtime",
+     "tool-csv",
+     "loop"
+    ],
+    "edges": [
+     "e-code-runtime",
+     "e-runtime-csv",
+     "e-runtime-loop",
+     "e-csv-loop"
+    ]
+   },
+   {
+    "title": "El bucle llama a herramientas por fila",
+    "description": "Dentro del bucle, el script llama a get_customer y compute_tax para cada una de las 500 filas, sin un turno separado del modelo por cada llamada.",
+    "input": "",
+    "nodes": [
+     "loop",
+     "tool-customer",
+     "tool-tax"
+    ],
+    "edges": [
+     "e-loop-customer",
+     "e-loop-tax"
+    ]
+   },
+   {
+    "title": "Los datos intermedios permanecen en el entorno de ejecución",
+    "description": "Los 500 registros de clientes y los valores de impuesto por fila viven en la memoria de ejecución y se filtran por la condición de vencimiento. Ninguno entra en la ventana de contexto.",
+    "input": "",
+    "nodes": [
+     "tool-customer",
+     "intermediate",
+     "filter",
+     "tool-tax"
+    ],
+    "edges": [
+     "e-customer-inter",
+     "e-tax-filter",
+     "e-inter-filter"
+    ]
+   },
+   {
+    "title": "Solo se devuelve el resumen",
+    "description": "El script acumula un único total. Devolver solo ese valor en lugar de 500 registros reduce los tokens aproximadamente un 98 por ciento frente a llamadas a herramientas por fila.",
+    "input": "",
+    "nodes": [
+     "filter",
+     "result",
+     "token-monitor"
+    ],
+    "edges": [
+     "e-filter-result",
+     "e-filter-monitor"
+    ]
+   },
+   {
+    "title": "Un turno, solo el resumen",
+    "description": "Todo el trabajo termina en un turno usando tres herramientas, y el modelo solo ve el total final.",
+    "input": "",
+    "nodes": [
+     "result",
+     "output"
+    ],
+    "edges": [
+     "e-result-output"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,320 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "progressive-enhancement",
+ "name": "Progressive Enhancement(PE)",
+ "icon": "📈",
+ "complexity": "medium",
+ "description": "Mejora de forma incremental la calidad de la salida de la IA según los recursos y el tiempo disponibles",
+ "features": [
+  "Mejora de calidad por capas",
+  "Implementación de algoritmos anytime",
+  "Mejora según los recursos",
+  "Soporte para degradación controlada",
+  "Compromisos entre calidad y tiempo",
+  "Adaptación a las preferencias del usuario"
+ ],
+ "tldr": {
+  "what": "Entrega resultados iniciales rápidamente y luego refina progresivamente la calidad de la salida si todavía quedan tiempo y recursos disponibles.",
+  "when": "Sistemas interactivos en los que los usuarios necesitan feedback rápido pero se benefician de mejores resultados si el agente tiene capacidad de cómputo de sobra.",
+  "watchOut": "Las salidas intermedias pueden llevar a los usuarios a actuar antes de que termine el refinamiento, o el refinamiento puede no terminar nunca bajo carga."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Progressive Enhancement",
+  "description": "Un pipeline anytime que devuelve un resultado utilizable casi de inmediato y sigue mejorando la calidad por capas mientras los recursos y el tiempo lo permitan. Los checkpoints de contexto y la degradación controlada le permiten detenerse en cualquier nivel satisfactorio; se muestra con una app de mejora de fotos.",
+  "nodes": [
+   {
+    "id": "image-input",
+    "label": "🖼️ Imagen original\nEl usuario sube una foto",
+    "x": 360,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "enhancement-engine",
+    "label": "📈 Motor de mejora\nPipeline anytime por capas",
+    "x": 360,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "baseline-layer",
+    "label": "⚡ Base (50ms)\nReducción de ruido + contraste\nPuntuación 6/10",
+    "x": 340,
+    "y": 270,
+    "w": 230
+   },
+   {
+    "id": "standard-layer",
+    "label": "🔵 Estándar (200ms)\n+ Eliminación de ruido + corrección de color\nPuntuación 7.5/10",
+    "x": 340,
+    "y": 390,
+    "w": 230
+   },
+   {
+    "id": "high-layer",
+    "label": "🟣 Alta (800ms)\n+ Escalado con IA + detalle\nPuntuación 9/10",
+    "x": 340,
+    "y": 510,
+    "w": 230
+   },
+   {
+    "id": "premium-layer",
+    "label": "💎 Premium (3000ms)\n+ Deep learning + eliminación de artefactos\nPuntuación 9.5/10",
+    "x": 340,
+    "y": 630,
+    "w": 240
+   },
+   {
+    "id": "resource-monitor",
+    "label": "⚙️ Monitor de recursos\nCPU, batería, red",
+    "x": 680,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "time-budget",
+    "label": "⏱️ Presupuesto de tiempo\nPlazo + paciencia del usuario",
+    "x": 680,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "user-preference",
+    "label": "👤 Preferencia del usuario\nCalidad vs. velocidad",
+    "x": 680,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "checkpoint",
+    "label": "🎯 Checkpoint de calidad\n¿Es suficiente? detenerse o continuar",
+    "x": 650,
+    "y": 540,
+    "w": 230
+   },
+   {
+    "id": "graceful-degrade",
+    "label": "🔻 Degradación controlada\nBatería baja: tope en Estándar",
+    "x": 40,
+    "y": 450,
+    "w": 210
+   },
+   {
+    "id": "preview-output",
+    "label": "👁️ Vista previa instantánea\nDevuelta a los 50ms",
+    "x": 40,
+    "y": 270,
+    "w": 190
+   },
+   {
+    "id": "final-output",
+    "label": "✨ Mejor resultado disponible\nDevuelto en el nivel elegido",
+    "x": 340,
+    "y": 760,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-engine",
+    "s": "image-input",
+    "t": "enhancement-engine",
+    "label": ""
+   },
+   {
+    "id": "engine-baseline",
+    "s": "enhancement-engine",
+    "t": "baseline-layer",
+    "label": "iniciar"
+   },
+   {
+    "id": "baseline-preview",
+    "s": "baseline-layer",
+    "t": "preview-output",
+    "label": "vista previa en 50ms"
+   },
+   {
+    "id": "baseline-standard",
+    "s": "baseline-layer",
+    "t": "standard-layer",
+    "label": "mejorar"
+   },
+   {
+    "id": "standard-checkpoint",
+    "s": "standard-layer",
+    "t": "checkpoint",
+    "label": "evaluar"
+   },
+   {
+    "id": "resource-check",
+    "s": "resource-monitor",
+    "t": "checkpoint",
+    "label": ""
+   },
+   {
+    "id": "time-check",
+    "s": "time-budget",
+    "t": "checkpoint",
+    "label": ""
+   },
+   {
+    "id": "pref-check",
+    "s": "user-preference",
+    "t": "checkpoint",
+    "label": ""
+   },
+   {
+    "id": "checkpoint-high",
+    "s": "checkpoint",
+    "t": "high-layer",
+    "label": "continuar"
+   },
+   {
+    "id": "checkpoint-final",
+    "s": "checkpoint",
+    "t": "final-output",
+    "label": "suficiente, detenerse"
+   },
+   {
+    "id": "high-premium",
+    "s": "high-layer",
+    "t": "premium-layer",
+    "label": "continuar"
+   },
+   {
+    "id": "high-final",
+    "s": "high-layer",
+    "t": "final-output",
+    "label": "retorno anytime"
+   },
+   {
+    "id": "premium-final",
+    "s": "premium-layer",
+    "t": "final-output",
+    "label": "devolver"
+   },
+   {
+    "id": "resource-degrade",
+    "s": "resource-monitor",
+    "t": "graceful-degrade",
+    "label": "batería baja"
+   },
+   {
+    "id": "degrade-standard",
+    "s": "graceful-degrade",
+    "t": "standard-layer",
+    "label": "tope aquí"
+   },
+   {
+    "id": "standard-final",
+    "s": "standard-layer",
+    "t": "final-output",
+    "label": "retorno anytime"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Subida y vista previa instantánea",
+    "description": "La capa base se ejecuta en 50ms y devuelve una vista previa inmediata para que el usuario nunca se quede mirando una pantalla en blanco.",
+    "input": "",
+    "nodes": [
+     "image-input",
+     "enhancement-engine",
+     "baseline-layer",
+     "preview-output"
+    ],
+    "edges": [
+     "input-engine",
+     "engine-baseline",
+     "baseline-preview"
+    ]
+   },
+   {
+    "title": "Comienza la mejora por capas",
+    "description": "Mientras se muestra la vista previa, el pipeline avanza a la capa de calidad estándar.",
+    "input": "",
+    "nodes": [
+     "baseline-layer",
+     "standard-layer"
+    ],
+    "edges": [
+     "baseline-standard"
+    ]
+   },
+   {
+    "title": "Checkpoint sensible al contexto",
+    "description": "Un checkpoint sopesa los recursos, el presupuesto de tiempo restante y la preferencia del usuario para decidir si seguir mejorando.",
+    "input": "",
+    "nodes": [
+     "standard-layer",
+     "checkpoint",
+     "resource-monitor",
+     "time-budget",
+     "user-preference"
+    ],
+    "edges": [
+     "standard-checkpoint",
+     "resource-check",
+     "time-check",
+     "pref-check"
+    ]
+   },
+   {
+    "title": "Continuar hacia una calidad mayor",
+    "description": "Con tiempo y recursos disponibles, el checkpoint permite que el pipeline avance a la capa de alta calidad.",
+    "input": "",
+    "nodes": [
+     "checkpoint",
+     "high-layer"
+    ],
+    "edges": [
+     "checkpoint-high"
+    ]
+   },
+   {
+    "title": "Retorno anytime",
+    "description": "Como cada capa produce un resultado completo, el pipeline puede devolver la mejor salida actual en calidad alta o premium.",
+    "input": "",
+    "nodes": [
+     "high-layer",
+     "premium-layer",
+     "final-output"
+    ],
+    "edges": [
+     "high-premium",
+     "high-final",
+     "premium-final"
+    ]
+   },
+   {
+    "title": "Degradación controlada",
+    "description": "Si el monitor de recursos informa batería baja, el pipeline se limita a la capa estándar y devuelve ese resultado en lugar de quedarse detenido.",
+    "input": "",
+    "nodes": [
+     "resource-monitor",
+     "graceful-degrade",
+     "standard-layer",
+     "final-output"
+    ],
+    "edges": [
+     "resource-degrade",
+     "degrade-standard",
+     "standard-final"
+    ]
+   },
+   {
+    "title": "Mejor resultado disponible",
+    "description": "Cada vez que el checkpoint considera que la salida es suficientemente buena, se detiene y entrega el mejor resultado logrado hasta el momento.",
+    "input": "",
+    "nodes": [
+     "checkpoint",
+     "final-output"
+    ],
+    "edges": [
+     "checkpoint-final"
+    ]
+   }
+  ]
+ }
+}

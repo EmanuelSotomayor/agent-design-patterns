@@ -1,0 +1,369 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "generative-ui",
+ "name": "Generative UI (Agent-Rendered Interfaces)(GenUI)",
+ "icon": "🧩",
+ "complexity": "high",
+ "description": "El agente genera, selecciona y controla la propia interfaz en tiempo de ejecución, devolviendo componentes interactivos ricos (formularios, gráficos, paneles, mapas, widgets de varios pasos) en lugar de texto plano, y decidiendo CÓMO presentar un resultado según el tipo de contenido y la intención del usuario. Una llamada a herramienta del modelo emite UI que el host renderiza en un marco aislado, por ejemplo MCP Apps sirviendo HTML empaquetado mediante recursos `ui://`, o especificaciones portables como Google A2UI y Open-JSON-UI que el cliente dibuja de forma nativa. Esto pasó de experimental a producción en 2026, cuando MCP Apps se lanzó en Claude, ChatGPT, VS Code y Goose, junto con A2UI y la UI generativa de CopilotKit/assistant-ui. Se diferencia de `ag-ui-protocol`, que transmite EVENTOS del agente a un frontend ya construido, y de `adaptive-interface-patterns`, que personaliza una interfaz EXISTENTE: aquí el agente materializa la propia interfaz, eligiendo y construyendo los componentes en el momento de responder.",
+ "features": [
+  "El agente elige la presentación: un gráfico para una tendencia, un formulario para una acción, una tabla para una comparación",
+  "Las llamadas a herramientas devuelven componentes de UI, no solo texto, que el host renderiza en línea",
+  "Renderizado aislado: MCP Apps sirve HTML empaquetado mediante recursos `ui://` en un iframe aislado",
+  "Especificaciones de UI portables (Google A2UI, Open-JSON-UI) que el cliente dibuja de forma nativa, independientes del host",
+  "Bidireccional: los widgets renderizados envían las acciones del usuario de vuelta al bucle del agente como resultados de herramienta",
+  "El enrutamiento por contenido e intención decide el diseño, la densidad y la modalidad de cada respuesta"
+ ],
+ "tldr": {
+  "what": "El agente genera y devuelve componentes de UI interactivos (formularios, gráficos, tablas, mapas) como salidas de herramienta, que el host renderiza en marcos aislados.",
+  "when": "Los resultados se benefician de una presentación visual, el usuario necesita interactuar con los datos o el mejor formato depende de la intención y del tipo de contenido.",
+  "watchOut": "Las fallas de renderizado, la latencia de red y los problemas de compatibilidad de navegadores se suman a los errores del agente; prueba a fondo los caminos de generación de UI antes de pasar a producción."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Generative UI (interfaces renderizadas por el agente)",
+  "description": "El agente decide CÓMO presentar cada respuesta y materializa la interfaz en tiempo de ejecución. Clasifica el tipo de contenido y la intención, elige el componente adecuado (gráfico, formulario o tabla), lo emite como un recurso ui:// aislado que el host renderiza en línea y conecta las acciones del usuario de vuelta al bucle del agente.",
+  "nodes": [
+   {
+    "id": "user-query",
+    "label": "🗣️ Consulta del usuario\n\"Muéstrame nuestra tendencia de ventas de este año\"",
+    "x": 400,
+    "y": 40,
+    "w": 320
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente de UI generativa\nDecide cómo presentar el resultado",
+    "x": 400,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "intent-router",
+    "label": "🧭 Clasificador de intención + contenido\n¿Qué es esto y cómo debería verse?",
+    "x": 390,
+    "y": 260,
+    "w": 300
+   },
+   {
+    "id": "decide-chart",
+    "label": "📈 Datos de series temporales\nElige: gráfico de líneas",
+    "x": 90,
+    "y": 380,
+    "w": 190
+   },
+   {
+    "id": "decide-form",
+    "label": "⚙️ Acción a realizar\nElige: formulario de reserva",
+    "x": 390,
+    "y": 380,
+    "w": 190
+   },
+   {
+    "id": "decide-table",
+    "label": "🆚 Comparación\nElige: tabla",
+    "x": 690,
+    "y": 380,
+    "w": 190
+   },
+   {
+    "id": "ui-resource",
+    "label": "🧩 Llamada a herramienta render_ui()\nEmite un componente ui:// (HTML empaquetado)",
+    "x": 380,
+    "y": 500,
+    "w": 300
+   },
+   {
+    "id": "host-renderer",
+    "label": "🖥️ Renderizador del host\nRecibe el recurso ui://",
+    "x": 390,
+    "y": 610,
+    "w": 260
+   },
+   {
+    "id": "sandbox",
+    "label": "🔒 iframe aislado\nAislado, sin acceso directo al host",
+    "x": 400,
+    "y": 720,
+    "w": 260
+   },
+   {
+    "id": "rendered-chart",
+    "label": "📊 Gráfico interactivo\nTooltips al pasar el cursor, series en vivo",
+    "x": 80,
+    "y": 840,
+    "w": 190
+   },
+   {
+    "id": "rendered-form",
+    "label": "🗓️ Formulario de reserva\nAsistente, fecha, duración",
+    "x": 390,
+    "y": 840,
+    "w": 190
+   },
+   {
+    "id": "rendered-table",
+    "label": "📋 Tabla comparativa\nColumnas por plan, \"Elegir\"",
+    "x": 700,
+    "y": 840,
+    "w": 190
+   },
+   {
+    "id": "user-action",
+    "label": "👆 El usuario interactúa\nEnvía el formulario / hace clic en Elegir plan",
+    "x": 390,
+    "y": 960,
+    "w": 280
+   },
+   {
+    "id": "action-postback",
+    "label": "↩️ Acción enviada de vuelta\nEl widget devuelve los valores como resultado de herramienta",
+    "x": 400,
+    "y": 1070,
+    "w": 300
+   },
+   {
+    "id": "agent-continues",
+    "label": "✨ El agente continúa\nActúa sobre los valores enviados y confirma",
+    "x": 400,
+    "y": 1180,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-query-agent",
+    "s": "user-query",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-router",
+    "s": "agent",
+    "t": "intent-router",
+    "label": "Clasificar"
+   },
+   {
+    "id": "e-router-chart",
+    "s": "intent-router",
+    "t": "decide-chart",
+    "label": "serie temporal"
+   },
+   {
+    "id": "e-router-form",
+    "s": "intent-router",
+    "t": "decide-form",
+    "label": "acción"
+   },
+   {
+    "id": "e-router-table",
+    "s": "intent-router",
+    "t": "decide-table",
+    "label": "comparación"
+   },
+   {
+    "id": "e-chart-emit",
+    "s": "decide-chart",
+    "t": "ui-resource",
+    "label": ""
+   },
+   {
+    "id": "e-form-emit",
+    "s": "decide-form",
+    "t": "ui-resource",
+    "label": ""
+   },
+   {
+    "id": "e-table-emit",
+    "s": "decide-table",
+    "t": "ui-resource",
+    "label": ""
+   },
+   {
+    "id": "e-emit-host",
+    "s": "ui-resource",
+    "t": "host-renderer",
+    "label": "ui://"
+   },
+   {
+    "id": "e-host-sandbox",
+    "s": "host-renderer",
+    "t": "sandbox",
+    "label": "renderizar"
+   },
+   {
+    "id": "e-sandbox-chart",
+    "s": "sandbox",
+    "t": "rendered-chart",
+    "label": ""
+   },
+   {
+    "id": "e-sandbox-form",
+    "s": "sandbox",
+    "t": "rendered-form",
+    "label": ""
+   },
+   {
+    "id": "e-sandbox-table",
+    "s": "sandbox",
+    "t": "rendered-table",
+    "label": ""
+   },
+   {
+    "id": "e-chart-action",
+    "s": "rendered-chart",
+    "t": "user-action",
+    "label": ""
+   },
+   {
+    "id": "e-form-action",
+    "s": "rendered-form",
+    "t": "user-action",
+    "label": ""
+   },
+   {
+    "id": "e-table-action",
+    "s": "rendered-table",
+    "t": "user-action",
+    "label": ""
+   },
+   {
+    "id": "e-action-postback",
+    "s": "user-action",
+    "t": "action-postback",
+    "label": "onSubmit"
+   },
+   {
+    "id": "e-postback-agent",
+    "s": "action-postback",
+    "t": "agent-continues",
+    "label": "resultado de herramienta"
+   },
+   {
+    "id": "e-loop-back",
+    "s": "agent-continues",
+    "t": "agent",
+    "label": "siguiente turno"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta del usuario",
+    "description": "El usuario hace una pregunta en lenguaje natural. En lugar de devolver texto, el agente decidirá qué interfaz la responde mejor.",
+    "input": "",
+    "nodes": [
+     "user-query",
+     "agent"
+    ],
+    "edges": [
+     "e-query-agent"
+    ]
+   },
+   {
+    "title": "Enrutamiento por intención + contenido",
+    "description": "El agente clasifica el tipo de contenido y la intención del usuario. \"Tendencia de ventas\" es una serie temporal, \"agendar una reunión\" es una acción y \"comparar planes\" es una comparación.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "intent-router"
+    ],
+    "edges": [
+     "e-agent-router"
+    ]
+   },
+   {
+    "title": "Elegir la interfaz",
+    "description": "Cada tipo de contenido se asigna a la mejor presentación: un gráfico de líneas para la tendencia, un formulario de reserva para la acción y una tabla comparativa para la comparación.",
+    "input": "",
+    "nodes": [
+     "intent-router",
+     "decide-chart",
+     "decide-form",
+     "decide-table"
+    ],
+    "edges": [
+     "e-router-chart",
+     "e-router-form",
+     "e-router-table"
+    ]
+   },
+   {
+    "title": "Emitir el componente de UI",
+    "description": "El agente llama a render_ui() y emite un recurso ui:// que empaqueta el componente como HTML. El agente materializa la interfaz en lugar de describirla.",
+    "input": "",
+    "nodes": [
+     "decide-chart",
+     "decide-form",
+     "decide-table",
+     "ui-resource"
+    ],
+    "edges": [
+     "e-chart-emit",
+     "e-form-emit",
+     "e-table-emit"
+    ]
+   },
+   {
+    "title": "El host renderiza en un sandbox",
+    "description": "El host recibe el recurso ui:// y lo dibuja en un iframe aislado sin acceso directo al host, tal como MCP Apps renderiza HTML empaquetado.",
+    "input": "",
+    "nodes": [
+     "ui-resource",
+     "host-renderer",
+     "sandbox"
+    ],
+    "edges": [
+     "e-emit-host",
+     "e-host-sandbox"
+    ]
+   },
+   {
+    "title": "Aparecen los componentes interactivos",
+    "description": "El gráfico, el formulario y la tabla se renderizan en línea dentro de la conversación. Cada uno es totalmente interactivo: tooltips en el gráfico, campos en el formulario y un botón Elegir por cada columna de la tabla.",
+    "input": "",
+    "nodes": [
+     "sandbox",
+     "rendered-chart",
+     "rendered-form",
+     "rendered-table"
+    ],
+    "edges": [
+     "e-sandbox-chart",
+     "e-sandbox-form",
+     "e-sandbox-table"
+    ]
+   },
+   {
+    "title": "El usuario actúa sobre el widget",
+    "description": "El usuario interactúa, por ejemplo enviando el formulario de reserva o haciendo clic en Elegir plan. El widget captura la acción y envía los valores de vuelta.",
+    "input": "",
+    "nodes": [
+     "rendered-chart",
+     "rendered-form",
+     "rendered-table",
+     "user-action",
+     "action-postback"
+    ],
+    "edges": [
+     "e-chart-action",
+     "e-form-action",
+     "e-table-action",
+     "e-action-postback"
+    ]
+   },
+   {
+    "title": "De vuelta al bucle del agente",
+    "description": "Los valores enviados llegan como resultado de herramienta, así que el agente continúa la misma conversación: agenda la reunión o aplica el plan elegido, y luego puede renderizar la siguiente interfaz.",
+    "input": "",
+    "nodes": [
+     "action-postback",
+     "agent-continues",
+     "agent"
+    ],
+    "edges": [
+     "e-postback-agent",
+     "e-loop-back"
+    ]
+   }
+  ]
+ }
+}

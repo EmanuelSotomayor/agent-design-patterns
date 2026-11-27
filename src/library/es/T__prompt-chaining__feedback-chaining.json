@@ -1,0 +1,349 @@
+{
+ "cat": "prompt-chaining",
+ "slug": "feedback-chaining",
+ "name": "Feedback Chaining",
+ "icon": "🔄",
+ "complexity": "medium",
+ "description": "Implementa ciclos de mejora iterativa en los que las salidas se evalúan y se vuelven a usar como entradas hasta cumplir los criterios de calidad; está comprobado que mejora la calidad de la salida mediante un refinamiento basado en convergencia, y es especialmente eficaz para tareas creativas y de optimización",
+ "features": [
+  "Ciclos de mejora iterativa",
+  "Detección de convergencia",
+  "Seguimiento de métricas de calidad",
+  "Evaluación de la condición de parada"
+ ],
+ "tldr": {
+  "what": "Genera una salida, la evalúa contra métricas de calidad, devuelve la crítica como entrada y regenera hasta alcanzar un umbral o llegar al límite de iteraciones.",
+  "when": "Tareas en las que la calidad mejora con ciclos de revisión, como redacción, generación de código o problemas de optimización con criterios de éxito medibles.",
+  "watchOut": "Cae fácilmente en bucles infinitos o produce rendimientos decrecientes; fija límites estrictos de iteraciones y valida que las métricas realmente se correlacionen con la calidad real."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Feedback Chaining Pattern",
+  "description": "Muestra la mejora iterativa mediante bucles de feedback hasta alcanzar los objetivos de calidad",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud inicial\n\"Escribe una descripción de producto para unos audífonos inalámbricos\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "generate",
+    "label": "Generación de contenido\nCrear la versión inicial",
+    "x": 400,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "evaluate",
+    "label": "Evaluación de calidad\nPuntuar el contenido (1-10)",
+    "x": 400,
+    "y": 310,
+    "w": 200
+   },
+   {
+    "id": "decision",
+    "label": "Control de calidad\n¿Puntaje ≥ objetivo?",
+    "x": 400,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "feedback",
+    "label": "Análisis del feedback\nIdentificar áreas de mejora",
+    "x": 150,
+    "y": 310,
+    "w": 200
+   },
+   {
+    "id": "improve",
+    "label": "Aplicar mejoras\nRefinar según el feedback",
+    "x": 150,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "Salida final\nContenido de alta calidad logrado",
+    "x": 400,
+    "y": 570,
+    "w": 220
+   },
+   {
+    "id": "iteration1",
+    "label": "Iteración 1\n\"Buenos audífonos. Buen sonido.\"\nPuntaje: 3/10",
+    "x": 700,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "feedback1",
+    "label": "Feedback 1\n• Demasiado genérico\n• Faltan características\n• Necesita detalles",
+    "x": 700,
+    "y": 310,
+    "w": 160
+   },
+   {
+    "id": "iteration2",
+    "label": "Iteración 2\n\"Audífonos inalámbricos con cancelación de ruido...\"\nPuntaje: 6/10",
+    "x": 900,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "feedback2",
+    "label": "Feedback 2\n• Mejores detalles\n• Necesita atractivo emocional\n• Agregar beneficios",
+    "x": 900,
+    "y": 310,
+    "w": 160
+   },
+   {
+    "id": "iteration3",
+    "label": "Iteración 3\n\"Transforma tu experiencia auditiva...\"\nPuntaje: 9/10",
+    "x": 1100,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "target",
+    "label": "Calidad objetivo: 8/10\nMáximo de iteraciones: 5",
+    "x": 650,
+    "y": 440,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-generate",
+    "s": "input",
+    "t": "generate",
+    "label": ""
+   },
+   {
+    "id": "e-generate-evaluate",
+    "s": "generate",
+    "t": "evaluate",
+    "label": ""
+   },
+   {
+    "id": "e-evaluate-decision",
+    "s": "evaluate",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-decision-output",
+    "s": "decision",
+    "t": "output",
+    "label": "Calidad ≥ objetivo"
+   },
+   {
+    "id": "e-decision-feedback",
+    "s": "decision",
+    "t": "feedback",
+    "label": "Calidad < objetivo"
+   },
+   {
+    "id": "e-feedback-improve",
+    "s": "feedback",
+    "t": "improve",
+    "label": ""
+   },
+   {
+    "id": "e-improve-generate",
+    "s": "improve",
+    "t": "generate",
+    "label": ""
+   },
+   {
+    "id": "e-evaluate-feedback",
+    "s": "evaluate",
+    "t": "feedback",
+    "label": ""
+   },
+   {
+    "id": "e-generate-iteration1",
+    "s": "generate",
+    "t": "iteration1",
+    "label": ""
+   },
+   {
+    "id": "e-iteration1-feedback1",
+    "s": "iteration1",
+    "t": "feedback1",
+    "label": ""
+   },
+   {
+    "id": "e-iteration1-iteration2",
+    "s": "iteration1",
+    "t": "iteration2",
+    "label": ""
+   },
+   {
+    "id": "e-iteration2-feedback2",
+    "s": "iteration2",
+    "t": "feedback2",
+    "label": ""
+   },
+   {
+    "id": "e-iteration2-iteration3",
+    "s": "iteration2",
+    "t": "iteration3",
+    "label": ""
+   },
+   {
+    "id": "e-target-decision",
+    "s": "target",
+    "t": "decision",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud inicial",
+    "description": "El usuario proporciona la tarea de creación de contenido que necesita mejora iterativa.",
+    "input": "Escribe una descripción de producto atractiva para los audífonos inalámbricos Sony WH-1000XM5.",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Primera generación",
+    "description": "El sistema genera la versión inicial del contenido sin contexto previo.",
+    "input": "Tarea: descripción de producto para audífonos inalámbricos",
+    "nodes": [
+     "input",
+     "generate"
+    ],
+    "edges": [
+     "e-input-generate"
+    ]
+   },
+   {
+    "title": "Salida de la primera iteración",
+    "description": "El intento inicial produce contenido básico y genérico.",
+    "input": "",
+    "nodes": [
+     "generate",
+     "iteration1"
+    ],
+    "edges": [
+     "e-generate-iteration1"
+    ]
+   },
+   {
+    "title": "Evaluación de calidad",
+    "description": "El sistema evalúa la calidad del contenido según múltiples criterios.",
+    "input": "Criterios de evaluación del contenido: claridad, detalle, enganche, precisión técnica, poder de persuasión",
+    "nodes": [
+     "evaluate",
+     "iteration1"
+    ],
+    "edges": [
+     "e-generate-evaluate"
+    ]
+   },
+   {
+    "title": "Evaluación del puntaje de calidad",
+    "description": "El contenido recibe un puntaje de calidad bajo, lo que activa el bucle de feedback.",
+    "input": "",
+    "nodes": [
+     "evaluate",
+     "decision",
+     "target"
+    ],
+    "edges": [
+     "e-evaluate-decision",
+     "e-target-decision"
+    ]
+   },
+   {
+    "title": "Análisis del feedback",
+    "description": "El sistema analiza el puntaje bajo y genera sugerencias de mejora específicas.",
+    "input": "Puntaje de calidad 3/10 < objetivo 8/10 → Generar feedback",
+    "nodes": [
+     "decision",
+     "feedback",
+     "feedback1"
+    ],
+    "edges": [
+     "e-decision-feedback",
+     "e-iteration1-feedback1"
+    ]
+   },
+   {
+    "title": "Aplicación de mejoras",
+    "description": "El sistema aplica el feedback para crear una versión mejorada.",
+    "input": "",
+    "nodes": [
+     "feedback",
+     "improve"
+    ],
+    "edges": [
+     "e-feedback-improve"
+    ]
+   },
+   {
+    "title": "Segunda generación",
+    "description": "El sistema genera contenido mejorado que incorpora el feedback.",
+    "input": "Contenido original + Sugerencias de mejora → Versión mejorada",
+    "nodes": [
+     "improve",
+     "generate",
+     "iteration2"
+    ],
+    "edges": [
+     "e-improve-generate",
+     "e-iteration1-iteration2"
+    ]
+   },
+   {
+    "title": "Salida de la segunda iteración",
+    "description": "La versión mejorada muestra un avance significativo con detalles específicos.",
+    "input": "",
+    "nodes": [
+     "iteration2",
+     "feedback2"
+    ],
+    "edges": [
+     "e-iteration2-feedback2"
+    ]
+   },
+   {
+    "title": "Iteración continua",
+    "description": "El proceso continúa hasta alcanzar el objetivo de calidad.",
+    "input": "",
+    "nodes": [
+     "iteration2",
+     "iteration3"
+    ],
+    "edges": [
+     "e-iteration2-iteration3"
+    ]
+   },
+   {
+    "title": "Calidad objetivo alcanzada",
+    "description": "La iteración final alcanza el umbral de calidad y completa el bucle de feedback.",
+    "input": "",
+    "nodes": [
+     "iteration3",
+     "output"
+    ],
+    "edges": [
+     "e-decision-output"
+    ]
+   },
+   {
+    "title": "Bucle de feedback completado",
+    "description": "El puntaje de calidad cumple el objetivo (9/10 ≥ 8/10) y el proceso termina con éxito.",
+    "input": "",
+    "nodes": [
+     "output"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}

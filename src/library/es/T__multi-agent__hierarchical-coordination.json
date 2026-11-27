@@ -1,0 +1,740 @@
+{
+ "cat": "multi-agent",
+ "slug": "hierarchical-coordination",
+ "name": "Hierarchical Coordination(HC)",
+ "icon": "🏛️",
+ "complexity": "high",
+ "description": "Coordinación de agentes en múltiples niveles con relaciones de supervisión, orquestación centralizada y delegación de autoridad",
+ "features": [
+  "Jerarquía de múltiples niveles",
+  "Coordinación centralizada",
+  "Delegación de autoridad",
+  "Delegación de tareas",
+  "Asignación de recursos",
+  "Procedimientos de escalamiento",
+  "Supervisión del desempeño",
+  "Gestión de flujos de trabajo"
+ ],
+ "tldr": {
+  "what": "Organiza múltiples agentes en niveles de supervisor y subordinado, donde los niveles superiores delegan tareas hacia abajo, asignan recursos y gestionan las excepciones escaladas.",
+  "when": "Sistemas grandes que necesitan una rendición de cuentas clara, restricciones de recursos, controles de calidad o aplicación de políticas en muchos flujos de trabajo de agentes en paralelo.",
+  "watchOut": "Los cuellos de botella en los niveles de supervisión pueden dejar sin trabajo a los agentes subordinados; las cadenas de escalamiento retrasan las decisiones urgentes si no se acotan con cuidado."
+ },
+ "overview": {
+  "pattern": "Coordinación de agentes en múltiples niveles con relaciones de supervisión, orquestación centralizada y delegación de autoridad",
+  "why": "Permite una descomposición de tareas escalable, la aplicación de políticas, el control de calidad y cadenas claras de rendición de cuentas",
+  "insight": "Estructura jerárquica + delegación de tareas + protocolos de escalamiento = coordinación de nivel empresarial",
+  "impl": [
+   {
+    "t": "Definir la jerarquía",
+    "d": "Establecer niveles de supervisor y subordinado con niveles de autoridad claros"
+   },
+   {
+    "t": "Descomposición de tareas",
+    "d": "Dividir objetivos complejos en subtareas jerárquicas (al estilo HTN)"
+   },
+   {
+    "t": "Protocolo de delegación",
+    "d": "Implementar la asignación de tareas con criterios de aceptación y SLAs"
+   },
+   {
+    "t": "Reglas de escalamiento",
+    "d": "Definir cuándo y cómo los problemas suben por la jerarquía"
+   },
+   {
+    "t": "Monitorear y coordinar",
+    "d": "Seguir la ejecución, agregar los resultados, aplicar las políticas"
+   }
+  ],
+  "example": "ExecutiveAgent → ManagerAgents → TeamLeadAgents → WorkerAgents",
+  "dos": [
+   "Define roles, permisos y límites de autoridad explícitos para cada nivel",
+   "Usa especificaciones de tareas estructuradas con criterios de éxito claros",
+   "Implementa una re-descomposición acotada con límites de profundidad de recursión",
+   "Resume entre niveles para controlar el crecimiento del contexto",
+   "Usa modelos más pequeños para tareas rutinarias y más grandes para decisiones estratégicas",
+   "Instrumenta trazas completas y logs de auditoría por nivel"
+  ],
+  "donts": [
+   "Crear puntos únicos de falla en el nivel del supervisor",
+   "Permitir un escalamiento excesivo que infla la latencia y el costo",
+   "Usar una autoridad ambigua que bloquea la finalización de tareas de los workers",
+   "Reenviar transcripciones completas entre niveles en lugar de resúmenes",
+   "Omitir los controles de aplicación de políticas en los niveles superiores"
+  ],
+  "use": [
+   "Flujos de trabajo complejos que requieren puntos de aprobación y supervisión",
+   "Sistemas empresariales que necesitan aplicación de políticas",
+   "Operaciones a gran escala con subtareas interdependientes",
+   "Escenarios que requieren autoridad y rendición de cuentas claras",
+   "Procesos de múltiples pasos con checkpoints de control de calidad",
+   "Operaciones que necesitan autorización y asignación de recursos"
+  ],
+  "avoid": [
+   "Tareas simples de un solo paso sin necesidad de coordinación",
+   "Sistemas en tiempo real donde la latencia de revisión incumple los SLAs",
+   "Lluvia de ideas creativa que requiere una colaboración fluida",
+   "Equipos pequeños donde la jerarquía genera una sobrecarga innecesaria",
+   "Entornos muy dinámicos que requieren una adaptación rápida"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de tareas",
+    "d": "Finalización de extremo a extremo frente a una línea base plana"
+   },
+   {
+    "n": "Latencia por nivel",
+    "d": "Tiempo de procesamiento P50/P95 por nivel jerárquico"
+   },
+   {
+    "n": "Tasa de escalamiento",
+    "d": "Porcentaje de tareas que requieren revisión de un nivel superior"
+   },
+   {
+    "n": "Cumplimiento de políticas",
+    "d": "Infracciones detectadas y resueltas en los checkpoints"
+   },
+   {
+    "n": "Utilización de recursos",
+    "d": "Eficiencia de costo y cómputo entre niveles"
+   },
+   {
+    "n": "Precisión de la delegación",
+    "d": "Asignaciones de tareas exitosas sin retrabajo"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Flujos de trabajo empresariales",
+    "d": "Procesos de aprobación de múltiples niveles para cumplimiento, finanzas y compras con aplicación de políticas"
+   },
+   {
+    "n": "Respuesta a incidentes",
+    "d": "Jerarquía de mando con comandante del incidente, líderes de equipo y especialistas para una resolución sistemática"
+   },
+   {
+    "n": "Proyectos de investigación",
+    "d": "Investigador principal, gerentes de proyecto y equipos de investigación con revisión por pares y supervisión de publicaciones"
+   },
+   {
+    "n": "Operaciones de manufactura",
+    "d": "Gerentes de planta, supervisores de línea y operarios con control de calidad y protocolos de seguridad"
+   },
+   {
+    "n": "Desarrollo de software",
+    "d": "Arquitectos, líderes técnicos y desarrolladores con revisión de código, pruebas y puntos de aprobación de despliegue"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Hierarchical Coordination",
+  "description": "Sistema de coordinación de múltiples niveles con capas estratégica, táctica y operativa, donde los agentes de nivel superior fijan objetivos y los de nivel inferior ejecutan tareas específicas con autoridad delegada.",
+  "nodes": [
+   {
+    "id": "strategic-goal",
+    "label": "🎯 Objetivo estratégico\n\"Lanzar un producto global con personalización regional\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "ceo-agent",
+    "label": "👔 Agente CEO\nDecisiones estratégicas\nAutoridad: total\nLímite de aprobación: ilimitado",
+    "x": 400,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "cto-agent",
+    "label": "💻 Agente CTO\nEstrategia tecnológica\nAutoridad: técnica\nLímite de aprobación: $5M",
+    "x": 150,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "cmo-agent",
+    "label": "📢 Agente CMO\nEstrategia de marketing\nAutoridad: marketing\nLímite de aprobación: $3M",
+    "x": 400,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "coo-agent",
+    "label": "⚙️ Agente COO\nEstrategia de operaciones\nAutoridad: operaciones\nLímite de aprobación: $4M",
+    "x": 650,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "dev-lead",
+    "label": "👨‍💻 Líder de desarrollo\nDesarrollo de software\nAutoridad: equipo de desarrollo\nAprobación: $500K",
+    "x": 50,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "infra-lead",
+    "label": "🔧 Líder de infraestructura\nInfraestructura\nAutoridad: DevOps\nAprobación: $300K",
+    "x": 200,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "product-lead",
+    "label": "📦 Líder de producto\nGestión de producto\nAutoridad: funcionalidades\nAprobación: $200K",
+    "x": 350,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "regional-lead",
+    "label": "🌍 Líder regional\nMercados locales\nAutoridad: región\nAprobación: $400K",
+    "x": 500,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "supply-lead",
+    "label": "📦 Líder de abastecimiento\nCadena de suministro\nAutoridad: logística\nAprobación: $250K",
+    "x": 650,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "frontend-dev",
+    "label": "🎨 Desarrollador frontend\nImplementación de la UI",
+    "x": 20,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "backend-dev",
+    "label": "⚡ Desarrollador backend\nDesarrollo de APIs",
+    "x": 140,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "qa-engineer",
+    "label": "🧪 Ingeniero de QA\nPruebas",
+    "x": 260,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "market-analyst",
+    "label": "📊 Analista de mercado\nAnálisis de datos",
+    "x": 380,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "logistics-coord",
+    "label": "🚚 Coord. de logística\nEnvíos",
+    "x": 500,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "vendor-manager",
+    "label": "🤝 Gestor de proveedores\nProveedores",
+    "x": 620,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "delegation-engine",
+    "label": "📋 Motor de delegación\nAsignación de tareas por nivel",
+    "x": 100,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "approval-chain",
+    "label": "✅ Cadena de aprobación\nUmbrales de escalamiento",
+    "x": 320,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "reporting-system",
+    "label": "📊 Sistema de reportes\nComunicación ascendente",
+    "x": 540,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "policy-enforcer",
+    "label": "📜 Aplicador de políticas\nReglas organizacionales",
+    "x": 100,
+    "y": 820,
+    "w": 180
+   },
+   {
+    "id": "performance-tracker",
+    "label": "📈 Seguimiento del desempeño\nKPIs por nivel",
+    "x": 280,
+    "y": 820,
+    "w": 180
+   },
+   {
+    "id": "resource-allocator",
+    "label": "💰 Asignador de recursos\nDistribución del presupuesto",
+    "x": 460,
+    "y": 820,
+    "w": 180
+   },
+   {
+    "id": "escalation-handler",
+    "label": "⬆️ Gestor de escalamientos\nElevación de problemas",
+    "x": 640,
+    "y": 820,
+    "w": 180
+   },
+   {
+    "id": "cross-functional",
+    "label": "🤝 Interfuncional\nCoordinación lateral",
+    "x": 150,
+    "y": 940,
+    "w": 180
+   },
+   {
+    "id": "status-aggregator",
+    "label": "📊 Agregador de estado\nReportes consolidados",
+    "x": 350,
+    "y": 940,
+    "w": 180
+   },
+   {
+    "id": "decision-cascade",
+    "label": "🌊 Cascada de decisiones\nEjecución de arriba hacia abajo",
+    "x": 550,
+    "y": 940,
+    "w": 180
+   },
+   {
+    "id": "final-execution",
+    "label": "✨ Ejecución coordinada\nLanzamiento global con personalización regional logrado",
+    "x": 400,
+    "y": 1060,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-ceo",
+    "s": "strategic-goal",
+    "t": "ceo-agent",
+    "label": ""
+   },
+   {
+    "id": "ceo-cto",
+    "s": "ceo-agent",
+    "t": "cto-agent",
+    "label": "Delegar"
+   },
+   {
+    "id": "ceo-cmo",
+    "s": "ceo-agent",
+    "t": "cmo-agent",
+    "label": "Delegar"
+   },
+   {
+    "id": "ceo-coo",
+    "s": "ceo-agent",
+    "t": "coo-agent",
+    "label": "Delegar"
+   },
+   {
+    "id": "cto-dev",
+    "s": "cto-agent",
+    "t": "dev-lead",
+    "label": "Asignar"
+   },
+   {
+    "id": "cto-infra",
+    "s": "cto-agent",
+    "t": "infra-lead",
+    "label": "Asignar"
+   },
+   {
+    "id": "cmo-product",
+    "s": "cmo-agent",
+    "t": "product-lead",
+    "label": "Asignar"
+   },
+   {
+    "id": "cmo-regional",
+    "s": "cmo-agent",
+    "t": "regional-lead",
+    "label": "Asignar"
+   },
+   {
+    "id": "coo-supply",
+    "s": "coo-agent",
+    "t": "supply-lead",
+    "label": "Asignar"
+   },
+   {
+    "id": "dev-frontend",
+    "s": "dev-lead",
+    "t": "frontend-dev",
+    "label": "Tarea"
+   },
+   {
+    "id": "dev-backend",
+    "s": "dev-lead",
+    "t": "backend-dev",
+    "label": "Tarea"
+   },
+   {
+    "id": "infra-qa",
+    "s": "infra-lead",
+    "t": "qa-engineer",
+    "label": "Tarea"
+   },
+   {
+    "id": "product-analyst",
+    "s": "product-lead",
+    "t": "market-analyst",
+    "label": "Tarea"
+   },
+   {
+    "id": "supply-logistics",
+    "s": "supply-lead",
+    "t": "logistics-coord",
+    "label": "Tarea"
+   },
+   {
+    "id": "supply-vendor",
+    "s": "supply-lead",
+    "t": "vendor-manager",
+    "label": "Tarea"
+   },
+   {
+    "id": "frontend-dev-report",
+    "s": "frontend-dev",
+    "t": "dev-lead",
+    "label": "Reportar"
+   },
+   {
+    "id": "dev-cto-report",
+    "s": "dev-lead",
+    "t": "cto-agent",
+    "label": "Reportar"
+   },
+   {
+    "id": "cto-ceo-report",
+    "s": "cto-agent",
+    "t": "ceo-agent",
+    "label": "Reportar"
+   },
+   {
+    "id": "cmo-ceo-report",
+    "s": "cmo-agent",
+    "t": "ceo-agent",
+    "label": "Reportar"
+   },
+   {
+    "id": "coo-ceo-report",
+    "s": "coo-agent",
+    "t": "ceo-agent",
+    "label": "Reportar"
+   },
+   {
+    "id": "ceo-delegation",
+    "s": "ceo-agent",
+    "t": "delegation-engine",
+    "label": ""
+   },
+   {
+    "id": "delegation-approval",
+    "s": "delegation-engine",
+    "t": "approval-chain",
+    "label": ""
+   },
+   {
+    "id": "approval-reporting",
+    "s": "approval-chain",
+    "t": "reporting-system",
+    "label": ""
+   },
+   {
+    "id": "delegation-policy",
+    "s": "delegation-engine",
+    "t": "policy-enforcer",
+    "label": ""
+   },
+   {
+    "id": "reporting-performance",
+    "s": "reporting-system",
+    "t": "performance-tracker",
+    "label": ""
+   },
+   {
+    "id": "approval-resource",
+    "s": "approval-chain",
+    "t": "resource-allocator",
+    "label": ""
+   },
+   {
+    "id": "reporting-escalation",
+    "s": "reporting-system",
+    "t": "escalation-handler",
+    "label": ""
+   },
+   {
+    "id": "escalation-cto",
+    "s": "escalation-handler",
+    "t": "cto-agent",
+    "label": "Escalar"
+   },
+   {
+    "id": "escalation-ceo",
+    "s": "escalation-handler",
+    "t": "ceo-agent",
+    "label": "Crítico"
+   },
+   {
+    "id": "cto-cmo-coord",
+    "s": "cto-agent",
+    "t": "cmo-agent",
+    "label": "Coord."
+   },
+   {
+    "id": "cmo-coo-coord",
+    "s": "cmo-agent",
+    "t": "coo-agent",
+    "label": "Coord."
+   },
+   {
+    "id": "dev-product-coord",
+    "s": "dev-lead",
+    "t": "product-lead",
+    "label": "Sincronizar"
+   },
+   {
+    "id": "policy-cross",
+    "s": "policy-enforcer",
+    "t": "cross-functional",
+    "label": ""
+   },
+   {
+    "id": "performance-status",
+    "s": "performance-tracker",
+    "t": "status-aggregator",
+    "label": ""
+   },
+   {
+    "id": "resource-cascade",
+    "s": "resource-allocator",
+    "t": "decision-cascade",
+    "label": ""
+   },
+   {
+    "id": "cross-execution",
+    "s": "cross-functional",
+    "t": "final-execution",
+    "label": ""
+   },
+   {
+    "id": "status-execution",
+    "s": "status-aggregator",
+    "t": "final-execution",
+    "label": ""
+   },
+   {
+    "id": "cascade-execution",
+    "s": "decision-cascade",
+    "t": "final-execution",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada del objetivo estratégico",
+    "description": "El CEO recibe el objetivo estratégico",
+    "input": "",
+    "nodes": [
+     "strategic-goal",
+     "ceo-agent"
+    ],
+    "edges": [
+     "goal-ceo"
+    ]
+   },
+   {
+    "title": "Delegación del nivel 1→2",
+    "description": "El CEO delega en los jefes de departamento con límites de autoridad",
+    "input": "",
+    "nodes": [
+     "ceo-agent",
+     "cto-agent",
+     "cmo-agent",
+     "coo-agent"
+    ],
+    "edges": [
+     "ceo-cto",
+     "ceo-cmo",
+     "ceo-coo"
+    ]
+   },
+   {
+    "title": "Asignación del nivel 2→3",
+    "description": "Los jefes de departamento asignan a los líderes de equipo",
+    "input": "",
+    "nodes": [
+     "cto-agent",
+     "cmo-agent",
+     "coo-agent",
+     "dev-lead",
+     "infra-lead",
+     "product-lead",
+     "regional-lead",
+     "supply-lead"
+    ],
+    "edges": [
+     "cto-dev",
+     "cto-infra",
+     "cmo-product",
+     "cmo-regional",
+     "coo-supply"
+    ]
+   },
+   {
+    "title": "Distribución de tareas del nivel 3→4",
+    "description": "Los líderes de equipo distribuyen las tareas a los workers",
+    "input": "",
+    "nodes": [
+     "dev-lead",
+     "infra-lead",
+     "supply-lead",
+     "frontend-dev",
+     "backend-dev",
+     "qa-engineer",
+     "logistics-coord",
+     "vendor-manager"
+    ],
+    "edges": [
+     "dev-frontend",
+     "dev-backend",
+     "infra-qa",
+     "supply-logistics",
+     "supply-vendor"
+    ]
+   },
+   {
+    "title": "Reportes ascendentes",
+    "description": "Los reportes de progreso suben por la jerarquía",
+    "input": "",
+    "nodes": [
+     "frontend-dev",
+     "dev-lead",
+     "cto-agent",
+     "ceo-agent"
+    ],
+    "edges": [
+     "frontend-dev-report",
+     "dev-cto-report",
+     "cto-ceo-report",
+     "cmo-ceo-report",
+     "coo-ceo-report"
+    ]
+   },
+   {
+    "title": "Flujo de autoridad",
+    "description": "El motor de delegación gestiona las cadenas de aprobación",
+    "input": "",
+    "nodes": [
+     "delegation-engine",
+     "approval-chain",
+     "reporting-system"
+    ],
+    "edges": [
+     "ceo-delegation",
+     "delegation-approval",
+     "approval-reporting"
+    ]
+   },
+   {
+    "title": "Mecanismos de control",
+    "description": "Aplicar las políticas y seguir el desempeño",
+    "input": "",
+    "nodes": [
+     "policy-enforcer",
+     "performance-tracker",
+     "resource-allocator",
+     "escalation-handler"
+    ],
+    "edges": [
+     "delegation-policy",
+     "reporting-performance",
+     "approval-resource",
+     "reporting-escalation"
+    ]
+   },
+   {
+    "title": "Coordinación interfuncional",
+    "description": "Coordinación lateral entre departamentos",
+    "input": "",
+    "nodes": [
+     "cto-agent",
+     "cmo-agent",
+     "coo-agent",
+     "dev-lead",
+     "product-lead"
+    ],
+    "edges": [
+     "cto-cmo-coord",
+     "cmo-coo-coord",
+     "dev-product-coord"
+    ]
+   },
+   {
+    "title": "Escalamiento de problemas",
+    "description": "Los problemas críticos escalan por la jerarquía",
+    "input": "",
+    "nodes": [
+     "escalation-handler",
+     "cto-agent",
+     "ceo-agent"
+    ],
+    "edges": [
+     "escalation-cto",
+     "escalation-ceo"
+    ]
+   },
+   {
+    "title": "Cascada de decisiones",
+    "description": "Las decisiones estratégicas descienden en cascada por los niveles",
+    "input": "",
+    "nodes": [
+     "cross-functional",
+     "status-aggregator",
+     "decision-cascade"
+    ],
+    "edges": [
+     "policy-cross",
+     "performance-status",
+     "resource-cascade"
+    ]
+   },
+   {
+    "title": "Ejecución coordinada",
+    "description": "La estructura jerárquica cumple el objetivo estratégico",
+    "input": "",
+    "nodes": [
+     "final-execution",
+     "cross-functional",
+     "status-aggregator",
+     "decision-cascade"
+    ],
+    "edges": [
+     "cross-execution",
+     "status-execution",
+     "cascade-execution"
+    ]
+   }
+  ]
+ }
+}

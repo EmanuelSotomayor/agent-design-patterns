@@ -1,0 +1,346 @@
+{
+ "cat": "knowledge-representation",
+ "slug": "owl-reasoning",
+ "name": "OWL Ontological Reasoning(OWL)",
+ "icon": "🦉",
+ "complexity": "high",
+ "description": "Web Ontology Language para definir relaciones semánticas complejas y habilitar el razonamiento lógico automatizado",
+ "features": [
+  "Definición formal de ontologías",
+  "Modelado de jerarquías de clases",
+  "Restricciones de propiedades",
+  "Reglas de inferencia lógica",
+  "Verificación de consistencia",
+  "Clasificación automatizada"
+ ],
+ "tldr": {
+  "what": "Define relaciones semánticas formales y jerarquías de clases, y luego aplica reglas lógicas para inferir automáticamente nuevos hechos y validar la consistencia.",
+  "when": "Dominios complejos con taxonomías estrictas donde necesitas clasificación automatizada, validación de restricciones o derivación de conocimiento implícito a partir de reglas explícitas.",
+  "watchOut": "El rendimiento del razonamiento se degrada drásticamente con el tamaño de la ontología y la complejidad de las reglas; los axiomas mal alineados provocan inconsistencias silenciosas difíciles de depurar."
+ },
+ "overview": null,
+ "flow": {
+  "title": "OWL Ontological Reasoning",
+  "description": "Web Ontology Language define jerarquías de clases y restricciones de propiedades que permiten que un razonador de lógica descriptiva infiera nuevos hechos. A partir solo de los síntomas declarados de un paciente, el razonador clasifica la condición del paciente, verifica la consistencia y materializa las tripletas implicadas.",
+  "nodes": [
+   {
+    "id": "asserted-facts",
+    "label": "🩺 Hechos declarados (ABox)\nmed:p1 med:hasSymptom med:HighBloodSugar\nmed:p1 med:hasSymptom med:InsulinResistance",
+    "x": 340,
+    "y": 40,
+    "w": 320
+   },
+   {
+    "id": "ontology",
+    "label": "🦉 Ontología OWL (TBox)\nAxiomas formales de clases y propiedades",
+    "x": 370,
+    "y": 160,
+    "w": 260
+   },
+   {
+    "id": "classes",
+    "label": "📚 Clases\nmed:Patient a owl:Class\nmed:Symptom a owl:Class\nmed:Treatment a owl:Class",
+    "x": 40,
+    "y": 280,
+    "w": 220
+   },
+   {
+    "id": "properties",
+    "label": "🔗 Propiedades de objeto\nmed:hasSymptom rdfs:domain Patient\nmed:treatedBy rdfs:range Treatment",
+    "x": 300,
+    "y": 280,
+    "w": 240
+   },
+   {
+    "id": "axiom-diabetes",
+    "label": "🧩 Axioma: DiabeticPatient\nmed:DiabeticPatient rdfs:subClassOf med:Patient ,\n[ owl:onProperty med:hasSymptom ;\n  owl:someValuesFrom med:HighBloodSugar ]",
+    "x": 590,
+    "y": 280,
+    "w": 260
+   },
+   {
+    "id": "axiom-type2",
+    "label": "🧩 Axioma: Type2DiabeticPatient\nowl:equivalentClass owl:intersectionOf (\n  med:DiabeticPatient\n  [ hasSymptom some med:InsulinResistance ] )",
+    "x": 590,
+    "y": 430,
+    "w": 260
+   },
+   {
+    "id": "reasoner",
+    "label": "🧠 Razonador OWL\nMotor DL HermiT / Pellet",
+    "x": 340,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "consistency-check",
+    "label": "🟠 Verificación de consistencia\nLa ontología es satisfacible",
+    "x": 40,
+    "y": 430,
+    "w": 210
+   },
+   {
+    "id": "classification",
+    "label": "🗂️ Clasificación\nSubsunción: hace coincidir los síntomas de p1\ncon las restricciones de clase",
+    "x": 300,
+    "y": 555,
+    "w": 240
+   },
+   {
+    "id": "inconsistency",
+    "label": "❌ Protección contra inconsistencias\nMarca si se cumplen dos clases disjuntas a la vez",
+    "x": 40,
+    "y": 555,
+    "w": 210
+   },
+   {
+    "id": "inferred-diabetes",
+    "label": "💠 Inferido\nmed:p1 a med:DiabeticPatient\n(se cumple la restricción HighBloodSugar)",
+    "x": 130,
+    "y": 680,
+    "w": 230
+   },
+   {
+    "id": "inferred-type2",
+    "label": "💠 Inferido\nmed:p1 a med:Type2DiabeticPatient\n(se cumple la restricción InsulinResistance)",
+    "x": 400,
+    "y": 680,
+    "w": 230
+   },
+   {
+    "id": "inferred-treatment",
+    "label": "💠 Inferido\nmed:p1 med:treatedBy\nmed:InsulinTherapy",
+    "x": 670,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "inferred-graph",
+    "label": "🌐 Inferencias materializadas\nTripletas implicadas agregadas al grafo",
+    "x": 360,
+    "y": 800,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "facts-ontology",
+    "s": "asserted-facts",
+    "t": "ontology",
+    "label": ""
+   },
+   {
+    "id": "ontology-classes",
+    "s": "ontology",
+    "t": "classes",
+    "label": ""
+   },
+   {
+    "id": "ontology-properties",
+    "s": "ontology",
+    "t": "properties",
+    "label": ""
+   },
+   {
+    "id": "ontology-axiom-diabetes",
+    "s": "ontology",
+    "t": "axiom-diabetes",
+    "label": ""
+   },
+   {
+    "id": "axiom-diabetes-type2",
+    "s": "axiom-diabetes",
+    "t": "axiom-type2",
+    "label": "subClassOf"
+   },
+   {
+    "id": "classes-reasoner",
+    "s": "classes",
+    "t": "reasoner",
+    "label": ""
+   },
+   {
+    "id": "properties-reasoner",
+    "s": "properties",
+    "t": "reasoner",
+    "label": ""
+   },
+   {
+    "id": "axiom-type2-reasoner",
+    "s": "axiom-type2",
+    "t": "reasoner",
+    "label": ""
+   },
+   {
+    "id": "reasoner-consistency",
+    "s": "reasoner",
+    "t": "consistency-check",
+    "label": "verifica"
+   },
+   {
+    "id": "consistency-inconsistency",
+    "s": "consistency-check",
+    "t": "inconsistency",
+    "label": "si no"
+   },
+   {
+    "id": "reasoner-classification",
+    "s": "reasoner",
+    "t": "classification",
+    "label": "clasifica"
+   },
+   {
+    "id": "classification-diabetes",
+    "s": "classification",
+    "t": "inferred-diabetes",
+    "label": ""
+   },
+   {
+    "id": "classification-type2",
+    "s": "classification",
+    "t": "inferred-type2",
+    "label": ""
+   },
+   {
+    "id": "type2-treatment",
+    "s": "inferred-type2",
+    "t": "inferred-treatment",
+    "label": "implica"
+   },
+   {
+    "id": "diabetes-graph",
+    "s": "inferred-diabetes",
+    "t": "inferred-graph",
+    "label": ""
+   },
+   {
+    "id": "type2-graph",
+    "s": "inferred-type2",
+    "t": "inferred-graph",
+    "label": ""
+   },
+   {
+    "id": "treatment-graph",
+    "s": "inferred-treatment",
+    "t": "inferred-graph",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Declarar los hechos base",
+    "description": "Solo se declaran observaciones en bruto: el paciente p1 tiene los síntomas HighBloodSugar e InsulinResistance. No se declara directamente ninguna clase de enfermedad.",
+    "input": "",
+    "nodes": [
+     "asserted-facts",
+     "ontology"
+    ],
+    "edges": [
+     "facts-ontology"
+    ]
+   },
+   {
+    "title": "Cargar el esquema de la ontología",
+    "description": "La TBox proporciona el vocabulario: las clases Patient, Symptom y Treatment, además del dominio y el rango de hasSymptom y treatedBy.",
+    "input": "",
+    "nodes": [
+     "ontology",
+     "classes",
+     "properties"
+    ],
+    "edges": [
+     "ontology-classes",
+     "ontology-properties"
+    ]
+   },
+   {
+    "title": "Leer los axiomas de definición",
+    "description": "DiabeticPatient se define como un Patient con algún síntoma HighBloodSugar; Type2DiabeticPatient es equivalente a un DiabeticPatient que además tiene algún InsulinResistance.",
+    "input": "",
+    "nodes": [
+     "ontology",
+     "axiom-diabetes",
+     "axiom-type2"
+    ],
+    "edges": [
+     "ontology-axiom-diabetes",
+     "axiom-diabetes-type2"
+    ]
+   },
+   {
+    "title": "Verificar la consistencia",
+    "description": "Primero, el razonador demuestra que la TBox y la ABox combinadas son satisfacibles; la protección de disyunción se activaría si se implicaran pertenencias a clases contradictorias.",
+    "input": "",
+    "nodes": [
+     "classes",
+     "properties",
+     "axiom-type2",
+     "reasoner",
+     "consistency-check",
+     "inconsistency"
+    ],
+    "edges": [
+     "classes-reasoner",
+     "properties-reasoner",
+     "axiom-type2-reasoner",
+     "reasoner-consistency",
+     "consistency-inconsistency"
+    ]
+   },
+   {
+    "title": "Clasificar por subsunción",
+    "description": "El razonador compara los síntomas de p1 con las restricciones de clase y calcula a qué clases definidas pertenece necesariamente el individuo.",
+    "input": "",
+    "nodes": [
+     "reasoner",
+     "classification"
+    ],
+    "edges": [
+     "reasoner-classification"
+    ]
+   },
+   {
+    "title": "Inferir la pertenencia a clases",
+    "description": "Como p1 tiene HighBloodSugar, se infiere que es un DiabeticPatient; como además tiene InsulinResistance, satisface la definición de clase equivalente de Type2DiabeticPatient.",
+    "input": "",
+    "nodes": [
+     "classification",
+     "inferred-diabetes",
+     "inferred-type2"
+    ],
+    "edges": [
+     "classification-diabetes",
+     "classification-type2"
+    ]
+   },
+   {
+    "title": "Implicar hechos derivados",
+    "description": "A partir de la clasificación Type2Diabetes, el razonador deriva una relación de tratamiento, lo que muestra cómo una inferencia desencadena en cascada más tripletas implicadas.",
+    "input": "",
+    "nodes": [
+     "inferred-type2",
+     "inferred-treatment"
+    ],
+    "edges": [
+     "type2-treatment"
+    ]
+   },
+   {
+    "title": "Materializar las inferencias",
+    "description": "Las tripletas implicadas se escriben de vuelta en el grafo para que las consultas posteriores vean los hechos derivados de enfermedad y tratamiento junto con los declarados.",
+    "input": "",
+    "nodes": [
+     "inferred-diabetes",
+     "inferred-type2",
+     "inferred-treatment",
+     "inferred-graph"
+    ],
+    "edges": [
+     "diabetes-graph",
+     "type2-graph",
+     "treatment-graph"
+    ]
+   }
+  ]
+ }
+}

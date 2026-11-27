@@ -1,0 +1,433 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "helm-agent-eval",
+ "name": "HELM Agent Evaluation Framework(HELM-AE)",
+ "icon": "🎓",
+ "complexity": "high",
+ "description": "La Holistic Evaluation of Language Models de Stanford CRFM, extendida a las capacidades de agentes. El ejemplo desarrollado es una instantánea fechada de un benchmark, no una recomendación actual de modelo.",
+ "features": [
+  "Evaluación holística de 7 métricas (precisión, calibración, robustez, equidad, sesgo, toxicidad, eficiencia)",
+  "Evaluación de tareas multimodales",
+  "Evaluación del uso de herramientas y de la interacción con APIs",
+  "Pruebas en entornos de simulación",
+  "Formato de benchmark estandarizado",
+  "Framework de evaluación de código abierto"
+ ],
+ "tldr": {
+  "what": "Mide el rendimiento de los agentes en siete dimensiones: precisión, calibración, robustez, equidad, sesgo, toxicidad y eficiencia, incluyendo el uso de herramientas y la interacción con APIs en escenarios estandarizados.",
+  "when": "Comparar múltiples agentes antes del despliegue o hacer seguimiento de regresiones de rendimiento entre versiones de modelos e integraciones de herramientas.",
+  "watchOut": "Las puntuaciones de benchmark no predicen el rendimiento en el mundo real; tus tareas reales pueden diferir significativamente de los 42 escenarios de prueba."
+ },
+ "overview": {
+  "pattern": "Framework holístico de Stanford CRFM que evalúa agentes en 7 métricas y 42 escenarios",
+  "why": "Va más allá de la precisión hacia una evaluación integral que incluye las compensaciones de equidad, robustez y eficiencia",
+  "insight": "Revela compensaciones críticas entre métricas y asegura que las dimensiones distintas de la precisión no sean ciudadanas de segunda clase",
+  "impl": [
+   {
+    "t": "Instalar",
+    "d": "pip install crfm-helm para el framework de evaluación holística"
+   },
+   {
+    "t": "Configurar",
+    "d": "Configura escenarios en 16 dominios principales con 7 métricas"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Ejecuta una evaluación integral que incluye tareas multimodales y uso de herramientas"
+   },
+   {
+    "t": "Analizar",
+    "d": "Revisa métricas holísticas más allá de la precisión (equidad, robustez, etc.)"
+   },
+   {
+    "t": "Comparar",
+    "d": "Compara contra más de 30 modelos con evaluación estandarizada"
+   }
+  ],
+  "example": "helm-run --model <current-model-id> --scenarios core --metrics all --output evaluation_report.json Las 7 métricas principales 1 Precisión Medición tradicional del rendimiento en los escenarios de tareas 2 Calibración Si el modelo sabe lo que no sabe: alineación de la confianza 3 Robustez Rendimiento ante perturbaciones (p. ej., errores tipográficos, variaciones en la entrada) 4 Equidad Consistencia del rendimiento entre distintos grupos y demografías 5 Sesgo Detección de injusticias sistemáticas en las salidas y decisiones del modelo 6 Toxicidad Generación de contenido dañino, ofensivo o peligroso 7 Eficiencia Uso de recursos computacionales y optimización de la velocidad de inferencia",
+  "dos": [
+   "Evalúa en las 7 métricas, no solo en precisión, para una evaluación holística",
+   "Usa escenarios estandarizados (16 principales + 26 específicos) para mantener la consistencia",
+   "Incluye las capacidades multimodales y de uso de herramientas en la evaluación",
+   "Prueba la robustez con perturbaciones y la equidad entre grupos",
+   "Aprovecha HELM Lite para una evaluación simplificada pero integral"
+  ],
+  "donts": [
+   "Enfocarse solo en la precisión: las demás métricas revelan compensaciones críticas",
+   "Omitir las pruebas de calibración si el modelo expone salidas de probabilidad",
+   "Ignorar las métricas de eficiencia en las decisiones de despliegue en producción",
+   "Usar escenarios personalizados sin líneas base de comparación estandarizadas",
+   "Pasar por alto la evaluación de sesgo y toxicidad para un despliegue responsable"
+  ],
+  "use": [
+   "Comparación integral de modelos en múltiples dimensiones",
+   "Investigación académica que requiere evaluación estandarizada",
+   "Decisiones de despliegue empresarial que necesitan una evaluación holística",
+   "Evaluación de IA responsable que incluye sesgo y toxicidad",
+   "Evaluación de capacidades de agentes multimodales"
+  ],
+  "avoid": [
+   "Verificaciones rápidas de rendimiento con una sola métrica",
+   "Benchmarks de dominios específicos fuera de los escenarios de HELM",
+   "Necesidades de evaluación en tiempo real (computacionalmente intensiva)",
+   "Escenarios de evaluación personalizados sin necesidad de estandarización",
+   "Evaluación con presupuesto limitado (requiere un cómputo significativo)"
+  ],
+  "metrics": [
+   {
+    "n": "Puntuación holística",
+    "d": "Rendimiento agregado en las 7 dimensiones"
+   },
+   {
+    "n": "Cobertura de escenarios",
+    "d": "Rendimiento en 16 escenarios principales + 26 específicos"
+   },
+   {
+    "n": "Análisis de compensaciones",
+    "d": "Patrones de correlación entre las distintas métricas"
+   },
+   {
+    "n": "Capacidad multimodal",
+    "d": "Rendimiento en texto a imagen y visión-lenguaje"
+   },
+   {
+    "n": "Competencia en uso de herramientas",
+    "d": "Efectividad de la integración con APIs externas y plugins"
+   },
+   {
+    "n": "Éxito en entornos de simulación",
+    "d": "Completitud de tareas de extremo a extremo en entornos realistas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Comparación académica de modelos",
+    "d": "Evaluación estandarizada de más de 30 modelos con una metodología transparente"
+   },
+   {
+    "n": "Selección de IA empresarial",
+    "d": "Evaluación holística más allá de la precisión para decisiones de despliegue responsable"
+   },
+   {
+    "n": "Desarrollo de IA responsable",
+    "d": "Frameworks integrales de evaluación de sesgo, equidad y toxicidad"
+   },
+   {
+    "n": "Pruebas de agentes multimodales",
+    "d": "Evaluación de capacidades de visión-lenguaje y uso de herramientas para aplicaciones complejas"
+   },
+   {
+    "n": "Benchmarking para investigación",
+    "d": "Framework de evaluación reproducible para publicaciones de investigación sobre modelos fundacionales"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón del framework de evaluación de agentes HELM",
+  "description": "La Holistic Evaluation of Language Models de Stanford CRFM, extendida a las capacidades de agentes, mide 7 métricas críticas en 42 escenarios que incluyen tareas multimodales, uso de herramientas y entornos de simulación",
+  "nodes": [
+   {
+    "id": "evaluation-fragmentation-challenge",
+    "label": "🔍 Desafío de la evaluación de agentes LLM\n\"Evaluación fragmentada e incompleta\nde las capacidades de los agentes más allá de la precisión\nSin una evaluación multimétrica estandarizada\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "helm-framework",
+    "label": "🏗️ Framework holístico HELM\n\"Evaluación integral de agentes:\n• 7 métricas críticas\n• 42 escenarios diversos\n• Condiciones estandarizadas\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "seven-metrics-system",
+    "label": "📊 Sistema de evaluación de 7 métricas\n\"Evaluación más allá de la precisión:\n• Medición multidimensional\n• Perfilado holístico de capacidades\n• Sistemas beneficiosos para la sociedad\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "performance-metrics",
+    "label": "🎯 Métricas de rendimiento\n\"• Precisión: medidas tradicionales\n• Calibración: estimación de la confianza\n• Robustez: estabilidad ante variaciones\"",
+    "x": 50,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "societal-metrics",
+    "label": "⚖️ Métricas de impacto social\n\"• Equidad: trato igualitario\n• Sesgo: prejuicios sistemáticos\n• Toxicidad: contenido dañino\"",
+    "x": 250,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "efficiency-metric",
+    "label": "⚡ Métrica de eficiencia\n\"• Optimización del uso de recursos\n• Análisis del costo computacional\n• Despliegue de IA sostenible\"",
+    "x": 450,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "scenario-evaluation-suite",
+    "label": "📋 Suite de evaluación de 42 escenarios\n\"Cobertura integral de tareas:\n• 16 escenarios principales\n• 26 evaluaciones específicas\n• Aplicaciones del mundo real\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "agent-capability-scenarios",
+    "label": "🤖 Escenarios de capacidades de agentes\n\"• Evaluación del uso de herramientas\n• Manejo de tareas multimodales\n• Interacciones con APIs externas\"",
+    "x": 500,
+    "y": 500,
+    "w": 190
+   },
+   {
+    "id": "simulation-environments",
+    "label": "🌐 Entornos de simulación\n\"• Comportamiento interactivo del agente\n• Navegación en entornos complejos\n• Modelado de la complejidad del mundo real\"",
+    "x": 650,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "multimodal-evaluation",
+    "label": "🖼️ Evaluación multimodal\n\"• Modelos de visión-lenguaje (VHELM)\n• Modelos de texto a imagen (HEIM)\n• Comprensión intermodal\"",
+    "x": 800,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "standardized-assessment",
+    "label": "⚙️ Proceso de evaluación estandarizado\n\"Condiciones de evaluación unificadas:\n• Los mismos escenarios para todos los modelos\n• Estrategias de adaptación controladas\n• Mediciones reproducibles\"",
+    "x": 400,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "comprehensive-coverage",
+    "label": "📈 Cobertura integral de modelos\n\"Mejoró de 17.9% a 96.0%\nde cobertura de escenarios en 30 modelos\nEstandarización de benchmarking denso\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "transparency-community",
+    "label": "🔓 Transparencia y comunidad\n\"Framework de código abierto\nSe publican los prompts/completions crudos\nBenchmark vivo con actualizaciones continuas\"",
+    "x": 600,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "holistic-evaluation-principle",
+    "label": "🎯 Principio de evaluación holística de agentes\n\"Las capacidades de los agentes requieren una evaluación multidimensional\nmás allá de la precisión: impacto social, eficiencia, robustez\nLas condiciones estandarizadas permiten comparaciones significativas\"",
+    "x": 400,
+    "y": 950,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "evaluation-fragmentation-challenge",
+    "t": "helm-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "helm-framework",
+    "t": "seven-metrics-system",
+    "label": "implementa 7 métricas"
+   },
+   {
+    "id": "e3",
+    "s": "helm-framework",
+    "t": "scenario-evaluation-suite",
+    "label": "despliega 42 escenarios"
+   },
+   {
+    "id": "e4",
+    "s": "seven-metrics-system",
+    "t": "performance-metrics",
+    "label": "incluye rendimiento"
+   },
+   {
+    "id": "e5",
+    "s": "seven-metrics-system",
+    "t": "societal-metrics",
+    "label": "incluye impacto social"
+   },
+   {
+    "id": "e6",
+    "s": "seven-metrics-system",
+    "t": "efficiency-metric",
+    "label": "incluye eficiencia"
+   },
+   {
+    "id": "e7",
+    "s": "scenario-evaluation-suite",
+    "t": "agent-capability-scenarios",
+    "label": "incluye tareas de agentes"
+   },
+   {
+    "id": "e8",
+    "s": "scenario-evaluation-suite",
+    "t": "simulation-environments",
+    "label": "incluye simulaciones"
+   },
+   {
+    "id": "e9",
+    "s": "scenario-evaluation-suite",
+    "t": "multimodal-evaluation",
+    "label": "incluye multimodal"
+   },
+   {
+    "id": "e10",
+    "s": "performance-metrics",
+    "t": "standardized-assessment",
+    "label": "medido por"
+   },
+   {
+    "id": "e11",
+    "s": "societal-metrics",
+    "t": "standardized-assessment",
+    "label": "evaluado por"
+   },
+   {
+    "id": "e12",
+    "s": "efficiency-metric",
+    "t": "standardized-assessment",
+    "label": "valorado por"
+   },
+   {
+    "id": "e13",
+    "s": "agent-capability-scenarios",
+    "t": "standardized-assessment",
+    "label": "procesado por"
+   },
+   {
+    "id": "e14",
+    "s": "simulation-environments",
+    "t": "standardized-assessment",
+    "label": "se ejecuta mediante"
+   },
+   {
+    "id": "e15",
+    "s": "multimodal-evaluation",
+    "t": "standardized-assessment",
+    "label": "ejecutado vía"
+   },
+   {
+    "id": "e16",
+    "s": "standardized-assessment",
+    "t": "comprehensive-coverage",
+    "label": "logra cobertura"
+   },
+   {
+    "id": "e17",
+    "s": "standardized-assessment",
+    "t": "transparency-community",
+    "label": "habilita transparencia"
+   },
+   {
+    "id": "e18",
+    "s": "comprehensive-coverage",
+    "t": "holistic-evaluation-principle",
+    "label": "demuestra efectividad"
+   },
+   {
+    "id": "e19",
+    "s": "transparency-community",
+    "t": "holistic-evaluation-principle",
+    "label": "demuestra apertura"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la fragmentación en la evaluación de agentes LLM",
+    "description": "La evaluación tradicional de LLMs sufre de una valoración fragmentada e incompleta centrada solo en la precisión, sin una evaluación multimétrica estandarizada de las capacidades de los agentes en escenarios diversos.",
+    "input": "",
+    "nodes": [
+     "evaluation-fragmentation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework holístico HELM",
+    "description": "La solución integral de Stanford CRFM despliega una evaluación sistemática en 7 métricas críticas y 42 escenarios diversos bajo condiciones estandarizadas para comparar de forma significativa las capacidades de los agentes.",
+    "input": "",
+    "nodes": [
+     "helm-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Sistema de evaluación multidimensional de 7 métricas",
+    "description": "El framework implementa una medición integral más allá de la precisión: métricas de rendimiento (precisión, calibración, robustez), impacto social (equidad, sesgo, toxicidad) y eficiencia de recursos.",
+    "input": "",
+    "nodes": [
+     "seven-metrics-system",
+     "performance-metrics",
+     "societal-metrics",
+     "efficiency-metric"
+    ],
+    "edges": [
+     "e2",
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Suite de evaluación integral de 42 escenarios",
+    "description": "La amplia cobertura de escenarios incluye tareas de capacidades de agentes (uso de herramientas, interacciones con APIs), entornos de simulación (navegación compleja) y evaluación multimodal (visión-lenguaje, texto a imagen).",
+    "input": "",
+    "nodes": [
+     "scenario-evaluation-suite",
+     "agent-capability-scenarios",
+     "simulation-environments",
+     "multimodal-evaluation"
+    ],
+    "edges": [
+     "e3",
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Proceso de evaluación estandarizado",
+    "description": "Las condiciones de evaluación unificadas procesan todas las métricas y escenarios de forma consistente: estrategias de adaptación controladas, mediciones reproducibles y los mismos escenarios para todos los modelos para lograr comparaciones significativas.",
+    "input": "",
+    "nodes": [
+     "standardized-assessment"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Cobertura integral e impacto en la comunidad",
+    "description": "HELM alcanzó un 96.0% de cobertura de escenarios (frente al 17.9%) en 30 modelos, con transparencia de código abierto al publicar los prompts/completions crudos, lo que demuestra que la evaluación holística multidimensional permite comparar de forma significativa las capacidades de los agentes.",
+    "input": "",
+    "nodes": [
+     "comprehensive-coverage",
+     "transparency-community",
+     "holistic-evaluation-principle"
+    ],
+    "edges": [
+     "e16",
+     "e17",
+     "e18",
+     "e19"
+    ]
+   }
+  ]
+ }
+}

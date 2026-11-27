@@ -1,0 +1,312 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "synthetic-user-simulation",
+ "name": "Synthetic User Simulation(SIM)",
+ "icon": "🎭",
+ "complexity": "medium",
+ "description": "Un simulador de usuarios impulsado por un LLM, parametrizado con personas diversas como usuarios confundidos, adversarios, impacientes o que cambian de objetivo, se usa como arnés de pruebas que conduce de forma autónoma a un agente conversacional a través de muchos diálogos de múltiples turnos. Ejecutar estas conversaciones simuladas a escala revela pérdidas de contexto, violaciones de políticas y alucinaciones antes de que los usuarios reales las encuentren, explorando ramas del árbol de diálogo que los casos golden estáticos de un solo turno no pueden alcanzar. Requiere una diversidad deliberada de personas y una alineación de objetivos para evitar el punto ciego de un único simulador cooperativo que se comporta de forma más complaciente que los usuarios reales. Se distingue de tau-bench, un benchmark fijo que incorpora un solo simulador de usuario, y de eval-driven-agent-development, cuyos casos golden son estáticos y de un solo turno, mientras que este patrón genera tráfico dinámico de múltiples turnos.",
+ "features": [
+  "Simuladores de usuario basados en LLM parametrizados con personas explícitas (confundido, adversario, impaciente, que cambia de objetivo)",
+  "Generación autónoma de diálogos de múltiples turnos como arnés de pruebas escalable",
+  "Revela pérdidas de contexto, violaciones de políticas y alucinaciones a lo largo del árbol de diálogo",
+  "Diversidad de personas y alineación de objetivos para evitar el punto ciego del simulador cooperativo",
+  "Los grupos de fallas extraídos de las ejecuciones simuladas retroalimentan el conjunto golden de regresión",
+  "Se ejecuta antes del lanzamiento, antes de exponer a los usuarios reales a la nueva versión del agente"
+ ],
+ "tldr": {
+  "what": "Personas parametrizadas basadas en LLM conducen de forma autónoma diálogos de múltiples turnos contra tu agente, revelando fallas en distintas ramas del diálogo antes de que los usuarios reales las encuentren.",
+  "when": "Agentes conversacionales donde los casos de prueba estáticos no detectan pérdidas de contexto, violaciones de políticas o alucinaciones que solo surgen a lo largo de muchos turnos y tipos de usuario.",
+  "watchOut": "Las personas del simulador pueden converger hacia comportamientos poco realistas si no se restringen explícitamente, ocultando modos de falla reales que los usuarios verdaderos provocarían de otra manera."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Simulación de usuarios sintéticos",
+  "description": "Un simulador de usuarios basado en LLM, parametrizado con 12 personas diversas, conduce de forma autónoma 500 diálogos de múltiples turnos contra un agente de reservas de viajes en etapa previa al lanzamiento. La puntuación agregada y la agrupación de fallas revelan una debilidad ante los cambios de objetivo y evasiones de políticas por parte de usuarios adversarios, y los diálogos fallidos se destilan en casos de regresión que se agregan al conjunto golden. Las cifras son ilustrativas de una sola ejecución.",
+  "nodes": [
+   {
+    "id": "target-agent",
+    "label": "🎯 Agente de reservas de viajes\ncandidato previo al lanzamiento en prueba",
+    "x": 360,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "persona-library",
+    "label": "🎭 Biblioteca de personas (12)\nconfundido, adversario, impaciente, cambia de objetivo, ...",
+    "x": 40,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "sim-harness",
+    "label": "🤖 Simulador de usuarios (LLM)\nobjetivo oculto + política de comportamiento por persona",
+    "x": 340,
+    "y": 160,
+    "w": 270
+   },
+   {
+    "id": "dialogue-gen",
+    "label": "💬 500 diálogos de múltiples turnos\n12 personas x objetivos muestreados, hasta 20 turnos",
+    "x": 340,
+    "y": 270,
+    "w": 270
+   },
+   {
+    "id": "run-agent",
+    "label": "▶️ Conduce al agente en prueba\nel simulador y el agente conversan de forma autónoma",
+    "x": 340,
+    "y": 380,
+    "w": 270
+   },
+   {
+    "id": "transcripts",
+    "label": "🧾 Transcripciones recopiladas\n500 diálogos registrados para puntuar",
+    "x": 680,
+    "y": 380,
+    "w": 220
+   },
+   {
+    "id": "scorer",
+    "label": "📊 Puntuación agregada\néxito de tareas 84% (420/500)",
+    "x": 350,
+    "y": 490,
+    "w": 230
+   },
+   {
+    "id": "policy-violations",
+    "label": "🚫 Violaciones de políticas\n22 diálogos",
+    "x": 40,
+    "y": 490,
+    "w": 170
+   },
+   {
+    "id": "dropped-context",
+    "label": "🧩 Fallas por pérdida de contexto\n31 diálogos",
+    "x": 660,
+    "y": 490,
+    "w": 190
+   },
+   {
+    "id": "cluster",
+    "label": "🔬 Agrupación de fallas\nagrupar por persona + tipo de falla",
+    "x": 350,
+    "y": 600,
+    "w": 230
+   },
+   {
+    "id": "cluster-goalshift",
+    "label": "🔀 grupo de cambio de objetivo\n61% de éxito (vs 88% promedio)",
+    "x": 40,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "cluster-adversarial",
+    "label": "😈 grupo adversario\n3 evasiones de la política de reembolsos",
+    "x": 660,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "distill",
+    "label": "⚗️ Destilar casos de regresión\n27 diálogos -> casos de un turno + múltiples turnos",
+    "x": 350,
+    "y": 705,
+    "w": 260
+   },
+   {
+    "id": "golden-set",
+    "label": "📚 Agregados al conjunto golden\ncontrolan cada PR futuro (alimentan el Agent CI)",
+    "x": 360,
+    "y": 795,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "s1",
+    "s": "persona-library",
+    "t": "sim-harness",
+    "label": "cargar personas"
+   },
+   {
+    "id": "s2",
+    "s": "target-agent",
+    "t": "run-agent",
+    "label": "en prueba"
+   },
+   {
+    "id": "s3",
+    "s": "sim-harness",
+    "t": "dialogue-gen",
+    "label": ""
+   },
+   {
+    "id": "s4",
+    "s": "dialogue-gen",
+    "t": "run-agent",
+    "label": ""
+   },
+   {
+    "id": "s5",
+    "s": "run-agent",
+    "t": "transcripts",
+    "label": "registrar 500"
+   },
+   {
+    "id": "s6",
+    "s": "transcripts",
+    "t": "scorer",
+    "label": ""
+   },
+   {
+    "id": "s7",
+    "s": "scorer",
+    "t": "policy-violations",
+    "label": ""
+   },
+   {
+    "id": "s8",
+    "s": "scorer",
+    "t": "dropped-context",
+    "label": ""
+   },
+   {
+    "id": "s9",
+    "s": "scorer",
+    "t": "cluster",
+    "label": ""
+   },
+   {
+    "id": "s10",
+    "s": "cluster",
+    "t": "cluster-goalshift",
+    "label": "punto débil"
+   },
+   {
+    "id": "s11",
+    "s": "cluster",
+    "t": "cluster-adversarial",
+    "label": ""
+   },
+   {
+    "id": "s12",
+    "s": "cluster-goalshift",
+    "t": "distill",
+    "label": ""
+   },
+   {
+    "id": "s13",
+    "s": "cluster-adversarial",
+    "t": "distill",
+    "label": ""
+   },
+   {
+    "id": "s14",
+    "s": "distill",
+    "t": "golden-set",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Configurar el simulador",
+    "description": "Se carga una biblioteca de 12 personas (confundido, adversario, impaciente, que cambia de objetivo y más) en un simulador de usuarios basado en LLM; cada persona tiene un objetivo oculto y una política de comportamiento. El agente de reservas de viajes previo al lanzamiento es el sistema en prueba.",
+    "input": "",
+    "nodes": [
+     "persona-library",
+     "sim-harness",
+     "target-agent"
+    ],
+    "edges": [
+     "s1",
+     "s2"
+    ]
+   },
+   {
+    "title": "Generar diálogos de múltiples turnos",
+    "description": "El simulador conduce 500 diálogos de múltiples turnos (personas cruzadas con objetivos muestreados, hasta 20 turnos cada uno) directamente contra el agente, explorando ramas que los casos golden estáticos de un solo turno no pueden alcanzar.",
+    "input": "",
+    "nodes": [
+     "sim-harness",
+     "dialogue-gen",
+     "run-agent"
+    ],
+    "edges": [
+     "s3",
+     "s4"
+    ]
+   },
+   {
+    "title": "Ejecutar y recopilar transcripciones",
+    "description": "El simulador y el agente conversan de forma autónoma hasta completar cada diálogo; los 500 diálogos se registran como transcripciones para su puntuación.",
+    "input": "",
+    "nodes": [
+     "run-agent",
+     "transcripts"
+    ],
+    "edges": [
+     "s5"
+    ]
+   },
+   {
+    "title": "Puntuación agregada",
+    "description": "En toda la ejecución, el éxito de tareas es del 84% (420/500), con 22 diálogos que muestran violaciones de políticas y 31 que muestran fallas por pérdida de contexto.",
+    "input": "",
+    "nodes": [
+     "transcripts",
+     "scorer",
+     "policy-violations",
+     "dropped-context"
+    ],
+    "edges": [
+     "s6",
+     "s7",
+     "s8"
+    ]
+   },
+   {
+    "title": "Agrupar las fallas",
+    "description": "Las fallas se agrupan por persona y tipo de falla. La persona que cambia de objetivo destaca con un 61% de éxito frente al 88% promedio, y la persona adversaria produjo 3 evasiones de la política de reembolsos.",
+    "input": "",
+    "nodes": [
+     "scorer",
+     "cluster",
+     "cluster-goalshift",
+     "cluster-adversarial"
+    ],
+    "edges": [
+     "s9",
+     "s10",
+     "s11"
+    ]
+   },
+   {
+    "title": "Destilar casos de regresión",
+    "description": "Los 27 diálogos fallidos más informativos (el agente seguía reservando la ciudad original después de que el usuario cambiara de destino a mitad de la conversación, además de las evasiones de políticas) se destilan en casos de regresión de un solo turno y de múltiples turnos.",
+    "input": "",
+    "nodes": [
+     "cluster-goalshift",
+     "cluster-adversarial",
+     "distill"
+    ],
+    "edges": [
+     "s12",
+     "s13"
+    ]
+   },
+   {
+    "title": "Agregar al conjunto golden",
+    "description": "Los nuevos casos se agregan al conjunto golden que controla cada PR futuro, alimentando el bucle de Agent CI guiado por evaluaciones para que estas fallas no puedan volver silenciosamente.",
+    "input": "",
+    "nodes": [
+     "distill",
+     "golden-set"
+    ],
+    "edges": [
+     "s14"
+    ]
+   }
+  ]
+ }
+}

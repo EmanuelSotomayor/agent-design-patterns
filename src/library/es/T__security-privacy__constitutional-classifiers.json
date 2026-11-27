@@ -1,0 +1,297 @@
+{
+ "cat": "security-privacy",
+ "slug": "constitutional-classifiers",
+ "name": "Constitutional Classifiers(CC)",
+ "icon": "📜",
+ "complexity": "medium",
+ "description": "Clasificadores livianos de entrada y salida entrenados con datos sintéticos generados a partir de una constitución en lenguaje natural que define el contenido permitido y el bloqueado. Se encadenan en cascada para que un filtrado barato cubra todo el tráfico mientras los casos sospechosos se escalan, y el clasificador de salida puede detener una generación en streaming en el momento en que aparece un token infractor. Esto es distinto de Constitutional AI: Constitutional AI alinea el modelo durante el entrenamiento, mientras que los Constitutional Classifiers son guardias en tiempo de ejecución entrenados a partir de una constitución.",
+ "features": [
+  "Una constitución en lenguaje natural define el contenido permitido vs bloqueado",
+  "Datos de entrenamiento sintéticos generados a partir de la constitución",
+  "El clasificador de entrada filtra los prompts antes de que se ejecute el modelo",
+  "El clasificador de salida en streaming detiene la generación en el primer token infractor",
+  "El filtrado en cascada, de barato a costoso, controla el costo",
+  "La constitución puede actualizarse a medida que surgen nuevas clases de ataques"
+ ],
+ "tldr": {
+  "what": "Entrena clasificadores livianos con datos sintéticos de una constitución en lenguaje natural para filtrar las entradas antes de la inferencia y detener las salidas en el primer token infractor.",
+  "when": "Sistemas de alto volumen que necesitan filtrado de contenido en tiempo de ejecución, donde las reglas de la constitución son claras y los patrones de ataque pueden sintetizarse para el entrenamiento.",
+  "watchOut": "Los clasificadores entrenados con datos sintéticos pueden no detectar ofuscaciones novedosas o redacciones adversariales que no estén representadas en los ejemplos generados a partir de la constitución."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Constitutional Classifiers",
+  "description": "Clasificadores de entrada y salida entrenados a partir de una constitución en lenguaje natural filtran todo el tráfico a bajo costo y escalan los casos sospechosos. El clasificador de entrada atrapa un jailbreak ofuscado, y cualquier cosa que se filtre se detiene a mitad del streaming gracias al clasificador de salida en el primer token infractor. Es distinto de Constitutional AI, que es un método de entrenamiento para alineación.",
+  "nodes": [
+   {
+    "id": "constitution",
+    "label": "📜 Constitución (lenguaje natural)\nPERMITIDO: educación en química\nBLOQUEADO: síntesis de armas restringidas",
+    "x": 350,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "traffic",
+    "label": "🌊 Tráfico entrante\nTodas las solicitudes se filtran",
+    "x": 380,
+    "y": 165,
+    "w": 220
+   },
+   {
+    "id": "jailbreak",
+    "label": "💉 Jailbreak ofuscado\nJuego de rol que oculta una solicitud\nde pasos para sintetizar un agente nervioso",
+    "x": 130,
+    "y": 275,
+    "w": 240
+   },
+   {
+    "id": "benign",
+    "label": "💬 Solicitud benigna\nPregunta general de química",
+    "x": 610,
+    "y": 275,
+    "w": 220
+   },
+   {
+    "id": "input-classifier",
+    "label": "🛂 Clasificador de entrada\nBarato, se ejecuta en el 100% del tráfico\nEvalúa la intención vs la constitución",
+    "x": 370,
+    "y": 385,
+    "w": 260
+   },
+   {
+    "id": "flagged",
+    "label": "🚩 Marcado\n\"restricted-synthesis\"\nconfianza 0.91",
+    "x": 100,
+    "y": 500,
+    "w": 210
+   },
+   {
+    "id": "model-gen",
+    "label": "🧠 Generación del modelo\nLo benigno y lo dudoso pasan",
+    "x": 470,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "blocked-input",
+    "label": "⛔ Solicitud bloqueada\nSe devuelve un rechazo seguro",
+    "x": 100,
+    "y": 610,
+    "w": 210
+   },
+   {
+    "id": "output-classifier",
+    "label": "📡 Clasificador de salida\nPasa los tokens por la guardia\na medida que se producen",
+    "x": 470,
+    "y": 610,
+    "w": 250
+   },
+   {
+    "id": "halt-stream",
+    "label": "✂️ Detener a mitad del streaming\nSe detiene en el primer token infractor\nSe descarta la salida parcial",
+    "x": 330,
+    "y": 720,
+    "w": 230
+   },
+   {
+    "id": "allowed-answer",
+    "label": "✅ Respuesta limpia entregada\nRespuesta benigna de química",
+    "x": 660,
+    "y": 720,
+    "w": 230
+   },
+   {
+    "id": "metrics",
+    "label": "📊 Resultados de red-team\n95%+ de jailbreaks bloqueados\n~0.4pt de rechazo excesivo, ~24% de cómputo",
+    "x": 350,
+    "y": 825,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "constitution-input",
+    "s": "constitution",
+    "t": "input-classifier",
+    "label": "Entrena"
+   },
+   {
+    "id": "constitution-output",
+    "s": "constitution",
+    "t": "output-classifier",
+    "label": "Entrena"
+   },
+   {
+    "id": "traffic-jailbreak",
+    "s": "traffic",
+    "t": "jailbreak",
+    "label": ""
+   },
+   {
+    "id": "traffic-benign",
+    "s": "traffic",
+    "t": "benign",
+    "label": ""
+   },
+   {
+    "id": "jailbreak-input",
+    "s": "jailbreak",
+    "t": "input-classifier",
+    "label": ""
+   },
+   {
+    "id": "benign-input",
+    "s": "benign",
+    "t": "input-classifier",
+    "label": ""
+   },
+   {
+    "id": "input-flagged",
+    "s": "input-classifier",
+    "t": "flagged",
+    "label": "Jailbreak"
+   },
+   {
+    "id": "flagged-blocked",
+    "s": "flagged",
+    "t": "blocked-input",
+    "label": ""
+   },
+   {
+    "id": "input-model",
+    "s": "input-classifier",
+    "t": "model-gen",
+    "label": "Pasa"
+   },
+   {
+    "id": "model-output",
+    "s": "model-gen",
+    "t": "output-classifier",
+    "label": ""
+   },
+   {
+    "id": "output-halt",
+    "s": "output-classifier",
+    "t": "halt-stream",
+    "label": "Token infractor"
+   },
+   {
+    "id": "output-allowed",
+    "s": "output-classifier",
+    "t": "allowed-answer",
+    "label": "Limpio"
+   },
+   {
+    "id": "blocked-metrics",
+    "s": "blocked-input",
+    "t": "metrics",
+    "label": ""
+   },
+   {
+    "id": "halt-metrics",
+    "s": "halt-stream",
+    "t": "metrics",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "La constitución define los límites",
+    "description": "Una constitución en lenguaje natural establece el contenido permitido y el bloqueado. Los datos sintéticos generados a partir de ella entrenan tanto el clasificador de entrada como el de salida.",
+    "input": "",
+    "nodes": [
+     "constitution",
+     "input-classifier",
+     "output-classifier"
+    ],
+    "edges": [
+     "constitution-input",
+     "constitution-output"
+    ]
+   },
+   {
+    "title": "Filtrar todo el tráfico entrante",
+    "description": "Cada solicitud, ya sea un jailbreak ofuscado o una pregunta benigna, pasa por el clasificador de entrada barato, que evalúa la intención frente a la constitución.",
+    "input": "",
+    "nodes": [
+     "traffic",
+     "jailbreak",
+     "benign",
+     "input-classifier"
+    ],
+    "edges": [
+     "traffic-jailbreak",
+     "traffic-benign",
+     "jailbreak-input",
+     "benign-input"
+    ]
+   },
+   {
+    "title": "El clasificador de entrada bloquea el jailbreak",
+    "description": "La intención decodificada del prompt de juego de rol se clasifica como restricted-synthesis con confianza 0.91. La solicitud se marca y se bloquea con un rechazo seguro antes de que se ejecute el modelo.",
+    "input": "",
+    "nodes": [
+     "input-classifier",
+     "flagged",
+     "blocked-input"
+    ],
+    "edges": [
+     "input-flagged",
+     "flagged-blocked"
+    ]
+   },
+   {
+    "title": "Lo benigno y lo dudoso llegan al modelo",
+    "description": "El tráfico que supera el filtro de entrada pasa a la generación. La cascada de barato a costoso mantiene el costo acotado al escalar solo los casos marcados.",
+    "input": "",
+    "nodes": [
+     "input-classifier",
+     "model-gen"
+    ],
+    "edges": [
+     "input-model"
+    ]
+   },
+   {
+    "title": "El clasificador de salida protege la generación",
+    "description": "Mientras el modelo emite tokens en streaming, el clasificador de salida los inspecciona en tiempo real. Si un prompt dudoso logró pasar el filtro de entrada, esta es la segunda línea de defensa.",
+    "input": "",
+    "nodes": [
+     "model-gen",
+     "output-classifier"
+    ],
+    "edges": [
+     "model-output"
+    ]
+   },
+   {
+    "title": "Detener en el primer token infractor",
+    "description": "En el momento en que un token inicia un paso de síntesis bloqueado, la generación se detiene a mitad del streaming y la salida parcial se descarta, mientras que las generaciones limpias se entregan con normalidad.",
+    "input": "",
+    "nodes": [
+     "output-classifier",
+     "halt-stream",
+     "allowed-answer"
+    ],
+    "edges": [
+     "output-halt",
+     "output-allowed"
+    ]
+   },
+   {
+    "title": "Protección medida",
+    "description": "En las pruebas de red-teaming de Anthropic, los clasificadores bloquearon más del 95% de los intentos de jailbreak, con un aumento de aproximadamente 0.4 puntos porcentuales en los rechazos excesivos en producción y cerca de un 24% de cómputo de inferencia adicional.",
+    "input": "",
+    "nodes": [
+     "blocked-input",
+     "halt-stream",
+     "metrics"
+    ],
+    "edges": [
+     "blocked-metrics",
+     "halt-metrics"
+    ]
+   }
+  ]
+ }
+}

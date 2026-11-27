@@ -1,0 +1,157 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "lrt",
+ "name": "Latent Recurrent Thinking(LRT)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Razonamiento iterativo dentro de un espacio latente continuo sin generación explícita de tokens",
+ "features": [
+  "Razona en un espacio latente continuo en lugar de emitir tokens de CoT",
+  "Ajuste dinámico de la profundidad del razonamiento",
+  "Exploración de rutas paralelas en el espacio latente",
+  "No requiere generar tokens intermedios",
+  "Escala el cómputo en tiempo de inferencia desplegando un bloque recurrente compartido",
+  "Imita los procesos de pensamiento intuitivo humano"
+ ],
+ "tldr": {
+  "what": "Razona de forma iterativa en un espacio latente continuo desplegando un bloque recurrente compartido, sin generar tokens intermedios hasta la decodificación final.",
+  "when": "Problemas complejos que requieren una exploración profunda del espacio de soluciones, donde los pasos de razonamiento intermedios no necesitan inspección humana ni feedback externo.",
+  "watchOut": "El razonamiento latente es opaco; no puedes inspeccionar, depurar ni guiar los pasos intermedios si la respuesta final sale mal."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Latent Recurrent Thinking (LRT)",
+  "description": "Razonamiento de IA mediante refinamiento iterativo en un espacio latente continuo sin generación explícita de tokens",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Problema complejo\nEntrada",
+    "x": 50,
+    "y": 100,
+    "w": 180
+   },
+   {
+    "id": "encoder",
+    "label": "Codificador\n(→ Espacio latente)",
+    "x": 250,
+    "y": 100,
+    "w": 180
+   },
+   {
+    "id": "latent-processor",
+    "label": "Procesador latente\n(Refinamiento iterativo)",
+    "x": 450,
+    "y": 100,
+    "w": 180
+   },
+   {
+    "id": "decoder",
+    "label": "Decodificador\n(← Legible para humanos)",
+    "x": 650,
+    "y": 100,
+    "w": 180
+   },
+   {
+    "id": "output",
+    "label": "Solución\noptimizada",
+    "x": 850,
+    "y": 100,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-encoder",
+    "s": "input",
+    "t": "encoder",
+    "label": ""
+   },
+   {
+    "id": "encoder-latent",
+    "s": "encoder",
+    "t": "latent-processor",
+    "label": ""
+   },
+   {
+    "id": "latent-recurrent",
+    "s": "latent-processor",
+    "t": "latent-processor",
+    "label": "Ciclos recurrentes"
+   },
+   {
+    "id": "latent-decoder",
+    "s": "latent-processor",
+    "t": "decoder",
+    "label": ""
+   },
+   {
+    "id": "decoder-output",
+    "s": "decoder",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Codificación del problema",
+    "description": "Convierte el problema de entrada en una representación latente de alta dimensión",
+    "input": "Problema de optimización complejo: \"Diseñar una red logística eficiente\"",
+    "nodes": [
+     "input",
+     "encoder"
+    ],
+    "edges": [
+     "input-encoder"
+    ]
+   },
+   {
+    "title": "Iteración latente 1",
+    "description": "Primer ciclo de refinamiento recurrente en el espacio latente",
+    "input": "z₀ (codificación inicial)",
+    "nodes": [
+     "encoder",
+     "latent-processor"
+    ],
+    "edges": [
+     "encoder-latent"
+    ]
+   },
+   {
+    "title": "Iteración latente 2",
+    "description": "Segundo ciclo de refinamiento enfocado en la optimización",
+    "input": "z₁ (estado consciente de las restricciones)",
+    "nodes": [
+     "latent-processor"
+    ],
+    "edges": [
+     "latent-recurrent"
+    ]
+   },
+   {
+    "title": "Iteración latente 3",
+    "description": "Ciclo de refinamiento final con evaluación de riesgos",
+    "input": "z₂ (estado optimizado)",
+    "nodes": [
+     "latent-processor"
+    ],
+    "edges": [
+     "latent-recurrent"
+    ]
+   },
+   {
+    "title": "Decodificación de la solución",
+    "description": "Transforma el estado latente final en una solución legible para humanos",
+    "input": "z₃ (estado final refinado)",
+    "nodes": [
+     "latent-processor",
+     "decoder",
+     "output"
+    ],
+    "edges": [
+     "latent-decoder",
+     "decoder-output"
+    ]
+   }
+  ]
+ }
+}

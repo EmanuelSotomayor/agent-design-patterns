@@ -1,0 +1,359 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "budget-guarded-autonomy",
+ "name": "Budget-Guarded Autonomy(BGA)",
+ "icon": "💸",
+ "complexity": "medium",
+ "description": "Presupuestos estrictos y aplicados por tarea y por sesión sobre tokens, dinero, tiempo real y cantidad de llamadas a herramientas, que se verifican antes de cada llamada y pausan o terminan la ejecución, en lugar de alertas de costo a posteriori. Los mecanismos incluyen verificaciones de presupuesto previas que lanzan una parada por presupuesto excedido antes de que la siguiente llamada llegue al proveedor, un circuit breaker de velocidad de tokens que se dispara ante bucles descontrolados, detectores de bucles que detienen ciclos sin progreso, y topes de presupuesto delegados en los que un agente padre otorga a un hijo un límite de gasto que este no puede superar. Se diferencia de `cost-aware-model-selection`, que enruta a modelos más baratos para bajar el costo unitario pero no impone un tope ni detiene el gasto.",
+ "features": [
+  "Aplicación previa: el presupuesto se verifica antes de la siguiente llamada, no después del gasto",
+  "Topes estrictos de tokens, dinero, tiempo real y cantidad de llamadas a herramientas",
+  "El circuit breaker de velocidad de tokens se dispara ante bucles descontrolados o de ida y vuelta",
+  "La detección de bucles detiene ciclos repetidos sin progreso",
+  "Topes delegados: un padre otorga a un hijo un límite de gasto que no puede superar",
+  "Pausa con estado al superar el límite para que un humano pueda subir el tope o cancelar la ejecución"
+ ],
+ "tldr": {
+  "what": "Impone topes estrictos de tokens, dinero, tiempo y llamadas a herramientas antes de cada paso de ejecución, deteniendo o pausando cuando se alcanzan los límites.",
+  "when": "Agentes autónomos que ejecutan tareas sin supervisión, donde los bucles descontrolados, el exceso de tokens o los costos inesperados suponen un riesgo financiero u operativo real.",
+  "watchOut": "Los presupuestos demasiado ajustados dejan sin recursos al trabajo legítimo; los topes subdimensionados generan falsas alarmas y pausas frecuentes que frustran a los usuarios y desperdician tiempo de ingeniería."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Budget-Guarded Autonomy",
+  "description": "Presupuestos estrictos por tarea sobre tokens, dinero, tiempo y llamadas a herramientas, verificados antes de cada llamada y no después. Un circuit breaker de velocidad de tokens y un detector de bucles atrapan los bucles descontrolados, los topes delegados limitan a los subagentes, y una infracción se degrada a una pausa segura con estado guardado en checkpoint en lugar de una factura sorpresa.",
+  "nodes": [
+   {
+    "id": "task-request",
+    "label": "🎯 Tarea de investigación\nPresupuesto: $2.00 / 10 min / 40 llamadas",
+    "x": 330,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "budget-guard",
+    "label": "🛡️ Guardián de presupuesto\nVerificación previa antes de cada llamada",
+    "x": 340,
+    "y": 160,
+    "w": 240
+   },
+   {
+    "id": "ledger",
+    "label": "📒 Registro en curso\nTokens, $, tiempo, cantidad de llamadas",
+    "x": 650,
+    "y": 160,
+    "w": 200
+   },
+   {
+    "id": "research-agent",
+    "label": "🤖 Agente de investigación\nEjecuta el bucle de búsqueda",
+    "x": 340,
+    "y": 265,
+    "w": 230
+   },
+   {
+    "id": "call-1",
+    "label": "🔍 Llamada: Búsqueda\n$0.10 admitida",
+    "x": 30,
+    "y": 375,
+    "w": 170
+   },
+   {
+    "id": "call-2",
+    "label": "📖 Llamada: Leer + Resumir\n$0.35 admitida",
+    "x": 225,
+    "y": 375,
+    "w": 180
+   },
+   {
+    "id": "sub-agent",
+    "label": "🧵 Subagente\nExtraer 5 fuentes",
+    "x": 450,
+    "y": 375,
+    "w": 180
+   },
+   {
+    "id": "delegated-cap",
+    "label": "🔒 Tope delegado\nTope del hijo $0.50",
+    "x": 690,
+    "y": 375,
+    "w": 190
+   },
+   {
+    "id": "velocity-monitor",
+    "label": "📈 Breaker de velocidad\nCircuit breaker de velocidad de tokens",
+    "x": 40,
+    "y": 485,
+    "w": 200
+   },
+   {
+    "id": "loop-detector",
+    "label": "🔁 Detector de bucles\nSin nuevo progreso",
+    "x": 280,
+    "y": 485,
+    "w": 190
+   },
+   {
+    "id": "runaway",
+    "label": "⚠️ Bucle descontrolado\nSubagentes en ida y vuelta",
+    "x": 540,
+    "y": 485,
+    "w": 190
+   },
+   {
+    "id": "breaker-trip",
+    "label": "🚫 Se dispara el circuit breaker\nDetención en $1.20 / $2.00",
+    "x": 330,
+    "y": 590,
+    "w": 220
+   },
+   {
+    "id": "pause-state",
+    "label": "⏸️ Pausa + Checkpoint\nEstado guardado, sin siguiente llamada",
+    "x": 260,
+    "y": 690,
+    "w": 210
+   },
+   {
+    "id": "human-decision",
+    "label": "🧑 Decisión del operador\nSubir el tope o cancelar",
+    "x": 590,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "resume",
+    "label": "▶️ Reanudar\nTope subido a $5",
+    "x": 470,
+    "y": 785,
+    "w": 180
+   },
+   {
+    "id": "killed",
+    "label": "🛑 Cancelar ejecución\nGasto acotado",
+    "x": 720,
+    "y": 785,
+    "w": 170
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-guard",
+    "s": "task-request",
+    "t": "budget-guard",
+    "label": ""
+   },
+   {
+    "id": "guard-ledger",
+    "s": "budget-guard",
+    "t": "ledger",
+    "label": "registrar"
+   },
+   {
+    "id": "guard-agent",
+    "s": "budget-guard",
+    "t": "research-agent",
+    "label": "admitir llamadas"
+   },
+   {
+    "id": "agent-call1",
+    "s": "research-agent",
+    "t": "call-1",
+    "label": ""
+   },
+   {
+    "id": "agent-call2",
+    "s": "research-agent",
+    "t": "call-2",
+    "label": ""
+   },
+   {
+    "id": "agent-sub",
+    "s": "research-agent",
+    "t": "sub-agent",
+    "label": "delegar"
+   },
+   {
+    "id": "sub-cap",
+    "s": "sub-agent",
+    "t": "delegated-cap",
+    "label": "tope del hijo"
+   },
+   {
+    "id": "agent-velocity",
+    "s": "research-agent",
+    "t": "velocity-monitor",
+    "label": "vigilar"
+   },
+   {
+    "id": "agent-loop",
+    "s": "research-agent",
+    "t": "loop-detector",
+    "label": "vigilar"
+   },
+   {
+    "id": "sub-runaway",
+    "s": "sub-agent",
+    "t": "runaway",
+    "label": "ida y vuelta"
+   },
+   {
+    "id": "velocity-breaker",
+    "s": "velocity-monitor",
+    "t": "breaker-trip",
+    "label": "pico de velocidad"
+   },
+   {
+    "id": "loop-breaker",
+    "s": "loop-detector",
+    "t": "breaker-trip",
+    "label": "sin progreso"
+   },
+   {
+    "id": "runaway-breaker",
+    "s": "runaway",
+    "t": "breaker-trip",
+    "label": ""
+   },
+   {
+    "id": "breaker-pause",
+    "s": "breaker-trip",
+    "t": "pause-state",
+    "label": "detener"
+   },
+   {
+    "id": "pause-human",
+    "s": "pause-state",
+    "t": "human-decision",
+    "label": ""
+   },
+   {
+    "id": "human-resume",
+    "s": "human-decision",
+    "t": "resume",
+    "label": "subir tope a $5"
+   },
+   {
+    "id": "human-killed",
+    "s": "human-decision",
+    "t": "killed",
+    "label": "cancelar"
+   },
+   {
+    "id": "resume-agent",
+    "s": "resume",
+    "t": "research-agent",
+    "label": "reanudar desde checkpoint"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea con presupuesto estricto asignado",
+    "description": "La tarea de investigación se admite con un tope aplicado: $2.00, 10 minutos de tiempo real y 40 llamadas a herramientas. Un guardián de presupuesto y un registro en curso se ubican delante del agente.",
+    "input": "",
+    "nodes": [
+     "task-request",
+     "budget-guard",
+     "ledger"
+    ],
+    "edges": [
+     "request-guard",
+     "guard-ledger"
+    ]
+   },
+   {
+    "title": "La verificación previa admite cada llamada",
+    "description": "Antes de cada llamada al modelo o a una herramienta, el guardián compara el gasto proyectado con el tope y solo la admite si se mantiene dentro del presupuesto. Las primeras llamadas de $0.10 y $0.35 pasan y actualizan el registro.",
+    "input": "",
+    "nodes": [
+     "budget-guard",
+     "research-agent",
+     "call-1",
+     "call-2"
+    ],
+    "edges": [
+     "guard-agent",
+     "agent-call1",
+     "agent-call2"
+    ]
+   },
+   {
+    "title": "Tope delegado a un subagente",
+    "description": "El agente lanza un subagente para extraer 5 fuentes y le otorga un subpresupuesto de $0.50. El hijo no puede superar su tope aunque al padre todavía le quede margen.",
+    "input": "",
+    "nodes": [
+     "research-agent",
+     "sub-agent",
+     "delegated-cap"
+    ],
+    "edges": [
+     "agent-sub",
+     "sub-cap"
+    ]
+   },
+   {
+    "title": "Los monitores vigilan descontroles",
+    "description": "Un circuit breaker de velocidad de tokens y un detector de bucles vigilan el bucle. Dos subagentes empiezan a ir y venir, releyendo las mismas páginas, y la velocidad de tokens se dispara muy por encima de la línea base de la tarea.",
+    "input": "",
+    "nodes": [
+     "research-agent",
+     "velocity-monitor",
+     "loop-detector",
+     "sub-agent",
+     "runaway"
+    ],
+    "edges": [
+     "agent-velocity",
+     "agent-loop",
+     "sub-runaway"
+    ]
+   },
+   {
+    "title": "Se dispara el circuit breaker",
+    "description": "El pico de velocidad, el detector de bucles que confirma la falta de progreso y el bucle descontrolado alimentan al breaker, que se dispara en $1.20 del tope de $2.00 antes de que la siguiente llamada llegue al proveedor.",
+    "input": "",
+    "nodes": [
+     "velocity-monitor",
+     "loop-detector",
+     "runaway",
+     "breaker-trip"
+    ],
+    "edges": [
+     "velocity-breaker",
+     "loop-breaker",
+     "runaway-breaker"
+    ]
+   },
+   {
+    "title": "Pausa con checkpoint del estado",
+    "description": "En lugar de gastar de más en silencio, la ejecución se pausa y el estado se guarda en un checkpoint. La ejecución se detiene antes de la siguiente llamada en vez de acumular una factura sin límite.",
+    "input": "",
+    "nodes": [
+     "breaker-trip",
+     "pause-state"
+    ],
+    "edges": [
+     "breaker-pause"
+    ]
+   },
+   {
+    "title": "El humano sube el tope o cancela",
+    "description": "El operador ve \"pausado: velocidad de tokens anómala, 60% del presupuesto gastado\" y sube el tope a $5 y reanuda desde el checkpoint, o cancela la ejecución. En cualquier caso, el gasto quedó acotado por diseño.",
+    "input": "",
+    "nodes": [
+     "pause-state",
+     "human-decision",
+     "resume",
+     "killed",
+     "research-agent"
+    ],
+    "edges": [
+     "pause-human",
+     "human-resume",
+     "human-killed",
+     "resume-agent"
+    ]
+   }
+  ]
+ }
+}

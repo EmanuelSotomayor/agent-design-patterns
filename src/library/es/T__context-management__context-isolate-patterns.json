@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "context-isolate-patterns",
+ "name": "Context Isolate Patterns(CIP)",
+ "icon": "🔀",
+ "complexity": "medium",
+ "description": "Partición estratégica del contexto entre subagentes y ventanas de contexto enfocadas para descomponer tareas complejas",
+ "features": [
+  "Aislamiento y coordinación del contexto entre múltiples agentes",
+  "Gestión modular del contexto para agentes especializados",
+  "Protocolos para compartir contexto entre agentes",
+  "Ventanas de contexto enfocadas para tareas específicas"
+ ],
+ "tldr": {
+  "what": "Divide el contexto de la tarea entre subagentes especializados, cada uno con una ventana enfocada, coordinándolos mediante protocolos explícitos de traspaso.",
+  "when": "Tareas complejas en las que distintos agentes necesitan distintos subconjuntos de conocimiento y la interferencia entre contextos degrada el rendimiento.",
+  "watchOut": "Las fallas de sincronización del contexto y los datos obsoletos hacen que los agentes tomen decisiones con información desactualizada proveniente de otros agentes."
+ },
+ "overview": {
+  "pattern": "Partición estratégica del contexto entre subagentes y ventanas de contexto enfocadas para descomponer tareas complejas",
+  "why": "Mejora la especialización de los agentes, reduce la interferencia de contexto y permite una coordinación multiagente escalable",
+  "insight": "El aislamiento del contexto con compartición selectiva permite agentes especializados sin perder la coordinación necesaria",
+  "impl": [
+   {
+    "t": "Definir límites",
+    "d": "Establece los ámbitos de aislamiento del contexto y las reglas de acceso"
+   },
+   {
+    "t": "Especialización de agentes",
+    "d": "Crea ventanas de contexto enfocadas para cada rol de agente"
+   },
+   {
+    "t": "Protocolos de compartición",
+    "d": "Implementa mecanismos de compartición selectiva del contexto"
+   },
+   {
+    "t": "Capa de coordinación",
+    "d": "Construye protocolos de comunicación y traspaso entre agentes"
+   },
+   {
+    "t": "Resolución de conflictos",
+    "d": "Gestiona los conflictos de contexto y mantén la consistencia"
+   }
+  ],
+  "example": "define_scopes → specialize_agents → share_selectively → coordinate_handoffs → resolve_conflicts",
+  "dos": [
+   "Crea límites de contexto claros para cada especialización de agente",
+   "Implementa la compartición selectiva según relevancia y seguridad",
+   "Usa interfaces estandarizadas para la comunicación entre agentes",
+   "Monitorea la efectividad y el rendimiento del aislamiento del contexto",
+   "Diseña procedimientos de traspaso ordenados entre agentes"
+  ],
+  "donts": [
+   "Permitir acceso irrestricto al contexto a todos los agentes",
+   "Compartir contexto sensible sin la validación adecuada",
+   "Crear esquemas de aislamiento excesivamente complejos",
+   "Ignorar el costo de rendimiento del aislamiento del contexto",
+   "Omitir la resolución de conflictos cuando los contextos se superponen"
+  ],
+  "use": [
+   "Sistemas multiagente con roles especializados",
+   "Requisitos de descomposición de tareas complejas",
+   "Necesidades de seguridad y privacidad del contexto",
+   "Arquitecturas de agentes distribuidas a gran escala"
+  ],
+  "avoid": [
+   "Aplicaciones simples de un solo agente",
+   "Requisitos de contexto altamente interdependientes",
+   "Colaboración en tiempo real con estado compartido",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Efectividad del aislamiento",
+    "d": "% de contexto correctamente contenido por agente"
+   },
+   {
+    "n": "Precisión de la compartición",
+    "d": "% de contexto relevante compartido con éxito"
+   },
+   {
+    "n": "Tasa de conflictos",
+    "d": "Conflictos de contexto por evento de coordinación"
+   },
+   {
+    "n": "Costo de rendimiento",
+    "d": "Latencia adicional por el aislamiento"
+   },
+   {
+    "n": "Enfoque del agente",
+    "d": "Tasa de finalización de tareas por agente especializado"
+   },
+   {
+    "n": "Éxito de la coordinación",
+    "d": "% de traspasos exitosos entre agentes"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Equipos de agentes especializados",
+    "d": "legal_agent → finance_agent → technical_agent → coordination_agent → synthesis_agent"
+   },
+   {
+    "n": "Procesamiento sensible a la seguridad",
+    "d": "public_context → classified_context → secure_handoff → filtered_sharing → audit_trail"
+   },
+   {
+    "n": "Sistemas de expertos de dominio",
+    "d": "medical_specialist → legal_expert → technical_advisor → coordination_layer → unified_response"
+   },
+   {
+    "n": "Procesamiento modular de tareas",
+    "d": "data_agent → analysis_agent → reporting_agent → review_agent → final_output"
+   },
+   {
+    "n": "Aislamiento multiinquilino",
+    "d": "tenant_a_context → tenant_b_context → shared_resources → access_control → audit_logging"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de aislamiento del contexto",
+  "description": "Técnicas de aislamiento enfocadas en seguridad que previenen la inyección de prompts, la fuga de datos entre inquilinos y el acceso no autorizado mediante sandboxing, separación de espacios de nombres y jerarquías de instrucciones",
+  "nodes": [
+   {
+    "id": "isolation-challenge",
+    "label": "🔒 Desafío de aislamiento\n\"¿Cómo evitar la mezcla de contextos,\nla inyección de prompts y la fuga de datos\nentre usuarios e inquilinos?\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "isolation-framework",
+    "label": "🛡️ Framework de aislamiento\n\"Protección en múltiples capas:\n• Separación de espacios de nombres\n• Ejecución en sandbox\n• Jerarquía de instrucciones\n• Límites de contexto\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "namespace-isolation",
+    "label": "📁 Aislamiento por espacios de nombres\n\"Separación a nivel de contenedor:\n• Espacios de nombres por inquilino\n• Alcance acotado de APIs\n• Aislamiento de recursos\n• Límites invisibles\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "multi-tenant-architecture",
+    "label": "🏢 Arquitectura multiinquilino\n\"Separación segura:\n• Controles RBAC\n• Gestión de cuotas\n• Políticas de red\n• Sandboxing de pods\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "instruction-hierarchy",
+    "label": "📜 Jerarquía de instrucciones\n\"Niveles de prioridad:\n• Instrucciones del sistema\n• Prompts del desarrollador\n• Entradas del usuario\n• 63% más de robustez\"",
+    "x": 600,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "prompt-injection-defense",
+    "label": "🚫 Defensa contra inyección\n\"Prevención de ataques:\n• Sanitización de entradas\n• Monitoreo de salidas\n• Tokens canario\n• Detección de jailbreaks\"",
+    "x": 750,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "sandboxed-execution",
+    "label": "📦 Ejecución en sandbox\n\"Procesamiento contenido:\n• Micro VMs\n• Kernels en espacio de usuario\n• Integridad del flujo de control\n• Límites de privilegios\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "context-boundaries",
+    "label": "🚪 Límites de contexto\n\"Separación formal:\n• Action-Selector\n• Plan-Then-Execute\n• Patrones Dual LLM\n• Minimización del contexto\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "mcp-context-broker",
+    "label": "🌐 Intermediario de contexto MCP\n\"Control de acceso:\n• Alcance por usuario\n• Autorización de herramientas\n• Filtrado de datos\n• Ensamblado de prompts\"",
+    "x": 600,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "security-monitoring",
+    "label": "📊 Monitoreo de seguridad\n\"Sistemas de detección:\n• Alertas de fuga de prompts\n• Detección de anomalías\n• Logging de auditoría\n• Seguimiento de cumplimiento\"",
+    "x": 200,
+    "y": 950,
+    "w": 230
+   },
+   {
+    "id": "data-compartmentalization",
+    "label": "🗝️ Compartimentos de datos\n\"Silos de información:\n• Seguridad a nivel de fila\n• Aislamiento de datos por inquilino\n• Segregación de memoria\n• Prevención entre inquilinos\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "least-privilege",
+    "label": "🔐 Mínimo privilegio\n\"Acceso mínimo:\n• Permisos basados en roles\n• Contextos acotados\n• Restricciones de herramientas\n• Limitaciones de acciones\"",
+    "x": 400,
+    "y": 1100,
+    "w": 230
+   },
+   {
+    "id": "isolation-principle",
+    "label": "🎯 Principio de aislamiento del contexto\n\"Los límites de seguridad sólidos evitan el acceso no autorizado\nLas defensas en múltiples capas protegen contra ataques de inyección\nLos patrones formales de aislamiento garantizan una operación multiinquilino segura\"",
+    "x": 400,
+    "y": 1250,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "isolation-challenge",
+    "t": "isolation-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "isolation-framework",
+    "t": "namespace-isolation",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "isolation-framework",
+    "t": "instruction-hierarchy",
+    "label": "aplica"
+   },
+   {
+    "id": "e4",
+    "s": "isolation-framework",
+    "t": "sandboxed-execution",
+    "label": "proporciona"
+   },
+   {
+    "id": "e5",
+    "s": "namespace-isolation",
+    "t": "multi-tenant-architecture",
+    "label": "habilita"
+   },
+   {
+    "id": "e6",
+    "s": "instruction-hierarchy",
+    "t": "prompt-injection-defense",
+    "label": "defiende contra"
+   },
+   {
+    "id": "e7",
+    "s": "sandboxed-execution",
+    "t": "context-boundaries",
+    "label": "establece"
+   },
+   {
+    "id": "e8",
+    "s": "sandboxed-execution",
+    "t": "mcp-context-broker",
+    "label": "gestionado por"
+   },
+   {
+    "id": "e9",
+    "s": "context-boundaries",
+    "t": "security-monitoring",
+    "label": "monitoreado mediante"
+   },
+   {
+    "id": "e10",
+    "s": "mcp-context-broker",
+    "t": "data-compartmentalization",
+    "label": "aplica"
+   },
+   {
+    "id": "e11",
+    "s": "multi-tenant-architecture",
+    "t": "data-compartmentalization",
+    "label": "requiere"
+   },
+   {
+    "id": "e12",
+    "s": "prompt-injection-defense",
+    "t": "security-monitoring",
+    "label": "reporta a"
+   },
+   {
+    "id": "e13",
+    "s": "security-monitoring",
+    "t": "least-privilege",
+    "label": "aplica"
+   },
+   {
+    "id": "e14",
+    "s": "data-compartmentalization",
+    "t": "least-privilege",
+    "label": "implementa"
+   },
+   {
+    "id": "e15",
+    "s": "least-privilege",
+    "t": "isolation-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de seguridad del aislamiento del contexto",
+    "description": "¿Cómo podemos evitar la mezcla de contextos, los ataques de inyección de prompts y la fuga de datos entre inquilinos en sistemas LLM multiusuario sin perder funcionalidad?",
+    "input": "",
+    "nodes": [
+     "isolation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de aislamiento en múltiples capas",
+    "description": "Un framework integral aborda el desafío mediante separación de espacios de nombres para el aislamiento a nivel de contenedor, entornos de ejecución en sandbox, jerarquías de instrucciones para controlar prioridades y límites formales de contexto.",
+    "input": "",
+    "nodes": [
+     "isolation-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Espacios de nombres y jerarquía de instrucciones",
+    "description": "Los espacios de nombres de contenedores proporcionan límites invisibles acotados por API que permiten arquitecturas multiinquilino seguras con RBAC y cuotas, mientras que la jerarquía de instrucciones establece niveles de prioridad que refuerzan el sistema contra la inyección de prompts.",
+    "input": "",
+    "nodes": [
+     "namespace-isolation",
+     "multi-tenant-architecture",
+     "instruction-hierarchy",
+     "prompt-injection-defense"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Ejecución en sandbox y límites de contexto",
+    "description": "La ejecución en sandbox usa micro VMs y kernels en espacio de usuario para un procesamiento contenido con límites de privilegios, y establece límites formales de contexto mediante los patrones Action-Selector, Plan-Then-Execute y Dual LLM.",
+    "input": "",
+    "nodes": [
+     "sandboxed-execution",
+     "context-boundaries",
+     "mcp-context-broker"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Monitoreo de seguridad y compartimentación de datos",
+    "description": "El monitoreo de seguridad detecta fugas de prompts y anomalías con logging de auditoría, mientras que la compartimentación de datos implementa seguridad a nivel de fila y aislamiento por inquilino, lo que impide el acceso entre inquilinos.",
+    "input": "",
+    "nodes": [
+     "security-monitoring",
+     "data-compartmentalization"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Mínimo privilegio y principio de aislamiento",
+    "description": "El mínimo privilegio impone un acceso mínimo mediante permisos basados en roles y contextos acotados, y confirma que los límites de seguridad sólidos con defensas en múltiples capas garantizan una operación segura de LLM multiinquilino.",
+    "input": "",
+    "nodes": [
+     "least-privilege",
+     "isolation-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

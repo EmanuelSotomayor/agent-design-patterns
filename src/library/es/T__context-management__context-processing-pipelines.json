@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "context-processing-pipelines",
+ "name": "Context Processing Pipelines(CPP)",
+ "icon": "⚙️",
+ "complexity": "high",
+ "description": "Workflows avanzados de transformación de contexto en múltiples etapas, con validación, evaluación de calidad e integración multimodal",
+ "features": [
+  "Pipelines de transformación de contexto en múltiples etapas",
+  "Validación del contexto y evaluación de calidad",
+  "Workflows de integración de contexto multimodal",
+  "Preprocesamiento y normalización del contexto"
+ ],
+ "tldr": {
+  "what": "Transforma el contexto en bruto mediante etapas ordenadas: la ingesta normaliza entradas multimodales, la validación verifica completitud y consistencia, y la integración crea embeddings multimodales para su uso posterior.",
+  "when": "Procesamiento de formatos de entrada diversos (texto, imágenes, metadatos) donde importan las compuertas de calidad y la coherencia entre formatos antes de que el agente actúe sobre el contexto.",
+  "watchOut": "Cada etapa agrega latencia y puntos de falla; un solo cuello de botella en la validación puede bloquear todo el pipeline aunque las etapas posteriores pudieran tolerar problemas menores."
+ },
+ "overview": {
+  "pattern": "Workflows avanzados de transformación de contexto en múltiples etapas, con validación, evaluación de calidad e integración multimodal",
+  "why": "Garantiza un procesamiento del contexto consistente y de alta calidad en pipelines de datos empresariales complejos",
+  "insight": "La validación y transformación sistemáticas en cada etapa garantizan la integridad del contexto y la compatibilidad multimodal",
+  "impl": [
+   {
+    "t": "Ingesta",
+    "d": "Procesamiento y normalización de entradas multimodales"
+   },
+   {
+    "t": "Validación",
+    "d": "Evaluación de calidad y verificación de consistencia"
+   },
+   {
+    "t": "Transformación",
+    "d": "Preprocesamiento y estandarización del contexto"
+   },
+   {
+    "t": "Integración",
+    "d": "Fusión de contexto multimodal y generación de embeddings"
+   },
+   {
+    "t": "Salida",
+    "d": "Entrega de contexto estructurado a los sistemas posteriores"
+   }
+  ],
+  "example": "ingest_multimodal → validate_quality → transform_normalize → integrate_embeddings → deliver_context",
+  "dos": [
+   "Implementa una validación exhaustiva en cada etapa",
+   "Usa esquemas de datos consistentes en todas las etapas del pipeline",
+   "Monitorea las métricas de calidad a lo largo de todo el pipeline",
+   "Implementa mecanismos de recuperación de errores y reintentos",
+   "Versiona las configuraciones del pipeline"
+  ],
+  "donts": [
+   "Omitir pasos de validación para ganar rendimiento",
+   "Mezclar distintos formatos de datos sin normalizarlos",
+   "Ignorar los requisitos de consistencia multimodal",
+   "Procesar datos sensibles sin la sanitización adecuada",
+   "Programar etapas fijas del pipeline sin flexibilidad"
+  ],
+  "use": [
+   "Requisitos de procesamiento de datos multimodales",
+   "Necesidades de calidad de contexto de nivel empresarial",
+   "Workflows complejos de transformación de datos",
+   "Integración de contexto entre sistemas"
+  ],
+  "avoid": [
+   "Procesamiento simple de datos en un solo formato",
+   "Requisitos de tiempo real y baja latencia",
+   "Necesidades mínimas de transformación de datos",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Rendimiento del pipeline",
+    "d": "Contextos procesados por segundo"
+   },
+   {
+    "n": "Puntaje de calidad",
+    "d": "Porcentaje de precisión de la validación"
+   },
+   {
+    "n": "Tasa de errores",
+    "d": "% de transformaciones de contexto fallidas"
+   },
+   {
+    "n": "Latencia de procesamiento",
+    "d": "Tiempo total del pipeline de extremo a extremo"
+   },
+   {
+    "n": "Integridad de los datos",
+    "d": "% de contextos sin corrupción"
+   },
+   {
+    "n": "Precisión multimodal",
+    "d": "% de integraciones multimodales exitosas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Procesamiento de documentos empresariales",
+    "d": "PDF/Word/Excel → validar → normalizar → generar embeddings → indexar"
+   },
+   {
+    "n": "Pipeline de procesamiento de medios",
+    "d": "video/audio/texto → extraer → validar → alinear → integrar"
+   },
+   {
+    "n": "Integración de datos de investigación",
+    "d": "artículos/datasets/experimentos → procesar → validar → sintetizar"
+   },
+   {
+    "n": "Unificación de datos de clientes",
+    "d": "CRM/soporte/feedback → normalizar → validar → fusionar → analizar"
+   },
+   {
+    "n": "Sistemas de gestión de contenido",
+    "d": "subir → escanear → validar → transformar → publicar → archivar"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de pipelines de procesamiento de contexto",
+  "description": "Pipeline RAG de múltiples etapas que optimiza el contexto mediante chunking, embeddings, filtrado, recuperación, reranking y enriquecimiento con metadatos para un rendimiento superior del LLM",
+  "nodes": [
+   {
+    "id": "context-optimization-challenge",
+    "label": "📚 Desafío de optimización del contexto\n\"¿Cómo proporcionar contexto relevante\na los LLM a partir de datasets masivos\nrespetando los límites de tokens?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "context-processing-pipeline",
+    "label": "⚙️ Pipeline de procesamiento de contexto\n\"Optimización en múltiples etapas:\n• Chunking inteligente\n• Recuperación en dos etapas\n• Mejora de calidad\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "data-preprocessing",
+    "label": "🔧 Preprocesamiento de datos\n\"Preparación de la base:\n• Limpieza de formato\n• Extracción de estructura\n• Generación de metadatos\"",
+    "x": 200,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "chunking-strategies",
+    "label": "✂️ Estrategias de chunking\n\"Segmentación óptima:\n• Chunking semántico\n• División recursiva\n• Chunking agéntico\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "chunking-details",
+    "label": "📏 Optimización de chunks\n\"Factores a equilibrar:\n• Tamaño: 1000-2000 tokens\n• Superposición: 10-20%\n• Límites semánticos\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "embedding-generation",
+    "label": "🔢 Generación de embeddings\n\"Representación vectorial:\n• Embeddings densos\n• Captura semántica\n• Búsqueda por similitud habilitada\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "two-stage-retrieval",
+    "label": "🎯 Recuperación en dos etapas\n\"Mejora de la precisión:\n• Etapa 1: Búsqueda vectorial (top-k)\n• Etapa 2: Reranking\n• Relevancia óptima\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "initial-retrieval",
+    "label": "🔍 Recuperación inicial\n\"Búsqueda vectorial rápida:\n• Top-50 candidatos\n• Similitud coseno\n• Baja latencia\"",
+    "x": 200,
+    "y": 800,
+    "w": 180
+   },
+   {
+    "id": "reranking-stage",
+    "label": "🏆 Etapa de reranking\n\"Refinamiento de calidad:\n• Modelos cross-encoder\n• Puntuación basada en LLM\n• Selección top-10\"",
+    "x": 400,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "metadata-filtering",
+    "label": "🏷️ Filtrado por metadatos\n\"Focalización precisa:\n• Rangos de fechas\n• Filtrado por fuente\n• Coincidencia por categoría\"",
+    "x": 600,
+    "y": 800,
+    "w": 180
+   },
+   {
+    "id": "context-enhancement",
+    "label": "✨ Enriquecimiento del contexto\n\"Mejora de calidad:\n• Contexto global del documento\n• Expansión de chunks\n• Compresión semántica\"",
+    "x": 200,
+    "y": 950,
+    "w": 230
+   },
+   {
+    "id": "final-context-assembly",
+    "label": "📦 Ensamblado final del contexto\n\"Salida optimizada:\n• Ordenada por relevancia\n• Presupuesto de tokens gestionado\n• Enriquecida con metadatos\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "pipeline-principle",
+    "label": "🎯 Principio del pipeline de contexto\n\"Una recuperación de calidad pesa más que la potencia del modelo\nEl procesamiento en múltiples etapas garantiza precisión\nUn contexto optimizado permite una generación superior\"",
+    "x": 400,
+    "y": 1100,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "context-optimization-challenge",
+    "t": "context-processing-pipeline",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "context-processing-pipeline",
+    "t": "data-preprocessing",
+    "label": "comienza con"
+   },
+   {
+    "id": "e3",
+    "s": "context-processing-pipeline",
+    "t": "chunking-strategies",
+    "label": "implementa"
+   },
+   {
+    "id": "e4",
+    "s": "data-preprocessing",
+    "t": "embedding-generation",
+    "label": "prepara para"
+   },
+   {
+    "id": "e5",
+    "s": "chunking-strategies",
+    "t": "chunking-details",
+    "label": "optimiza"
+   },
+   {
+    "id": "e6",
+    "s": "embedding-generation",
+    "t": "two-stage-retrieval",
+    "label": "habilita"
+   },
+   {
+    "id": "e7",
+    "s": "chunking-details",
+    "t": "two-stage-retrieval",
+    "label": "alimenta a"
+   },
+   {
+    "id": "e8",
+    "s": "two-stage-retrieval",
+    "t": "initial-retrieval",
+    "label": "Etapa 1"
+   },
+   {
+    "id": "e9",
+    "s": "two-stage-retrieval",
+    "t": "reranking-stage",
+    "label": "Etapa 2"
+   },
+   {
+    "id": "e10",
+    "s": "two-stage-retrieval",
+    "t": "metadata-filtering",
+    "label": "aplica"
+   },
+   {
+    "id": "e11",
+    "s": "initial-retrieval",
+    "t": "reranking-stage",
+    "label": "candidatos para"
+   },
+   {
+    "id": "e12",
+    "s": "metadata-filtering",
+    "t": "reranking-stage",
+    "label": "refina"
+   },
+   {
+    "id": "e13",
+    "s": "reranking-stage",
+    "t": "context-enhancement",
+    "label": "enriquece"
+   },
+   {
+    "id": "e14",
+    "s": "context-enhancement",
+    "t": "final-context-assembly",
+    "label": "ensambla"
+   },
+   {
+    "id": "e15",
+    "s": "final-context-assembly",
+    "t": "pipeline-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de optimización del contexto",
+    "description": "¿Cómo podemos proporcionar el contexto más relevante a los LLM a partir de datasets masivos, respetando los límites de tokens y manteniendo la coherencia semántica?",
+    "input": "",
+    "nodes": [
+     "context-optimization-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al pipeline de procesamiento de contexto",
+    "description": "Un pipeline de múltiples etapas aborda el desafío mediante chunking inteligente, recuperación en dos etapas y mejora de calidad, optimizando cada aspecto de la preparación del contexto.",
+    "input": "",
+    "nodes": [
+     "context-processing-pipeline"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Preprocesamiento de datos y estrategias de chunking",
+    "description": "El pipeline comienza con la limpieza de formato y la extracción de estructura, y luego aplica chunking semántico (1000-2000 tokens, 10-20% de superposición) preservando los límites semánticos para una recuperación óptima.",
+    "input": "",
+    "nodes": [
+     "data-preprocessing",
+     "chunking-strategies",
+     "chunking-details"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5"
+    ]
+   },
+   {
+    "title": "Generación de embeddings y preparación vectorial",
+    "description": "Los chunks preprocesados se convierten en embeddings vectoriales densos que capturan el significado semántico, lo que permite operaciones rápidas de búsqueda por similitud y recuperación.",
+    "input": "",
+    "nodes": [
+     "embedding-generation"
+    ],
+    "edges": [
+     "e4"
+    ]
+   },
+   {
+    "title": "Sistema de recuperación en dos etapas",
+    "description": "Mejora de la precisión en dos etapas: la búsqueda vectorial inicial recupera los top-50 candidatos mediante similitud coseno, y luego el reranking selecciona los top-10 usando cross-encoders o puntuación con LLM.",
+    "input": "",
+    "nodes": [
+     "two-stage-retrieval",
+     "initial-retrieval",
+     "reranking-stage",
+     "metadata-filtering"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Enriquecimiento del contexto y ensamblado final",
+    "description": "Los chunks seleccionados se enriquecen con el contexto global del documento, la expansión de chunks y la compresión semántica, y luego se ensamblan en una salida optimizada que gestiona el presupuesto de tokens, lo que demuestra que una recuperación de calidad pesa más que la potencia del modelo.",
+    "input": "",
+    "nodes": [
+     "context-enhancement",
+     "final-context-assembly",
+     "pipeline-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

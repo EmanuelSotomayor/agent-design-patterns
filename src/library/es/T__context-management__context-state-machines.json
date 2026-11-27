@@ -1,0 +1,385 @@
+{
+ "cat": "context-management",
+ "slug": "context-state-machines",
+ "name": "Context State Machines(CSM)",
+ "icon": "🔧",
+ "complexity": "high",
+ "description": "Gestión dinámica del estado del contexto con máquinas de estados finitos, validación y mecanismos de recuperación",
+ "features": [
+  "Máquinas de estados finitos para las transiciones de contexto",
+  "Validación del estado del contexto y verificación de consistencia",
+  "Recuperación ante estados de contexto inválidos",
+  "Protocolos de sincronización del estado del contexto"
+ ],
+ "tldr": {
+  "what": "Gestiona el contexto del agente mediante estados definidos con transiciones explícitas, reglas de validación y rutas alternativas cuando el contexto se vuelve inconsistente o inválido.",
+  "when": "Workflows de larga duración en los que el contexto debe mantenerse válido a lo largo de los pasos, o en los que combinaciones de estado inválidas podrían causar decisiones erróneas o trabajo repetido.",
+  "watchOut": "La complejidad de la máquina de estados crece rápidamente; las transiciones mal diseñadas atrapan a los agentes en estados irrecuperables o crean bucles costosos de vuelta a etapas anteriores."
+ },
+ "overview": {
+  "pattern": "Gestión dinámica del estado del contexto con máquinas de estados finitos, validación y mecanismos de recuperación",
+  "why": "Proporciona una gestión de estado confiable para workflows complejos, con validación adecuada y recuperación ante errores",
+  "insight": "Las máquinas de estados aseguran transiciones de contexto predecibles y, al mismo tiempo, permiten un manejo de errores y una recuperación robustos",
+  "impl": [
+   {
+    "t": "Definir estados",
+    "d": "Identifica los estados del contexto y los campos de datos requeridos"
+   },
+   {
+    "t": "Diseñar transiciones",
+    "d": "Mapea las transiciones de estado válidas con condiciones de guarda"
+   },
+   {
+    "t": "Reglas de validación",
+    "d": "Implementa verificaciones de consistencia e integridad del estado"
+   },
+   {
+    "t": "Lógica de recuperación",
+    "d": "Construye mecanismos de manejo de errores y recuperación del estado"
+   },
+   {
+    "t": "Sincronización",
+    "d": "Habilita protocolos de coordinación de estado distribuido"
+   }
+  ],
+  "example": "initial_state → [event + guard] → target_state → validate → synchronize → recovery_fallback",
+  "dos": [
+   "Define invariantes de estado y reglas de validación claras",
+   "Implementa transiciones de estado deterministas",
+   "Usa condiciones de guarda para evitar transiciones inválidas",
+   "Registra todas las transiciones de estado para depuración y auditoría",
+   "Implementa manejo de timeouts para estados atascados"
+  ],
+  "donts": [
+   "Permitir la manipulación directa del estado sin transiciones",
+   "Crear máquinas de estados anidadas complejas sin justificación",
+   "Omitir la validación durante las transiciones de estado",
+   "Ignorar las condiciones de carrera en cambios de estado concurrentes",
+   "Codificar de forma rígida la lógica de la máquina de estados sin configuración"
+  ],
+  "use": [
+   "Sistemas complejos de gestión de workflows",
+   "Necesidades de control del flujo de conversación",
+   "Orquestación de tareas con dependencias de estado",
+   "Requisitos de recuperación ante errores y rollback"
+  ],
+  "avoid": [
+   "Workflows lineales simples",
+   "Requisitos de procesamiento sin estado",
+   "Cambios de estado de alta frecuencia",
+   "Rutas críticas de rendimiento en tiempo real"
+  ],
+  "metrics": [
+   {
+    "n": "Validez del estado",
+    "d": "% de transiciones de estado válidas"
+   },
+   {
+    "n": "Éxito de recuperación",
+    "d": "% de recuperaciones de errores exitosas"
+   },
+   {
+    "n": "Latencia de transición",
+    "d": "Tiempo promedio de cambio de estado"
+   },
+   {
+    "n": "Tasa de consistencia",
+    "d": "% de estados que pasan la validación"
+   },
+   {
+    "n": "Prevención de bloqueos",
+    "d": "% de estados atascados evitados"
+   },
+   {
+    "n": "Precisión de sincronización",
+    "d": "% de sincronizaciones distribuidas exitosas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Flujo de atención al cliente",
+    "d": "greeting → problem_analysis → solution_search → resolution → validation → closure"
+   },
+   {
+    "n": "Procesamiento de pedidos",
+    "d": "received → validated → payment_processed → fulfillment → shipped → delivered → completed"
+   },
+   {
+    "n": "Aprobación de documentos",
+    "d": "draft → review → approval → published → archived"
+   },
+   {
+    "n": "Gestión de tareas del agente",
+    "d": "assigned → in_progress → blocked → completed → verified"
+   },
+   {
+    "n": "Gestión de conversaciones",
+    "d": "start → context_building → task_execution → validation → summary → end"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de máquinas de estados de contexto",
+  "description": "Gestión estructurada de conversaciones mediante máquinas de estados finitos para controlar el comportamiento del LLM, imponer transiciones válidas, mantener el contexto del diálogo y orquestar workflows multiagente",
+  "nodes": [
+   {
+    "id": "conversation-management-challenge",
+    "label": "💬 Desafío de la gestión de conversaciones\n\"¿Cómo mantener un flujo de diálogo estructurado\nmientras se manejan entradas dinámicas del usuario\ne interacciones complejas de varios turnos?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "context-state-machine",
+    "label": "🎯 Máquina de estados de contexto\n\"Conversaciones controladas por FSM:\n• Estados y transiciones definidos\n• Preservación del contexto\n• Orquestación de workflows\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "state-definition",
+    "label": "📊 Definición de estados\n\"Estados de la conversación:\n• Estado inicial/de saludo\n• Recopilación de información\n• Estados de procesamiento/acción\n• Terminal/finalización\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "state-properties",
+    "label": "🔧 Propiedades del estado\n\"Componentes del estado:\n• Identificadores únicos\n• Acciones de entrada/salida\n• Plantillas de prompt\n• Transiciones válidas\"",
+    "x": 50,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "transition-management",
+    "label": "🔄 Gestión de transiciones\n\"Flujo controlado:\n• Ramas condicionales\n• Condiciones de guarda\n• Disparadores por eventos\n• Rutas alternativas\"",
+    "x": 600,
+    "y": 350,
+    "w": 230
+   },
+   {
+    "id": "llm-integration",
+    "label": "🤖 Integración con el LLM\n\"Generación consciente del estado:\n• Inyección de contexto\n• Salidas restringidas\n• Validación de respuestas\n• Control de tokens\"",
+    "x": 750,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "context-tracking",
+    "label": "📝 Capa de seguimiento del contexto\n\"Gestión de memoria:\n• Historial de la conversación\n• Variables de estado\n• Preferencias del usuario\n• Metadatos de la sesión\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "multi-agent-orchestration",
+    "label": "👥 Orquestación multiagente\n\"Coordinación de agentes:\n• Traspasos basados en estado\n• Paso de payloads\n• Control por supervisor\n• Flujos de llamadas a herramientas\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "stateflow-implementation",
+    "label": "⚡ Implementación de StateFlow\n\"Mejoras de rendimiento:\n• Reducción de costos de 4-6x\n• Menor longitud de contexto\n• Finalización más rápida de tareas\n• Mayor precisión\"",
+    "x": 600,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "dynamic-adaptability",
+    "label": "🔀 Adaptabilidad dinámica\n\"Comportamiento flexible:\n• Creación de estados en tiempo de ejecución\n• Aprendizaje a partir del feedback\n• Enrutamiento consciente del contexto\n• Automodificación\"",
+    "x": 200,
+    "y": 950,
+    "w": 230
+   },
+   {
+    "id": "human-in-loop",
+    "label": "👤 Humano en el bucle\n\"Intervención manual:\n• Puertas de aprobación\n• Retroceso de estados\n• Capacidad de anulación\n• Mecanismos de dirección\"",
+    "x": 600,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "state-machine-principle",
+    "label": "🎯 Principio de la máquina de estados de contexto\n\"Las máquinas de estados estructuradas aportan previsibilidad a las conversaciones con LLM\nLas transiciones explícitas aseguran flujos de diálogo válidos y la preservación del contexto\nEl control mediante FSM permite una orquestación multiagente compleja a escala\"",
+    "x": 400,
+    "y": 1100,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "conversation-management-challenge",
+    "t": "context-state-machine",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "context-state-machine",
+    "t": "state-definition",
+    "label": "define estados"
+   },
+   {
+    "id": "e3",
+    "s": "context-state-machine",
+    "t": "transition-management",
+    "label": "controla el flujo"
+   },
+   {
+    "id": "e4",
+    "s": "state-definition",
+    "t": "state-properties",
+    "label": "especifica"
+   },
+   {
+    "id": "e5",
+    "s": "transition-management",
+    "t": "llm-integration",
+    "label": "guía"
+   },
+   {
+    "id": "e6",
+    "s": "state-properties",
+    "t": "context-tracking",
+    "label": "actualiza"
+   },
+   {
+    "id": "e7",
+    "s": "llm-integration",
+    "t": "context-tracking",
+    "label": "mantiene"
+   },
+   {
+    "id": "e8",
+    "s": "context-tracking",
+    "t": "multi-agent-orchestration",
+    "label": "permite"
+   },
+   {
+    "id": "e9",
+    "s": "context-tracking",
+    "t": "stateflow-implementation",
+    "label": "optimiza"
+   },
+   {
+    "id": "e10",
+    "s": "multi-agent-orchestration",
+    "t": "dynamic-adaptability",
+    "label": "soporta"
+   },
+   {
+    "id": "e11",
+    "s": "stateflow-implementation",
+    "t": "human-in-loop",
+    "label": "incluye"
+   },
+   {
+    "id": "e12",
+    "s": "dynamic-adaptability",
+    "t": "state-definition",
+    "label": "modifica"
+   },
+   {
+    "id": "e13",
+    "s": "human-in-loop",
+    "t": "transition-management",
+    "label": "anula"
+   },
+   {
+    "id": "e14",
+    "s": "dynamic-adaptability",
+    "t": "state-machine-principle",
+    "label": "valida"
+   },
+   {
+    "id": "e15",
+    "s": "human-in-loop",
+    "t": "state-machine-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la gestión de conversaciones",
+    "description": "¿Cómo podemos mantener flujos de diálogo estructurados con un comportamiento predecible mientras manejamos entradas dinámicas del usuario e interacciones complejas de varios turnos en sistemas basados en LLM?",
+    "input": "",
+    "nodes": [
+     "conversation-management-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Solución de máquina de estados de contexto",
+    "description": "Las conversaciones controladas por una máquina de estados finitos (FSM) abordan el desafío mediante estados definidos, transiciones explícitas, preservación del contexto y orquestación estructurada de workflows.",
+    "input": "",
+    "nodes": [
+     "context-state-machine"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Definición de estados y gestión de transiciones",
+    "description": "El sistema define los estados de la conversación (saludo, recopilación de información, procesamiento, finalización) con propiedades como IDs únicos, plantillas de prompt y transiciones válidas controladas por ramas condicionales y condiciones de guarda.",
+    "input": "",
+    "nodes": [
+     "state-definition",
+     "state-properties",
+     "transition-management",
+     "llm-integration"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Seguimiento del contexto y gestión de memoria",
+    "description": "Una capa central de contexto mantiene el historial de la conversación, las variables de estado, las preferencias del usuario y los metadatos de la sesión, lo que permite una generación del LLM consciente del estado, con salidas restringidas y validación de respuestas.",
+    "input": "",
+    "nodes": [
+     "context-tracking"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Orquestación multiagente y rendimiento",
+    "description": "Las máquinas de estados permiten la coordinación multiagente mediante traspasos basados en estado y control por supervisor; StateFlow logra una reducción de costos de 4-6x y mayor precisión gracias a una gestión optimizada del contexto.",
+    "input": "",
+    "nodes": [
+     "multi-agent-orchestration",
+     "stateflow-implementation"
+    ],
+    "edges": [
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Adaptabilidad dinámica y control humano",
+    "description": "El sistema soporta la creación de estados en tiempo de ejecución, el aprendizaje a partir del feedback y controles de humano en el bucle, como puertas de aprobación y retroceso de estados, lo que demuestra que las FSM estructuradas aportan previsibilidad a la orquestación compleja de LLM.",
+    "input": "",
+    "nodes": [
+     "dynamic-adaptability",
+     "human-in-loop",
+     "state-machine-principle"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

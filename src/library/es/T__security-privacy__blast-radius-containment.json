@@ -1,0 +1,343 @@
+{
+ "cat": "security-privacy",
+ "slug": "blast-radius-containment",
+ "name": "Blast-Radius Containment & Autonomy Bounds(BRC)",
+ "icon": "💥",
+ "complexity": "high",
+ "description": "Limita el impacto en el peor caso de un agente que falla antes de que actúe, en lugar de solo detectar el mal uso después de los hechos. Las herramientas se clasifican por reversibilidad e impacto (la lectura es libre, la escritura se valida, lo destructivo se pausa); la autoridad se acota con mínimo privilegio por tarea; la autonomía es gradual (de asistir, a proponer y aprobar, a actuar y auditar, a observar) y se gana a medida que se demuestra la confiabilidad; los pasos irreversibles muestran un dry-run o una vista previa del plan para que un humano revise el plan y no las consecuencias; y un interruptor de emergencia con captura de estado y cuarentena puede detener al agente a mitad de la ejecución. Se diferencia de human-in-the-loop: ese es un enfoque de supervisión, mientras que este limita la capacidad según la reversibilidad. Se diferencia de agent-sandboxing: ese aísla el entorno de ejecución, mientras que este clasifica por niveles la reversibilidad de cada herramienta y gradúa la autonomía. Se diferencia de tool-misuse-prevention: ese protege contra el mal uso provocado por inyección, no contra la clasificación del radio de impacto.",
+ "features": [
+  "Herramientas clasificadas por reversibilidad e impacto (lectura libre, escritura validada, destructiva pausada)",
+  "Acotamiento de herramientas con mínimo privilegio otorgado por tarea",
+  "Niveles de autonomía graduales que se ganan a medida que se demuestra la confiabilidad",
+  "Dry-run y vista previa del plan antes de acciones irreversibles",
+  "Interruptor de emergencia con captura de estado y cuarentena",
+  "Impacto en el peor caso limitado antes de que el agente actúe, no después"
+ ],
+ "tldr": {
+  "what": "Clasifica las herramientas por reversibilidad (lectura, escritura, destructiva), otorga mínimo privilegio por tarea, gradúa la autonomía a medida que se demuestra la confiabilidad y muestra las acciones irreversibles para revisión mediante dry-run antes de ejecutarlas.",
+  "when": "Sistemas de alto riesgo donde los errores del agente causan daño real (bases de datos, infraestructura, pagos) y necesitas limitar el impacto en el peor caso antes de que el agente actúe.",
+  "watchOut": "La sobrecarga de clasificar cada herramienta y gestionar niveles de autonomía graduales puede ralentizar el despliegue; una falsa confianza en la clasificación de reversibilidad lleva a pasar por alto el radio de impacto."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Blast-Radius Containment & Autonomy Bounds",
+  "description": "Limita el impacto en el peor caso de un agente antes de que actúe: las herramientas se clasifican por niveles de reversibilidad (lectura libre, escritura validada, destructiva pausada), la autoridad se acota con mínimo privilegio, la autonomía es gradual y se gana, los pasos irreversibles muestran una vista previa del plan en dry-run para revisión humana, y un interruptor de emergencia con captura de estado permanece armado.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea\n\"Migrar la tabla users de producción\nal nuevo esquema\"",
+    "x": 330,
+    "y": 30,
+    "w": 300
+   },
+   {
+    "id": "autonomy-level",
+    "label": "🎚️ Nivel de autonomía\nproponer y aprobar; ganado con el tiempo",
+    "x": 40,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente de migración\nPlanifica la migración",
+    "x": 340,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "least-privilege",
+    "label": "🔑 Alcance de mínimo privilegio\nSolo se otorgan las herramientas de esta tarea",
+    "x": 630,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "tool-classifier",
+    "label": "🗂️ Clasificador de reversibilidad de herramientas\nlectura / escritura / destructiva",
+    "x": 330,
+    "y": 240,
+    "w": 280
+   },
+   {
+    "id": "read-tools",
+    "label": "👁️ Herramientas de lectura\nSELECT, describe -> automático, libre",
+    "x": 60,
+    "y": 345,
+    "w": 220
+   },
+   {
+    "id": "write-tools",
+    "label": "✏️ Herramientas de escritura\nALTER ADD, backfill -> validado",
+    "x": 330,
+    "y": 345,
+    "w": 220
+   },
+   {
+    "id": "destructive-tools",
+    "label": "💥 Herramientas destructivas\nDROP, DELETE -> pausado",
+    "x": 600,
+    "y": 345,
+    "w": 240
+   },
+   {
+    "id": "read-phase",
+    "label": "✅ Fase de lectura\nInspeccionar esquema, conteo de filas (automático)",
+    "x": 60,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "write-phase",
+    "label": "🛠️ Fase de escritura\nAgregar columna, backfill por lotes (registrado)",
+    "x": 330,
+    "y": 450,
+    "w": 240
+   },
+   {
+    "id": "dry-run",
+    "label": "🔍 Vista previa dry-run\n\"Haría DROP de legacy_email en 4.2M filas\"",
+    "x": 600,
+    "y": 450,
+    "w": 250
+   },
+   {
+    "id": "human-approval",
+    "label": "🧑‍⚖️ Aprobación humana\nRevisa el PLAN, no las consecuencias",
+    "x": 600,
+    "y": 550,
+    "w": 240
+   },
+   {
+    "id": "kill-switch",
+    "label": "🛑 Interruptor de emergencia\nCaptura de estado + cuarentena, armado",
+    "x": 300,
+    "y": 645,
+    "w": 240
+   },
+   {
+    "id": "execute-destructive",
+    "label": "⚙️ Ejecutar (aprobado)\nDROP legacy_email confirmado",
+    "x": 600,
+    "y": 645,
+    "w": 240
+   },
+   {
+    "id": "success",
+    "label": "🏁 Migración completa\nLo reversible automático, lo irreversible controlado",
+    "x": 330,
+    "y": 745,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-agent",
+    "s": "task",
+    "t": "agent",
+    "label": "Planificar"
+   },
+   {
+    "id": "agent-autonomy",
+    "s": "agent",
+    "t": "autonomy-level",
+    "label": "Nivel"
+   },
+   {
+    "id": "agent-scope",
+    "s": "agent",
+    "t": "least-privilege",
+    "label": "Acotar herramientas"
+   },
+   {
+    "id": "agent-classifier",
+    "s": "agent",
+    "t": "tool-classifier",
+    "label": "Clasificar herramientas"
+   },
+   {
+    "id": "classifier-read",
+    "s": "tool-classifier",
+    "t": "read-tools",
+    "label": "Reversible"
+   },
+   {
+    "id": "classifier-write",
+    "s": "tool-classifier",
+    "t": "write-tools",
+    "label": "Recuperable"
+   },
+   {
+    "id": "classifier-destructive",
+    "s": "tool-classifier",
+    "t": "destructive-tools",
+    "label": "Irreversible"
+   },
+   {
+    "id": "read-readphase",
+    "s": "read-tools",
+    "t": "read-phase",
+    "label": "Automático"
+   },
+   {
+    "id": "write-writephase",
+    "s": "write-tools",
+    "t": "write-phase",
+    "label": "Validado"
+   },
+   {
+    "id": "destructive-dryrun",
+    "s": "destructive-tools",
+    "t": "dry-run",
+    "label": "Pausado"
+   },
+   {
+    "id": "dryrun-approval",
+    "s": "dry-run",
+    "t": "human-approval",
+    "label": "Revisar plan"
+   },
+   {
+    "id": "approval-execute",
+    "s": "human-approval",
+    "t": "execute-destructive",
+    "label": "Aprobar"
+   },
+   {
+    "id": "killswitch-execute",
+    "s": "kill-switch",
+    "t": "execute-destructive",
+    "label": "Puede detener"
+   },
+   {
+    "id": "killswitch-write",
+    "s": "kill-switch",
+    "t": "write-phase",
+    "label": "Se activa ante un pico de errores"
+   },
+   {
+    "id": "readphase-success",
+    "s": "read-phase",
+    "t": "success",
+    "label": "Listo"
+   },
+   {
+    "id": "writephase-success",
+    "s": "write-phase",
+    "t": "success",
+    "label": "Listo"
+   },
+   {
+    "id": "execute-success",
+    "s": "execute-destructive",
+    "t": "success",
+    "label": "Confirmado"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea y acotamiento con mínimo privilegio",
+    "description": "El agente recibe la tarea de migración, se le otorgan solo las herramientas que esta tarea necesita y opera en un nivel de autonomía de proponer y aprobar, ganado por su confiabilidad previa.",
+    "input": "",
+    "nodes": [
+     "task",
+     "agent",
+     "least-privilege",
+     "autonomy-level"
+    ],
+    "edges": [
+     "task-agent",
+     "agent-scope",
+     "agent-autonomy"
+    ]
+   },
+   {
+    "title": "Clasificar herramientas por reversibilidad",
+    "description": "Cada herramienta se clasifica por nivel de impacto: la lectura es reversible y libre, la escritura es recuperable y validada, lo destructivo es irreversible y se pausa.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "tool-classifier",
+     "read-tools",
+     "write-tools",
+     "destructive-tools"
+    ],
+    "edges": [
+     "agent-classifier",
+     "classifier-read",
+     "classifier-write",
+     "classifier-destructive"
+    ]
+   },
+   {
+    "title": "La fase de lectura se ejecuta libremente",
+    "description": "El agente inspecciona el esquema, el conteo de filas y las restricciones usando herramientas de solo lectura que no necesitan aprobación.",
+    "input": "",
+    "nodes": [
+     "read-tools",
+     "read-phase"
+    ],
+    "edges": [
+     "read-readphase"
+    ]
+   },
+   {
+    "title": "Fase de escritura validada y registrada",
+    "description": "Agregar la nueva columna y hacer el backfill por lotes está permitido, pero cada escritura se valida contra el plan y se registra en el log de auditoría.",
+    "input": "",
+    "nodes": [
+     "write-tools",
+     "write-phase"
+    ],
+    "edges": [
+     "write-writephase"
+    ]
+   },
+   {
+    "title": "El paso destructivo muestra un dry-run",
+    "description": "El DROP COLUMN propuesto se pausa; se muestra un plan de dry-run que describe exactamente qué se eliminaría y que es irreversible.",
+    "input": "",
+    "nodes": [
+     "destructive-tools",
+     "dry-run",
+     "human-approval"
+    ],
+    "edges": [
+     "destructive-dryrun",
+     "dryrun-approval"
+    ]
+   },
+   {
+    "title": "El humano aprueba, el interruptor de emergencia está armado",
+    "description": "El humano revisa el plan y lo aprueba; durante todo el proceso, un interruptor de emergencia puede detener la ejecución con captura de estado, y se activaría ante un pico de errores en el backfill antes del drop.",
+    "input": "",
+    "nodes": [
+     "human-approval",
+     "execute-destructive",
+     "kill-switch",
+     "write-phase"
+    ],
+    "edges": [
+     "approval-execute",
+     "killswitch-execute",
+     "killswitch-write"
+    ]
+   },
+   {
+    "title": "Migración completa",
+    "description": "El trabajo reversible se ejecutó sin supervisión y el único paso irreversible pasó por una revisión humana del plan, por lo que el impacto en el peor caso quedó limitado antes de la ejecución.",
+    "input": "",
+    "nodes": [
+     "read-phase",
+     "write-phase",
+     "execute-destructive",
+     "success"
+    ],
+    "edges": [
+     "readphase-success",
+     "writephase-success",
+     "execute-success"
+    ]
+   }
+  ]
+ }
+}

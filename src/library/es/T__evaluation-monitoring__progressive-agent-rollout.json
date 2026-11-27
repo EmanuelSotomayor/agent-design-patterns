@@ -1,0 +1,365 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "progressive-agent-rollout",
+ "name": "Progressive Rollout & Shadow Mode(PRS)",
+ "icon": "🚦",
+ "complexity": "high",
+ "description": "El lado del despliegue al lanzar de forma segura una versión de un agente o de un prompt. El candidato se ejecuta primero en modo sombra (shadow mode), procesando tráfico real de producción mientras su salida se oculta a los usuarios y se compara offline con la versión servida; luego pasa a un canary con el 1 al 5 por ciento del tráfico en vivo, puntuado por evals online frente a un grupo de control; después, a un aumento progresivo, con rollback automático en el momento en que una métrica monitoreada retrocede. Combinar evals online (que puntúan el tráfico en vivo sobre la marcha) con evals offline detecta los fallos de cola larga que un conjunto dorado estático no puede predecir. Se distingue de eval-driven-agent-development, que controla los cambios offline antes del merge, mientras que este patrón gobierna el aumento progresivo online después del merge.",
+ "features": [
+  "Modo sombra: el candidato se ejecuta con tráfico en vivo, la salida se oculta y se compara offline",
+  "Canary con el 1-5% del tráfico en vivo, puntuado por evals online frente a un control",
+  "Aumento progresivo con umbrales de promoción y rollback predefinidos",
+  "Rollback automático activado por la regresión de una métrica monitoreada",
+  "Evals online (puntuación sobre la marcha) combinados con evals offline para los fallos de cola larga",
+  "Un span de telemetría por solicitud vincula la puntuación del eval con la decisión de enrutamiento para el control automático"
+ ],
+ "tldr": {
+  "what": "Ejecuta el agente candidato con tráfico de producción sin servir su salida y luego exponlo gradualmente a los usuarios con rollback automático ante la regresión de métricas.",
+  "when": "Lanzar cambios de agentes o prompts cuando los fallos de cola larga en tráfico real importan más que los conjuntos de prueba estáticos y necesitas confianza antes del despliegue completo.",
+  "watchOut": "La latencia y el costo de los evals online escalan con el volumen de tráfico; un evaluador lento o costoso puede convertirse en el cuello de botella antes de que detectes problemas reales."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Despliegue progresivo y modo sombra",
+  "description": "Se lanza de forma segura la v2 de un agente de soporte: primero se ejecuta en modo sombra con tráfico en vivo y su salida oculta; luego, un canary del 5% se puntúa con evals online frente al control v1. Una regresión por intención en las cancelaciones dispara un rollback automático, se corrige la causa raíz y una nueva ejecución en sombra limpia permite que el cambio aumente progresivamente hasta el 100%.",
+  "nodes": [
+   {
+    "id": "candidate-v2",
+    "label": "🆕 Candidata v2\nnuevo prompt de enrutamiento de herramientas",
+    "x": 80,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "live-traffic",
+    "label": "🌐 Tráfico de producción en vivo\nsolicitudes reales de usuarios",
+    "x": 380,
+    "y": 50,
+    "w": 210
+   },
+   {
+    "id": "served-v1",
+    "label": "🟦 v1 servida (control)\nagente actual en producción",
+    "x": 680,
+    "y": 50,
+    "w": 210
+   },
+   {
+    "id": "shadow-stage",
+    "label": "👻 Modo sombra (7 días)\nv2 se ejecuta en paralelo, salida oculta",
+    "x": 360,
+    "y": 160,
+    "w": 260
+   },
+   {
+    "id": "offline-diff",
+    "label": "🧾 Diff offline frente a v1\n4.1% de las respuestas difieren, 0 violaciones de políticas",
+    "x": 360,
+    "y": 270,
+    "w": 260
+   },
+   {
+    "id": "promote-canary",
+    "label": "⬆️ Promover a canary\ndiff limpio -> continuar",
+    "x": 380,
+    "y": 375,
+    "w": 200
+   },
+   {
+    "id": "canary-5",
+    "label": "🐤 Canary: 5% del tráfico en vivo\nv2 servida a una parte de los usuarios",
+    "x": 280,
+    "y": 480,
+    "w": 220
+   },
+   {
+    "id": "online-eval",
+    "label": "📊 Evals online (sobre la marcha)\npuntúan v2 servida frente al control v1",
+    "x": 620,
+    "y": 480,
+    "w": 230
+   },
+   {
+    "id": "intent-billing",
+    "label": "💳 facturación\n4.40 vs 4.38 (ok)",
+    "x": 40,
+    "y": 595,
+    "w": 150
+   },
+   {
+    "id": "intent-pwreset",
+    "label": "🔑 restablecimiento de contraseña\n4.44 vs 4.42 (ok)",
+    "x": 230,
+    "y": 595,
+    "w": 160
+   },
+   {
+    "id": "intent-cancel",
+    "label": "❌ cancelación\n3.92 vs 4.35 (REGRESIÓN)",
+    "x": 440,
+    "y": 595,
+    "w": 190
+   },
+   {
+    "id": "rollback-trigger",
+    "label": "🚨 Disparador de rollback\ncaída de CSAT > 0.20",
+    "x": 680,
+    "y": 595,
+    "w": 180
+   },
+   {
+    "id": "auto-rollback",
+    "label": "⏪ Rollback automático\ncanary reducido a 0% en 90 s",
+    "x": 440,
+    "y": 700,
+    "w": 210
+   },
+   {
+    "id": "root-cause",
+    "label": "🔍 Causa raíz\nv2 enrutaba las cancelaciones a la herramienta equivocada",
+    "x": 690,
+    "y": 700,
+    "w": 220
+   },
+   {
+    "id": "fix-reramp",
+    "label": "🛠️ Corrección + nueva sombra\nnueva ejecución limpia, canary 4.37 vs 4.35",
+    "x": 60,
+    "y": 700,
+    "w": 220
+   },
+   {
+    "id": "progressive-ramp",
+    "label": "📈 Aumento progresivo\n5 -> 25 -> 50 -> 100%",
+    "x": 60,
+    "y": 795,
+    "w": 200
+   },
+   {
+    "id": "fully-rolled-out",
+    "label": "🚀 Despliegue completo\nv2 es el nuevo control servido",
+    "x": 380,
+    "y": 795,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "r1",
+    "s": "candidate-v2",
+    "t": "shadow-stage",
+    "label": "entra en sombra"
+   },
+   {
+    "id": "r2",
+    "s": "live-traffic",
+    "t": "shadow-stage",
+    "label": "replica el 100%"
+   },
+   {
+    "id": "r3",
+    "s": "live-traffic",
+    "t": "served-v1",
+    "label": "servida"
+   },
+   {
+    "id": "r4",
+    "s": "shadow-stage",
+    "t": "offline-diff",
+    "label": ""
+   },
+   {
+    "id": "r5",
+    "s": "served-v1",
+    "t": "offline-diff",
+    "label": "comparar"
+   },
+   {
+    "id": "r6",
+    "s": "offline-diff",
+    "t": "promote-canary",
+    "label": "limpio"
+   },
+   {
+    "id": "r7",
+    "s": "promote-canary",
+    "t": "canary-5",
+    "label": ""
+   },
+   {
+    "id": "r8",
+    "s": "canary-5",
+    "t": "online-eval",
+    "label": ""
+   },
+   {
+    "id": "r9",
+    "s": "online-eval",
+    "t": "intent-billing",
+    "label": ""
+   },
+   {
+    "id": "r10",
+    "s": "online-eval",
+    "t": "intent-pwreset",
+    "label": ""
+   },
+   {
+    "id": "r11",
+    "s": "online-eval",
+    "t": "intent-cancel",
+    "label": ""
+   },
+   {
+    "id": "r12",
+    "s": "intent-cancel",
+    "t": "rollback-trigger",
+    "label": "caída > 0.20"
+   },
+   {
+    "id": "r13",
+    "s": "rollback-trigger",
+    "t": "auto-rollback",
+    "label": "dispara"
+   },
+   {
+    "id": "r14",
+    "s": "auto-rollback",
+    "t": "served-v1",
+    "label": "todo el tráfico a v1"
+   },
+   {
+    "id": "r15",
+    "s": "auto-rollback",
+    "t": "root-cause",
+    "label": ""
+   },
+   {
+    "id": "r16",
+    "s": "root-cause",
+    "t": "fix-reramp",
+    "label": ""
+   },
+   {
+    "id": "r17",
+    "s": "fix-reramp",
+    "t": "progressive-ramp",
+    "label": "nueva sombra limpia"
+   },
+   {
+    "id": "r18",
+    "s": "progressive-ramp",
+    "t": "fully-rolled-out",
+    "label": "5 -> 25 -> 50 -> 100%"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El candidato entra en modo sombra",
+    "description": "v2 se replica sobre el 100% del tráfico en vivo mientras v1 sigue atendiendo a los usuarios. La salida de v2 se oculta, por lo que los usuarios nunca la ven durante la fase de sombra.",
+    "input": "",
+    "nodes": [
+     "candidate-v2",
+     "live-traffic",
+     "served-v1",
+     "shadow-stage"
+    ],
+    "edges": [
+     "r1",
+     "r2",
+     "r3"
+    ]
+   },
+   {
+    "title": "El diff offline es limpio: promover",
+    "description": "Durante 7 días, la salida en sombra se compara offline con la v1 servida: solo el 4.1% de las respuestas difiere y no se dispara ninguna violación de políticas, así que v2 se promueve a canary.",
+    "input": "",
+    "nodes": [
+     "shadow-stage",
+     "offline-diff",
+     "served-v1",
+     "promote-canary"
+    ],
+    "edges": [
+     "r4",
+     "r5",
+     "r6"
+    ]
+   },
+   {
+    "title": "Canary al 5% con evals online",
+    "description": "v2 ahora atiende el 5% del tráfico en vivo. Los evals online puntúan sus respuestas sobre la marcha frente al control v1 en el mismo span de telemetría.",
+    "input": "",
+    "nodes": [
+     "promote-canary",
+     "canary-5",
+     "online-eval"
+    ],
+    "edges": [
+     "r7",
+     "r8"
+    ]
+   },
+   {
+    "title": "Aparece una regresión por intención",
+    "description": "El CSAT general parece estar en el límite, pero desglosarlo por intención expone el problema: facturación y restablecimiento de contraseña se mantienen, mientras que cancelación cae de 4.35 a 3.92.",
+    "input": "",
+    "nodes": [
+     "online-eval",
+     "intent-billing",
+     "intent-pwreset",
+     "intent-cancel"
+    ],
+    "edges": [
+     "r9",
+     "r10",
+     "r11"
+    ]
+   },
+   {
+    "title": "Rollback automático",
+    "description": "La caída en cancelación supera el umbral de rollback de 0.20 y dispara un rollback automático. El canary se reduce a 0% en 90 segundos y todo el tráfico vuelve a v1.",
+    "input": "",
+    "nodes": [
+     "intent-cancel",
+     "rollback-trigger",
+     "auto-rollback",
+     "served-v1"
+    ],
+    "edges": [
+     "r12",
+     "r13",
+     "r14"
+    ]
+   },
+   {
+    "title": "Diagnosticar y corregir",
+    "description": "El análisis de causa raíz descubre que v2 enrutaba las cancelaciones a la herramienta de retención equivocada. Se corrige el enrutamiento y el candidato se pone en cola para una nueva ejecución en sombra.",
+    "input": "",
+    "nodes": [
+     "auto-rollback",
+     "root-cause",
+     "fix-reramp"
+    ],
+    "edges": [
+     "r15",
+     "r16"
+    ]
+   },
+   {
+    "title": "Nueva sombra limpia, aumento hasta el total",
+    "description": "La nueva ejecución en sombra es limpia y el nuevo canary muestra cancelación en 4.37 vs 4.35, así que el lanzamiento aumenta progresivamente 5 -> 25 -> 50 -> 100% hasta que v2 se convierte en el nuevo control servido.",
+    "input": "",
+    "nodes": [
+     "fix-reramp",
+     "progressive-ramp",
+     "fully-rolled-out"
+    ],
+    "edges": [
+     "r17",
+     "r18"
+    ]
+   }
+  ]
+ }
+}

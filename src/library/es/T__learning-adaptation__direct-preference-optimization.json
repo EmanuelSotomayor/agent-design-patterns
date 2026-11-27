@@ -1,0 +1,738 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "direct-preference-optimization",
+ "name": "Direct Preference Optimization(DPO)",
+ "icon": "⚡",
+ "complexity": "high",
+ "description": "Optimización de preferencias offline con una pérdida de clasificación sobre respuestas elegidas y rechazadas, sin entrenar un modelo de recompensa explícito",
+ "features": [
+  "Pares de respuestas elegidas y rechazadas",
+  "Comparación con una política de referencia congelada",
+  "Optimización directa de la política",
+  "Objetivo de clasificación basado en el log-ratio",
+  "Entrenamiento de preferencias offline",
+  "Monitoreo de la deriva del comportamiento"
+ ],
+ "tldr": {
+  "what": "Entrena una política directamente sobre pares de preferencias minimizando una pérdida de clasificación que compara las respuestas elegidas con las rechazadas en relación con una política de referencia congelada, sin pasar por el modelado explícito de recompensas.",
+  "when": "Cuando tienes datos de preferencias en pares (salidas elegidas y rechazadas) y quieres alinear el comportamiento sin el costo de entrenar primero un modelo de recompensa separado.",
+  "watchOut": "La política puede alejarse mucho de la referencia, lo que degrada el desempeño en tareas fuera del dataset de preferencias o provoca colapso de modos si los pares de preferencias son poco variados."
+ },
+ "overview": {
+  "pattern": "Entrenamiento en dos fases: SFT → optimización directa de preferencias sin modelado explícito de recompensas",
+  "why": "Simplifica el pipeline de RLHF, mejora la estabilidad del entrenamiento y reduce la sobrecarga computacional manteniendo la calidad de la alineación",
+  "insight": "Trata al modelo de lenguaje como un modelo de recompensa implícito y optimiza las preferencias directamente mediante una pérdida de clasificación",
+  "impl": [
+   {
+    "t": "SFT",
+    "d": "Fine-tuning supervisado sobre demostraciones"
+   },
+   {
+    "t": "Recolectar",
+    "d": "Datos de comparación de preferencias humanas"
+   },
+   {
+    "t": "Entrenamiento DPO",
+    "d": "Optimización directa sin modelo de recompensa"
+   },
+   {
+    "t": "Validar",
+    "d": "Precisión de preferencias en un conjunto reservado"
+   },
+   {
+    "t": "Desplegar",
+    "d": "Monitorear la alineación de preferencias en producción"
+   }
+  ],
+  "example": "base_model → sft_model → preference_data → dpo_optimized_model",
+  "dos": [
+   "Usa datasets de preferencias de alta calidad y equilibrados",
+   "Ajusta el parámetro beta para controlar la fuerza de la regularización KL",
+   "Valida la precisión de preferencias con datos humanos reservados",
+   "Monitorea el sesgo de longitud en los juicios de preferencia",
+   "Usa tasas de aprendizaje estables (de 1e-6 a 5e-7)",
+   "Aplica gradient clipping para la estabilidad del entrenamiento"
+  ],
+  "donts": [
+   "Omitir la validación de calidad de los datos de preferencias",
+   "Usar preferencias inconsistentes o contradictorias",
+   "Ignorar el cambio de distribución de SFT a preferencias",
+   "Fijar beta demasiado alto (provoca colapso de modos)",
+   "Usar los mismos datos para SFT y para la optimización de preferencias"
+  ],
+  "use": [
+   "Se necesita una alternativa más simple a RLHF",
+   "Recursos computacionales limitados",
+   "Se requieren ciclos de entrenamiento más rápidos",
+   "Se prefiere un aprendizaje supervisado estable",
+   "Hay preferencias por pares claras disponibles"
+  ],
+  "avoid": [
+   "Se necesita una optimización multiobjetivo compleja",
+   "Se requiere interpretabilidad del modelo de recompensa",
+   "Datasets de preferencias a muy gran escala",
+   "Es necesario un moldeado fino de la recompensa",
+   "Se necesita modelar explícitamente la señal de recompensa"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de preferencias",
+    "d": "% de predicciones por pares correctas"
+   },
+   {
+    "n": "Tasa de victorias en preferencia humana",
+    "d": "% de veces preferido frente a la línea base"
+   },
+   {
+    "n": "Divergencia KL",
+    "d": "Deriva de la política respecto al modelo de referencia"
+   },
+   {
+    "n": "Estabilidad del entrenamiento",
+    "d": "Suavidad de la convergencia de la pérdida"
+   },
+   {
+    "n": "Sesgo de longitud",
+    "d": "Correlación de las preferencias con la longitud"
+   },
+   {
+    "n": "Eficiencia del entrenamiento",
+    "d": "Horas de GPU frente a la línea base de RLHF"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Alineación de LLM",
+    "d": "Alternativa eficiente a RLHF para la alineación de preferencias"
+   },
+   {
+    "n": "Entrenamiento de chatbots",
+    "d": "Alinear la IA conversacional con las preferencias humanas"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Optimizar según preferencias de calidad y corrección del código"
+   },
+   {
+    "n": "Creación de contenido",
+    "d": "Alinear las salidas creativas con los juicios estéticos humanos"
+   },
+   {
+    "n": "Resumen",
+    "d": "Mejorar la calidad de los resúmenes según las preferencias humanas"
+   },
+   {
+    "n": "Traducción",
+    "d": "Optimizar según preferencias de fluidez y precisión"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Direct Preference Optimization",
+  "description": "Método de entrenamiento que optimiza directamente los modelos de lenguaje con datos de preferencias humanas sin requerir modelos de recompensa, usando pares de preferencias para mejorar la calidad y la alineación de las respuestas.",
+  "nodes": [
+   {
+    "id": "user-prompt",
+    "label": "💬 Prompt del usuario\n\"Genera la respuesta óptima\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "reference-model",
+    "label": "🤖 Modelo de referencia\nLLM base preentrenado\nParámetros fijos",
+    "x": 100,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "policy-model",
+    "label": "🎯 Modelo de política\nLLM entrenable\nParámetros optimizados",
+    "x": 300,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "response-sampler",
+    "label": "🎲 Muestreador de respuestas\nGenerar pares\nSalidas diversas",
+    "x": 500,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "candidate-pairs",
+    "label": "📑 Pares candidatos\nRespuesta A vs B\nListos para comparar",
+    "x": 700,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "human-evaluator",
+    "label": "👤 Evaluador humano\nJuicio de preferencia\nSelección del ganador",
+    "x": 50,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "preference-dataset",
+    "label": "📊 Dataset de preferencias\n(x, y_w, y_l)\nPares ganador/perdedor",
+    "x": 220,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "data-augmentation",
+    "label": "🔄 Aumento de datos\nRuptura de simetría\nRealce del contraste",
+    "x": 390,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "batch-sampler",
+    "label": "📦 Muestreador de batches\nCreación de mini-batches\nMuestreo equilibrado",
+    "x": 560,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "quality-filter",
+    "label": "🎯 Filtro de calidad\nEliminación de ambigüedades\nReducción de ruido",
+    "x": 730,
+    "y": 280,
+    "w": 160
+   },
+   {
+    "id": "log-probability",
+    "label": "📈 Log-probabilidad\nπ(y_w|x) / π(y_l|x)\nVerosimilitud de la política",
+    "x": 100,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "reference-log-prob",
+    "label": "📊 Log-prob de referencia\nπ_ref(y_w|x) / π_ref(y_l|x)\nComparación con la línea base",
+    "x": 300,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "bradley-terry",
+    "label": "🎲 Modelo Bradley-Terry\nP(y_w > y_l)\nProbabilidad de preferencia",
+    "x": 500,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "dpo-loss",
+    "label": "📉 Pérdida DPO\n-log σ(β·r_θ)\nOptimización directa",
+    "x": 700,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "implicit-reward",
+    "label": "💎 Recompensa implícita\nr_θ(x,y) = β·log[π/π_ref]\nSin modelo explícito",
+    "x": 50,
+    "y": 540,
+    "w": 200
+   },
+   {
+    "id": "reward-margin",
+    "label": "📏 Margen de recompensa\nr(y_w) - r(y_l)\nFuerza de la preferencia",
+    "x": 270,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "kl-regularization",
+    "label": "🔒 Regularización KL\nβ·KL(π||π_ref)\nRestricción de la distribución",
+    "x": 470,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "beta-tuning",
+    "label": "⚙️ Ajuste de β\nFuerza de la regularización\nControl del compromiso",
+    "x": 670,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "gradient-computation",
+    "label": "∇ Cálculo del gradiente\nBackpropagation\nCálculo eficiente",
+    "x": 100,
+    "y": 660,
+    "w": 180
+   },
+   {
+    "id": "adam-optimizer",
+    "label": "⚡ Optimizador Adam\nTasa de aprendizaje adaptativa\nSeguimiento del momentum",
+    "x": 300,
+    "y": 660,
+    "w": 180
+   },
+   {
+    "id": "gradient-clipping",
+    "label": "✂️ Gradient Clipping\nControl de estabilidad\nEvita la explosión",
+    "x": 500,
+    "y": 660,
+    "w": 180
+   },
+   {
+    "id": "parameter-update",
+    "label": "🔄 Actualización de parámetros\nθ ← θ - α∇L\nModificación de los pesos",
+    "x": 700,
+    "y": 660,
+    "w": 180
+   },
+   {
+    "id": "win-rate",
+    "label": "🏆 Tasa de victorias\nPrecisión de preferencias\nEvaluación por pares",
+    "x": 50,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "reward-accuracy",
+    "label": "🎯 Precisión de la recompensa\nPuntuación implícita\nMedida de alineación",
+    "x": 220,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "kl-divergence-metric",
+    "label": "📊 Divergencia KL\nCambio de distribución\nVerificación de la regularización",
+    "x": 390,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "validation-loss",
+    "label": "📉 Pérdida de validación\nGeneralización\nDetección de sobreajuste",
+    "x": 560,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "convergence-monitor",
+    "label": "📈 Convergencia\nEstabilidad del entrenamiento\nMesetas de la pérdida",
+    "x": 730,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "optimized-model",
+    "label": "✨ Modelo optimizado\nAlineación directa de preferencias\nSin necesidad de modelo de recompensa",
+    "x": 300,
+    "y": 900,
+    "w": 300
+   },
+   {
+    "id": "aligned-response",
+    "label": "🎯 Respuesta alineada\nSalida optimizada por preferencias",
+    "x": 400,
+    "y": 1000,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "prompt-reference",
+    "s": "user-prompt",
+    "t": "reference-model",
+    "label": ""
+   },
+   {
+    "id": "prompt-policy",
+    "s": "user-prompt",
+    "t": "policy-model",
+    "label": ""
+   },
+   {
+    "id": "policy-sampler",
+    "s": "policy-model",
+    "t": "response-sampler",
+    "label": ""
+   },
+   {
+    "id": "sampler-pairs",
+    "s": "response-sampler",
+    "t": "candidate-pairs",
+    "label": ""
+   },
+   {
+    "id": "pairs-evaluator",
+    "s": "candidate-pairs",
+    "t": "human-evaluator",
+    "label": ""
+   },
+   {
+    "id": "evaluator-dataset",
+    "s": "human-evaluator",
+    "t": "preference-dataset",
+    "label": ""
+   },
+   {
+    "id": "dataset-augmentation",
+    "s": "preference-dataset",
+    "t": "data-augmentation",
+    "label": ""
+   },
+   {
+    "id": "augmentation-batch",
+    "s": "data-augmentation",
+    "t": "batch-sampler",
+    "label": ""
+   },
+   {
+    "id": "batch-filter",
+    "s": "batch-sampler",
+    "t": "quality-filter",
+    "label": ""
+   },
+   {
+    "id": "filter-logprob",
+    "s": "quality-filter",
+    "t": "log-probability",
+    "label": ""
+   },
+   {
+    "id": "reference-logprob",
+    "s": "reference-model",
+    "t": "reference-log-prob",
+    "label": "Probabilidades de referencia"
+   },
+   {
+    "id": "policy-logprob",
+    "s": "policy-model",
+    "t": "log-probability",
+    "label": "Probabilidades de la política"
+   },
+   {
+    "id": "logprob-bradley",
+    "s": "log-probability",
+    "t": "bradley-terry",
+    "label": ""
+   },
+   {
+    "id": "reflogprob-bradley",
+    "s": "reference-log-prob",
+    "t": "bradley-terry",
+    "label": ""
+   },
+   {
+    "id": "bradley-loss",
+    "s": "bradley-terry",
+    "t": "dpo-loss",
+    "label": ""
+   },
+   {
+    "id": "logprob-implicit",
+    "s": "log-probability",
+    "t": "implicit-reward",
+    "label": ""
+   },
+   {
+    "id": "reflogprob-implicit",
+    "s": "reference-log-prob",
+    "t": "implicit-reward",
+    "label": ""
+   },
+   {
+    "id": "implicit-margin",
+    "s": "implicit-reward",
+    "t": "reward-margin",
+    "label": ""
+   },
+   {
+    "id": "margin-kl",
+    "s": "reward-margin",
+    "t": "kl-regularization",
+    "label": ""
+   },
+   {
+    "id": "kl-beta",
+    "s": "kl-regularization",
+    "t": "beta-tuning",
+    "label": ""
+   },
+   {
+    "id": "beta-loss",
+    "s": "beta-tuning",
+    "t": "dpo-loss",
+    "label": "Control de β"
+   },
+   {
+    "id": "loss-gradient",
+    "s": "dpo-loss",
+    "t": "gradient-computation",
+    "label": ""
+   },
+   {
+    "id": "gradient-adam",
+    "s": "gradient-computation",
+    "t": "adam-optimizer",
+    "label": ""
+   },
+   {
+    "id": "adam-clipping",
+    "s": "adam-optimizer",
+    "t": "gradient-clipping",
+    "label": ""
+   },
+   {
+    "id": "clipping-update",
+    "s": "gradient-clipping",
+    "t": "parameter-update",
+    "label": ""
+   },
+   {
+    "id": "update-policy",
+    "s": "parameter-update",
+    "t": "policy-model",
+    "label": "Actualizar θ"
+   },
+   {
+    "id": "policy-winrate",
+    "s": "policy-model",
+    "t": "win-rate",
+    "label": ""
+   },
+   {
+    "id": "implicit-accuracy",
+    "s": "implicit-reward",
+    "t": "reward-accuracy",
+    "label": ""
+   },
+   {
+    "id": "kl-metric",
+    "s": "kl-regularization",
+    "t": "kl-divergence-metric",
+    "label": ""
+   },
+   {
+    "id": "loss-validation",
+    "s": "dpo-loss",
+    "t": "validation-loss",
+    "label": ""
+   },
+   {
+    "id": "validation-convergence",
+    "s": "validation-loss",
+    "t": "convergence-monitor",
+    "label": ""
+   },
+   {
+    "id": "winrate-optimized",
+    "s": "win-rate",
+    "t": "optimized-model",
+    "label": ""
+   },
+   {
+    "id": "accuracy-optimized",
+    "s": "reward-accuracy",
+    "t": "optimized-model",
+    "label": ""
+   },
+   {
+    "id": "convergence-optimized",
+    "s": "convergence-monitor",
+    "t": "optimized-model",
+    "label": ""
+   },
+   {
+    "id": "optimized-response",
+    "s": "optimized-model",
+    "t": "aligned-response",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Prompt del usuario",
+    "description": "El usuario proporciona una entrada que requiere una respuesta óptima",
+    "input": "",
+    "nodes": [
+     "user-prompt"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Inicialización del modelo",
+    "description": "Configuración de los modelos de referencia y de política",
+    "input": "",
+    "nodes": [
+     "user-prompt",
+     "reference-model",
+     "policy-model"
+    ],
+    "edges": [
+     "prompt-reference",
+     "prompt-policy"
+    ]
+   },
+   {
+    "title": "Generación de respuestas",
+    "description": "Generación de pares de respuestas candidatas",
+    "input": "",
+    "nodes": [
+     "policy-model",
+     "response-sampler",
+     "candidate-pairs"
+    ],
+    "edges": [
+     "policy-sampler",
+     "sampler-pairs"
+    ]
+   },
+   {
+    "title": "Recolección de preferencias humanas",
+    "description": "Recolección de preferencias humanas sobre pares de respuestas",
+    "input": "",
+    "nodes": [
+     "candidate-pairs",
+     "human-evaluator",
+     "preference-dataset",
+     "data-augmentation",
+     "batch-sampler",
+     "quality-filter"
+    ],
+    "edges": [
+     "pairs-evaluator",
+     "evaluator-dataset",
+     "dataset-augmentation",
+     "augmentation-batch",
+     "batch-filter"
+    ]
+   },
+   {
+    "title": "Cálculo de log-probabilidades",
+    "description": "Cálculo de las probabilidades del modelo de política y del de referencia",
+    "input": "",
+    "nodes": [
+     "reference-model",
+     "policy-model",
+     "log-probability",
+     "reference-log-prob"
+    ],
+    "edges": [
+     "reference-logprob",
+     "policy-logprob"
+    ]
+   },
+   {
+    "title": "Modelado Bradley-Terry",
+    "description": "Aplicación del modelo de probabilidad de preferencias",
+    "input": "",
+    "nodes": [
+     "log-probability",
+     "reference-log-prob",
+     "bradley-terry",
+     "dpo-loss"
+    ],
+    "edges": [
+     "logprob-bradley",
+     "reflogprob-bradley",
+     "bradley-loss"
+    ]
+   },
+   {
+    "title": "Cálculo de la recompensa implícita",
+    "description": "Cálculo de recompensas implícitas sin un modelo explícito",
+    "input": "",
+    "nodes": [
+     "implicit-reward",
+     "reward-margin",
+     "kl-regularization",
+     "beta-tuning"
+    ],
+    "edges": [
+     "logprob-implicit",
+     "reflogprob-implicit",
+     "implicit-margin",
+     "margin-kl",
+     "kl-beta"
+    ]
+   },
+   {
+    "title": "Integración de la pérdida",
+    "description": "Combinación de la pérdida DPO con la regularización",
+    "input": "",
+    "nodes": [
+     "beta-tuning",
+     "dpo-loss"
+    ],
+    "edges": [
+     "beta-loss"
+    ]
+   },
+   {
+    "title": "Optimización por gradiente",
+    "description": "Cálculo de gradientes y actualización de parámetros",
+    "input": "",
+    "nodes": [
+     "dpo-loss",
+     "gradient-computation",
+     "adam-optimizer",
+     "gradient-clipping",
+     "parameter-update"
+    ],
+    "edges": [
+     "loss-gradient",
+     "gradient-adam",
+     "adam-clipping",
+     "clipping-update"
+    ]
+   },
+   {
+    "title": "Actualización de parámetros",
+    "description": "Actualización de los parámetros del modelo de política",
+    "input": "",
+    "nodes": [
+     "parameter-update",
+     "policy-model"
+    ],
+    "edges": [
+     "update-policy"
+    ]
+   },
+   {
+    "title": "Evaluación del desempeño",
+    "description": "Evaluación de las métricas de desempeño del modelo",
+    "input": "",
+    "nodes": [
+     "win-rate",
+     "reward-accuracy",
+     "kl-divergence-metric",
+     "validation-loss",
+     "convergence-monitor"
+    ],
+    "edges": [
+     "policy-winrate",
+     "implicit-accuracy",
+     "kl-metric",
+     "loss-validation",
+     "validation-convergence"
+    ]
+   },
+   {
+    "title": "Optimización del modelo completada",
+    "description": "Producción de un modelo optimizado con alineación directa de preferencias",
+    "input": "",
+    "nodes": [
+     "win-rate",
+     "reward-accuracy",
+     "convergence-monitor",
+     "optimized-model",
+     "aligned-response"
+    ],
+    "edges": [
+     "winrate-optimized",
+     "accuracy-optimized",
+     "convergence-optimized",
+     "optimized-response"
+    ]
+   }
+  ]
+ }
+}

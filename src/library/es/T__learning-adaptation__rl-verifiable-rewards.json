@@ -1,0 +1,354 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "rl-verifiable-rewards",
+ "name": "RL from Verifiable Rewards (RLVR)(RLVR)",
+ "icon": "🏅",
+ "complexity": "high",
+ "description": "Entrena modelos de razonamiento con aprendizaje por refuerzo usando recompensas verificables automáticamente, como si una respuesta matemática coincide con la verdad de referencia o si el código pasa sus pruebas, en lugar de modelos de preferencia aprendidos. Como la recompensa solo evalúa la corrección final, surgen largas cadenas de pensamiento con retrocesos y autoverificación sin razonamientos supervisados. Esto se diferencia de RLHF, RLAIF y DPO, que optimizan preferencias humanas o de IA.",
+ "features": [
+  "Recompensas verificables automáticamente (corrección matemática o de código)",
+  "No requiere trazas de razonamiento supervisadas",
+  "Cadenas de pensamiento largas emergentes con retrocesos",
+  "Autoverificación y revisión emergentes",
+  "Optimización de política relativa al grupo (GRPO)",
+  "Se diferencia de RLHF, RLAIF y DPO, basados en preferencias"
+ ],
+ "tldr": {
+  "what": "Entrena un modelo con RL usando recompensas verificables automáticamente (corrección matemática, pruebas de código) solo sobre las salidas finales, lo que permite que surjan cadenas de razonamiento y autoverificación sin razonamientos supervisados.",
+  "when": "Problemas con respuestas de referencia deterministas y verificables donde quieres que el modelo descubra su propio proceso de razonamiento sin soluciones etiquetadas paso a paso.",
+  "watchOut": "Requiere una enorme capacidad de cómputo para muestrear muchas soluciones candidatas por problema; la mayoría fallan, lo que hace que el entrenamiento sea costoso y lento en comparación con los enfoques supervisados."
+ },
+ "overview": null,
+ "flow": {
+  "title": "RL from Verifiable Rewards (RLVR)",
+  "description": "Entrena un modelo de razonamiento con aprendizaje por refuerzo usando recompensas verificables automáticamente. La política muestrea soluciones, un verificador determinista califica las respuestas finales, GRPO actualiza la política, y a lo largo del entrenamiento surgen cadenas de pensamiento largas con retrocesos y autoverificación sin ningún razonamiento supervisado.",
+  "nodes": [
+   {
+    "id": "problem",
+    "label": "🧮 Problema matemático\nNivel de competencia\nRespuesta de referencia conocida",
+    "x": 340,
+    "y": 50,
+    "w": 230
+   },
+   {
+    "id": "base-model",
+    "label": "🤖 Modelo base (política)\nPreentrenado, sin razonamientos",
+    "x": 340,
+    "y": 150,
+    "w": 230
+   },
+   {
+    "id": "sample-group",
+    "label": "🎲 Grupo de muestras\nG = 8 soluciones candidatas\ncada una termina en una respuesta encuadrada",
+    "x": 340,
+    "y": 250,
+    "w": 230
+   },
+   {
+    "id": "sol-1",
+    "label": "📝 Solución 1\nCoT corto -> correcta",
+    "x": 60,
+    "y": 355,
+    "w": 160
+   },
+   {
+    "id": "sol-2",
+    "label": "📝 Solución 2\nCoT -> incorrecta",
+    "x": 330,
+    "y": 355,
+    "w": 160
+   },
+   {
+    "id": "sol-3",
+    "label": "📝 Solución 3\nCoT largo -> correcta",
+    "x": 600,
+    "y": 355,
+    "w": 160
+   },
+   {
+    "id": "verifier",
+    "label": "✅ Verificador\nCoincidencia numérica / pruebas unitarias\nsin modelo de recompensa aprendido",
+    "x": 330,
+    "y": 460,
+    "w": 220
+   },
+   {
+    "id": "verify-watch",
+    "label": "⚠️ Guardrail del verificador\nVigila el reward hacking",
+    "x": 620,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "rewards",
+    "label": "🏅 Recompensas\n+1 correcta, 0 incorrecta\n+ pequeña recompensa de formato",
+    "x": 330,
+    "y": 560,
+    "w": 220
+   },
+   {
+    "id": "grpo",
+    "label": "📐 Actualización GRPO\nVentaja frente a la media del grupo\nsin red de valor",
+    "x": 330,
+    "y": 660,
+    "w": 220
+   },
+   {
+    "id": "updated-policy",
+    "label": "🔄 Política actualizada\nrefuerza las soluciones\npor encima del promedio",
+    "x": 60,
+    "y": 640,
+    "w": 190
+   },
+   {
+    "id": "emergent-length",
+    "label": "📈 CoT más largo\ncrece la longitud promedio de respuesta",
+    "x": 620,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "emergent-backtrack",
+    "label": "🔁 Retroceso\nvuelve a derivar, se autoverifica, corrige",
+    "x": 620,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "aha-moment",
+    "label": "💡 Momento eureka\nse detiene a reconsiderar el enfoque",
+    "x": 330,
+    "y": 765,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "🏆 Modelo de razonamiento\nel pass@1 en AIME sube drásticamente",
+    "x": 60,
+    "y": 770,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-problem-model",
+    "s": "problem",
+    "t": "base-model",
+    "label": ""
+   },
+   {
+    "id": "e-model-sample",
+    "s": "base-model",
+    "t": "sample-group",
+    "label": "Muestrear G=8"
+   },
+   {
+    "id": "e-sample-sol1",
+    "s": "sample-group",
+    "t": "sol-1",
+    "label": ""
+   },
+   {
+    "id": "e-sample-sol2",
+    "s": "sample-group",
+    "t": "sol-2",
+    "label": ""
+   },
+   {
+    "id": "e-sample-sol3",
+    "s": "sample-group",
+    "t": "sol-3",
+    "label": ""
+   },
+   {
+    "id": "e-sol1-verifier",
+    "s": "sol-1",
+    "t": "verifier",
+    "label": ""
+   },
+   {
+    "id": "e-sol2-verifier",
+    "s": "sol-2",
+    "t": "verifier",
+    "label": ""
+   },
+   {
+    "id": "e-sol3-verifier",
+    "s": "sol-3",
+    "t": "verifier",
+    "label": ""
+   },
+   {
+    "id": "e-verifier-watch",
+    "s": "verifier",
+    "t": "verify-watch",
+    "label": "Monitorear"
+   },
+   {
+    "id": "e-verifier-rewards",
+    "s": "verifier",
+    "t": "rewards",
+    "label": "+1 / 0"
+   },
+   {
+    "id": "e-rewards-grpo",
+    "s": "rewards",
+    "t": "grpo",
+    "label": ""
+   },
+   {
+    "id": "e-grpo-updated",
+    "s": "grpo",
+    "t": "updated-policy",
+    "label": "Ventaja frente a la media"
+   },
+   {
+    "id": "e-updated-model",
+    "s": "updated-policy",
+    "t": "base-model",
+    "label": "Siguiente paso (política theta)"
+   },
+   {
+    "id": "e-grpo-length",
+    "s": "grpo",
+    "t": "emergent-length",
+    "label": "A lo largo de los pasos de entrenamiento"
+   },
+   {
+    "id": "e-length-backtrack",
+    "s": "emergent-length",
+    "t": "emergent-backtrack",
+    "label": ""
+   },
+   {
+    "id": "e-backtrack-aha",
+    "s": "emergent-backtrack",
+    "t": "aha-moment",
+    "label": ""
+   },
+   {
+    "id": "e-aha-output",
+    "s": "aha-moment",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Problema y modelo base",
+    "description": "El entrenamiento parte de un modelo base preentrenado. Para cada problema solo se calificará la respuesta final, y no se proporcionan trazas de razonamiento escritas por humanos.",
+    "input": "",
+    "nodes": [
+     "problem",
+     "base-model"
+    ],
+    "edges": [
+     "e-problem-model"
+    ]
+   },
+   {
+    "title": "Muestrear un grupo de soluciones",
+    "description": "La política muestrea un grupo de G=8 soluciones candidatas para el problema, cada una es una cadena de pensamiento completa que termina en una respuesta final encuadrada.",
+    "input": "",
+    "nodes": [
+     "base-model",
+     "sample-group",
+     "sol-1",
+     "sol-2",
+     "sol-3"
+    ],
+    "edges": [
+     "e-model-sample",
+     "e-sample-sol1",
+     "e-sample-sol2",
+     "e-sample-sol3"
+    ]
+   },
+   {
+    "title": "Verificar las respuestas finales",
+    "description": "Un verificador determinista revisa cada respuesta final mediante coincidencia numérica o pruebas unitarias. Aquí las soluciones 1 y 3 son correctas y la solución 2 es incorrecta. Un guardrail vigila al verificador para detectar reward hacking.",
+    "input": "",
+    "nodes": [
+     "sol-1",
+     "sol-2",
+     "sol-3",
+     "verifier",
+     "verify-watch"
+    ],
+    "edges": [
+     "e-sol1-verifier",
+     "e-sol2-verifier",
+     "e-sol3-verifier",
+     "e-verifier-watch"
+    ]
+   },
+   {
+    "title": "Asignar recompensas verificables",
+    "description": "El verificador asigna +1 a las respuestas correctas y 0 en otro caso, más una pequeña recompensa de formato por una salida bien formada. No interviene ningún modelo de preferencia.",
+    "input": "",
+    "nodes": [
+     "verifier",
+     "rewards"
+    ],
+    "edges": [
+     "e-verifier-rewards"
+    ]
+   },
+   {
+    "title": "Actualización de la política con GRPO",
+    "description": "GRPO calcula la ventaja de cada muestra en relación con la recompensa media del grupo y actualiza la política, reforzando las soluciones por encima del promedio sin entrenar una red de valor separada.",
+    "input": "",
+    "nodes": [
+     "rewards",
+     "grpo",
+     "updated-policy"
+    ],
+    "edges": [
+     "e-rewards-grpo",
+     "e-grpo-updated"
+    ]
+   },
+   {
+    "title": "Actualizar y repetir",
+    "description": "La política actualizada reemplaza al modelo base en el siguiente paso, y el bucle se repite durante miles de pasos sobre muchos problemas.",
+    "input": "",
+    "nodes": [
+     "updated-policy",
+     "base-model",
+     "grpo"
+    ],
+    "edges": [
+     "e-updated-model"
+    ]
+   },
+   {
+    "title": "Razonamiento emergente",
+    "description": "A medida que avanza el entrenamiento, la longitud promedio de las respuestas crece y el modelo retrocede y se autoverifica de forma espontánea. El trabajo de R1 documenta un momento eureka en el que el modelo se detiene a reconsiderar su enfoque.",
+    "input": "",
+    "nodes": [
+     "grpo",
+     "emergent-length",
+     "emergent-backtrack",
+     "aha-moment"
+    ],
+    "edges": [
+     "e-grpo-length",
+     "e-length-backtrack",
+     "e-backtrack-aha"
+    ]
+   },
+   {
+    "title": "Modelo de razonamiento",
+    "description": "Usando solo recompensas verificables automáticamente, el pass@1 en problemas de estilo AIME sube drásticamente por encima del modelo base, sin razonamientos supervisados en ningún momento.",
+    "input": "",
+    "nodes": [
+     "aha-moment",
+     "output"
+    ],
+    "edges": [
+     "e-aha-output"
+    ]
+   }
+  ]
+ }
+}

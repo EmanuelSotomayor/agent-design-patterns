@@ -1,0 +1,691 @@
+{
+ "cat": "parallelization",
+ "slug": "async-await",
+ "name": "Async-Await",
+ "icon": "⏳",
+ "complexity": "medium",
+ "description": "Ejecución asíncrona no bloqueante con coordinación basada en promesas",
+ "features": [
+  "Operaciones no bloqueantes",
+  "Coordinación basada en promesas",
+  "Manejo de errores",
+  "Eficiencia de recursos"
+ ],
+ "tldr": {
+  "what": "Lanza varias operaciones de forma concurrente sin bloquear y recoge los resultados mediante promesas antes de continuar.",
+  "when": "Tareas independientes que pueden ejecutarse en paralelo, donde el tiempo total importa más que la ejecución secuencial.",
+  "watchOut": "Los rechazos de promesas no manejados en una tarea pueden fallar en silencio o hacer caer toda la coordinación si falta el manejo de errores."
+ },
+ "overview": {
+  "pattern": "Ejecución asíncrona no bloqueante con coordinación basada en promesas",
+  "why": "Mejora el throughput y la capacidad de respuesta manteniendo la legibilidad del código",
+  "insight": "Promise → async/await → [concurrent_operations] → await_results",
+  "impl": [
+   {
+    "t": "Identificar",
+    "d": "Encuentra las operaciones asíncronas (I/O, red, etc.)"
+   },
+   {
+    "t": "Envolver",
+    "d": "Usa promesas con manejo de errores y timeouts"
+   },
+   {
+    "t": "Async/Await",
+    "d": "Escribe código asíncrono con apariencia secuencial"
+   },
+   {
+    "t": "Concurrencia",
+    "d": "Ejecuta varias operaciones en paralelo"
+   },
+   {
+    "t": "Coordinar",
+    "d": "Usa Promise.all/race para la orquestación"
+   }
+  ],
+  "example": "async_ops → [Promise.all([op1, op2, op3])] → await_results → process",
+  "dos": [
+   "Usa Promise.all para operaciones concurrentes independientes",
+   "Aplica Promise.race para escenarios de timeout y de primera respuesta",
+   "Implementa límites de error y bloques catch adecuados",
+   "Define timeouts apropiados para evitar bloqueos indefinidos",
+   "Usa iteradores asíncronos para datos en streaming"
+  ],
+  "donts": [
+   "Olvidar hacer await de las operaciones asíncronas",
+   "Crear cascadas de async/await que eliminan la concurrencia",
+   "Ignorar el manejo de errores en las cadenas de promesas",
+   "Bloquear el event loop con operaciones intensivas en CPU",
+   "Omitir el manejo de timeouts en operaciones largas"
+  ],
+  "use": [
+   "Operaciones intensivas en I/O",
+   "Múltiples llamadas a API independientes",
+   "Tareas en segundo plano no bloqueantes",
+   "Arquitecturas orientadas a eventos"
+  ],
+  "avoid": [
+   "Operaciones síncronas simples",
+   "Tareas intensivas en CPU",
+   "Orden de ejecución secuencial crítico",
+   "Requisitos de tiempos deterministas"
+  ],
+  "metrics": [
+   {
+    "n": "Mejora del tiempo de respuesta",
+    "d": "Reducción de latencia frente a la ejecución secuencial"
+   },
+   {
+    "n": "Aumento del throughput",
+    "d": "Operaciones por unidad de tiempo con paralelismo"
+   },
+   {
+    "n": "Efectividad del manejo de errores",
+    "d": "Tasa de éxito de la recuperación controlada"
+   },
+   {
+    "n": "Utilización de recursos",
+    "d": "Mejoras de eficiencia en CPU y memoria"
+   },
+   {
+    "n": "Tasa de resolución de promesas",
+    "d": "% de operaciones que terminan dentro del timeout"
+   },
+   {
+    "n": "Eficiencia de la concurrencia",
+    "d": "Operaciones en paralelo frente al costo de coordinación"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Integración de APIs",
+    "d": "Llamadas concurrentes a servicios → reunir respuestas → procesar resultados"
+   },
+   {
+    "n": "Procesamiento de archivos",
+    "d": "I/O de archivos en paralelo → procesar flujos de datos → agregar la salida"
+   },
+   {
+    "n": "Operaciones de base de datos",
+    "d": "Consultas concurrentes → combinar resultados → devolver el dataset"
+   },
+   {
+    "n": "Coordinación de microservicios",
+    "d": "Llamadas a servicios en paralelo → orquestar respuestas"
+   },
+   {
+    "n": "Procesamiento en tiempo real",
+    "d": "Procesamiento de streams → análisis concurrente → resultados en vivo"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Async-Await",
+  "description": "Muestra la ejecución asíncrona no bloqueante con coordinación basada en promesas y gestión de operaciones concurrentes",
+  "nodes": [
+   {
+    "id": "client-request",
+    "label": "Solicitud del cliente\n\"Obtener los datos del dashboard del usuario\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "async-coordinator",
+    "label": "Coordinador asíncrono\nGestiona operaciones concurrentes",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "promise-manager",
+    "label": "Gestor de promesas\nCoordina operaciones asíncronas",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "fetch-profile",
+    "label": "Obtener perfil\nGET /api/user/profile",
+    "x": 150,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "fetch-orders",
+    "label": "Obtener pedidos\nGET /api/user/orders",
+    "x": 350,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "fetch-preferences",
+    "label": "Obtener preferencias\nGET /api/user/preferences",
+    "x": 550,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "fetch-notifications",
+    "label": "Obtener notificaciones\nGET /api/user/notifications",
+    "x": 750,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "fetch-analytics",
+    "label": "Obtener analíticas\nGET /api/user/analytics",
+    "x": 950,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "profile-promise",
+    "label": "Promesa de perfil\nPendiente → Resuelta",
+    "x": 150,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "orders-promise",
+    "label": "Promesa de pedidos\nPendiente → Resuelta",
+    "x": 350,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "preferences-promise",
+    "label": "Promesa de preferencias\nPendiente → Resuelta",
+    "x": 550,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "notifications-promise",
+    "label": "Promesa de notificaciones\nPendiente → Resuelta",
+    "x": 750,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "analytics-promise",
+    "label": "Promesa de analíticas\nPendiente → Rechazada",
+    "x": 950,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "await-sync",
+    "label": "Sincronización con await\nPromise.allSettled()",
+    "x": 500,
+    "y": 760,
+    "w": 200
+   },
+   {
+    "id": "result-processor",
+    "label": "Procesador de resultados\nManeja los datos resueltos",
+    "x": 300,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "error-handler",
+    "label": "Manejador de errores\nManeja las promesas rechazadas",
+    "x": 700,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "response-aggregator",
+    "label": "Agregador de respuestas\nCombina todos los resultados",
+    "x": 500,
+    "y": 1040,
+    "w": 200
+   },
+   {
+    "id": "event-loop",
+    "label": "Event loop\nEjecución no bloqueante",
+    "x": 200,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "promise-pool",
+    "label": "Pool de promesas\nGestión de la concurrencia",
+    "x": 800,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "microtask-queue",
+    "label": "Cola de microtareas\nCola de resolución de promesas",
+    "x": 100,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "callback-scheduler",
+    "label": "Planificador de callbacks\nGestión de callbacks asíncronos",
+    "x": 900,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "performance-monitor",
+    "label": "Monitor de rendimiento\n• Solicitudes concurrentes: 5\\n• Tiempo de respuesta: 245ms\\n• Tasa de éxito: 80%\\n• Uso de memoria: 12MB\\n• Utilización de CPU: 15%",
+    "x": 50,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "network-manager",
+    "label": "Gestor de red\n• Conexiones activas: 5\\n• Keep-alive: habilitado\\n• Pool de conexiones: 10\\n• Timeout: 5000ms\\n• Política de reintentos: 3 intentos",
+    "x": 1100,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "memory-manager",
+    "label": "Gestor de memoria\nRecolección de basura\\nLimpieza de promesas",
+    "x": 100,
+    "y": 900,
+    "w": 140
+   },
+   {
+    "id": "resource-cleanup",
+    "label": "Limpieza de recursos\nCierre de conexiones\\nLiberación de memoria",
+    "x": 900,
+    "y": 900,
+    "w": 140
+   },
+   {
+    "id": "final-response",
+    "label": "Respuesta final\nDatos del dashboard listos",
+    "x": 500,
+    "y": 1180,
+    "w": 200
+   },
+   {
+    "id": "context-tracker",
+    "label": "Rastreador de contexto\nPila de llamadas asíncronas\\nContexto de ejecución",
+    "x": 200,
+    "y": 1180,
+    "w": 160
+   },
+   {
+    "id": "performance-analyzer",
+    "label": "Analizador de rendimiento\nMétricas de latencia\\nAnálisis de throughput",
+    "x": 800,
+    "y": 1180,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-client-coordinator",
+    "s": "client-request",
+    "t": "async-coordinator",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-manager",
+    "s": "async-coordinator",
+    "t": "promise-manager",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-eventloop",
+    "s": "async-coordinator",
+    "t": "event-loop",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-pool",
+    "s": "async-coordinator",
+    "t": "promise-pool",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-microtask",
+    "s": "async-coordinator",
+    "t": "microtask-queue",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-scheduler",
+    "s": "async-coordinator",
+    "t": "callback-scheduler",
+    "label": ""
+   },
+   {
+    "id": "e-manager-profile",
+    "s": "promise-manager",
+    "t": "fetch-profile",
+    "label": "async"
+   },
+   {
+    "id": "e-manager-orders",
+    "s": "promise-manager",
+    "t": "fetch-orders",
+    "label": "async"
+   },
+   {
+    "id": "e-manager-preferences",
+    "s": "promise-manager",
+    "t": "fetch-preferences",
+    "label": "async"
+   },
+   {
+    "id": "e-manager-notifications",
+    "s": "promise-manager",
+    "t": "fetch-notifications",
+    "label": "async"
+   },
+   {
+    "id": "e-manager-analytics",
+    "s": "promise-manager",
+    "t": "fetch-analytics",
+    "label": "async"
+   },
+   {
+    "id": "e-profile-promise",
+    "s": "fetch-profile",
+    "t": "profile-promise",
+    "label": ""
+   },
+   {
+    "id": "e-orders-promise",
+    "s": "fetch-orders",
+    "t": "orders-promise",
+    "label": ""
+   },
+   {
+    "id": "e-preferences-promise",
+    "s": "fetch-preferences",
+    "t": "preferences-promise",
+    "label": ""
+   },
+   {
+    "id": "e-notifications-promise",
+    "s": "fetch-notifications",
+    "t": "notifications-promise",
+    "label": ""
+   },
+   {
+    "id": "e-analytics-promise",
+    "s": "fetch-analytics",
+    "t": "analytics-promise",
+    "label": ""
+   },
+   {
+    "id": "e-profile-sync",
+    "s": "profile-promise",
+    "t": "await-sync",
+    "label": ""
+   },
+   {
+    "id": "e-orders-sync",
+    "s": "orders-promise",
+    "t": "await-sync",
+    "label": ""
+   },
+   {
+    "id": "e-preferences-sync",
+    "s": "preferences-promise",
+    "t": "await-sync",
+    "label": ""
+   },
+   {
+    "id": "e-notifications-sync",
+    "s": "notifications-promise",
+    "t": "await-sync",
+    "label": ""
+   },
+   {
+    "id": "e-analytics-sync",
+    "s": "analytics-promise",
+    "t": "await-sync",
+    "label": ""
+   },
+   {
+    "id": "e-sync-processor",
+    "s": "await-sync",
+    "t": "result-processor",
+    "label": ""
+   },
+   {
+    "id": "e-sync-error",
+    "s": "await-sync",
+    "t": "error-handler",
+    "label": ""
+   },
+   {
+    "id": "e-processor-aggregator",
+    "s": "result-processor",
+    "t": "response-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-error-aggregator",
+    "s": "error-handler",
+    "t": "response-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-aggregator-response",
+    "s": "response-aggregator",
+    "t": "final-response",
+    "label": ""
+   },
+   {
+    "id": "e-memory-processor",
+    "s": "memory-manager",
+    "t": "result-processor",
+    "label": ""
+   },
+   {
+    "id": "e-cleanup-error",
+    "s": "resource-cleanup",
+    "t": "error-handler",
+    "label": ""
+   },
+   {
+    "id": "e-response-context",
+    "s": "final-response",
+    "t": "context-tracker",
+    "label": ""
+   },
+   {
+    "id": "e-response-analyzer",
+    "s": "final-response",
+    "t": "performance-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-perf-profile",
+    "s": "performance-monitor",
+    "t": "fetch-profile",
+    "label": ""
+   },
+   {
+    "id": "e-network-analytics",
+    "s": "network-manager",
+    "t": "fetch-analytics",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Inicio de la solicitud del cliente",
+    "description": "El cliente inicia una solicitud de datos completos del dashboard que requiere varias operaciones asíncronas.",
+    "input": "Solicitud: obtener los datos del dashboard del usuario, incluidos perfil, pedidos, preferencias, notificaciones y analíticas",
+    "nodes": [
+     "client-request"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Configuración del coordinador asíncrono",
+    "description": "Inicializa el coordinador asíncrono para gestionar de forma eficiente varias operaciones concurrentes.",
+    "input": "Configuración del coordinador: preparar las operaciones asíncronas concurrentes e inicializar la gestión de promesas",
+    "nodes": [
+     "client-request",
+     "async-coordinator"
+    ],
+    "edges": [
+     "e-client-coordinator"
+    ]
+   },
+   {
+    "title": "Event loop y sistemas de soporte",
+    "description": "Inicializa el event loop, la cola de microtareas y los demás sistemas de soporte asíncrono.",
+    "input": "Inicialización del sistema: event loop, cola de microtareas, planificador de callbacks y configuración del pool de promesas",
+    "nodes": [
+     "event-loop",
+     "microtask-queue",
+     "callback-scheduler",
+     "promise-pool"
+    ],
+    "edges": [
+     "e-coordinator-eventloop",
+     "e-coordinator-microtask",
+     "e-coordinator-scheduler",
+     "e-coordinator-pool"
+    ]
+   },
+   {
+    "title": "Activación del gestor de promesas",
+    "description": "Activa el gestor de promesas para coordinar varias operaciones asíncronas.",
+    "input": "Coordinación de promesas: configurar operaciones de obtención concurrentes con un manejo de errores adecuado",
+    "nodes": [
+     "promise-manager"
+    ],
+    "edges": [
+     "e-coordinator-manager"
+    ]
+   },
+   {
+    "title": "Lanzamiento de operaciones asíncronas concurrentes",
+    "description": "Lanza todas las operaciones asíncronas al mismo tiempo para lograr la máxima eficiencia.",
+    "input": "Lanzamiento concurrente: 5 operaciones asíncronas de obtención iniciadas en paralelo",
+    "nodes": [
+     "fetch-profile",
+     "fetch-orders",
+     "fetch-preferences",
+     "fetch-notifications",
+     "fetch-analytics"
+    ],
+    "edges": [
+     "e-manager-profile",
+     "e-manager-orders",
+     "e-manager-preferences",
+     "e-manager-notifications",
+     "e-manager-analytics"
+    ]
+   },
+   {
+    "title": "Transiciones de estado de las promesas",
+    "description": "Monitorea las transiciones de estado de las promesas de pendiente a resuelta/rechazada.",
+    "input": "Monitoreo de promesas: seguir el estado de cada operación y manejar su resolución o rechazo",
+    "nodes": [
+     "profile-promise",
+     "orders-promise",
+     "preferences-promise",
+     "notifications-promise",
+     "analytics-promise"
+    ],
+    "edges": [
+     "e-profile-promise",
+     "e-orders-promise",
+     "e-preferences-promise",
+     "e-notifications-promise",
+     "e-analytics-promise"
+    ]
+   },
+   {
+    "title": "Punto de sincronización con await",
+    "description": "Sincroniza todas las promesas usando await con Promise.allSettled para lograr tolerancia a fallos.",
+    "input": "Sincronización: await Promise.allSettled() para manejar tanto las operaciones exitosas como las fallidas",
+    "nodes": [
+     "await-sync"
+    ],
+    "edges": [
+     "e-profile-sync",
+     "e-orders-sync",
+     "e-preferences-sync",
+     "e-notifications-sync",
+     "e-analytics-sync"
+    ]
+   },
+   {
+    "title": "Procesamiento de resultados y manejo de errores",
+    "description": "Procesa los resultados exitosos y maneja cualquier error o rechazo.",
+    "input": "Procesamiento de resultados: extraer los datos exitosos y manejar de forma controlada las operaciones fallidas",
+    "nodes": [
+     "result-processor",
+     "error-handler",
+     "memory-manager",
+     "resource-cleanup"
+    ],
+    "edges": [
+     "e-sync-processor",
+     "e-sync-error",
+     "e-memory-processor",
+     "e-cleanup-error"
+    ]
+   },
+   {
+    "title": "Agregación de respuestas",
+    "description": "Agrega todos los resultados procesados en una estructura de respuesta unificada.",
+    "input": "Agregación: combinar los resultados exitosos y la información de errores en una respuesta unificada",
+    "nodes": [
+     "response-aggregator"
+    ],
+    "edges": [
+     "e-processor-aggregator",
+     "e-error-aggregator"
+    ]
+   },
+   {
+    "title": "Entrega de la respuesta final",
+    "description": "Entrega al cliente la respuesta agregada junto con métricas de rendimiento.",
+    "input": "Entrega de la respuesta: enviar los datos completos del dashboard con metadatos e información de rendimiento",
+    "nodes": [
+     "final-response",
+     "performance-monitor",
+     "network-manager"
+    ],
+    "edges": [
+     "e-aggregator-response",
+     "e-perf-profile",
+     "e-network-analytics"
+    ]
+   },
+   {
+    "title": "Análisis de contexto y rendimiento",
+    "description": "Analiza el contexto de ejecución y las características de rendimiento de las operaciones asíncronas.",
+    "input": "Análisis de rendimiento: medir la eficiencia de la ejecución asíncrona y la utilización de recursos",
+    "nodes": [
+     "context-tracker",
+     "performance-analyzer"
+    ],
+    "edges": [
+     "e-response-context",
+     "e-response-analyzer"
+    ]
+   },
+   {
+    "title": "Finalización del patrón Async-Await",
+    "description": "Completa la ejecución async-await con resultados y conclusiones completos.",
+    "input": "",
+    "nodes": [
+     "context-tracker",
+     "performance-analyzer"
+    ],
+    "edges": [
+     "e-response-context",
+     "e-response-analyzer"
+    ]
+   }
+  ]
+ }
+}

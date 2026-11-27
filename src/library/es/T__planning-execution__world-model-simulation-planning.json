@@ -1,0 +1,371 @@
+{
+ "cat": "planning-execution",
+ "slug": "world-model-simulation-planning",
+ "name": "World-Model Simulation Planning(WMSP)",
+ "icon": "🔮",
+ "complexity": "high",
+ "description": "El agente mantiene un modelo del mundo (o usa al propio LLM como tal) que predice el siguiente estado y la consecuencia de cada acción candidata, y luego ejecuta simulaciones anticipadas (\"imaginar antes de actuar\") para puntuar y seleccionar una acción antes de ejecutar nada en el entorno real. Esto extiende el aprendizaje por refuerzo basado en modelos a los agentes de lenguaje y es especialmente importante cuando las acciones son irreversibles y es imposible retroceder en un sitio web o una GUI en vivo. Se diferencia de scenario-planning, que razona sobre varios futuros estratégicos sin un simulador de acción-consecuencia, y de reflective-mcts, que busca sobre trazas de razonamiento en lugar de estados simulados del entorno.",
+ "features": [
+  "El LLM o un modelo aprendido simula el resultado de cada acción candidata",
+  "Las simulaciones anticipadas puntúan las acciones antes de cualquier ejecución real",
+  "Evita errores irreversibles en entornos web y GUI en vivo",
+  "Una función de valor o un puntuador clasifica los estados finales simulados",
+  "Más eficiente que una búsqueda en árbol que no puede deshacer una acción en vivo",
+  "Las variantes autoevolutivas actualizan el modelo del mundo a partir de los errores de predicción"
+ ],
+ "tldr": {
+  "what": "El agente simula los resultados de las acciones candidatas con un LLM o un modelo aprendido, los puntúa y luego ejecuta la mejor en el entorno real.",
+  "when": "Acciones irreversibles en sitios web o GUIs en vivo, donde retroceder es imposible o costoso y los errores tienen consecuencias graves.",
+  "watchOut": "Los errores de simulación se acumulan: una predicción errónea al inicio de la simulación se propaga en una mala selección de acciones, aunque la lógica de puntuación sea correcta."
+ },
+ "overview": null,
+ "flow": {
+  "title": "World-Model Simulation Planning",
+  "description": "Un agente web usa el LLM como modelo del mundo para simular la consecuencia de cada acción candidata y ejecutar simulaciones anticipadas antes de hacer nada, de modo que elige una acción reversible en lugar de una irreversible en un sitio en vivo.",
+  "nodes": [
+   {
+    "id": "user-goal",
+    "label": "🎯 Objetivo del usuario\n\"Quita el newsletter de ACME de mi bandeja de entrada\"",
+    "x": 350,
+    "y": 30,
+    "w": 300
+   },
+   {
+    "id": "web-agent",
+    "label": "🤖 Agente web\nPlanificador basado en modelos",
+    "x": 360,
+    "y": 130,
+    "w": 220
+   },
+   {
+    "id": "observe-state",
+    "label": "👁️ Observar estado\nDOM de la bandeja: fila del mensaje + botones de acción",
+    "x": 110,
+    "y": 220,
+    "w": 220
+   },
+   {
+    "id": "candidate-gen",
+    "label": "🧭 Acciones candidatas\nEliminar / Archivar / Desuscribir+Archivar",
+    "x": 570,
+    "y": 220,
+    "w": 220
+   },
+   {
+    "id": "world-model",
+    "label": "🔮 Modelo del mundo (LLM)\nSimula el siguiente estado por acción",
+    "x": 350,
+    "y": 320,
+    "w": 260
+   },
+   {
+    "id": "sim-delete",
+    "label": "🅰️ sim: Eliminar\nMensaje borrado permanentemente\n(irreversible)",
+    "x": 40,
+    "y": 420,
+    "w": 190
+   },
+   {
+    "id": "sim-archive",
+    "label": "🅱️ sim: Archivar\nSale de la bandeja, se conserva en Todos",
+    "x": 330,
+    "y": 420,
+    "w": 190
+   },
+   {
+    "id": "sim-unsub",
+    "label": "🅲 sim: Desuscribir+Archivar\nDetiene futuros + sale de la bandeja",
+    "x": 620,
+    "y": 420,
+    "w": 190
+   },
+   {
+    "id": "value-scorer",
+    "label": "📊 Puntuador de valor\nPuntúa cada estado final simulado",
+    "x": 300,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "score-board",
+    "label": "🧮 Puntajes\nEliminar 0.4 | Archivar 0.8 | Desuscribir 0.9",
+    "x": 610,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "irreversible-guard",
+    "label": "⛔ Verificación de irreversibilidad\nEliminar es permanente -> rechazar",
+    "x": 40,
+    "y": 620,
+    "w": 200
+   },
+   {
+    "id": "select-action",
+    "label": "✅ Seleccionar acción\nargmax valor = Desuscribir+Archivar",
+    "x": 330,
+    "y": 620,
+    "w": 240
+   },
+   {
+    "id": "execute",
+    "label": "🖱️ Ejecutar de verdad\nDesuscribir -> confirmar -> Archivar",
+    "x": 300,
+    "y": 710,
+    "w": 240
+   },
+   {
+    "id": "reactive-contrast",
+    "label": "⚠️ Agente reactivo (sin modelo del mundo)\nHace clic en el primer botón = Eliminar -> pérdida de datos",
+    "x": 630,
+    "y": 710,
+    "w": 240
+   },
+   {
+    "id": "real-state",
+    "label": "📥 Estado real de la bandeja\nBandeja -1, newsletter desuscrito",
+    "x": 180,
+    "y": 790,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✨ Resultado\nLimpieza correcta y reversible; no se pierde nada",
+    "x": 450,
+    "y": 790,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-agent",
+    "s": "user-goal",
+    "t": "web-agent",
+    "label": "Tarea"
+   },
+   {
+    "id": "agent-observe",
+    "s": "web-agent",
+    "t": "observe-state",
+    "label": "Observar"
+   },
+   {
+    "id": "agent-candidates",
+    "s": "web-agent",
+    "t": "candidate-gen",
+    "label": "Enumerar"
+   },
+   {
+    "id": "observe-wm",
+    "s": "observe-state",
+    "t": "world-model",
+    "label": "Estado"
+   },
+   {
+    "id": "candidates-wm",
+    "s": "candidate-gen",
+    "t": "world-model",
+    "label": "Acciones"
+   },
+   {
+    "id": "wm-simdelete",
+    "s": "world-model",
+    "t": "sim-delete",
+    "label": "Simular"
+   },
+   {
+    "id": "wm-simarchive",
+    "s": "world-model",
+    "t": "sim-archive",
+    "label": "Simular"
+   },
+   {
+    "id": "wm-simunsub",
+    "s": "world-model",
+    "t": "sim-unsub",
+    "label": "Simular"
+   },
+   {
+    "id": "simdelete-scorer",
+    "s": "sim-delete",
+    "t": "value-scorer",
+    "label": ""
+   },
+   {
+    "id": "simarchive-scorer",
+    "s": "sim-archive",
+    "t": "value-scorer",
+    "label": ""
+   },
+   {
+    "id": "simunsub-scorer",
+    "s": "sim-unsub",
+    "t": "value-scorer",
+    "label": ""
+   },
+   {
+    "id": "scorer-board",
+    "s": "value-scorer",
+    "t": "score-board",
+    "label": "Clasificar"
+   },
+   {
+    "id": "simdelete-guard",
+    "s": "sim-delete",
+    "t": "irreversible-guard",
+    "label": "Irreversible"
+   },
+   {
+    "id": "board-select",
+    "s": "score-board",
+    "t": "select-action",
+    "label": "argmax"
+   },
+   {
+    "id": "guard-select",
+    "s": "irreversible-guard",
+    "t": "select-action",
+    "label": "Rechazar Eliminar"
+   },
+   {
+    "id": "select-execute",
+    "s": "select-action",
+    "t": "execute",
+    "label": "Confirmar"
+   },
+   {
+    "id": "candidates-reactive",
+    "s": "candidate-gen",
+    "t": "reactive-contrast",
+    "label": "Sin sim"
+   },
+   {
+    "id": "execute-realstate",
+    "s": "execute",
+    "t": "real-state",
+    "label": ""
+   },
+   {
+    "id": "realstate-output",
+    "s": "real-state",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Objetivo recibido",
+    "description": "Se le pide al agente que quite un newsletter de la bandeja de entrada en un sitio de correo en vivo donde algunas acciones no se pueden deshacer.",
+    "input": "",
+    "nodes": [
+     "user-goal",
+     "web-agent"
+    ],
+    "edges": [
+     "goal-agent"
+    ]
+   },
+   {
+    "title": "Observar y enumerar",
+    "description": "El agente lee el estado actual de la página y enumera las acciones candidatas disponibles en la fila del mensaje: Eliminar, Archivar y Desuscribir+Archivar.",
+    "input": "",
+    "nodes": [
+     "web-agent",
+     "observe-state",
+     "candidate-gen"
+    ],
+    "edges": [
+     "agent-observe",
+     "agent-candidates"
+    ]
+   },
+   {
+    "title": "Imaginar resultados",
+    "description": "El LLM actúa como modelo del mundo y simula el estado resultante de cada acción candidata sin hacer clic en nada de verdad.",
+    "input": "",
+    "nodes": [
+     "world-model",
+     "sim-delete",
+     "sim-archive",
+     "sim-unsub"
+    ],
+    "edges": [
+     "observe-wm",
+     "candidates-wm",
+     "wm-simdelete",
+     "wm-simarchive",
+     "wm-simunsub"
+    ]
+   },
+   {
+    "title": "Puntuar estados simulados",
+    "description": "Un puntuador de valor clasifica cada estado final imaginado frente al objetivo: Eliminar 0.4 (demasiado destructivo), Archivar 0.8, Desuscribir+Archivar 0.9.",
+    "input": "",
+    "nodes": [
+     "value-scorer",
+     "score-board"
+    ],
+    "edges": [
+     "simdelete-scorer",
+     "simarchive-scorer",
+     "simunsub-scorer",
+     "scorer-board"
+    ]
+   },
+   {
+    "title": "Rechazar la acción irreversible",
+    "description": "La simulación de Eliminar muestra una pérdida permanente e irrecuperable; la verificación de irreversibilidad la rechaza incluso antes de comparar valores.",
+    "input": "",
+    "nodes": [
+     "sim-delete",
+     "irreversible-guard"
+    ],
+    "edges": [
+     "simdelete-guard"
+    ]
+   },
+   {
+    "title": "Seleccionar la acción de mayor valor",
+    "description": "El planificador toma el argmax entre las acciones simuladas seguras y selecciona Desuscribir+Archivar.",
+    "input": "",
+    "nodes": [
+     "score-board",
+     "irreversible-guard",
+     "select-action"
+    ],
+    "edges": [
+     "board-select",
+     "guard-select"
+    ]
+   },
+   {
+    "title": "Ejecutar de verdad",
+    "description": "Solo ahora el agente actúa en el entorno real: se desuscribe, confirma y luego archiva, alcanzando un estado de bandeja correcto y reversible.",
+    "input": "",
+    "nodes": [
+     "select-action",
+     "execute",
+     "real-state",
+     "output"
+    ],
+    "edges": [
+     "select-execute",
+     "execute-realstate",
+     "realstate-output"
+    ]
+   },
+   {
+    "title": "Contraste: agente reactivo",
+    "description": "Un agente reactivo sin modelo del mundo omite la simulación y hace clic con avidez en el primer botón destacado (Eliminar), lo que provoca una pérdida de datos irreversible.",
+    "input": "",
+    "nodes": [
+     "candidate-gen",
+     "reactive-contrast"
+    ],
+    "edges": [
+     "candidates-reactive"
+    ]
+   }
+  ]
+ }
+}

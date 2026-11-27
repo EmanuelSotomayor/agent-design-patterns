@@ -1,0 +1,746 @@
+{
+ "cat": "multi-agent",
+ "slug": "consensus-algorithms",
+ "name": "Consensus Algorithms",
+ "icon": "⚖️",
+ "complexity": "high",
+ "description": "Mecanismos de acuerdo distribuido para la toma de decisiones multiagente",
+ "features": [
+  "Tolerancia a fallas bizantinas",
+  "Mecanismos de votación",
+  "Resolución de conflictos",
+  "Protocolos de acuerdo",
+  "Consenso distribuido",
+  "Garantías de finalidad"
+ ],
+ "tldr": {
+  "what": "Varios agentes votan o proponen decisiones, ponderadas por confianza o participación, hasta llegar a un acuerdo aunque algunos agentes fallen o actúen de forma maliciosa.",
+  "when": "Sistemas distribuidos donde no se confía en ningún agente individual y necesitas decisiones vinculantes que sobrevivan a fallas de agentes o a comportamientos bizantinos.",
+  "watchOut": "La sobrecarga del consenso crece exponencialmente con la cantidad de agentes; la convergencia lenta o los bloqueos en condiciones adversas desperdician cómputo y retrasan las decisiones."
+ },
+ "overview": {
+  "pattern": "Mecanismos de acuerdo distribuido que garantizan seguridad y vivacidad en sistemas multiagente con tolerancia a fallas bizantinas",
+  "why": "Permite la coordinación sin confianza, maneja actores maliciosos, garantiza la consistencia y proporciona seguridad económica en sistemas descentralizados",
+  "insight": "Tolerancia a fallas bizantinas + incentivos económicos + pruebas criptográficas = consenso distribuido sin confianza",
+  "impl": [
+   {
+    "t": "Definir el modelo de fallas",
+    "d": "Elige CFT, BFT o probabilístico según el modelo de amenazas"
+   },
+   {
+    "t": "Configurar la membresía",
+    "d": "Configura el conjunto de validadores, el tamaño de los quórums y los pesos de votación"
+   },
+   {
+    "t": "Implementar el protocolo",
+    "d": "Despliega el mecanismo de consenso con fases de propuesta y votación"
+   },
+   {
+    "t": "Agregar recuperación",
+    "d": "Maneja cambios de líder, timeouts y transiciones de vista"
+   },
+   {
+    "t": "Monitorear y optimizar",
+    "d": "Haz seguimiento de la finalidad, el throughput y la resiliencia bizantina"
+   }
+  ],
+  "example": "Agentes → Proponen → Votan → Quórum → Confirmación → Finalidad",
+  "dos": [
+   "Elige la familia de protocolos que coincida con tu modelo de fallas: CFT para caídas, BFT para comportamiento adversario",
+   "Dimensiona correctamente los quórums (mayoría para CFT, 2f+1 para BFT) y documenta las invariantes de seguridad",
+   "Implementa timeouts adecuados, cambios de vista y mecanismos de rotación de líder",
+   "Monitorea las métricas de consenso: tiempo de finalidad, tasa de bifurcaciones, participación, complejidad de mensajes",
+   "Usa agregación de firmas (BLS) y procesamiento por batch para mejorar la escalabilidad",
+   "Prueba con ingeniería del caos: particiones de red, desfases de reloj, escenarios bizantinos"
+  ],
+  "donts": [
+   "Asumir sincronía perfecta: diseña para sincronía parcial con retrasos acotados",
+   "Permitir complejidad de mensajes O(n²) sin agregación en comités grandes",
+   "Crear cuellos de botella en el líder o puntos únicos de falla",
+   "Ignorar la concentración de validadores y los riesgos de centralización en sistemas PoS",
+   "Desplegar sin un monitoreo integral de las violaciones de seguridad y vivacidad"
+  ],
+  "use": [
+   "Sistemas distribuidos que requieren garantías de consistencia fuerte",
+   "Sistemas multiagente que necesitan tolerancia a fallas bizantinas",
+   "Redes blockchain con requisitos de seguridad económica",
+   "Planos de control y almacenes de metadatos que requieren durabilidad",
+   "Toma de decisiones basada en comités con mecanismos de votación",
+   "Sistemas donde los supuestos de confianza necesitan garantías formales"
+  ],
+  "avoid": [
+   "Sistemas de un solo escritor donde basta con bases de datos primarias",
+   "Rutas de latencia ultrabaja que no toleran los retrasos del consenso",
+   "Tareas de agregación simples que no requieren consistencia fuerte",
+   "Equipos sin la madurez operativa para gestionar validadores",
+   "Aplicaciones donde la consistencia eventual es aceptable"
+  ],
+  "metrics": [
+   {
+    "n": "Throughput (TPS)",
+    "d": "Transacciones por segundo en condiciones normales y adversas"
+   },
+   {
+    "n": "Tiempo de finalidad",
+    "d": "Tiempo P50/P95 desde la propuesta hasta la confirmación irreversible"
+   },
+   {
+    "n": "Tasa de bifurcaciones/reorganizaciones",
+    "d": "Frecuencia de reversiones del consenso y violaciones de seguridad"
+   },
+   {
+    "n": "Tasa de participación",
+    "d": "Porcentaje de validadores que participan activamente en el consenso"
+   },
+   {
+    "n": "Complejidad de mensajes",
+    "d": "Sobrecarga de comunicación por validador (O(n), O(n²))"
+   },
+   {
+    "n": "Tolerancia bizantina",
+    "d": "Fracción máxima de validadores maliciosos tolerada"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Redes blockchain",
+    "d": "Cadenas públicas (Ethereum PoS), registros permisionados y protocolos DeFi que requieren finalidad económica"
+   },
+   {
+    "n": "Bases de datos distribuidas",
+    "d": "Replicación basada en consenso para datos críticos con consistencia fuerte (etcd, CockroachDB)"
+   },
+   {
+    "n": "Sistemas de IA multiagente",
+    "d": "Votación por comité de las salidas de modelos, agregación ponderada por confianza e inferencia distribuida"
+   },
+   {
+    "n": "Coordinación de la cadena de suministro",
+    "d": "Consenso entre múltiples partes para logística, cumplimiento y control de calidad entre organizaciones"
+   },
+   {
+    "n": "Sistemas financieros",
+    "d": "Liquidación de operaciones, redes de compensación y liquidación, y monedas digitales de bancos centrales (CBDC)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Consensus Algorithms",
+  "description": "Mecanismos de toma de decisiones distribuida que incluyen votación, tolerancia a fallas bizantinas y consenso Raft para lograr acuerdos entre varios agentes ante posibles fallas.",
+  "nodes": [
+   {
+    "id": "decision-problem",
+    "label": "🎯 Problema de decisión\n\"Seleccionar la mejor arquitectura para un sistema distribuido\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "agent-1",
+    "label": "🤖 Agente 1\nPropuesta: Microservicios\nPeso del voto: 1.0",
+    "x": 100,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "agent-2",
+    "label": "🤖 Agente 2\nPropuesta: Serverless\nPeso del voto: 0.8",
+    "x": 280,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "agent-3",
+    "label": "🤖 Agente 3\nPropuesta: Híbrida\nPeso del voto: 1.2",
+    "x": 460,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "agent-4",
+    "label": "🤖 Agente 4\nPropuesta: Monolito\nPeso del voto: 0.6",
+    "x": 640,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "agent-5",
+    "label": "🤖 Agente 5\nPropuesta: Orientada a eventos\nPeso del voto: 0.9",
+    "x": 820,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "mechanism-selector",
+    "label": "🎛️ Selector de mecanismo\nElige el algoritmo de consenso",
+    "x": 400,
+    "y": 300,
+    "w": 220
+   },
+   {
+    "id": "majority-voting",
+    "label": "🗳️ Votación por mayoría\n>50% de acuerdo\nResultado: Microservicios",
+    "x": 100,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "weighted-voting",
+    "label": "⚖️ Votación ponderada\nBasada en experiencia\nResultado: Híbrida",
+    "x": 280,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "byzantine-fault",
+    "label": "🛡️ Tolerante a fallas\nbizantinas (BFT)\nResultado: Validado",
+    "x": 460,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "raft-consensus",
+    "label": "📜 Algoritmo Raft\nElección de líder\nResultado: Elección del líder",
+    "x": 640,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "paxos-algorithm",
+    "label": "🏛️ Algoritmo Paxos\nConfirmación en 2 fases\nResultado: Acordado",
+    "x": 820,
+    "y": 420,
+    "w": 160
+   },
+   {
+    "id": "proposal-phase",
+    "label": "💡 Fase de propuesta\nLos agentes envían candidatos",
+    "x": 150,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "voting-phase",
+    "label": "🗳️ Fase de votación\nEmiten votos/preferencias",
+    "x": 350,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "validation-phase",
+    "label": "✅ Fase de validación\nVerifica los votos",
+    "x": 550,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "commit-phase",
+    "label": "🔒 Fase de confirmación\nFinaliza la decisión",
+    "x": 750,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "safety-checker",
+    "label": "🔐 Seguridad\nSin decisiones contradictorias",
+    "x": 100,
+    "y": 660,
+    "w": 160
+   },
+   {
+    "id": "liveness-monitor",
+    "label": "♾️ Vivacidad\nDecisión eventual",
+    "x": 280,
+    "y": 660,
+    "w": 160
+   },
+   {
+    "id": "fault-tolerance",
+    "label": "🛡️ Tolerancia a fallas\nManeja las fallas",
+    "x": 460,
+    "y": 660,
+    "w": 160
+   },
+   {
+    "id": "agreement-verifier",
+    "label": "🤝 Acuerdo\nTodos coinciden en el valor",
+    "x": 640,
+    "y": 660,
+    "w": 160
+   },
+   {
+    "id": "termination-guarantee",
+    "label": "🏁 Terminación\nFinalización garantizada",
+    "x": 820,
+    "y": 660,
+    "w": 160
+   },
+   {
+    "id": "quorum-calculator",
+    "label": "📊 Calculadora de quórum\nSe requieren 3/5 agentes",
+    "x": 200,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "threshold-manager",
+    "label": "🎚️ Gestor de umbral\nSupermayoría del 66%",
+    "x": 400,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "timeout-handler",
+    "label": "⏱️ Manejador de timeout\nVentana de decisión de 30s",
+    "x": 600,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "tie-breaker",
+    "label": "🎲 Desempate\nResuelve bloqueos",
+    "x": 150,
+    "y": 900,
+    "w": 160
+   },
+   {
+    "id": "revote-mechanism",
+    "label": "🔄 Mecanismo de nueva votación\nVarias rondas",
+    "x": 320,
+    "y": 900,
+    "w": 160
+   },
+   {
+    "id": "leader-election",
+    "label": "👑 Elección de líder\nDesigna a quien decide",
+    "x": 490,
+    "y": 900,
+    "w": 160
+   },
+   {
+    "id": "consensus-log",
+    "label": "📖 Registro de consenso\nRegistro inmutable",
+    "x": 660,
+    "y": 900,
+    "w": 160
+   },
+   {
+    "id": "final-consensus",
+    "label": "✨ Consenso final\nArquitectura híbrida seleccionada con un 68% de acuerdo",
+    "x": 400,
+    "y": 1020,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "problem-agent1",
+    "s": "decision-problem",
+    "t": "agent-1",
+    "label": ""
+   },
+   {
+    "id": "problem-agent2",
+    "s": "decision-problem",
+    "t": "agent-2",
+    "label": ""
+   },
+   {
+    "id": "problem-agent3",
+    "s": "decision-problem",
+    "t": "agent-3",
+    "label": ""
+   },
+   {
+    "id": "problem-agent4",
+    "s": "decision-problem",
+    "t": "agent-4",
+    "label": ""
+   },
+   {
+    "id": "problem-agent5",
+    "s": "decision-problem",
+    "t": "agent-5",
+    "label": ""
+   },
+   {
+    "id": "agent1-mechanism",
+    "s": "agent-1",
+    "t": "mechanism-selector",
+    "label": ""
+   },
+   {
+    "id": "agent2-mechanism",
+    "s": "agent-2",
+    "t": "mechanism-selector",
+    "label": ""
+   },
+   {
+    "id": "agent3-mechanism",
+    "s": "agent-3",
+    "t": "mechanism-selector",
+    "label": ""
+   },
+   {
+    "id": "agent4-mechanism",
+    "s": "agent-4",
+    "t": "mechanism-selector",
+    "label": ""
+   },
+   {
+    "id": "agent5-mechanism",
+    "s": "agent-5",
+    "t": "mechanism-selector",
+    "label": ""
+   },
+   {
+    "id": "mechanism-majority",
+    "s": "mechanism-selector",
+    "t": "majority-voting",
+    "label": "Simple"
+   },
+   {
+    "id": "mechanism-weighted",
+    "s": "mechanism-selector",
+    "t": "weighted-voting",
+    "label": "Ponderado"
+   },
+   {
+    "id": "mechanism-byzantine",
+    "s": "mechanism-selector",
+    "t": "byzantine-fault",
+    "label": "Seguro"
+   },
+   {
+    "id": "mechanism-raft",
+    "s": "mechanism-selector",
+    "t": "raft-consensus",
+    "label": "Líder"
+   },
+   {
+    "id": "mechanism-paxos",
+    "s": "mechanism-selector",
+    "t": "paxos-algorithm",
+    "label": "Distribuido"
+   },
+   {
+    "id": "weighted-proposal",
+    "s": "weighted-voting",
+    "t": "proposal-phase",
+    "label": ""
+   },
+   {
+    "id": "proposal-voting",
+    "s": "proposal-phase",
+    "t": "voting-phase",
+    "label": ""
+   },
+   {
+    "id": "voting-validation",
+    "s": "voting-phase",
+    "t": "validation-phase",
+    "label": ""
+   },
+   {
+    "id": "validation-commit",
+    "s": "validation-phase",
+    "t": "commit-phase",
+    "label": ""
+   },
+   {
+    "id": "validation-safety",
+    "s": "validation-phase",
+    "t": "safety-checker",
+    "label": ""
+   },
+   {
+    "id": "voting-liveness",
+    "s": "voting-phase",
+    "t": "liveness-monitor",
+    "label": ""
+   },
+   {
+    "id": "byzantine-fault-tol",
+    "s": "byzantine-fault",
+    "t": "fault-tolerance",
+    "label": ""
+   },
+   {
+    "id": "commit-agreement",
+    "s": "commit-phase",
+    "t": "agreement-verifier",
+    "label": ""
+   },
+   {
+    "id": "timeout-termination",
+    "s": "timeout-handler",
+    "t": "termination-guarantee",
+    "label": ""
+   },
+   {
+    "id": "voting-quorum",
+    "s": "voting-phase",
+    "t": "quorum-calculator",
+    "label": "Verificar"
+   },
+   {
+    "id": "quorum-threshold",
+    "s": "quorum-calculator",
+    "t": "threshold-manager",
+    "label": ""
+   },
+   {
+    "id": "threshold-timeout",
+    "s": "threshold-manager",
+    "t": "timeout-handler",
+    "label": ""
+   },
+   {
+    "id": "voting-tie",
+    "s": "voting-phase",
+    "t": "tie-breaker",
+    "label": "Si hay empate"
+   },
+   {
+    "id": "tie-revote",
+    "s": "tie-breaker",
+    "t": "revote-mechanism",
+    "label": ""
+   },
+   {
+    "id": "raft-leader",
+    "s": "raft-consensus",
+    "t": "leader-election",
+    "label": ""
+   },
+   {
+    "id": "commit-log",
+    "s": "commit-phase",
+    "t": "consensus-log",
+    "label": ""
+   },
+   {
+    "id": "agreement-final",
+    "s": "agreement-verifier",
+    "t": "final-consensus",
+    "label": ""
+   },
+   {
+    "id": "log-final",
+    "s": "consensus-log",
+    "t": "final-consensus",
+    "label": ""
+   },
+   {
+    "id": "termination-final",
+    "s": "termination-guarantee",
+    "t": "final-consensus",
+    "label": ""
+   },
+   {
+    "id": "agent1-agent2",
+    "s": "agent-1",
+    "t": "agent-2",
+    "label": "Msj"
+   },
+   {
+    "id": "agent2-agent3",
+    "s": "agent-2",
+    "t": "agent-3",
+    "label": "Msj"
+   },
+   {
+    "id": "agent3-agent4",
+    "s": "agent-3",
+    "t": "agent-4",
+    "label": "Msj"
+   },
+   {
+    "id": "agent4-agent5",
+    "s": "agent-4",
+    "t": "agent-5",
+    "label": "Msj"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Distribución del problema",
+    "description": "El problema de decisión se envía a todos los agentes participantes",
+    "input": "",
+    "nodes": [
+     "decision-problem",
+     "agent-1",
+     "agent-2",
+     "agent-3",
+     "agent-4",
+     "agent-5"
+    ],
+    "edges": [
+     "problem-agent1",
+     "problem-agent2",
+     "problem-agent3",
+     "problem-agent4",
+     "problem-agent5"
+    ]
+   },
+   {
+    "title": "Comunicación entre agentes",
+    "description": "Los agentes intercambian propuestas y preferencias",
+    "input": "",
+    "nodes": [
+     "agent-1",
+     "agent-2",
+     "agent-3",
+     "agent-4",
+     "agent-5"
+    ],
+    "edges": [
+     "agent1-agent2",
+     "agent2-agent3",
+     "agent3-agent4",
+     "agent4-agent5"
+    ]
+   },
+   {
+    "title": "Selección del algoritmo",
+    "description": "Elige el mecanismo de consenso adecuado",
+    "input": "",
+    "nodes": [
+     "mechanism-selector",
+     "majority-voting",
+     "weighted-voting",
+     "byzantine-fault",
+     "raft-consensus",
+     "paxos-algorithm"
+    ],
+    "edges": [
+     "agent1-mechanism",
+     "agent2-mechanism",
+     "agent3-mechanism",
+     "mechanism-majority",
+     "mechanism-weighted",
+     "mechanism-byzantine",
+     "mechanism-raft",
+     "mechanism-paxos"
+    ]
+   },
+   {
+    "title": "Fase de propuesta",
+    "description": "Los agentes envían formalmente sus propuestas",
+    "input": "",
+    "nodes": [
+     "weighted-voting",
+     "proposal-phase"
+    ],
+    "edges": [
+     "weighted-proposal"
+    ]
+   },
+   {
+    "title": "Fase de votación",
+    "description": "Los agentes emiten votos ponderados sobre las propuestas",
+    "input": "",
+    "nodes": [
+     "proposal-phase",
+     "voting-phase",
+     "quorum-calculator"
+    ],
+    "edges": [
+     "proposal-voting",
+     "voting-quorum"
+    ]
+   },
+   {
+    "title": "Verificación de quórum",
+    "description": "Verifica que haya participación suficiente (3/5 agentes)",
+    "input": "",
+    "nodes": [
+     "quorum-calculator",
+     "threshold-manager",
+     "timeout-handler"
+    ],
+    "edges": [
+     "quorum-threshold",
+     "threshold-timeout"
+    ]
+   },
+   {
+    "title": "Fase de validación",
+    "description": "Valida los votos y verifica las propiedades de seguridad",
+    "input": "",
+    "nodes": [
+     "voting-phase",
+     "validation-phase",
+     "safety-checker"
+    ],
+    "edges": [
+     "voting-validation",
+     "validation-safety"
+    ]
+   },
+   {
+    "title": "Resolución de conflictos",
+    "description": "Maneja empates y bloqueos si es necesario",
+    "input": "",
+    "nodes": [
+     "tie-breaker",
+     "revote-mechanism",
+     "leader-election"
+    ],
+    "edges": [
+     "voting-tie",
+     "tie-revote",
+     "raft-leader"
+    ]
+   },
+   {
+    "title": "Fase de confirmación",
+    "description": "Finaliza y confirma la decisión de consenso",
+    "input": "",
+    "nodes": [
+     "validation-phase",
+     "commit-phase",
+     "consensus-log"
+    ],
+    "edges": [
+     "validation-commit",
+     "commit-log"
+    ]
+   },
+   {
+    "title": "Verificación de propiedades",
+    "description": "Asegura que se cumplan las propiedades del consenso",
+    "input": "",
+    "nodes": [
+     "safety-checker",
+     "liveness-monitor",
+     "fault-tolerance",
+     "agreement-verifier",
+     "termination-guarantee"
+    ],
+    "edges": [
+     "commit-agreement",
+     "timeout-termination",
+     "byzantine-fault-tol",
+     "voting-liveness"
+    ]
+   },
+   {
+    "title": "Consenso final",
+    "description": "Se logra un acuerdo sobre la arquitectura híbrida",
+    "input": "",
+    "nodes": [
+     "final-consensus",
+     "agreement-verifier",
+     "consensus-log",
+     "termination-guarantee"
+    ],
+    "edges": [
+     "agreement-final",
+     "log-final",
+     "termination-final"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,433 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "abductive-reasoning",
+ "name": "Abductive Reasoning(ABR)",
+ "icon": "🔍",
+ "complexity": "high",
+ "description": "Infiere la explicación más probable a partir de observaciones incompletas",
+ "features": [
+  "Inferencia de la mejor explicación",
+  "Generación de hipótesis",
+  "Razonamiento basado en evidencia",
+  "Manejo de la incertidumbre",
+  "Completado de patrones",
+  "Razonamiento diagnóstico"
+ ],
+ "tldr": {
+  "what": "Genera hipótesis en competencia a partir de datos incompletos y luego las clasifica por probabilidad según la evidencia disponible.",
+  "when": "Diagnosticar causas raíz con información incompleta, resolver fallas o inferir estados ocultos a partir de efectos observables.",
+  "watchOut": "Favorece la historia más coherente sobre la más probable; el sesgo de confirmación puede atarte a hipótesis equivocadas desde el principio."
+ },
+ "overview": {
+  "pattern": "Inferencia de la mejor explicación mediante la generación y evaluación de hipótesis que explican los fenómenos observados",
+  "why": "Permite el descubrimiento y la explicación al encontrar la explicación más plausible para observaciones sorprendentes o desconcertantes",
+  "insight": "Observar hechos sorprendentes → Generar explicaciones → Clasificar por plausibilidad → Seleccionar la mejor → Probar predicciones",
+  "impl": [
+   {
+    "t": "Observación",
+    "d": "Identifica hechos o fenómenos sorprendentes que hay que explicar"
+   },
+   {
+    "t": "Generación de hipótesis",
+    "d": "Crea explicaciones plausibles para las observaciones"
+   },
+   {
+    "t": "Clasificación por plausibilidad",
+    "d": "Evalúa las explicaciones por simplicidad y probabilidad"
+   },
+   {
+    "t": "Mejor explicación",
+    "d": "Selecciona la hipótesis más creíble"
+   },
+   {
+    "t": "Prueba de predicciones",
+    "d": "Genera predicciones comprobables a partir de la hipótesis"
+   }
+  ],
+  "example": "Hecho sorprendente → Múltiples explicaciones → Clasificar por plausibilidad → Mejor explicación → Probar predicciones",
+  "dos": [
+   "Genera múltiples hipótesis en competencia",
+   "Aplica la navaja de Occam (prefiere explicaciones más simples)",
+   "Considera el conocimiento previo y las restricciones del dominio",
+   "Evalúa el poder explicativo y la coherencia",
+   "Genera predicciones comprobables a partir de las hipótesis"
+  ],
+  "donts": [
+   "Detenerse en la primera explicación plausible",
+   "Ignorar evidencia contradictoria o anomalías",
+   "Confundir la abducción con la deducción o la inducción",
+   "Aceptar explicaciones sin considerar alternativas",
+   "Explicaciones demasiado complejas cuando bastan las simples"
+  ],
+  "use": [
+   "Diagnosticar problemas a partir de síntomas",
+   "Explicar observaciones inesperadas",
+   "Formulación de hipótesis en investigación",
+   "Resolución de problemas y análisis de causa raíz",
+   "Resolución creativa de problemas y descubrimiento"
+  ],
+  "avoid": [
+   "Cuando se requiere una prueba deductiva",
+   "Problemas de inferencia estadística",
+   "Procedimientos rutinarios bien comprendidos",
+   "Cuando se dispone de información completa",
+   "Decisiones críticas en tiempo que requieren rapidez"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de la explicación",
+    "d": "Coherencia y completitud de las hipótesis generadas"
+   },
+   {
+    "n": "Diversidad de hipótesis",
+    "d": "Variedad de explicaciones alternativas consideradas"
+   },
+   {
+    "n": "Clasificación por plausibilidad",
+    "d": "Precisión del orden de preferencia de las explicaciones"
+   },
+   {
+    "n": "Poder predictivo",
+    "d": "Calidad de las predicciones comprobables derivadas de las hipótesis"
+   },
+   {
+    "n": "Equilibrio de parsimonia",
+    "d": "Compensación óptima entre simplicidad y completitud"
+   },
+   {
+    "n": "Integración de la evidencia",
+    "d": "Uso eficaz de la información disponible"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Diagnóstico médico",
+    "d": "Síntomas del paciente → Múltiples hipótesis de enfermedad → Diagnóstico más probable → Plan de tratamiento"
+   },
+   {
+    "n": "Depuración de software",
+    "d": "Comportamiento del error → Posibles causas del bug → Causa raíz más probable → Estrategia de corrección"
+   },
+   {
+    "n": "Descubrimiento científico",
+    "d": "Datos anómalos → Explicaciones teóricas → Mejor teoría → Nuevos experimentos"
+   },
+   {
+    "n": "Analítica de negocio",
+    "d": "Caída del rendimiento → Posibles causas → Factor principal → Plan de acción"
+   },
+   {
+    "n": "Trabajo detectivesco",
+    "d": "Evidencia del crimen → Teorías sobre sospechosos → Escenario más probable → Dirección de la investigación"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Razonamiento abductivo",
+  "description": "Infiere la explicación más probable a partir de observaciones incompletas generando y evaluando hipótesis en competencia para encontrar la que mejor se ajusta",
+  "nodes": [
+   {
+    "id": "incomplete-observations",
+    "label": "🕵️ Observaciones incompletas\n\"El servidor se cayó a las 3AM\nSe registró alto uso de CPU\nHubo un despliegue nuevo ayer\nNo se encontraron logs de error\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "hypothesis-generation",
+    "label": "💡 Generación de hipótesis\n\"Hay múltiples explicaciones posibles\nHay que encontrar la que MEJOR se ajusta\na la evidencia observada\"",
+    "x": 400,
+    "y": 170,
+    "w": 220
+   },
+   {
+    "id": "code-bug-hypothesis",
+    "label": "🐛 Hipótesis 1: bug en el código\n\"El nuevo despliegue introdujo\nuna fuga de memoria que causa\nun pico gradual de CPU\"",
+    "x": 150,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "attack-hypothesis",
+    "label": "⚔️ Hipótesis 2: ciberataque\n\"DDoS o código malicioso\nque provoca agotamiento\nde recursos\"",
+    "x": 400,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "hardware-hypothesis",
+    "label": "💻 Hipótesis 3: hardware\n\"Falla del ventilador\nque causa throttling térmico\ne inestabilidad del sistema\"",
+    "x": 650,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "evidence-evaluation",
+    "label": "⚖️ Evaluación de la evidencia\n\"¿Qué hipótesis explica MEJOR\nTODAS las observaciones?\nConsidera ajuste y simplicidad\"",
+    "x": 400,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "code-analysis",
+    "label": "🔍 Análisis del bug en el código\n\"✓ El momento coincide con el despliegue\n✓ Explica el pico de CPU\n? La falta de logs de error es rara\nProbabilidad: 70%\"",
+    "x": 150,
+    "y": 560,
+    "w": 180
+   },
+   {
+    "id": "attack-analysis",
+    "label": "🔍 Análisis del ataque\n\"? Sin anomalías de red\n? Sin alertas de seguridad\n? Patrón de CPU alto inusual\nProbabilidad: 20%\"",
+    "x": 400,
+    "y": 560,
+    "w": 180
+   },
+   {
+    "id": "hardware-analysis",
+    "label": "🔍 Análisis del hardware\n\"? Uso de CPU, no térmico\n? Sin alertas de temperatura\n? Coincide con el despliegue reciente\nProbabilidad: 10%\"",
+    "x": 650,
+    "y": 560,
+    "w": 180
+   },
+   {
+    "id": "best-explanation",
+    "label": "🎯 Mejor explicación\n\"Lo más probable es un bug en el código:\n- Coincide con la evidencia temporal\n- Explica los síntomas\n- Es la explicación más simple\"",
+    "x": 400,
+    "y": 690,
+    "w": 200
+   },
+   {
+    "id": "abductive-inference",
+    "label": "💭 Inferencia abductiva\n\"Con evidencia incompleta,\nun bug en el nuevo despliegue\nes la causa más plausible\nde la caída del servidor\"",
+    "x": 400,
+    "y": 810,
+    "w": 240
+   },
+   {
+    "id": "seek-confirmation",
+    "label": "🔍 Buscar confirmación\n\"Revisar el diff del código\ndel despliegue de ayer\nen busca de operaciones intensivas en memoria\"",
+    "x": 100,
+    "y": 690,
+    "w": 180
+   },
+   {
+    "id": "confirmation-found",
+    "label": "✅ Confirmación\n\"Se encontró un bucle infinito en\nel nuevo código de procesamiento batch\n→ Valida la hipótesis\"",
+    "x": 100,
+    "y": 810,
+    "w": 180
+   },
+   {
+    "id": "deductive-contrast",
+    "label": "📐 vs deductivo\n\"Se necesitaría conocimiento\ncompleto para deducir\nla causa con certeza\"",
+    "x": 700,
+    "y": 690,
+    "w": 180
+   },
+   {
+    "id": "inductive-contrast",
+    "label": "📊 vs inductivo\n\"Se necesitarían muchos\ncasos similares para encontrar\nun patrón general\"",
+    "x": 700,
+    "y": 810,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "incomplete-observations",
+    "t": "hypothesis-generation",
+    "label": "generar explicaciones"
+   },
+   {
+    "id": "e2a",
+    "s": "hypothesis-generation",
+    "t": "code-bug-hypothesis",
+    "label": "posibilidad 1"
+   },
+   {
+    "id": "e2b",
+    "s": "hypothesis-generation",
+    "t": "attack-hypothesis",
+    "label": "posibilidad 2"
+   },
+   {
+    "id": "e2c",
+    "s": "hypothesis-generation",
+    "t": "hardware-hypothesis",
+    "label": "posibilidad 3"
+   },
+   {
+    "id": "e3a",
+    "s": "code-bug-hypothesis",
+    "t": "evidence-evaluation",
+    "label": "evaluar ajuste"
+   },
+   {
+    "id": "e3b",
+    "s": "attack-hypothesis",
+    "t": "evidence-evaluation",
+    "label": "evaluar ajuste"
+   },
+   {
+    "id": "e3c",
+    "s": "hardware-hypothesis",
+    "t": "evidence-evaluation",
+    "label": "evaluar ajuste"
+   },
+   {
+    "id": "e4a",
+    "s": "evidence-evaluation",
+    "t": "code-analysis",
+    "label": "analizar"
+   },
+   {
+    "id": "e4b",
+    "s": "evidence-evaluation",
+    "t": "attack-analysis",
+    "label": "analizar"
+   },
+   {
+    "id": "e4c",
+    "s": "evidence-evaluation",
+    "t": "hardware-analysis",
+    "label": "analizar"
+   },
+   {
+    "id": "e5a",
+    "s": "code-analysis",
+    "t": "best-explanation",
+    "label": "mayor probabilidad"
+   },
+   {
+    "id": "e5b",
+    "s": "attack-analysis",
+    "t": "best-explanation",
+    "label": "menor probabilidad"
+   },
+   {
+    "id": "e5c",
+    "s": "hardware-analysis",
+    "t": "best-explanation",
+    "label": "probabilidad más baja"
+   },
+   {
+    "id": "e6",
+    "s": "best-explanation",
+    "t": "abductive-inference",
+    "label": "concluir"
+   },
+   {
+    "id": "e7",
+    "s": "best-explanation",
+    "t": "seek-confirmation",
+    "label": "verificar"
+   },
+   {
+    "id": "e8",
+    "s": "seek-confirmation",
+    "t": "confirmation-found",
+    "label": "encontrar evidencia"
+   },
+   {
+    "id": "e9",
+    "s": "confirmation-found",
+    "t": "abductive-inference",
+    "label": "reforzar la inferencia"
+   },
+   {
+    "id": "e10",
+    "s": "abductive-inference",
+    "t": "deductive-contrast",
+    "label": "comparar"
+   },
+   {
+    "id": "e11",
+    "s": "abductive-inference",
+    "t": "inductive-contrast",
+    "label": "comparar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis de observaciones incompletas",
+    "description": "El sistema se encuentra con evidencia incompleta: caída del servidor a las 3AM, alto uso de CPU, un despliegue reciente, pero sin logs de error. Reconoce la necesidad de un razonamiento explicativo.",
+    "input": "",
+    "nodes": [
+     "incomplete-observations",
+     "hypothesis-generation"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Generación de múltiples hipótesis",
+    "description": "Genera explicaciones en competencia para la evidencia observada: un bug en el código del despliegue, un ciberataque que agota los recursos o una falla de hardware con problemas térmicos.",
+    "input": "",
+    "nodes": [
+     "code-bug-hypothesis",
+     "attack-hypothesis",
+     "hardware-hypothesis"
+    ],
+    "edges": [
+     "e2a",
+     "e2b",
+     "e2c"
+    ]
+   },
+   {
+    "title": "Evaluación del ajuste entre evidencia e hipótesis",
+    "description": "Evalúa sistemáticamente qué tan bien explica cada hipótesis la evidencia observada, considerando tanto el poder explicativo como la simplicidad (navaja de Occam).",
+    "input": "",
+    "nodes": [
+     "evidence-evaluation",
+     "code-analysis",
+     "attack-analysis",
+     "hardware-analysis"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c",
+     "e4a",
+     "e4b",
+     "e4c"
+    ]
+   },
+   {
+    "title": "Selección de la mejor explicación",
+    "description": "La hipótesis del bug en el código surge como la mejor explicación (70% de probabilidad) porque coincide temporalmente con el despliegue y se ajusta a los síntomas, mientras que las explicaciones de ataque (20%) y hardware (10%) tienen vacíos.",
+    "input": "",
+    "nodes": [
+     "best-explanation"
+    ],
+    "edges": [
+     "e5a",
+     "e5b",
+     "e5c"
+    ]
+   },
+   {
+    "title": "Inferencia abductiva y confirmación",
+    "description": "Hace la inferencia abductiva de que un bug en el código es la causa más plausible y luego busca confirmación revisando el código del despliegue, donde encuentra un bucle infinito que valida la hipótesis.",
+    "input": "",
+    "nodes": [
+     "abductive-inference",
+     "seek-confirmation",
+     "confirmation-found",
+     "deductive-contrast",
+     "inductive-contrast"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9",
+     "e10",
+     "e11"
+    ]
+   }
+  ]
+ }
+}

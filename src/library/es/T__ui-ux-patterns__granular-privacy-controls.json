@@ -1,0 +1,353 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "granular-privacy-controls",
+ "name": "Granular Privacy Controls(GPC)",
+ "icon": "🎚️",
+ "complexity": "medium",
+ "description": "Gestión de permisos detallada que permite a los usuarios controlar tipos de datos específicos, propósitos de procesamiento, contextos de uso compartido y periodos de retención, con mecanismos de consentimiento contextual y controles de revocación sencillos.",
+ "features": [
+  "Interruptores de permiso por tipo de dato y por propósito",
+  "Consentimiento contextual solicitado en el momento de uso",
+  "Selección del periodo de retención y vencimiento automático",
+  "Revocación con un toque y efecto inmediato en los sistemas posteriores"
+ ],
+ "tldr": {
+  "what": "Permite a los usuarios otorgar o denegar permisos por separado para tipos de datos, propósitos y contextos de uso compartido específicos, con los periodos de retención que elijan.",
+  "when": "Sistemas que recopilan múltiples tipos de datos donde los usuarios necesitan reglas distintas para cada uno, o donde el cumplimiento regulatorio exige un consentimiento documentado vinculado a usos específicos.",
+  "watchOut": "Los usuarios suelen otorgar permisos amplios sin leer los detalles y luego los revocan de forma reactiva tras incidentes de privacidad, en lugar de configurarlos con cuidado desde el principio."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón UX Granular Privacy Controls",
+  "description": "Sistema de gestión de permisos detallado que permite a los usuarios controlar tipos de datos específicos, propósitos de procesamiento, contextos de uso compartido y periodos de retención, con mecanismos de consentimiento contextual y controles de revocación sencillos",
+  "nodes": [
+   {
+    "id": "smart-home-setup",
+    "label": "🏠 Configuración del agente de hogar inteligente\n\"El usuario configura un asistente de IA para el hogar\npara optimización energética, monitoreo de seguridad\ny coordinación de la agenda familiar\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "permission-complexity",
+    "label": "🔐 Requisitos de permisos complejos\n\"Múltiples tipos de datos: ubicación, voz, video\nDiversos propósitos: optimización, seguridad, comodidad\nDistintas necesidades de uso compartido y niveles de privacidad\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "binary-consent",
+    "label": "⚫⚪ Modelo de consentimiento binario\n\"Permisos de todo o nada\nAceptar todos los términos o quedarse sin servicio\nSin controles contextuales\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "user-frustration",
+    "label": "😤 Frustración del usuario\n\"Obligado a compartir datos de más\nFalta de opciones reales\nPreocupaciones de privacidad ignoradas\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "system-abandonment",
+    "label": "🚪 Abandono del sistema\n\"Los usuarios rechazan términos invasivos\nMenores tasas de adopción\nBeneficios funcionales desaprovechados\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "granular-controls",
+    "label": "🎛️ Controles de privacidad granulares\n\"Sistema de permisos detallado\nMecanismos de consentimiento contextual\nAutorizaciones por propósito\"",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "data-type-controls",
+    "label": "📊 Controles por tipo de dato\n\"Ubicación: solo optimización energética\nVoz: comandos, no conversaciones\nVideo: zonas de seguridad, no dormitorios\"",
+    "x": 450,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "purpose-controls",
+    "label": "🎯 Controles de limitación de propósito\n\"Datos de energía: solo optimización\nDatos de seguridad: detección de amenazas\nDatos de agenda: coordinación familiar\"",
+    "x": 700,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "temporal-controls",
+    "label": "⏰ Controles temporales\n\"Comandos de voz: borrar a diario\nAlertas de seguridad: retención de 30 días\nPatrones de energía: almacenamiento anual\"",
+    "x": 950,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "sharing-controls",
+    "label": "🤝 Controles de uso compartido\n\"Servicios de emergencia: solo datos de seguridad\nEmpresa de servicios: estadísticas de energía anónimas\nFamiliares: solo información de agenda\"",
+    "x": 450,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "contextual-consent",
+    "label": "📍 Consentimiento contextual\n\"Permisos justo a tiempo\nSolicitudes según la situación\nAplicación automática de políticas\"",
+    "x": 700,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "easy-revocation",
+    "label": "🔄 Revocación sencilla\n\"Eliminación de permisos con un clic\nAjustes de configuración granulares\nAplicación con efecto inmediato\"",
+    "x": 950,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "user-empowerment",
+    "label": "💪 Empoderamiento del usuario\n\"Opciones de privacidad significativas\nUso compartido de datos con tranquilidad\nConfianza en los controles del sistema\"",
+    "x": 575,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "optimal-functionality",
+    "label": "⚡ Funcionalidad óptima\n\"Equilibrio entre privacidad y utilidad\nExperiencia de usuario personalizada\nMáximo valor del sistema\"",
+    "x": 825,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "granular-principle",
+    "label": "🎯 Principio de control granular\n\"Los usuarios deben tener un control detallado sobre sus datos,\nespecificando no solo qué se comparte, sino cómo, cuándo, por qué,\ncon quién y por cuánto tiempo, con cambios sencillos en cualquier momento.\"",
+    "x": 650,
+    "y": 950,
+    "w": 450
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "smart-home-setup",
+    "t": "permission-complexity",
+    "label": "requiere múltiples tipos de datos"
+   },
+   {
+    "id": "e2",
+    "s": "permission-complexity",
+    "t": "binary-consent",
+    "label": "modelo de todo o nada"
+   },
+   {
+    "id": "e3",
+    "s": "permission-complexity",
+    "t": "granular-controls",
+    "label": "modelo de control detallado"
+   },
+   {
+    "id": "e4",
+    "s": "binary-consent",
+    "t": "user-frustration",
+    "label": "obliga a compartir de más"
+   },
+   {
+    "id": "e5",
+    "s": "user-frustration",
+    "t": "system-abandonment",
+    "label": "lleva al rechazo"
+   },
+   {
+    "id": "e6",
+    "s": "granular-controls",
+    "t": "data-type-controls",
+    "label": "permisos de datos específicos"
+   },
+   {
+    "id": "e7",
+    "s": "granular-controls",
+    "t": "purpose-controls",
+    "label": "consentimiento por propósito"
+   },
+   {
+    "id": "e8",
+    "s": "granular-controls",
+    "t": "temporal-controls",
+    "label": "límites basados en tiempo"
+   },
+   {
+    "id": "e9",
+    "s": "data-type-controls",
+    "t": "sharing-controls",
+    "label": "permite decisiones de uso compartido"
+   },
+   {
+    "id": "e10",
+    "s": "purpose-controls",
+    "t": "contextual-consent",
+    "label": "soporta solicitudes justo a tiempo"
+   },
+   {
+    "id": "e11",
+    "s": "temporal-controls",
+    "t": "easy-revocation",
+    "label": "facilita los ajustes"
+   },
+   {
+    "id": "e12",
+    "s": "sharing-controls",
+    "t": "contextual-consent",
+    "label": "uso compartido según el contexto"
+   },
+   {
+    "id": "e13",
+    "s": "contextual-consent",
+    "t": "easy-revocation",
+    "label": "ajuste inmediato"
+   },
+   {
+    "id": "e14",
+    "s": "sharing-controls",
+    "t": "user-empowerment",
+    "label": "crea opciones significativas"
+   },
+   {
+    "id": "e15",
+    "s": "contextual-consent",
+    "t": "user-empowerment",
+    "label": "genera confianza"
+   },
+   {
+    "id": "e16",
+    "s": "easy-revocation",
+    "t": "optimal-functionality",
+    "label": "fomenta la experimentación"
+   },
+   {
+    "id": "e17",
+    "s": "user-empowerment",
+    "t": "optimal-functionality",
+    "label": "permite una experiencia personalizada"
+   },
+   {
+    "id": "e18",
+    "s": "system-abandonment",
+    "t": "granular-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e19",
+    "s": "user-empowerment",
+    "t": "granular-principle",
+    "label": "valida el enfoque"
+   },
+   {
+    "id": "e20",
+    "s": "optimal-functionality",
+    "t": "granular-principle",
+    "label": "prueba la efectividad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Requisitos de permisos complejos del agente de hogar inteligente",
+    "description": "El usuario configura un asistente de IA para el hogar que requiere múltiples tipos de datos (ubicación, voz, video) para diversos propósitos (optimización energética, monitoreo de seguridad, coordinación familiar) con distintas sensibilidades de privacidad.",
+    "input": "",
+    "nodes": [
+     "smart-home-setup",
+     "permission-complexity"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de gestión de permisos",
+    "description": "Los mismos requisitos de permisos complejos se manejan con un modelo de consentimiento binario de todo o nada (izquierda) frente a un sistema de control granular y detallado (derecha).",
+    "input": "",
+    "nodes": [
+     "binary-consent",
+     "granular-controls"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Consentimiento binario: frustración del usuario y abandono del sistema",
+    "description": "El modelo de todo o nada obliga a los usuarios a compartir datos de más o a perder funcionalidad, lo que genera una frustración que lleva al rechazo del sistema y a menores tasas de adopción.",
+    "input": "",
+    "nodes": [
+     "user-frustration",
+     "system-abandonment"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Componentes del control granular: datos, propósito y tiempo",
+    "description": "El sistema detallado ofrece controles específicos para tipos de datos (ubicación solo para energía), propósitos (datos de seguridad solo para amenazas) y periodos de retención (comandos de voz borrados a diario).",
+    "input": "",
+    "nodes": [
+     "data-type-controls",
+     "purpose-controls",
+     "temporal-controls"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Funciones de control avanzadas: uso compartido, contexto y revocación",
+    "description": "Los controles sofisticados permiten decisiones de uso compartido (los servicios de emergencia reciben solo datos de seguridad), consentimiento contextual (solicitudes justo a tiempo) y revocación sencilla de permisos con efecto inmediato.",
+    "input": "",
+    "nodes": [
+     "sharing-controls",
+     "contextual-consent",
+     "easy-revocation"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12",
+     "e13"
+    ]
+   },
+   {
+    "title": "Empoderamiento del usuario y funcionalidad óptima",
+    "description": "Los controles granulares crean opciones de privacidad significativas que generan confianza en el usuario y permiten experiencias personalizadas que equilibran la privacidad con la funcionalidad para obtener el máximo valor del sistema.",
+    "input": "",
+    "nodes": [
+     "user-empowerment",
+     "optimal-functionality"
+    ],
+    "edges": [
+     "e14",
+     "e15",
+     "e16",
+     "e17"
+    ]
+   },
+   {
+    "title": "Principio central del control granular",
+    "description": "Los usuarios merecen un control detallado sobre sus datos, especificando no solo qué se comparte, sino cómo, cuándo, por qué, con quién y por cuánto tiempo, con la posibilidad de cambiar esta configuración fácilmente en cualquier momento.",
+    "input": "",
+    "nodes": [
+     "granular-principle"
+    ],
+    "edges": [
+     "e18",
+     "e19",
+     "e20"
+    ]
+   }
+  ]
+ }
+}

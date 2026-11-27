@@ -1,0 +1,395 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "human-in-the-loop",
+ "name": "Human-in-the-Loop(HITL)",
+ "icon": "👤",
+ "complexity": "medium",
+ "description": "Integración estratégica del juicio humano en los puntos de decisión críticos de los flujos de trabajo de IA",
+ "features": [
+  "Puntos estratégicos de intervención humana",
+  "Escalamiento basado en la confianza",
+  "Integración de la experiencia humana",
+  "Checkpoints de aseguramiento de calidad",
+  "Optimización del ciclo de feedback",
+  "Validación por expertos del dominio"
+ ],
+ "tldr": {
+  "what": "Pausa la ejecución de la IA en puntos críticos para derivar las decisiones a personas, normalmente cuando la confianza cae por debajo de un umbral o se requiere experiencia en el dominio.",
+  "when": "Decisiones de alto riesgo en las que los errores son costosos, casos ambiguos que necesitan el juicio de un experto o cuando el cumplimiento regulatorio exige la aprobación de una persona.",
+  "watchOut": "Las personas se convierten en cuellos de botella; las colas de escalamiento crecen más rápido que la capacidad de revisión, lo que provoca demoras o que los revisores decidan a las apuradas."
+ },
+ "overview": {
+  "pattern": "Integración estratégica del juicio humano en los puntos de decisión críticos de los flujos de trabajo de IA, con participación activa",
+  "why": "Combina la eficiencia de la IA con la experiencia humana en decisiones complejas, garantizando seguridad y calidad en escenarios de alto riesgo",
+  "insight": "Las personas participan activamente en el proceso de toma de decisiones y aportan feedback continuo que mejora el rendimiento de la IA",
+  "impl": [
+   {
+    "t": "Definir los disparadores",
+    "d": "Establecer umbrales de confianza y puntos de intervención"
+   },
+   {
+    "t": "Diseñar la interfaz",
+    "d": "Crear interfaces de decisión fáciles de usar para las personas"
+   },
+   {
+    "t": "Derivar las decisiones",
+    "d": "Canalizar los casos complejos hacia expertos del dominio"
+   },
+   {
+    "t": "Capturar el feedback",
+    "d": "Registrar las decisiones humanas y su razonamiento"
+   },
+   {
+    "t": "Aprender y adaptarse",
+    "d": "Actualizar los modelos de IA a partir de la experiencia humana"
+   }
+  ],
+  "example": "confidence_check → human_escalation → expert_decision → feedback_capture → model_update",
+  "dos": [
+   "Define umbrales de confianza claros para escalar a una persona",
+   "Diseña interfaces intuitivas para quienes toman las decisiones",
+   "Captura el razonamiento detrás de las decisiones humanas para aprender de él",
+   "Deriva las decisiones a los expertos del dominio adecuados",
+   "Implementa aprendizaje activo a partir del feedback humano"
+  ],
+  "donts": [
+   "Escalar todas las decisiones a personas (anula el propósito de la automatización)",
+   "Ignorar el feedback humano en los ciclos de mejora del modelo",
+   "Sobrecargar a las personas con demasiadas decisiones simultáneas",
+   "Omitir la validación de la calidad de las decisiones humanas",
+   "Usar HITL donde bastaría la supervisión HOTL"
+  ],
+  "use": [
+   "Decisiones de alto riesgo que requieren juicio humano",
+   "Casos complejos con resultados ambiguos",
+   "Aplicaciones críticas para la seguridad",
+   "Requisitos de cumplimiento regulatorio"
+  ],
+  "avoid": [
+   "Decisiones de alto volumen y bajo riesgo",
+   "Operaciones autónomas en las que el tiempo es crítico",
+   "Procesos basados en reglas bien definidas",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de escalamiento",
+    "d": "Porcentaje de decisiones que requieren intervención humana"
+   },
+   {
+    "n": "Calidad de las decisiones humanas",
+    "d": "Precisión y consistencia de las elecciones humanas"
+   },
+   {
+    "n": "Tiempo de respuesta",
+    "d": "Tiempo desde el escalamiento hasta la decisión humana"
+   },
+   {
+    "n": "Eficiencia del aprendizaje",
+    "d": "Mejora de la IA a partir del feedback humano"
+   },
+   {
+    "n": "Costo por decisión",
+    "d": "Costo total, incluido el tiempo de los expertos humanos"
+   },
+   {
+    "n": "Satisfacción del usuario",
+    "d": "Satisfacción con la colaboración humano-IA"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Diagnóstico médico",
+    "d": "La IA evalúa los casos rutinarios y escala los síntomas complejos a los médicos, con una mejora del 95% en la precisión"
+   },
+   {
+    "n": "Revisión de documentos legales",
+    "d": "La IA procesa los contratos estándar y deriva las cláusulas complejas a abogados, reduciendo el tiempo de revisión en un 60%"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "La IA maneja las infracciones claras y escala los casos con matices a moderadores humanos, con un 98% de cumplimiento de las políticas"
+   },
+   {
+    "n": "Detección de fraude financiero",
+    "d": "La IA marca las transacciones sospechosas y deriva los patrones complejos a analistas, con una reducción del 40% en falsos positivos"
+   },
+   {
+    "n": "Seguridad de vehículos autónomos",
+    "d": "La IA se encarga de la conducción normal y transfiere de inmediato el control al conductor humano en situaciones de emergencia"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Human-in-the-Loop",
+  "description": "Flujos de trabajo colaborativos humano-IA que integran supervisión, feedback y control humanos, ubicando el juicio humano en los puntos donde una ejecución autónoma dejaría pasar sus errores",
+  "nodes": [
+   {
+    "id": "collaboration-challenge",
+    "label": "🤔 Desafío de la colaboración humano-IA\n\"¿Cómo integrar de forma óptima\nla experiencia humana con las capacidades de la IA\npara obtener mejores resultados?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "hitl-framework",
+    "label": "🤝 Marco HITL\n\"Sistema colaborativo:\n• Puntos de intervención\n• Ciclos de feedback\n• Controles de supervisión\n• Calibración de la confianza\"",
+    "x": 400,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "intervention-types",
+    "label": "🚦 Puntos de intervención\n\"Control humano:\n• Aprobación previa a la ejecución\n• Corrección en tiempo real\n• Revisión posterior a la ejecución\n• Escalamiento de excepciones\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "decision-delegation",
+    "label": "⚖️ Delegación de decisiones\n\"Traspaso inteligente:\n• Umbrales de confianza\n• Detección de incertidumbre\n• Evaluación de la complejidad\n• Evaluación del riesgo\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "feedback-integration",
+    "label": "🔄 Integración del feedback\n\"Mecanismos de aprendizaje:\n• Entrenamiento con RLHF\n• Aprendizaje activo\n• Aprendizaje de preferencias\n• Adaptación en línea\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "rlhf-implementation",
+    "label": "🎯 Proceso de RLHF\n\"Alineación humana:\n• Ranking de respuestas\n• Modelado de recompensas\n• Optimización con PPO\n• Alinea con las preferencias humanas\"",
+    "x": 750,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "collaborative-workflows",
+    "label": "👥 Flujos de trabajo colaborativos\n\"Patrones de trabajo:\n• Modelo centauro\n• Integración cyborg\n• Protocolos de traspaso\n• Preservación del estado\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "quality-assurance",
+    "label": "✅ Aseguramiento de calidad\n\"Validación humana:\n• Sistemas con varios revisores\n• Validación por expertos\n• Detección de sesgos\n• Evaluación de equidad\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "trust-mechanisms",
+    "label": "🔐 Mecanismos de confianza\n\"Transparencia:\n• Decisiones explicables\n• Visualización de la confianza\n• Registros de auditoría\n• Métricas de rendimiento\"",
+    "x": 600,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "interface-design",
+    "label": "🖥️ Diseño de la interfaz\n\"Herramientas de colaboración:\n• Revelación progresiva\n• Preservación del contexto\n• Interacción multimodal\n• Espacios de trabajo compartidos\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "production-results",
+    "label": "📊 Resultados en producción\n\"Qué monitorear:\n• Minutos del revisor por elemento\n• Errores detectados en la revisión vs. publicados\n• Proporción de elementos aprobados automáticamente sin riesgo\n• Si los revisores realmente lo usan\"",
+    "x": 600,
+    "y": 950,
+    "w": 250
+   },
+   {
+    "id": "implementation-patterns",
+    "label": "🚀 Patrones de implementación\n\"Estrategias de despliegue:\n• Lanzamiento gradual\n• Pruebas A/B\n• Programas piloto\n• Monitoreo continuo\"",
+    "x": 400,
+    "y": 1100,
+    "w": 260
+   },
+   {
+    "id": "hitl-principle",
+    "label": "🎯 Principio de Human-in-the-Loop\n\"Ubica a la persona donde una ejecución autónoma dejaría pasar sus errores\nEl intercambio es minutos del revisor contra errores detectados antes de que lleguen a un usuario\nLa calibración de la confianza y la transparencia son lo que hace que los revisores realmente lo usen\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "collaboration-challenge",
+    "t": "hitl-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "hitl-framework",
+    "t": "intervention-types",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "hitl-framework",
+    "t": "feedback-integration",
+    "label": "utiliza"
+   },
+   {
+    "id": "e4",
+    "s": "hitl-framework",
+    "t": "collaborative-workflows",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "intervention-types",
+    "t": "decision-delegation",
+    "label": "guiado por"
+   },
+   {
+    "id": "e6",
+    "s": "feedback-integration",
+    "t": "rlhf-implementation",
+    "label": "incluye"
+   },
+   {
+    "id": "e7",
+    "s": "collaborative-workflows",
+    "t": "quality-assurance",
+    "label": "requiere"
+   },
+   {
+    "id": "e8",
+    "s": "collaborative-workflows",
+    "t": "trust-mechanisms",
+    "label": "construye"
+   },
+   {
+    "id": "e9",
+    "s": "decision-delegation",
+    "t": "quality-assurance",
+    "label": "valida mediante"
+   },
+   {
+    "id": "e10",
+    "s": "rlhf-implementation",
+    "t": "trust-mechanisms",
+    "label": "mejora"
+   },
+   {
+    "id": "e11",
+    "s": "quality-assurance",
+    "t": "interface-design",
+    "label": "respaldado por"
+   },
+   {
+    "id": "e12",
+    "s": "trust-mechanisms",
+    "t": "production-results",
+    "label": "logra"
+   },
+   {
+    "id": "e13",
+    "s": "interface-design",
+    "t": "implementation-patterns",
+    "label": "se despliega mediante"
+   },
+   {
+    "id": "e14",
+    "s": "production-results",
+    "t": "implementation-patterns",
+    "label": "guía"
+   },
+   {
+    "id": "e15",
+    "s": "implementation-patterns",
+    "t": "hitl-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la colaboración humano-IA",
+    "description": "¿Cómo podemos integrar de forma óptima la experiencia humana con las capacidades de la IA para lograr mejores resultados, manteniendo el control, la calidad y la confianza?",
+    "input": "",
+    "nodes": [
+     "collaboration-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al marco HITL",
+    "description": "Un sistema colaborativo aborda el desafío mediante puntos de intervención estratégicos, ciclos de feedback, controles de supervisión y mecanismos de calibración de la confianza para una colaboración humano-IA óptima.",
+    "input": "",
+    "nodes": [
+     "hitl-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Sistemas de intervención y feedback",
+    "description": "Control humano mediante aprobación previa a la ejecución, corrección en tiempo real y revisión posterior. RLHF y el aprendizaje activo convierten ese feedback en señal de entrenamiento en lugar de dejar que se pierda.",
+    "input": "",
+    "nodes": [
+     "intervention-types",
+     "decision-delegation",
+     "feedback-integration",
+     "rlhf-implementation"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Flujos de trabajo colaborativos y calidad",
+    "description": "Los patrones de trabajo incluyen los modelos centauro y cyborg con protocolos de traspaso. Los sistemas con varios revisores y la validación por expertos aseguran la calidad mientras construyen confianza mediante la transparencia.",
+    "input": "",
+    "nodes": [
+     "collaborative-workflows",
+     "quality-assurance",
+     "trust-mechanisms"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Interfaz y resultados en producción",
+    "description": "La revelación progresiva y la interacción multimodal facilitan la colaboración. El intercambio es minutos del revisor contra errores detectados antes de publicarse, así que mide ambos lados antes de escalar el paso de revisión.",
+    "input": "",
+    "nodes": [
+     "interface-design",
+     "production-results"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Implementación y validación",
+    "description": "Un lanzamiento gradual con pruebas A/B y monitoreo continuo asegura el éxito. La intervención humana estratégica, con flujos de trabajo colaborativos y calibración de la confianza, es lo que logra que los revisores adopten la herramienta en lugar de esquivarla.",
+    "input": "",
+    "nodes": [
+     "implementation-patterns",
+     "hitl-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

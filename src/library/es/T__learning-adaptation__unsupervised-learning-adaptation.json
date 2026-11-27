@@ -1,0 +1,525 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "unsupervised-learning-adaptation",
+ "name": "Unsupervised Learning for Agents(ULA)",
+ "icon": "🔍",
+ "complexity": "high",
+ "description": "Aprendizaje de representaciones, clústeres o puntuaciones de anomalía a partir de datos sin etiquetas de tarea, seguido de una validación del dominio",
+ "features": [
+  "Aprendizaje de representaciones",
+  "Clustering y segmentación",
+  "Reducción de dimensionalidad",
+  "Puntuación de anomalías",
+  "Análisis de estabilidad",
+  "Interpretación por expertos del dominio"
+ ],
+ "tldr": {
+  "what": "Aprende patrones a partir de datos no etiquetados mediante embeddings, clustering o detección de anomalías, y luego valida los hallazgos con expertos del dominio.",
+  "when": "Tienes datos en bruto sin etiquetas y necesitas descubrir estructura, segmentar usuarios o señalar casos inusuales antes de aplicar métodos supervisados.",
+  "watchOut": "Los clústeres y las puntuaciones de anomalía son artefactos inestables; la validación suele revelar que no coinciden con las categorías reales del negocio ni con los límites de decisión."
+ },
+ "overview": {
+  "pattern": "Adapta modelos a nuevos dominios usando datos no etiquetados mediante objetivos de aprendizaje autosupervisado",
+  "why": "Aprovecha la abundancia de datos no etiquetados para aprender patrones específicos del dominio sin costosos requisitos de anotación",
+  "insight": "Las tareas pretexto autosupervisadas crean señales de supervisión a partir de la estructura de los datos, lo que permite una adaptación de dominio eficaz",
+  "impl": [
+   {
+    "t": "Recolectar",
+    "d": "Reúne datos no etiquetados del dominio objetivo"
+   },
+   {
+    "t": "Preprocesar",
+    "d": "Limpia y estructura los datos sin etiquetas"
+   },
+   {
+    "t": "Autosupervisar",
+    "d": "Aplica objetivos de aprendizaje autosupervisado"
+   },
+   {
+    "t": "Adaptar",
+    "d": "Haz fine-tuning sobre patrones específicos del dominio"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Evalúa la adaptación con tareas proxy o con el rendimiento en tareas posteriores"
+   }
+  ],
+  "example": "pretrained_model + unlabeled_domain_data → self_supervised_objectives → adapted_model",
+  "dos": [
+   "Usa objetivos autosupervisados diversos (enmascaramiento, contrastivos, generativos)",
+   "Implementa estrategias de aumento de datos específicas del dominio",
+   "Monitorea la calidad de las representaciones mediante tareas de sondeo",
+   "Aplica descongelamiento gradual y adaptación capa por capa",
+   "Usa aprendizaje contrastivo para una extracción de características robusta",
+   "Valida en tareas posteriores para medir el éxito de la adaptación"
+  ],
+  "donts": [
+   "Ignorar la calidad de los datos y las características de su distribución",
+   "Usar objetivos autosupervisados inadecuados para el dominio",
+   "Sobreentrenar sin una regularización adecuada",
+   "Omitir la evaluación de las representaciones aprendidas",
+   "Aplicarlo sin comprender los patrones específicos del dominio"
+  ],
+  "use": [
+   "Hay grandes cantidades de datos no etiquetados del dominio disponibles",
+   "Los datos etiquetados son costosos o imposibles de obtener",
+   "Necesitas adaptarte a nuevos dominios con distribuciones diferentes",
+   "Se pueden extraer señales autosupervisadas de la estructura de los datos",
+   "El dominio tiene patrones y regularidades inherentes ricos"
+  ],
+  "avoid": [
+   "Hay datos etiquetados de alta calidad fácilmente disponibles",
+   "El dominio carece de señales autosupervisadas claras",
+   "Los recursos computacionales están muy limitados",
+   "Se requiere despliegue inmediato sin tiempo para adaptación",
+   "Un transfer learning simple es suficiente"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de las representaciones",
+    "d": "Rendimiento en tareas de sondeo y evaluación lineal"
+   },
+   {
+    "n": "Puntuación de adaptación de dominio",
+    "d": "Mejora respecto de la línea base preentrenada en el dominio objetivo"
+   },
+   {
+    "n": "Pérdida autosupervisada",
+    "d": "Convergencia y estabilidad de los objetivos no supervisados"
+   },
+   {
+    "n": "Rendimiento en tareas posteriores",
+    "d": "Rendimiento de la tarea después de la adaptación"
+   },
+   {
+    "n": "Eficiencia de transferencia",
+    "d": "Velocidad de aprendizaje en tareas del dominio objetivo"
+   },
+   {
+    "n": "Robustez",
+    "d": "Rendimiento ante cambios de dominio y ruido"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Adaptación de dominio",
+    "d": "Adapta modelos a nuevas industrias, idiomas o dominios especializados sin etiquetas"
+   },
+   {
+    "n": "Aprendizaje intermodal",
+    "d": "Aprende representaciones compartidas entre texto, imágenes y otras modalidades"
+   },
+   {
+    "n": "Adaptación temporal",
+    "d": "Adapta modelos a distribuciones de datos que evolucionan con el tiempo"
+   },
+   {
+    "n": "Idiomas de pocos recursos",
+    "d": "Adapta modelos de lenguaje a idiomas con pocos datos etiquetados"
+   },
+   {
+    "n": "Análisis de datos científicos",
+    "d": "Aprende patrones en datasets científicos especializados sin anotaciones"
+   },
+   {
+    "n": "Adaptación que preserva la privacidad",
+    "d": "Adapta modelos sin acceder a información etiquetada sensible"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Aprendizaje no supervisado para agentes",
+  "description": "Metodología de aprendizaje para que los agentes descubran patrones y estructura en datos no etiquetados mediante técnicas de clustering, reducción de dimensionalidad y autoorganización.",
+  "nodes": [
+   {
+    "id": "agent-challenge",
+    "label": "🎯 Desafío: agente de soporte de e-commerce\n100.000 mensajes de clientes\nSIN ETIQUETAS: ¡solo texto en bruto!",
+    "x": 400,
+    "y": 50,
+    "w": 400
+   },
+   {
+    "id": "raw-messages",
+    "label": "📧 Mensajes en bruto\n\"¿Dónde está mi pedido?\"\n\"Producto roto\"\n\"¡Me encanta!\"\n\"Cancelar suscripción\"\n\"¿Cómo devuelvo?\"",
+    "x": 100,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "no-labels",
+    "label": "❌ Sin etiquetas\nSin categorías\nSin anotaciones de expertos\n¡Solo texto!",
+    "x": 100,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "clustering",
+    "label": "🔍 Clustering\nAgrupa mensajes similares\nautomáticamente",
+    "x": 400,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "cluster-1",
+    "label": "📦 Clúster 1: Envíos\n\"¿Dónde está mi pedido?\"\n\"¿Número de seguimiento?\"\n\"Entrega retrasada\"",
+    "x": 250,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "cluster-2",
+    "label": "🔧 Clúster 2: Problemas\n\"Producto roto\"\n\"No funciona\"\n\"Artículo defectuoso\"",
+    "x": 430,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "cluster-3",
+    "label": "💚 Clúster 3: Satisfechos\n\"¡Me encanta!\"\n\"Gran producto\"\n\"Cinco estrellas\"",
+    "x": 610,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "topic-discovery",
+    "label": "📊 Modelado de temas\nEncuentra temas ocultos\nEmbeddings LDA/BERT",
+    "x": 700,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "pattern-recognition",
+    "label": "🧠 Reconocimiento de patrones\nEl agente aprende:\n• Problemas comunes\n• Lenguaje del cliente\n• Tipos de problema",
+    "x": 400,
+    "y": 440,
+    "w": 200
+   },
+   {
+    "id": "response-templates",
+    "label": "📝 Plantillas automáticas\nEnvíos → Enlace de seguimiento\nProblemas → Formulario de devolución\nSatisfechos → Agradecimiento",
+    "x": 150,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "anomaly-detection",
+    "label": "⚠️ Detección de anomalías\nSolicitudes inusuales\nProblemas nuevos\nEscalar a un humano",
+    "x": 650,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "benefit-1",
+    "label": "💰 Sin etiquetado\nAhorra semanas\nde trabajo manual",
+    "x": 100,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "benefit-2",
+    "label": "🔍 Descubrimiento\nEncuentra patrones\ndesconocidos",
+    "x": 270,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "benefit-3",
+    "label": "📈 Escalable\nManeja millones\nde mensajes",
+    "x": 440,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "benefit-4",
+    "label": "🔄 Adaptativo\nAprende patrones\nnuevos",
+    "x": 610,
+    "y": 560,
+    "w": 140
+   },
+   {
+    "id": "new-message",
+    "label": "💬 Nuevo: \"¡El artículo nunca llegó, estoy muy frustrado!\"",
+    "x": 250,
+    "y": 680,
+    "w": 250
+   },
+   {
+    "id": "agent-action",
+    "label": "🤖 El agente sabe\nTipo: problema de envío\nEmoción: frustración\nAcción: soporte prioritario",
+    "x": 550,
+    "y": 680,
+    "w": 180
+   },
+   {
+    "id": "smart-agent",
+    "label": "🎉 Agente inteligente\nEntiende 15 tipos de problema\n¡Aprendió de patrones, no de etiquetas!\n¡Sin necesidad de anotación humana!",
+    "x": 400,
+    "y": 800,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "challenge-messages",
+    "s": "agent-challenge",
+    "t": "raw-messages",
+    "label": ""
+   },
+   {
+    "id": "messages-nolabels",
+    "s": "raw-messages",
+    "t": "no-labels",
+    "label": ""
+   },
+   {
+    "id": "challenge-clustering",
+    "s": "agent-challenge",
+    "t": "clustering",
+    "label": ""
+   },
+   {
+    "id": "challenge-topic",
+    "s": "agent-challenge",
+    "t": "topic-discovery",
+    "label": ""
+   },
+   {
+    "id": "clustering-cluster1",
+    "s": "clustering",
+    "t": "cluster-1",
+    "label": ""
+   },
+   {
+    "id": "clustering-cluster2",
+    "s": "clustering",
+    "t": "cluster-2",
+    "label": ""
+   },
+   {
+    "id": "clustering-cluster3",
+    "s": "clustering",
+    "t": "cluster-3",
+    "label": ""
+   },
+   {
+    "id": "cluster1-pattern",
+    "s": "cluster-1",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "cluster2-pattern",
+    "s": "cluster-2",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "cluster3-pattern",
+    "s": "cluster-3",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "topic-pattern",
+    "s": "topic-discovery",
+    "t": "pattern-recognition",
+    "label": ""
+   },
+   {
+    "id": "pattern-templates",
+    "s": "pattern-recognition",
+    "t": "response-templates",
+    "label": ""
+   },
+   {
+    "id": "pattern-anomaly",
+    "s": "pattern-recognition",
+    "t": "anomaly-detection",
+    "label": ""
+   },
+   {
+    "id": "nolabels-benefit1",
+    "s": "no-labels",
+    "t": "benefit-1",
+    "label": ""
+   },
+   {
+    "id": "pattern-benefit2",
+    "s": "pattern-recognition",
+    "t": "benefit-2",
+    "label": ""
+   },
+   {
+    "id": "pattern-benefit3",
+    "s": "pattern-recognition",
+    "t": "benefit-3",
+    "label": ""
+   },
+   {
+    "id": "anomaly-benefit4",
+    "s": "anomaly-detection",
+    "t": "benefit-4",
+    "label": ""
+   },
+   {
+    "id": "templates-test",
+    "s": "response-templates",
+    "t": "new-message",
+    "label": ""
+   },
+   {
+    "id": "test-action",
+    "s": "new-message",
+    "t": "agent-action",
+    "label": ""
+   },
+   {
+    "id": "action-smart",
+    "s": "agent-action",
+    "t": "smart-agent",
+    "label": ""
+   },
+   {
+    "id": "benefit3-smart",
+    "s": "benefit-3",
+    "t": "smart-agent",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "El desafío",
+    "description": "100.000 mensajes de clientes SIN etiquetas",
+    "input": "",
+    "nodes": [
+     "agent-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Datos no etiquetados",
+    "description": "Solo mensajes en bruto, sin categorías ni anotaciones",
+    "input": "",
+    "nodes": [
+     "agent-challenge",
+     "raw-messages",
+     "no-labels"
+    ],
+    "edges": [
+     "challenge-messages",
+     "messages-nolabels"
+    ]
+   },
+   {
+    "title": "Técnicas no supervisadas",
+    "description": "Usa clustering y modelado de temas para encontrar patrones",
+    "input": "",
+    "nodes": [
+     "agent-challenge",
+     "clustering",
+     "topic-discovery"
+    ],
+    "edges": [
+     "challenge-clustering",
+     "challenge-topic"
+    ]
+   },
+   {
+    "title": "Clústeres descubiertos",
+    "description": "Encontrados automáticamente: envíos, problemas, clientes satisfechos",
+    "input": "",
+    "nodes": [
+     "clustering",
+     "cluster-1",
+     "cluster-2",
+     "cluster-3"
+    ],
+    "edges": [
+     "clustering-cluster1",
+     "clustering-cluster2",
+     "clustering-cluster3"
+    ]
+   },
+   {
+    "title": "Reconocimiento de patrones",
+    "description": "El agente aprende los problemas comunes y el lenguaje del cliente",
+    "input": "",
+    "nodes": [
+     "cluster-1",
+     "cluster-2",
+     "cluster-3",
+     "topic-discovery",
+     "pattern-recognition"
+    ],
+    "edges": [
+     "cluster1-pattern",
+     "cluster2-pattern",
+     "cluster3-pattern",
+     "topic-pattern"
+    ]
+   },
+   {
+    "title": "Capacidades del agente",
+    "description": "Genera plantillas automáticamente y detecta anomalías",
+    "input": "",
+    "nodes": [
+     "pattern-recognition",
+     "response-templates",
+     "anomaly-detection"
+    ],
+    "edges": [
+     "pattern-templates",
+     "pattern-anomaly"
+    ]
+   },
+   {
+    "title": "Beneficios",
+    "description": "Sin necesidad de etiquetado, descubre patrones desconocidos",
+    "input": "",
+    "nodes": [
+     "no-labels",
+     "pattern-recognition",
+     "anomaly-detection",
+     "benefit-1",
+     "benefit-2",
+     "benefit-3",
+     "benefit-4"
+    ],
+    "edges": [
+     "nolabels-benefit1",
+     "pattern-benefit2",
+     "pattern-benefit3",
+     "anomaly-benefit4"
+    ]
+   },
+   {
+    "title": "Probar un mensaje nuevo",
+    "description": "Cliente: \"¡El artículo nunca llegó, estoy muy frustrado!\"",
+    "input": "",
+    "nodes": [
+     "response-templates",
+     "new-message",
+     "agent-action"
+    ],
+    "edges": [
+     "templates-test",
+     "test-action"
+    ]
+   },
+   {
+    "title": "Resultado del agente inteligente",
+    "description": "¡Entiende 15 tipos de problema sin ningún etiquetado humano!",
+    "input": "",
+    "nodes": [
+     "agent-action",
+     "benefit-3",
+     "smart-agent"
+    ],
+    "edges": [
+     "action-smart",
+     "benefit3-smart"
+    ]
+   }
+  ]
+ }
+}

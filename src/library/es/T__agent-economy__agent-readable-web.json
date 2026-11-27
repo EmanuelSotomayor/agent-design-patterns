@@ -1,0 +1,304 @@
+{
+ "cat": "agent-economy",
+ "slug": "agent-readable-web",
+ "name": "Agent-Readable Web (llms.txt / NLWeb)",
+ "icon": "📄",
+ "complexity": "medium",
+ "description": "Contratos del lado de la oferta que exponen el contenido de un sitio directamente a los agentes en lugar de obligarlos a hacer scraping del HTML renderizado. llms.txt (Jeremy Howard, 2024) es un índice curado en Markdown en /llms.txt más páginas espejo .md que le dan a un LLM contenido de alta densidad y sin navegación en tiempo de inferencia. Microsoft NLWeb (2025, liderado por R.V. Guha, cocreador de Schema.org) va más allá con un endpoint /ask en lenguaje natural que devuelve JSON estructurado fundamentado en los propios datos Schema.org del sitio, y cada instancia de NLWeb funciona también como servidor MCP. Juntos definen el sitio legible por agentes, la contraparte de lectura de robots.txt para la web agéntica.",
+ "features": [
+  "Índice curado en Markdown /llms.txt de un sitio",
+  "Páginas espejo .md para contenido limpio y de alta densidad",
+  "Endpoint de consultas en lenguaje natural /ask de NLWeb",
+  "JSON estructurado fundamentado en datos Schema.org",
+  "Cada instancia de NLWeb también actúa como servidor MCP",
+  "Recuperación sin scraping frágil de HTML"
+ ],
+ "tldr": {
+  "what": "El sitio publica Markdown curado en /llms.txt y páginas espejo .md, además de un endpoint /ask opcional que devuelve JSON estructurado, para que los agentes recuperen contenido sin hacer scraping de HTML.",
+  "when": "Operas un servicio o sitio de contenido y quieres que los agentes accedan a tus datos de forma confiable, precisa y a escala sin analizar páginas renderizadas.",
+  "watchOut": "Requiere mantener sincronizadas dos superficies de contenido; un /llms.txt desactualizado o incompleto anula el propósito y los agentes vuelven a hacer scraping de todos modos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Web legible por agentes (llms.txt / NLWeb)",
+  "description": "Contratos de contenido del lado de la oferta que permiten a un agente leer un sitio directamente en lugar de hacer scraping del HTML renderizado. El agente revisa /llms.txt en busca de un índice curado en Markdown, obtiene páginas espejo .md limpias y luego recurre a un endpoint /ask de NLWeb para obtener una respuesta estructurada fundamentada en los datos Schema.org del sitio; la instancia de NLWeb también puede usarse como servidor MCP.",
+  "nodes": [
+   {
+    "id": "agent-task",
+    "label": "🤖 Tarea del agente\n\"Obtener precios y límites de tasa\nde la API de este producto SaaS\"",
+    "x": 330,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "llms-txt",
+    "label": "📄 GET /llms.txt\nRevisa primero el contrato de contenido",
+    "x": 280,
+    "y": 160,
+    "w": 240
+   },
+   {
+    "id": "html-scrape",
+    "label": "🚫 Scraping de HTML\nAnálisis del DOM, se rompe con cambios\nde diseño (evitado)",
+    "x": 660,
+    "y": 160,
+    "w": 220
+   },
+   {
+    "id": "curated-index",
+    "label": "🗂️ Índice curado\nresumen, precios, docs de la API,\nchangelog -> enlaces .md",
+    "x": 280,
+    "y": 270,
+    "w": 240
+   },
+   {
+    "id": "md-pricing",
+    "label": "📃 /docs/pricing.md\nPágina Markdown limpia",
+    "x": 90,
+    "y": 390,
+    "w": 190
+   },
+   {
+    "id": "md-ratelimits",
+    "label": "📃 /docs/rate-limits.md\nPágina Markdown limpia",
+    "x": 500,
+    "y": 390,
+    "w": 190
+   },
+   {
+    "id": "clean-markdown",
+    "label": "✅ Contenido de alta densidad\nSin navegación, anuncios ni JS del cliente\nMenor costo en tokens",
+    "x": 280,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "needs-structured",
+    "label": "🧩 Conciliar datos\nAlgunas respuestas abarcan varias páginas\n-> hacer una pregunta estructurada",
+    "x": 280,
+    "y": 610,
+    "w": 240
+   },
+   {
+    "id": "nlweb-ask",
+    "label": "💬 NLWeb POST /ask\n\"¿Límite de solicitudes en el plan Pro?\"",
+    "x": 260,
+    "y": 720,
+    "w": 240
+   },
+   {
+    "id": "mcp-server",
+    "label": "🔌 También un servidor MCP\nInstancia invocable como herramienta",
+    "x": 620,
+    "y": 720,
+    "w": 220
+   },
+   {
+    "id": "schema-data",
+    "label": "🏷️ Datos Schema.org\nLos datos estructurados del sitio fundamentan\nla respuesta",
+    "x": 80,
+    "y": 830,
+    "w": 210
+   },
+   {
+    "id": "structured-json",
+    "label": "📦 JSON estructurado\nRespuesta fundamentada y legible\npor máquinas",
+    "x": 440,
+    "y": 830,
+    "w": 210
+   },
+   {
+    "id": "answer",
+    "label": "🎯 Respuesta fundamentada\nContenido avalado por el editor,\nsin scraping",
+    "x": 300,
+    "y": 940,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-llms",
+    "s": "agent-task",
+    "t": "llms-txt",
+    "label": "Revisar primero"
+   },
+   {
+    "id": "task-scrape",
+    "s": "agent-task",
+    "t": "html-scrape",
+    "label": "Evitado"
+   },
+   {
+    "id": "llms-index",
+    "s": "llms-txt",
+    "t": "curated-index",
+    "label": ""
+   },
+   {
+    "id": "index-pricing",
+    "s": "curated-index",
+    "t": "md-pricing",
+    "label": "Obtener"
+   },
+   {
+    "id": "index-ratelimits",
+    "s": "curated-index",
+    "t": "md-ratelimits",
+    "label": "Obtener"
+   },
+   {
+    "id": "pricing-clean",
+    "s": "md-pricing",
+    "t": "clean-markdown",
+    "label": ""
+   },
+   {
+    "id": "ratelimits-clean",
+    "s": "md-ratelimits",
+    "t": "clean-markdown",
+    "label": ""
+   },
+   {
+    "id": "clean-needs",
+    "s": "clean-markdown",
+    "t": "needs-structured",
+    "label": ""
+   },
+   {
+    "id": "needs-nlweb",
+    "s": "needs-structured",
+    "t": "nlweb-ask",
+    "label": ""
+   },
+   {
+    "id": "nlweb-schema",
+    "s": "nlweb-ask",
+    "t": "schema-data",
+    "label": ""
+   },
+   {
+    "id": "nlweb-mcp",
+    "s": "nlweb-ask",
+    "t": "mcp-server",
+    "label": "Método MCP"
+   },
+   {
+    "id": "schema-json",
+    "s": "schema-data",
+    "t": "structured-json",
+    "label": ""
+   },
+   {
+    "id": "json-answer",
+    "s": "structured-json",
+    "t": "answer",
+    "label": ""
+   },
+   {
+    "id": "clean-answer",
+    "s": "clean-markdown",
+    "t": "answer",
+    "label": "Datos de precios"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El agente necesita datos",
+    "description": "El agente necesita los precios y los límites de tasa de la API. En lugar de hacer scraping de la página HTML renderizada, primero verifica si el sitio publica un contrato legible por agentes.",
+    "input": "",
+    "nodes": [
+     "agent-task",
+     "llms-txt",
+     "html-scrape"
+    ],
+    "edges": [
+     "task-llms",
+     "task-scrape"
+    ]
+   },
+   {
+    "title": "Descubrir el contrato",
+    "description": "El archivo /llms.txt devuelve un índice curado en Markdown que lista resumen, precios, docs de la API y changelog, cada uno con un enlace a una página espejo .md.",
+    "input": "",
+    "nodes": [
+     "llms-txt",
+     "curated-index"
+    ],
+    "edges": [
+     "llms-index"
+    ]
+   },
+   {
+    "title": "Obtener Markdown limpio",
+    "description": "El agente obtiene las páginas espejo de precios y de límites de tasa y recibe contenido de alta densidad, sin navegación, anuncios ni JavaScript del lado del cliente, lo que reduce el costo en tokens.",
+    "input": "",
+    "nodes": [
+     "curated-index",
+     "md-pricing",
+     "md-ratelimits",
+     "clean-markdown"
+    ],
+    "edges": [
+     "index-pricing",
+     "index-ratelimits",
+     "pricing-clean",
+     "ratelimits-clean"
+    ]
+   },
+   {
+    "title": "Decidir preguntar",
+    "description": "Algunos datos necesitan conciliarse entre varias páginas, así que el agente pasa de leer páginas a hacerle al sitio una pregunta estructurada en lenguaje natural.",
+    "input": "",
+    "nodes": [
+     "clean-markdown",
+     "needs-structured"
+    ],
+    "edges": [
+     "clean-needs"
+    ]
+   },
+   {
+    "title": "Consulta NLWeb",
+    "description": "El agente envía un POST al endpoint /ask de NLWeb. NLWeb responde a partir de los propios datos Schema.org del sitio y devuelve JSON estructurado en lugar de texto libre.",
+    "input": "",
+    "nodes": [
+     "needs-structured",
+     "nlweb-ask",
+     "schema-data",
+     "structured-json"
+    ],
+    "edges": [
+     "needs-nlweb",
+     "nlweb-schema",
+     "schema-json"
+    ]
+   },
+   {
+    "title": "Servidor MCP",
+    "description": "Como cada instancia de NLWeb también actúa como servidor MCP, el agente podría invocar la misma capacidad /ask como una herramienta registrada en su bucle normal de herramientas.",
+    "input": "",
+    "nodes": [
+     "nlweb-ask",
+     "mcp-server"
+    ],
+    "edges": [
+     "nlweb-mcp"
+    ]
+   },
+   {
+    "title": "Respuesta fundamentada",
+    "description": "El agente arma una respuesta fundamentada a partir de los datos de precios en Markdown limpio y del límite de tasa en JSON estructurado, todo avalado por el editor y libre de scraping frágil.",
+    "input": "",
+    "nodes": [
+     "structured-json",
+     "clean-markdown",
+     "answer"
+    ],
+    "edges": [
+     "json-answer",
+     "clean-answer"
+    ]
+   }
+  ]
+ }
+}

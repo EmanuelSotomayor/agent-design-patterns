@@ -1,0 +1,426 @@
+{
+ "cat": "security-privacy",
+ "slug": "layered-defense-pattern",
+ "name": "Layered Defense Pattern(LDP)",
+ "icon": "🧀",
+ "complexity": "high",
+ "description": "Arquitectura de seguridad multicapa que implementa el Swiss Cheese Model para la seguridad de la IA",
+ "features": [
+  "Restricciones externas a nivel de API y limitación de tasa",
+  "Validación secundaria de entrada/salida y filtrado de contenido",
+  "Mecanismos internos de seguridad y alineación a nivel del modelo",
+  "Enfoque de seguridad de defensa en profundidad",
+  "Aislamiento de fallos entre capas",
+  "Mecanismos de seguridad redundantes"
+ ],
+ "tldr": {
+  "what": "Apila controles de seguridad independientes en las capas de API, aplicación y modelo, de modo que ningún fallo aislado exponga el sistema.",
+  "when": "Dominios de alto riesgo como finanzas o salud, donde una defensa comprometida no puede saltarse todas las protecciones.",
+  "watchOut": "Cada capa agrega latencia y carga operativa; las reglas desalineadas entre capas generan una falsa sensación de seguridad mientras persisten brechas reales."
+ },
+ "overview": {
+  "pattern": "Múltiples capas de seguridad independientes (Externa → Aplicación → Modelo) que crean defensa en profundidad",
+  "why": "El fallo de una sola capa no compromete el sistema; cada capa detecta distintos tipos de amenazas",
+  "insight": "Swiss Cheese Model: los agujeros de las distintas capas no se alinean, lo que evita una brecha completa",
+  "impl": [
+   {
+    "t": "Capa externa",
+    "d": "API gateway con limitación de tasa y autenticación"
+   },
+   {
+    "t": "Capa de aplicación",
+    "d": "Filtrado de contenido y detección de PII"
+   },
+   {
+    "t": "Capa del modelo",
+    "d": "Constitutional AI y mecanismos de rechazo"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Registra las decisiones en cada capa"
+   },
+   {
+    "t": "Coordinar",
+    "d": "Asegura que las capas se complementen y no entren en conflicto"
+   }
+  ],
+  "example": "request → auth_check → content_filter → model_safety → response_validation",
+  "dos": [
+   "Implementa valores predeterminados a prueba de fallos en cada capa",
+   "Usa defensa en profundidad con modos de fallo independientes",
+   "Registra los eventos de seguridad para auditoría y mejora",
+   "Prueba las capas tanto de forma independiente como integrada",
+   "Documenta contra qué protege cada capa"
+  ],
+  "donts": [
+   "Depender de una sola capa para la seguridad crítica",
+   "Crear reglas superpuestas que entren en conflicto",
+   "Omitir el monitoreo de los intentos de evasión",
+   "Ignorar el impacto en el rendimiento de múltiples capas",
+   "Olvidar actualizar todas las capas cuando evolucionan las amenazas"
+  ],
+  "use": [
+   "Aplicaciones de IA de alto riesgo",
+   "Se requiere cumplimiento regulatorio",
+   "Sistemas expuestos al público",
+   "Manejo de datos sensibles"
+  ],
+  "avoid": [
+   "Herramientas internas de bajo riesgo",
+   "Restricciones de latencia extremas",
+   "Bots simples de propósito único",
+   "Dispositivos edge con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de bloqueo",
+    "d": "Amenazas detenidas por capa"
+   },
+   {
+    "n": "Falsos positivos",
+    "d": "% de solicitudes legítimas bloqueadas"
+   },
+   {
+    "n": "Impacto en la latencia",
+    "d": "ms agregados por capa"
+   },
+   {
+    "n": "Intentos de evasión",
+    "d": "Ataques que llegan a capas más profundas"
+   },
+   {
+    "n": "Cobertura",
+    "d": "% del OWASP Top 10 abordado"
+   },
+   {
+    "n": "MTTR",
+    "d": "Tiempo para actualizar las defensas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA financiera",
+    "d": "Externa (DDoS) → Aplicación (detección de fraude) → Modelo (cumplimiento)"
+   },
+   {
+    "n": "Bot de salud",
+    "d": "Externa (autenticación HIPAA) → Aplicación (filtrado de PHI) → Modelo (seguridad médica)"
+   },
+   {
+    "n": "Asistente legal",
+    "d": "Externa (autenticación del cliente) → Aplicación (verificación de privilegios) → Modelo (límites éticos)"
+   },
+   {
+    "n": "Plataforma de RR. HH.",
+    "d": "Externa (verificación de empleados) → Aplicación (protección de PII) → Modelo (prevención de sesgos)"
+   },
+   {
+    "n": "IA educativa",
+    "d": "Externa (verificación de edad) → Aplicación (filtrado de contenido) → Modelo (pautas de seguridad)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Layered Defense Pattern",
+  "description": "Arquitectura de seguridad multicapa que implementa el Swiss Cheese Model para la seguridad de la IA, donde múltiples salvaguardas independientes evitan salidas dañinas incluso si fallan capas individuales",
+  "nodes": [
+   {
+    "id": "swiss-cheese-model",
+    "label": "🧀 Swiss Cheese Model\n\"Cada capa tiene agujeros\npero rara vez se alinean\nSe necesitan múltiples fallos\npara que el daño pase\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "harmful-input",
+    "label": "⚠️ Entrada dañina\n\"Genera instrucciones\npara crear sustancias\nilegales\"",
+    "x": 100,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "layer1-defense",
+    "label": "🛡️ Capa 1: Filtro de entrada\n\"Bloquea el 90% de las solicitudes dañinas\nDetección de palabras clave\"",
+    "x": 300,
+    "y": 200,
+    "w": 200
+   },
+   {
+    "id": "layer1-bypass",
+    "label": "🕳️ 10% evade la capa 1\n\"Los eufemismos y\nel lenguaje indirecto\nse cuelan\"",
+    "x": 500,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "layer2-defense",
+    "label": "🧠 Capa 2: Análisis de intención\n\"Bloquea el 80% de lo restante\nDetecta manipulación\"",
+    "x": 300,
+    "y": 300,
+    "w": 200
+   },
+   {
+    "id": "layer2-bypass",
+    "label": "🕳️ 2% evade la capa 2\n\"El encuadre académico\nengaña al clasificador\"",
+    "x": 500,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "layer3-defense",
+    "label": "⚙️ Capa 3: Controles de generación\n\"Bloquea el 90% de lo restante\nEntrenamiento con Constitutional AI\"",
+    "x": 300,
+    "y": 400,
+    "w": 220
+   },
+   {
+    "id": "layer3-bypass",
+    "label": "🕳️ 0.2% evade la capa 3\n\"Patrones novedosos que no\nestán en los datos de entrenamiento\"",
+    "x": 500,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "layer4-defense",
+    "label": "🔍 Capa 4: Escáner de salida\n\"Bloquea el 85% de lo restante\nAnálisis de contenido\"",
+    "x": 300,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "layer4-bypass",
+    "label": "🕳️ 0.03% evade la capa 4\n\"Pasan implicaciones\ndañinas sutiles\"",
+    "x": 500,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "layer5-defense",
+    "label": "👥 Capa 5: Supervisión humana\n\"Bloquea el 80% de lo restante\nRevisión manual\"",
+    "x": 300,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "final-escape",
+    "label": "⚠️ 0.006% de escape final\n\"Caso extremadamente raro\nen que todas las capas fallan\nsimultáneamente\"",
+    "x": 500,
+    "y": 600,
+    "w": 200
+   },
+   {
+    "id": "threat-blocked",
+    "label": "✅ Amenaza bloqueada\n\"La defensa en capas\ndetiene lo que cualquier capa\naislada habría pasado por alto\"",
+    "x": 100,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "feedback-improvement",
+    "label": "🔄 Mejora continua\n\"Aprender de los escapes raros\nReforzar las capas débiles\nAgregar nuevas defensas\"",
+    "x": 400,
+    "y": 750,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "e0",
+    "s": "swiss-cheese-model",
+    "t": "harmful-input",
+    "label": "demuestra"
+   },
+   {
+    "id": "e1",
+    "s": "harmful-input",
+    "t": "layer1-defense",
+    "label": "100% de intentos"
+   },
+   {
+    "id": "e1b",
+    "s": "harmful-input",
+    "t": "layer1-bypass",
+    "label": "10% evade"
+   },
+   {
+    "id": "e2",
+    "s": "layer1-bypass",
+    "t": "layer2-defense",
+    "label": "llega a la capa 2"
+   },
+   {
+    "id": "e2b",
+    "s": "layer1-bypass",
+    "t": "layer2-bypass",
+    "label": "2% de evasión total"
+   },
+   {
+    "id": "e3",
+    "s": "layer2-bypass",
+    "t": "layer3-defense",
+    "label": "llega a la capa 3"
+   },
+   {
+    "id": "e3b",
+    "s": "layer2-bypass",
+    "t": "layer3-bypass",
+    "label": "0.2% de evasión total"
+   },
+   {
+    "id": "e4",
+    "s": "layer3-bypass",
+    "t": "layer4-defense",
+    "label": "llega a la capa 4"
+   },
+   {
+    "id": "e4b",
+    "s": "layer3-bypass",
+    "t": "layer4-bypass",
+    "label": "0.03% de evasión total"
+   },
+   {
+    "id": "e5",
+    "s": "layer4-bypass",
+    "t": "layer5-defense",
+    "label": "llega a la capa 5"
+   },
+   {
+    "id": "e5b",
+    "s": "layer4-bypass",
+    "t": "final-escape",
+    "label": "0.006% de escape final"
+   },
+   {
+    "id": "e6",
+    "s": "layer1-defense",
+    "t": "threat-blocked",
+    "label": "90% bloqueado aquí"
+   },
+   {
+    "id": "e7",
+    "s": "layer2-defense",
+    "t": "threat-blocked",
+    "label": "8% bloqueado aquí"
+   },
+   {
+    "id": "e8",
+    "s": "layer3-defense",
+    "t": "threat-blocked",
+    "label": "1.8% bloqueado aquí"
+   },
+   {
+    "id": "e9",
+    "s": "layer4-defense",
+    "t": "threat-blocked",
+    "label": "0.17% bloqueado aquí"
+   },
+   {
+    "id": "e10",
+    "s": "layer5-defense",
+    "t": "threat-blocked",
+    "label": "0.024% bloqueado aquí"
+   },
+   {
+    "id": "e11",
+    "s": "final-escape",
+    "t": "feedback-improvement",
+    "label": "aprender de los fallos raros"
+   },
+   {
+    "id": "e12",
+    "s": "threat-blocked",
+    "t": "feedback-improvement",
+    "label": "optimizar las defensas"
+   },
+   {
+    "id": "e13",
+    "s": "feedback-improvement",
+    "t": "layer1-defense",
+    "label": "reforzar"
+   },
+   {
+    "id": "e14",
+    "s": "feedback-improvement",
+    "t": "layer3-defense",
+    "label": "reforzar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Fundamento del Swiss Cheese Model",
+    "description": "El Swiss Cheese Model demuestra que cada capa de defensa tiene vulnerabilidades, pero múltiples capas independientes evitan el daño al hacer que un fallo simultáneo sea extremadamente improbable.",
+    "input": "",
+    "nodes": [
+     "swiss-cheese-model",
+     "harmful-input"
+    ],
+    "edges": [
+     "e0"
+    ]
+   },
+   {
+    "title": "Arquitectura de defensa en capas",
+    "description": "Cinco capas de defensa independientes crean una protección multiplicativa: la capa 1 bloquea el 90%, la capa 2 bloquea el 80% del resto, lo que reduce exponencialmente la probabilidad de amenaza en cada capa.",
+    "input": "",
+    "nodes": [
+     "layer1-defense",
+     "layer2-defense",
+     "layer3-defense",
+     "layer4-defense",
+     "layer5-defense"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Progresión de la evasión de vulnerabilidades",
+    "description": "Las amenazas que evaden cada capa enfrentan tasas de éxito que disminuyen exponencialmente: 10% → 2% → 0.2% → 0.03% → 0.006%, lo que demuestra cómo las defensas en capas multiplican su efectividad.",
+    "input": "",
+    "nodes": [
+     "layer1-bypass",
+     "layer2-bypass",
+     "layer3-bypass",
+     "layer4-bypass",
+     "final-escape"
+    ],
+    "edges": [
+     "e1b",
+     "e2b",
+     "e3b",
+     "e4b",
+     "e5b"
+    ]
+   },
+   {
+    "title": "Estadísticas de éxito de la defensa",
+    "description": "La gran mayoría de las amenazas (99.994%) se bloquean con éxito a lo largo de todas las capas, y la mayoría se detiene en las primeras. Solo un 0.006% de casos extremadamente raros escapa de todas las defensas simultáneamente.",
+    "input": "",
+    "nodes": [
+     "threat-blocked"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Evolución continua de la defensa",
+    "description": "El sistema aprende tanto de los fallos raros como de los bloqueos exitosos para reforzar las capas débiles, corregir las vulnerabilidades descubiertas y agregar nuevos mecanismos de defensa, reduciendo aún más la probabilidad de escape.",
+    "input": "",
+    "nodes": [
+     "feedback-improvement"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

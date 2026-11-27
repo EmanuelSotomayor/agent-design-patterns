@@ -1,0 +1,335 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "reversible-action-compensation",
+ "name": "Reversible Actions & Compensation (Agent Saga)(Saga)",
+ "icon": "↩️",
+ "complexity": "high",
+ "description": "Un patrón para que los efectos secundarios de un agente se puedan deshacer de forma segura. Estructura la trayectoria como una saga: cada acción hacia adelante (reservar un vuelo, cobrar una tarjeta, crear un registro) se empareja con una acción compensatoria que revierte su efecto de negocio, y cada herramienta se hace idempotente con una clave de idempotencia para que un reintento o un rollback produzcan el mismo estado final en lugar de duplicar trabajo. Cuando un paso falla a mitad de camino, el agente ejecuta las compensaciones de los pasos ya completados en orden inverso en lugar de dejar el sistema aplicado a medias. No existe un rollback ACID automático entre servicios, por lo que las compensaciones se diseñan explícitamente como el inverso lógico de cada acción. Es distinto de `durable-execution`: ese persiste y reproduce una ejecución para que pueda continuar hasta completarse después de una caída, mientras que este define cómo deshacer semánticamente los efectos secundarios ya confirmados cuando completar la ejecución ya no es el resultado correcto.",
+ "features": [
+  "Cada acción hacia adelante se empareja con una acción compensatoria (deshacer semántico)",
+  "Las claves de idempotencia hacen que los reintentos y rollbacks converjan al mismo estado final",
+  "Rollback ordenado de los pasos completados ante una falla a mitad de la trayectoria",
+  "Las protecciones de verificar-antes-de-actuar y upsert evitan efectos secundarios duplicados",
+  "Sin rollback ACID automático: las compensaciones se escriben explícitamente",
+  "Efectos secundarios distribuidos modelados como una saga de transacciones locales"
+ ],
+ "tldr": {
+  "what": "Empareja cada acción hacia adelante con una acción compensatoria explícita que revierte su efecto de negocio, usando claves de idempotencia para que los reintentos y rollbacks converjan al mismo estado.",
+  "when": "Workflows de varios pasos entre servicios donde las fallas a mitad de la trayectoria exigen deshacer efectos secundarios ya confirmados sin un rollback ACID automático.",
+  "watchOut": "Las compensaciones deben escribirse correctamente y seguir disponibles; una compensación rota o faltante deja el sistema en un estado inconsistente sin recuperación automática."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Reversible Actions & Compensation (Agent Saga)",
+  "description": "Un agente de reservas de viaje estructura sus efectos secundarios como una saga: cada acción hacia adelante registra una acción compensatoria y cada llamada a herramienta lleva una clave de idempotencia. Cuando falla el paso del hotel, el agente revierte el vuelo ya reservado con un reintento idempotente en lugar de dejar un viaje aplicado a medias.",
+  "nodes": [
+   {
+    "id": "request",
+    "label": "🧳 Solicitud de reserva\nVuelo, luego hotel, luego auto",
+    "x": 350,
+    "y": 40,
+    "w": 240
+   },
+   {
+    "id": "saga-orchestrator",
+    "label": "🎗️ Orquestador de la saga\nEjecuta la ruta hacia adelante y registra las compensaciones",
+    "x": 340,
+    "y": 130,
+    "w": 270
+   },
+   {
+    "id": "idempotency-store",
+    "label": "🔑 Almacén de idempotencia\nUna clave por acción",
+    "x": 30,
+    "y": 130,
+    "w": 180
+   },
+   {
+    "id": "compensation-log",
+    "label": "📚 Log de compensaciones\nPila de deshacer registrada",
+    "x": 680,
+    "y": 130,
+    "w": 190
+   },
+   {
+    "id": "book-flight",
+    "label": "✈️ book_flight\nkey=trip-42-flight",
+    "x": 350,
+    "y": 225,
+    "w": 200
+   },
+   {
+    "id": "flight-confirmed",
+    "label": "🟢 Vuelo reservado\nAF1234, $420",
+    "x": 120,
+    "y": 315,
+    "w": 180
+   },
+   {
+    "id": "register-cancel",
+    "label": "↩️ Registrar compensación\ncancel_flight(AF1234)",
+    "x": 560,
+    "y": 315,
+    "w": 220
+   },
+   {
+    "id": "book-hotel",
+    "label": "🏨 book_hotel\nkey=trip-42-hotel",
+    "x": 350,
+    "y": 405,
+    "w": 200
+   },
+   {
+    "id": "hotel-failed",
+    "label": "❌ Falló el hotel\nSin disponibilidad para las fechas",
+    "x": 350,
+    "y": 495,
+    "w": 220
+   },
+   {
+    "id": "rollback-trigger",
+    "label": "🔁 Disparador de rollback\nDetiene la ruta hacia adelante y saca las compensaciones",
+    "x": 630,
+    "y": 495,
+    "w": 230
+   },
+   {
+    "id": "cancel-flight",
+    "label": "✈️ cancel_flight(AF1234)\nkey=trip-42-flight-cancel",
+    "x": 330,
+    "y": 590,
+    "w": 230
+   },
+   {
+    "id": "retry-timeout",
+    "label": "⏱️ El intento 1 excede el tiempo\nReintento con la misma clave",
+    "x": 640,
+    "y": 590,
+    "w": 210
+   },
+   {
+    "id": "idempotent-retry",
+    "label": "🧷 Reintento idempotente\nLa API deduplica por clave, sin doble reembolso",
+    "x": 640,
+    "y": 685,
+    "w": 230
+   },
+   {
+    "id": "flight-cancelled",
+    "label": "🟢 Vuelo cancelado\nUn único reembolso limpio",
+    "x": 320,
+    "y": 685,
+    "w": 190
+   },
+   {
+    "id": "final-state",
+    "label": "✅ Estado final consistente\nCero reservas parciales, sin doble cobro",
+    "x": 330,
+    "y": 780,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "r1",
+    "s": "request",
+    "t": "saga-orchestrator",
+    "label": ""
+   },
+   {
+    "id": "r2",
+    "s": "saga-orchestrator",
+    "t": "idempotency-store",
+    "label": "claves"
+   },
+   {
+    "id": "r3",
+    "s": "saga-orchestrator",
+    "t": "compensation-log",
+    "label": "pila de deshacer"
+   },
+   {
+    "id": "r4",
+    "s": "saga-orchestrator",
+    "t": "book-flight",
+    "label": "paso 1"
+   },
+   {
+    "id": "r5",
+    "s": "book-flight",
+    "t": "flight-confirmed",
+    "label": ""
+   },
+   {
+    "id": "r6",
+    "s": "book-flight",
+    "t": "register-cancel",
+    "label": "registrar"
+   },
+   {
+    "id": "r7",
+    "s": "register-cancel",
+    "t": "compensation-log",
+    "label": "apilar"
+   },
+   {
+    "id": "r8",
+    "s": "flight-confirmed",
+    "t": "book-hotel",
+    "label": "paso 2"
+   },
+   {
+    "id": "r9",
+    "s": "book-hotel",
+    "t": "hotel-failed",
+    "label": "falla"
+   },
+   {
+    "id": "r10",
+    "s": "hotel-failed",
+    "t": "rollback-trigger",
+    "label": "abortar avance"
+   },
+   {
+    "id": "r11",
+    "s": "rollback-trigger",
+    "t": "compensation-log",
+    "label": "desapilar"
+   },
+   {
+    "id": "r12",
+    "s": "rollback-trigger",
+    "t": "cancel-flight",
+    "label": "compensar"
+   },
+   {
+    "id": "r13",
+    "s": "cancel-flight",
+    "t": "retry-timeout",
+    "label": "intento 1"
+   },
+   {
+    "id": "r14",
+    "s": "retry-timeout",
+    "t": "idempotent-retry",
+    "label": "misma clave"
+   },
+   {
+    "id": "r15",
+    "s": "idempotent-retry",
+    "t": "flight-cancelled",
+    "label": "deduplicado"
+   },
+   {
+    "id": "r16",
+    "s": "flight-cancelled",
+    "t": "final-state",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Iniciar la saga",
+    "description": "El orquestador acepta la reserva de varios pasos y prepara los dos ingredientes que la hacen reversible: una clave de idempotencia por acción y un log de compensaciones para las acciones de deshacer registradas.",
+    "input": "",
+    "nodes": [
+     "request",
+     "saga-orchestrator",
+     "idempotency-store",
+     "compensation-log"
+    ],
+    "edges": [
+     "r1",
+     "r2",
+     "r3"
+    ]
+   },
+   {
+    "title": "Hacia adelante: reservar el vuelo",
+    "description": "El vuelo se reserva con éxito (AF1234, $420). Antes de continuar, el agente registra su acción compensatoria, cancel_flight(AF1234), en el log de compensaciones.",
+    "input": "",
+    "nodes": [
+     "saga-orchestrator",
+     "book-flight",
+     "flight-confirmed",
+     "register-cancel",
+     "compensation-log"
+    ],
+    "edges": [
+     "r4",
+     "r5",
+     "r6",
+     "r7"
+    ]
+   },
+   {
+    "title": "Hacia adelante: falla el hotel",
+    "description": "El siguiente paso hacia adelante, reservar el hotel, falla: no hay disponibilidad para las fechas solicitadas. La trayectoria queda aplicada a medias, con una reserva de vuelo activa.",
+    "input": "",
+    "nodes": [
+     "flight-confirmed",
+     "book-hotel",
+     "hotel-failed"
+    ],
+    "edges": [
+     "r8",
+     "r9"
+    ]
+   },
+   {
+    "title": "Disparar el rollback",
+    "description": "En lugar de reintentar todo el viaje o seguir adelante, la saga aborta la ruta hacia adelante y saca del log las compensaciones registradas para ejecutarlas de la más reciente a la más antigua.",
+    "input": "",
+    "nodes": [
+     "hotel-failed",
+     "rollback-trigger",
+     "compensation-log"
+    ],
+    "edges": [
+     "r10",
+     "r11"
+    ]
+   },
+   {
+    "title": "Compensar: cancelar el vuelo",
+    "description": "El agente invoca cancel_flight(AF1234) con su propia clave de idempotencia. El primer intento excede el tiempo de espera, así que el agente reintenta con exactamente la misma clave.",
+    "input": "",
+    "nodes": [
+     "rollback-trigger",
+     "cancel-flight",
+     "retry-timeout"
+    ],
+    "edges": [
+     "r12",
+     "r13"
+    ]
+   },
+   {
+    "title": "Reintento idempotente",
+    "description": "La API de la aerolínea deduplica por la clave de idempotencia, de modo que el reintento devuelve la misma cancelación en lugar de emitir un segundo reembolso o dar error. El vuelo queda cancelado limpiamente.",
+    "input": "",
+    "nodes": [
+     "retry-timeout",
+     "idempotent-retry",
+     "flight-cancelled"
+    ],
+    "edges": [
+     "r14",
+     "r15"
+    ]
+   },
+   {
+    "title": "Estado final consistente",
+    "description": "El sistema termina en un estado limpio: cero reservas parciales, un reembolso y ningún doble cobro. La compensación deshizo el efecto secundario confirmado en lugar de dejarlo abandonado.",
+    "input": "",
+    "nodes": [
+     "flight-cancelled",
+     "final-state"
+    ],
+    "edges": [
+     "r16"
+    ]
+   }
+  ]
+ }
+}

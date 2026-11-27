@@ -1,0 +1,366 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "edge-ai-optimization",
+ "name": "Edge AI Optimization(EAO)",
+ "icon": "📱",
+ "complexity": "high",
+ "description": "Optimiza los workflows de IA para dispositivos edge con recursos limitados y entornos móviles",
+ "features": [
+  "Compresión y cuantización de modelos",
+  "Optimización de la inferencia por batches",
+  "Procesamiento eficiente en memoria",
+  "Gestión del consumo de energía",
+  "Cómputo consciente de la red",
+  "Degradación adaptativa de la calidad"
+ ],
+ "tldr": {
+  "what": "Comprime los modelos y adapta la calidad de la inferencia según los recursos del dispositivo y las condiciones de la red para ejecutar IA en dispositivos edge.",
+  "when": "Desplegar IA en teléfonos móviles, dispositivos IoT o cámaras donde el ancho de banda, la energía o el cómputo están muy limitados.",
+  "watchOut": "La pérdida de precisión se acumula a lo largo de los pasos de compresión; prueba el rendimiento real en el hardware de destino antes del despliegue."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Edge AI Optimization",
+  "description": "Ejecuta workflows de IA dentro de los límites ajustados de cómputo, memoria, energía y ancho de banda de los dispositivos edge. Combina compresión de modelos, inferencia por batches, calidad adaptativa activada por movimiento y subida consciente de la red, ilustrado con un sistema de seguridad con cámara inteligente.",
+  "nodes": [
+   {
+    "id": "camera-feed",
+    "label": "📹 Señal de la cámara\nStream de seguridad 1080p @ 30fps",
+    "x": 380,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "edge-device",
+    "label": "📱 Dispositivo edge\nSoC de cámara inteligente, 8GB de RAM",
+    "x": 380,
+    "y": 150,
+    "w": 240
+   },
+   {
+    "id": "power-manager",
+    "label": "🔋 Gestor de energía\nEquilibra cómputo vs batería",
+    "x": 700,
+    "y": 150,
+    "w": 210
+   },
+   {
+    "id": "model-quantization",
+    "label": "🗜️ Cuantización\n50MB FP32 -> 12MB INT8",
+    "x": 80,
+    "y": 250,
+    "w": 190
+   },
+   {
+    "id": "model-pruning",
+    "label": "✂️ Poda\n12MB -> 8MB, 91% de precisión",
+    "x": 80,
+    "y": 350,
+    "w": 190
+   },
+   {
+    "id": "edge-model",
+    "label": "🧠 Modelo edge\n8MB, se ejecuta completamente en el dispositivo",
+    "x": 380,
+    "y": 290,
+    "w": 210
+   },
+   {
+    "id": "inference-batching",
+    "label": "📦 Inferencia por batches\n4 frames -> 3x más rápido",
+    "x": 680,
+    "y": 290,
+    "w": 200
+   },
+   {
+    "id": "motion-detector",
+    "label": "🏃 Compuerta de movimiento\nSelecciona la profundidad del análisis",
+    "x": 380,
+    "y": 400,
+    "w": 210
+   },
+   {
+    "id": "high-motion",
+    "label": "⚡ Mucho movimiento\nAnálisis a resolución completa",
+    "x": 40,
+    "y": 510,
+    "w": 170
+   },
+   {
+    "id": "normal-activity",
+    "label": "🔵 Actividad normal\nAnálisis al 50% de resolución",
+    "x": 250,
+    "y": 510,
+    "w": 170
+   },
+   {
+    "id": "static-scene",
+    "label": "⏸️ Escena estática\nAnálisis solo de keyframes",
+    "x": 460,
+    "y": 510,
+    "w": 170
+   },
+   {
+    "id": "low-battery",
+    "label": "🪫 Batería < 20%\nSolo detección esencial",
+    "x": 690,
+    "y": 510,
+    "w": 170
+   },
+   {
+    "id": "detection-result",
+    "label": "🎯 Detecciones\n80% más rápido, 60% menos energía",
+    "x": 380,
+    "y": 630,
+    "w": 230
+   },
+   {
+    "id": "network-router",
+    "label": "🌐 Subida consciente de la red\nWiFi / Celular / Sin conexión",
+    "x": 380,
+    "y": 730,
+    "w": 230
+   },
+   {
+    "id": "cloud-sync",
+    "label": "☁️ Sincronización en la nube\nEventos de alta confianza",
+    "x": 120,
+    "y": 800,
+    "w": 190
+   },
+   {
+    "id": "local-store",
+    "label": "💾 Almacenamiento local\nEventos críticos guardados sin conexión",
+    "x": 620,
+    "y": 800,
+    "w": 190
+   }
+  ],
+  "edges": [
+   {
+    "id": "cam-device",
+    "s": "camera-feed",
+    "t": "edge-device",
+    "label": ""
+   },
+   {
+    "id": "device-quant",
+    "s": "edge-device",
+    "t": "model-quantization",
+    "label": "comprimir"
+   },
+   {
+    "id": "quant-prune",
+    "s": "model-quantization",
+    "t": "model-pruning",
+    "label": ""
+   },
+   {
+    "id": "prune-model",
+    "s": "model-pruning",
+    "t": "edge-model",
+    "label": "desplegar"
+   },
+   {
+    "id": "device-power",
+    "s": "edge-device",
+    "t": "power-manager",
+    "label": "monitorear"
+   },
+   {
+    "id": "model-batch",
+    "s": "edge-model",
+    "t": "inference-batching",
+    "label": "agrupar frames"
+   },
+   {
+    "id": "model-motion",
+    "s": "edge-model",
+    "t": "motion-detector",
+    "label": "por frame"
+   },
+   {
+    "id": "motion-high",
+    "s": "motion-detector",
+    "t": "high-motion",
+    "label": "mucho movimiento"
+   },
+   {
+    "id": "motion-normal",
+    "s": "motion-detector",
+    "t": "normal-activity",
+    "label": "normal"
+   },
+   {
+    "id": "motion-static",
+    "s": "motion-detector",
+    "t": "static-scene",
+    "label": "estática"
+   },
+   {
+    "id": "power-low",
+    "s": "power-manager",
+    "t": "low-battery",
+    "label": "poca energía"
+   },
+   {
+    "id": "high-detect",
+    "s": "high-motion",
+    "t": "detection-result",
+    "label": ""
+   },
+   {
+    "id": "normal-detect",
+    "s": "normal-activity",
+    "t": "detection-result",
+    "label": ""
+   },
+   {
+    "id": "static-detect",
+    "s": "static-scene",
+    "t": "detection-result",
+    "label": ""
+   },
+   {
+    "id": "low-detect",
+    "s": "low-battery",
+    "t": "detection-result",
+    "label": ""
+   },
+   {
+    "id": "batch-detect",
+    "s": "inference-batching",
+    "t": "detection-result",
+    "label": "acelera"
+   },
+   {
+    "id": "detect-network",
+    "s": "detection-result",
+    "t": "network-router",
+    "label": ""
+   },
+   {
+    "id": "network-cloud",
+    "s": "network-router",
+    "t": "cloud-sync",
+    "label": "WiFi disponible"
+   },
+   {
+    "id": "network-local",
+    "s": "network-router",
+    "t": "local-store",
+    "label": "sin conexión"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Stream de la cámara",
+    "description": "Un stream de seguridad de alta tasa de frames alimenta un dispositivo edge con recursos limitados que debe procesarlo localmente.",
+    "input": "",
+    "nodes": [
+     "camera-feed",
+     "edge-device"
+    ],
+    "edges": [
+     "cam-device"
+    ]
+   },
+   {
+    "title": "Compresión del modelo",
+    "description": "La cuantización y luego la poda reducen un modelo de 50MB a un modelo edge de 8MB que conserva 91% de precisión y cabe en el dispositivo.",
+    "input": "",
+    "nodes": [
+     "edge-device",
+     "model-quantization",
+     "model-pruning",
+     "edge-model"
+    ],
+    "edges": [
+     "device-quant",
+     "quant-prune",
+     "prune-model"
+    ]
+   },
+   {
+    "title": "Inferencia por batches",
+    "description": "Los frames similares se agrupan y se procesan de a cuatro, con una ganancia de throughput de aproximadamente 3x.",
+    "input": "",
+    "nodes": [
+     "edge-model",
+     "inference-batching"
+    ],
+    "edges": [
+     "model-batch"
+    ]
+   },
+   {
+    "title": "Compuerta de movimiento adaptativa",
+    "description": "Una compuerta de movimiento elige la resolución de análisis de cada frame: completa con mucho movimiento, a la mitad con actividad normal y solo keyframes en escenas estáticas.",
+    "input": "",
+    "nodes": [
+     "edge-model",
+     "motion-detector",
+     "high-motion",
+     "normal-activity",
+     "static-scene"
+    ],
+    "edges": [
+     "model-motion",
+     "motion-high",
+     "motion-normal",
+     "motion-static"
+    ]
+   },
+   {
+    "title": "Degradación según la energía",
+    "description": "Cuando el gestor de energía informa batería baja, el dispositivo pasa a hacer solo la detección esencial.",
+    "input": "",
+    "nodes": [
+     "edge-device",
+     "power-manager",
+     "low-battery"
+    ],
+    "edges": [
+     "device-power",
+     "power-low"
+    ]
+   },
+   {
+    "title": "Detección en el dispositivo",
+    "description": "El modo seleccionado junto con la inferencia por batches producen detecciones localmente, reduciendo el tiempo de procesamiento y el consumo de energía.",
+    "input": "",
+    "nodes": [
+     "high-motion",
+     "normal-activity",
+     "static-scene",
+     "low-battery",
+     "inference-batching",
+     "detection-result"
+    ],
+    "edges": [
+     "high-detect",
+     "normal-detect",
+     "static-detect",
+     "low-detect",
+     "batch-detect"
+    ]
+   },
+   {
+    "title": "Subida consciente de la red",
+    "description": "Los resultados se enrutan según la conectividad: se sincronizan con la nube cuando hay WiFi o, sin conexión, se guardan localmente solo los eventos críticos.",
+    "input": "",
+    "nodes": [
+     "detection-result",
+     "network-router",
+     "cloud-sync",
+     "local-store"
+    ],
+    "edges": [
+     "detect-network",
+     "network-cloud",
+     "network-local"
+    ]
+   }
+  ]
+ }
+}

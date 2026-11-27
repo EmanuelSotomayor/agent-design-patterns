@@ -1,0 +1,195 @@
+{
+ "cat": "tool-use",
+ "slug": "control-plane",
+ "name": "Control Plane as a Tool(CPT)",
+ "icon": "🎛️",
+ "complexity": "medium",
+ "description": "Expone una única interfaz de herramientas unificada al agente, mientras un plano de control interno enruta cada solicitud a la herramienta, el servicio o el modelo adecuado que hay detrás. El prompt del agente se mantiene estable aunque el catálogo de herramientas evolucione, y la autenticación, las políticas, el rate limiting y la observabilidad se aplican en un solo lugar.",
+ "features": [
+  "Una única interfaz de herramientas estable para el agente",
+  "Registro interno de herramientas con lógica de enrutamiento dinámica",
+  "Aplicación centralizada de políticas, autenticación y límites de tasa",
+  "Versionado y reemplazo de herramientas sin cambios en el prompt",
+  "Logging y observabilidad unificados para todas las llamadas a herramientas"
+ ],
+ "tldr": {
+  "what": "Enruta todas las llamadas a herramientas del agente a través de una única interfaz hacia un plano de control en el backend que maneja la autenticación, los límites de tasa y la selección de herramientas sin cambiar el prompt del agente.",
+  "when": "Tienes muchas herramientas que evolucionan con frecuencia y necesitas una aplicación consistente de políticas, registros de auditoría y prompts de agente estables pese a los cambios en el catálogo de herramientas.",
+  "watchOut": "El plano de control se convierte en un cuello de botella y en un punto único de falla si la lógica de enrutamiento es lenta o el plano se cae, lo que corta todo el acceso del agente a las herramientas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Control Plane as a Tool",
+  "description": "Patrón de diseño escalable que expone una única interfaz de herramienta mientras encapsula una lógica modular de enrutamiento de herramientas",
+  "nodes": [
+   {
+    "id": "agent",
+    "label": "Agente de IA",
+    "x": 100,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "control-plane",
+    "label": "Plano de control\n(Interfaz unificada)",
+    "x": 400,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "routing-logic",
+    "label": "Lógica de enrutamiento\ny políticas",
+    "x": 600,
+    "y": 80,
+    "w": 180
+   },
+   {
+    "id": "text-tool",
+    "label": "Herramienta de\nanálisis de texto",
+    "x": 600,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "sentiment-tool",
+    "label": "Herramienta\nAPI de sentimiento",
+    "x": 600,
+    "y": 220,
+    "w": 180
+   },
+   {
+    "id": "report-tool",
+    "label": "Herramienta\ngeneradora de reportes",
+    "x": 600,
+    "y": 290,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "agent-control",
+    "s": "agent",
+    "t": "control-plane",
+    "label": "Solicitud unificada"
+   },
+   {
+    "id": "control-routing",
+    "s": "control-plane",
+    "t": "routing-logic",
+    "label": ""
+   },
+   {
+    "id": "control-text",
+    "s": "control-plane",
+    "t": "text-tool",
+    "label": ""
+   },
+   {
+    "id": "control-sentiment",
+    "s": "control-plane",
+    "t": "sentiment-tool",
+    "label": ""
+   },
+   {
+    "id": "control-report",
+    "s": "control-plane",
+    "t": "report-tool",
+    "label": ""
+   },
+   {
+    "id": "text-control",
+    "s": "text-tool",
+    "t": "control-plane",
+    "label": ""
+   },
+   {
+    "id": "sentiment-control",
+    "s": "sentiment-tool",
+    "t": "control-plane",
+    "label": ""
+   },
+   {
+    "id": "report-control",
+    "s": "report-tool",
+    "t": "control-plane",
+    "label": ""
+   },
+   {
+    "id": "control-agent",
+    "s": "control-plane",
+    "t": "agent",
+    "label": "Respuesta unificada"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud del agente",
+    "description": "El agente hace una solicitud a través de la interfaz de herramientas unificada",
+    "input": "Solicitud a la herramienta: \"Analiza el sentimiento de los clientes y genera un reporte\"",
+    "nodes": [
+     "agent",
+     "control-plane"
+    ],
+    "edges": [
+     "agent-control"
+    ]
+   },
+   {
+    "title": "Análisis de la solicitud",
+    "description": "El plano de control analiza la solicitud y determina las herramientas necesarias",
+    "input": "Solicitud compleja de varios pasos",
+    "nodes": [
+     "control-plane",
+     "routing-logic"
+    ],
+    "edges": [
+     "control-routing"
+    ]
+   },
+   {
+    "title": "Orquestación de herramientas",
+    "description": "Enruta a las herramientas de backend adecuadas según sus capacidades",
+    "input": "Plan de enrutamiento",
+    "nodes": [
+     "control-plane",
+     "text-tool",
+     "sentiment-tool",
+     "report-tool"
+    ],
+    "edges": [
+     "control-text",
+     "control-sentiment",
+     "control-report"
+    ]
+   },
+   {
+    "title": "Agregación de resultados",
+    "description": "Recopila y combina los resultados de varias herramientas",
+    "input": "Salidas individuales de las herramientas",
+    "nodes": [
+     "text-tool",
+     "sentiment-tool",
+     "report-tool",
+     "control-plane"
+    ],
+    "edges": [
+     "text-control",
+     "sentiment-control",
+     "report-control"
+    ]
+   },
+   {
+    "title": "Respuesta unificada",
+    "description": "Devuelve una única respuesta coherente al agente",
+    "input": "Resultados agregados",
+    "nodes": [
+     "control-plane",
+     "agent"
+    ],
+    "edges": [
+     "control-agent"
+    ]
+   }
+  ]
+ }
+}

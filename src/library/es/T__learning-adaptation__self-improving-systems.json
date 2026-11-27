@@ -1,0 +1,457 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "self-improving-systems",
+ "name": "Self-Improving Systems(SIS)",
+ "icon": "🔧",
+ "complexity": "high",
+ "description": "Sistemas controlados que proponen cambios a prompts, herramientas o políticas y los conservan solo después de una evaluación y aprobación independientes",
+ "features": [
+  "Generación de cambios candidatos",
+  "Suites de evaluación versionadas",
+  "Validación en sandbox",
+  "Puntos de aprobación humana",
+  "Releases canary y rollback",
+  "Procedencia de los cambios y logs de auditoría"
+ ],
+ "tldr": {
+  "what": "El agente propone cambios a prompts o políticas, los valida de forma aislada frente a suites de pruebas y los despliega solo después de la aprobación humana.",
+  "when": "Sistemas en producción donde las fallas son costosas y necesitas evolucionar el comportamiento de forma segura sin romper la funcionalidad existente.",
+  "watchOut": "Las suites de evaluación quedan desactualizadas o incompletas, lo que hace que cambios malos pasen la validación y lleguen a producción de todos modos."
+ },
+ "overview": {
+  "pattern": "Sistemas que analizan, modifican y mejoran automáticamente sus propias capacidades y su rendimiento con el tiempo",
+  "why": "Permite la optimización continua, reduce el mantenimiento manual y se adapta automáticamente a requisitos cambiantes",
+  "insight": "Combina mecanismos de monitoreo, análisis y despliegue seguro para lograr una mejora autónoma de capacidades",
+  "impl": [
+   {
+    "t": "Línea base",
+    "d": "Establece las métricas iniciales de rendimiento del sistema"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Recolecta datos de rendimiento y errores de forma continua"
+   },
+   {
+    "t": "Analizar",
+    "d": "Identifica oportunidades de mejora automáticamente"
+   },
+   {
+    "t": "Generar",
+    "d": "Crea y evalúa posibles mejoras"
+   },
+   {
+    "t": "Desplegar",
+    "d": "Implementa las mejoras validadas de forma segura"
+   }
+  ],
+  "example": "baseline_system → continuous_monitoring → improvement_generation → safe_deployment → enhanced_system",
+  "dos": [
+   "Implementa verificaciones de seguridad robustas y mecanismos de rollback",
+   "Usa despliegue gradual y pruebas A/B para las mejoras",
+   "Vigila efectos secundarios no deseados y comportamientos emergentes",
+   "Mantén la supervisión humana y la capacidad de intervención",
+   "Registra todos los intentos de mejora y sus resultados",
+   "Establece límites y restricciones claros a la automodificación"
+  ],
+  "donts": [
+   "Permitir la automodificación sin restricciones ni límites de seguridad",
+   "Desplegar mejoras sin pruebas exhaustivas",
+   "Ignorar posibles vulnerabilidades de seguridad en la automodificación",
+   "Eliminar los mecanismos de supervisión y control humanos",
+   "Optimizar una sola métrica sin considerar las compensaciones"
+  ],
+  "use": [
+   "Sistemas de larga duración que requieren optimización continua",
+   "Entornos dinámicos con requisitos cambiantes",
+   "Sistemas con métricas de rendimiento medibles",
+   "Existe suficiente infraestructura de seguridad",
+   "La supervisión e intervención humanas son posibles"
+  ],
+  "avoid": [
+   "Sistemas críticos para la seguridad sin salvaguardas robustas",
+   "Aplicaciones de corto plazo o de uso único",
+   "Sistemas con objetivos poco claros o no medibles",
+   "Entornos altamente regulados que requieren un comportamiento estático",
+   "Infraestructura de monitoreo y control insuficiente"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de mejora",
+    "d": "Ganancias de rendimiento por ciclo de iteración"
+   },
+   {
+    "n": "Violaciones de seguridad",
+    "d": "Cantidad de incumplimientos de restricciones o fallas"
+   },
+   {
+    "n": "Velocidad de convergencia",
+    "d": "Tiempo para alcanzar el rendimiento óptimo"
+   },
+   {
+    "n": "Índice de estabilidad",
+    "d": "Intentos de mejora exitosos vs fallidos"
+   },
+   {
+    "n": "Eficiencia de recursos",
+    "d": "Costo computacional de la automejora"
+   },
+   {
+    "n": "Intervención humana",
+    "d": "Frecuencia de correcciones manuales necesarias"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Generación de código",
+    "d": "Mejora automáticamente la calidad y eficiencia del código mediante refinamiento iterativo"
+   },
+   {
+    "n": "Sistemas de recomendación",
+    "d": "Optimiza continuamente los algoritmos según el feedback y la interacción de los usuarios"
+   },
+   {
+    "n": "Algoritmos de trading",
+    "d": "Adapta las estrategias según el rendimiento del mercado y las condiciones cambiantes"
+   },
+   {
+    "n": "Creación de contenido",
+    "d": "Mejora de forma iterativa la redacción, el diseño o las salidas creativas según métricas de éxito"
+   },
+   {
+    "n": "Administración de sistemas",
+    "d": "Optimiza automáticamente las configuraciones y la asignación de recursos"
+   },
+   {
+    "n": "Descubrimiento científico",
+    "d": "Mejora la generación de hipótesis y el diseño experimental mediante aprendizaje iterativo"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Sistemas que se automejoran",
+  "description": "Sistemas autónomos que mejoran continuamente su rendimiento mediante el análisis de interacciones reales, la autoevaluación y ciclos de mejora iterativa.",
+  "nodes": [
+   {
+    "id": "chatbot-v1",
+    "label": "🤖 Bot de soporte al cliente v1.0\n60% de tasa de éxito\nMuchos usuarios confundidos",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "user-question",
+    "label": "💬 Pregunta del usuario\n\"Mi pedido #12345\nno llegó\"",
+    "x": 100,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "bot-response",
+    "label": "🤖 Respuesta del bot\n\"Revisa tu correo\npara el seguimiento\"",
+    "x": 300,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "user-feedback",
+    "label": "👎 Feedback del usuario\n\"¡No sirve!\nSigo sin el pedido\"",
+    "x": 500,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "human-takeover",
+    "label": "👤 Agente humano\n\"Déjame revisar...\nReembolso emitido\"",
+    "x": 700,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "failure-analysis",
+    "label": "📊 Analizar fallas\n¿Por qué falló el bot?\n¿Qué patrones hay?",
+    "x": 150,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "learn-from-human",
+    "label": "📚 Aprender del humano\nEnfoque correcto:\nRevisar → Reembolsar",
+    "x": 350,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "pattern-extraction",
+    "label": "🔍 Extraer patrones\n\"Pedido faltante\"\n→ Revisar estado\n→ Ofrecer solución",
+    "x": 550,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "knowledge-update",
+    "label": "💾 Actualizar conocimiento\nNuevas plantillas de respuesta\nMejor comprensión",
+    "x": 100,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "confidence-calibration",
+    "label": "🎯 Calibrar la confianza\nSaber cuándo\nescalar a un humano",
+    "x": 300,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "response-generation",
+    "label": "✨ Mejores respuestas\nMás empáticas\nOrientadas a la acción",
+    "x": 500,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "performance-tracking",
+    "label": "📈 Seguir métricas\nTasa de éxito: 75%\nSatisfacción del usuario ↑",
+    "x": 700,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "new-user-question",
+    "label": "💬 Misma pregunta\n\"Mi pedido #67890\nno llegó\"",
+    "x": 200,
+    "y": 580,
+    "w": 160
+   },
+   {
+    "id": "improved-response",
+    "label": "🤖 Respuesta mejorada\n\"Veo el pedido #67890.\nProcesando el reembolso ahora.\nEspéralo en 2-3 días\"",
+    "x": 500,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "chatbot-v2",
+    "label": "🎉 Bot de soporte al cliente v2.0\n85% de tasa de éxito\n¡Mejorando continuamente!",
+    "x": 400,
+    "y": 700,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "v1-question",
+    "s": "chatbot-v1",
+    "t": "user-question",
+    "label": ""
+   },
+   {
+    "id": "question-response",
+    "s": "user-question",
+    "t": "bot-response",
+    "label": ""
+   },
+   {
+    "id": "response-feedback",
+    "s": "bot-response",
+    "t": "user-feedback",
+    "label": ""
+   },
+   {
+    "id": "feedback-human",
+    "s": "user-feedback",
+    "t": "human-takeover",
+    "label": "Escalar"
+   },
+   {
+    "id": "feedback-analysis",
+    "s": "user-feedback",
+    "t": "failure-analysis",
+    "label": ""
+   },
+   {
+    "id": "human-learn",
+    "s": "human-takeover",
+    "t": "learn-from-human",
+    "label": ""
+   },
+   {
+    "id": "learn-pattern",
+    "s": "learn-from-human",
+    "t": "pattern-extraction",
+    "label": ""
+   },
+   {
+    "id": "analysis-pattern",
+    "s": "failure-analysis",
+    "t": "pattern-extraction",
+    "label": ""
+   },
+   {
+    "id": "pattern-knowledge",
+    "s": "pattern-extraction",
+    "t": "knowledge-update",
+    "label": ""
+   },
+   {
+    "id": "pattern-confidence",
+    "s": "pattern-extraction",
+    "t": "confidence-calibration",
+    "label": ""
+   },
+   {
+    "id": "knowledge-response",
+    "s": "knowledge-update",
+    "t": "response-generation",
+    "label": ""
+   },
+   {
+    "id": "confidence-response",
+    "s": "confidence-calibration",
+    "t": "response-generation",
+    "label": ""
+   },
+   {
+    "id": "response-tracking",
+    "s": "response-generation",
+    "t": "performance-tracking",
+    "label": ""
+   },
+   {
+    "id": "tracking-new-question",
+    "s": "performance-tracking",
+    "t": "new-user-question",
+    "label": ""
+   },
+   {
+    "id": "new-question-improved",
+    "s": "new-user-question",
+    "t": "improved-response",
+    "label": ""
+   },
+   {
+    "id": "improved-v2",
+    "s": "improved-response",
+    "t": "chatbot-v2",
+    "label": ""
+   },
+   {
+    "id": "v2-loop",
+    "s": "chatbot-v2",
+    "t": "chatbot-v1",
+    "label": "Seguir mejorando"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Punto de partida",
+    "description": "Bot de soporte al cliente con 60% de tasa de éxito",
+    "input": "",
+    "nodes": [
+     "chatbot-v1"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Interacción del usuario",
+    "description": "El usuario pregunta por un pedido que no llegó",
+    "input": "",
+    "nodes": [
+     "chatbot-v1",
+     "user-question",
+     "bot-response"
+    ],
+    "edges": [
+     "v1-question",
+     "question-response"
+    ]
+   },
+   {
+    "title": "Falla y escalamiento",
+    "description": "El bot da una respuesta inútil, el usuario se queja y un humano toma el control",
+    "input": "",
+    "nodes": [
+     "bot-response",
+     "user-feedback",
+     "human-takeover"
+    ],
+    "edges": [
+     "response-feedback",
+     "feedback-human"
+    ]
+   },
+   {
+    "title": "Aprender de la falla",
+    "description": "Analiza por qué falló el bot y aprende de la solución humana",
+    "input": "",
+    "nodes": [
+     "user-feedback",
+     "human-takeover",
+     "failure-analysis",
+     "learn-from-human",
+     "pattern-extraction"
+    ],
+    "edges": [
+     "feedback-analysis",
+     "human-learn",
+     "learn-pattern",
+     "analysis-pattern"
+    ]
+   },
+   {
+    "title": "Automejora",
+    "description": "Actualiza el conocimiento, calibra la confianza y genera mejores respuestas",
+    "input": "",
+    "nodes": [
+     "pattern-extraction",
+     "knowledge-update",
+     "confidence-calibration",
+     "response-generation"
+    ],
+    "edges": [
+     "pattern-knowledge",
+     "pattern-confidence",
+     "knowledge-response",
+     "confidence-response"
+    ]
+   },
+   {
+    "title": "Seguir el rendimiento",
+    "description": "Monitorea las métricas que muestran la mejora",
+    "input": "",
+    "nodes": [
+     "response-generation",
+     "performance-tracking"
+    ],
+    "edges": [
+     "response-tracking"
+    ]
+   },
+   {
+    "title": "Probar la versión mejorada",
+    "description": "El mismo tipo de pregunta recibe una respuesta mucho mejor",
+    "input": "",
+    "nodes": [
+     "new-user-question",
+     "improved-response"
+    ],
+    "edges": [
+     "tracking-new-question",
+     "new-question-improved"
+    ]
+   },
+   {
+    "title": "Éxito y continuidad",
+    "description": "¡Bot v2.0 con 85% de tasa de éxito, y sigue mejorando!",
+    "input": "",
+    "nodes": [
+     "improved-response",
+     "chatbot-v2"
+    ],
+    "edges": [
+     "improved-v2",
+     "v2-loop"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "infini-attention-architecture",
+ "name": "Infini-Attention Architecture(IAA)",
+ "icon": "⚡",
+ "complexity": "high",
+ "description": "El innovador procesamiento de contexto infinito de Google con memoria acotada y mecanismos de atención compresiva",
+ "features": [
+  "Longitud de contexto infinita con memoria acotada",
+  "Integración de un módulo de memoria compresiva",
+  "Mecanismo de atención lineal para secuencias largas",
+  "Streaming sobre entradas infinitamente largas"
+ ],
+ "tldr": {
+  "what": "Amplía el contexto efectivo combinando atención local sobre los tokens recientes con atención comprimida sobre los tokens más antiguos, dentro de una memoria acotada.",
+  "when": "Sistemas de larga ejecución que procesan flujos ilimitados donde todo el historial importa, pero la memoria debe mantenerse constante.",
+  "watchOut": "La compresión pierde información; verifica que tu tarea tolere un recuerdo degradado del contexto lejano antes del despliegue."
+ },
+ "overview": {
+  "pattern": "El innovador procesamiento de contexto infinito de Google con memoria acotada y mecanismos de atención compresiva",
+  "why": "Permite procesar secuencias arbitrariamente largas con un uso de memoria constante, superando las limitaciones tradicionales de longitud de contexto",
+  "insight": "La memoria compresiva con atención dual logra una capacidad de contexto infinita manteniendo una complejidad de memoria O(1)",
+  "impl": [
+   {
+    "t": "Módulo de memoria",
+    "d": "Inicializa la memoria compresiva con capacidad acotada"
+   },
+   {
+    "t": "Atención dual",
+    "d": "Implementa mecanismos de atención local + compresiva"
+   },
+   {
+    "t": "Procesamiento en streaming",
+    "d": "Habilita el procesamiento continuo de entradas con escalamiento lineal"
+   },
+   {
+    "t": "Actualizaciones de memoria",
+    "d": "Actualiza la memoria compresiva con información nueva"
+   },
+   {
+    "t": "Contexto infinito",
+    "d": "Maneja secuencias arbitrariamente largas con memoria O(1)"
+   }
+  ],
+  "example": "init_memory → dual_attention → stream_input → update_memory → infinite_processing",
+  "dos": [
+   "Usa memoria compresiva para el almacenamiento de información a largo plazo",
+   "Implementa atención lineal para el procesamiento local de tokens",
+   "Diseña estrategias de actualización de memoria que preserven la información importante",
+   "Monitorea la utilización de memoria y la efectividad de la compresión",
+   "Optimiza para el procesamiento de entradas en streaming"
+  ],
+  "donts": [
+   "Almacenar toda la información histórica sin compresión",
+   "Usar atención cuadrática para secuencias muy largas",
+   "Ignorar las restricciones de capacidad de memoria",
+   "Actualizar la memoria sin considerar la importancia de la información",
+   "Procesar secuencias sin una arquitectura de streaming adecuada"
+  ],
+  "use": [
+   "Requisitos de contexto infinito o muy largo",
+   "Aplicaciones de streaming con entrada continua",
+   "Procesamiento de documentos largos con eficiencia de memoria",
+   "Sistemas de conversación en tiempo real"
+  ],
+  "avoid": [
+   "Tareas de procesamiento de secuencias cortas",
+   "Aplicaciones que requieren un recuerdo histórico exacto",
+   "Sistemas con abundantes recursos de memoria",
+   "Procesamiento por batch con entradas de longitud fija"
+  ],
+  "metrics": [
+   {
+    "n": "Complejidad de memoria",
+    "d": "Uso de memoria acotado O(1)"
+   },
+   {
+    "n": "Longitud de secuencia",
+    "d": "Longitud máxima de secuencia procesable"
+   },
+   {
+    "n": "Tasa de compresión",
+    "d": "Información retenida vs. memoria usada"
+   },
+   {
+    "n": "Throughput de procesamiento",
+    "d": "Tokens procesados por segundo"
+   },
+   {
+    "n": "Calidad de la atención",
+    "d": "Efectividad en dependencias de largo alcance"
+   },
+   {
+    "n": "Eficiencia de actualización de memoria",
+    "d": "Calidad de preservación de la información"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Procesamiento de libros completos",
+    "d": "continuous_reading → compressive_memory → infinite_context → coherent_understanding → full_book_analysis"
+   },
+   {
+    "n": "Conversaciones en streaming",
+    "d": "real_time_input → local_attention → memory_compression → context_preservation → continuous_dialogue"
+   },
+   {
+    "n": "Análisis de documentos largos",
+    "d": "document_stream → progressive_compression → infinite_processing → comprehensive_analysis → complete_understanding"
+   },
+   {
+    "n": "Aprendizaje continuo",
+    "d": "ongoing_input → memory_updates → knowledge_accumulation → infinite_capacity → adaptive_intelligence"
+   },
+   {
+    "n": "Analítica en tiempo real",
+    "d": "data_stream → bounded_memory → infinite_processing → pattern_recognition → continuous_insights"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de arquitectura Infini-Attention",
+  "description": "Arquitectura transformer de contexto infinito que usa memoria compresiva y mecanismos de atención dual, logrando 114x de eficiencia de memoria para procesar secuencias de un millón de tokens",
+  "nodes": [
+   {
+    "id": "infinite-context-challenge",
+    "label": "♾️ Desafío del contexto infinito\n\"¿Cómo procesar secuencias de un millón\nde tokens con memoria acotada\ny complejidad lineal?\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "infini-attention-framework",
+    "label": "🏗️ Framework Infini-Attention\n\"Contexto infinito acotado:\n• Memoria compresiva\n• Rutas de atención dual\n• Complejidad lineal\n• Reutilización de estado\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "compressive-memory",
+    "label": "💾 Memoria compresiva\n\"Almacenamiento de tamaño fijo:\n• Matriz asociativa\n• Retención de estados KV\n• Contexto histórico\n• Parámetros constantes\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "memory-consolidation",
+    "label": "🔄 Consolidación de memoria\n\"Preservación de estado:\n• Se guardan los estados KV antiguos\n• Acumulación de contexto\n• Actualizaciones selectivas\n• Reserva de información\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "dual-attention-mechanism",
+    "label": "👁️‍🗨️ Atención dual\n\"Procesamiento en paralelo:\n• Atención local enmascarada\n• Atención global lineal\n• Integración en un solo bloque\n• Modelado de rango\"",
+    "x": 600,
+    "y": 350,
+    "w": 260
+   },
+   {
+    "id": "linear-attention",
+    "label": "📐 Atención lineal\n\"Reducción de complejidad:\n• O(n) vs O(n²)\n• Recuperación de memoria\n• Acceso basado en consultas\n• Búsqueda eficiente\"",
+    "x": 750,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "state-reuse-mechanism",
+    "label": "♻️ Reutilización de estado\n\"Optimización de eficiencia:\n• Compartir Query/Key/Value\n• Ahorro de cómputo\n• Diseño plug-and-play\n• Parámetros mínimos\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "gating-mechanism",
+    "label": "🚪 Mecanismo de gating\n\"Control del equilibrio:\n• Parámetro β\n• Mezcla local/global\n• Adaptación a la tarea\n• Ponderación del contexto\"",
+    "x": 200,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "attention-head-types",
+    "label": "🎯 Especialización de cabezas\n\"Distribución de tareas:\n• Cabezas especializadas\n• Cabezas mezcladoras\n• Enfoque local\n• Recuperación de memoria\"",
+    "x": 600,
+    "y": 800,
+    "w": 210
+   },
+   {
+    "id": "streaming-processing",
+    "label": "🌊 Procesamiento en streaming\n\"Manejo continuo:\n• Segmento por segmento\n• Actualizaciones de memoria\n• Secuencias infinitas\n• Recursos acotados\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "performance-metrics",
+    "label": "📊 Métricas de rendimiento\n\"Resultados innovadores:\n• 114x de reducción de memoria\n• Manejo de 1M de tokens\n• Resumen SOTA\n• Escalamiento lineal\"",
+    "x": 600,
+    "y": 950,
+    "w": 250
+   },
+   {
+    "id": "practical-applications",
+    "label": "🚀 Aplicaciones prácticas\n\"Impacto en el mundo real:\n• Habilitador de Gemini 1.5\n• Resumen de libros\n• Recuperación de passkey\n• Tareas de contexto largo\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "infini-principle",
+    "label": "🎯 Principio de Infini-Attention\n\"La memoria compresiva permite un contexto infinito con recursos acotados\nLas rutas de atención dual equilibran dependencias locales y globales\nLa complejidad lineal hace práctico el procesamiento de un millón de tokens\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "infinite-context-challenge",
+    "t": "infini-attention-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "infini-attention-framework",
+    "t": "compressive-memory",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "infini-attention-framework",
+    "t": "dual-attention-mechanism",
+    "label": "utiliza"
+   },
+   {
+    "id": "e4",
+    "s": "infini-attention-framework",
+    "t": "state-reuse-mechanism",
+    "label": "optimiza mediante"
+   },
+   {
+    "id": "e5",
+    "s": "compressive-memory",
+    "t": "memory-consolidation",
+    "label": "realiza"
+   },
+   {
+    "id": "e6",
+    "s": "dual-attention-mechanism",
+    "t": "linear-attention",
+    "label": "incluye"
+   },
+   {
+    "id": "e7",
+    "s": "state-reuse-mechanism",
+    "t": "gating-mechanism",
+    "label": "controlado por"
+   },
+   {
+    "id": "e8",
+    "s": "state-reuse-mechanism",
+    "t": "attention-head-types",
+    "label": "habilita"
+   },
+   {
+    "id": "e9",
+    "s": "memory-consolidation",
+    "t": "gating-mechanism",
+    "label": "equilibrado mediante"
+   },
+   {
+    "id": "e10",
+    "s": "linear-attention",
+    "t": "attention-head-types",
+    "label": "se especializa en"
+   },
+   {
+    "id": "e11",
+    "s": "gating-mechanism",
+    "t": "streaming-processing",
+    "label": "habilita"
+   },
+   {
+    "id": "e12",
+    "s": "attention-head-types",
+    "t": "performance-metrics",
+    "label": "logra"
+   },
+   {
+    "id": "e13",
+    "s": "streaming-processing",
+    "t": "practical-applications",
+    "label": "habilita"
+   },
+   {
+    "id": "e14",
+    "s": "performance-metrics",
+    "t": "practical-applications",
+    "label": "valida"
+   },
+   {
+    "id": "e15",
+    "s": "practical-applications",
+    "t": "infini-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío del contexto infinito",
+    "description": "¿Cómo pueden los transformers procesar secuencias de un millón de tokens cuando la atención tradicional tiene complejidad cuadrática O(n²) y requisitos de memoria ilimitados?",
+    "input": "",
+    "nodes": [
+     "infinite-context-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework Infini-Attention",
+    "description": "El framework aborda el desafío mediante memoria compresiva para un almacenamiento acotado, rutas de atención dual para el modelado de rango y complejidad lineal con reutilización eficiente del estado.",
+    "input": "",
+    "nodes": [
+     "infini-attention-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Memoria compresiva y atención dual",
+    "description": "La memoria compresiva de tamaño fijo almacena los estados KV antiguos en una matriz asociativa que mantiene el contexto histórico, mientras que el mecanismo dual combina atención local enmascarada y atención global lineal en un solo bloque.",
+    "input": "",
+    "nodes": [
+     "compressive-memory",
+     "memory-consolidation",
+     "dual-attention-mechanism",
+     "linear-attention"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Reutilización de estado y control por gating",
+    "description": "El mecanismo de reutilización de estado comparte los estados Query/Key/Value para ahorrar cómputo con parámetros mínimos, controlado por el parámetro de gating β que equilibra la mezcla de contexto local/global.",
+    "input": "",
+    "nodes": [
+     "state-reuse-mechanism",
+     "gating-mechanism",
+     "attention-head-types"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Procesamiento en streaming y rendimiento",
+    "description": "El streaming segmento por segmento permite procesar secuencias infinitas con recursos acotados, logrando 114x de reducción de memoria y la capacidad de manejar 1M de tokens.",
+    "input": "",
+    "nodes": [
+     "streaming-processing",
+     "performance-metrics"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Aplicaciones prácticas y validación",
+    "description": "Impulsa la ventana de un millón de tokens de Gemini 1.5 y alcanza el SOTA en resumen de libros de 500K, lo que demuestra que la memoria compresiva con atención dual permite un contexto infinito con complejidad lineal.",
+    "input": "",
+    "nodes": [
+     "practical-applications",
+     "infini-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

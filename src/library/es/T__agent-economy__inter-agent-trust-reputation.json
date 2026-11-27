@@ -1,0 +1,320 @@
+{
+ "cat": "agent-economy",
+ "slug": "inter-agent-trust-reputation",
+ "name": "Inter-Agent Trust & Reputation(IATR)",
+ "icon": "⭐",
+ "complexity": "high",
+ "description": "Estándares emergentes, en su mayoría en etapa de borrador, sobre cómo un agente valora el riesgo de contraparte frente a un agente desconocido sin un guardián central. El borrador EIP ERC-8004 \"Trustless Agents\" define tres registros on-chain: Identity (un identificador ERC-721 que resuelve a metadatos del agente off-chain), Reputation (señales de feedback firmadas) y Validation (atestaciones de contratos validadores, como la re-ejecución respaldada por stake o los oráculos TEE), y deja deliberadamente los pagos y la lógica de la aplicación off-chain. Una taxonomía complementaria de modelos de confianza clasifica los mecanismos como brief, claim, proof, stake, reputation y constraint, y sostiene que ningún mecanismo por sí solo es suficiente y que se necesitan combinaciones escalonadas. Esto es temprano y no está consolidado: ERC-8004 es un EIP en borrador y gran parte de las herramientas es incipiente. Se distingue de authenticated-delegation: aquella trata sobre autoridad delegada e identidad, mientras que esta trata sobre la confianza reputacional valorada entre pares económicos.",
+ "features": [
+  "Registro de identidad: identificador ERC-721 portable que resuelve a metadatos del agente off-chain",
+  "Registro de reputación: señales de feedback firmadas y agregables sobre el comportamiento pasado",
+  "Registro de validación: atestaciones de validadores (re-ejecución respaldada por stake, TEE, zkML)",
+  "Taxonomía de modelos de confianza: brief, claim, proof, stake, reputation, constraint",
+  "Confianza escalonada proporcional al riesgo de la transacción, sin un guardián central",
+  "Pagos y lógica de la aplicación mantenidos off-chain por diseño"
+ ],
+ "tldr": {
+  "what": "Los agentes valoran el riesgo de contraparte usando identidad on-chain, reputación y atestaciones de validadores sin una autoridad central, manteniendo los pagos y la lógica off-chain.",
+  "when": "Sistemas multiagente donde agentes desconocidos deben transaccionar directamente y el historial de reputación es más confiable que una verificación centralizada.",
+  "watchOut": "Los estándares están en etapa de borrador, las herramientas son incipientes, y la manipulación de la reputación o la colusión de validadores pueden socavar las señales de confianza a escala."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Inter-Agent Trust & Reputation",
+  "description": "Estándares emergentes, en su mayoría en etapa de borrador (registros Identity/Reputation/Validation de ERC-8004 más una taxonomía de modelos de confianza brief/claim/proof/stake/reputation/constraint) para valorar el riesgo de contraparte frente a un agente desconocido. Se muestra aquí como un agente comprador que verifica a un vendedor antes de transaccionar, con un respaldo de escrow. ERC-8004 es un EIP en borrador y las herramientas están en etapa temprana.",
+  "nodes": [
+   {
+    "id": "buyer-agent",
+    "label": "🛒 Agente comprador\nNecesita un servicio de limpieza de datos",
+    "x": 100,
+    "y": 40,
+    "w": 240
+   },
+   {
+    "id": "seller-agent",
+    "label": "🏷️ Agente vendedor desconocido\nContraparte desconocida",
+    "x": 560,
+    "y": 40,
+    "w": 240
+   },
+   {
+    "id": "resolve-identity",
+    "label": "🔎 Resolver identidad\nVerificar el control del identificador",
+    "x": 100,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "identity-registry",
+    "label": "🪪 Registro de identidad\nIdentificador ERC-721 -> AgentFacts",
+    "x": 560,
+    "y": 150,
+    "w": 240
+   },
+   {
+    "id": "rep-check",
+    "label": "📊 Verificación de reputación\n340 trabajos, 2 disputas, positiva",
+    "x": 100,
+    "y": 255,
+    "w": 220
+   },
+   {
+    "id": "reputation-registry",
+    "label": "⭐ Registro de reputación\nSeñales de feedback firmadas",
+    "x": 560,
+    "y": 255,
+    "w": 240
+   },
+   {
+    "id": "validation-check",
+    "label": "✔️ Verificación de validación\nAtestación por re-ejecución respaldada por stake",
+    "x": 100,
+    "y": 360,
+    "w": 240
+   },
+   {
+    "id": "validation-registry",
+    "label": "🔬 Registro de validación\nAtestaciones de contratos validadores",
+    "x": 560,
+    "y": 360,
+    "w": 240
+   },
+   {
+    "id": "weak-signal",
+    "label": "🚫 Señal débil\nLa autodeclaración por sí sola es insuficiente",
+    "x": 570,
+    "y": 465,
+    "w": 220
+   },
+   {
+    "id": "trust-model",
+    "label": "⚖️ Escalonamiento del modelo de confianza\nbrief/claim/proof/stake/reputation/constraint",
+    "x": 100,
+    "y": 465,
+    "w": 270
+   },
+   {
+    "id": "decision",
+    "label": "🧭 Decisión de riesgo\nPrimera interacción: exigir escrow",
+    "x": 100,
+    "y": 570,
+    "w": 240
+   },
+   {
+    "id": "escrow",
+    "label": "🔐 Escrow\nFondos retenidos hasta la entrega validada",
+    "x": 420,
+    "y": 570,
+    "w": 230
+   },
+   {
+    "id": "delivery",
+    "label": "📦 Entrega validada\nLa salida cumple la especificación",
+    "x": 330,
+    "y": 675,
+    "w": 240
+   },
+   {
+    "id": "feedback",
+    "label": "📝 Feedback firmado\nEl comprador califica al vendedor para otros",
+    "x": 90,
+    "y": 675,
+    "w": 210
+   }
+  ],
+  "edges": [
+   {
+    "id": "buyer-seller",
+    "s": "buyer-agent",
+    "t": "seller-agent",
+    "label": "Encontrar"
+   },
+   {
+    "id": "buyer-resolve",
+    "s": "buyer-agent",
+    "t": "resolve-identity",
+    "label": "Verificar"
+   },
+   {
+    "id": "resolve-identityreg",
+    "s": "resolve-identity",
+    "t": "identity-registry",
+    "label": "Resolver identificador"
+   },
+   {
+    "id": "resolve-rep",
+    "s": "resolve-identity",
+    "t": "rep-check",
+    "label": "Siguiente"
+   },
+   {
+    "id": "rep-repreg",
+    "s": "rep-check",
+    "t": "reputation-registry",
+    "label": "Consultar"
+   },
+   {
+    "id": "rep-validation",
+    "s": "rep-check",
+    "t": "validation-check",
+    "label": "Siguiente"
+   },
+   {
+    "id": "validation-valreg",
+    "s": "validation-check",
+    "t": "validation-registry",
+    "label": "Consultar"
+   },
+   {
+    "id": "validation-trust",
+    "s": "validation-check",
+    "t": "trust-model",
+    "label": "Señales"
+   },
+   {
+    "id": "seller-weak",
+    "s": "seller-agent",
+    "t": "weak-signal",
+    "label": "Autodeclaración"
+   },
+   {
+    "id": "weak-trust",
+    "s": "weak-signal",
+    "t": "trust-model",
+    "label": "No es suficiente"
+   },
+   {
+    "id": "trust-decision",
+    "s": "trust-model",
+    "t": "decision",
+    "label": "Riesgo escalonado"
+   },
+   {
+    "id": "decision-escrow",
+    "s": "decision",
+    "t": "escrow",
+    "label": "Respaldo de escrow"
+   },
+   {
+    "id": "escrow-delivery",
+    "s": "escrow",
+    "t": "delivery",
+    "label": "Liberar al entregar"
+   },
+   {
+    "id": "delivery-feedback",
+    "s": "delivery",
+    "t": "feedback",
+    "label": "Calificar al vendedor"
+   },
+   {
+    "id": "feedback-repreg",
+    "s": "feedback",
+    "t": "reputation-registry",
+    "label": "Feedback firmado"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El comprador encuentra un vendedor desconocido",
+    "description": "Un agente comprador necesita un servicio y descubre un agente vendedor desconocido con el que nunca ha transaccionado.",
+    "input": "",
+    "nodes": [
+     "buyer-agent",
+     "seller-agent"
+    ],
+    "edges": [
+     "buyer-seller"
+    ]
+   },
+   {
+    "title": "Resolver identidad",
+    "description": "El comprador resuelve el identificador del vendedor a través del Identity Registry hacia los AgentFacts off-chain y verifica que el vendedor controla esa identidad.",
+    "input": "",
+    "nodes": [
+     "buyer-agent",
+     "resolve-identity",
+     "identity-registry"
+    ],
+    "edges": [
+     "buyer-resolve",
+     "resolve-identityreg"
+    ]
+   },
+   {
+    "title": "Verificar reputación",
+    "description": "Se agrega desde el Reputation Registry el feedback firmado de contrapartes anteriores: 340 trabajos completados, 2 disputas, señales positivas recientes.",
+    "input": "",
+    "nodes": [
+     "resolve-identity",
+     "rep-check",
+     "reputation-registry"
+    ],
+    "edges": [
+     "resolve-rep",
+     "rep-repreg"
+    ]
+   },
+   {
+    "title": "Verificar atestaciones de validación",
+    "description": "Un validador atesta, mediante re-ejecución respaldada por stake, que las últimas salidas del vendedor cumplieron la especificación, lo cual queda registrado en el Validation Registry.",
+    "input": "",
+    "nodes": [
+     "rep-check",
+     "validation-check",
+     "validation-registry"
+    ],
+    "edges": [
+     "rep-validation",
+     "validation-valreg"
+    ]
+   },
+   {
+    "title": "La autodeclaración por sí sola es insuficiente",
+    "description": "La propia declaración del vendedor no tiene peso independiente; el modelo de confianza trata las señales brief o claim como demasiado débiles para un trabajo pagado.",
+    "input": "",
+    "nodes": [
+     "seller-agent",
+     "weak-signal",
+     "trust-model"
+    ],
+    "edges": [
+     "seller-weak",
+     "weak-trust"
+    ]
+   },
+   {
+    "title": "Decisión de confianza escalonada",
+    "description": "Combinar la reputación con una atestación de validación supera el umbral, pero como es la primera interacción, el comprador exige un respaldo de escrow.",
+    "input": "",
+    "nodes": [
+     "validation-check",
+     "trust-model",
+     "decision"
+    ],
+    "edges": [
+     "validation-trust",
+     "trust-decision"
+    ]
+   },
+   {
+    "title": "Transaccionar con escrow y retroalimentar la reputación",
+    "description": "Los fondos se retienen en escrow y se liberan tras la entrega validada; luego el comprador envía su propio feedback firmado, que informa a futuras contrapartes.",
+    "input": "",
+    "nodes": [
+     "decision",
+     "escrow",
+     "delivery",
+     "feedback",
+     "reputation-registry"
+    ],
+    "edges": [
+     "decision-escrow",
+     "escrow-delivery",
+     "delivery-feedback",
+     "feedback-repreg"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,346 @@
+{
+ "cat": "interpretability",
+ "slug": "latent-space-visualization",
+ "name": "Latent Space Visualization(LSV)",
+ "icon": "🔬",
+ "complexity": "high",
+ "description": "Visualiza e interpreta los procesos de razonamiento de la IA en espacios latentes continuos",
+ "features": [
+  "Mapeo de espacios de alta dimensionalidad",
+  "Visualización de trayectorias de razonamiento",
+  "Seguimiento de la evolución del pensamiento",
+  "Visualización de agrupamientos semánticos",
+  "Herramientas de exploración interactiva",
+  "Análisis latente multimodal"
+ ],
+ "tldr": {
+  "what": "Mapea el razonamiento de la IA en espacios visuales 2D o 3D, mostrando cómo los conceptos se agrupan y se conectan durante la resolución de problemas.",
+  "when": "Depurar razonamientos complejos de múltiples pasos, validar el comportamiento del modelo en tareas críticas o comprender patrones de fallo en la generación.",
+  "watchOut": "Las visualizaciones pueden engañar; la reducción de dimensionalidad pierde información, lo que puede hacer que los grupos aparentes carezcan de sentido o contradigan las decisiones reales del modelo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Visualización del espacio latente",
+  "description": "Proyecta las activaciones internas de un modelo en un mapa de baja dimensionalidad (UMAP / t-SNE), agrúpalas por concepto y traza la trayectoria de razonamiento para revelar cómo piensa un agente y dónde tiene sesgos.",
+  "nodes": [
+   {
+    "id": "input-prompt",
+    "label": "🎯 Prompt de entrada\n\"Planifica una ciudad sostenible\"",
+    "x": 380,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "reasoning-agent",
+    "label": "🤖 Agente de razonamiento\nGenera una cadena de pensamiento\na través de muchas capas ocultas",
+    "x": 380,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "activation-capture",
+    "label": "🧠 Captura de activaciones\nVectores de estado oculto\npor token y por capa",
+    "x": 380,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "embedding-store",
+    "label": "🗄️ Matriz de embeddings\nActivaciones de 4096 dimensiones\nrecolectadas a lo largo de los pasos",
+    "x": 380,
+    "y": 360,
+    "w": 220
+   },
+   {
+    "id": "dim-reduction",
+    "label": "📉 Reducción de dimensionalidad\nUMAP / t-SNE proyecta\nde 4096 dimensiones a 3D",
+    "x": 380,
+    "y": 470,
+    "w": 240
+   },
+   {
+    "id": "clustering",
+    "label": "🔮 Agrupamiento por concepto\nk-means sobre los puntos\nproyectados -> grupos semánticos",
+    "x": 380,
+    "y": 580,
+    "w": 240
+   },
+   {
+    "id": "cluster-energy",
+    "label": "⚡ Grupo de energía (verde)\nSolar, red, almacenamiento\nDenso, central",
+    "x": 20,
+    "y": 690,
+    "w": 180
+   },
+   {
+    "id": "cluster-transport",
+    "label": "🚊 Grupo de transporte (azul)\nTransporte público, EV, ciclovías",
+    "x": 240,
+    "y": 690,
+    "w": 180
+   },
+   {
+    "id": "cluster-housing",
+    "label": "🏘️ Grupo de vivienda (naranja)\nDensidad, materiales\nFuertemente acoplado a energía",
+    "x": 460,
+    "y": 690,
+    "w": 180
+   },
+   {
+    "id": "cluster-economics",
+    "label": "💰 Grupo de economía (disperso)\nPresupuesto, empleos\nPocos puntos dispersos",
+    "x": 700,
+    "y": 690,
+    "w": 180
+   },
+   {
+    "id": "trajectory",
+    "label": "🧭 Trayectoria de razonamiento\nEnergía -> Transporte -> Integración",
+    "x": 120,
+    "y": 810,
+    "w": 220
+   },
+   {
+    "id": "interactive-explorer",
+    "label": "🖱️ Explorador interactivo\nZoom, hover, filtrado\nde grupos y rutas",
+    "x": 400,
+    "y": 810,
+    "w": 200
+   },
+   {
+    "id": "insight-panel",
+    "label": "💡 Panel de hallazgos\nDetección de sesgos + acoplamientos\nLo técnico sobre lo social",
+    "x": 660,
+    "y": 810,
+    "w": 220
+   },
+   {
+    "id": "output-report",
+    "label": "📄 Informe de interpretabilidad\nMapa de razonamiento + hallazgos\npara auditoría y depuración",
+    "x": 380,
+    "y": 920,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-prompt-agent",
+    "s": "input-prompt",
+    "t": "reasoning-agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-capture",
+    "s": "reasoning-agent",
+    "t": "activation-capture",
+    "label": "Capturar"
+   },
+   {
+    "id": "e-capture-store",
+    "s": "activation-capture",
+    "t": "embedding-store",
+    "label": "Almacenar"
+   },
+   {
+    "id": "e-store-reduce",
+    "s": "embedding-store",
+    "t": "dim-reduction",
+    "label": "Proyectar"
+   },
+   {
+    "id": "e-reduce-cluster",
+    "s": "dim-reduction",
+    "t": "clustering",
+    "label": "Agrupar"
+   },
+   {
+    "id": "e-cluster-energy",
+    "s": "clustering",
+    "t": "cluster-energy",
+    "label": ""
+   },
+   {
+    "id": "e-cluster-transport",
+    "s": "clustering",
+    "t": "cluster-transport",
+    "label": ""
+   },
+   {
+    "id": "e-cluster-housing",
+    "s": "clustering",
+    "t": "cluster-housing",
+    "label": ""
+   },
+   {
+    "id": "e-cluster-economics",
+    "s": "clustering",
+    "t": "cluster-economics",
+    "label": "débil"
+   },
+   {
+    "id": "e-energy-trajectory",
+    "s": "cluster-energy",
+    "t": "trajectory",
+    "label": "1.º"
+   },
+   {
+    "id": "e-transport-trajectory",
+    "s": "cluster-transport",
+    "t": "trajectory",
+    "label": "2.º"
+   },
+   {
+    "id": "e-housing-trajectory",
+    "s": "cluster-housing",
+    "t": "trajectory",
+    "label": "acoplado"
+   },
+   {
+    "id": "e-trajectory-explorer",
+    "s": "trajectory",
+    "t": "interactive-explorer",
+    "label": ""
+   },
+   {
+    "id": "e-explorer-insight",
+    "s": "interactive-explorer",
+    "t": "insight-panel",
+    "label": ""
+   },
+   {
+    "id": "e-economics-insight",
+    "s": "cluster-economics",
+    "t": "insight-panel",
+    "label": "brecha"
+   },
+   {
+    "id": "e-trajectory-insight",
+    "s": "trajectory",
+    "t": "insight-panel",
+    "label": ""
+   },
+   {
+    "id": "e-insight-output",
+    "s": "insight-panel",
+    "t": "output-report",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Capturar las activaciones del razonamiento",
+    "description": "Mientras el agente razona sobre el prompt de la ciudad sostenible, se registran los vectores de estado oculto de cada token y cada capa.",
+    "input": "",
+    "nodes": [
+     "input-prompt",
+     "reasoning-agent",
+     "activation-capture"
+    ],
+    "edges": [
+     "e-prompt-agent",
+     "e-agent-capture"
+    ]
+   },
+   {
+    "title": "Construir la matriz de embeddings",
+    "description": "Las activaciones capturadas de 4096 dimensiones se apilan en una sola matriz que abarca todos los pasos de razonamiento.",
+    "input": "",
+    "nodes": [
+     "activation-capture",
+     "embedding-store"
+    ],
+    "edges": [
+     "e-capture-store"
+    ]
+   },
+   {
+    "title": "Proyectar a pocas dimensiones",
+    "description": "UMAP o t-SNE reduce la matriz de alta dimensionalidad a un mapa 3D que preserva la estructura de vecindad.",
+    "input": "",
+    "nodes": [
+     "embedding-store",
+     "dim-reduction"
+    ],
+    "edges": [
+     "e-store-reduce"
+    ]
+   },
+   {
+    "title": "Agrupar por concepto",
+    "description": "k-means agrupa los puntos proyectados en grupos semánticos: grupos densos de energía, transporte y vivienda, más un grupo disperso de economía.",
+    "input": "",
+    "nodes": [
+     "dim-reduction",
+     "clustering",
+     "cluster-energy",
+     "cluster-transport",
+     "cluster-housing",
+     "cluster-economics"
+    ],
+    "edges": [
+     "e-reduce-cluster",
+     "e-cluster-energy",
+     "e-cluster-transport",
+     "e-cluster-housing",
+     "e-cluster-economics"
+    ]
+   },
+   {
+    "title": "Trazar la trayectoria de razonamiento",
+    "description": "Seguir los puntos en el orden de generación revela la ruta Energía -> Transporte -> Integración, con la vivienda fuertemente acoplada a la energía.",
+    "input": "",
+    "nodes": [
+     "trajectory",
+     "cluster-energy",
+     "cluster-transport",
+     "cluster-housing"
+    ],
+    "edges": [
+     "e-energy-trajectory",
+     "e-transport-trajectory",
+     "e-housing-trajectory"
+    ]
+   },
+   {
+    "title": "Explorar de forma interactiva",
+    "description": "Un analista hace zoom, pasa el cursor y filtra el mapa para inspeccionar grupos individuales y cómo se mueven los pensamientos entre ellos.",
+    "input": "",
+    "nodes": [
+     "trajectory",
+     "interactive-explorer"
+    ],
+    "edges": [
+     "e-trajectory-explorer"
+    ]
+   },
+   {
+    "title": "Revelar hallazgos y sesgos",
+    "description": "El panel señala que el modelo prioriza primero la energía, acopla fuertemente la vivienda a la energía y apenas considera la economía, favoreciendo soluciones técnicas sobre sociales.",
+    "input": "",
+    "nodes": [
+     "interactive-explorer",
+     "insight-panel",
+     "cluster-economics",
+     "trajectory"
+    ],
+    "edges": [
+     "e-explorer-insight",
+     "e-economics-insight",
+     "e-trajectory-insight"
+    ]
+   },
+   {
+    "title": "Entregar el informe de interpretabilidad",
+    "description": "El mapa de razonamiento y los hallazgos se empaquetan en un informe para auditar la calidad del razonamiento y depurar salidas inesperadas.",
+    "input": "",
+    "nodes": [
+     "insight-panel",
+     "output-report"
+    ],
+    "edges": [
+     "e-insight-output"
+    ]
+   }
+  ]
+ }
+}

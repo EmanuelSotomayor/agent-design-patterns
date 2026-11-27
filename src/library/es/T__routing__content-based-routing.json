@@ -1,0 +1,460 @@
+{
+ "cat": "routing",
+ "slug": "content-based-routing",
+ "name": "Content-Based Routing(CBR)",
+ "icon": "📄",
+ "complexity": "medium",
+ "description": "Enruta solicitudes según el análisis y la clasificación de su contenido",
+ "features": [
+  "Clasificación automática de contenido",
+  "Decisiones de enrutamiento basadas en el tema",
+  "Análisis de contenido multimodal",
+  "Reglas de enrutamiento dinámicas"
+ ],
+ "tldr": {
+  "what": "Analiza el contenido entrante para clasificarlo y luego lo enruta a manejadores especializados según el tema, la urgencia o el tipo detectados.",
+  "when": "Varios tipos de agentes manejan dominios distintos y necesitas un triaje automático sin reglas de enrutamiento predefinidas ni selección por parte del usuario.",
+  "watchOut": "Una mala clasificación envía solicitudes a los agentes equivocados; verifica la precisión de la clasificación en casos límite antes de desplegar en producción."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón Content-Based Routing",
+  "description": "Muestra decisiones de enrutamiento basadas puramente en el análisis de contenido, palabras clave, patrones y comprensión semántica",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Entrada de contenido\n\"Analiza este documento/consulta\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "lexical-analyzer",
+    "label": "Analizador léxico\nPalabras clave, entidades, idioma",
+    "x": 300,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "semantic-analyzer",
+    "label": "Analizador semántico\nSignificado, intención, contexto",
+    "x": 500,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "pattern-matcher",
+    "label": "Comparador de patrones\nEstructuras, formatos, tipos",
+    "x": 700,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "content-classifier",
+    "label": "Clasificador de contenido\nCategoriza por características del contenido",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "routing-engine",
+    "label": "Motor de enrutamiento\nSelecciona el manejador según el contenido",
+    "x": 500,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "text-handler",
+    "label": "Manejador de texto\nPipeline de procesamiento NLP",
+    "x": 150,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "code-handler",
+    "label": "Manejador de código\nAnálisis de sintaxis y ejecución",
+    "x": 350,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "data-handler",
+    "label": "Manejador de datos\nProcesamiento de datos estructurados",
+    "x": 550,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "media-handler",
+    "label": "Manejador de medios\nProcesamiento de imagen/video",
+    "x": 750,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "nlp-pipeline",
+    "label": "Pipeline NLP\nTokenización, POS, NER",
+    "x": 150,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "ast-parser",
+    "label": "Parser AST\nAnálisis de la estructura del código",
+    "x": 350,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "data-processor",
+    "label": "Procesador de datos\nETL y validación",
+    "x": 550,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "cv-engine",
+    "label": "Visión por computadora\nDetección de objetos y OCR",
+    "x": 750,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "content-features",
+    "label": "Características del contenido\n• Extensión del archivo\n• Tipo MIME\n• Tamaño y estructura\n• Idioma detectado",
+    "x": 100,
+    "y": 320,
+    "w": 150
+   },
+   {
+    "id": "routing-rules",
+    "label": "Reglas de enrutamiento\n• .py → Manejador de código\n• JSON → Manejador de datos\n• Texto natural → Manejador de texto\n• Imágenes → Manejador de medios",
+    "x": 850,
+    "y": 460,
+    "w": 160
+   },
+   {
+    "id": "results-aggregator",
+    "label": "Agregador de resultados\nCombina las salidas de los manejadores",
+    "x": 500,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "text-example",
+    "label": "Contenido de texto\n\"Analiza el sentimiento\nde los clientes en las reseñas\"",
+    "x": 50,
+    "y": 180,
+    "w": 130
+   },
+   {
+    "id": "code-example",
+    "label": "Contenido de código\n\"def analyze(data):\n  return results\"",
+    "x": 200,
+    "y": 50,
+    "w": 130
+   },
+   {
+    "id": "data-example",
+    "label": "Contenido de datos\n{\"sales\": 1000,\n \"region\": \"US\"}",
+    "x": 800,
+    "y": 50,
+    "w": 130
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-lexical",
+    "s": "input",
+    "t": "lexical-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-input-semantic",
+    "s": "input",
+    "t": "semantic-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-input-pattern",
+    "s": "input",
+    "t": "pattern-matcher",
+    "label": ""
+   },
+   {
+    "id": "e-lexical-classifier",
+    "s": "lexical-analyzer",
+    "t": "content-classifier",
+    "label": ""
+   },
+   {
+    "id": "e-semantic-classifier",
+    "s": "semantic-analyzer",
+    "t": "content-classifier",
+    "label": ""
+   },
+   {
+    "id": "e-pattern-classifier",
+    "s": "pattern-matcher",
+    "t": "content-classifier",
+    "label": ""
+   },
+   {
+    "id": "e-classifier-routing",
+    "s": "content-classifier",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-routing-text",
+    "s": "routing-engine",
+    "t": "text-handler",
+    "label": "Lenguaje natural"
+   },
+   {
+    "id": "e-routing-code",
+    "s": "routing-engine",
+    "t": "code-handler",
+    "label": "Código fuente"
+   },
+   {
+    "id": "e-routing-data",
+    "s": "routing-engine",
+    "t": "data-handler",
+    "label": "Datos estructurados"
+   },
+   {
+    "id": "e-routing-media",
+    "s": "routing-engine",
+    "t": "media-handler",
+    "label": "Archivos multimedia"
+   },
+   {
+    "id": "e-text-nlp",
+    "s": "text-handler",
+    "t": "nlp-pipeline",
+    "label": ""
+   },
+   {
+    "id": "e-code-ast",
+    "s": "code-handler",
+    "t": "ast-parser",
+    "label": ""
+   },
+   {
+    "id": "e-data-processor",
+    "s": "data-handler",
+    "t": "data-processor",
+    "label": ""
+   },
+   {
+    "id": "e-media-cv",
+    "s": "media-handler",
+    "t": "cv-engine",
+    "label": ""
+   },
+   {
+    "id": "e-nlp-results",
+    "s": "nlp-pipeline",
+    "t": "results-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-ast-results",
+    "s": "ast-parser",
+    "t": "results-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-data-results",
+    "s": "data-processor",
+    "t": "results-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-cv-results",
+    "s": "cv-engine",
+    "t": "results-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-features-classifier",
+    "s": "content-features",
+    "t": "content-classifier",
+    "label": ""
+   },
+   {
+    "id": "e-rules-routing",
+    "s": "routing-rules",
+    "t": "routing-engine",
+    "label": ""
+   },
+   {
+    "id": "e-text-example",
+    "s": "text-example",
+    "t": "lexical-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-code-example",
+    "s": "code-example",
+    "t": "pattern-matcher",
+    "label": ""
+   },
+   {
+    "id": "e-data-example",
+    "s": "data-example",
+    "t": "semantic-analyzer",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Ingesta de contenido",
+    "description": "El sistema recibe contenido que debe procesarse de forma adecuada.",
+    "input": "Entrada de contenido mixto: \"Analiza este código Python: def sentiment_analysis(text): return model.predict(text)\"",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Análisis de contenido en múltiples capas",
+    "description": "El contenido se analiza simultáneamente mediante reconocimiento léxico, semántico y de patrones.",
+    "input": "Análisis en paralelo: palabras clave, significado y patrones estructurales",
+    "nodes": [
+     "input",
+     "lexical-analyzer",
+     "semantic-analyzer",
+     "pattern-matcher"
+    ],
+    "edges": [
+     "e-input-lexical",
+     "e-input-semantic",
+     "e-input-pattern"
+    ]
+   },
+   {
+    "title": "Resultados del análisis léxico",
+    "description": "Extrae palabras clave, entidades y características del idioma.",
+    "input": "Análisis léxico: tokens, entidades, detección de idioma",
+    "nodes": [
+     "lexical-analyzer"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Resultados del análisis semántico",
+    "description": "Comprende el significado, la intención y la información contextual.",
+    "input": "Análisis semántico: detección de intención, comprensión del contexto",
+    "nodes": [
+     "semantic-analyzer"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Resultados de la comparación de patrones",
+    "description": "Identifica patrones estructurales y el formato del contenido.",
+    "input": "Comparación de patrones: reconocimiento de estructura, sintaxis y formato",
+    "nodes": [
+     "pattern-matcher"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Clasificación del contenido",
+    "description": "Combina todos los resultados del análisis para clasificar el tipo de contenido.",
+    "input": "Clasificación basada en características léxicas + semánticas + de patrones",
+    "nodes": [
+     "content-classifier",
+     "content-features"
+    ],
+    "edges": [
+     "e-lexical-classifier",
+     "e-semantic-classifier",
+     "e-pattern-classifier",
+     "e-features-classifier"
+    ]
+   },
+   {
+    "title": "Decisión de enrutamiento",
+    "description": "Selecciona el manejador adecuado según la clasificación del contenido.",
+    "input": "Selección de ruta: contenido de código detectado → Manejador de código",
+    "nodes": [
+     "routing-engine",
+     "routing-rules"
+    ],
+    "edges": [
+     "e-classifier-routing",
+     "e-rules-routing"
+    ]
+   },
+   {
+    "title": "Activación del manejador de código",
+    "description": "Enruta al pipeline especializado de procesamiento de código.",
+    "input": "Manejador de código: análisis de función Python",
+    "nodes": [
+     "routing-engine",
+     "code-handler"
+    ],
+    "edges": [
+     "e-routing-code"
+    ]
+   },
+   {
+    "title": "Parsing y análisis del AST",
+    "description": "Convierte el código en un árbol de sintaxis abstracta (AST) para un análisis detallado.",
+    "input": "Parsing del AST: análisis de la estructura y la semántica del código",
+    "nodes": [
+     "code-handler",
+     "ast-parser"
+    ],
+    "edges": [
+     "e-code-ast"
+    ]
+   },
+   {
+    "title": "Ejemplos de contenido alternativo",
+    "description": "Muestra cómo distintos tipos de contenido se enrutarían de forma diferente.",
+    "input": "Ejemplo de enrutamiento para distintos tipos de contenido",
+    "nodes": [
+     "text-example",
+     "data-example",
+     "routing-engine",
+     "text-handler",
+     "data-handler"
+    ],
+    "edges": [
+     "e-routing-text",
+     "e-routing-data"
+    ]
+   },
+   {
+    "title": "Procesamiento especializado",
+    "description": "Cada manejador aplica técnicas de procesamiento específicas de su dominio.",
+    "input": "Procesamiento específico de cada manejador: NLP, procesamiento de datos, visión por computadora",
+    "nodes": [
+     "nlp-pipeline",
+     "data-processor",
+     "cv-engine"
+    ],
+    "edges": [
+     "e-text-nlp",
+     "e-data-processor",
+     "e-media-cv"
+    ]
+   },
+   {
+    "title": "Agregación de resultados",
+    "description": "Combina las salidas de los manejadores específicos de cada contenido en una respuesta unificada.",
+    "input": "",
+    "nodes": [
+     "results-aggregator"
+    ],
+    "edges": [
+     "e-ast-results"
+    ]
+   }
+  ]
+ }
+}

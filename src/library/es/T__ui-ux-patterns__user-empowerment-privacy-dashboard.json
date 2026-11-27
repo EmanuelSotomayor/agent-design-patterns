@@ -1,0 +1,363 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "user-empowerment-privacy-dashboard",
+ "name": "User Empowerment Privacy Dashboard(UPD)",
+ "icon": "📊",
+ "complexity": "high",
+ "description": "Interfaz integral de gestión soberana de datos que brinda a los usuarios visibilidad y control completos sobre sus datos personales en los sistemas de agentes, con información sobre privacidad, portabilidad de datos y aplicación automatizada de los derechos de privacidad.",
+ "features": [
+  "Inventario entre agentes de los datos personales recopilados",
+  "Puntuación de salud de la privacidad e información sobre la exposición",
+  "Exportación y portabilidad de datos en un clic",
+  "Ejercicio automatizado de los derechos de acceso, rectificación y eliminación"
+ ],
+ "tldr": {
+  "what": "Centraliza la visibilidad y el control del usuario sobre los datos personales que guardan varios agentes, permitiendo exportaciones, eliminaciones y la aplicación automatizada de derechos.",
+  "when": "Sistemas que manejan datos personales sensibles en varios agentes, donde los usuarios necesitan transparencia y cumplimiento regulatorio (GDPR, CCPA).",
+  "watchOut": "La aplicación en backends de agentes heterogéneos es compleja; las eliminaciones incompletas o las copias de datos desactualizadas generan un falso cumplimiento y desconfianza en los usuarios."
+ },
+ "overview": null,
+ "flow": {
+  "title": "User Empowerment Privacy Dashboard",
+  "description": "Interfaz integral de gestión soberana de datos que brinda a los usuarios visibilidad y control completos sobre sus datos personales en los sistemas de agentes, con información sobre privacidad, portabilidad de datos y aplicación automatizada de los derechos de privacidad",
+  "nodes": [
+   {
+    "id": "privacy-awareness-need",
+    "label": "🤔 Desafío de la conciencia sobre la privacidad\n\"El usuario se da cuenta de que varios agentes de IA\nrecopilaron datos personales, pero no tiene\nvisibilidad de qué, dónde ni cómo\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "data-sprawl",
+    "label": "📈 Dispersión de datos entre sistemas\n\"Agente financiero: datos bancarios\nAgente de salud: historias clínicas\nHogar inteligente: patrones de comportamiento\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "fragmented-visibility",
+    "label": "🔍 Visibilidad de la privacidad fragmentada\n\"Políticas de privacidad separadas\nUbicaciones de datos dispersas\nSin una interfaz de control unificada\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "user-helplessness",
+    "label": "😵 Impotencia del usuario\n\"No puede rastrear el uso de sus datos\nProcedimientos de eliminación poco claros\nSin un control significativo\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "privacy-fatigue",
+    "label": "😴 Fatiga de privacidad\n\"Abrumado por la complejidad\nRenuncia a gestionar su privacidad\nAcepta la configuración predeterminada\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "empowerment-dashboard",
+    "label": "📊 Panel de empoderamiento del usuario\n\"Centro de control de privacidad unificado\nVisibilidad integral de los datos\nGestión soberana de los datos\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "data-inventory",
+    "label": "📋 Inventario de datos personales\n\"Catálogo completo de datos entre sistemas\nClasificación por tipo de dato\nSeguimiento de la fecha y el origen de la recopilación\"",
+    "x": 450,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "usage-insights",
+    "label": "📈 Información y analítica de uso\n\"Gráficos de frecuencia de acceso a los datos\nLínea de tiempo de la actividad de procesamiento\nInformes de datos compartidos con terceros\"",
+    "x": 700,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "privacy-score",
+    "label": "🏆 Puntuación de salud de la privacidad\n\"Calificación de privacidad en tiempo real\nIndicadores de evaluación de riesgos\nRecomendaciones personalizadas\"",
+    "x": 950,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "data-portability",
+    "label": "📦 Centro de portabilidad de datos\n\"Exportación en un clic a formatos estándar\nMigración de datos entre plataformas\nAcceso por API para la integración de datos\"",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "automated-rights",
+    "label": "⚙️ Aplicación automatizada de derechos\n\"Eliminación de datos programada\nRetiro automático del consentimiento\nAlertas de incumplimiento de políticas\"",
+    "x": 650,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "privacy-assistant",
+    "label": "🤖 Asistente de privacidad con IA\n\"Recomendaciones de privacidad personalizadas\nDetección de amenazas y advertencias\nSugerencias de configuración óptima\"",
+    "x": 900,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "consent-management",
+    "label": "✅ Gestión centralizada del consentimiento\n\"Revocación universal del consentimiento\nAjustes granulares de permisos\nHistorial de consentimientos\"",
+    "x": 450,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "privacy-marketplace",
+    "label": "🏪 Marketplace de privacidad\n\"Opciones de monetización de datos\nRecomendaciones de servicios de privacidad\nCalificaciones de confianza de proveedores\"",
+    "x": 750,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "true-empowerment",
+    "label": "💪 Empoderamiento real del usuario\n\"Soberanía total sobre los datos\nDecisiones de privacidad informadas\nControl significativo sobre la vida digital\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "empowerment-principle",
+    "label": "🎯 Principio de empoderamiento del usuario\n\"Los usuarios deben tener soberanía total sobre sus datos,\ncon visibilidad integral, control sin esfuerzo\ny protección proactiva en todos los sistemas.\"",
+    "x": 600,
+    "y": 1100,
+    "w": 450
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "privacy-awareness-need",
+    "t": "data-sprawl",
+    "label": "revela la complejidad"
+   },
+   {
+    "id": "e2",
+    "s": "data-sprawl",
+    "t": "fragmented-visibility",
+    "label": "enfoque tradicional disperso"
+   },
+   {
+    "id": "e3",
+    "s": "data-sprawl",
+    "t": "empowerment-dashboard",
+    "label": "enfoque unificado de empoderamiento"
+   },
+   {
+    "id": "e4",
+    "s": "fragmented-visibility",
+    "t": "user-helplessness",
+    "label": "genera confusión"
+   },
+   {
+    "id": "e5",
+    "s": "user-helplessness",
+    "t": "privacy-fatigue",
+    "label": "lleva al abandono"
+   },
+   {
+    "id": "e6",
+    "s": "empowerment-dashboard",
+    "t": "data-inventory",
+    "label": "ofrece un catálogo de datos"
+   },
+   {
+    "id": "e7",
+    "s": "empowerment-dashboard",
+    "t": "usage-insights",
+    "label": "muestra analítica de actividad"
+   },
+   {
+    "id": "e8",
+    "s": "empowerment-dashboard",
+    "t": "privacy-score",
+    "label": "calcula la salud de la privacidad"
+   },
+   {
+    "id": "e9",
+    "s": "data-inventory",
+    "t": "data-portability",
+    "label": "habilita la exportación"
+   },
+   {
+    "id": "e10",
+    "s": "usage-insights",
+    "t": "automated-rights",
+    "label": "dispara acciones automatizadas"
+   },
+   {
+    "id": "e11",
+    "s": "privacy-score",
+    "t": "privacy-assistant",
+    "label": "impulsa recomendaciones de IA"
+   },
+   {
+    "id": "e12",
+    "s": "data-portability",
+    "t": "consent-management",
+    "label": "se integra con el consentimiento"
+   },
+   {
+    "id": "e13",
+    "s": "automated-rights",
+    "t": "consent-management",
+    "label": "automatiza los cambios de consentimiento"
+   },
+   {
+    "id": "e14",
+    "s": "privacy-assistant",
+    "t": "privacy-marketplace",
+    "label": "recomienda servicios"
+   },
+   {
+    "id": "e15",
+    "s": "consent-management",
+    "t": "privacy-marketplace",
+    "label": "gestiona los permisos de proveedores"
+   },
+   {
+    "id": "e16",
+    "s": "consent-management",
+    "t": "true-empowerment",
+    "label": "habilita el control"
+   },
+   {
+    "id": "e17",
+    "s": "privacy-marketplace",
+    "t": "true-empowerment",
+    "label": "ofrece opciones"
+   },
+   {
+    "id": "e18",
+    "s": "privacy-fatigue",
+    "t": "empowerment-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e19",
+    "s": "true-empowerment",
+    "t": "empowerment-principle",
+    "label": "valida el enfoque"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Conciencia sobre la privacidad y reconocimiento de la dispersión de datos",
+    "description": "El usuario se da cuenta de que varios agentes de IA (financiero, de salud, de hogar inteligente) recopilaron una gran cantidad de datos personales en distintos sistemas, lo que genera una dispersión de datos compleja sin visibilidad unificada.",
+    "input": "",
+    "nodes": [
+     "privacy-awareness-need",
+     "data-sprawl"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques para la gestión de la privacidad",
+    "description": "La dispersión de datos se gestiona mediante la visibilidad fragmentada tradicional con políticas de privacidad dispersas (izquierda) frente a un panel unificado de empoderamiento del usuario (derecha).",
+    "input": "",
+    "nodes": [
+     "fragmented-visibility",
+     "empowerment-dashboard"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Enfoque fragmentado: impotencia y fatiga de privacidad",
+    "description": "Los controles de privacidad dispersos entre sistemas generan confusión e impotencia en el usuario, lo que lleva a una fatiga de privacidad en la que renuncia a gestionarla de forma significativa.",
+    "input": "",
+    "nodes": [
+     "user-helplessness",
+     "privacy-fatigue"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Funciones centrales del panel: inventario, información y puntuación de salud",
+    "description": "El panel de empoderamiento ofrece un inventario completo de los datos personales entre sistemas, analítica de uso con líneas de tiempo de actividad y una puntuación de salud de la privacidad en tiempo real con recomendaciones personalizadas.",
+    "input": "",
+    "nodes": [
+     "data-inventory",
+     "usage-insights",
+     "privacy-score"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Funciones de control: portabilidad, automatización y asistente de IA",
+    "description": "Las funciones de control avanzadas permiten exportar datos en un clic, aplicar derechos de forma automatizada con eliminaciones programadas y contar con un asistente de privacidad con IA que ofrece detección de amenazas personalizada y optimización de la configuración.",
+    "input": "",
+    "nodes": [
+     "data-portability",
+     "automated-rights",
+     "privacy-assistant"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Empoderamiento avanzado: gestión del consentimiento y marketplace de privacidad",
+    "description": "Las funciones sofisticadas incluyen la gestión centralizada del consentimiento con capacidad de revocación universal y un marketplace de privacidad con opciones de monetización de datos y calificaciones de confianza de proveedores.",
+    "input": "",
+    "nodes": [
+     "consent-management",
+     "privacy-marketplace"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Logro de un empoderamiento real del usuario",
+    "description": "El panel integral logra una soberanía total sobre los datos con decisiones de privacidad informadas y un control significativo sobre la vida digital, transformando a los usuarios de sujetos pasivos en gestores activos de su privacidad.",
+    "input": "",
+    "nodes": [
+     "true-empowerment"
+    ],
+    "edges": [
+     "e16",
+     "e17"
+    ]
+   },
+   {
+    "title": "Principio central del empoderamiento del usuario",
+    "description": "Los usuarios merecen soberanía total sobre sus datos, con visibilidad integral, control sin esfuerzo y protección proactiva en todos los sistemas, no un teatro de privacidad fragmentado.",
+    "input": "",
+    "nodes": [
+     "empowerment-principle"
+    ],
+    "edges": [
+     "e18",
+     "e19"
+    ]
+   }
+  ]
+ }
+}

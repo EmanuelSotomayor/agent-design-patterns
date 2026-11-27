@@ -1,0 +1,382 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "metacognitive-monitoring",
+ "name": "Metacognitive Monitoring(MCM)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Autoconciencia y monitoreo de la calidad y la confianza del razonamiento",
+ "features": [
+  "Evaluación de la calidad del razonamiento",
+  "Estimación de la confianza",
+  "Detección de brechas de conocimiento",
+  "Monitoreo de la efectividad de la estrategia",
+  "Ajuste adaptativo del razonamiento",
+  "Anticipación de errores"
+ ],
+ "tldr": {
+  "what": "El agente sigue la calidad de su propio razonamiento, sus niveles de confianza y sus brechas de conocimiento, y luego ajusta la estrategia o pide aclaraciones según su autoevaluación.",
+  "when": "Decisiones de alto riesgo donde las respuestas equivocadas causan daño real y las verificaciones intermedias de confianza pueden disparar más recolección de datos o una revisión experta.",
+  "watchOut": "Las estimaciones de confianza suelen correlacionarse mal con la precisión real; los agentes con exceso de confianza se saltan pasos de verificación necesarios pese a reportar una alta certeza."
+ },
+ "overview": {
+  "pattern": "Autoconciencia continua y ajuste de estrategia durante los procesos de razonamiento",
+  "why": "Permite resolver problemas de forma adaptativa mediante el seguimiento de la confianza, la detección de errores y el cambio de método",
+  "insight": "Monitorear la calidad del razonamiento → Detectar baja confianza/errores → Adaptar la estrategia → Validar las mejoras",
+  "impl": [
+   {
+    "t": "Autoconciencia",
+    "d": "Monitorea el proceso de razonamiento y los niveles de confianza"
+   },
+   {
+    "t": "Verificación de estrategia",
+    "d": "Evalúa la efectividad del enfoque actual"
+   },
+   {
+    "t": "Detección de errores",
+    "d": "Identifica posibles errores o brechas"
+   },
+   {
+    "t": "Adaptar el método",
+    "d": "Cambia de estrategia cuando haga falta"
+   },
+   {
+    "t": "Validar el resultado",
+    "d": "Contrasta la calidad de la solución"
+   }
+  ],
+  "example": "Problema → Monitorear la confianza → \"Confianza baja, cambiar de estrategia\" → Nuevo enfoque → Validar",
+  "dos": [
+   "Evalúa continuamente los niveles de confianza del razonamiento",
+   "Implementa checkpoints explícitos de evaluación de la estrategia",
+   "Usa puntajes de confianza calibrados (0-100%)",
+   "Construye patrones de detección para los errores comunes",
+   "Crea disparadores y alternativas de respaldo para el cambio de estrategia"
+  ],
+  "donts": [
+   "Monitorear sin actuar ante señales de baja confianza",
+   "Usar evaluaciones de confianza vagas (\"quizás\", \"probablemente\")",
+   "Omitir la validación al cambiar de estrategia de razonamiento",
+   "Ignorar un patrón constante de fallas de razonamiento",
+   "Monitorear en exceso tareas simples (costo cognitivo)"
+  ],
+  "use": [
+   "Decisiones de alto riesgo que requieren confiabilidad",
+   "Tareas complejas de razonamiento de varios pasos",
+   "Dominios propensos a errores sistemáticos",
+   "Cuando existen varios enfoques de solución",
+   "Escenarios de aprendizaje o adaptación"
+  ],
+  "avoid": [
+   "Problemas simples y bien definidos",
+   "Aplicaciones muy sensibles al tiempo",
+   "Cuando los patrones de razonamiento son estables",
+   "Entornos con recursos limitados",
+   "Tareas rutinarias o repetitivas"
+  ],
+  "metrics": [
+   {
+    "n": "Calibración de la confianza",
+    "d": "Alineación entre la confianza y la precisión real"
+   },
+   {
+    "n": "Tasa de detección de errores",
+    "d": "Porcentaje de errores detectados antes de la respuesta final"
+   },
+   {
+    "n": "Éxito del cambio de estrategia",
+    "d": "Mejora tras adaptar el método"
+   },
+   {
+    "n": "Costo del monitoreo",
+    "d": "Costo computacional adicional frente al beneficio"
+   },
+   {
+    "n": "Precisión de la autocorrección",
+    "d": "Calidad de los ajustes del razonamiento"
+   },
+   {
+    "n": "Velocidad de adaptación",
+    "d": "Tiempo para reconocer y cambiar estrategias ineficaces"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Diagnóstico médico",
+    "d": "Monitorear la confianza → \"Confianza baja ante una enfermedad rara\" → Cambiar al modo de consulta con especialista"
+   },
+   {
+    "n": "Análisis financiero",
+    "d": "Seguir la calidad del razonamiento → Detectar exceso de confianza en las predicciones → Aplicar ajustes conservadores"
+   },
+   {
+    "n": "Revisión de código",
+    "d": "Monitorear la comprensión → \"Lógica compleja, confianza baja\" → Solicitar pasos de validación adicionales"
+   },
+   {
+    "n": "Síntesis de investigación",
+    "d": "Evaluar la integración de fuentes → Identificar brechas de conocimiento → Adaptar la estrategia de búsqueda"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Monitorear la validez de los supuestos → Detectar razonamientos débiles → Fortalecer la base del análisis"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Metacognitive Monitoring",
+  "description": "Autoconciencia y monitoreo continuo de la calidad del razonamiento, los niveles de confianza y los procesos de toma de decisiones para mejorar el desempeño",
+  "nodes": [
+   {
+    "id": "medical-diagnosis",
+    "label": "🩺 Caso médico\n\"Paciente: dolor torácico,\nfalta de aire,\nfatiga desde hace 3 días\"",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "initial-reasoning",
+    "label": "💭 Análisis inicial\n\"Podría ser cardíaco,\npulmonar o ansiedad.\nNecesito más datos.\"",
+    "x": 400,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "confidence-monitor",
+    "label": "📊 Monitor de confianza\n\"Confianza actual: 30%\nDatos insuficientes para\nun diagnóstico confiable\"",
+    "x": 150,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "knowledge-check",
+    "label": "🧠 Evaluación del conocimiento\n\"Conozco los signos cardíacos,\npero necesito verificar\nlos criterios de embolia pulmonar\"",
+    "x": 400,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "bias-detector",
+    "label": "⚠️ Verificación de sesgos\n\"¿Me estoy anclando en\nun infarto? Considerar\notras posibilidades.\"",
+    "x": 650,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "gather-vitals",
+    "label": "📋 Recolección de datos\n\"PA: 140/90, FC: 105\nSat O2: 94%, Temp: 98.6°F\nECG: ritmo sinusal normal\"",
+    "x": 400,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "reasoning-quality",
+    "label": "🎯 Calidad del razonamiento\n\"Bien: enfoque sistemático\nDébil: falta prueba de dímero D\npara descartar EP\"",
+    "x": 150,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "updated-confidence",
+    "label": "📈 Actualización de la confianza\n\"Ahora 60% de confianza:\nlos signos vitales sugieren causa cardíaca\npero necesito los niveles de troponina\"",
+    "x": 400,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "uncertainty-flag",
+    "label": "🚩 Alerta de incertidumbre\n\"Decisión de alto riesgo\ncon confianza moderada\n→ Pedir más pruebas\"",
+    "x": 650,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "lab-results",
+    "label": "🧪 Resultados de laboratorio\n\"Troponina: elevada\nDímero D: normal\n→ Evento cardíaco probable\"",
+    "x": 400,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "meta-evaluation",
+    "label": "🔍 Metaevaluación\n\"Mi razonamiento fue sólido:\n✓ Evité el sesgo de anclaje\n✓ Reuní los datos adecuados\"",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "final-diagnosis",
+    "label": "✅ Diagnóstico (confianza: 85%)\n\"Infarto de miocardio\nsin elevación del ST. Se recomienda\ncateterismo cardíaco.\"",
+    "x": 400,
+    "y": 750,
+    "w": 250
+   },
+   {
+    "id": "learning-update",
+    "label": "📚 Integración del aprendizaje\n\"Recordar: un ECG normal\nno descarta un IM.\nLa troponina es el marcador clave.\"",
+    "x": 400,
+    "y": 850,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "medical-diagnosis",
+    "t": "initial-reasoning",
+    "label": "analizar"
+   },
+   {
+    "id": "e2a",
+    "s": "initial-reasoning",
+    "t": "confidence-monitor",
+    "label": "evaluar la confianza"
+   },
+   {
+    "id": "e2b",
+    "s": "initial-reasoning",
+    "t": "knowledge-check",
+    "label": "revisar el conocimiento"
+   },
+   {
+    "id": "e2c",
+    "s": "initial-reasoning",
+    "t": "bias-detector",
+    "label": "detectar sesgos"
+   },
+   {
+    "id": "e3",
+    "s": "knowledge-check",
+    "t": "gather-vitals",
+    "label": "se necesitan más datos"
+   },
+   {
+    "id": "e4a",
+    "s": "gather-vitals",
+    "t": "reasoning-quality",
+    "label": "evaluar el razonamiento"
+   },
+   {
+    "id": "e4b",
+    "s": "gather-vitals",
+    "t": "updated-confidence",
+    "label": "actualizar la confianza"
+   },
+   {
+    "id": "e4c",
+    "s": "gather-vitals",
+    "t": "uncertainty-flag",
+    "label": "señalar incertidumbre"
+   },
+   {
+    "id": "e5",
+    "s": "uncertainty-flag",
+    "t": "lab-results",
+    "label": "pedir pruebas"
+   },
+   {
+    "id": "e6",
+    "s": "lab-results",
+    "t": "meta-evaluation",
+    "label": "evaluar el proceso"
+   },
+   {
+    "id": "e7",
+    "s": "meta-evaluation",
+    "t": "final-diagnosis",
+    "label": "diagnóstico con confianza"
+   },
+   {
+    "id": "e8",
+    "s": "final-diagnosis",
+    "t": "learning-update",
+    "label": "integrar el aprendizaje"
+   },
+   {
+    "id": "e9",
+    "s": "confidence-monitor",
+    "t": "gather-vitals",
+    "label": "confianza baja"
+   },
+   {
+    "id": "e10",
+    "s": "reasoning-quality",
+    "t": "updated-confidence",
+    "label": "control de calidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Autoevaluación inicial",
+    "description": "El sistema analiza el caso médico y de inmediato monitorea su propio nivel de confianza (30%), sus brechas de conocimiento y los posibles sesgos en su razonamiento.",
+    "input": "",
+    "nodes": [
+     "medical-diagnosis",
+     "initial-reasoning",
+     "confidence-monitor",
+     "knowledge-check",
+     "bias-detector"
+    ],
+    "edges": [
+     "e1",
+     "e2a",
+     "e2b",
+     "e2c"
+    ]
+   },
+   {
+    "title": "Recolección de datos guiada por el conocimiento",
+    "description": "A partir de las brechas de conocimiento autoevaluadas y la baja confianza, el sistema reúne de forma sistemática los signos vitales y los datos del ECG.",
+    "input": "",
+    "nodes": [
+     "gather-vitals"
+    ],
+    "edges": [
+     "e3",
+     "e9"
+    ]
+   },
+   {
+    "title": "Automonitoreo multidimensional",
+    "description": "El sistema evalúa a la vez la calidad de su razonamiento, actualiza su nivel de confianza (60%) y señala la incertidumbre restante ante una decisión médica de alto riesgo.",
+    "input": "",
+    "nodes": [
+     "reasoning-quality",
+     "updated-confidence",
+     "uncertainty-flag"
+    ],
+    "edges": [
+     "e4a",
+     "e4b",
+     "e4c",
+     "e10"
+    ]
+   },
+   {
+    "title": "Acción guiada por la incertidumbre",
+    "description": "La señal de alta incertidumbre dispara pruebas de laboratorio adicionales (troponina, dímero D) en lugar de avanzar con un diagnóstico de confianza moderada.",
+    "input": "",
+    "nodes": [
+     "lab-results"
+    ],
+    "edges": [
+     "e5"
+    ]
+   },
+   {
+    "title": "Evaluación metacognitiva y aprendizaje",
+    "description": "El sistema evalúa todo su proceso de razonamiento, confirma que la metodología fue sólida, emite un diagnóstico con confianza (85%) e integra el nuevo aprendizaje sobre el diagnóstico de IM.",
+    "input": "",
+    "nodes": [
+     "meta-evaluation",
+     "final-diagnosis",
+     "learning-update"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   }
+  ]
+ }
+}

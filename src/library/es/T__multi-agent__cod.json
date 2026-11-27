@@ -1,0 +1,273 @@
+{
+ "cat": "multi-agent",
+ "slug": "cod",
+ "name": "Chain of Debates(CoD)",
+ "icon": "💬",
+ "complexity": "high",
+ "description": "Varios modelos de IA colaboran y debaten para llegar a conclusiones",
+ "features": [
+  "Colaboración entre múltiples modelos",
+  "Mecanismo de revisión entre pares",
+  "Reduce el sesgo individual",
+  "Aprovecha la inteligencia colectiva"
+ ],
+ "tldr": {
+  "what": "Varios modelos presentan puntos de vista opuestos sobre una pregunta y luego sintetizan conclusiones sopesando las ventajas y desventajas de cada postura.",
+  "when": "Decisiones complejas con prioridades legítimamente en conflicto, donde ninguna perspectiva experta individual captura el panorama completo.",
+  "watchOut": "El debate puede disfrazar la incertidumbre como consenso; los modelos pueden converger en respuestas que suenan plausibles sin validación contra la verdad de referencia."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Razonamiento Chain of Debates (CoD)",
+  "description": "",
+  "nodes": [
+   {
+    "id": "problem",
+    "label": "Problema complejo\n\"¿Deberíamos adoptar microservicios?\"",
+    "x": 400,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "advocate",
+    "label": "Defensor\n(A favor de microservicios)",
+    "x": 150,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "skeptic",
+    "label": "Escéptico\n(En contra de microservicios)",
+    "x": 400,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "analyst",
+    "label": "Analista\n(Depende del contexto)",
+    "x": 650,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "arguments",
+    "label": "Recopilación\nde argumentos",
+    "x": 400,
+    "y": 350,
+    "w": 140
+   },
+   {
+    "id": "round1",
+    "label": "Ronda 1\nArgumentos iniciales",
+    "x": 200,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "round2",
+    "label": "Ronda 2\nContraargumentos",
+    "x": 400,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "round3",
+    "label": "Ronda 3\nRefinamiento",
+    "x": 600,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "moderator",
+    "label": "Moderador\n(Síntesis)",
+    "x": 400,
+    "y": 650,
+    "w": 140
+   },
+   {
+    "id": "consensus",
+    "label": "Decisión\npor consenso",
+    "x": 400,
+    "y": 800,
+    "w": 140
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-problem-advocate",
+    "s": "problem",
+    "t": "advocate",
+    "label": ""
+   },
+   {
+    "id": "e-problem-skeptic",
+    "s": "problem",
+    "t": "skeptic",
+    "label": ""
+   },
+   {
+    "id": "e-problem-analyst",
+    "s": "problem",
+    "t": "analyst",
+    "label": ""
+   },
+   {
+    "id": "e-advocate-args",
+    "s": "advocate",
+    "t": "arguments",
+    "label": ""
+   },
+   {
+    "id": "e-skeptic-args",
+    "s": "skeptic",
+    "t": "arguments",
+    "label": ""
+   },
+   {
+    "id": "e-analyst-args",
+    "s": "analyst",
+    "t": "arguments",
+    "label": ""
+   },
+   {
+    "id": "e-args-round1",
+    "s": "arguments",
+    "t": "round1",
+    "label": ""
+   },
+   {
+    "id": "e-round1-round2",
+    "s": "round1",
+    "t": "round2",
+    "label": ""
+   },
+   {
+    "id": "e-round2-round3",
+    "s": "round2",
+    "t": "round3",
+    "label": ""
+   },
+   {
+    "id": "e-round1-mod",
+    "s": "round1",
+    "t": "moderator",
+    "label": ""
+   },
+   {
+    "id": "e-round2-mod",
+    "s": "round2",
+    "t": "moderator",
+    "label": ""
+   },
+   {
+    "id": "e-round3-mod",
+    "s": "round3",
+    "t": "moderator",
+    "label": ""
+   },
+   {
+    "id": "e-mod-consensus",
+    "s": "moderator",
+    "t": "consensus",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Presentación del problema",
+    "description": "Se presenta al sistema de debate un problema complejo que requiere múltiples perspectivas.",
+    "input": "Problema complejo: \"¿Debería nuestra startup adoptar una arquitectura de microservicios?\"",
+    "nodes": [
+     "problem"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Asignación de perspectivas",
+    "description": "A distintos agentes de IA se les asignan perspectivas específicas desde las cuales argumentar.",
+    "input": "Asignar perspectivas: A favor de microservicios (Defensor), En contra de microservicios (Escéptico), Depende del contexto (Analista)",
+    "nodes": [
+     "problem",
+     "advocate",
+     "skeptic",
+     "analyst"
+    ],
+    "edges": [
+     "e-problem-advocate",
+     "e-problem-skeptic",
+     "e-problem-analyst"
+    ]
+   },
+   {
+    "title": "Argumentos iniciales",
+    "description": "Cada perspectiva presenta sus argumentos y razonamiento iniciales.",
+    "input": "Defensor: \"Los microservicios permiten escalar, desplegar de forma independiente, usar diversidad tecnológica...\"\nEscéptico: \"Son complejos para startups, implican sobrecarga operativa, desafíos de sistemas distribuidos...\"\nAnalista: \"Depende del tamaño del equipo, la tasa de crecimiento, la tolerancia a la deuda técnica...\"",
+    "nodes": [
+     "advocate",
+     "skeptic",
+     "analyst",
+     "arguments",
+     "round1"
+    ],
+    "edges": [
+     "e-advocate-args",
+     "e-skeptic-args",
+     "e-analyst-args",
+     "e-args-round1"
+    ]
+   },
+   {
+    "title": "Contrainterrogatorio",
+    "description": "Cada perspectiva cuestiona los argumentos de las demás con contrapuntos.",
+    "input": "El Defensor replica: \"La complejidad de una startup es temporal, los beneficios de escalar son permanentes...\"\nEl Escéptico replica: \"La mayoría de las startups fracasan antes de que escalar sea relevante...\"\nEl Analista agrega: \"Consideren estrategias de migración gradual...\"",
+    "nodes": [
+     "round1",
+     "round2"
+    ],
+    "edges": [
+     "e-round1-round2"
+    ]
+   },
+   {
+    "title": "Refinamiento de argumentos",
+    "description": "Las perspectivas refinan sus posturas con base en el debate.",
+    "input": "Posturas refinadas que reconocen las ventajas y desventajas, y las condiciones de cada enfoque.",
+    "nodes": [
+     "round2",
+     "round3"
+    ],
+    "edges": [
+     "e-round2-round3"
+    ]
+   },
+   {
+    "title": "Síntesis y moderación",
+    "description": "Un moderador sintetiza el debate en una conclusión equilibrada.",
+    "input": "El moderador analiza todos los argumentos e identifica los factores clave de decisión.",
+    "nodes": [
+     "round1",
+     "round2",
+     "round3",
+     "moderator"
+    ],
+    "edges": [
+     "e-round1-mod",
+     "e-round2-mod",
+     "e-round3-mod"
+    ]
+   },
+   {
+    "title": "Decisión por consenso",
+    "description": "Recomendación final basada en el análisis completo del debate.",
+    "input": "Decisión final: \"Para equipos <10: Monolítico. Para escalamiento rápido: Microservicios. Para crecimiento incierto: Enfoque híbrido con plan de migración.\"",
+    "nodes": [
+     "moderator",
+     "consensus"
+    ],
+    "edges": [
+     "e-mod-consensus"
+    ]
+   }
+  ]
+ }
+}

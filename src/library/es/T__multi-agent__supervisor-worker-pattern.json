@@ -1,0 +1,706 @@
+{
+ "cat": "multi-agent",
+ "slug": "supervisor-worker-pattern",
+ "name": "Supervisor-Worker Pattern(SVW)",
+ "icon": "👨‍💼",
+ "complexity": "high",
+ "description": "Arquitectura orquestador-worker en la que un agente líder coordina subagentes especializados para ejecutar tareas en paralelo",
+ "features": [
+  "Descomposición dinámica de tareas",
+  "Coordinación de subagentes en paralelo",
+  "Distribución inteligente de la carga de trabajo",
+  "Ajuste de estrategia en tiempo real",
+  "Control de calidad centralizado",
+  "Creación escalable de agentes"
+ ],
+ "tldr": {
+  "what": "Un agente líder divide el trabajo en tareas paralelas, crea subagentes especializados para encargarse de cada una y recopila los resultados para su síntesis o control de calidad.",
+  "when": "Problemas complejos que se pueden descomponer en subtareas independientes, donde la ejecución en paralelo ahorra tiempo y los agentes especializados mejoran la precisión en cada dominio.",
+  "watchOut": "La sobrecarga de coordinación y la complejidad de combinar resultados suelen superar las ganancias, a menos que las tareas sean realmente independientes y las fallas de los subagentes se manejen explícitamente."
+ },
+ "overview": {
+  "pattern": "Arquitectura orquestador-worker en la que un agente líder coordina subagentes especializados para ejecutar tareas en paralelo",
+  "why": "Logra una mejora del 90% en el rendimiento mediante exploración en paralelo y experiencia especializada, manteniendo un control de calidad centralizado",
+  "insight": "Descomposición dinámica de tareas + contextos separados por worker + coordinación en tiempo real = calidad de investigación superior a 15x el costo en tokens",
+  "impl": [
+   {
+    "t": "Descomponer",
+    "d": "Divide la consulta en 3-5 subtareas paralelas"
+   },
+   {
+    "t": "Crear",
+    "d": "Crea agentes worker especializados de forma dinámica"
+   },
+   {
+    "t": "Coordinar",
+    "d": "Monitorea el progreso en los distintos contextos"
+   },
+   {
+    "t": "Adaptar",
+    "d": "Crea workers adicionales si es necesario"
+   },
+   {
+    "t": "Sintetizar",
+    "d": "Agrega todos los hallazgos en el resultado final"
+   }
+  ],
+  "example": "query → decompose(4_tasks) → spawn_workers() → monitor_parallel() → synthesize_results()",
+  "dos": [
+   "Usa ventanas de contexto separadas para cada agente worker",
+   "Implementa la creación dinámica de workers según la complejidad",
+   "Monitorea el progreso de los workers y ajusta las estrategias en tiempo real",
+   "Define objetivos y criterios de éxito claros para cada worker",
+   "Usa pensamiento intercalado para la autoevaluación de los workers",
+   "Implementa manejo de timeouts y fallas para los workers",
+   "Guarda en cache las operaciones costosas y los resultados intermedios",
+   "Usa formatos de salida estructurados para la comunicación de los workers"
+  ],
+  "donts": [
+   "Crear demasiados workers (rendimientos decrecientes a partir de 5-7)",
+   "Compartir contexto entre workers (reduce los beneficios del paralelismo)",
+   "Ignorar la explosión en el consumo de tokens (15x el uso normal)",
+   "Omitir el control de calidad en el paso final de síntesis",
+   "Usarlo para consultas simples que no necesitan descomposición",
+   "Olvidar implementar el manejo de la propagación de errores de los workers"
+  ],
+  "use": [
+   "Consultas de investigación complejas y de múltiples dominios",
+   "Análisis abiertos que requieren múltiples perspectivas",
+   "Tareas que se benefician de la exploración en paralelo",
+   "Workflows intensivos en investigación",
+   "Requisitos de alta precisión que justifican el costo extra",
+   "Problemas que requieren diversas áreas de experiencia"
+  ],
+  "avoid": [
+   "Preguntas simples de un solo dominio",
+   "Aplicaciones sensibles al costo (15x uso de tokens)",
+   "Requisitos de tiempo real o baja latencia",
+   "Tareas procedimentales bien definidas",
+   "Escenarios con cuota de API limitada",
+   "Workflows con dependencias secuenciales"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de la investigación",
+    "d": "Mejora del 90% frente a un solo agente"
+   },
+   {
+    "n": "Consumo de tokens",
+    "d": "15x el uso base (planificación de costos)"
+   },
+   {
+    "n": "Eficiencia del paralelismo",
+    "d": "% de workers que terminan con éxito"
+   },
+   {
+    "n": "Descomposición de tareas",
+    "d": "Cantidad óptima de subtareas (3-5 workers)"
+   },
+   {
+    "n": "Calidad de la síntesis",
+    "d": "Coherencia del resultado final agregado"
+   },
+   {
+    "n": "Utilización de los workers",
+    "d": "% de workers que aportan valor único"
+   },
+   {
+    "n": "Recuperación de errores",
+    "d": "% de workers fallidos manejados de forma elegante"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de investigación",
+    "d": "\"Impacto de la IA en la salud\" → Workers médico, regulatorio, económico y de ética → Informe integral"
+   },
+   {
+    "n": "Inteligencia de mercado",
+    "d": "\"Análisis de competidores\" → Workers de producto, finanzas, estrategia y tecnología → Insights estratégicos"
+   },
+   {
+    "n": "Literatura científica",
+    "d": "\"Soluciones al cambio climático\" → Workers de física, políticas públicas, ingeniería y economía → Revisión multidisciplinaria"
+   },
+   {
+    "n": "Due diligence de inversión",
+    "d": "\"Evaluación de empresa\" → Workers financiero, de mercado, de riesgo y técnico → Recomendación de inversión"
+   },
+   {
+    "n": "Investigación de políticas públicas",
+    "d": "\"Reforma educativa\" → Workers académico, económico, social y de implementación → Marco de políticas"
+   },
+   {
+    "n": "Evaluación tecnológica",
+    "d": "\"Adopción de blockchain\" → Workers técnico, de negocio, legal y social → Estrategia de adopción"
+   },
+   {
+    "n": "Análisis de crisis",
+    "d": "\"Disrupción de la cadena de suministro\" → Workers de logística, economía, geopolítica y riesgo → Plan de respuesta"
+   },
+   {
+    "n": "Estrategia de producto",
+    "d": "\"Análisis de entrada al mercado\" → Workers de cliente, competencia, regulación y técnico → Plan de salida al mercado"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Supervisor-Worker Pattern",
+  "description": "Patrón de coordinación jerárquica en el que un agente supervisor gestiona y distribuye tareas entre agentes worker especializados, monitoreando el progreso y asegurando resultados de calidad.",
+  "nodes": [
+   {
+    "id": "client-request",
+    "label": "🎯 Solicitud del cliente\n\"Construir una plataforma de e-commerce con funciones de IA\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "supervisor",
+    "label": "👔 Agente supervisor\nDescomposición y orquestación de tareas",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "task-analyzer",
+    "label": "📊 Analizador de tareas\nDesglosa los requisitos",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "worker-selector",
+    "label": "🎯 Selector de workers\nAsigna tareas a workers",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "work-queue",
+    "label": "📋 Cola de trabajo\nCola de tareas priorizada",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "progress-monitor",
+    "label": "📈 Monitor de progreso\nSigue el estado de los workers",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "frontend-worker",
+    "label": "🎨 Worker de frontend\nDesarrollo de UI/UX\nEstado: Activo",
+    "x": 50,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "backend-worker",
+    "label": "⚙️ Worker de backend\nDesarrollo de API\nEstado: Activo",
+    "x": 200,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "database-worker",
+    "label": "🗄️ Worker de base de datos\nDiseño de esquema\nEstado: Activo",
+    "x": 350,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "ml-worker",
+    "label": "🤖 Worker de ML\nMotor de recomendaciones\nEstado: Activo",
+    "x": 500,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "security-worker",
+    "label": "🔒 Worker de seguridad\nAutenticación y cifrado\nEstado: Inactivo",
+    "x": 650,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "testing-worker",
+    "label": "🧪 Worker de pruebas\nQA y validación\nEstado: En espera",
+    "x": 800,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "task-1",
+    "label": "📝 Tarea: Landing page\nAsignada a: Frontend\nPrioridad: Alta",
+    "x": 50,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "task-2",
+    "label": "📝 Tarea: API de usuarios\nAsignada a: Backend\nPrioridad: Alta",
+    "x": 200,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "task-3",
+    "label": "📝 Tarea: BD de productos\nAsignada a: Base de datos\nPrioridad: Media",
+    "x": 350,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "task-4",
+    "label": "📝 Tarea: Recomendaciones\nAsignada a: ML\nPrioridad: Baja",
+    "x": 500,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "heartbeat-checker",
+    "label": "💓 Verificador de heartbeat\nMonitoreo de salud de los workers",
+    "x": 100,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "load-balancer",
+    "label": "⚖️ Balanceador de carga\nDistribuye la carga de trabajo de forma uniforme",
+    "x": 300,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "dependency-resolver",
+    "label": "🔗 Resolutor de dependencias\nGestiona las dependencias entre tareas",
+    "x": 500,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "conflict-resolver",
+    "label": "🤝 Resolutor de conflictos\nManeja conflictos de recursos",
+    "x": 700,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "result-validator",
+    "label": "✅ Validador de resultados\nAseguramiento de calidad",
+    "x": 200,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "result-merger",
+    "label": "🔀 Combinador de resultados\nCombina las salidas de los workers",
+    "x": 400,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "error-handler",
+    "label": "⚠️ Manejador de errores\nLógica de reintento y fallback",
+    "x": 600,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "output",
+    "label": "✨ Proyecto completado\nPlataforma de e-commerce totalmente integrada",
+    "x": 400,
+    "y": 900,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-supervisor",
+    "s": "client-request",
+    "t": "supervisor",
+    "label": ""
+   },
+   {
+    "id": "supervisor-analyzer",
+    "s": "supervisor",
+    "t": "task-analyzer",
+    "label": "Analizar"
+   },
+   {
+    "id": "supervisor-selector",
+    "s": "supervisor",
+    "t": "worker-selector",
+    "label": "Seleccionar"
+   },
+   {
+    "id": "supervisor-queue",
+    "s": "supervisor",
+    "t": "work-queue",
+    "label": "Encolar"
+   },
+   {
+    "id": "supervisor-monitor",
+    "s": "supervisor",
+    "t": "progress-monitor",
+    "label": "Monitorear"
+   },
+   {
+    "id": "queue-frontend",
+    "s": "work-queue",
+    "t": "frontend-worker",
+    "label": "Asignar"
+   },
+   {
+    "id": "queue-backend",
+    "s": "work-queue",
+    "t": "backend-worker",
+    "label": "Asignar"
+   },
+   {
+    "id": "queue-database",
+    "s": "work-queue",
+    "t": "database-worker",
+    "label": "Asignar"
+   },
+   {
+    "id": "queue-ml",
+    "s": "work-queue",
+    "t": "ml-worker",
+    "label": "Asignar"
+   },
+   {
+    "id": "queue-security",
+    "s": "work-queue",
+    "t": "security-worker",
+    "label": "Encolar"
+   },
+   {
+    "id": "queue-testing",
+    "s": "work-queue",
+    "t": "testing-worker",
+    "label": "Esperar"
+   },
+   {
+    "id": "frontend-task1",
+    "s": "frontend-worker",
+    "t": "task-1",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "backend-task2",
+    "s": "backend-worker",
+    "t": "task-2",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "database-task3",
+    "s": "database-worker",
+    "t": "task-3",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "ml-task4",
+    "s": "ml-worker",
+    "t": "task-4",
+    "label": "Ejecutar"
+   },
+   {
+    "id": "frontend-monitor",
+    "s": "frontend-worker",
+    "t": "progress-monitor",
+    "label": "Estado"
+   },
+   {
+    "id": "backend-monitor",
+    "s": "backend-worker",
+    "t": "progress-monitor",
+    "label": "Estado"
+   },
+   {
+    "id": "database-monitor",
+    "s": "database-worker",
+    "t": "progress-monitor",
+    "label": "Estado"
+   },
+   {
+    "id": "ml-monitor",
+    "s": "ml-worker",
+    "t": "progress-monitor",
+    "label": "Estado"
+   },
+   {
+    "id": "monitor-heartbeat",
+    "s": "progress-monitor",
+    "t": "heartbeat-checker",
+    "label": ""
+   },
+   {
+    "id": "selector-balancer",
+    "s": "worker-selector",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "analyzer-dependency",
+    "s": "task-analyzer",
+    "t": "dependency-resolver",
+    "label": ""
+   },
+   {
+    "id": "balancer-conflict",
+    "s": "load-balancer",
+    "t": "conflict-resolver",
+    "label": ""
+   },
+   {
+    "id": "heartbeat-supervisor",
+    "s": "heartbeat-checker",
+    "t": "supervisor",
+    "label": "Salud"
+   },
+   {
+    "id": "dependency-supervisor",
+    "s": "dependency-resolver",
+    "t": "supervisor",
+    "label": "Dependencias"
+   },
+   {
+    "id": "conflict-supervisor",
+    "s": "conflict-resolver",
+    "t": "supervisor",
+    "label": "Conflictos"
+   },
+   {
+    "id": "task1-validator",
+    "s": "task-1",
+    "t": "result-validator",
+    "label": ""
+   },
+   {
+    "id": "task2-validator",
+    "s": "task-2",
+    "t": "result-validator",
+    "label": ""
+   },
+   {
+    "id": "task3-validator",
+    "s": "task-3",
+    "t": "result-validator",
+    "label": ""
+   },
+   {
+    "id": "task4-validator",
+    "s": "task-4",
+    "t": "result-validator",
+    "label": ""
+   },
+   {
+    "id": "validator-merger",
+    "s": "result-validator",
+    "t": "result-merger",
+    "label": "Válido"
+   },
+   {
+    "id": "validator-error",
+    "s": "result-validator",
+    "t": "error-handler",
+    "label": "Error"
+   },
+   {
+    "id": "error-supervisor",
+    "s": "error-handler",
+    "t": "supervisor",
+    "label": "Reintentar"
+   },
+   {
+    "id": "merger-output",
+    "s": "result-merger",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud del cliente",
+    "description": "Solicitud de proyecto complejo que requiere múltiples habilidades especializadas",
+    "input": "",
+    "nodes": [
+     "client-request"
+    ],
+    "edges": [
+     "request-supervisor"
+    ]
+   },
+   {
+    "title": "Inicialización del supervisor",
+    "description": "El supervisor analiza la solicitud y prepara los sistemas de coordinación",
+    "input": "",
+    "nodes": [
+     "supervisor",
+     "task-analyzer",
+     "worker-selector",
+     "work-queue",
+     "progress-monitor"
+    ],
+    "edges": [
+     "supervisor-analyzer",
+     "supervisor-selector",
+     "supervisor-queue",
+     "supervisor-monitor"
+    ]
+   },
+   {
+    "title": "Análisis de tareas",
+    "description": "Divide el proyecto en tareas discretas con dependencias",
+    "input": "",
+    "nodes": [
+     "task-analyzer",
+     "dependency-resolver"
+    ],
+    "edges": [
+     "analyzer-dependency"
+    ]
+   },
+   {
+    "title": "Selección de workers",
+    "description": "Asigna las tareas a workers especializados según sus capacidades",
+    "input": "",
+    "nodes": [
+     "worker-selector",
+     "load-balancer"
+    ],
+    "edges": [
+     "selector-balancer"
+    ]
+   },
+   {
+    "title": "Distribución de tareas",
+    "description": "Asigna tareas de la cola a los workers según la prioridad",
+    "input": "",
+    "nodes": [
+     "work-queue",
+     "frontend-worker",
+     "backend-worker",
+     "database-worker",
+     "ml-worker"
+    ],
+    "edges": [
+     "queue-frontend",
+     "queue-backend",
+     "queue-database",
+     "queue-ml"
+    ]
+   },
+   {
+    "title": "Ejecución en paralelo",
+    "description": "Los workers ejecutan tareas en paralelo y actualizan su estado",
+    "input": "",
+    "nodes": [
+     "frontend-worker",
+     "backend-worker",
+     "database-worker",
+     "ml-worker",
+     "task-1",
+     "task-2",
+     "task-3",
+     "task-4"
+    ],
+    "edges": [
+     "frontend-task1",
+     "backend-task2",
+     "database-task3",
+     "ml-task4"
+    ]
+   },
+   {
+    "title": "Monitoreo del progreso",
+    "description": "El supervisor monitorea el estado y la salud de los workers",
+    "input": "",
+    "nodes": [
+     "progress-monitor",
+     "heartbeat-checker"
+    ],
+    "edges": [
+     "frontend-monitor",
+     "backend-monitor",
+     "database-monitor",
+     "ml-monitor",
+     "monitor-heartbeat"
+    ]
+   },
+   {
+    "title": "Feedback de coordinación",
+    "description": "Maneja conflictos, dependencias y problemas de salud de los workers",
+    "input": "",
+    "nodes": [
+     "heartbeat-checker",
+     "dependency-resolver",
+     "conflict-resolver",
+     "supervisor"
+    ],
+    "edges": [
+     "heartbeat-supervisor",
+     "dependency-supervisor",
+     "conflict-supervisor",
+     "balancer-conflict"
+    ]
+   },
+   {
+    "title": "Validación de resultados",
+    "description": "Valida las tareas completadas y maneja los errores",
+    "input": "",
+    "nodes": [
+     "result-validator",
+     "error-handler"
+    ],
+    "edges": [
+     "task1-validator",
+     "task2-validator",
+     "task3-validator",
+     "task4-validator",
+     "validator-error"
+    ]
+   },
+   {
+    "title": "Recuperación de errores",
+    "description": "Reintenta las tareas fallidas a través del supervisor",
+    "input": "",
+    "nodes": [
+     "error-handler",
+     "supervisor"
+    ],
+    "edges": [
+     "error-supervisor"
+    ]
+   },
+   {
+    "title": "Combinación de resultados",
+    "description": "Combina los resultados validados de todos los workers",
+    "input": "",
+    "nodes": [
+     "result-validator",
+     "result-merger"
+    ],
+    "edges": [
+     "validator-merger"
+    ]
+   },
+   {
+    "title": "Entrega final",
+    "description": "Entrega el proyecto integrado completo",
+    "input": "",
+    "nodes": [
+     "result-merger",
+     "output"
+    ],
+    "edges": [
+     "merger-output"
+    ]
+   }
+  ]
+ }
+}

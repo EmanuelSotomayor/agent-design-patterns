@@ -1,0 +1,290 @@
+{
+ "cat": "tool-use",
+ "slug": "structured-reflection-tool",
+ "name": "Structured Reflection (Think Tool)",
+ "icon": "💭",
+ "complexity": "low",
+ "description": "Una herramienta \"think\" dedicada y sin efecto (no-op) de Anthropic, declarada en el esquema de herramientas del agente, que el modelo llama a mitad de la trayectoria para agregar razonamiento estructurado entre el resultado de una herramienta y la siguiente acción. La llamada no tiene efectos externos ni devuelve nada útil: simplemente le da al modelo un checkpoint para releer la política, verificar restricciones y planificar antes de actuar dentro de una cadena larga de llamadas a herramientas. Anthropic reporta una mejora relativa del 54% en la métrica pass^1 del dominio airline de tau-bench (0.570 frente a una línea base de 0.370) cuando la herramienta se combina con un prompt que muestra cómo usarla. Se distingue de `metacognitive-monitoring`: esa entrada es la capacidad general de monitorear el propio razonamiento, mientras que la herramienta think es un mecanismo concreto del esquema de herramientas para lograrlo, separado del razonamiento extendido o en tiempo de inferencia que ocurre antes de la primera respuesta.",
+ "features": [
+  "Herramienta no-op en el esquema: sin efectos secundarios y sin devolver datos nuevos",
+  "Se llama a mitad de la trayectoria, entre el resultado de una herramienta y la siguiente acción",
+  "Crea checkpoints de reflexión explícitos dentro de cadenas largas de llamadas a herramientas",
+  "Se usa para volver a verificar el cumplimiento de políticas y validar planes antes de actuar",
+  "Barata y con poco código: una definición de herramienta más un prompt que guía su uso",
+  "Mejora relativa reportada del 54% en pass^1 en el dominio airline de tau-bench"
+ ],
+ "tldr": {
+  "what": "Declara una herramienta no-op en el esquema que el modelo llama a mitad de la trayectoria para pausar, releer la política y planificar antes de la siguiente acción.",
+  "when": "Cadenas largas de llamadas a herramientas en las que el modelo debe verificar restricciones o el cumplimiento de políticas antes de comprometerse con una acción irreversible.",
+  "watchOut": "El modelo puede omitir la llamada a think si el ejemplo del prompt es débil o no existe; su efectividad depende por completo de mostrarle al modelo cuándo y cómo usarla."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Reflexión estructurada (herramienta Think)",
+  "description": "Una herramienta \"think\" no-op en el esquema del agente que el modelo llama a mitad de la trayectoria para agregar razonamiento estructurado entre el resultado de una herramienta y la siguiente acción. En una tarea de aerolínea con muchas políticas, el agente la usa para volver a revisar las reglas de tarifas antes de actuar, evitando un cambio no permitido. Anthropic reporta que esto eleva el pass^1 del dominio airline de tau-bench de 0.370 a 0.570, una mejora relativa del 54%.",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "🎯 Usuario\n\"Cámbiame al vuelo de\nmañana por la mañana\"",
+    "x": 340,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente de soporte de aerolínea\nBucle de uso de herramientas",
+    "x": 360,
+    "y": 160,
+    "w": 260
+   },
+   {
+    "id": "tool-get-res",
+    "label": "🔧 get_reservation()\nLlamada a herramienta",
+    "x": 360,
+    "y": 280,
+    "w": 260
+   },
+   {
+    "id": "tool-result",
+    "label": "📄 Resultado\nEconómica básica,\nreservado hace 20 min",
+    "x": 660,
+    "y": 280,
+    "w": 240
+   },
+   {
+    "id": "think-tool",
+    "label": "💭 think() [no-op]\nCheckpoint: revisar la política\nantes de actuar",
+    "x": 360,
+    "y": 410,
+    "w": 300
+   },
+   {
+    "id": "policy-check",
+    "label": "📋 Política en contexto\nEconómica básica: no modificable.\nVentana de cancelación gratuita de 24h",
+    "x": 40,
+    "y": 410,
+    "w": 240
+   },
+   {
+    "id": "plan",
+    "label": "🗺️ Plan\nCancelar < 24h, luego volver a reservar",
+    "x": 690,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "decision",
+    "label": "⚖️ Decisión\nCancelar y volver a reservar,\nno un cambio no permitido",
+    "x": 360,
+    "y": 540,
+    "w": 260
+   },
+   {
+    "id": "bad-path",
+    "label": "🚫 Camino evitado\nchange_flight() violaría\nlas reglas de tarifa",
+    "x": 670,
+    "y": 540,
+    "w": 220
+   },
+   {
+    "id": "action-cancel",
+    "label": "🔧 cancel_booking()\nDentro de la ventana de 24h",
+    "x": 40,
+    "y": 660,
+    "w": 200
+   },
+   {
+    "id": "action-rebook",
+    "label": "🔧 book_flight()\nNueva tarifa cotizada + confirmada",
+    "x": 360,
+    "y": 660,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✨ Reserva cambiada legalmente\ntau-bench airline pass^1\n0.370 -> 0.570 (+54% rel)",
+    "x": 330,
+    "y": 780,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-user-agent",
+    "s": "user-request",
+    "t": "agent",
+    "label": "Solicitud de cambio"
+   },
+   {
+    "id": "e-agent-get",
+    "s": "agent",
+    "t": "tool-get-res",
+    "label": "Buscar la reserva"
+   },
+   {
+    "id": "e-get-result",
+    "s": "tool-get-res",
+    "t": "tool-result",
+    "label": "Devuelve el boleto"
+   },
+   {
+    "id": "e-result-think",
+    "s": "tool-result",
+    "t": "think-tool",
+    "label": "Antes de actuar"
+   },
+   {
+    "id": "e-think-policy",
+    "s": "think-tool",
+    "t": "policy-check",
+    "label": "Recordar reglas"
+   },
+   {
+    "id": "e-think-plan",
+    "s": "think-tool",
+    "t": "plan",
+    "label": "Esbozar pasos"
+   },
+   {
+    "id": "e-policy-decision",
+    "s": "policy-check",
+    "t": "decision",
+    "label": "Restricciones"
+   },
+   {
+    "id": "e-plan-decision",
+    "s": "plan",
+    "t": "decision",
+    "label": "Pasos"
+   },
+   {
+    "id": "e-decision-bad",
+    "s": "decision",
+    "t": "bad-path",
+    "label": "Rechazado"
+   },
+   {
+    "id": "e-decision-cancel",
+    "s": "decision",
+    "t": "action-cancel",
+    "label": "Primero cancelar"
+   },
+   {
+    "id": "e-decision-rebook",
+    "s": "decision",
+    "t": "action-rebook",
+    "label": "Luego volver a reservar"
+   },
+   {
+    "id": "e-cancel-output",
+    "s": "action-cancel",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "e-rebook-output",
+    "s": "action-rebook",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "El usuario pide cambiar el vuelo",
+    "description": "El usuario solicita un vuelo más temprano. El agente entra en su bucle de uso de herramientas para gestionar el cambio según las reglas de tarifas de la aerolínea.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "agent"
+    ],
+    "edges": [
+     "e-user-agent"
+    ]
+   },
+   {
+    "title": "El agente busca la reserva",
+    "description": "El agente llama a get_reservation y la herramienta devuelve el boleto: una tarifa económica básica reservada hace 20 minutos.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "tool-get-res",
+     "tool-result"
+    ],
+    "edges": [
+     "e-agent-get",
+     "e-get-result"
+    ]
+   },
+   {
+    "title": "Llega el resultado de la herramienta y el agente llama a think()",
+    "description": "En lugar de actuar de inmediato sobre el resultado, el agente llama a la herramienta think no-op. La llamada no realiza ninguna acción externa ni devuelve nada, pero abre un checkpoint de reflexión.",
+    "input": "",
+    "nodes": [
+     "tool-result",
+     "think-tool"
+    ],
+    "edges": [
+     "e-result-think"
+    ]
+   },
+   {
+    "title": "Checkpoint de think: recordar la política y esbozar un plan",
+    "description": "Dentro de la llamada a think, el agente escribe la política relevante (la económica básica no es modificable, pero aplica una ventana de cancelación gratuita de 24 horas) y esboza los pasos. Este razonamiento queda ahora en el contexto.",
+    "input": "",
+    "nodes": [
+     "think-tool",
+     "policy-check",
+     "plan"
+    ],
+    "edges": [
+     "e-think-policy",
+     "e-think-plan"
+    ]
+   },
+   {
+    "title": "La decisión respeta las reglas de tarifa",
+    "description": "Guiado por el checkpoint, el agente elige cancelar y volver a reservar dentro de la ventana de 24 horas y rechaza una llamada directa a change_flight(), que violaría la tarifa no modificable.",
+    "input": "",
+    "nodes": [
+     "policy-check",
+     "plan",
+     "decision",
+     "bad-path"
+    ],
+    "edges": [
+     "e-policy-decision",
+     "e-plan-decision",
+     "e-decision-bad"
+    ]
+   },
+   {
+    "title": "El agente cancela dentro de las 24h y luego vuelve a reservar",
+    "description": "El agente cancela la reserva dentro de la ventana de cancelación gratuita, cotiza la nueva tarifa, obtiene la confirmación del usuario y reserva el vuelo de mañana por la mañana.",
+    "input": "",
+    "nodes": [
+     "decision",
+     "action-cancel",
+     "action-rebook"
+    ],
+    "edges": [
+     "e-decision-cancel",
+     "e-decision-rebook"
+    ]
+   },
+   {
+    "title": "Reserva cambiada legalmente, infracción evitada",
+    "description": "El cambio se completa dentro de la política. En tau-bench airline, este patrón de reflexión eleva el pass^1 de 0.370 a 0.570, una mejora relativa del 54% frente al mismo agente sin la herramienta think.",
+    "input": "",
+    "nodes": [
+     "action-cancel",
+     "action-rebook",
+     "output"
+    ],
+    "edges": [
+     "e-cancel-output",
+     "e-rebook-output"
+    ]
+   }
+  ]
+ }
+}

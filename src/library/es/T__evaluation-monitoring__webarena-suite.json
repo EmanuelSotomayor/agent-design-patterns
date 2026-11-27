@@ -1,0 +1,367 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "webarena-suite",
+ "name": "WebArena Evaluation Suite(WebArena)",
+ "icon": "🌐",
+ "complexity": "high",
+ "description": "Evaluación integral de agentes web que incluye WebArena, VisualWebArena y WorkArena para probar interacciones web realistas en entornos aislados (sandbox).",
+ "features": [
+  "Entornos web reproducibles en sandbox",
+  "Evaluación de tareas web visuales (VisualWebArena)",
+  "Pruebas de flujos de trabajo empresariales (WorkArena)",
+  "Simulación de interacción con sitios web reales",
+  "Evaluación de corrección funcional",
+  "Comprensión web multimodal"
+ ],
+ "tldr": {
+  "what": "Ejecuta agentes web sobre réplicas en sandbox de sitios web reales para medir tasas de éxito en tareas de repositorios, comercio electrónico, redes sociales y flujos de trabajo empresariales.",
+  "when": "Necesitas evidencia reproducible y cuantificada de si tu agente web maneja interacciones realistas de múltiples pasos antes de desplegarlo en producción.",
+  "watchOut": "Alto costo de configuración y tiempo de evaluación largo; los resultados pueden no trasladarse a sitios reales con contenido dinámico, medidas anti-bots o diseños con los que tu agente nunca se entrenó."
+ },
+ "overview": {
+  "pattern": "Evaluación integral de agentes web que incluye WebArena, VisualWebArena y WorkArena para probar interacciones web realistas en entornos aislados",
+  "why": "Prueba agentes autónomos en tareas realistas de sitios web: comercio electrónico, foros, plataformas de desarrollo y flujos de trabajo empresariales",
+  "insight": "Enorme brecha entre humanos e IA: WebArena 78.2% vs 14.4%, VisualWebArena 88.7% vs 16.4% - la automatización web sigue siendo un desafío",
+  "impl": [
+   {
+    "t": "Preparar",
+    "d": "Despliega entornos web en sandbox: WebArena (4 sitios), VisualWebArena (3 sitios), WorkArena (ServiceNow)"
+   },
+   {
+    "t": "Configurar",
+    "d": "Selecciona el modo de evaluación: WebArena (812 tareas), VisualWebArena (910 tareas), WorkArena (33-682 tareas)"
+   },
+   {
+    "t": "Habilitar",
+    "d": "Configura capacidades multimodales para tareas visuales y BrowserGym para flujos de trabajo empresariales"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Ejecuta agentes en interacciones web realistas con evaluación basada en la ejecución"
+   },
+   {
+    "t": "Analizar",
+    "d": "Compara con las líneas base humanas: WebArena (78.2%), VisualWebArena (88.7%), WorkArena (KPIs empresariales)"
+   }
+  ],
+  "example": "web_eval = WebArenaSuite(suites=[\"webarena\", \"visualwebarena\", \"workarena\"], agent=web_agent, multimodal=True)",
+  "dos": [
+   "Prueba en las tres suites para una evaluación integral de automatización web",
+   "Usa entornos en sandbox para una evaluación segura y reproducible",
+   "Habilita el procesamiento multimodal para las 910 tareas visuales de VisualWebArena",
+   "Aprovecha el prompting Set-of-Marks (SoM) para la navegación web visual",
+   "Incluye flujos de trabajo empresariales con las pruebas de la plataforma ServiceNow de WorkArena"
+  ],
+  "donts": [
+   "Esperar un alto rendimiento: los mejores agentes logran 14.4% (WebArena) y 16.4% (VisualWebArena)",
+   "Omitir los requisitos de comprensión visual: el 25.2% de las tareas necesita integrar lo visual con el texto",
+   "Ignorar el contexto empresarial: WorkArena requiere comprender tareas de trabajo del conocimiento",
+   "Usarlo sin un sandbox adecuado: los entornos simulan sitios web reales con datos",
+   "Pasar por alto la evaluación basada en la ejecución: la corrección funcional es la métrica clave"
+  ],
+  "use": [
+   "Evaluar agentes web autónomos en interacciones realistas con sitios web",
+   "Probar agentes multimodales que requieren comprensión web visual y textual",
+   "Evaluar capacidades de automatización empresarial en tareas de trabajo del conocimiento",
+   "Hacer benchmarking de la navegación web y del llenado de formularios",
+   "Investigación sobre la automatización de la interacción humano-computadora"
+  ],
+  "avoid": [
+   "Automatización simple basada en APIs (usa benchmarks especializados de APIs)",
+   "Pruebas de aplicaciones de una sola página sin flujos de trabajo entre varios sitios",
+   "Evaluación solo de texto sin componentes web visuales",
+   "Pruebas en producción en tiempo real (usa solo entornos en sandbox)",
+   "Evaluación de tareas no interactivas (usa benchmarks estáticos)"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de tareas",
+    "d": "Métrica principal: porcentaje de tareas web completadas con éxito"
+   },
+   {
+    "n": "Brecha humano vs agente",
+    "d": "WebArena: 78.2% vs 14.4%, VisualWebArena: 88.7% vs 16.4%"
+   },
+   {
+    "n": "Comprensión multimodal",
+    "d": "Éxito en el 25.2% de las tareas que requieren integrar lo visual con el texto"
+   },
+   {
+    "n": "Finalización de tareas empresariales",
+    "d": "WorkArena: 55% de tasa de éxito en tareas de trabajo del conocimiento"
+   },
+   {
+    "n": "Cobertura de sitios",
+    "d": "Rendimiento en comercio electrónico, foros, desarrollo y gestión de contenidos"
+   },
+   {
+    "n": "Corrección funcional",
+    "d": "Evaluación basada en la ejecución de la finalización real de la tarea"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación académica",
+    "d": "El framework integral de CMU para evaluar agentes web en entornos realistas"
+   },
+   {
+    "n": "Automatización empresarial",
+    "d": "Pruebas de ServiceNow WorkArena para la automatización de tareas de trabajadores del conocimiento (55% de tasa de éxito)"
+   },
+   {
+    "n": "Agentes web multimodales",
+    "d": "Las 910 tareas de VisualWebArena que requieren comprensión visual y prompting Set-of-Marks"
+   },
+   {
+    "n": "Benchmarking en la industria",
+    "d": "Evaluación estándar en comercio electrónico, foros sociales y plataformas de desarrollo colaborativo"
+   },
+   {
+    "n": "Desarrollo de agentes",
+    "d": "Entorno BrowserGym para diseñar y evaluar agentes web autónomos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "WebArena: patrón de evaluación realista de agentes web",
+  "description": "El estudio original de WebArena usó 812 tareas de horizonte largo en 4 dominios y reportó 14.41% para su línea base con GPT-4 frente a 78.24% de rendimiento humano",
+  "nodes": [
+   {
+    "id": "web-agent-evaluation-challenge",
+    "label": "🌐 Desafío de evaluación de agentes web\n\"¿Cómo evaluar agentes autónomos\nen tareas web realistas y complejas\nque las personas realizan a diario?\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "webarena-environment",
+    "label": "🏗️ Entorno realista de WebArena\n\"Entorno web independiente:\n• 4 dominios web funcionales\n• 812 tareas de horizonte largo\n• Complejidad de tareas similar a la humana\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "four-web-domains",
+    "label": "🌍 Cuatro dominios web funcionales\n\"Cobertura de sitios web reales:\n• Comercio electrónico (OneStopMarket)\n• Foro social (tipo Reddit)\n• Desarrollo de software (GitLab)\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "cms-domain",
+    "label": "📝 Sistema de gestión de contenidos\n\"Administración de sitios web:\n• Creación/edición de contenido\n• Gestión de usuarios\n• Configuración del sistema\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "long-horizon-tasks",
+    "label": "📋 812 tareas de horizonte largo\n\"Escenarios complejos de múltiples pasos:\n• 241 plantillas de tareas\n• 3.3 variaciones por plantilla\n• Patrones de tareas similares a los humanos\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "task-examples",
+    "label": "✅ Ejemplos de tareas realistas\n\"Interacciones web auténticas:\n• Suscribirse a un boletín\n• Cancelar pedidos, actualizar perfiles\n• Interacciones con repositorios\n• Búsqueda de rutas con mapas\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "observation-system",
+    "label": "👁️ Sistema de observación multimodal\n\"Percepción web integral:\n• Árboles de accesibilidad (principal)\n• Estructuras DOM\n• Capturas de pantalla del navegador\n• Viewport de 1280x720\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "functional-evaluation",
+    "label": "🔍 Evaluación de corrección funcional\n\"Validación basada en resultados:\n• Detección programática del éxito\n• Verificación del estado del entorno\n• Finalización de la tarea de extremo a extremo\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "performance-gap",
+    "label": "📉 Enorme brecha de rendimiento de los agentes\n\"Limitaciones de la IA expuestas:\n• Mejor GPT-4: 14.41% de éxito\n• Rendimiento humano: 78.24%\n• Mejor reciente: CUA con 58.1%\"",
+    "x": 600,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "benchmark-extensions",
+    "label": "🚀 Extensiones y evolución del benchmark\n\"Ampliando el alcance de la evaluación:\n• VisualWebArena (multimodal)\n• ST-WebAgentBench (seguridad/confianza)\n• Seguimiento continuo del rendimiento\"",
+    "x": 400,
+    "y": 950,
+    "w": 280
+   },
+   {
+    "id": "web-agent-evaluation-principle",
+    "label": "🎯 Principio de evaluación de agentes web\n\"Los entornos web realistas revelan las verdaderas capacidades del agente\nLas tareas de horizonte largo exponen brechas de planificación y ejecución\nLa corrección funcional mide el progreso significativo\"",
+    "x": 400,
+    "y": 1100,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "web-agent-evaluation-challenge",
+    "t": "webarena-environment",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "webarena-environment",
+    "t": "four-web-domains",
+    "label": "implementa 4 dominios"
+   },
+   {
+    "id": "e3",
+    "s": "webarena-environment",
+    "t": "long-horizon-tasks",
+    "label": "crea 812 tareas"
+   },
+   {
+    "id": "e4",
+    "s": "four-web-domains",
+    "t": "cms-domain",
+    "label": "incluye CMS"
+   },
+   {
+    "id": "e5",
+    "s": "long-horizon-tasks",
+    "t": "task-examples",
+    "label": "ejemplificado por"
+   },
+   {
+    "id": "e6",
+    "s": "webarena-environment",
+    "t": "observation-system",
+    "label": "usa observación"
+   },
+   {
+    "id": "e7",
+    "s": "cms-domain",
+    "t": "functional-evaluation",
+    "label": "evaluado por"
+   },
+   {
+    "id": "e8",
+    "s": "task-examples",
+    "t": "functional-evaluation",
+    "label": "probado mediante"
+   },
+   {
+    "id": "e9",
+    "s": "observation-system",
+    "t": "functional-evaluation",
+    "label": "permite la evaluación"
+   },
+   {
+    "id": "e10",
+    "s": "functional-evaluation",
+    "t": "performance-gap",
+    "label": "revela limitaciones"
+   },
+   {
+    "id": "e11",
+    "s": "performance-gap",
+    "t": "benchmark-extensions",
+    "label": "motiva extensiones"
+   },
+   {
+    "id": "e12",
+    "s": "functional-evaluation",
+    "t": "benchmark-extensions",
+    "label": "permite la evolución"
+   },
+   {
+    "id": "e13",
+    "s": "benchmark-extensions",
+    "t": "web-agent-evaluation-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de evaluación de agentes web",
+    "description": "¿Cómo podemos evaluar agentes autónomos en tareas web realistas y complejas que las personas realizan a diario, yendo más allá de interacciones simples y aisladas para probar verdaderas capacidades de navegación web?",
+    "input": "",
+    "nodes": [
+     "web-agent-evaluation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al entorno realista de WebArena",
+    "description": "Un entorno web independiente e integral aborda el desafío con 4 dominios web funcionales y 812 tareas de horizonte largo diseñadas para igualar la complejidad de las tareas humanas y los escenarios del mundo real.",
+    "input": "",
+    "nodes": [
+     "webarena-environment"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Cuatro dominios web y sistema de plantillas de tareas",
+    "description": "El entorno implementa una cobertura realista: comercio electrónico (OneStopMarket), foro social, desarrollo de software (GitLab) y sistema de gestión de contenidos, generando 812 tareas a partir de 241 plantillas con 3.3 variaciones cada una.",
+    "input": "",
+    "nodes": [
+     "four-web-domains",
+     "cms-domain",
+     "long-horizon-tasks",
+     "task-examples"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Sistema de observación multimodal",
+    "description": "WebArena usa una percepción web integral mediante árboles de accesibilidad (principal), estructuras DOM y capturas de pantalla del navegador en un viewport de 1280x720, lo que permite una interacción sofisticada entre agente y entorno.",
+    "input": "",
+    "nodes": [
+     "observation-system"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Evaluación de corrección funcional y brecha de rendimiento",
+    "description": "La validación basada en resultados con detección programática del éxito revela enormes limitaciones: GPT-4 logra solo 14.41% de éxito frente a 78.24% de rendimiento humano, y el mejor resultado reciente (CUA) alcanza 58.1%.",
+    "input": "",
+    "nodes": [
+     "functional-evaluation",
+     "performance-gap"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Extensiones del benchmark y principio central de evaluación",
+    "description": "El impacto de WebArena impulsa su evolución: VisualWebArena (multimodal) y ST-WebAgentBench (seguridad/confianza), demostrando que los entornos web realistas revelan las verdaderas capacidades mientras que las tareas de horizonte largo exponen brechas de planificación.",
+    "input": "",
+    "nodes": [
+     "benchmark-extensions",
+     "web-agent-evaluation-principle"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13"
+    ]
+   }
+  ]
+ }
+}

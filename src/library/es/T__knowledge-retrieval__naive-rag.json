@@ -1,0 +1,369 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "naive-rag",
+ "name": "Naive RAG(NRAG)",
+ "icon": "📚",
+ "complexity": "low",
+ "description": "Framework fundamental \"Retrieve-Read\" que sigue el proceso tradicional de indexación, recuperación y generación",
+ "features": [
+  "Pipeline de recuperación simple",
+  "Integración directa de pasajes",
+  "Búsqueda semántica básica",
+  "Procesamiento secuencial",
+  "Generación directa",
+  "Preprocesamiento mínimo"
+ ],
+ "tldr": {
+  "what": "Recupera los pasajes de documentos que mejor coinciden mediante búsqueda semántica, los concatena en el prompt y luego genera una respuesta.",
+  "when": "Preguntas factuales sencillas sobre documentos bien indexados, donde la calidad de la recuperación es alta y no se necesita razonamiento de varios pasos.",
+  "watchOut": "Los pasajes recuperados pueden contradecirse entre sí o contener ruido irrelevante, lo que degrada la calidad de la respuesta si no hay ranking ni filtrado."
+ },
+ "overview": {
+  "pattern": "Pipeline simple de recuperar y luego leer: consulta → recuperar documentos → concatenar → generar",
+  "why": "Proporciona acceso a conocimiento externo con una complejidad mínima: enfoque fundamental establecido por Lewis et al. (2020)",
+  "insight": "Concatenación directa de los top-k documentos recuperados al prompt de la consulta, sin optimización ni posprocesamiento",
+  "impl": [
+   {
+    "t": "Indexar",
+    "d": "Crear embeddings vectoriales de la base de conocimiento"
+   },
+   {
+    "t": "Recuperar",
+    "d": "Encontrar los top-k documentos relevantes por similitud"
+   },
+   {
+    "t": "Concatenar",
+    "d": "Agregar los documentos recuperados al prompt de la consulta"
+   },
+   {
+    "t": "Generar",
+    "d": "Enviar el prompt combinado al LLM"
+   },
+   {
+    "t": "Devolver",
+    "d": "Entregar directamente la respuesta generada"
+   }
+  ],
+  "example": "query → vector_search → concat_context → llm_generate → response",
+  "dos": [
+   "Usa embeddings semánticos (p. ej., sentence-transformers)",
+   "Implementa una estrategia de chunking básica (tamaño fijo de 512-1024 tokens)",
+   "Define límites claros de recuperación top-k (normalmente 3-5 documentos)",
+   "Incluye metadatos de los documentos y atribución de fuentes",
+   "Usa FAISS o similar para una búsqueda vectorial eficiente"
+  ],
+  "donts": [
+   "Omitir el preprocesamiento o la normalización de la consulta",
+   "Recuperar demasiados documentos (provoca contaminación del contexto)",
+   "Ignorar los umbrales de puntuación de relevancia",
+   "Concatenar sin límites claros entre documentos",
+   "Esperar razonamiento sofisticado de un enfoque básico"
+  ],
+  "use": [
+   "Preguntas y respuestas simples sobre documentos",
+   "Sistemas RAG de prueba de concepto",
+   "Se permite una complejidad técnica limitada",
+   "Bases de conocimiento pequeñas a medianas",
+   "Consultas factuales sencillas"
+  ],
+  "avoid": [
+   "Se requiere razonamiento complejo de múltiples saltos",
+   "Aplicaciones críticas de alta precisión",
+   "Sistemas de producción a gran escala",
+   "Bases de conocimiento ruidosas o contradictorias",
+   "Requisitos de rendimiento en tiempo real"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de recuperación",
+    "d": "Documentos relevantes en el top-k (Recall@k)"
+   },
+   {
+    "n": "Calidad de la respuesta",
+    "d": "Puntuaciones BLEU/ROUGE frente a la referencia correcta"
+   },
+   {
+    "n": "Tiempo de respuesta",
+    "d": "Latencia de extremo a extremo (recuperación + generación)"
+   },
+   {
+    "n": "Utilización del contexto",
+    "d": "% del contexto recuperado que se usa en la respuesta"
+   },
+   {
+    "n": "Tasa de alucinación",
+    "d": "% de respuestas con afirmaciones sin sustento"
+   },
+   {
+    "n": "Atribución de fuentes",
+    "d": "% de respuestas con citas de fuentes correctas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Preguntas y respuestas sobre documentos",
+    "d": "Preguntas factuales simples sobre documentos de la empresa o bases de conocimiento"
+   },
+   {
+    "n": "Sistemas de preguntas frecuentes",
+    "d": "Respuestas automatizadas a preguntas frecuentes usando la documentación existente"
+   },
+   {
+    "n": "Asistencia en investigación",
+    "d": "Recuperación básica de información de artículos académicos o colecciones de investigación"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "Consultas de soporte de nivel 1 que se pueden responder con la documentación y los manuales"
+   },
+   {
+    "n": "Herramientas educativas",
+    "d": "Preguntas y respuestas simples sobre libros de texto y materiales educativos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Naive RAG (Retrieve-Augmented Generation)",
+  "description": "Enfoque simple de generación aumentada por recuperación con fases básicas de indexación y recuperación, que demuestra los conceptos fundamentales de la recuperación de conocimiento para la generación de texto aumentada.",
+  "nodes": [
+   {
+    "id": "indexing-phase-header",
+    "label": "📚 FASE DE INDEXACIÓN\n(Configuración única)",
+    "x": 150,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "document-collection",
+    "label": "📄 Colección de documentos\nArtículos médicos, estudios,\nbases de datos de fármacos",
+    "x": 150,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "simple-chunking",
+    "label": "✂️ Chunking simple\nDivisión básica de texto\n(sin conciencia semántica)",
+    "x": 150,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "basic-embedding",
+    "label": "🔢 Embedding básico\nEmbeddings estándar\n(sin optimización)",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "vector-storage",
+    "label": "💾 Almacenamiento vectorial\nBase de datos vectorial simple\n(metadatos mínimos)",
+    "x": 150,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "inference-phase-header",
+    "label": "🔍 FASE DE INFERENCIA\n(Por consulta)",
+    "x": 550,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "user-query",
+    "label": "❓ Consulta del usuario\n\"¿Cuáles son los efectos secundarios\nde la metformina?\"",
+    "x": 550,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "query-embedding",
+    "label": "🔢 Embedding de la consulta\nConvertir la consulta en\nrepresentación vectorial",
+    "x": 550,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "simple-search",
+    "label": "🔍 Búsqueda vectorial simple\nSimilitud coseno básica\n(recuperación top-k)",
+    "x": 550,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "retrieved-docs",
+    "label": "📄 Documentos recuperados\n\"Metformina: malestar GI,\nriesgo de acidosis láctica,\ndeficiencia de B12...\"",
+    "x": 550,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "basic-context",
+    "label": "📋 Preparación básica del contexto\nConcatenación simple\nconsulta + documentos",
+    "x": 550,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "llm-generation",
+    "label": "🤖 Generación del LLM\nGenerar respuesta usando\nuna plantilla de prompt básica",
+    "x": 550,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "final-answer",
+    "label": "✅ Respuesta final\n\"Efectos secundarios de la metformina:\n• Náuseas, diarrea\n• Raro: acidosis láctica\n• A largo plazo: deficiencia de B12\"",
+    "x": 550,
+    "y": 750,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "indexing-header",
+    "s": "indexing-phase-header",
+    "t": "document-collection",
+    "label": "inicio"
+   },
+   {
+    "id": "indexing-e1",
+    "s": "document-collection",
+    "t": "simple-chunking",
+    "label": "fragmentar"
+   },
+   {
+    "id": "indexing-e2",
+    "s": "simple-chunking",
+    "t": "basic-embedding",
+    "label": "embeber"
+   },
+   {
+    "id": "indexing-e3",
+    "s": "basic-embedding",
+    "t": "vector-storage",
+    "label": "almacenar"
+   },
+   {
+    "id": "inference-header",
+    "s": "inference-phase-header",
+    "t": "user-query",
+    "label": "inicio"
+   },
+   {
+    "id": "inference-e1",
+    "s": "user-query",
+    "t": "query-embedding",
+    "label": "codificar"
+   },
+   {
+    "id": "inference-e2",
+    "s": "query-embedding",
+    "t": "simple-search",
+    "label": "buscar"
+   },
+   {
+    "id": "inference-e3",
+    "s": "simple-search",
+    "t": "retrieved-docs",
+    "label": "top-k"
+   },
+   {
+    "id": "inference-e4",
+    "s": "retrieved-docs",
+    "t": "basic-context",
+    "label": "combinar"
+   },
+   {
+    "id": "inference-e5",
+    "s": "basic-context",
+    "t": "llm-generation",
+    "label": "prompt"
+   },
+   {
+    "id": "inference-e6",
+    "s": "llm-generation",
+    "t": "final-answer",
+    "label": "generar"
+   },
+   {
+    "id": "cross-phase",
+    "s": "vector-storage",
+    "t": "simple-search",
+    "label": "consultar índice"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Indexación básica de documentos",
+    "description": "Configuración única: los documentos se recopilan, se dividen con un chunking de texto simple, se convierten en embeddings con modelos estándar y se almacenan en una base de datos vectorial básica.",
+    "input": "",
+    "nodes": [
+     "indexing-phase-header",
+     "document-collection",
+     "simple-chunking",
+     "basic-embedding",
+     "vector-storage"
+    ],
+    "edges": [
+     "indexing-header",
+     "indexing-e1",
+     "indexing-e2",
+     "indexing-e3"
+    ]
+   },
+   {
+    "title": "Codificación de la consulta",
+    "description": "La consulta del usuario sobre la metformina se convierte en una representación vectorial usando el mismo modelo de embeddings que se usó para indexar los documentos.",
+    "input": "",
+    "nodes": [
+     "inference-phase-header",
+     "user-query",
+     "query-embedding"
+    ],
+    "edges": [
+     "inference-header",
+     "inference-e1"
+    ]
+   },
+   {
+    "title": "Búsqueda vectorial simple",
+    "description": "Una búsqueda básica por similitud coseno recupera los top-k chunks de documentos más similares de la base de datos vectorial, sin ninguna optimización de ranking.",
+    "input": "",
+    "nodes": [
+     "simple-search",
+     "vector-storage"
+    ],
+    "edges": [
+     "inference-e2",
+     "cross-phase"
+    ]
+   },
+   {
+    "title": "Ensamblado básico del contexto",
+    "description": "Los documentos recuperados simplemente se concatenan con la consulta original usando una plantilla de prompt básica, sin curaduría ni optimización.",
+    "input": "",
+    "nodes": [
+     "retrieved-docs",
+     "basic-context"
+    ],
+    "edges": [
+     "inference-e3",
+     "inference-e4"
+    ]
+   },
+   {
+    "title": "Generación directa",
+    "description": "El LLM genera la respuesta usando el prompt básico y el contexto, sin pasos de validación, re-ranking ni posprocesamiento.",
+    "input": "",
+    "nodes": [
+     "llm-generation",
+     "final-answer"
+    ],
+    "edges": [
+     "inference-e5",
+     "inference-e6"
+    ]
+   }
+  ]
+ }
+}

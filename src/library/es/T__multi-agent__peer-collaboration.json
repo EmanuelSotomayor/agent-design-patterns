@@ -1,0 +1,711 @@
+{
+ "cat": "multi-agent",
+ "slug": "peer-collaboration",
+ "name": "Peer Collaboration",
+ "icon": "👥",
+ "complexity": "high",
+ "description": "Colaboración descentralizada entre agentes iguales sin una autoridad central",
+ "features": [
+  "Comunicación peer-to-peer",
+  "Mecanismos de consenso",
+  "Toma de decisiones compartida",
+  "Distribución de la carga",
+  "Tolerancia a fallas",
+  "Autoorganización"
+ ],
+ "tldr": {
+  "what": "Múltiples agentes se comunican directamente, debaten sus hallazgos y llegan a un consenso sin que un coordinador decida los resultados.",
+  "when": "Problemas que requieren experiencia diversa en los que ningún agente debería dominar, y en los que el desacuerdo señala puntos ciegos importantes.",
+  "watchOut": "La búsqueda de consenso a menudo se estanca o converge en un compromiso mediocre en lugar de descubrir la respuesta más sólida."
+ },
+ "overview": {
+  "pattern": "Colaboración descentralizada entre agentes iguales sin autoridad central mediante comunicación peer-to-peer",
+  "why": "Elimina los puntos únicos de falla, permite la cooperación entre organizaciones, aprovecha la inteligencia colectiva y brinda tolerancia a fallas bizantinas",
+  "insight": "Topología P2P + mecanismos de consenso + autoorganización = inteligencia distribuida resiliente",
+  "impl": [
+   {
+    "t": "Diseño de la red",
+    "d": "Define la topología y los protocolos de comunicación peer-to-peer"
+   },
+   {
+    "t": "Reglas de consenso",
+    "d": "Implementa mecanismos de votación, reputación y acuerdo"
+   },
+   {
+    "t": "Autoorganización",
+    "d": "Habilita la asignación dinámica de roles y la distribución de tareas"
+   },
+   {
+    "t": "Resolución de conflictos",
+    "d": "Agrega protocolos de negociación y resolución de disputas"
+   },
+   {
+    "t": "Aprendizaje adaptativo",
+    "d": "Implementa inteligencia colectiva e intercambio de conocimiento"
+   }
+  ],
+  "example": "AgentA ↔ AgentB ↔ AgentC → Consenso → Decisión colectiva",
+  "dos": [
+   "Implementa mecanismos de consenso robustos para las decisiones críticas",
+   "Habilita la adaptación dinámica de la topología según el desempeño de los agentes",
+   "Usa sistemas de reputación para ponderar las contribuciones de los agentes",
+   "Diseña protocolos tolerantes a fallas para cuando fallen los agentes",
+   "Implementa comunicación que preserve la privacidad cuando sea necesario",
+   "Habilita el comportamiento emergente mediante reglas de interacción local"
+  ],
+  "donts": [
+   "Crear puntos únicos de falla en la red de pares",
+   "Permitir que agentes maliciosos manipulen el consenso sin control",
+   "Ignorar los escenarios de partición de red y de fallas bizantinas",
+   "Usar protocolos síncronos que se bloqueen con pares lentos",
+   "Descuidar los límites de escalabilidad de las arquitecturas peer-to-peer"
+  ],
+  "use": [
+   "Resolución distribuida de problemas entre organizaciones",
+   "Construcción de consenso sin autoridad central",
+   "Colaboración en investigación y procesos de revisión por pares",
+   "Escenarios de toma de decisiones descentralizada",
+   "Sistemas que requieren tolerancia a fallas y resiliencia",
+   "Tareas de integración de conocimiento entre dominios"
+  ],
+  "avoid": [
+   "Tareas que requieren un control jerárquico estricto",
+   "Decisiones críticas en tiempo que necesitan respuesta inmediata",
+   "Problemas simples que puede resolver un solo agente",
+   "Escenarios con soluciones óptimas bien definidas",
+   "Entornos con conectividad de red poco confiable"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad del consenso",
+    "d": "Solidez del acuerdo y confianza en la decisión"
+   },
+   {
+    "n": "Resiliencia de la red",
+    "d": "Desempeño ante fallas de nodos y ataques"
+   },
+   {
+    "n": "Tiempo de convergencia",
+    "d": "Velocidad para alcanzar decisiones colaborativas"
+   },
+   {
+    "n": "Diversidad de conocimiento",
+    "d": "Variedad de perspectivas y soluciones generadas"
+   },
+   {
+    "n": "Factor de escalabilidad",
+    "d": "Degradación del desempeño según el tamaño de la red"
+   },
+   {
+    "n": "Tolerancia bizantina",
+    "d": "Robustez frente a agentes maliciosos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Colaboración en investigación científica",
+    "d": "Revisión por pares distribuida con evaluación basada en consenso y síntesis de conocimiento entre instituciones"
+   },
+   {
+    "n": "Consenso en blockchain",
+    "d": "Validación descentralizada con tolerancia a fallas bizantinas y mecanismos de proof-of-stake para transacciones seguras"
+   },
+   {
+    "n": "Desarrollo de software distribuido",
+    "d": "Revisión de código entre pares, depuración colaborativa y decisiones de arquitectura basadas en consenso"
+   },
+   {
+    "n": "Coordinación de la cadena de suministro",
+    "d": "Consenso entre múltiples partes para logística, control de calidad y cumplimiento normativo más allá de los límites organizacionales"
+   },
+   {
+    "n": "Redes de vehículos autónomos",
+    "d": "Coordinación peer-to-peer para la gestión del tráfico, la optimización de rutas y el consenso de seguridad"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Colaboración entre pares",
+  "description": "Patrón de colaboración descentralizada en el que agentes pares con el mismo estatus trabajan juntos en problemas distribuidos mediante la construcción de consenso y la toma de decisiones compartida.",
+  "nodes": [
+   {
+    "id": "distributed-problem",
+    "label": "🎯 Problema distribuido\n\"Desarrollar una app descentralizada con mecanismo de consenso\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "peer-1",
+    "label": "👤 Agente par 1\nExperto en blockchain\nReputación: ⭐⭐⭐⭐⭐",
+    "x": 200,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "peer-2",
+    "label": "👤 Agente par 2\nDesarrollador de smart contracts\nReputación: ⭐⭐⭐⭐",
+    "x": 600,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "peer-3",
+    "label": "👤 Agente par 3\nSeguridad criptográfica\nReputación: ⭐⭐⭐⭐⭐",
+    "x": 100,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "peer-4",
+    "label": "👤 Agente par 4\nRedes P2P\nReputación: ⭐⭐⭐⭐",
+    "x": 400,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "peer-5",
+    "label": "👤 Agente par 5\nAlgoritmos de consenso\nReputación: ⭐⭐⭐⭐⭐",
+    "x": 700,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "proposal-1",
+    "label": "💡 Propuesta #1\nConsenso PoW\nVotos: 2/5",
+    "x": 200,
+    "y": 300,
+    "w": 140
+   },
+   {
+    "id": "proposal-2",
+    "label": "💡 Propuesta #2\nConsenso PoS\nVotos: 3/5",
+    "x": 600,
+    "y": 300,
+    "w": 140
+   },
+   {
+    "id": "proposal-3",
+    "label": "💡 Propuesta #3\nEnfoque híbrido\nVotos: 4/5",
+    "x": 400,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "message-broadcast",
+    "label": "📡 Difusión de mensajes\nComunicación P2P",
+    "x": 100,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "reputation-system",
+    "label": "⭐ Sistema de reputación\nPuntuación de confianza",
+    "x": 300,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "voting-mechanism",
+    "label": "🗳️ Mecanismo de votación\nDecisiones descentralizadas",
+    "x": 500,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "consensus-protocol",
+    "label": "🤝 Protocolo de consenso\nAlcanzar un acuerdo",
+    "x": 700,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "shared-ledger",
+    "label": "📖 Libro mayor compartido\nRegistro inmutable",
+    "x": 150,
+    "y": 720,
+    "w": 160
+   },
+   {
+    "id": "gossip-protocol",
+    "label": "💬 Protocolo gossip\nDifusión de información",
+    "x": 320,
+    "y": 720,
+    "w": 160
+   },
+   {
+    "id": "conflict-resolution",
+    "label": "⚖️ Resolución de conflictos\nTolerancia a fallas bizantinas",
+    "x": 490,
+    "y": 720,
+    "w": 160
+   },
+   {
+    "id": "task-marketplace",
+    "label": "🏪 Mercado de tareas\nOfertar por subtareas",
+    "x": 660,
+    "y": 720,
+    "w": 160
+   },
+   {
+    "id": "swarm-intelligence",
+    "label": "🐝 Inteligencia de enjambre\nResolución colectiva de problemas",
+    "x": 200,
+    "y": 840,
+    "w": 200
+   },
+   {
+    "id": "self-organization",
+    "label": "🔄 Autoorganización\nEstructura emergente",
+    "x": 420,
+    "y": 840,
+    "w": 200
+   },
+   {
+    "id": "distributed-learning",
+    "label": "🎓 Aprendizaje distribuido\nBase de conocimiento compartida",
+    "x": 640,
+    "y": 840,
+    "w": 200
+   },
+   {
+    "id": "peer-review",
+    "label": "👁️ Revisión por pares\nValidación cruzada",
+    "x": 150,
+    "y": 960,
+    "w": 160
+   },
+   {
+    "id": "trust-verification",
+    "label": "🔐 Verificación de confianza\nPruebas criptográficas",
+    "x": 350,
+    "y": 960,
+    "w": 160
+   },
+   {
+    "id": "performance-metrics",
+    "label": "📊 Métricas de desempeño\nSeguimiento de contribuciones",
+    "x": 550,
+    "y": 960,
+    "w": 160
+   },
+   {
+    "id": "emergent-solution",
+    "label": "✨ Solución emergente\nApp descentralizada con consenso validado por pares",
+    "x": 400,
+    "y": 1080,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "problem-peer1",
+    "s": "distributed-problem",
+    "t": "peer-1",
+    "label": ""
+   },
+   {
+    "id": "problem-peer2",
+    "s": "distributed-problem",
+    "t": "peer-2",
+    "label": ""
+   },
+   {
+    "id": "problem-peer3",
+    "s": "distributed-problem",
+    "t": "peer-3",
+    "label": ""
+   },
+   {
+    "id": "problem-peer4",
+    "s": "distributed-problem",
+    "t": "peer-4",
+    "label": ""
+   },
+   {
+    "id": "problem-peer5",
+    "s": "distributed-problem",
+    "t": "peer-5",
+    "label": ""
+   },
+   {
+    "id": "peer1-peer2",
+    "s": "peer-1",
+    "t": "peer-2",
+    "label": "P2P"
+   },
+   {
+    "id": "peer1-peer3",
+    "s": "peer-1",
+    "t": "peer-3",
+    "label": "P2P"
+   },
+   {
+    "id": "peer1-peer4",
+    "s": "peer-1",
+    "t": "peer-4",
+    "label": "P2P"
+   },
+   {
+    "id": "peer2-peer3",
+    "s": "peer-2",
+    "t": "peer-3",
+    "label": "P2P"
+   },
+   {
+    "id": "peer2-peer4",
+    "s": "peer-2",
+    "t": "peer-4",
+    "label": "P2P"
+   },
+   {
+    "id": "peer2-peer5",
+    "s": "peer-2",
+    "t": "peer-5",
+    "label": "P2P"
+   },
+   {
+    "id": "peer3-peer4",
+    "s": "peer-3",
+    "t": "peer-4",
+    "label": "P2P"
+   },
+   {
+    "id": "peer3-peer5",
+    "s": "peer-3",
+    "t": "peer-5",
+    "label": "P2P"
+   },
+   {
+    "id": "peer4-peer5",
+    "s": "peer-4",
+    "t": "peer-5",
+    "label": "P2P"
+   },
+   {
+    "id": "peer1-proposal1",
+    "s": "peer-1",
+    "t": "proposal-1",
+    "label": "Enviar"
+   },
+   {
+    "id": "peer2-proposal2",
+    "s": "peer-2",
+    "t": "proposal-2",
+    "label": "Enviar"
+   },
+   {
+    "id": "peer4-proposal3",
+    "s": "peer-4",
+    "t": "proposal-3",
+    "label": "Enviar"
+   },
+   {
+    "id": "peer3-proposal1",
+    "s": "peer-3",
+    "t": "proposal-1",
+    "label": "Votar"
+   },
+   {
+    "id": "peer5-proposal2",
+    "s": "peer-5",
+    "t": "proposal-2",
+    "label": "Votar"
+   },
+   {
+    "id": "peer1-proposal3",
+    "s": "peer-1",
+    "t": "proposal-3",
+    "label": "Votar"
+   },
+   {
+    "id": "peer1-broadcast",
+    "s": "peer-1",
+    "t": "message-broadcast",
+    "label": ""
+   },
+   {
+    "id": "peer2-reputation",
+    "s": "peer-2",
+    "t": "reputation-system",
+    "label": ""
+   },
+   {
+    "id": "peer3-voting",
+    "s": "peer-3",
+    "t": "voting-mechanism",
+    "label": ""
+   },
+   {
+    "id": "peer5-consensus",
+    "s": "peer-5",
+    "t": "consensus-protocol",
+    "label": ""
+   },
+   {
+    "id": "broadcast-gossip",
+    "s": "message-broadcast",
+    "t": "gossip-protocol",
+    "label": ""
+   },
+   {
+    "id": "reputation-ledger",
+    "s": "reputation-system",
+    "t": "shared-ledger",
+    "label": ""
+   },
+   {
+    "id": "voting-conflict",
+    "s": "voting-mechanism",
+    "t": "conflict-resolution",
+    "label": ""
+   },
+   {
+    "id": "consensus-marketplace",
+    "s": "consensus-protocol",
+    "t": "task-marketplace",
+    "label": ""
+   },
+   {
+    "id": "gossip-swarm",
+    "s": "gossip-protocol",
+    "t": "swarm-intelligence",
+    "label": ""
+   },
+   {
+    "id": "ledger-organization",
+    "s": "shared-ledger",
+    "t": "self-organization",
+    "label": ""
+   },
+   {
+    "id": "marketplace-learning",
+    "s": "task-marketplace",
+    "t": "distributed-learning",
+    "label": ""
+   },
+   {
+    "id": "conflict-organization",
+    "s": "conflict-resolution",
+    "t": "self-organization",
+    "label": ""
+   },
+   {
+    "id": "swarm-review",
+    "s": "swarm-intelligence",
+    "t": "peer-review",
+    "label": ""
+   },
+   {
+    "id": "organization-trust",
+    "s": "self-organization",
+    "t": "trust-verification",
+    "label": ""
+   },
+   {
+    "id": "learning-metrics",
+    "s": "distributed-learning",
+    "t": "performance-metrics",
+    "label": ""
+   },
+   {
+    "id": "review-solution",
+    "s": "peer-review",
+    "t": "emergent-solution",
+    "label": ""
+   },
+   {
+    "id": "trust-solution",
+    "s": "trust-verification",
+    "t": "emergent-solution",
+    "label": ""
+   },
+   {
+    "id": "metrics-solution",
+    "s": "performance-metrics",
+    "t": "emergent-solution",
+    "label": ""
+   },
+   {
+    "id": "proposal3-solution",
+    "s": "proposal-3",
+    "t": "emergent-solution",
+    "label": "Aceptada"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Distribución del problema",
+    "description": "El problema se difunde por igual a todos los agentes pares",
+    "input": "",
+    "nodes": [
+     "distributed-problem",
+     "peer-1",
+     "peer-2",
+     "peer-3",
+     "peer-4",
+     "peer-5"
+    ],
+    "edges": [
+     "problem-peer1",
+     "problem-peer2",
+     "problem-peer3",
+     "problem-peer4",
+     "problem-peer5"
+    ]
+   },
+   {
+    "title": "Formación de la red de pares",
+    "description": "Los pares establecen conexiones de red en malla P2P",
+    "input": "",
+    "nodes": [
+     "peer-1",
+     "peer-2",
+     "peer-3",
+     "peer-4",
+     "peer-5"
+    ],
+    "edges": [
+     "peer1-peer2",
+     "peer1-peer3",
+     "peer1-peer4",
+     "peer2-peer3",
+     "peer2-peer4",
+     "peer2-peer5",
+     "peer3-peer4",
+     "peer3-peer5",
+     "peer4-peer5"
+    ]
+   },
+   {
+    "title": "Generación de propuestas",
+    "description": "Los pares generan propuestas de solución de forma independiente",
+    "input": "",
+    "nodes": [
+     "peer-1",
+     "peer-2",
+     "peer-4",
+     "proposal-1",
+     "proposal-2",
+     "proposal-3"
+    ],
+    "edges": [
+     "peer1-proposal1",
+     "peer2-proposal2",
+     "peer4-proposal3"
+    ]
+   },
+   {
+    "title": "Votación distribuida",
+    "description": "Los pares votan las propuestas sin autoridad central",
+    "input": "",
+    "nodes": [
+     "peer-1",
+     "peer-3",
+     "peer-5",
+     "proposal-1",
+     "proposal-2",
+     "proposal-3"
+    ],
+    "edges": [
+     "peer3-proposal1",
+     "peer5-proposal2",
+     "peer1-proposal3"
+    ]
+   },
+   {
+    "title": "Mecanismos descentralizados",
+    "description": "Se activan la comunicación P2P y los protocolos de consenso",
+    "input": "",
+    "nodes": [
+     "message-broadcast",
+     "reputation-system",
+     "voting-mechanism",
+     "consensus-protocol"
+    ],
+    "edges": [
+     "peer1-broadcast",
+     "peer2-reputation",
+     "peer3-voting",
+     "peer5-consensus"
+    ]
+   },
+   {
+    "title": "Funciones de colaboración",
+    "description": "Se habilitan el libro mayor compartido, el protocolo gossip y el mercado de tareas",
+    "input": "",
+    "nodes": [
+     "shared-ledger",
+     "gossip-protocol",
+     "conflict-resolution",
+     "task-marketplace"
+    ],
+    "edges": [
+     "broadcast-gossip",
+     "reputation-ledger",
+     "voting-conflict",
+     "consensus-marketplace"
+    ]
+   },
+   {
+    "title": "Comportamiento emergente",
+    "description": "Emergen la inteligencia de enjambre y la autoorganización",
+    "input": "",
+    "nodes": [
+     "swarm-intelligence",
+     "self-organization",
+     "distributed-learning"
+    ],
+    "edges": [
+     "gossip-swarm",
+     "ledger-organization",
+     "marketplace-learning",
+     "conflict-organization"
+    ]
+   },
+   {
+    "title": "Aseguramiento de calidad entre pares",
+    "description": "Los pares revisan y verifican el trabajo de los demás",
+    "input": "",
+    "nodes": [
+     "peer-review",
+     "trust-verification",
+     "performance-metrics"
+    ],
+    "edges": [
+     "swarm-review",
+     "organization-trust",
+     "learning-metrics"
+    ]
+   },
+   {
+    "title": "Logro del consenso",
+    "description": "La propuesta #3 alcanza el umbral de consenso",
+    "input": "",
+    "nodes": [
+     "proposal-3",
+     "consensus-protocol"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Surgimiento de la solución",
+    "description": "Una solución descentralizada surge de la colaboración entre pares",
+    "input": "",
+    "nodes": [
+     "emergent-solution",
+     "proposal-3",
+     "peer-review",
+     "trust-verification",
+     "performance-metrics"
+    ],
+    "edges": [
+     "proposal3-solution",
+     "review-solution",
+     "trust-solution",
+     "metrics-solution"
+    ]
+   }
+  ]
+ }
+}

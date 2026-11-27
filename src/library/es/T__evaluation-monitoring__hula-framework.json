@@ -1,0 +1,374 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "hula-framework",
+ "name": "Human-in-the-Loop Agent (HULA)(HULA)",
+ "icon": "🤝",
+ "complexity": "high",
+ "description": "Framework para la evaluación y el refinamiento con humano en el bucle de agentes basados en LLM, que permite a los ingenieros guiar y evaluar el desempeño del agente en cada etapa del desarrollo.",
+ "features": [
+  "Integración del feedback humano etapa por etapa",
+  "Guía y refinamiento del agente en tiempo real",
+  "Flujo de trabajo de desarrollo colaborativo",
+  "Evaluación del desempeño con supervisión humana",
+  "Validación del despliegue en producción",
+  "Ciclos de mejora continua"
+ ],
+ "tldr": {
+  "what": "Integra puntos de revisión y aprobación humana a lo largo de la ejecución del agente, lo que permite a los ingenieros redirigirlo antes de que se complete cada paso importante.",
+  "when": "Trabajo de alto riesgo donde los errores del agente son costosos, o etapas tempranas de desarrollo en las que necesitas orientar al agente hacia tu enfoque.",
+  "watchOut": "El cuello de botella humano destruye el rendimiento; los ciclos de feedback se vuelven la parte más lenta y anulan las ganancias de velocidad de la automatización."
+ },
+ "overview": {
+  "pattern": "Framework de colaboración de tres agentes con AI Planner, AI Coder y Human Agent para el desarrollo de software",
+  "why": "Mantiene el control humano mientras aprovecha la asistencia de la IA para resolver issues de JIRA y generar código",
+  "insight": "79% de éxito en planes, 59% de tasa de merge de PR: mantener a los ingenieros al volante permite una colaboración confiable con la IA",
+  "impl": [
+   {
+    "t": "Configuración",
+    "d": "Despliega los componentes AI Planner, AI Coding y Human Agent"
+   },
+   {
+    "t": "Planificar",
+    "d": "El AI Planner crea un plan de codificación a partir del issue de JIRA"
+   },
+   {
+    "t": "Revisar",
+    "d": "El agente humano revisa, refina y aprueba el plan"
+   },
+   {
+    "t": "Codificar",
+    "d": "El agente AI Coding genera código basado en el plan aprobado"
+   },
+   {
+    "t": "Validar",
+    "d": "El humano revisa el código, da feedback y aprueba el PR"
+   }
+  ],
+  "example": "hula_session = HULA(issue=jira_ticket, agents=[planner, coder, human], stages=[plan, code, review])",
+  "dos": [
+   "Mantén al ingeniero humano al volante durante todo el proceso de desarrollo",
+   "Usa una evaluación en tres etapas: offline, online y percepción de los profesionales",
+   "Incorpora el feedback de compiladores, linters y herramientas de validación",
+   "Revisa y refina los planes antes de pasar a la etapa de codificación",
+   "Despliega en un entorno real de JIRA para una evaluación auténtica"
+  ],
+  "donts": [
+   "Permitir una operación totalmente autónoma sin supervisión humana",
+   "Omitir la etapa de aprobación del plan: la validación humana es crítica",
+   "Ignorar el feedback del compilador/linter en el ciclo de generación de código",
+   "Esperar 100% de automatización: el objetivo es la colaboración humana",
+   "Desplegar sin un framework de evaluación adecuado en tres etapas"
+  ],
+  "use": [
+   "Equipos de desarrollo de software que necesitan asistencia de IA",
+   "Flujos de trabajo de desarrollo y seguimiento de issues basados en JIRA",
+   "Organizaciones que quieren codificación con IA controlada por humanos",
+   "Equipos que requieren aseguramiento y supervisión de la calidad del código",
+   "Entornos empresariales con procesos de revisión establecidos"
+  ],
+  "avoid": [
+   "Requisitos de codificación totalmente autónoma",
+   "Scripts simples o tareas de codificación únicas",
+   "Equipos sin sistemas estructurados de seguimiento de issues",
+   "Proyectos que requieren despliegue inmediato del código",
+   "Entornos sin capacidad de revisión humana"
+  ],
+  "metrics": [
+   {
+    "n": "Éxito en la generación de planes",
+    "d": "El 79% de los elementos de trabajo reciben planes de codificación exitosos"
+   },
+   {
+    "n": "Tasa de aprobación de planes",
+    "d": "El 82% de los planes generados son aprobados por los ingenieros"
+   },
+   {
+    "n": "Éxito en la generación de código",
+    "d": "El 87% de los planes aprobados resultan en código generado"
+   },
+   {
+    "n": "Tasa de pull requests",
+    "d": "El 25% del código generado llega a la etapa de pull request"
+   },
+   {
+    "n": "Tasa de merge exitoso",
+    "d": "El 59% de los PR de HULA se integran en los repositorios"
+   },
+   {
+    "n": "Desempeño en SWE-bench",
+    "d": "Tasa de resolución del 37.2% en SWE-bench Verified"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Desarrollo de software empresarial",
+    "d": "Despliegue en Atlassian con 45 ingenieros, ~900 PR integrados"
+   },
+   {
+    "n": "Resolución de issues de JIRA",
+    "d": "Generación automatizada de planes y desarrollo de código para el seguimiento de elementos de trabajo"
+   },
+   {
+    "n": "Codificación colaborativa con IA",
+    "d": "Desarrollo guiado por humanos que mantiene el control y la supervisión del ingeniero"
+   },
+   {
+    "n": "Flujos de trabajo de aseguramiento de la calidad",
+    "d": "Feedback integrado de compilador/linter con procesos de revisión humana"
+   },
+   {
+    "n": "Investigación y desarrollo",
+    "d": "Colaboración entre academia e industria para la ingeniería de software humano-IA"
+   }
+  ]
+ },
+ "flow": {
+  "title": "HULA: patrón de agente con humano en el bucle",
+  "description": "Framework de IA colaborativa de Atlassian que integra la supervisión humana con agentes de desarrollo de software basados en LLM, y que logró más de 900 pull requests integrados mediante una colaboración estratégica entre humanos e IA",
+  "nodes": [
+   {
+    "id": "automation-challenge",
+    "label": "🤖 Desafío de automatización del desarrollo de software\n\"¿Cómo automatizar tareas de codificación\nmanteniendo el control humano y el aseguramiento\nde la calidad en flujos de desarrollo complejos?\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "pure-automation-approach",
+    "label": "❌ Enfoque de automatización pura\n\"Agentes de codificación totalmente autónomos:\n• Sin supervisión humana\n• Problemas de control de calidad\n• Brechas de confianza y rendición de cuentas\"",
+    "x": 150,
+    "y": 200,
+    "w": 240
+   },
+   {
+    "id": "hula-framework",
+    "label": "🤝 Framework colaborativo HULA\n\"Agentes LLM con humano en el bucle:\n• Guía humana estratégica\n• Checkpoints de aseguramiento de la calidad\n• El ingeniero sigue al volante\"",
+    "x": 650,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "three-agent-architecture",
+    "label": "🏗️ Arquitectura de tres agentes\n\"Sistema de agentes colaborativo:\n• Agente AI Planner\n• Agente AI Coding\n• Agente humano (ingeniero)\"",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "ai-planner-agent",
+    "label": "📋 Agente AI Planner\n\"Planificación estratégica:\n• Analiza elementos de trabajo de Jira\n• Identifica archivos relevantes\n• Crea planes de codificación\"",
+    "x": 450,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "human-agent-engineer",
+    "label": "👨‍💻 Agente humano (ingeniero)\n\"Control de calidad y guía:\n• Revisa y refina los planes\n• Da feedback estratégico\n• Mantiene el control de supervisión\"",
+    "x": 650,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "ai-coding-agent",
+    "label": "💻 Agente AI Coding\n\"Implementación del código:\n• Genera código fuente\n• Incorpora el feedback\n• Crea pull requests\"",
+    "x": 850,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "four-stage-workflow",
+    "label": "⚙️ Flujo de trabajo colaborativo de cuatro etapas\n\"1. Definir el contexto (el ingeniero elige la tarea)\n2. Generar el plan (IA + revisión humana)\n3. Generar el código (IA + feedback)\n4. Abrir el PR (aprobación humana)\"",
+    "x": 400,
+    "y": 650,
+    "w": 300
+   },
+   {
+    "id": "production-results",
+    "label": "📊 Resultados del despliegue en producción\n\"Más de 900 pull requests integrados\n79% de éxito en la generación de planes\n82% de tasa de aprobación de planes\n59% de tasa de merge de PR\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "quality-metrics",
+    "label": "🎯 Métricas de calidad y desempeño\n\"31% de tasa de aprobación de pruebas en SWE-bench\n45% muy similar al código humano\n61% de calificación de comprensibilidad del código\nMenor tiempo de desarrollo\"",
+    "x": 600,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "collaborative-principle",
+    "label": "🎯 Principio de colaboración humano-IA\n\"La asistencia óptima de la IA equilibra la automatización con la supervisión humana\nLos checkpoints estratégicos aseguran la calidad y reducen el esfuerzo rutinario\nEl humano mantiene el control, la IA amplifica las capacidades\"",
+    "x": 400,
+    "y": 950,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "automation-challenge",
+    "t": "pure-automation-approach",
+    "label": "enfoque de automatización total"
+   },
+   {
+    "id": "e2",
+    "s": "automation-challenge",
+    "t": "hula-framework",
+    "label": "enfoque colaborativo"
+   },
+   {
+    "id": "e3",
+    "s": "hula-framework",
+    "t": "three-agent-architecture",
+    "label": "implementa la arquitectura"
+   },
+   {
+    "id": "e4",
+    "s": "three-agent-architecture",
+    "t": "ai-planner-agent",
+    "label": "incluye al planificador"
+   },
+   {
+    "id": "e5",
+    "s": "three-agent-architecture",
+    "t": "human-agent-engineer",
+    "label": "incluye al humano"
+   },
+   {
+    "id": "e6",
+    "s": "three-agent-architecture",
+    "t": "ai-coding-agent",
+    "label": "incluye al codificador"
+   },
+   {
+    "id": "e7",
+    "s": "ai-planner-agent",
+    "t": "four-stage-workflow",
+    "label": "planifica en el flujo"
+   },
+   {
+    "id": "e8",
+    "s": "human-agent-engineer",
+    "t": "four-stage-workflow",
+    "label": "guía el flujo"
+   },
+   {
+    "id": "e9",
+    "s": "ai-coding-agent",
+    "t": "four-stage-workflow",
+    "label": "codifica en el flujo"
+   },
+   {
+    "id": "e10",
+    "s": "four-stage-workflow",
+    "t": "production-results",
+    "label": "produce resultados"
+   },
+   {
+    "id": "e11",
+    "s": "four-stage-workflow",
+    "t": "quality-metrics",
+    "label": "logra calidad"
+   },
+   {
+    "id": "e12",
+    "s": "production-results",
+    "t": "collaborative-principle",
+    "label": "demuestra efectividad"
+   },
+   {
+    "id": "e13",
+    "s": "quality-metrics",
+    "t": "collaborative-principle",
+    "label": "valida el enfoque"
+   },
+   {
+    "id": "e14",
+    "s": "pure-automation-approach",
+    "t": "collaborative-principle",
+    "label": "demuestra la necesidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de automatización del desarrollo de software",
+    "description": "¿Cómo podemos automatizar tareas de codificación repetitivas manteniendo el control humano, el aseguramiento de la calidad y la rendición de cuentas en flujos de desarrollo de software complejos?",
+    "input": "",
+    "nodes": [
+     "automation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Dos enfoques de automatización: puro vs. colaborativo",
+    "description": "La automatización pura carece de supervisión humana y genera problemas de calidad y confianza, mientras que el framework colaborativo de HULA mantiene a los ingenieros al volante con asistencia estratégica de la IA.",
+    "input": "",
+    "nodes": [
+     "pure-automation-approach",
+     "hula-framework"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Arquitectura colaborativa de tres agentes",
+    "description": "HULA implementa un sistema colaborativo: agente AI Planner (analiza tareas, crea planes), agente humano/ingeniero (revisa, guía, controla) y agente AI Coding (implementa el código, crea PR).",
+    "input": "",
+    "nodes": [
+     "three-agent-architecture",
+     "ai-planner-agent",
+     "human-agent-engineer",
+     "ai-coding-agent"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Flujo de trabajo colaborativo de cuatro etapas",
+    "description": "Los agentes colaboran mediante un flujo de trabajo estructurado: 1) definir el contexto (el ingeniero elige la tarea), 2) generar el plan (IA + revisión humana), 3) generar el código (IA + feedback), 4) abrir el PR (aprobación humana).",
+    "input": "",
+    "nodes": [
+     "four-stage-workflow"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Resultados en producción y métricas de calidad",
+    "description": "HULA logró más de 900 PR integrados con 79% de éxito en la generación de planes, 82% de tasa de aprobación, 59% de tasa de merge, 31% de tasa de aprobación en SWE-bench y 45% de código muy similar al humano.",
+    "input": "",
+    "nodes": [
+     "production-results",
+     "quality-metrics"
+    ],
+    "edges": [
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Principio de colaboración humano-IA",
+    "description": "La asistencia óptima de la IA equilibra la automatización con checkpoints estratégicos de supervisión humana, reduce el esfuerzo rutinario y mantiene el control de calidad, lo que demuestra que los humanos conservan el control mientras la IA amplifica las capacidades.",
+    "input": "",
+    "nodes": [
+     "collaborative-principle"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

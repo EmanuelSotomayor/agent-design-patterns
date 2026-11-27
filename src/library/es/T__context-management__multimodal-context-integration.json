@@ -1,0 +1,295 @@
+{
+ "cat": "context-management",
+ "slug": "multimodal-context-integration",
+ "name": "Multimodal Context Integration(MCI)",
+ "icon": "🎭",
+ "complexity": "high",
+ "description": "Integración y procesamiento fluidos de texto, imágenes, audio y datos estructurados dentro de frameworks de contexto unificados",
+ "features": [
+  "Alineación de contexto entre modalidades",
+  "Espacios de representación unificados",
+  "Optimización específica por modalidad",
+  "Construcción de puentes semánticos",
+  "Sincronización temporal",
+  "Ponderación de modalidades según su calidad"
+ ],
+ "tldr": {
+  "what": "Combina texto, imágenes, audio y datos estructurados en un único espacio de contexto, ponderando cada modalidad según su relevancia y calidad.",
+  "when": "Problemas que requieren analizar simultáneamente varios tipos de datos, donde cada modalidad aporta un valor distinto para el diagnóstico o la toma de decisiones.",
+  "watchOut": "Las marcas de tiempo desalineadas o las brechas de calidad entre modalidades generan correlaciones falsas y degradan la precisión más rápido que los errores de una sola modalidad."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Integración de contexto multimodal",
+  "description": "Integra y procesa de forma fluida múltiples modalidades de datos (texto, imágenes, audio, video) dentro de un framework contextual unificado para mejorar el razonamiento de la IA y la generación de respuestas.",
+  "nodes": [
+   {
+    "id": "input-processor",
+    "label": "Procesador de entradas multimodales",
+    "x": 50,
+    "y": 100,
+    "w": 180
+   },
+   {
+    "id": "text-analyzer",
+    "label": "Motor de análisis de texto",
+    "x": 250,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "vision-analyzer",
+    "label": "Motor de análisis visual",
+    "x": 250,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "audio-analyzer",
+    "label": "Motor de análisis de audio",
+    "x": 250,
+    "y": 190,
+    "w": 180
+   },
+   {
+    "id": "alignment-engine",
+    "label": "Alineación entre modalidades",
+    "x": 450,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "fusion-processor",
+    "label": "Motor de fusión de contexto",
+    "x": 650,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "context-integrator",
+    "label": "Integrador de contexto",
+    "x": 850,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "task-analyzer",
+    "label": "Analizador de requisitos de la tarea",
+    "x": 850,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "attention-module",
+    "label": "Atención multimodal",
+    "x": 1050,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "reasoning-engine",
+    "label": "Razonamiento entre modalidades",
+    "x": 1250,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "inference-generator",
+    "label": "Generador de inferencias",
+    "x": 1450,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "response-synthesizer",
+    "label": "Sintetizador de respuestas",
+    "x": 1650,
+    "y": 120,
+    "w": 180
+   },
+   {
+    "id": "multimodal-output",
+    "label": "Salida multimodal",
+    "x": 1850,
+    "y": 120,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-to-text",
+    "s": "input-processor",
+    "t": "text-analyzer",
+    "label": "datos de texto"
+   },
+   {
+    "id": "input-to-vision",
+    "s": "input-processor",
+    "t": "vision-analyzer",
+    "label": "datos visuales"
+   },
+   {
+    "id": "input-to-audio",
+    "s": "input-processor",
+    "t": "audio-analyzer",
+    "label": "datos de audio"
+   },
+   {
+    "id": "text-to-alignment",
+    "s": "text-analyzer",
+    "t": "alignment-engine",
+    "label": "características de texto"
+   },
+   {
+    "id": "vision-to-alignment",
+    "s": "vision-analyzer",
+    "t": "alignment-engine",
+    "label": "características visuales"
+   },
+   {
+    "id": "audio-to-alignment",
+    "s": "audio-analyzer",
+    "t": "alignment-engine",
+    "label": "características de audio"
+   },
+   {
+    "id": "alignment-to-fusion",
+    "s": "alignment-engine",
+    "t": "fusion-processor",
+    "label": "embeddings alineados"
+   },
+   {
+    "id": "fusion-to-context",
+    "s": "fusion-processor",
+    "t": "context-integrator",
+    "label": "contexto fusionado"
+   },
+   {
+    "id": "context-to-attention",
+    "s": "context-integrator",
+    "t": "attention-module",
+    "label": "vector de contexto"
+   },
+   {
+    "id": "task-to-attention",
+    "s": "task-analyzer",
+    "t": "attention-module",
+    "label": "requisitos de la tarea"
+   },
+   {
+    "id": "attention-to-reasoning",
+    "s": "attention-module",
+    "t": "reasoning-engine",
+    "label": "representación ponderada"
+   },
+   {
+    "id": "reasoning-to-inference",
+    "s": "reasoning-engine",
+    "t": "inference-generator",
+    "label": "resultados del razonamiento"
+   },
+   {
+    "id": "inference-to-synthesizer",
+    "s": "inference-generator",
+    "t": "response-synthesizer",
+    "label": "inferencias"
+   },
+   {
+    "id": "synthesizer-to-output",
+    "s": "response-synthesizer",
+    "t": "multimodal-output",
+    "label": "respuesta sintetizada"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis de entradas multimodales",
+    "description": "El sistema recibe y analiza entradas de múltiples modalidades",
+    "input": "Consulta de texto + Imagen + Clip de audio",
+    "nodes": [
+     "input-processor",
+     "text-analyzer",
+     "vision-analyzer",
+     "audio-analyzer"
+    ],
+    "edges": [
+     "input-to-text",
+     "input-to-vision",
+     "input-to-audio"
+    ]
+   },
+   {
+    "title": "Alineación semántica entre modalidades",
+    "description": "Alinea los conceptos semánticos de distintas modalidades usando un espacio de embeddings compartido",
+    "input": "Características de cada modalidad",
+    "nodes": [
+     "text-analyzer",
+     "vision-analyzer",
+     "audio-analyzer",
+     "alignment-engine"
+    ],
+    "edges": [
+     "text-to-alignment",
+     "vision-to-alignment",
+     "audio-to-alignment"
+    ]
+   },
+   {
+    "title": "Fusión e integración del contexto",
+    "description": "Fusiona las características alineadas de cada modalidad en una representación contextual unificada",
+    "input": "Embeddings multimodales alineados",
+    "nodes": [
+     "alignment-engine",
+     "fusion-processor",
+     "context-integrator"
+    ],
+    "edges": [
+     "alignment-to-fusion",
+     "fusion-to-context"
+    ]
+   },
+   {
+    "title": "Ponderación con atención multimodal",
+    "description": "Aplica mecanismos de atención para ponderar la importancia de cada modalidad en la tarea actual",
+    "input": "Contexto fusionado + Requisitos de la tarea",
+    "nodes": [
+     "context-integrator",
+     "attention-module",
+     "task-analyzer"
+    ],
+    "edges": [
+     "context-to-attention",
+     "task-to-attention"
+    ]
+   },
+   {
+    "title": "Razonamiento entre modalidades",
+    "description": "Realiza un razonamiento que aprovecha simultáneamente la información de múltiples modalidades",
+    "input": "Representación multimodal ponderada",
+    "nodes": [
+     "attention-module",
+     "reasoning-engine",
+     "inference-generator"
+    ],
+    "edges": [
+     "attention-to-reasoning",
+     "reasoning-to-inference"
+    ]
+   },
+   {
+    "title": "Generación de respuestas multimodales",
+    "description": "Genera respuestas que pueden incluir múltiples modalidades de salida según el contexto",
+    "input": "Inferencias entre modalidades + Requisitos de salida",
+    "nodes": [
+     "inference-generator",
+     "response-synthesizer",
+     "multimodal-output"
+    ],
+    "edges": [
+     "inference-to-synthesizer",
+     "synthesizer-to-output"
+    ]
+   }
+  ]
+ }
+}

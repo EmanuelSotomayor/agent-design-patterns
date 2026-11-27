@@ -1,0 +1,297 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "chain-of-verification",
+ "name": "Chain of Verification (CoVe)(CoVe)",
+ "icon": "🔎",
+ "complexity": "medium",
+ "description": "Reduce las alucinaciones redactando una respuesta base, planificando un conjunto de preguntas de verificación sobre ella, respondiendo cada una de esas preguntas de forma independiente para que las verificaciones no estén sesgadas por el borrador, y luego revisando la respuesta final usando solo los hechos verificados. La verificación factorizada, en la que las verificaciones se ejecutan en contextos separados, supera a dejar que el modelo vuelva a revisar su propio borrador, lo que tiende a repetir sus propios errores.",
+ "features": [
+  "Genera primero un borrador de respuesta base",
+  "Planifica preguntas de verificación específicas sobre el borrador",
+  "Responde cada pregunta de verificación de forma independiente del borrador",
+  "La ejecución factorizada evita que el borrador sesgue sus propias verificaciones",
+  "Revisa la respuesta final para eliminar las afirmaciones no verificadas",
+  "Reduce las alucinaciones en tareas factuales basadas en listas y sin acceso a fuentes externas"
+ ],
+ "tldr": {
+  "what": "Redacta una respuesta, genera preguntas de verificación sobre ella, responde cada pregunta de forma independiente sin ver el borrador y luego revisa usando solo los hechos verificados.",
+  "when": "Tareas factuales propensas a alucinaciones donde puedes descomponer las afirmaciones en preguntas verificables y tolerar una sobrecarga moderada de latencia.",
+  "watchOut": "Las preguntas de verificación heredan los errores del borrador si están mal diseñadas; responderlas de forma independiente multiplica por 2-3x el costo y la latencia."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Chain of Verification (CoVe)",
+  "description": "Redacta una respuesta, planifica preguntas de verificación, responde cada una de forma independiente para que las verificaciones no estén sesgadas por el borrador y luego revisa. La verificación factorizada en contextos separados expone alucinaciones que el borrador, de otro modo, confirmaría.",
+  "nodes": [
+   {
+    "id": "query",
+    "label": "❓ Consulta\n\"Nombra algunos políticos que\nnacieron en la ciudad de Nueva York.\"",
+    "x": 320,
+    "y": 40,
+    "w": 320
+   },
+   {
+    "id": "draft-agent",
+    "label": "✍️ Generador del borrador base\nResponde directamente, sin verificar",
+    "x": 350,
+    "y": 160,
+    "w": 260
+   },
+   {
+    "id": "draft-list",
+    "label": "📄 Borrador de respuesta (2 errores ocultos)\n1. Donald Trump\n2. Theodore Roosevelt\n3. Hillary Clinton\n4. Franklin D. Roosevelt",
+    "x": 320,
+    "y": 270,
+    "w": 320
+   },
+   {
+    "id": "plan-verify",
+    "label": "📋 Planificar preguntas de verificación\nUna verificación específica por entidad",
+    "x": 340,
+    "y": 410,
+    "w": 280
+   },
+   {
+    "id": "independence-note",
+    "label": "🚧 Ejecución factorizada\nCada pregunta se responde en un contexto\naislado; se oculta el borrador para evitar sesgos",
+    "x": 650,
+    "y": 410,
+    "w": 250
+   },
+   {
+    "id": "q1",
+    "label": "🔎 P1: ¿Dónde nació Trump?\n-> Queens, NYC\n✅ consistente",
+    "x": 0,
+    "y": 530,
+    "w": 190
+   },
+   {
+    "id": "q2",
+    "label": "🔎 P2: ¿Dónde nació T. Roosevelt?\n-> Manhattan, NYC\n✅ consistente",
+    "x": 210,
+    "y": 530,
+    "w": 190
+   },
+   {
+    "id": "q3",
+    "label": "🔎 P3: ¿Dónde nació Hillary Clinton?\n-> Chicago, Illinois\n❌ inconsistente",
+    "x": 430,
+    "y": 530,
+    "w": 190
+   },
+   {
+    "id": "q4",
+    "label": "🔎 P4: ¿Dónde nació F.D. Roosevelt?\n-> Hyde Park, NY (no NYC)\n❌ inconsistente",
+    "x": 650,
+    "y": 530,
+    "w": 200
+   },
+   {
+    "id": "revise",
+    "label": "♻️ Revisar la respuesta\nEliminar las entradas que no pasaron la verificación",
+    "x": 330,
+    "y": 660,
+    "w": 270
+   },
+   {
+    "id": "final",
+    "label": "✨ Respuesta verificada\n1. Donald Trump (Queens)\n2. Theodore Roosevelt (Manhattan)",
+    "x": 310,
+    "y": 770,
+    "w": 340
+   },
+   {
+    "id": "result-note",
+    "label": "📉 Efecto neto\n2 entradas inventadas eliminadas;\nlas verificaciones factorizadas superan a la autoverificación",
+    "x": 680,
+    "y": 700,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-query-draft",
+    "s": "query",
+    "t": "draft-agent",
+    "label": ""
+   },
+   {
+    "id": "e-draft-list",
+    "s": "draft-agent",
+    "t": "draft-list",
+    "label": "borrador"
+   },
+   {
+    "id": "e-list-plan",
+    "s": "draft-list",
+    "t": "plan-verify",
+    "label": "planificar verificaciones"
+   },
+   {
+    "id": "e-plan-independence",
+    "s": "plan-verify",
+    "t": "independence-note",
+    "label": ""
+   },
+   {
+    "id": "e-plan-q1",
+    "s": "plan-verify",
+    "t": "q1",
+    "label": ""
+   },
+   {
+    "id": "e-plan-q2",
+    "s": "plan-verify",
+    "t": "q2",
+    "label": ""
+   },
+   {
+    "id": "e-plan-q3",
+    "s": "plan-verify",
+    "t": "q3",
+    "label": ""
+   },
+   {
+    "id": "e-plan-q4",
+    "s": "plan-verify",
+    "t": "q4",
+    "label": ""
+   },
+   {
+    "id": "e-q1-revise",
+    "s": "q1",
+    "t": "revise",
+    "label": ""
+   },
+   {
+    "id": "e-q2-revise",
+    "s": "q2",
+    "t": "revise",
+    "label": ""
+   },
+   {
+    "id": "e-q3-revise",
+    "s": "q3",
+    "t": "revise",
+    "label": "eliminar"
+   },
+   {
+    "id": "e-q4-revise",
+    "s": "q4",
+    "t": "revise",
+    "label": "eliminar"
+   },
+   {
+    "id": "e-revise-final",
+    "s": "revise",
+    "t": "final",
+    "label": ""
+   },
+   {
+    "id": "e-final-result",
+    "s": "final",
+    "t": "result-note",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta recibida",
+    "description": "Se plantea una consulta factual tipo lista, el tipo de tarea en la que los modelos de lenguaje suelen alucinar entradas plausibles pero incorrectas.",
+    "input": "",
+    "nodes": [
+     "query"
+    ],
+    "edges": [
+     "e-query-draft"
+    ]
+   },
+   {
+    "title": "Redactar una respuesta base",
+    "description": "El modelo responde directamente. El borrador parece seguro, pero oculta 2 errores: Hillary Clinton (nacida en Chicago) y Franklin D. Roosevelt (nacido en Hyde Park, no en NYC).",
+    "input": "",
+    "nodes": [
+     "draft-agent",
+     "draft-list"
+    ],
+    "edges": [
+     "e-draft-list"
+    ]
+   },
+   {
+    "title": "Planificar preguntas de verificación",
+    "description": "En lugar de confiar en el borrador, el modelo planifica una pregunta de verificación enfocada por entidad: ¿dónde nació realmente cada persona?",
+    "input": "",
+    "nodes": [
+     "draft-list",
+     "plan-verify"
+    ],
+    "edges": [
+     "e-list-plan"
+    ]
+   },
+   {
+    "title": "Verificar cada hecho de forma independiente",
+    "description": "Cada pregunta se responde en su propio contexto aislado, sin acceso al borrador. Esta ejecución factorizada es la idea clave: el borrador no puede sesgar sus propias verificaciones para que confirmen sus errores.",
+    "input": "",
+    "nodes": [
+     "plan-verify",
+     "independence-note",
+     "q1",
+     "q2",
+     "q3",
+     "q4"
+    ],
+    "edges": [
+     "e-plan-independence",
+     "e-plan-q1",
+     "e-plan-q2",
+     "e-plan-q3",
+     "e-plan-q4"
+    ]
+   },
+   {
+    "title": "Exponer las inconsistencias",
+    "description": "P1 y P2 confirman a Trump (Queens) y a Theodore Roosevelt (Manhattan). P3 y P4 devuelven lugares de nacimiento que contradicen el borrador, señalando las dos alucinaciones.",
+    "input": "",
+    "nodes": [
+     "q3",
+     "q4"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Revisar la respuesta final",
+    "description": "El modelo reconstruye la respuesta usando solo las entradas cuya verificación fue consistente, eliminando los dos nombres contradichos.",
+    "input": "",
+    "nodes": [
+     "q1",
+     "q2",
+     "q3",
+     "q4",
+     "revise"
+    ],
+    "edges": [
+     "e-q1-revise",
+     "e-q2-revise",
+     "e-q3-revise",
+     "e-q4-revise"
+    ]
+   },
+   {
+    "title": "Salida verificada",
+    "description": "La lista revisada contiene solo políticos verificados. La verificación factorizada elimina 2 entradas inventadas y supera a dejar que el modelo vuelva a revisar su propio borrador en una sola pasada.",
+    "input": "",
+    "nodes": [
+     "revise",
+     "final",
+     "result-note"
+    ],
+    "edges": [
+     "e-revise-final",
+     "e-final-result"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,355 @@
+{
+ "cat": "prioritization",
+ "slug": "priority-queues",
+ "name": "Dynamic Priority Queue Systems(DPQS)",
+ "icon": "📊",
+ "complexity": "medium",
+ "description": "Gestión inteligente de colas con ajuste dinámico de prioridades según condiciones cambiantes",
+ "features": [
+  "Cálculo dinámico de prioridades",
+  "Mecanismos de envejecimiento",
+  "Programación consciente de los SLA",
+  "Balanceo de carga",
+  "Algoritmos de equidad",
+  "Optimización en tiempo real"
+ ],
+ "tldr": {
+  "what": "Ajusta la prioridad de las tareas en tiempo real usando fórmulas que combinan urgencia, nivel del usuario, tiempo de espera y costo de recursos, y reordena la cola dinámicamente.",
+  "when": "Muchas tareas compitiendo con distintos plazos y costos de recursos, donde la prioridad estática falla y la equidad entre grupos de usuarios importa.",
+  "watchOut": "Las inversiones de prioridad y la inanición ocurren cuando las bonificaciones por envejecimiento o las fórmulas no impiden que las tareas de baja prioridad bloqueen indefinidamente el trabajo de alto valor."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Dynamic Priority Queue Systems",
+  "description": "Un agente programador ordena trabajos de entrenamiento de ML en un clúster compartido de 50 GPU. Calcula una prioridad dinámica por trabajo (Priority = Base × Tier × Urgency + Aging − Cost), aplica envejecimiento para que los trabajos de baja prioridad nunca sufran inanición y respeta los niveles de SLA con preempción para el trabajo crítico.",
+  "nodes": [
+   {
+    "id": "incoming-jobs",
+    "label": "📥 Trabajos entrantes\nMás de 500 trabajos de entrenamiento de ML/día, clúster de 50 GPU",
+    "x": 350,
+    "y": 40,
+    "w": 310
+   },
+   {
+    "id": "scheduler-agent",
+    "label": "🤖 Agente programador\nCalcula la prioridad y ordena la cola",
+    "x": 365,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "priority-calculator",
+    "label": "🧮 Calculadora de prioridad\nBase × Tier × Urgency + Aging − Cost",
+    "x": 90,
+    "y": 270,
+    "w": 240
+   },
+   {
+    "id": "aging-mechanism",
+    "label": "⏳ Mecanismo de envejecimiento\n+0.1/hora en cola, con tope de +2.0",
+    "x": 370,
+    "y": 270,
+    "w": 210
+   },
+   {
+    "id": "sla-monitor",
+    "label": "⏱️ Monitor de SLA\nCrítico 1h / Producto 4h / Investigación 24h",
+    "x": 630,
+    "y": 270,
+    "w": 230
+   },
+   {
+    "id": "job-b",
+    "label": "🎫 Trabajo B: Actualización del modelo de producción\nBase 8 × Tier 1.3 × Urg 1.5 + 0.05 − 1.0\nPrioridad: 14.65",
+    "x": 40,
+    "y": 400,
+    "w": 230
+   },
+   {
+    "id": "job-a",
+    "label": "🎫 Trabajo A: Experimento de investigación\nBase 5 × Tier 1.0 × Urg 1.0 + 0.3\nPrioridad: 5.30",
+    "x": 330,
+    "y": 400,
+    "w": 230
+   },
+   {
+    "id": "job-c",
+    "label": "🎫 Trabajo C: Ejecución de tesis estudiantil\nBase 2 × Tier 0.7 × Urg 0.8 + 1.2 de envejecimiento\nPrioridad: 2.32 (riesgo de inanición)",
+    "x": 620,
+    "y": 400,
+    "w": 230
+   },
+   {
+    "id": "starvation-guard",
+    "label": "🛡️ Protección contra inanición\nImpulsa los trabajos que esperan > 12h mediante envejecimiento",
+    "x": 640,
+    "y": 540,
+    "w": 230
+   },
+   {
+    "id": "priority-queue",
+    "label": "📊 Cola de prioridad\nOrden: B 14.65 > A 5.30 > C 2.32",
+    "x": 320,
+    "y": 540,
+    "w": 240
+   },
+   {
+    "id": "preemption-handler",
+    "label": "⚡ Manejador de preempción\nLos trabajos críticos desplazan a otros + checkpoint",
+    "x": 30,
+    "y": 540,
+    "w": 210
+   },
+   {
+    "id": "gpu-dispatcher",
+    "label": "🎛️ Despachador de GPU\nProgramación gang + backfill",
+    "x": 340,
+    "y": 660,
+    "w": 220
+   },
+   {
+    "id": "gpu-pool",
+    "label": "🖥️ Pool de GPU\n50 clústeres, 94% de utilización",
+    "x": 130,
+    "y": 770,
+    "w": 220
+   },
+   {
+    "id": "metrics",
+    "label": "📈 Métricas\nSLA 99.2%, espera 2.3h, equidad 0.87",
+    "x": 560,
+    "y": 770,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "jobs-agent",
+    "s": "incoming-jobs",
+    "t": "scheduler-agent",
+    "label": ""
+   },
+   {
+    "id": "agent-calculator",
+    "s": "scheduler-agent",
+    "t": "priority-calculator",
+    "label": ""
+   },
+   {
+    "id": "agent-aging",
+    "s": "scheduler-agent",
+    "t": "aging-mechanism",
+    "label": ""
+   },
+   {
+    "id": "agent-sla",
+    "s": "scheduler-agent",
+    "t": "sla-monitor",
+    "label": ""
+   },
+   {
+    "id": "calculator-job-b",
+    "s": "priority-calculator",
+    "t": "job-b",
+    "label": "puntuar"
+   },
+   {
+    "id": "calculator-job-a",
+    "s": "priority-calculator",
+    "t": "job-a",
+    "label": "puntuar"
+   },
+   {
+    "id": "calculator-job-c",
+    "s": "priority-calculator",
+    "t": "job-c",
+    "label": "puntuar"
+   },
+   {
+    "id": "aging-job-c",
+    "s": "aging-mechanism",
+    "t": "job-c",
+    "label": "+1.2 de envejecimiento"
+   },
+   {
+    "id": "sla-guard",
+    "s": "sla-monitor",
+    "t": "starvation-guard",
+    "label": ""
+   },
+   {
+    "id": "guard-queue",
+    "s": "starvation-guard",
+    "t": "priority-queue",
+    "label": "impulso"
+   },
+   {
+    "id": "job-b-queue",
+    "s": "job-b",
+    "t": "priority-queue",
+    "label": ""
+   },
+   {
+    "id": "job-a-queue",
+    "s": "job-a",
+    "t": "priority-queue",
+    "label": ""
+   },
+   {
+    "id": "job-c-queue",
+    "s": "job-c",
+    "t": "priority-queue",
+    "label": ""
+   },
+   {
+    "id": "preemption-queue",
+    "s": "preemption-handler",
+    "t": "priority-queue",
+    "label": "preempción"
+   },
+   {
+    "id": "queue-dispatcher",
+    "s": "priority-queue",
+    "t": "gpu-dispatcher",
+    "label": ""
+   },
+   {
+    "id": "dispatcher-pool",
+    "s": "gpu-dispatcher",
+    "t": "gpu-pool",
+    "label": ""
+   },
+   {
+    "id": "dispatcher-metrics",
+    "s": "gpu-dispatcher",
+    "t": "metrics",
+    "label": ""
+   },
+   {
+    "id": "metrics-agent",
+    "s": "metrics",
+    "t": "scheduler-agent",
+    "label": "recalcular 15m"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de trabajos",
+    "description": "El agente programador recibe nuevos trabajos de entrenamiento que compiten por un clúster compartido de 50 GPU que maneja más de 500 trabajos al día.",
+    "input": "",
+    "nodes": [
+     "incoming-jobs",
+     "scheduler-agent"
+    ],
+    "edges": [
+     "jobs-agent"
+    ]
+   },
+   {
+    "title": "Configurar el mecanismo de prioridades",
+    "description": "El agente conecta tres entradas: una calculadora de prioridad (Base × Tier × Urgency + Aging − Cost), un mecanismo de envejecimiento y un monitor de SLA con niveles de 1h/4h/24h.",
+    "input": "",
+    "nodes": [
+     "scheduler-agent",
+     "priority-calculator",
+     "aging-mechanism",
+     "sla-monitor"
+    ],
+    "edges": [
+     "agent-calculator",
+     "agent-aging",
+     "agent-sla"
+    ]
+   },
+   {
+    "title": "Puntuar cada trabajo",
+    "description": "La calculadora produce una prioridad dinámica por trabajo: actualización de producción del Trabajo B 14.65, experimento de investigación del Trabajo A 5.30, ejecución estudiantil del Trabajo C 2.32.",
+    "input": "",
+    "nodes": [
+     "priority-calculator",
+     "job-b",
+     "job-a",
+     "job-c"
+    ],
+    "edges": [
+     "calculator-job-b",
+     "calculator-job-a",
+     "calculator-job-c"
+    ]
+   },
+   {
+    "title": "Aplicar envejecimiento y protección contra inanición",
+    "description": "El Trabajo C lleva 12 horas esperando y, de otro modo, sufriría inanición. El mecanismo de envejecimiento suma +1.2 y la protección contra inanición lo sigue haciendo subir para que no se omita perpetuamente.",
+    "input": "",
+    "nodes": [
+     "aging-mechanism",
+     "job-c",
+     "starvation-guard",
+     "sla-monitor"
+    ],
+    "edges": [
+     "aging-job-c",
+     "sla-guard"
+    ]
+   },
+   {
+    "title": "Ordenar la cola",
+    "description": "Los trabajos se ordenan en la cola según su prioridad actual: Trabajo B (14.65) antes que Trabajo A (5.30), y este antes que Trabajo C (2.32), con los impulsos por SLA incorporados.",
+    "input": "",
+    "nodes": [
+     "job-b",
+     "job-a",
+     "job-c",
+     "priority-queue",
+     "starvation-guard"
+    ],
+    "edges": [
+     "job-b-queue",
+     "job-a-queue",
+     "job-c-queue",
+     "guard-queue"
+    ]
+   },
+   {
+    "title": "Manejar la preempción",
+    "description": "Si llega un trabajo crítico con SLA de 1h, el manejador de preempción hace checkpoint de un trabajo en ejecución de menor prioridad y lo reinserta cerca del frente de la cola.",
+    "input": "",
+    "nodes": [
+     "preemption-handler",
+     "priority-queue"
+    ],
+    "edges": [
+     "preemption-queue"
+    ]
+   },
+   {
+    "title": "Despachar a las GPU",
+    "description": "El despachador coloca los trabajos en el pool con programación gang y backfill, alcanzando un 94% de utilización en los 50 clústeres.",
+    "input": "",
+    "nodes": [
+     "priority-queue",
+     "gpu-dispatcher",
+     "gpu-pool"
+    ],
+    "edges": [
+     "queue-dispatcher",
+     "dispatcher-pool"
+    ]
+   },
+   {
+    "title": "Medir y recalcular",
+    "description": "Las métricas reportan un 99.2% de cumplimiento de SLA, una espera promedio de 2.3h y un índice de equidad de 0.87. Cada 15 minutos, el agente recalcula todas las prioridades a partir de este feedback.",
+    "input": "",
+    "nodes": [
+     "gpu-dispatcher",
+     "metrics",
+     "scheduler-agent"
+    ],
+    "edges": [
+     "dispatcher-metrics",
+     "metrics-agent"
+    ]
+   }
+  ]
+ }
+}

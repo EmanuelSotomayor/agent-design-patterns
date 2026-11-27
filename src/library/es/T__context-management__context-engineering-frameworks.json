@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "context-engineering-frameworks",
+ "name": "Context Engineering Frameworks(CEF)",
+ "icon": "📊",
+ "complexity": "high",
+ "description": "Orquestación sistemática del contexto con estructuración tipo XML, ensamblado dinámico y prevención de fallas",
+ "features": [
+  "Representación estructurada del contexto (formatos tipo XML)",
+  "Sistemas de orquestación dinámica del contexto",
+  "Puntuación y validación de la coherencia del contexto",
+  "Arquitectura modular de componentes de contexto"
+ ],
+ "tldr": {
+  "what": "Organiza el contexto en componentes modulares y etiquetados con reglas de validación, y luego los ensambla dinámicamente según los requisitos de la tarea.",
+  "when": "Problemas complejos de múltiples dominios donde el contexto debe mantenerse coherente a lo largo de muchos pasos y distintos caminos de razonamiento.",
+  "watchOut": "Alto costo de implementación y fragilidad si las reglas de validación no detectan inconsistencias reales entre los componentes ensamblados."
+ },
+ "overview": {
+  "pattern": "Orquestación sistemática del contexto con estructuración tipo XML, ensamblado dinámico y prevención de fallas",
+  "why": "Proporciona confiabilidad y consistencia de nivel empresarial para la gestión de contextos complejos mediante frameworks estandarizados",
+  "insight": "La representación estructurada con componentes modulares y validación permite una ingeniería de contexto confiable y escalable",
+  "impl": [
+   {
+    "t": "Diseño del esquema",
+    "d": "Define una representación estructurada del contexto tipo XML"
+   },
+   {
+    "t": "Motor de orquestación",
+    "d": "Construye el ensamblado y la coordinación dinámicos del contexto"
+   },
+   {
+    "t": "Framework de validación",
+    "d": "Implementa la puntuación de coherencia y la evaluación de calidad"
+   },
+   {
+    "t": "Arquitectura de componentes",
+    "d": "Crea componentes de contexto modulares y reutilizables"
+   },
+   {
+    "t": "Sistemas de recuperación",
+    "d": "Construye mecanismos de prevención y recuperación ante fallas"
+   }
+  ],
+  "example": "design_schema → orchestrate_dynamically → validate_coherence → modularize_components → prevent_failures",
+  "dos": [
+   "Usa formatos estructurados tipo XML para representar el contexto",
+   "Implementa etiquetado semántico y organización jerárquica",
+   "Construye componentes modulares para patrones de contexto reutilizables",
+   "Usa flujos de validación automatizados para el aseguramiento de la calidad",
+   "Implementa mecanismos integrales de prevención de fallas"
+  ],
+  "donts": [
+   "Usar texto no estructurado sin el formato adecuado",
+   "Omitir la validación de la coherencia y la calidad del contexto",
+   "Crear contextos monolíticos sin componentes modulares",
+   "Ignorar los escenarios de falla y los procedimientos de recuperación",
+   "Codificar la lógica del contexto de forma rígida sin la flexibilidad de un framework"
+  ],
+  "use": [
+   "Gestión de contexto a escala empresarial",
+   "Requisitos complejos de contexto estructurado",
+   "Sistemas en producción que necesitan confiabilidad",
+   "Desarrollo colaborativo entre varios equipos"
+  ],
+  "avoid": [
+   "Aplicaciones simples de propósito único",
+   "Desarrollo de prototipos y experimentos",
+   "Entornos con recursos limitados",
+   "Contexto estático con complejidad mínima"
+  ],
+  "metrics": [
+   {
+    "n": "Coherencia del contexto",
+    "d": "% de contextos que pasan la validación de coherencia"
+   },
+   {
+    "n": "Confiabilidad del sistema",
+    "d": "% de tiempo activo con prevención de fallas"
+   },
+   {
+    "n": "Reutilización de componentes",
+    "d": "% de componentes de contexto reutilizados entre proyectos"
+   },
+   {
+    "n": "Velocidad de ensamblado",
+    "d": "Tiempo para componer el contexto dinámicamente"
+   },
+   {
+    "n": "Puntuación de calidad",
+    "d": "Evaluación automatizada de la calidad del contexto"
+   },
+   {
+    "n": "Adopción del framework",
+    "d": "% de equipos que usan patrones estandarizados"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Plataforma de contexto empresarial",
+    "d": "xml_schema → component_library → orchestration_engine → validation_pipeline → production_deployment"
+   },
+   {
+    "n": "Coordinación multiagente",
+    "d": "structured_context → semantic_tagging → dynamic_assembly → coherence_validation → agent_communication"
+   },
+   {
+    "n": "Sistemas de IA en producción",
+    "d": "context_framework → quality_gates → automated_validation → failure_prevention → reliable_operation"
+   },
+   {
+    "n": "Gestión del conocimiento",
+    "d": "structured_representation → hierarchical_organization → component_reuse → validation_workflows → enterprise_adoption"
+   },
+   {
+    "n": "Desarrollo colaborativo",
+    "d": "shared_schemas → reusable_components → validation_standards → quality_metrics → team_coordination"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de frameworks de ingeniería de contexto",
+  "description": "Frameworks sistemáticos para diseñar, optimizar y gestionar contextos usando herramientas como DSPy, LangChain y Semantic Kernel con optimización automatizada",
+  "nodes": [
+   {
+    "id": "context-engineering-challenge",
+    "label": "🎯 Desafío de ingeniería de contexto\n\"¿Cómo diseñar, optimizar y gestionar\ncontextos de forma sistemática\npara aplicaciones LLM en producción?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "framework-ecosystem",
+    "label": "🏗️ Ecosistema de frameworks\n\"Sistemas en producción:\n• LangChain/LangGraph\n• Programación con DSPy\n• Semantic Kernel\n• Prompt Flow\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "dspy-optimization",
+    "label": "🔧 Framework DSPy\n\"Programar prompts:\n• Firmas declarativas\n• Optimización automática\n• BootstrapFewShot\n• MIPRO/COPRO\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "automatic-optimization",
+    "label": "🚀 Optimización automática\n\"Ajuste guiado por IA:\n• Selección de ejemplos\n• Optimización del formato\n• Ajuste de instrucciones\n• Menos tokens por llamada\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "langchain-ecosystem",
+    "label": "🔗 LangChain/LangGraph\n\"Orquestación de flujos:\n• Composición con LCEL\n• Grafos con estado\n• Integración de herramientas\n• Agentes en producción\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "template-systems",
+    "label": "📝 Sistemas de plantillas\n\"Prompts estructurados:\n• Inyección de variables\n• Formatos XML/JSON\n• Control de versiones\n• Validación de seguridad\"",
+    "x": 750,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "context-assembly",
+    "label": "🔄 Ensamblado dinámico\n\"Construcción según la tarea:\n• Puntuación de relevancia\n• Ponderación de prioridades\n• Optimización de la ventana\n• Más señal por token\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "prompt-chaining",
+    "label": "⛓️ Encadenamiento de prompts\n\"Patrones de composición:\n• Flujos secuenciales\n• Procesamiento en paralelo\n• Enrutamiento condicional\n• Refinamiento cíclico\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "evaluation-frameworks",
+    "label": "📊 Sistemas de evaluación\n\"Plataformas de pruebas:\n• PromptLayer\n• LangSmith\n• ChainForge\n• Pruebas de seguridad\"",
+    "x": 600,
+    "y": 800,
+    "w": 210
+   },
+   {
+    "id": "context-management",
+    "label": "💾 Gestión del contexto\n\"Optimización de la ventana:\n• Solución a lost-in-middle\n• Ventanas deslizantes\n• Compresión semántica\n• Estrategias de cache\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "multi-turn-handling",
+    "label": "🗣️ Manejo de múltiples turnos\n\"Contexto de la conversación:\n• Persistencia de la sesión\n• Jerarquías de memoria\n• Compresión progresiva\n• Continuidad entre turnos\"",
+    "x": 600,
+    "y": 950,
+    "w": 250
+   },
+   {
+    "id": "production-deployment",
+    "label": "🚢 Despliegue en producción\n\"Qué monitorear tras el lanzamiento:\n• Tokens por tarea completada\n• Escalamientos por falta de contexto\n• Tiempo para agregar una nueva fuente de contexto\n• Si los prompts siguen siendo auditables\"",
+    "x": 400,
+    "y": 1100,
+    "w": 270
+   },
+   {
+    "id": "engineering-principle",
+    "label": "🎯 Principio de ingeniería de contexto\n\"Los frameworks sistemáticos permiten un despliegue confiable en producción\nLa optimización automática intercambia tokens por fidelidad, y la tasa de cambio depende de la tarea\nEl ensamblado dinámico y la evaluación aseguran la mejora continua\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "context-engineering-challenge",
+    "t": "framework-ecosystem",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "framework-ecosystem",
+    "t": "dspy-optimization",
+    "label": "incluye"
+   },
+   {
+    "id": "e3",
+    "s": "framework-ecosystem",
+    "t": "langchain-ecosystem",
+    "label": "proporciona"
+   },
+   {
+    "id": "e4",
+    "s": "framework-ecosystem",
+    "t": "context-assembly",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "dspy-optimization",
+    "t": "automatic-optimization",
+    "label": "realiza"
+   },
+   {
+    "id": "e6",
+    "s": "langchain-ecosystem",
+    "t": "template-systems",
+    "label": "implementa"
+   },
+   {
+    "id": "e7",
+    "s": "context-assembly",
+    "t": "prompt-chaining",
+    "label": "utiliza"
+   },
+   {
+    "id": "e8",
+    "s": "context-assembly",
+    "t": "evaluation-frameworks",
+    "label": "validado por"
+   },
+   {
+    "id": "e9",
+    "s": "automatic-optimization",
+    "t": "context-management",
+    "label": "optimiza"
+   },
+   {
+    "id": "e10",
+    "s": "template-systems",
+    "t": "multi-turn-handling",
+    "label": "soporta"
+   },
+   {
+    "id": "e11",
+    "s": "prompt-chaining",
+    "t": "context-management",
+    "label": "requiere"
+   },
+   {
+    "id": "e12",
+    "s": "evaluation-frameworks",
+    "t": "multi-turn-handling",
+    "label": "prueba"
+   },
+   {
+    "id": "e13",
+    "s": "context-management",
+    "t": "production-deployment",
+    "label": "habilita"
+   },
+   {
+    "id": "e14",
+    "s": "multi-turn-handling",
+    "t": "production-deployment",
+    "label": "asegura"
+   },
+   {
+    "id": "e15",
+    "s": "production-deployment",
+    "t": "engineering-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de ingeniería de contexto",
+    "description": "¿Cómo podemos diseñar, optimizar y gestionar contextos de forma sistemática para aplicaciones LLM en producción, asegurando confiabilidad, eficiencia y mantenibilidad?",
+    "input": "",
+    "nodes": [
+     "context-engineering-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Panorama del ecosistema de frameworks",
+    "description": "Los frameworks de producción ofrecen soluciones integrales: LangChain/LangGraph para flujos de trabajo, DSPy para la optimización programática, Semantic Kernel para la integración empresarial y Prompt Flow para el desarrollo visual.",
+    "input": "",
+    "nodes": [
+     "framework-ecosystem"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Frameworks DSPy y LangChain",
+    "description": "DSPy trata el prompting como programación, con firmas declarativas y optimización automática que logra un 70% de compresión, mientras que LangChain ofrece composición con LCEL, grafos con estado e integración de herramientas para producción.",
+    "input": "",
+    "nodes": [
+     "dspy-optimization",
+     "automatic-optimization",
+     "langchain-ecosystem",
+     "template-systems"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Ensamblado dinámico del contexto",
+    "description": "La construcción según la tarea analiza los requisitos para puntuar la relevancia y ponderar las prioridades, aumentando la señal por token mediante una optimización inteligente de la ventana y la selección de componentes.",
+    "input": "",
+    "nodes": [
+     "context-assembly",
+     "prompt-chaining",
+     "evaluation-frameworks"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Gestión del contexto y de la conversación",
+    "description": "La gestión del contexto soluciona el problema de lost-in-middle con ventanas deslizantes y compresión semántica, mientras que el manejo de múltiples turnos asegura el 100% de continuidad de la sesión mediante jerarquías de memoria y compresión progresiva.",
+    "input": "",
+    "nodes": [
+     "context-management",
+     "multi-turn-handling"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Éxito del despliegue en producción",
+    "description": "Los equipos que trasladan el ensamblado del contexto a un framework reportan menor gasto de tokens y menos escalamientos, pero el tamaño de la mejora depende por completo de qué tan derrochadora era la versión hecha a mano. Trata las cifras publicadas como anécdotas y mide contra tu propia línea base antes y después.",
+    "input": "",
+    "nodes": [
+     "production-deployment",
+     "engineering-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

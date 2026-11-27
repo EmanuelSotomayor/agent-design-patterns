@@ -1,0 +1,368 @@
+{
+ "cat": "knowledge-representation",
+ "slug": "knowledge-graph-construction",
+ "name": "Knowledge Graph Construction(KGC)",
+ "icon": "🔗",
+ "complexity": "high",
+ "description": "Construcción sistemática de grafos de conocimiento a partir de fuentes de datos estructuradas y no estructuradas",
+ "features": [
+  "Integración de datos de múltiples fuentes",
+  "Extracción y vinculación de entidades",
+  "Descubrimiento de relaciones",
+  "Alineación de esquemas",
+  "Evaluación de calidad",
+  "Construcción incremental del grafo"
+ ],
+ "tldr": {
+  "what": "Extrae entidades y relaciones de múltiples fuentes de datos, y luego las vincula y organiza en una estructura de grafo consultable.",
+  "when": "Necesitas conectar información de bases de datos estructuradas, texto no estructurado y APIs para habilitar consultas y razonamiento sobre relaciones.",
+  "watchOut": "Los errores de vinculación de entidades se acumulan en el grafo; una sola entidad mal identificada puede corromper las relaciones y consultas posteriores."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Construcción de grafos de conocimiento",
+  "description": "Ensamblado sistemático de un grafo de conocimiento a partir de fuentes heterogéneas. Las entradas estructuradas, semiestructuradas y no estructuradas pasan por la extracción de entidades, la vinculación, el descubrimiento de relaciones, la alineación de esquemas y la fusión, con controles de calidad antes de que las tripletas lleguen a un grafo de productos de comercio electrónico.",
+  "nodes": [
+   {
+    "id": "src-products",
+    "label": "🗃️ Base de datos de productos\nFilas estructuradas del catálogo",
+    "x": 30,
+    "y": 40,
+    "w": 190
+   },
+   {
+    "id": "src-reviews",
+    "label": "💬 Reseñas de clientes\nTexto no estructurado",
+    "x": 250,
+    "y": 40,
+    "w": 190
+   },
+   {
+    "id": "src-suppliers",
+    "label": "📦 Feeds de proveedores\nXML/CSV semiestructurado",
+    "x": 470,
+    "y": 40,
+    "w": 190
+   },
+   {
+    "id": "src-market",
+    "label": "📈 APIs de mercado\nPrecios en tiempo real",
+    "x": 690,
+    "y": 40,
+    "w": 190
+   },
+   {
+    "id": "pipeline",
+    "label": "🔗 Pipeline de construcción del KG\nOrquesta desde la ingesta hasta el grafo",
+    "x": 360,
+    "y": 160,
+    "w": 280
+   },
+   {
+    "id": "entity-extraction",
+    "label": "🔍 Extracción de entidades\nNER sobre las fuentes\n\"iPhone 15\", \"Apple\", \"Camera\"",
+    "x": 40,
+    "y": 290,
+    "w": 240
+   },
+   {
+    "id": "entity-linking",
+    "label": "🎯 Vinculación de entidades\nDesambigua hacia URIs canónicas\n\"Apple\" a ex:Apple",
+    "x": 340,
+    "y": 290,
+    "w": 240
+   },
+   {
+    "id": "relation-discovery",
+    "label": "🕸️ Descubrimiento de relaciones\nhasFeature, manufacturedBy,\ncompetesWith",
+    "x": 640,
+    "y": 290,
+    "w": 240
+   },
+   {
+    "id": "schema-alignment",
+    "label": "🧭 Alineación de esquemas\nMapea códigos a IDs estándar\nNormaliza marcas y categorías",
+    "x": 190,
+    "y": 430,
+    "w": 250
+   },
+   {
+    "id": "entity-fusion",
+    "label": "⚗️ Fusión de entidades\nCombina duplicados\nex:Apple = \"Apple Inc.\"",
+    "x": 490,
+    "y": 430,
+    "w": 250
+   },
+   {
+    "id": "quality-check",
+    "label": "🟠 Aseguramiento de calidad\nConsistencia, deduplicación,\nintegridad referencial",
+    "x": 690,
+    "y": 555,
+    "w": 230
+   },
+   {
+    "id": "conflict-flag",
+    "label": "⛔ Conflicto marcado\nPrecio contradictorio / referencia rota",
+    "x": 690,
+    "y": 685,
+    "w": 220
+   },
+   {
+    "id": "triple-product",
+    "label": "💠 ex:iPhone15 a ex:Smartphone ;\nex:brand ex:Apple",
+    "x": 30,
+    "y": 570,
+    "w": 230
+   },
+   {
+    "id": "triple-feature",
+    "label": "💠 ex:iPhone15 ex:hasFeature\nex:AdvancedCamera , ex:LongBattery",
+    "x": 30,
+    "y": 690,
+    "w": 230
+   },
+   {
+    "id": "triple-competes",
+    "label": "💠 ex:iPhone15 ex:competesWith\nex:GalaxyS24 ;\nex:averageRating \"4.5\"",
+    "x": 340,
+    "y": 630,
+    "w": 230
+   },
+   {
+    "id": "kg-output",
+    "label": "🌐 Grafo de conocimiento de comercio electrónico\nRecomendaciones, análisis de competidores, búsqueda",
+    "x": 340,
+    "y": 780,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "products-pipeline",
+    "s": "src-products",
+    "t": "pipeline",
+    "label": ""
+   },
+   {
+    "id": "reviews-pipeline",
+    "s": "src-reviews",
+    "t": "pipeline",
+    "label": ""
+   },
+   {
+    "id": "suppliers-pipeline",
+    "s": "src-suppliers",
+    "t": "pipeline",
+    "label": ""
+   },
+   {
+    "id": "market-pipeline",
+    "s": "src-market",
+    "t": "pipeline",
+    "label": ""
+   },
+   {
+    "id": "pipeline-extraction",
+    "s": "pipeline",
+    "t": "entity-extraction",
+    "label": "Extraer"
+   },
+   {
+    "id": "extraction-linking",
+    "s": "entity-extraction",
+    "t": "entity-linking",
+    "label": "Vincular"
+   },
+   {
+    "id": "linking-relation",
+    "s": "entity-linking",
+    "t": "relation-discovery",
+    "label": "Relacionar"
+   },
+   {
+    "id": "linking-alignment",
+    "s": "entity-linking",
+    "t": "schema-alignment",
+    "label": ""
+   },
+   {
+    "id": "relation-fusion",
+    "s": "relation-discovery",
+    "t": "entity-fusion",
+    "label": ""
+   },
+   {
+    "id": "alignment-fusion",
+    "s": "schema-alignment",
+    "t": "entity-fusion",
+    "label": "Combinar"
+   },
+   {
+    "id": "fusion-quality",
+    "s": "entity-fusion",
+    "t": "quality-check",
+    "label": "Evaluar"
+   },
+   {
+    "id": "quality-conflict",
+    "s": "quality-check",
+    "t": "conflict-flag",
+    "label": "rechazar"
+   },
+   {
+    "id": "fusion-product",
+    "s": "entity-fusion",
+    "t": "triple-product",
+    "label": ""
+   },
+   {
+    "id": "product-feature",
+    "s": "triple-product",
+    "t": "triple-feature",
+    "label": ""
+   },
+   {
+    "id": "fusion-competes",
+    "s": "entity-fusion",
+    "t": "triple-competes",
+    "label": ""
+   },
+   {
+    "id": "quality-product",
+    "s": "quality-check",
+    "t": "triple-product",
+    "label": "aprobar"
+   },
+   {
+    "id": "feature-output",
+    "s": "triple-feature",
+    "t": "kg-output",
+    "label": ""
+   },
+   {
+    "id": "competes-output",
+    "s": "triple-competes",
+    "t": "kg-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Integrar múltiples fuentes",
+    "description": "Las filas estructuradas de productos, las reseñas no estructuradas, los feeds semiestructurados de proveedores y las APIs de mercado en tiempo real se dirigen a un único pipeline de construcción.",
+    "input": "",
+    "nodes": [
+     "src-products",
+     "src-reviews",
+     "src-suppliers",
+     "src-market",
+     "pipeline"
+    ],
+    "edges": [
+     "products-pipeline",
+     "reviews-pipeline",
+     "suppliers-pipeline",
+     "market-pipeline"
+    ]
+   },
+   {
+    "title": "Extraer entidades",
+    "description": "El reconocimiento de entidades nombradas obtiene menciones candidatas de cada fuente: productos como iPhone 15, marcas como Apple y características como Camera.",
+    "input": "",
+    "nodes": [
+     "pipeline",
+     "entity-extraction"
+    ],
+    "edges": [
+     "pipeline-extraction"
+    ]
+   },
+   {
+    "title": "Vincular menciones a URIs",
+    "description": "Cada mención superficial se desambigua y se resuelve hacia un recurso canónico, de modo que todas las formas de escribir \"Apple\" convergen en ex:Apple.",
+    "input": "",
+    "nodes": [
+     "entity-extraction",
+     "entity-linking"
+    ],
+    "edges": [
+     "extraction-linking"
+    ]
+   },
+   {
+    "title": "Descubrir relaciones",
+    "description": "El pipeline extrae predicados entre las entidades vinculadas: hasFeature, manufacturedBy y competesWith conectan los productos con sus características, marcas y rivales.",
+    "input": "",
+    "nodes": [
+     "entity-linking",
+     "relation-discovery",
+     "schema-alignment"
+    ],
+    "edges": [
+     "linking-relation",
+     "linking-alignment"
+    ]
+   },
+   {
+    "title": "Alinear el esquema y fusionar entidades",
+    "description": "Los códigos de producto se mapean a identificadores estándar y se normalizan las jerarquías de categorías; luego se fusionan los nodos duplicados para que una misma entidad no aparezca dos veces.",
+    "input": "",
+    "nodes": [
+     "schema-alignment",
+     "relation-discovery",
+     "entity-fusion"
+    ],
+    "edges": [
+     "relation-fusion",
+     "alignment-fusion"
+    ]
+   },
+   {
+    "title": "Evaluar la calidad",
+    "description": "Los controles de consistencia, deduplicación e integridad referencial filtran las tripletas candidatas; las contradicciones, como precios en conflicto, se marcan para revisión.",
+    "input": "",
+    "nodes": [
+     "entity-fusion",
+     "quality-check",
+     "conflict-flag"
+    ],
+    "edges": [
+     "fusion-quality",
+     "quality-conflict"
+    ]
+   },
+   {
+    "title": "Emitir tripletas de productos",
+    "description": "Se escriben las afirmaciones validadas: el iPhone 15 es un Smartphone fabricado por Apple, con características de cámara y batería, y un vínculo de competencia con el Galaxy S24.",
+    "input": "",
+    "nodes": [
+     "entity-fusion",
+     "quality-check",
+     "triple-product",
+     "triple-feature",
+     "triple-competes"
+    ],
+    "edges": [
+     "fusion-product",
+     "quality-product",
+     "product-feature",
+     "fusion-competes"
+    ]
+   },
+   {
+    "title": "Publicar el grafo de conocimiento",
+    "description": "Las tripletas acumuladas forman un grafo de productos incremental que impulsa recomendaciones, análisis de competidores y una búsqueda semántica más rica.",
+    "input": "",
+    "nodes": [
+     "triple-feature",
+     "triple-competes",
+     "kg-output"
+    ],
+    "edges": [
+     "feature-output",
+     "competes-output"
+    ]
+   }
+  ]
+ }
+}

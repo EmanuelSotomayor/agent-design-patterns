@@ -1,0 +1,380 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "constitutional-ai-evaluation",
+ "name": "Constitutional AI Evaluation Framework(CAI-Eval)",
+ "icon": "⚖️",
+ "complexity": "high",
+ "description": "Framework de Anthropic para evaluar la seguridad de la IA mediante principios constitucionales, que incluye pruebas de resistencia a jailbreaks y evaluación de inocuidad.",
+ "features": [
+  "Pruebas de adherencia a los principios constitucionales",
+  "Evaluación de resistencia a jailbreaks (tasa de éxito del 95%+)",
+  "Evaluación adversarial de red team",
+  "Inocuidad a partir de feedback de IA",
+  "Validación de clasificadores constitucionales",
+  "Más de 3000 horas de pruebas de red team"
+ ],
+ "tldr": {
+  "what": "Pone a prueba las salidas de la IA frente a un conjunto de principios explícitos, usando clasificadores y adversarios de red team para medir la resistencia a jailbreaks y el comportamiento dañino.",
+  "when": "Cuando construyes sistemas críticos para la seguridad en los que necesitas evidencia cuantificada de resistencia a prompts adversariales y puntuaciones de inocuidad medibles.",
+  "watchOut": "Las pruebas de red team son costosas y consumen mucho tiempo; los resultados pueden no trasladarse a tu contexto de despliegue específico ni a vectores de ataque novedosos."
+ },
+ "overview": {
+  "pattern": "Framework de Anthropic para evaluar la seguridad de la IA mediante principios constitucionales con pruebas de resistencia a jailbreaks",
+  "why": "Ofrece una defensa robusta contra ataques adversariales mientras mantiene una alineación de la IA transparente y basada en principios",
+  "insight": "Los Constitutional Classifiers logran bloquear el 95.6% de los jailbreaks frente al 14% de la línea base, con solo un 0.38% de rechazo excesivo",
+  "impl": [
+   {
+    "t": "Constitución",
+    "d": "Definir principios y reglas para el comportamiento de la IA"
+   },
+   {
+    "t": "Clasificadores",
+    "d": "Entrenar clasificadores constitucionales de entrada/salida"
+   },
+   {
+    "t": "Red Team",
+    "d": "Realizar pruebas adversariales exhaustivas"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Medir la resistencia a jailbreaks y la inocuidad"
+   },
+   {
+    "t": "Desplegar",
+    "d": "Proteger los sistemas en producción con clasificadores"
+   }
+  ],
+  "example": "constitution → classifier_training → red_team_testing → jailbreak_eval → production_deploy",
+  "dos": [
+   "Usa clasificadores tanto de entrada como de salida para una protección integral",
+   "Realiza pruebas de red team exhaustivas (más de 3000 horas)",
+   "Prueba contra jailbreaks sintéticos y generados por humanos",
+   "Equilibra la seguridad con la usabilidad (monitorea las tasas de rechazo excesivo)",
+   "Usa principios constitucionales para una alineación de la IA transparente"
+  ],
+  "donts": [
+   "Depender únicamente de la seguridad del modelo base sin protección adicional",
+   "Omitir la evaluación de los costos de sobrecarga computacional",
+   "Ignorar los casos límite y los intentos creativos de jailbreak",
+   "Desplegar sin medir el impacto del rechazo excesivo en los usuarios",
+   "Suponer que los clasificadores previenen todos los jailbreaks universales"
+  ],
+  "use": [
+   "Requisitos de seguridad de IA en producción",
+   "Escenarios de despliegue de alto riesgo",
+   "Aplicaciones de IA de cara al público",
+   "Necesidades de cumplimiento regulatorio"
+  ],
+  "avoid": [
+   "Solo herramientas de desarrollo internas",
+   "Aplicaciones no críticas para la seguridad",
+   "Entornos con recursos limitados",
+   "Sistemas exclusivamente de investigación"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de jailbreaks",
+    "d": "Porcentaje de ataques exitosos (objetivo <5%)"
+   },
+   {
+    "n": "Tasa de rechazo excesivo",
+    "d": "Bloqueos de seguridad por falsos positivos (objetivo <1%)"
+   },
+   {
+    "n": "Adherencia constitucional",
+    "d": "Cumplimiento de los principios definidos (0-10)"
+   },
+   {
+    "n": "Resistencia al red team",
+    "d": "Desempeño frente a adversarios humanos"
+   },
+   {
+    "n": "Sobrecarga computacional",
+    "d": "Costo de procesamiento adicional (+20-30%)"
+   },
+   {
+    "n": "Detección de jailbreaks universales",
+    "d": "Prevención de ataques entre consultas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Seguridad de IA empresarial",
+    "d": "Chatbots en producción con más del 95% de resistencia a jailbreaks para atención al cliente"
+   },
+   {
+    "n": "Plataformas educativas de IA",
+    "d": "Tutores de IA seguros que evitan la generación de contenido dañino para estudiantes"
+   },
+   {
+    "n": "Sistemas de IA para salud",
+    "d": "Cumplimiento constitucional para consejos médicos e interacción con pacientes"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "Moderadores de IA con resistencia robusta a ataques adversariales"
+   },
+   {
+    "n": "Servicios gubernamentales de IA",
+    "d": "IA de cara al público con transparencia y alineación constitucional"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de framework de evaluación Constitutional AI",
+  "description": "Alineación de IA auto-mejorable de Anthropic mediante principios constitucionales, que reemplaza el feedback humano por la autocrítica de la IA y logra mejoras de Pareto en utilidad e inocuidad",
+  "nodes": [
+   {
+    "id": "ai-alignment-challenge",
+    "label": "⚖️ Desafío de alineación de la IA\n\"¿Cómo entrenar asistentes de IA inocuos\nsin costosas etiquetas humanas\ny manteniendo la utilidad?\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "constitutional-ai-framework",
+    "label": "📜 Framework Constitutional AI\n\"Auto-mejora basada en principios:\n• Sistema de autocrítica de la IA\n• Principios constitucionales\n• RLAIF en lugar de RLHF\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "two-phase-training",
+    "label": "🔄 Proceso de entrenamiento en dos fases\n\"Mejora secuencial:\n• Fase 1: Aprendizaje supervisado\n• Fase 2: Aprendizaje por refuerzo\n• Ciclo de auto-mejora\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "supervised-learning-phase",
+    "label": "📚 Fase 1: Aprendizaje supervisado\n\"Proceso de autocrítica:\n• Muestrear respuestas iniciales\n• Generar autocríticas\n• Revisar usando principios\n• Hacer fine-tuning sobre las revisiones\"",
+    "x": 50,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "rlaif-phase",
+    "label": "🤖 Fase 2: RLAIF\n\"Aprendizaje con feedback de IA:\n• La IA evalúa muestras\n• Entrenamiento del modelo de preferencias\n• Sin necesidad de etiquetas humanas\n• Costo: <$0.01 vs $1-10\"",
+    "x": 350,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "constitutional-principles",
+    "label": "📋 Principios constitucionales\n\"Pautas normativas:\n• Inspiradas en los Derechos Humanos de la ONU\n• Útil, honesto, inocuo\n• Evitar lo tóxico/discriminatorio\n• Toma de decisiones ética\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "principle-sources",
+    "label": "📖 Fuentes de los principios\n\"Fundamentos diversos:\n• Declaración de la ONU\n• Pautas de plataformas\n• Curaduría de Anthropic\n• Futuro: aportes democráticos\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "chain-of-thought",
+    "label": "💭 Razonamiento Chain-of-Thought\n\"Evaluación mejorada:\n• Análisis paso a paso\n• Trazas de razonamiento explícitas\n• Mejor detección de daños\n• Decisiones transparentes\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "pareto-improvement",
+    "label": "📈 Resultados de mejora de Pareto\n\"Desempeño superior:\n• Respuestas más útiles\n• Salidas más inocuas\n• Respuestas no evasivas\n• Resistencia adversarial\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "scalable-oversight",
+    "label": "🚀 Beneficios de la supervisión escalable\n\"Ventajas prácticas:\n• Reducción de costos de 100-1000x\n• Sin anotadores humanos\n• Ciclos de iteración más rápidos\n• Potencial democrático\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "balance-challenge",
+    "label": "⚖️ Equilibrio entre utilidad e inocuidad\n\"Tensión crítica:\n• Inocuo → menos útil\n• Útil → daño potencial\n• CAI logra ambos\n• Compromisos transparentes\"",
+    "x": 400,
+    "y": 950,
+    "w": 280
+   },
+   {
+    "id": "constitutional-principle",
+    "label": "🎯 Principio de Constitutional AI\n\"La IA auto-mejorable mediante feedback basado en principios logra\nuna alineación superior sin los costos de supervisión humana\nEl diseño democrático de la constitución permite alinear valores\"",
+    "x": 400,
+    "y": 1100,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-alignment-challenge",
+    "t": "constitutional-ai-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "constitutional-ai-framework",
+    "t": "two-phase-training",
+    "label": "implementa el entrenamiento"
+   },
+   {
+    "id": "e3",
+    "s": "constitutional-ai-framework",
+    "t": "constitutional-principles",
+    "label": "guiado por principios"
+   },
+   {
+    "id": "e4",
+    "s": "two-phase-training",
+    "t": "supervised-learning-phase",
+    "label": "Fase 1"
+   },
+   {
+    "id": "e5",
+    "s": "two-phase-training",
+    "t": "rlaif-phase",
+    "label": "Fase 2"
+   },
+   {
+    "id": "e6",
+    "s": "constitutional-principles",
+    "t": "supervised-learning-phase",
+    "label": "guía la crítica"
+   },
+   {
+    "id": "e7",
+    "s": "constitutional-principles",
+    "t": "principle-sources",
+    "label": "derivado de"
+   },
+   {
+    "id": "e8",
+    "s": "rlaif-phase",
+    "t": "chain-of-thought",
+    "label": "potenciado por"
+   },
+   {
+    "id": "e9",
+    "s": "supervised-learning-phase",
+    "t": "chain-of-thought",
+    "label": "usa razonamiento"
+   },
+   {
+    "id": "e10",
+    "s": "chain-of-thought",
+    "t": "pareto-improvement",
+    "label": "logra"
+   },
+   {
+    "id": "e11",
+    "s": "rlaif-phase",
+    "t": "scalable-oversight",
+    "label": "habilita"
+   },
+   {
+    "id": "e12",
+    "s": "pareto-improvement",
+    "t": "balance-challenge",
+    "label": "resuelve la tensión"
+   },
+   {
+    "id": "e13",
+    "s": "scalable-oversight",
+    "t": "balance-challenge",
+    "label": "hace viable"
+   },
+   {
+    "id": "e14",
+    "s": "balance-challenge",
+    "t": "constitutional-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de escalabilidad de la alineación de la IA",
+    "description": "¿Cómo podemos entrenar asistentes de IA inocuos sin costosas etiquetas humanas para identificar salidas dañinas, manteniendo la utilidad y evitando respuestas evasivas?",
+    "input": "",
+    "nodes": [
+     "ai-alignment-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework Constitutional AI",
+    "description": "El sistema de auto-mejora basado en principios de Anthropic aborda el desafío mediante la autocrítica de la IA usando principios constitucionales, reemplazando RLHF por RLAIF (Reinforcement Learning from AI Feedback).",
+    "input": "",
+    "nodes": [
+     "constitutional-ai-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Proceso de entrenamiento en dos fases y principios constitucionales",
+    "description": "El framework implementa un entrenamiento secuencial: Fase 1, aprendizaje supervisado con autocrítica; Fase 2, RLAIF; todo guiado por principios inspirados en los Derechos Humanos de la ONU y en pautas de plataformas.",
+    "input": "",
+    "nodes": [
+     "two-phase-training",
+     "supervised-learning-phase",
+     "rlaif-phase",
+     "constitutional-principles",
+     "principle-sources"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Razonamiento mejorado con Chain-of-Thought",
+    "description": "Ambas fases de entrenamiento aprovechan el razonamiento chain-of-thought para el análisis paso a paso, trazas de razonamiento explícitas, una mejor detección de daños y procesos de toma de decisiones transparentes.",
+    "input": "",
+    "nodes": [
+     "chain-of-thought"
+    ],
+    "edges": [
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Mejora de Pareto y supervisión escalable",
+    "description": "Constitutional AI logra mejoras de Pareto (más útil Y más inocuo), con una reducción de costos de 100-1000x (<$0.01 vs $1-10 por etiqueta), lo que permite una alineación de la IA escalable sin supervisión humana.",
+    "input": "",
+    "nodes": [
+     "pareto-improvement",
+     "scalable-oversight"
+    ],
+    "edges": [
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Resolución del equilibrio entre utilidad e inocuidad",
+    "description": "CAI navega con éxito la tensión crítica entre utilidad e inocuidad, logrando ambas mediante la auto-mejora basada en principios, lo que demuestra que la IA auto-mejorable mediante feedback constitucional logra una alineación superior.",
+    "input": "",
+    "nodes": [
+     "balance-challenge",
+     "constitutional-principle"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

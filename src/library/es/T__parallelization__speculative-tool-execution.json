@@ -1,0 +1,350 @@
+{
+ "cat": "parallelization",
+ "slug": "speculative-tool-execution",
+ "name": "Speculative & Parallel Tool Execution(STE)",
+ "icon": "🔀",
+ "complexity": "high",
+ "description": "Predice la siguiente llamada a herramienta probable a partir de trayectorias recurrentes del agente y la ejecuta de forma especulativa mientras el LLM todavía está generando, manteniendo aislado el resultado especulativo hasta que el modelo confirme la llamada y descartándolo si la predicción falla. También abarca lanzar la recuperación a mitad de un turno del usuario en streaming y devolver resultados de herramientas parciales o en streaming. Se distingue de async-await, fork-join, scatter-gather y map-reduce, que distribuyen llamadas ya decididas y que se sabe que son independientes; la novedad aquí es actuar sobre una llamada predicha y no confirmada para que la latencia de la herramienta se superponga con la generación en lugar de sucederla.",
+ "features": [
+  "Predice la siguiente llamada a herramienta a partir de trayectorias recurrentes del agente",
+  "Lanza la llamada predicha mientras el LLM todavía está decodificando",
+  "El resultado especulativo se mantiene aislado hasta que el modelo confirma la llamada",
+  "Las llamadas mal predichas se descartan sin efecto sobre el estado real",
+  "Recuperación a mitad del stream más resultados de herramientas parciales o en streaming",
+  "Superpone la latencia de las herramientas con la generación en lugar de hacer idas y vueltas en serie"
+ ],
+ "tldr": {
+  "what": "Predice la siguiente llamada a herramienta a partir de patrones anteriores del agente y la ejecuta de forma especulativa mientras el LLM todavía está generando, manteniendo los resultados aislados hasta que el modelo confirme la llamada.",
+  "when": "Workflows sensibles a la latencia en los que la misma secuencia de herramientas se repite de forma predecible y el tiempo de ejecución de las herramientas domina la demora de la respuesta.",
+  "watchOut": "Las predicciones fallidas desperdician cómputo y pueden causar inconsistencias sutiles de estado si los efectos secundarios especulativos se filtran a la ruta de ejecución confirmada."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Ejecución especulativa y paralela de herramientas",
+  "description": "El planificador predice la siguiente llamada a herramienta a partir de la trayectoria del agente y la lanza de forma especulativa mientras el LLM todavía está generando, manteniendo el resultado aislado hasta que el modelo lo confirme; así la latencia de la herramienta se superpone con la generación y una predicción fallida se descarta sin efectos secundarios.",
+  "nodes": [
+   {
+    "id": "user-turn",
+    "label": "🎯 Turno del usuario\n\"Búscame un vuelo a Boston para el próximo viernes\"",
+    "x": 350,
+    "y": 30,
+    "w": 300
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente\nGeneración en streaming",
+    "x": 360,
+    "y": 120,
+    "w": 220
+   },
+   {
+    "id": "trajectory-model",
+    "label": "🧠 Predictor de trayectorias\nAprendido: search_flights sigue a parse_date",
+    "x": 60,
+    "y": 215,
+    "w": 230
+   },
+   {
+    "id": "gen-parsedate",
+    "label": "✍️ Decodificando la llamada 1\nparse_date(...) todavía generándose",
+    "x": 560,
+    "y": 215,
+    "w": 240
+   },
+   {
+    "id": "speculator",
+    "label": "🔮 Planificador especulativo\nPredice la siguiente llamada y la lanza antes",
+    "x": 330,
+    "y": 310,
+    "w": 240
+   },
+   {
+    "id": "spec-search",
+    "label": "⚡ Llamada especulativa\nsearch_flights(\"Boston\", <pending date>)",
+    "x": 40,
+    "y": 410,
+    "w": 250
+   },
+   {
+    "id": "sandbox",
+    "label": "🧪 Sandbox de aislamiento\nResultado en cuarentena hasta confirmarse",
+    "x": 340,
+    "y": 410,
+    "w": 220
+   },
+   {
+    "id": "parsedate-result",
+    "label": "📅 parse_date devuelve\ndate = 2026-07-24",
+    "x": 610,
+    "y": 410,
+    "w": 200
+   },
+   {
+    "id": "rekey",
+    "label": "🔑 Reasignar clave\nVincula la llamada especulativa a la fecha real",
+    "x": 610,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "mispredict",
+    "label": "⚠️ Ruta de predicción fallida\nUsuario: \"en realidad, cancela eso\"",
+    "x": 40,
+    "y": 560,
+    "w": 220
+   },
+   {
+    "id": "llm-emit",
+    "label": "📤 El LLM emite la llamada real\nsearch_flights(\"Boston\", 2026-07-24)",
+    "x": 340,
+    "y": 560,
+    "w": 240
+   },
+   {
+    "id": "discard",
+    "label": "🗑️ Descartar resultado especulativo\nsin reserva, sin efectos secundarios",
+    "x": 40,
+    "y": 660,
+    "w": 220
+   },
+   {
+    "id": "confirm",
+    "label": "✅ Confirmar\nPredicha == emitida -> adoptar resultado",
+    "x": 340,
+    "y": 660,
+    "w": 240
+   },
+   {
+    "id": "results",
+    "label": "📊 Resultados de vuelos\nDevueltos en streaming, tiempo real reducido casi a la mitad",
+    "x": 340,
+    "y": 755,
+    "w": 240
+   },
+   {
+    "id": "output",
+    "label": "✨ Respuesta\nVuelos a BOS, próximo viernes",
+    "x": 620,
+    "y": 755,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "turn-agent",
+    "s": "user-turn",
+    "t": "agent",
+    "label": "Turno"
+   },
+   {
+    "id": "agent-gen",
+    "s": "agent",
+    "t": "gen-parsedate",
+    "label": "Decodificar llamada 1"
+   },
+   {
+    "id": "agent-traj",
+    "s": "agent",
+    "t": "trajectory-model",
+    "label": "Consultar patrón"
+   },
+   {
+    "id": "gen-speculator",
+    "s": "gen-parsedate",
+    "t": "speculator",
+    "label": "dest=Boston decodificado"
+   },
+   {
+    "id": "traj-speculator",
+    "s": "trajectory-model",
+    "t": "speculator",
+    "label": "predice search_flights"
+   },
+   {
+    "id": "speculator-specsearch",
+    "s": "speculator",
+    "t": "spec-search",
+    "label": "Lanzar antes"
+   },
+   {
+    "id": "specsearch-sandbox",
+    "s": "spec-search",
+    "t": "sandbox",
+    "label": "Cuarentena"
+   },
+   {
+    "id": "gen-parsedateresult",
+    "s": "gen-parsedate",
+    "t": "parsedate-result",
+    "label": "Devuelve la fecha"
+   },
+   {
+    "id": "parsedateresult-rekey",
+    "s": "parsedate-result",
+    "t": "rekey",
+    "label": ""
+   },
+   {
+    "id": "rekey-specsearch",
+    "s": "rekey",
+    "t": "spec-search",
+    "label": "Vincular fecha real"
+   },
+   {
+    "id": "agent-emit",
+    "s": "agent",
+    "t": "llm-emit",
+    "label": "Emitir llamada real"
+   },
+   {
+    "id": "emit-confirm",
+    "s": "llm-emit",
+    "t": "confirm",
+    "label": "Coincide con la predicción"
+   },
+   {
+    "id": "sandbox-confirm",
+    "s": "sandbox",
+    "t": "confirm",
+    "label": "Adoptar resultado"
+   },
+   {
+    "id": "confirm-results",
+    "s": "confirm",
+    "t": "results",
+    "label": ""
+   },
+   {
+    "id": "results-output",
+    "s": "results",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "agent-mispredict",
+    "s": "agent",
+    "t": "mispredict",
+    "label": "Alt: el usuario cancela"
+   },
+   {
+    "id": "mispredict-discard",
+    "s": "mispredict",
+    "t": "discard",
+    "label": "Nunca confirmada"
+   },
+   {
+    "id": "sandbox-discard",
+    "s": "sandbox",
+    "t": "discard",
+    "label": "Descartar resultado en cuarentena"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Comienza el turno del usuario",
+    "description": "El usuario pide un vuelo. El agente empieza a transmitir en streaming su respuesta y su primera llamada a herramienta.",
+    "input": "",
+    "nodes": [
+     "user-turn",
+     "agent"
+    ],
+    "edges": [
+     "turn-agent"
+    ]
+   },
+   {
+    "title": "Decodificar la primera llamada y consultar la trayectoria",
+    "description": "El LLM empieza a decodificar parse_date mientras el planificador consulta la trayectoria aprendida según la cual search_flights casi siempre sigue a parse_date.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "gen-parsedate",
+     "trajectory-model"
+    ],
+    "edges": [
+     "agent-gen",
+     "agent-traj"
+    ]
+   },
+   {
+    "title": "Lanzar la llamada predicha de forma especulativa",
+    "description": "En cuanto se decodifica dest=\"Boston\", el planificador lanza search_flights con una fecha pendiente dentro de un sandbox de aislamiento, de modo que la ida y vuelta de solo lectura ya está en curso.",
+    "input": "",
+    "nodes": [
+     "gen-parsedate",
+     "trajectory-model",
+     "speculator",
+     "spec-search",
+     "sandbox"
+    ],
+    "edges": [
+     "gen-speculator",
+     "traj-speculator",
+     "speculator-specsearch",
+     "specsearch-sandbox"
+    ]
+   },
+   {
+    "title": "Llega la fecha real, se reasigna la clave",
+    "description": "parse_date devuelve 2026-07-24; la llamada especulativa se vincula a la fecha real sin reiniciar la solicitud que ya está en curso.",
+    "input": "",
+    "nodes": [
+     "parsedate-result",
+     "rekey",
+     "spec-search"
+    ],
+    "edges": [
+     "gen-parsedateresult",
+     "parsedateresult-rekey",
+     "rekey-specsearch"
+    ]
+   },
+   {
+    "title": "El LLM emite la llamada real y la confirma",
+    "description": "El modelo emite la llamada real a search_flights; coincide con la especulación, así que se adopta el resultado en cuarentena en lugar de hacer una llamada nueva.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "llm-emit",
+     "sandbox",
+     "confirm"
+    ],
+    "edges": [
+     "agent-emit",
+     "emit-confirm",
+     "sandbox-confirm"
+    ]
+   },
+   {
+    "title": "Transmitir los resultados",
+    "description": "Como la herramienta se ejecutó durante la generación, los resultados vuelven de inmediato en streaming y el tiempo real se reduce casi a la mitad frente a una ida y vuelta en serie de pensar y luego llamar.",
+    "input": "",
+    "nodes": [
+     "confirm",
+     "results",
+     "output"
+    ],
+    "edges": [
+     "confirm-results",
+     "results-output"
+    ]
+   },
+   {
+    "title": "Predicción fallida manejada de forma segura",
+    "description": "En la ruta alternativa el usuario cancela; la llamada predicha nunca se confirma, así que el resultado especulativo aislado se descarta sin reserva y sin efectos secundarios.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "mispredict",
+     "sandbox",
+     "discard"
+    ],
+    "edges": [
+     "agent-mispredict",
+     "mispredict-discard",
+     "sandbox-discard"
+    ]
+   }
+  ]
+ }
+}

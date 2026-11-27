@@ -1,0 +1,677 @@
+{
+ "cat": "planning-execution",
+ "slug": "goal-decomposition",
+ "name": "Intelligent Goal Decomposition(IGD)",
+ "icon": "🎯",
+ "complexity": "medium",
+ "description": "Desglose sistemático de objetivos complejos en subobjetivos alcanzables y medibles, con criterios de éxito claros",
+ "features": [
+  "Creación de objetivos SMART",
+  "Análisis de dependencias",
+  "Estimación de los recursos necesarios",
+  "Evaluación de riesgos",
+  "Definición de métricas de éxito",
+  "Identificación de hitos"
+ ],
+ "tldr": {
+  "what": "Divide un objetivo difuso en subobjetivos medibles, con dependencias, necesidades de recursos, riesgos y métricas de éxito asignados a cada nivel.",
+  "when": "Proyectos complejos donde un alcance poco claro bloquea la planificación, o equipos que necesitan una visión compartida de qué significa \"terminado\" en cada etapa.",
+  "watchOut": "La descomposición excesiva genera trabajo inútil; la descomposición insuficiente deja bloqueos críticos ocultos hasta etapas tardías de la ejecución."
+ },
+ "overview": {
+  "pattern": "Desglose sistemático de objetivos complejos en subobjetivos alcanzables y medibles, con criterios de éxito claros",
+  "why": "Transforma ambiciones difusas en planes ejecutables, permite seguir el progreso y reduce la complejidad abrumadora mediante una descomposición estructurada",
+  "insight": "Objetivos SMART + mapeo de dependencias + priorización por impacto + monitoreo del progreso = logro sistemático",
+  "impl": [
+   {
+    "t": "Definir",
+    "d": "Establece un objetivo SMART con alcance, restricciones y criterios de éxito"
+   },
+   {
+    "t": "Descomponer",
+    "d": "Divide en subobjetivos y valida la cobertura"
+   },
+   {
+    "t": "Mapear",
+    "d": "Crea un grafo de dependencias (DAG) e identifica la ruta crítica"
+   },
+   {
+    "t": "Priorizar",
+    "d": "Ordena por impacto × urgencia × viabilidad"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Monitorea el progreso y adáptate según el feedback"
+   }
+  ],
+  "example": "improve_model_performance → [data_quality, architecture, training, validation] → executable_tasks",
+  "dos": [
+   "Redacta objetivos SMART con alcance y criterios de éxito explícitos",
+   "Crea un grafo de dependencias (DAG) para identificar la ruta crítica",
+   "Define criterios de aceptación y puertas de calidad para cada subobjetivo",
+   "Usa una priorización basada en evidencia (impacto × urgencia × viabilidad)",
+   "Implementa el seguimiento del progreso con checkpoints por hito",
+   "Separa la ideación del LLM de la validación y la planificación simbólicas",
+   "Versiona los árboles de objetivos y reutiliza plantillas probadas",
+   "Haz seguimiento de los riesgos y mantén tareas de mitigación junto con la entrega"
+  ],
+  "donts": [
+   "Descomponer en exceso objetivos simples (costo de planificación vs. beneficio)",
+   "Ignorar dependencias, lo que invalida el plan más adelante",
+   "Crear iteraciones sin límite y sin criterios de parada",
+   "Enfocarse en métricas de actividad en lugar de medir resultados",
+   "Omitir la alineación con los stakeholders sobre la definición de los objetivos",
+   "Usarlo para acciones críticas de seguridad sin revisión humana"
+  ],
+  "use": [
+   "Programas complejos con múltiples frentes de trabajo",
+   "Lanzamientos de productos con muchas dependencias",
+   "Hojas de ruta de investigación que requieren coordinación",
+   "Planificación estratégica con resultados medibles",
+   "Desarrollo personal con progreso estructurado",
+   "Iniciativas de excelencia operativa"
+  ],
+  "avoid": [
+   "Tareas triviales de un solo paso",
+   "Objetivos mal definidos sin alineación con los stakeholders",
+   "Sistemas de tiempo real estricto con presupuestos de microsegundos",
+   "Acciones críticas de seguridad que requieren verificación formal",
+   "Requisitos que cambian rápidamente y sin estabilidad",
+   "Procesos lineales simples sin dependencias"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de logro de objetivos",
+    "d": "% de subobjetivos completados con éxito"
+   },
+   {
+    "n": "Desviación del cronograma",
+    "d": "Tiempo de finalización real vs. planificado"
+   },
+   {
+    "n": "Eficiencia de la ruta crítica",
+    "d": "Tasa de entrega de hitos a tiempo"
+   },
+   {
+    "n": "Calidad de la descomposición",
+    "d": "Validación de cobertura y puntajes de revisión por pares"
+   },
+   {
+    "n": "Utilización de recursos",
+    "d": "Esfuerzo y costo reales vs. estimados"
+   },
+   {
+    "n": "Frecuencia de replanificación",
+    "d": "Número de ajustes del plan por objetivo"
+   },
+   {
+    "n": "Proporción de trabajo en paralelo",
+    "d": "% de tareas ejecutadas de forma concurrente vs. secuencial"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Desarrollo de modelos de IA",
+    "d": "\"Mejorar la precisión de 87%→95%\" → Calidad de datos + Optimización de la arquitectura + Mejora del entrenamiento + Validación con checkpoints medibles"
+   },
+   {
+    "n": "Lanzamiento de producto",
+    "d": "\"Lanzar una plataforma de e-commerce en 6 meses\" → Frontend + Backend + Pagos + Pruebas, con seguimiento de dependencias y frentes de trabajo en paralelo"
+   },
+   {
+    "n": "Proyecto de investigación",
+    "d": "\"Completar un estudio de análisis de mercado\" → Revisión de literatura + Recolección de datos + Análisis estadístico + Generación del informe, con puertas por hito"
+   },
+   {
+    "n": "Desarrollo personal",
+    "d": "\"Convertirme en experto en machine learning\" → Cursos de fundamentos + Proyectos prácticos + Construcción de portafolio + Preparación laboral, con seguimiento del progreso"
+   },
+   {
+    "n": "Estrategia de negocio",
+    "d": "\"Entrar a un nuevo segmento de mercado\" → Investigación de mercado + Adaptación del producto + Desarrollo de alianzas + Ejecución del lanzamiento, con mitigación de riesgos"
+   },
+   {
+    "n": "Arquitectura de software",
+    "d": "\"Migrar a microservicios\" → Identificación de servicios + División de la base de datos + Diseño de APIs + Automatización del despliegue, con planes de rollback"
+   },
+   {
+    "n": "Plan de estudios educativo",
+    "d": "\"Diseñar un curso de seguridad de IA\" → Objetivos de aprendizaje + Desarrollo de contenido + Diseño de evaluaciones + Optimización de la impartición, con ciclos de feedback"
+   },
+   {
+    "n": "Excelencia operativa",
+    "d": "\"Reducir 50% el tiempo de respuesta de atención al cliente\" → Análisis de procesos + Optimización de herramientas + Programas de capacitación + Monitoreo de calidad"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Descomposición inteligente de objetivos",
+  "description": "Desglose automatizado de objetivos estratégicos complejos en subobjetivos y tareas manejables, usando análisis de dependencias y restricciones de recursos para crear planes de acción ejecutables.",
+  "nodes": [
+   {
+    "id": "strategic-goal",
+    "label": "🎯 Objetivo estratégico\n\"Aumentar la retención de clientes en 30%\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "goal-analyzer",
+    "label": "🧠 Analizador de objetivos\nComprende objetivos y restricciones",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "decomposition-engine",
+    "label": "🔨 Motor de descomposición\nDivide en subobjetivos",
+    "x": 650,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "context-analyzer",
+    "label": "📊 Análisis de contexto\nActual: 65% de retención\nPromedio de la industria: 72%",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "constraint-identifier",
+    "label": "🔒 Identificador de restricciones\nPresupuesto: $500K\nPlazo: 6 meses",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "success-criteria",
+    "label": "✅ Criterios de éxito\nMedible: Sí\nCon plazo definido: Sí\nAlcanzable: Por definir",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "stakeholder-mapper",
+    "label": "👥 Mapeo de stakeholders\nVentas, Soporte, Producto\nMarketing, Ingeniería",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "subgoal-experience",
+    "label": "🎨 Mejorar la experiencia\nMeta: +15 NPS\nResponsable: Equipo de Producto",
+    "x": 100,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "subgoal-support",
+    "label": "💬 Mejorar el soporte\nMeta: respuesta <2hr\nResponsable: Equipo de Soporte",
+    "x": 300,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "subgoal-engagement",
+    "label": "📈 Aumentar la interacción\nMeta: uso 3x/semana\nResponsable: Marketing",
+    "x": 500,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "subgoal-onboarding",
+    "label": "🚀 Optimizar el onboarding\nMeta: 80% de finalización\nResponsable: Producto",
+    "x": 700,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "task-ui-redesign",
+    "label": "🖼️ Rediseño de UI\nKPI: finalización de tareas +20%\nPlazo: Mes 2",
+    "x": 50,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "task-performance",
+    "label": "⚡ Rendimiento\nKPI: tiempo de carga <2s\nPlazo: Mes 1",
+    "x": 200,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "task-chat-support",
+    "label": "💬 Chat 24/7\nKPI: 90% de satisfacción\nPlazo: Mes 2",
+    "x": 350,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "task-email-campaign",
+    "label": "📧 Campaña de email\nKPI: 25% de tasa de apertura\nPlazo: Continuo",
+    "x": 500,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "task-tutorial",
+    "label": "📚 Tutoriales\nKPI: 70% de tasa de visualización\nPlazo: Mes 1",
+    "x": 650,
+    "y": 520,
+    "w": 150
+   },
+   {
+    "id": "kpi-tracker",
+    "label": "📊 Seguimiento de KPIs\nDashboard de métricas en tiempo real",
+    "x": 100,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "dependency-validator",
+    "label": "🔗 Validador de dependencias\nVerifica las relaciones entre objetivos",
+    "x": 300,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "feasibility-checker",
+    "label": "⚖️ Verificador de viabilidad\nValida que sea alcanzable",
+    "x": 500,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "progress-aggregator",
+    "label": "📈 Agregador de progreso\nConsolida el progreso de los subobjetivos",
+    "x": 700,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "goal-adjuster",
+    "label": "🔄 Ajustador de objetivos\nRefina según el progreso",
+    "x": 250,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "resource-reallocator",
+    "label": "💰 Reasignador de recursos\nOptimiza la asignación del presupuesto",
+    "x": 450,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "risk-mitigator",
+    "label": "⚠️ Mitigador de riesgos\nAborda los bloqueos de forma proactiva",
+    "x": 650,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "output",
+    "label": "✨ Plan de logro de objetivos\nHoja de ruta accionable con hitos medibles",
+    "x": 400,
+    "y": 900,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-analyzer",
+    "s": "strategic-goal",
+    "t": "goal-analyzer",
+    "label": ""
+   },
+   {
+    "id": "analyzer-engine",
+    "s": "goal-analyzer",
+    "t": "decomposition-engine",
+    "label": "Procesar"
+   },
+   {
+    "id": "analyzer-context",
+    "s": "goal-analyzer",
+    "t": "context-analyzer",
+    "label": "Analizar"
+   },
+   {
+    "id": "analyzer-constraint",
+    "s": "goal-analyzer",
+    "t": "constraint-identifier",
+    "label": "Identificar"
+   },
+   {
+    "id": "analyzer-criteria",
+    "s": "goal-analyzer",
+    "t": "success-criteria",
+    "label": "Definir"
+   },
+   {
+    "id": "analyzer-stakeholder",
+    "s": "goal-analyzer",
+    "t": "stakeholder-mapper",
+    "label": "Mapear"
+   },
+   {
+    "id": "context-engine",
+    "s": "context-analyzer",
+    "t": "decomposition-engine",
+    "label": ""
+   },
+   {
+    "id": "constraint-engine",
+    "s": "constraint-identifier",
+    "t": "decomposition-engine",
+    "label": ""
+   },
+   {
+    "id": "criteria-engine",
+    "s": "success-criteria",
+    "t": "decomposition-engine",
+    "label": ""
+   },
+   {
+    "id": "engine-experience",
+    "s": "decomposition-engine",
+    "t": "subgoal-experience",
+    "label": "Crear"
+   },
+   {
+    "id": "engine-support",
+    "s": "decomposition-engine",
+    "t": "subgoal-support",
+    "label": "Crear"
+   },
+   {
+    "id": "engine-engagement",
+    "s": "decomposition-engine",
+    "t": "subgoal-engagement",
+    "label": "Crear"
+   },
+   {
+    "id": "engine-onboarding",
+    "s": "decomposition-engine",
+    "t": "subgoal-onboarding",
+    "label": "Crear"
+   },
+   {
+    "id": "experience-ui",
+    "s": "subgoal-experience",
+    "t": "task-ui-redesign",
+    "label": ""
+   },
+   {
+    "id": "experience-performance",
+    "s": "subgoal-experience",
+    "t": "task-performance",
+    "label": ""
+   },
+   {
+    "id": "support-chat",
+    "s": "subgoal-support",
+    "t": "task-chat-support",
+    "label": ""
+   },
+   {
+    "id": "engagement-email",
+    "s": "subgoal-engagement",
+    "t": "task-email-campaign",
+    "label": ""
+   },
+   {
+    "id": "onboarding-tutorial",
+    "s": "subgoal-onboarding",
+    "t": "task-tutorial",
+    "label": ""
+   },
+   {
+    "id": "tasks-kpi",
+    "s": "task-ui-redesign",
+    "t": "kpi-tracker",
+    "label": "Seguir"
+   },
+   {
+    "id": "subgoals-dependency",
+    "s": "subgoal-experience",
+    "t": "dependency-validator",
+    "label": "Validar"
+   },
+   {
+    "id": "subgoals-feasibility",
+    "s": "subgoal-support",
+    "t": "feasibility-checker",
+    "label": "Verificar"
+   },
+   {
+    "id": "kpi-progress",
+    "s": "kpi-tracker",
+    "t": "progress-aggregator",
+    "label": ""
+   },
+   {
+    "id": "dependency-progress",
+    "s": "dependency-validator",
+    "t": "progress-aggregator",
+    "label": ""
+   },
+   {
+    "id": "feasibility-progress",
+    "s": "feasibility-checker",
+    "t": "progress-aggregator",
+    "label": ""
+   },
+   {
+    "id": "progress-adjuster",
+    "s": "progress-aggregator",
+    "t": "goal-adjuster",
+    "label": "Informar"
+   },
+   {
+    "id": "progress-reallocator",
+    "s": "progress-aggregator",
+    "t": "resource-reallocator",
+    "label": "Optimizar"
+   },
+   {
+    "id": "progress-mitigator",
+    "s": "progress-aggregator",
+    "t": "risk-mitigator",
+    "label": "Alertar"
+   },
+   {
+    "id": "adjuster-engine",
+    "s": "goal-adjuster",
+    "t": "decomposition-engine",
+    "label": "Refinar"
+   },
+   {
+    "id": "reallocator-constraint",
+    "s": "resource-reallocator",
+    "t": "constraint-identifier",
+    "label": "Actualizar"
+   },
+   {
+    "id": "adjuster-output",
+    "s": "goal-adjuster",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "reallocator-output",
+    "s": "resource-reallocator",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "mitigator-output",
+    "s": "risk-mitigator",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada del objetivo estratégico",
+    "description": "Define un objetivo de alto nivel con un valor de negocio claro",
+    "input": "",
+    "nodes": [
+     "strategic-goal"
+    ],
+    "edges": [
+     "goal-analyzer"
+    ]
+   },
+   {
+    "title": "Análisis del objetivo",
+    "description": "Analiza el contexto, las restricciones, los criterios y los stakeholders del objetivo",
+    "input": "",
+    "nodes": [
+     "goal-analyzer",
+     "context-analyzer",
+     "constraint-identifier",
+     "success-criteria",
+     "stakeholder-mapper"
+    ],
+    "edges": [
+     "analyzer-context",
+     "analyzer-constraint",
+     "analyzer-criteria",
+     "analyzer-stakeholder"
+    ]
+   },
+   {
+    "title": "Procesamiento de la descomposición",
+    "description": "Procesa los resultados del análisis para preparar la descomposición",
+    "input": "",
+    "nodes": [
+     "decomposition-engine",
+     "context-analyzer",
+     "constraint-identifier",
+     "success-criteria"
+    ],
+    "edges": [
+     "analyzer-engine",
+     "context-engine",
+     "constraint-engine",
+     "criteria-engine"
+    ]
+   },
+   {
+    "title": "Crear subobjetivos",
+    "description": "Divide en subobjetivos medibles con responsables claros",
+    "input": "",
+    "nodes": [
+     "decomposition-engine",
+     "subgoal-experience",
+     "subgoal-support",
+     "subgoal-engagement",
+     "subgoal-onboarding"
+    ],
+    "edges": [
+     "engine-experience",
+     "engine-support",
+     "engine-engagement",
+     "engine-onboarding"
+    ]
+   },
+   {
+    "title": "Definir tareas accionables",
+    "description": "Descompone aún más los subobjetivos en tareas concretas con KPIs",
+    "input": "",
+    "nodes": [
+     "task-ui-redesign",
+     "task-performance",
+     "task-chat-support",
+     "task-email-campaign",
+     "task-tutorial"
+    ],
+    "edges": [
+     "experience-ui",
+     "experience-performance",
+     "support-chat",
+     "engagement-email",
+     "onboarding-tutorial"
+    ]
+   },
+   {
+    "title": "Establecer la medición",
+    "description": "Configura el seguimiento de KPIs y los mecanismos de validación",
+    "input": "",
+    "nodes": [
+     "kpi-tracker",
+     "dependency-validator",
+     "feasibility-checker"
+    ],
+    "edges": [
+     "tasks-kpi",
+     "subgoals-dependency",
+     "subgoals-feasibility"
+    ]
+   },
+   {
+    "title": "Agregar el progreso",
+    "description": "Consolida las métricas de progreso de todos los sistemas de seguimiento",
+    "input": "",
+    "nodes": [
+     "progress-aggregator",
+     "kpi-tracker",
+     "dependency-validator",
+     "feasibility-checker"
+    ],
+    "edges": [
+     "kpi-progress",
+     "dependency-progress",
+     "feasibility-progress"
+    ]
+   },
+   {
+    "title": "Planificación adaptativa",
+    "description": "Ajusta los objetivos, reasigna recursos y mitiga riesgos",
+    "input": "",
+    "nodes": [
+     "goal-adjuster",
+     "resource-reallocator",
+     "risk-mitigator"
+    ],
+    "edges": [
+     "progress-adjuster",
+     "progress-reallocator",
+     "progress-mitigator"
+    ]
+   },
+   {
+    "title": "Ciclo de refinamiento",
+    "description": "Retroalimenta las conclusiones para mejorar la descomposición",
+    "input": "",
+    "nodes": [
+     "goal-adjuster",
+     "decomposition-engine",
+     "resource-reallocator",
+     "constraint-identifier"
+    ],
+    "edges": [
+     "adjuster-engine",
+     "reallocator-constraint"
+    ]
+   },
+   {
+    "title": "Hoja de ruta final",
+    "description": "Entrega un plan completo de logro de objetivos con hitos",
+    "input": "",
+    "nodes": [
+     "output",
+     "goal-adjuster",
+     "resource-reallocator",
+     "risk-mitigator"
+    ],
+    "edges": [
+     "adjuster-output",
+     "reallocator-output",
+     "mitigator-output"
+    ]
+   }
+  ]
+ }
+}

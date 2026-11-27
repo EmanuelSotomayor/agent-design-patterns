@@ -1,0 +1,351 @@
+{
+ "cat": "security-privacy",
+ "slug": "identity-access-management",
+ "name": "Identity & Access Management(IAM)",
+ "icon": "🔑",
+ "complexity": "high",
+ "description": "Autenticación, autorización y verificación de identidad seguras para los agentes",
+ "features": [
+  "Autenticación multifactor",
+  "Control de acceso basado en roles",
+  "Integración de inicio de sesión único (SSO)",
+  "Federación de identidades",
+  "Gestión de accesos privilegiados",
+  "Autenticación continua"
+ ],
+ "tldr": {
+  "what": "Verifica la identidad del agente mediante certificados o tokens, aplica permisos basados en roles y vuelve a validar el acceso a intervalos o ante operaciones sensibles.",
+  "when": "Sistemas multi-tenant, entornos regulados o agentes que acceden a datos sensibles o realizan cambios irreversibles en varios servicios.",
+  "watchOut": "Las políticas demasiado estrictas pueden bloquear los flujos de trabajo de los agentes; las demasiado laxas anulan el propósito de seguridad. El equilibrio requiere monitoreo continuo."
+ },
+ "overview": {
+  "pattern": "Autenticación, autorización y verificación de identidad seguras para los agentes, con un control de acceso integral",
+  "why": "Garantiza interacciones seguras entre agentes, evita accesos no autorizados, mantiene registros de auditoría y facilita el cumplimiento normativo",
+  "insight": "Identidad basada en certificados + autenticación basada en riesgo + autorización basada en roles → ecosistema de agentes seguro",
+  "impl": [
+   {
+    "t": "Registro de identidad",
+    "d": "Certificados del agente y creación de una identidad única"
+   },
+   {
+    "t": "Autenticación",
+    "d": "Verificación multifactor y validación de certificados"
+   },
+   {
+    "t": "Autorización",
+    "d": "Permisos basados en roles y evaluación de políticas"
+   },
+   {
+    "t": "Control de acceso",
+    "d": "Evaluación dinámica de riesgos y monitoreo"
+   },
+   {
+    "t": "Auditoría y cumplimiento",
+    "d": "Registro de actividad y verificación continua"
+   }
+  ],
+  "example": "identity_registration → authentication_flow → authorization_check → access_control → audit_logging",
+  "dos": [
+   "Usa autenticación basada en certificados para los agentes",
+   "Implementa autenticación continua basada en riesgo",
+   "Aplica el principio de mínimo privilegio",
+   "Mantén registros de auditoría completos",
+   "Intégrate con los proveedores de SSO/identidad existentes"
+  ],
+  "donts": [
+   "Usar API keys estáticas para accesos de largo plazo",
+   "Omitir la verificación de identidad para agentes internos",
+   "Otorgar permisos amplios sin justificación",
+   "Ignorar los patrones de autenticación fallida",
+   "Guardar credenciales en texto plano"
+  ],
+  "use": [
+   "Sistemas de IA empresariales",
+   "Plataformas multi-tenant",
+   "Despliegues de servicios en la nube",
+   "Requisitos de seguridad de APIs"
+  ],
+  "avoid": [
+   "Aplicaciones de escritorio de un solo usuario",
+   "Prototipos de prueba de concepto",
+   "Herramientas internas de desarrollo",
+   "Entornos de baja seguridad"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de autenticación",
+    "d": "% de verificaciones de identidad exitosas"
+   },
+   {
+    "n": "Latencia de autorización",
+    "d": "Tiempo de las decisiones de acceso (ms)"
+   },
+   {
+    "n": "Automatización del ciclo de vida de identidades",
+    "d": "% de altas/bajas automatizadas"
+   },
+   {
+    "n": "Violaciones de acceso privilegiado",
+    "d": "Intentos de elevación no autorizados"
+   },
+   {
+    "n": "Completitud de la auditoría",
+    "d": "% de acciones con registros completos"
+   },
+   {
+    "n": "Precisión de la evaluación de riesgos",
+    "d": "Tasa de identificación correcta de amenazas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Plataforma de IA empresarial",
+    "d": "Integración con SSO, permisos de agentes basados en roles, cumplimiento de auditoría"
+   },
+   {
+    "n": "SaaS multi-tenant",
+    "d": "Aislamiento de tenants, gestión de API keys, seguimiento del uso"
+   },
+   {
+    "n": "Servicios de IA en la nube",
+    "d": "Autenticación basada en certificados, integración con OAuth, identidad federada"
+   },
+   {
+    "n": "Sistemas de IA financieros",
+    "d": "Gestión de accesos privilegiados, autenticación reforzada, cumplimiento regulatorio"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Acceso conforme a HIPAA, atribución por usuario, acceso mínimo necesario"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Identity & Access Management",
+  "description": "Sistema de autenticación, autorización y verificación de identidad seguras para agentes, con controles de acceso basados en roles y validación continua de la identidad",
+  "nodes": [
+   {
+    "id": "enterprise-system",
+    "label": "🏢 Sistema empresarial multiagente\n\"Agente de RR. HH. + Agente de Nómina + Agente de Finanzas\naccediendo a datos sensibles de empleados y\nfinancieros entre departamentos\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "access-request",
+    "label": "🔑 Solicitud de acceso del agente\n\"El Agente de RR. HH. solicita acceso a\nla base de datos de nómina para procesar\nel cálculo de bonos del T4\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "basic-auth",
+    "label": "🔓 Autenticación básica\n\"Usuario/contraseña simple\nSin verificación de roles\nPermisos de acceso estáticos\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "credential-compromise",
+    "label": "🚨 Credenciales comprometidas\n\"Roban las credenciales del Agente de RR. HH.\nEl atacante obtiene acceso total a la nómina\nSin verificación adicional\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "unauthorized-access",
+    "label": "💀 Acceso no autorizado a los datos\n\"El atacante descarga todos los datos salariales\nModifica la compensación de los ejecutivos\nSin registro de auditoría de los cambios\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "data-breach",
+    "label": "📰 Gran filtración de datos\n\"Se filtran 50,000 registros de empleados\nMulta regulatoria de $10M\nDaño a la reputación de la empresa\"",
+    "x": 150,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "comprehensive-iam",
+    "label": "🛡️ Sistema IAM integral\n\"Autenticación multifactor\nControl de acceso basado en roles\nValidación continua de la identidad\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "identity-verification",
+    "label": "🔍 Verificación de identidad en varias capas\n\"1. Validación del certificado del agente\n2. Biometría conductual\n3. Análisis del contexto de la solicitud\"",
+    "x": 650,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "authorization-check",
+    "label": "⚖️ Autorización dinámica\n\"Rol de RR. HH. verificado\nAcceso a nómina: SOLO LECTURA\nCálculo de bonos: APROBADO\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "secure-access",
+    "label": "✅ Acceso seguro otorgado\n\"Token de acceso con tiempo limitado\nTodas las acciones registradas y monitoreadas\nPrincipio de mínimo privilegio aplicado\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "iam-principle",
+    "label": "🎯 Principio de seguridad de IAM\n\"La identidad es el nuevo perímetro\nAutentica la identidad, autoriza las acciones\nVerificación continua, no confianza\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "enterprise-system",
+    "t": "access-request",
+    "label": "el agente solicita acceso"
+   },
+   {
+    "id": "e2",
+    "s": "access-request",
+    "t": "basic-auth",
+    "label": "autenticación básica"
+   },
+   {
+    "id": "e3",
+    "s": "access-request",
+    "t": "comprehensive-iam",
+    "label": "IAM integral"
+   },
+   {
+    "id": "e4",
+    "s": "basic-auth",
+    "t": "credential-compromise",
+    "label": "la seguridad débil facilita el robo"
+   },
+   {
+    "id": "e5",
+    "s": "credential-compromise",
+    "t": "unauthorized-access",
+    "label": "el atacante usa credenciales robadas"
+   },
+   {
+    "id": "e6",
+    "s": "unauthorized-access",
+    "t": "data-breach",
+    "label": "escala a una gran filtración"
+   },
+   {
+    "id": "e7",
+    "s": "comprehensive-iam",
+    "t": "identity-verification",
+    "label": "verificar identidad"
+   },
+   {
+    "id": "e8",
+    "s": "identity-verification",
+    "t": "authorization-check",
+    "label": "revisar autorización"
+   },
+   {
+    "id": "e9",
+    "s": "authorization-check",
+    "t": "secure-access",
+    "label": "otorgar acceso seguro"
+   },
+   {
+    "id": "e10",
+    "s": "data-breach",
+    "t": "iam-principle",
+    "label": "demuestra una necesidad crítica"
+   },
+   {
+    "id": "e11",
+    "s": "secure-access",
+    "t": "iam-principle",
+    "label": "habilita operaciones seguras"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Sistema empresarial multiagente",
+    "description": "Sistema empresarial con un Agente de RR. HH., un Agente de Nómina y un Agente de Finanzas que requieren acceso seguro a datos sensibles de empleados y financieros entre departamentos.",
+    "input": "",
+    "nodes": [
+     "enterprise-system"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Solicitud de acceso del agente a datos sensibles",
+    "description": "El Agente de RR. HH. solicita acceso a la base de datos de nómina para calcular los bonos del T4, lo que exige verificar la autenticación y la autorización de forma segura.",
+    "input": "",
+    "nodes": [
+     "access-request"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de autenticación: básico vs. integral",
+    "description": "La misma solicitud de acceso procesada mediante autenticación básica de usuario/contraseña (izquierda) vs. un sistema IAM integral (derecha) con seguridad en varias capas.",
+    "input": "",
+    "nodes": [
+     "basic-auth",
+     "comprehensive-iam"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Cadena de vulnerabilidades de la autenticación básica",
+    "description": "La autenticación débil facilita el robo de credenciales; el atacante usa las credenciales robadas para acceder sin autorización, lo que lleva a comprometer todos los datos sin ser detectado.",
+    "input": "",
+    "nodes": [
+     "credential-compromise",
+     "unauthorized-access"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "IAM integral: seguridad en varias capas",
+    "description": "El sistema IAM valida el certificado del agente, aplica biometría conductual y análisis de contexto, y luego una autorización dinámica basada en roles con el principio de mínimo privilegio.",
+    "input": "",
+    "nodes": [
+     "identity-verification",
+     "authorization-check"
+    ],
+    "edges": [
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Resultados de seguridad y principio central de IAM",
+    "description": "La autenticación básica termina en una gran filtración de datos y una multa de $10M, mientras que el IAM integral brinda acceso seguro con monitoreo, demostrando que la identidad es el nuevo perímetro de seguridad.",
+    "input": "",
+    "nodes": [
+     "data-breach",
+     "secure-access",
+     "iam-principle"
+    ],
+    "edges": [
+     "e6",
+     "e9",
+     "e10",
+     "e11"
+    ]
+   }
+  ]
+ }
+}

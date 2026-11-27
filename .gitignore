@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Temporales de pruebas y capturas
+_check_*.html
+_*.png
+_*.html
+
+# Sistema
+.DS_Store
+Thumbs.db

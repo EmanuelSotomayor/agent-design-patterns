@@ -1,0 +1,324 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "event-driven-blackboard",
+ "name": "Event-Driven Blackboard(EDB)",
+ "icon": "📝",
+ "complexity": "medium",
+ "description": "Base de conocimiento compartida mediante streaming de eventos para la colaboración asíncrona",
+ "features": [
+  "Conocimiento compartido basado en eventos (event sourcing)",
+  "Colaboración asíncrona entre agentes",
+  "Seguimiento de la evolución del conocimiento",
+  "Contribuciones de varios agentes",
+  "Disparadores y reacciones basados en eventos",
+  "Historial persistente de la colaboración"
+ ],
+ "tldr": {
+  "what": "Los agentes publican eventos en una base de conocimiento compartida; otros agentes se suscriben, reaccionan de forma asíncrona y publican nuevos eventos, creando un registro de auditoría persistente de las contribuciones.",
+  "when": "Varios agentes deben colaborar en problemas que evolucionan, donde los resultados intermedios informan a los demás, y necesitas rastrear cómo se formaron las conclusiones a lo largo del tiempo.",
+  "watchOut": "Los errores de orden y de sincronización de eventos se multiplican rápidamente; los agentes pueden actuar sobre datos desactualizados o perder eventos críticos, lo que provoca estados finales inconsistentes."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Event-Driven Blackboard",
+  "description": "Los agentes especialistas colaboran a través de un espacio de conocimiento compartido basado en eventos, en lugar de mensajes directos. Cada especialista observa la pizarra y contribuye de forma oportunista cuando el estado actual coincide con su especialidad, construyendo el conocimiento de forma incremental con un registro de auditoría completo.",
+  "nodes": [
+   {
+    "id": "research-problem",
+    "label": "🔬 Problema de investigación\n\"Identificar un candidato a fármaco para el objetivo X\"",
+    "x": 360,
+    "y": 40,
+    "w": 320
+   },
+   {
+    "id": "blackboard",
+    "label": "🧠 Pizarra compartida\nEspacio de conocimiento basado en eventos",
+    "x": 340,
+    "y": 170,
+    "w": 340
+   },
+   {
+    "id": "hypothesis-agent",
+    "label": "🧪 Agente de hipótesis\nPropone mecanismos candidatos",
+    "x": 40,
+    "y": 165,
+    "w": 190
+   },
+   {
+    "id": "data-agent",
+    "label": "📊 Agente de datos\nRecupera evidencia de respaldo",
+    "x": 40,
+    "y": 320,
+    "w": 190
+   },
+   {
+    "id": "analysis-agent",
+    "label": "📈 Agente de análisis\nCalcula estadísticas",
+    "x": 740,
+    "y": 165,
+    "w": 190
+   },
+   {
+    "id": "review-agent",
+    "label": "🔍 Agente de revisión por pares\nValida la metodología",
+    "x": 740,
+    "y": 320,
+    "w": 190
+   },
+   {
+    "id": "hypothesis-event",
+    "label": "📌 hypothesis-posted\nEntrada de conocimiento",
+    "x": 90,
+    "y": 450,
+    "w": 160
+   },
+   {
+    "id": "evidence-event",
+    "label": "📌 evidence-added\nEntrada de conocimiento",
+    "x": 270,
+    "y": 450,
+    "w": 160
+   },
+   {
+    "id": "analysis-event",
+    "label": "📌 analysis-completed\nEntrada de conocimiento",
+    "x": 450,
+    "y": 450,
+    "w": 160
+   },
+   {
+    "id": "review-event",
+    "label": "📌 peer-review-submitted\nEntrada de conocimiento",
+    "x": 630,
+    "y": 450,
+    "w": 160
+   },
+   {
+    "id": "synthesis-agent",
+    "label": "🧩 Agente de síntesis\nConstruye consenso a partir del estado",
+    "x": 350,
+    "y": 570,
+    "w": 220
+   },
+   {
+    "id": "consensus-event",
+    "label": "🤝 consensus-reached\nEstado de conocimiento estable",
+    "x": 375,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✅ Conclusión validada\nCandidato a fármaco priorizado con evidencia",
+    "x": 340,
+    "y": 780,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "problem-blackboard",
+    "s": "research-problem",
+    "t": "blackboard",
+    "label": ""
+   },
+   {
+    "id": "blackboard-hypothesis",
+    "s": "blackboard",
+    "t": "hypothesis-agent",
+    "label": "Disparar"
+   },
+   {
+    "id": "hypothesis-event-write",
+    "s": "hypothesis-agent",
+    "t": "hypothesis-event",
+    "label": "Escribir"
+   },
+   {
+    "id": "hypothesis-blackboard",
+    "s": "hypothesis-event",
+    "t": "blackboard",
+    "label": ""
+   },
+   {
+    "id": "blackboard-data",
+    "s": "blackboard",
+    "t": "data-agent",
+    "label": "Disparar"
+   },
+   {
+    "id": "data-event-write",
+    "s": "data-agent",
+    "t": "evidence-event",
+    "label": "Escribir"
+   },
+   {
+    "id": "evidence-blackboard",
+    "s": "evidence-event",
+    "t": "blackboard",
+    "label": ""
+   },
+   {
+    "id": "blackboard-analysis",
+    "s": "blackboard",
+    "t": "analysis-agent",
+    "label": "Disparar"
+   },
+   {
+    "id": "analysis-event-write",
+    "s": "analysis-agent",
+    "t": "analysis-event",
+    "label": "Escribir"
+   },
+   {
+    "id": "analysis-blackboard",
+    "s": "analysis-event",
+    "t": "blackboard",
+    "label": ""
+   },
+   {
+    "id": "blackboard-review",
+    "s": "blackboard",
+    "t": "review-agent",
+    "label": "Disparar"
+   },
+   {
+    "id": "review-event-write",
+    "s": "review-agent",
+    "t": "review-event",
+    "label": "Escribir"
+   },
+   {
+    "id": "review-blackboard",
+    "s": "review-event",
+    "t": "blackboard",
+    "label": ""
+   },
+   {
+    "id": "blackboard-synthesis",
+    "s": "blackboard",
+    "t": "synthesis-agent",
+    "label": "Disparar"
+   },
+   {
+    "id": "synthesis-consensus",
+    "s": "synthesis-agent",
+    "t": "consensus-event",
+    "label": "Escribir"
+   },
+   {
+    "id": "consensus-blackboard",
+    "s": "consensus-event",
+    "t": "blackboard",
+    "label": ""
+   },
+   {
+    "id": "blackboard-output",
+    "s": "consensus-event",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Problema publicado",
+    "description": "Un problema de investigación inicializa la pizarra compartida. No se asigna a ningún agente; los especialistas reaccionarán por su cuenta al estado del conocimiento a medida que evoluciona.",
+    "input": "",
+    "nodes": [
+     "research-problem",
+     "blackboard"
+    ],
+    "edges": [
+     "problem-blackboard"
+    ]
+   },
+   {
+    "title": "Contribución de hipótesis",
+    "description": "El agente de hipótesis detecta una pizarra vacía y publica de forma oportunista un mecanismo candidato como un evento hypothesis-posted.",
+    "input": "",
+    "nodes": [
+     "blackboard",
+     "hypothesis-agent",
+     "hypothesis-event"
+    ],
+    "edges": [
+     "blackboard-hypothesis",
+     "hypothesis-event-write",
+     "hypothesis-blackboard"
+    ]
+   },
+   {
+    "title": "Recopilación de evidencia",
+    "description": "La nueva hipótesis dispara al agente de datos, que recupera evidencia de respaldo y agrega un evento evidence-added.",
+    "input": "",
+    "nodes": [
+     "blackboard",
+     "data-agent",
+     "evidence-event"
+    ],
+    "edges": [
+     "blackboard-data",
+     "data-event-write",
+     "evidence-blackboard"
+    ]
+   },
+   {
+    "title": "Análisis estadístico",
+    "description": "Con la evidencia disponible, el agente de análisis se activa y escribe un evento analysis-completed con las estadísticas calculadas.",
+    "input": "",
+    "nodes": [
+     "blackboard",
+     "analysis-agent",
+     "analysis-event"
+    ],
+    "edges": [
+     "blackboard-analysis",
+     "analysis-event-write",
+     "analysis-blackboard"
+    ]
+   },
+   {
+    "title": "Revisión por pares",
+    "description": "El agente de revisión por pares valida la metodología que ya está en la pizarra y envía un evento peer-review-submitted.",
+    "input": "",
+    "nodes": [
+     "blackboard",
+     "review-agent",
+     "review-event"
+    ],
+    "edges": [
+     "blackboard-review",
+     "review-event-write",
+     "review-blackboard"
+    ]
+   },
+   {
+    "title": "Síntesis del consenso",
+    "description": "Al ver que la hipótesis, la evidencia, el análisis y la revisión están presentes, el agente de síntesis los concilia en un estado consensus-reached.",
+    "input": "",
+    "nodes": [
+     "blackboard",
+     "synthesis-agent",
+     "consensus-event"
+    ],
+    "edges": [
+     "blackboard-synthesis",
+     "synthesis-consensus",
+     "consensus-blackboard"
+    ]
+   },
+   {
+    "title": "Conclusión validada",
+    "description": "El estado de consenso estable se emite como la conclusión final, respaldado por el historial completo de eventos que muestra cómo se alcanzó.",
+    "input": "",
+    "nodes": [
+     "consensus-event",
+     "output"
+    ],
+    "edges": [
+     "blackboard-output"
+    ]
+   }
+  ]
+ }
+}

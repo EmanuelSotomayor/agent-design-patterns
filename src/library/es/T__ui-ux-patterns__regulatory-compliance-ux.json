@@ -1,0 +1,346 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "regulatory-compliance-ux",
+ "name": "Regulatory Compliance UX(RCX)",
+ "icon": "⚖️",
+ "complexity": "high",
+ "description": "Diseño de experiencia de usuario para GDPR, CCPA y las regulaciones emergentes de IA, que incluye interfaces del derecho a explicación, automatización de los derechos de los titulares de datos, visualización en paneles de cumplimiento y adhesión regulatoria proactiva desde el diseño.",
+ "features": [
+  "Interfaces del derecho a explicación para decisiones automatizadas",
+  "Automatización de solicitudes de derechos de los titulares de datos (acceso, eliminación, portabilidad)",
+  "Flujos de consentimiento y divulgación según la jurisdicción",
+  "Paneles de cumplimiento con evidencia lista para auditoría"
+ ],
+ "tldr": {
+  "what": "Integra los requisitos regulatorios directamente en las interfaces de usuario: flujos de consentimiento, explicaciones de decisiones, solicitudes de derechos sobre los datos y registros de auditoría visibles para los usuarios.",
+  "when": "Sistemas que procesan datos personales en múltiples jurisdicciones o que usan decisiones automatizadas que activan obligaciones de GDPR, CCPA o el AI Act.",
+  "watchOut": "La UX de cumplimiento suele quedarse en una casilla de cumplimiento; los usuarios ignoran los muros de avisos, y las interfaces de explicación mal diseñadas oscurecen las decisiones en lugar de aclararlas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón de UX de cumplimiento normativo",
+  "description": "Diseño de experiencia de usuario para GDPR, CCPA y las regulaciones emergentes de IA, que incluye interfaces del derecho a explicación, automatización de los derechos de los titulares de datos, visualización en paneles de cumplimiento y adhesión regulatoria proactiva desde el diseño",
+  "nodes": [
+   {
+    "id": "global-ai-service",
+    "label": "🌍 Lanzamiento global de un servicio de IA\n\"Plataforma de reclutamiento con IA que se expande\na la UE (GDPR) y California (CCPA)\ny se prepara para cumplir el EU AI Act\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "regulatory-complexity",
+    "label": "⚖️ Cumplimiento en múltiples jurisdicciones\n\"GDPR: derecho a explicación + portabilidad de datos\nCCPA: transparencia + derechos de eliminación\nEU AI Act: requisitos para sistemas de alto riesgo\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "reactive-compliance",
+    "label": "🚨 Enfoque de cumplimiento reactivo\n\"El equipo legal revisa después del desarrollo\nFunciones de privacidad agregadas a posteriori\nProcesos de cumplimiento manuales\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "compliance-friction",
+    "label": "⚙️ Alta fricción en el cumplimiento\n\"Solicitudes de titulares de datos manuales\nRevisiones legales que consumen mucho tiempo\nExperiencias de usuario inconsistentes\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "regulatory-risk",
+    "label": "💸 Riesgo regulatorio y sanciones\n\"Posibles multas de €20M por GDPR\n$7,500 por infracción (CCPA)\nRestricciones de acceso al mercado\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "proactive-compliance",
+    "label": "🛡️ Cumplimiento proactivo desde el diseño\n\"Adhesión regulatoria integrada\nWorkflows de cumplimiento automatizados\nInterfaces de derechos centradas en el usuario\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "gdpr-interfaces",
+    "label": "🇪🇺 Interfaces de cumplimiento de GDPR\n\"Derecho de acceso: portal de descarga de datos\nDerecho de rectificación: edición en línea\nDerecho de supresión: botón 'Olvídame'\"",
+    "x": 450,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "explanation-interface",
+    "label": "🔍 UI de explicación de decisiones de IA\n\"¿Por qué me rechazaron?\n• Experiencia: peso 65%\n• Coincidencia de habilidades: peso 23%\n• Ubicación: peso 12%\"",
+    "x": 700,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "ccpa-interfaces",
+    "label": "🇺🇸 Funciones de cumplimiento de CCPA\n\"Interruptor No vender mis datos\nDivulgación de categorías de información personal\nTransparencia sobre lo que se comparte con terceros\"",
+    "x": 950,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "ai-act-compliance",
+    "label": "🤖 UI de sistema de alto riesgo del EU AI Act\n\"Evaluación de riesgos: documentada\nSupervisión humana: siempre activada\nMonitoreo de sesgos: alertas en tiempo real\"",
+    "x": 450,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "compliance-automation",
+    "label": "⚙️ Motor de cumplimiento automatizado\n\"Eliminación automática por retención de datos\nNotificaciones de vencimiento del consentimiento\nGeneración de reportes regulatorios\"",
+    "x": 700,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "compliance-dashboard",
+    "label": "📊 Panel de salud del cumplimiento\n\"GDPR: 98% de cumplimiento\nCCPA: 100% de cumplimiento\nAI Act: preparación al 85%\"",
+    "x": 950,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "regulatory-confidence",
+    "label": "✅ Confianza regulatoria\n\"Los usuarios confían en el manejo de datos\nEjercicio de derechos sin fricciones\nDecisiones de IA transparentes\"",
+    "x": 575,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "business-advantages",
+    "label": "🚀 Ventaja competitiva para el negocio\n\"Entrada más rápida a mercados globales\nMenores costos legales\nReputación de marca centrada en la privacidad\"",
+    "x": 825,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "compliance-principle",
+    "label": "🎯 Principio de UX de cumplimiento normativo\n\"El cumplimiento debe mejorar la experiencia de usuario, no entorpecerla.\nLos requisitos regulatorios se convierten en oportunidades\npara empoderar al usuario y construir confianza.\"",
+    "x": 650,
+    "y": 950,
+    "w": 450
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "global-ai-service",
+    "t": "regulatory-complexity",
+    "label": "debe moverse entre múltiples jurisdicciones"
+   },
+   {
+    "id": "e2",
+    "s": "regulatory-complexity",
+    "t": "reactive-compliance",
+    "label": "enfoque reactivo tradicional"
+   },
+   {
+    "id": "e3",
+    "s": "regulatory-complexity",
+    "t": "proactive-compliance",
+    "label": "enfoque de diseño proactivo"
+   },
+   {
+    "id": "e4",
+    "s": "reactive-compliance",
+    "t": "compliance-friction",
+    "label": "genera carga operativa"
+   },
+   {
+    "id": "e5",
+    "s": "compliance-friction",
+    "t": "regulatory-risk",
+    "label": "aumenta el riesgo de infracciones"
+   },
+   {
+    "id": "e6",
+    "s": "proactive-compliance",
+    "t": "gdpr-interfaces",
+    "label": "implementa los derechos del GDPR"
+   },
+   {
+    "id": "e7",
+    "s": "proactive-compliance",
+    "t": "explanation-interface",
+    "label": "ofrece transparencia de la IA"
+   },
+   {
+    "id": "e8",
+    "s": "proactive-compliance",
+    "t": "ccpa-interfaces",
+    "label": "habilita el cumplimiento de CCPA"
+   },
+   {
+    "id": "e9",
+    "s": "gdpr-interfaces",
+    "t": "ai-act-compliance",
+    "label": "se integra con la gobernanza de IA"
+   },
+   {
+    "id": "e10",
+    "s": "explanation-interface",
+    "t": "compliance-automation",
+    "label": "alimenta los sistemas automatizados"
+   },
+   {
+    "id": "e11",
+    "s": "ccpa-interfaces",
+    "t": "compliance-dashboard",
+    "label": "monitorea el estado del cumplimiento"
+   },
+   {
+    "id": "e12",
+    "s": "ai-act-compliance",
+    "t": "compliance-automation",
+    "label": "automatiza el monitoreo de riesgos"
+   },
+   {
+    "id": "e13",
+    "s": "compliance-automation",
+    "t": "compliance-dashboard",
+    "label": "ofrece el estado en tiempo real"
+   },
+   {
+    "id": "e14",
+    "s": "ai-act-compliance",
+    "t": "regulatory-confidence",
+    "label": "genera confianza en el usuario"
+   },
+   {
+    "id": "e15",
+    "s": "compliance-dashboard",
+    "t": "regulatory-confidence",
+    "label": "demuestra transparencia"
+   },
+   {
+    "id": "e16",
+    "s": "regulatory-confidence",
+    "t": "business-advantages",
+    "label": "crea valor de mercado"
+   },
+   {
+    "id": "e17",
+    "s": "regulatory-risk",
+    "t": "compliance-principle",
+    "label": "destaca la importancia del cumplimiento"
+   },
+   {
+    "id": "e18",
+    "s": "regulatory-confidence",
+    "t": "compliance-principle",
+    "label": "valida el enfoque centrado en el usuario"
+   },
+   {
+    "id": "e19",
+    "s": "business-advantages",
+    "t": "compliance-principle",
+    "label": "prueba el valor para el negocio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de cumplimiento multijurisdiccional de un servicio de IA global",
+    "description": "Una plataforma de reclutamiento con IA que se expande globalmente debe cumplir el GDPR (derecho a explicación, portabilidad de datos) y la CCPA (transparencia, derechos de eliminación), y prepararse para los requisitos del EU AI Act para sistemas de alto riesgo.",
+    "input": "",
+    "nodes": [
+     "global-ai-service",
+     "regulatory-complexity"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de cumplimiento normativo",
+    "description": "Los requisitos multijurisdiccionales se abordan con el cumplimiento reactivo tradicional, con adaptaciones legales a posteriori (izquierda), frente al cumplimiento proactivo desde el diseño, con adhesión integrada (derecha).",
+    "input": "",
+    "nodes": [
+     "reactive-compliance",
+     "proactive-compliance"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Cumplimiento reactivo: fricción y riesgo regulatorio",
+    "description": "Los procesos de cumplimiento manuales y las funciones de privacidad agregadas a posteriori generan carga operativa, revisiones legales que consumen mucho tiempo y un mayor riesgo de multas de €20M por GDPR o de infracciones de $7,500 por CCPA.",
+    "input": "",
+    "nodes": [
+     "compliance-friction",
+     "regulatory-risk"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Interfaces proactivas de GDPR y transparencia de la IA",
+    "description": "Cumplimiento de GDPR integrado con portales de descarga de datos, edición en línea para la rectificación, botones 'Olvídame' e interfaces de explicación de decisiones de IA que muestran los factores y pesos de la decisión algorítmica.",
+    "input": "",
+    "nodes": [
+     "gdpr-interfaces",
+     "explanation-interface",
+     "ccpa-interfaces"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Cumplimiento avanzado: EU AI Act y automatización",
+    "description": "Cumplimiento del EU AI Act para sistemas de alto riesgo con evaluaciones de riesgos documentadas, controles de supervisión humana y monitoreo de sesgos, además de un motor de cumplimiento automatizado con eliminación por retención y gestión del consentimiento.",
+    "input": "",
+    "nodes": [
+     "ai-act-compliance",
+     "compliance-automation",
+     "compliance-dashboard"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12",
+     "e13"
+    ]
+   },
+   {
+    "title": "Confianza regulatoria y ventajas para el negocio",
+    "description": "El cumplimiento proactivo genera confianza en el usuario mediante un manejo transparente de datos y un ejercicio de derechos sin fricciones, creando ventajas competitivas gracias a una entrada más rápida al mercado y una reputación centrada en la privacidad.",
+    "input": "",
+    "nodes": [
+     "regulatory-confidence",
+     "business-advantages"
+    ],
+    "edges": [
+     "e14",
+     "e15",
+     "e16"
+    ]
+   },
+   {
+    "title": "Principio de UX de cumplimiento normativo",
+    "description": "El cumplimiento debe mejorar la experiencia de usuario, no entorpecerla. Los requisitos regulatorios se convierten en oportunidades para empoderar al usuario y construir confianza, transformando las obligaciones legales en ventajas competitivas.",
+    "input": "",
+    "nodes": [
+     "compliance-principle"
+    ],
+    "edges": [
+     "e17",
+     "e18",
+     "e19"
+    ]
+   }
+  ]
+ }
+}

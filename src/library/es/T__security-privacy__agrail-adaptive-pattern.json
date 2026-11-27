@@ -1,0 +1,350 @@
+{
+ "cat": "security-privacy",
+ "slug": "agrail-adaptive-pattern",
+ "name": "AGrail Adaptive Pattern(AAP)",
+ "icon": "🎭",
+ "complexity": "high",
+ "description": "Sistema de seguridad adaptativo de por vida que genera y refina verificaciones de seguridad de forma dinámica",
+ "features": [
+  "Generación dinámica de verificaciones de seguridad",
+  "Adaptación de restricciones específica por tarea",
+  "Adaptación en tiempo de prueba con LLMs duales",
+  "Refinamiento iterativo de la seguridad",
+  "Aplicación de criterios universales",
+  "Evolución de la seguridad consciente del contexto"
+ ],
+ "tldr": {
+  "what": "Genera y refina dinámicamente restricciones de seguridad en tiempo de ejecución observando el contexto de la tarea, y luego usa LLMs duales para probar las salidas frente a las reglas evolucionadas.",
+  "when": "Sistemas que manejan dominios diversos donde las reglas de seguridad únicas para todo fallan y puedes permitirte un monitoreo continuo y el refinamiento de restricciones.",
+  "watchOut": "La evaluación con LLMs duales agrega latencia y costo; las restricciones evolucionadas pueden desviarse de los límites de seguridad previstos si el feedback de refinamiento es ruidoso o adversarial."
+ },
+ "overview": {
+  "pattern": "Sistema de seguridad adaptativo de por vida que genera y refina verificaciones de seguridad de forma dinámica",
+  "why": "Las reglas estáticas fallan en contextos cambiantes; los sistemas adaptativos aprenden y mejoran continuamente",
+  "insight": "Criterios universales + validación con LLMs duales + adaptación en tiempo de prueba = seguridad en evolución",
+  "impl": [
+   {
+    "t": "Criterios universales",
+    "d": "Define reglas de seguridad base para todos los contextos"
+   },
+   {
+    "t": "Generación dinámica",
+    "d": "LLM-1 crea verificaciones específicas del contexto"
+   },
+   {
+    "t": "Bucle de validación",
+    "d": "LLM-2 valida y refina las verificaciones"
+   },
+   {
+    "t": "Adaptación en prueba",
+    "d": "Mejora iterativamente durante el despliegue"
+   },
+   {
+    "t": "Refinamiento continuo",
+    "d": "Aprende de los casos límite y optimiza"
+   }
+  ],
+  "example": "universal_rules → check_generation → validation → adaptation → optimization",
+  "dos": [
+   "Empieza con criterios de seguridad universales que apliquen en todas partes",
+   "Usa LLMs duales para separar la generación de la validación",
+   "Soporta verificaciones de seguridad específicas por tarea para contextos de confianza",
+   "Haz seguimiento de métricas de efectividad para la mejora continua",
+   "Implementa adaptación en tiempo de prueba para escenarios nuevos"
+  ],
+  "donts": [
+   "Usar un solo LLM tanto para la generación como para la validación",
+   "Omitir los criterios universales en favor de solo reglas específicas",
+   "Ignorar los casos límite durante el refinamiento continuo",
+   "Permitir una adaptación ilimitada sin fronteras",
+   "Olvidar validar la efectividad de las verificaciones generadas"
+  ],
+  "use": [
+   "Requisitos del sistema en evolución",
+   "Contextos de despliegue diversos",
+   "Necesidades de aprendizaje continuo",
+   "Aplicaciones multidominio"
+  ],
+  "avoid": [
+   "Entornos estáticos e inmutables",
+   "Sistemas de propósito único",
+   "Despliegues con recursos limitados",
+   "Períodos de congelamiento regulatorio"
+  ],
+  "metrics": [
+   {
+    "n": "Cobertura de dominios",
+    "d": "Número de contextos adaptados"
+   },
+   {
+    "n": "Efectividad de las verificaciones",
+    "d": "% de amenazas detectadas por las reglas generadas"
+   },
+   {
+    "n": "Tasa de falsos positivos",
+    "d": "Reducción del bloqueo excesivo con el tiempo"
+   },
+   {
+    "n": "Velocidad de adaptación",
+    "d": "Horas para optimizar un nuevo dominio"
+   },
+   {
+    "n": "Eficiencia de las reglas",
+    "d": "Promedio de verificaciones por tipo de acción"
+   },
+   {
+    "n": "Evolución del sistema",
+    "d": "Mejora mensual en las métricas de seguridad"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Plataforma multidominio",
+    "d": "Se adapta de asistente general → salud → finanzas → educación"
+   },
+   {
+    "n": "Despliegue global",
+    "d": "Evoluciona la seguridad para distintos contextos culturales y regulaciones"
+   },
+   {
+    "n": "Evolución empresarial",
+    "d": "Crece de un MVP de startup a seguridad de nivel empresarial"
+   },
+   {
+    "n": "Sistemas de investigación",
+    "d": "Se adapta a medida que se amplían las capacidades sin actualizaciones manuales de reglas"
+   },
+   {
+    "n": "Productos de consumo",
+    "d": "Aprende de las interacciones de los usuarios para mejorar la seguridad con el tiempo"
+   }
+  ]
+ },
+ "flow": {
+  "title": "AGrail Adaptive Pattern",
+  "description": "Sistema de seguridad adaptativo de por vida que genera y refina dinámicamente verificaciones de seguridad según las amenazas emergentes y la experiencia operativa",
+  "nodes": [
+   {
+    "id": "initial-deployment",
+    "label": "🚀 Despliegue del sistema de IA\n\"Chatbot de atención al cliente lanzado\ncon reglas de seguridad básicas:\n• No compartir datos personales\n• Solo respuestas corteses\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "novel-threat",
+    "label": "🆕 Surge una amenaza nueva\n\"Ataque de ingeniería social:\nLos usuarios engañan al bot para generar\nplantillas de correos de phishing\"",
+    "x": 150,
+    "y": 200,
+    "w": 220
+   },
+   {
+    "id": "static-system",
+    "label": "⚠️ Sistema de seguridad estático\n\"Las reglas fijas no pueden adaptarse\nNo hay mecanismo para aprender\nde nuevos patrones de ataque\"",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "exploitation",
+    "label": "💀 Explotación exitosa\n\"El bot genera correos de phishing\nLos usuarios son estafados\nEl sistema de seguridad es eludido\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "agrail-system",
+    "label": "🧠 Sistema adaptativo AGrail\n\"Monitorea las interacciones\nDetecta violaciones de seguridad\nAprende de los incidentes\"",
+    "x": 650,
+    "y": 200,
+    "w": 220
+   },
+   {
+    "id": "threat-detection",
+    "label": "🔍 Detección de anomalías\n\"Patrón identificado:\nSolicitudes de plantillas de correo\n+ Marcadores de ingeniería social\"",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "safety-generation",
+    "label": "⚡ Generación dinámica de seguridad\n\"Crea una nueva regla:\nBloquear solicitudes de plantillas de correo\ncon marcadores de intención engañosa\"",
+    "x": 650,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "rule-deployment",
+    "label": "🛡️ Despliegue automático de reglas\n\"Nueva verificación de seguridad activada\nIntentos de phishing bloqueados\nMonitoreo continuo activo\"",
+    "x": 650,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "continuous-learning",
+    "label": "🔄 Aprendizaje adaptativo de por vida\n\"El sistema evoluciona continuamente\nNuevas amenazas → Nuevas protecciones\nLa seguridad mejora con el tiempo\"",
+    "x": 400,
+    "y": 800,
+    "w": 280
+   },
+   {
+    "id": "future-threat",
+    "label": "🔮 Ejemplo de amenaza futura\n\"El próximo mes: inyección de código\nmediante lenguaje natural\nAGrail se adapta de nuevo\"",
+    "x": 900,
+    "y": 350,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "initial-deployment",
+    "t": "novel-threat",
+    "label": "enfrenta un nuevo ataque"
+   },
+   {
+    "id": "e2",
+    "s": "novel-threat",
+    "t": "static-system",
+    "label": "la seguridad estática no puede adaptarse"
+   },
+   {
+    "id": "e3",
+    "s": "novel-threat",
+    "t": "agrail-system",
+    "label": "AGrail detecta la amenaza"
+   },
+   {
+    "id": "e4",
+    "s": "static-system",
+    "t": "exploitation",
+    "label": "permite la explotación"
+   },
+   {
+    "id": "e5",
+    "s": "agrail-system",
+    "t": "threat-detection",
+    "label": "analiza patrones"
+   },
+   {
+    "id": "e6",
+    "s": "threat-detection",
+    "t": "safety-generation",
+    "label": "genera una nueva regla"
+   },
+   {
+    "id": "e7",
+    "s": "safety-generation",
+    "t": "rule-deployment",
+    "label": "despliega la protección"
+   },
+   {
+    "id": "e8",
+    "s": "exploitation",
+    "t": "continuous-learning",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e9",
+    "s": "rule-deployment",
+    "t": "continuous-learning",
+    "label": "éxito adaptativo"
+   },
+   {
+    "id": "e10",
+    "s": "agrail-system",
+    "t": "future-threat",
+    "label": "listo para amenazas futuras"
+   },
+   {
+    "id": "e11",
+    "s": "future-threat",
+    "t": "continuous-learning",
+    "label": "evolución continua"
+   },
+   {
+    "id": "e12",
+    "s": "continuous-learning",
+    "t": "agrail-system",
+    "label": "mejora la detección"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Sistema de IA inicial con seguridad básica",
+    "description": "Chatbot de atención al cliente desplegado con reglas de seguridad fundamentales, como no compartir datos personales y dar respuestas corteses, pero limitado a amenazas predefinidas.",
+    "input": "",
+    "nodes": [
+     "initial-deployment"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Surge una amenaza nueva",
+    "description": "Surge un nuevo ataque de ingeniería social en el que los usuarios engañan al bot para que genere plantillas de correos de phishing, una amenaza no cubierta por las reglas de seguridad originales.",
+    "input": "",
+    "nodes": [
+     "novel-threat"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Respuesta de seguridad estática vs. adaptativa",
+    "description": "Los sistemas de seguridad estáticos no pueden adaptarse a nuevas amenazas y no logran bloquear ataques novedosos, mientras que el sistema adaptativo AGrail detecta y analiza el patrón de la amenaza emergente.",
+    "input": "",
+    "nodes": [
+     "static-system",
+     "agrail-system"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Falla del sistema estático vs. detección adaptativa",
+    "description": "Las reglas fijas permiten la explotación exitosa del ataque novedoso, mientras que el sistema AGrail identifica patrones como solicitudes de plantillas de correo combinadas con marcadores de ingeniería social.",
+    "input": "",
+    "nodes": [
+     "exploitation",
+     "threat-detection"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Generación dinámica de reglas de seguridad",
+    "description": "AGrail genera automáticamente una nueva verificación de seguridad para bloquear solicitudes de plantillas de correo con marcadores de intención engañosa, y luego despliega la protección en todo el sistema.",
+    "input": "",
+    "nodes": [
+     "safety-generation",
+     "rule-deployment"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Principio de aprendizaje adaptativo de por vida",
+    "description": "El sistema demuestra una evolución continua: las nuevas amenazas activan nuevas protecciones, creando una seguridad adaptativa de por vida que mejora con el tiempo y se prepara para amenazas futuras desconocidas.",
+    "input": "",
+    "nodes": [
+     "continuous-learning",
+     "future-threat"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   }
+  ]
+ }
+}

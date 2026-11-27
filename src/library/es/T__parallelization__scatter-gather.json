@@ -1,0 +1,635 @@
+{
+ "cat": "parallelization",
+ "slug": "scatter-gather",
+ "name": "Scatter-Gather",
+ "icon": "📡",
+ "complexity": "medium",
+ "description": "Distribuye solicitudes a múltiples servicios y recopila sus respuestas",
+ "features": [
+  "Distribución de solicitudes",
+  "Agregación de respuestas",
+  "Gestión de timeouts",
+  "Manejo de resultados parciales"
+ ],
+ "tldr": {
+  "what": "Envía una solicitud a múltiples servicios en paralelo y luego espera y combina sus respuestas en un solo resultado.",
+  "when": "Necesitas datos de varias fuentes independientes y puedes tolerar resultados parciales si algunos servicios son lentos o fallan.",
+  "watchOut": "El timeout debe ser lo bastante corto para evitar demoras visibles para el usuario, pero lo bastante largo para no descartar respuestas válidas."
+ },
+ "overview": {
+  "pattern": "Difunde solicitudes a múltiples servicios y luego agrega sus respuestas",
+  "why": "Maximiza la cobertura de información, mejora la resiliencia y aprovecha capacidades diversas",
+  "insight": "Request → [Service1, Service2, ServiceN] → Gather → Aggregate → Result",
+  "impl": [
+   {
+    "t": "Identificar",
+    "d": "Encuentra servicios/recursos independientes"
+   },
+   {
+    "t": "Dispersar (Scatter)",
+    "d": "Envía solicitudes concurrentes a todos los servicios"
+   },
+   {
+    "t": "Timeout",
+    "d": "Establece plazos de respuesta realistas"
+   },
+   {
+    "t": "Recopilar (Gather)",
+    "d": "Recoge las respuestas a medida que llegan"
+   },
+   {
+    "t": "Agregar",
+    "d": "Combina usando estrategias de votación/puntuación"
+   }
+  ],
+  "example": "query → [service_A, service_B, service_C] → gather_responses → merge_results",
+  "dos": [
+   "Diseña interfaces consistentes en todos los servicios",
+   "Implementa circuit breakers para los servicios poco confiables",
+   "Usa la agregación de resultados parciales para ganar resiliencia",
+   "Guarda las respuestas en cache para reducir llamadas redundantes",
+   "Monitorea el rendimiento de los servicios y adapta las estrategias"
+  ],
+  "donts": [
+   "Crear dependencias entre servicios",
+   "Depender de que todos los servicios tengan éxito",
+   "Usar formatos de solicitud inconsistentes",
+   "Ignorar patrones de servicios lentos o con fallas",
+   "Omitir la validación de los resultados de cada servicio"
+  ],
+  "use": [
+   "Múltiples fuentes de información independientes",
+   "Se necesita una cobertura integral",
+   "Los servicios tienen especializaciones distintas",
+   "La tolerancia a fallas es crítica"
+  ],
+  "avoid": [
+   "Los servicios tienen dependencias entre sí",
+   "Un solo servicio es suficiente",
+   "Requisitos de latencia en tiempo real",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de respuesta de los servicios",
+    "d": "% de servicios que responden dentro del timeout"
+   },
+   {
+    "n": "Completitud de la agregación",
+    "d": "% de la información esperada que se recopiló"
+   },
+   {
+    "n": "Latencia total",
+    "d": "Tiempo de respuesta de extremo a extremo"
+   },
+   {
+    "n": "Confiabilidad de los servicios",
+    "d": "Tiempo activo de cada servicio"
+   },
+   {
+    "n": "Calidad del resultado",
+    "d": "Precisión frente a la línea base de un solo servicio"
+   },
+   {
+    "n": "Eficiencia de recursos",
+    "d": "Costo frente a llamadas secuenciales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación con múltiples fuentes",
+    "d": "Consultar bases de conocimiento → recopilar hallazgos → sintetizar un informe"
+   },
+   {
+    "n": "Comparación de precios",
+    "d": "Consultar proveedores → recopilar cotizaciones → recomendar la mejor opción"
+   },
+   {
+    "n": "Verificación de salud de servicios",
+    "d": "Sondear endpoints → recopilar estados → agregar en un dashboard"
+   },
+   {
+    "n": "Enriquecimiento de contenido",
+    "d": "Consultar APIs → recopilar metadatos → mejorar el contenido"
+   },
+   {
+    "n": "Construcción de consenso",
+    "d": "Consultar validadores → recopilar opiniones → determinar el consenso"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Scatter-Gather",
+  "description": "Muestra la distribución concurrente de solicitudes a múltiples servicios seguida de la agregación de respuestas para una recopilación integral de datos",
+  "nodes": [
+   {
+    "id": "client-request",
+    "label": "Solicitud del cliente\n\"Consulta de búsqueda de productos\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "request-coordinator",
+    "label": "Coordinador de solicitudes\nCentro de orquestación",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "request-dispatcher",
+    "label": "Despachador de solicitudes\nDispersa hacia los servicios",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "inventory-service",
+    "label": "Servicio de inventario\nStock y disponibilidad",
+    "x": 150,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "pricing-service",
+    "label": "Servicio de precios\nPrecios y descuentos",
+    "x": 350,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "review-service",
+    "label": "Servicio de reseñas\nCalificaciones y comentarios",
+    "x": 550,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "recommendation-service",
+    "label": "Servicio de recomendaciones\nArtículos sugeridos",
+    "x": 750,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "catalog-service",
+    "label": "Servicio de catálogo\nDetalles del producto",
+    "x": 950,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "inventory-processing",
+    "label": "Verificación de stock\nCantidad: 45\nEstado: Disponible",
+    "x": 150,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "pricing-processing",
+    "label": "Consulta de precio\nPrecio: $299.99\nDescuento: 15%",
+    "x": 350,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "review-processing",
+    "label": "Agregación de reseñas\nCalificación: 4.3/5\nReseñas: 127",
+    "x": 550,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "recommendation-processing",
+    "label": "Recomendación con ML\n3 artículos similares\nPersonalizada",
+    "x": 750,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "response-collector",
+    "label": "Recolector de respuestas\nRecoge todas las respuestas",
+    "x": 500,
+    "y": 780,
+    "w": 200
+   },
+   {
+    "id": "data-aggregator",
+    "label": "Agregador de datos\nCombina y fusiona los datos",
+    "x": 300,
+    "y": 920,
+    "w": 180
+   },
+   {
+    "id": "result-formatter",
+    "label": "Formateador de resultados\nEstructura la respuesta final",
+    "x": 700,
+    "y": 920,
+    "w": 180
+   },
+   {
+    "id": "final-response",
+    "label": "Respuesta unificada\nInformación completa del producto",
+    "x": 500,
+    "y": 1060,
+    "w": 200
+   },
+   {
+    "id": "timeout-manager",
+    "label": "Gestor de timeouts\nLímites de tiempo de respuesta",
+    "x": 200,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "circuit-breaker",
+    "label": "Circuit Breaker\nProtección ante fallas",
+    "x": 800,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "error-handler",
+    "label": "Manejador de errores\nGestión de fallas",
+    "x": 100,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "partial-response",
+    "label": "Manejador de respuestas parciales\nGestión de datos incompletos",
+    "x": 900,
+    "y": 780,
+    "w": 160
+   },
+   {
+    "id": "load-balancer",
+    "label": "Balanceador de carga\nDistribución entre servicios",
+    "x": 350,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "cache-layer",
+    "label": "Capa de cache\nCache de respuestas",
+    "x": 650,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "performance-monitor",
+    "label": "Monitor de rendimiento\n• Tiempo de respuesta: 245ms\n• Tasa de éxito: 98.5%\n• Tasa de timeouts: 1.2%\n• Solicitudes concurrentes: 150",
+    "x": 50,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "health-monitor",
+    "label": "Monitor de salud\n• Inventario: Saludable\n• Precios: Saludable\n• Reseñas: Advertencia\n• Recomendaciones: Saludable\n• Catálogo: Saludable",
+    "x": 1100,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "rate-limiter",
+    "label": "Limitador de tasa\nControl de throttling",
+    "x": 500,
+    "y": 920,
+    "w": 140
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-client-coordinator",
+    "s": "client-request",
+    "t": "request-coordinator",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-dispatcher",
+    "s": "request-coordinator",
+    "t": "request-dispatcher",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-balancer",
+    "s": "request-coordinator",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-cache",
+    "s": "request-coordinator",
+    "t": "cache-layer",
+    "label": ""
+   },
+   {
+    "id": "e-dispatcher-timeout",
+    "s": "request-dispatcher",
+    "t": "timeout-manager",
+    "label": ""
+   },
+   {
+    "id": "e-dispatcher-breaker",
+    "s": "request-dispatcher",
+    "t": "circuit-breaker",
+    "label": ""
+   },
+   {
+    "id": "e-dispatcher-inventory",
+    "s": "request-dispatcher",
+    "t": "inventory-service",
+    "label": "Consulta de stock"
+   },
+   {
+    "id": "e-dispatcher-pricing",
+    "s": "request-dispatcher",
+    "t": "pricing-service",
+    "label": "Consulta de precio"
+   },
+   {
+    "id": "e-dispatcher-review",
+    "s": "request-dispatcher",
+    "t": "review-service",
+    "label": "Consulta de reseñas"
+   },
+   {
+    "id": "e-dispatcher-recommendation",
+    "s": "request-dispatcher",
+    "t": "recommendation-service",
+    "label": "Consulta de recomendaciones"
+   },
+   {
+    "id": "e-dispatcher-catalog",
+    "s": "request-dispatcher",
+    "t": "catalog-service",
+    "label": "Consulta de catálogo"
+   },
+   {
+    "id": "e-inventory-processing",
+    "s": "inventory-service",
+    "t": "inventory-processing",
+    "label": ""
+   },
+   {
+    "id": "e-pricing-processing",
+    "s": "pricing-service",
+    "t": "pricing-processing",
+    "label": ""
+   },
+   {
+    "id": "e-review-processing",
+    "s": "review-service",
+    "t": "review-processing",
+    "label": ""
+   },
+   {
+    "id": "e-recommendation-processing",
+    "s": "recommendation-service",
+    "t": "recommendation-processing",
+    "label": ""
+   },
+   {
+    "id": "e-inventory-collector",
+    "s": "inventory-processing",
+    "t": "response-collector",
+    "label": ""
+   },
+   {
+    "id": "e-pricing-collector",
+    "s": "pricing-processing",
+    "t": "response-collector",
+    "label": ""
+   },
+   {
+    "id": "e-review-collector",
+    "s": "review-processing",
+    "t": "response-collector",
+    "label": ""
+   },
+   {
+    "id": "e-recommendation-collector",
+    "s": "recommendation-processing",
+    "t": "response-collector",
+    "label": ""
+   },
+   {
+    "id": "e-collector-aggregator",
+    "s": "response-collector",
+    "t": "data-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-collector-formatter",
+    "s": "response-collector",
+    "t": "result-formatter",
+    "label": ""
+   },
+   {
+    "id": "e-aggregator-response",
+    "s": "data-aggregator",
+    "t": "final-response",
+    "label": ""
+   },
+   {
+    "id": "e-formatter-response",
+    "s": "result-formatter",
+    "t": "final-response",
+    "label": ""
+   },
+   {
+    "id": "e-error-collector",
+    "s": "error-handler",
+    "t": "response-collector",
+    "label": ""
+   },
+   {
+    "id": "e-partial-collector",
+    "s": "partial-response",
+    "t": "response-collector",
+    "label": ""
+   },
+   {
+    "id": "e-limiter-aggregator",
+    "s": "rate-limiter",
+    "t": "data-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-performance-dispatcher",
+    "s": "performance-monitor",
+    "t": "request-dispatcher",
+    "label": ""
+   },
+   {
+    "id": "e-health-services",
+    "s": "health-monitor",
+    "t": "catalog-service",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de la solicitud del cliente",
+    "description": "El cliente envía una solicitud de búsqueda de productos que requiere datos de múltiples servicios.",
+    "input": "Solicitud de búsqueda de productos: \"laptop gaming por menos de $1500\" con el contexto y las preferencias del usuario.",
+    "nodes": [
+     "client-request"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Preparación de la coordinación de la solicitud",
+    "description": "El coordinador de solicitudes recibe la consulta y se prepara para orquestar los servicios.",
+    "input": "Coordinación de la solicitud: analizar la consulta, identificar los servicios necesarios, preparar la estrategia de dispersión",
+    "nodes": [
+     "client-request",
+     "request-coordinator"
+    ],
+    "edges": [
+     "e-client-coordinator"
+    ]
+   },
+   {
+    "title": "Balanceo de carga y verificación de cache",
+    "description": "El balanceador de carga optimiza la distribución entre servicios mientras la capa de cache busca respuestas almacenadas.",
+    "input": "Preparación de la infraestructura: balanceo de carga, búsqueda en cache, evaluación de la salud de los servicios",
+    "nodes": [
+     "load-balancer",
+     "cache-layer"
+    ],
+    "edges": [
+     "e-coordinator-balancer",
+     "e-coordinator-cache"
+    ]
+   },
+   {
+    "title": "Activación del despachador de solicitudes",
+    "description": "El despachador de solicitudes se prepara para dispersar la consulta a múltiples servicios simultáneamente.",
+    "input": "Preparación de la dispersión: selección de servicios, configuración de timeouts, preparación de la ejecución en paralelo",
+    "nodes": [
+     "request-dispatcher"
+    ],
+    "edges": [
+     "e-coordinator-dispatcher"
+    ]
+   },
+   {
+    "title": "Configuración de timeouts y circuit breakers",
+    "description": "Configura la gestión de timeouts y la protección con circuit breakers para llamadas confiables a los servicios.",
+    "input": "Configuración de confiabilidad: umbrales de timeout, reglas del circuit breaker, manejo de fallas",
+    "nodes": [
+     "timeout-manager",
+     "circuit-breaker"
+    ],
+    "edges": [
+     "e-dispatcher-timeout",
+     "e-dispatcher-breaker"
+    ]
+   },
+   {
+    "title": "Fase de dispersión: llamadas en paralelo a los servicios",
+    "description": "Despacha simultáneamente las solicitudes a todos los servicios necesarios para una recopilación integral de datos.",
+    "input": "Dispersión en paralelo: llamadas simultáneas a los servicios de inventario, precios, reseñas, recomendaciones y catálogo",
+    "nodes": [
+     "inventory-service",
+     "pricing-service",
+     "review-service",
+     "recommendation-service",
+     "catalog-service"
+    ],
+    "edges": [
+     "e-dispatcher-inventory",
+     "e-dispatcher-pricing",
+     "e-dispatcher-review",
+     "e-dispatcher-recommendation",
+     "e-dispatcher-catalog"
+    ]
+   },
+   {
+    "title": "Procesamiento en los servicios: verificación de inventario",
+    "description": "El servicio de inventario procesa la información de disponibilidad y cantidad de stock.",
+    "input": "Procesamiento de inventario: verificar niveles de stock, estado de disponibilidad, ubicaciones de almacén",
+    "nodes": [
+     "inventory-processing"
+    ],
+    "edges": [
+     "e-inventory-processing"
+    ]
+   },
+   {
+    "title": "Procesamiento en los servicios: precios y reseñas",
+    "description": "Los servicios de precios y reseñas procesan la información de costos y los datos de feedback de los usuarios.",
+    "input": "Procesamiento en múltiples servicios: cálculo de precios con descuentos, agregación de reseñas con calificaciones",
+    "nodes": [
+     "pricing-processing",
+     "review-processing"
+    ],
+    "edges": [
+     "e-pricing-processing",
+     "e-review-processing"
+    ]
+   },
+   {
+    "title": "Procesamiento en los servicios: recomendaciones",
+    "description": "El servicio de recomendaciones genera sugerencias de productos personalizadas usando algoritmos de ML.",
+    "input": "Procesamiento de recomendaciones con ML: analizar el historial del usuario, generar sugerencias personalizadas, calcular puntuaciones de similitud",
+    "nodes": [
+     "recommendation-processing"
+    ],
+    "edges": [
+     "e-recommendation-processing"
+    ]
+   },
+   {
+    "title": "Fase de recopilación de respuestas",
+    "description": "El recolector de respuestas reúne todas las respuestas de los servicios y maneja las respuestas parciales o fallidas.",
+    "input": "Recopilación de respuestas: agregar las respuestas exitosas, manejar los timeouts, gestionar los datos parciales",
+    "nodes": [
+     "response-collector",
+     "error-handler",
+     "partial-response"
+    ],
+    "edges": [
+     "e-inventory-collector",
+     "e-pricing-collector",
+     "e-review-collector",
+     "e-recommendation-collector",
+     "e-error-collector",
+     "e-partial-collector"
+    ]
+   },
+   {
+    "title": "Agregación y formateo de datos",
+    "description": "Agrega los datos recopilados y les da formato en una estructura de respuesta unificada.",
+    "input": "Procesamiento de datos: combinar las respuestas de los servicios, resolver conflictos, aplicar reglas de negocio, formatear la salida",
+    "nodes": [
+     "data-aggregator",
+     "result-formatter",
+     "rate-limiter"
+    ],
+    "edges": [
+     "e-collector-aggregator",
+     "e-collector-formatter",
+     "e-limiter-aggregator"
+    ]
+   },
+   {
+    "title": "Entrega de la respuesta unificada",
+    "description": "Entrega información integral del producto combinando los datos de todos los servicios.",
+    "input": "",
+    "nodes": [
+     "final-response",
+     "performance-monitor",
+     "health-monitor"
+    ],
+    "edges": [
+     "e-aggregator-response",
+     "e-formatter-response",
+     "e-performance-dispatcher",
+     "e-health-services"
+    ]
+   }
+  ]
+ }
+}

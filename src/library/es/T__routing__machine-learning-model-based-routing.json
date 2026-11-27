@@ -1,0 +1,428 @@
+{
+ "cat": "routing",
+ "slug": "machine-learning-model-based-routing",
+ "name": "Machine Learning Model-Based Routing(MLMR)",
+ "icon": "🤖",
+ "complexity": "high",
+ "description": "Un enfoque de enrutamiento especializado que emplea modelos discriminativos (clasificadores) con fine-tuning sobre datos etiquetados para tomar decisiones de enrutamiento, codificando la lógica de enrutamiento directamente en los pesos del modelo en lugar de en prompts, lo que permite inferencias de menos de 10ms para sistemas de IA agéntica de alto volumen que requieren decisiones de enrutamiento deterministas y explicables",
+ "features": [
+  "Fine-tuning supervisado con datos de enrutamiento del dominio",
+  "Inferencia de latencia ultrabaja (<10ms) sin generación",
+  "Lógica de enrutamiento codificada en los parámetros del modelo",
+  "Puntuaciones de confianza y probabilidades calibradas",
+  "Aumento de datos sintéticos mediante LLMs",
+  "Detección de deriva del modelo y disparadores de reentrenamiento",
+  "Decisiones de enrutamiento explicables mediante pesos de atención",
+  "Integración con pipelines de MLOps para la mejora continua"
+ ],
+ "tldr": {
+  "what": "Entrena un clasificador con ejemplos de enrutamiento etiquetados para tomar decisiones mediante la inferencia del modelo en lugar de prompts, codificando la lógica de enrutamiento en los pesos para reducir la latencia.",
+  "when": "Sistemas de alto volumen que necesitan un enrutamiento rápido con decisiones explicables, donde existen datos de entrenamiento etiquetados o se pueden generar de forma confiable.",
+  "watchOut": "La deriva del modelo degrada la precisión del enrutamiento de forma silenciosa; requiere monitoreo continuo, disparadores de reentrenamiento y lógica de respaldo cuando cae la confianza o cambia la distribución de los datos."
+ },
+ "overview": {
+  "pattern": "Modelo discriminativo con fine-tuning que codifica la lógica de enrutamiento en pesos aprendidos",
+  "why": "Permite decisiones de enrutamiento ultrarrápidas (<10ms) con alta precisión tras un entrenamiento supervisado",
+  "insight": "La lógica de enrutamiento queda integrada en los parámetros del modelo, no en los prompts: inferencia sin generación",
+  "impl": [
+   {
+    "t": "Etiquetar datos",
+    "d": "Crear un corpus de entrenamiento con etiquetas de enrutamiento"
+   },
+   {
+    "t": "Entrenar el modelo",
+    "d": "Hacer fine-tuning del clasificador con los ejemplos etiquetados"
+   },
+   {
+    "t": "Integrar la lógica",
+    "d": "Codificar el enrutamiento en los pesos del modelo"
+   },
+   {
+    "t": "Desplegar",
+    "d": "Servir el modelo para enrutamiento en tiempo real"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Dar seguimiento a la precisión, la deriva y el rendimiento"
+   }
+  ],
+  "example": "query → classifier → {support: 0.92, sales: 0.05, billing: 0.03} → route_to_support",
+  "dos": [
+   "Usa fine-tuning supervisado con datos etiquetados del dominio",
+   "Empieza con modelos más pequeños (BERT-base) para reducir la latencia",
+   "Implementa umbrales de confianza para las decisiones de enrutamiento",
+   "Monitorea la distribución de clases y reentrena ante la deriva",
+   "Usa generación de datos sintéticos con LLMs para ampliar el conjunto de entrenamiento"
+  ],
+  "donts": [
+   "Usar modelos generativos para decisiones de enrutamiento en tiempo real",
+   "Desplegar sin mecanismos de respaldo para predicciones de baja confianza",
+   "Ignorar el desbalance de clases en los datos de entrenamiento",
+   "Omitir las pruebas A/B frente a los métodos de enrutamiento de referencia",
+   "Descuidar la explicabilidad en decisiones de enrutamiento críticas"
+  ],
+  "use": [
+   "Enrutamiento de alto volumen con datos de entrenamiento etiquetados",
+   "Se necesita una latencia de enrutamiento menor a 10ms",
+   "Categorías/clases de enrutamiento claras",
+   "Requisitos regulatorios de decisiones deterministas"
+  ],
+  "avoid": [
+   "Datos etiquetados limitados (<1000 ejemplos)",
+   "Reglas de enrutamiento en constante evolución",
+   "Se necesita una lógica de enrutamiento interpretable",
+   "Aplicaciones de pequeña escala"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión del enrutamiento",
+    "d": "F1 score por clase de ruta"
+   },
+   {
+    "n": "Latencia",
+    "d": "Tiempo de inferencia P50/P95/P99"
+   },
+   {
+    "n": "Deriva del modelo",
+    "d": "Detección de cambios en la distribución"
+   },
+   {
+    "n": "Calibración de la confianza",
+    "d": "ECE (Expected Calibration Error, error de calibración esperado)"
+   },
+   {
+    "n": "Cobertura",
+    "d": "% de consultas por encima del umbral de confianza"
+   },
+   {
+    "n": "Eficiencia de costos",
+    "d": "Costo de inferencia por cada 1M de solicitudes"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Clasificación de intenciones",
+    "d": "customer_query → {support: 0.89, sales: 0.08, info: 0.03}"
+   },
+   {
+    "n": "Enrutamiento de tickets",
+    "d": "issue_description → {technical_L1: 0.72, technical_L2: 0.25, billing: 0.03}"
+   },
+   {
+    "n": "Detección de idioma",
+    "d": "multilingual_text → {en: 0.95, es: 0.03, fr: 0.02}"
+   },
+   {
+    "n": "Triaje por prioridad",
+    "d": "request → {urgent: 0.91, normal: 0.07, low: 0.02}"
+   },
+   {
+    "n": "Asignación de departamento",
+    "d": "email → {hr: 0.88, legal: 0.10, finance: 0.02}"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Machine Learning Model-Based Routing",
+  "description": "Muestra el enrutamiento mediante modelos de clasificación de ML entrenados con distribuciones de probabilidad",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Consulta del cliente\n\"Mi pedido no llegó y el seguimiento dice que fue entregado\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "preprocessor",
+    "label": "🔄 Preprocesador\nTokenizar, normalizar, extraer características",
+    "x": 375,
+    "y": 150,
+    "w": 300
+   },
+   {
+    "id": "feature-vector",
+    "label": "Vector de características\n• Puntuaciones TF-IDF\n• N-gramas\n• Sentimiento: -0.7\n• Longitud: 12 tokens",
+    "x": 50,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "ml-model",
+    "label": "🤖 Clasificador de ML\nModelo Random Forest\nEntrenado con 100K consultas\nPrecisión: 94.2%",
+    "x": 375,
+    "y": 350,
+    "w": 280
+   },
+   {
+    "id": "model-metadata",
+    "label": "📊 Información del modelo\n• Versión: 2.3.1\n• Último entrenamiento: 2024-01-08\n• Características: 512\n• Clases: 8",
+    "x": 700,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "probabilities",
+    "label": "📈 Probabilidades por clase\nProblema de entrega: 0.82\nEstado del pedido: 0.09\nSolicitud de reembolso: 0.04\nPregunta sobre producto: 0.02\nOtro: 0.03",
+    "x": 375,
+    "y": 460,
+    "w": 220
+   },
+   {
+    "id": "delivery-route",
+    "label": "📦 Soporte de entregas\nProbabilidad: 0.82\nAtiende problemas de envío",
+    "x": 100,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "order-route",
+    "label": "📋 Gestión de pedidos\nProbabilidad: 0.09\nEstado y seguimiento de pedidos",
+    "x": 325,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "refund-route",
+    "label": "💰 Equipo de reembolsos\nProbabilidad: 0.04\nReembolsos y devoluciones",
+    "x": 550,
+    "y": 580,
+    "w": 200
+   },
+   {
+    "id": "threshold-check",
+    "label": "✓ Verificación de confianza\nUmbral: 0.70\n0.82 > 0.70\n✅ Enrutamiento con confianza",
+    "x": 775,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "delivery-processor",
+    "label": "Procesar el problema de entrega\n• Verificar el estado de la entrega\n• Revisar los registros del transportista\n• Iniciar una investigación",
+    "x": 100,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "Respuesta\n\"Iniciamos una investigación por tu paquete extraviado.\nContactaremos al transportista dentro de las próximas 24 horas.\"",
+    "x": 400,
+    "y": 820,
+    "w": 350
+   },
+   {
+    "id": "metrics",
+    "label": "📉 Métricas de rendimiento\n• Precisión: 0.93\n• Recall: 0.91\n• F1 Score: 0.92\n• Latencia: 12ms",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-preprocessor",
+    "s": "input",
+    "t": "preprocessor",
+    "label": ""
+   },
+   {
+    "id": "e-preprocessor-features",
+    "s": "preprocessor",
+    "t": "feature-vector",
+    "label": "Extraer"
+   },
+   {
+    "id": "e-features-model",
+    "s": "feature-vector",
+    "t": "ml-model",
+    "label": ""
+   },
+   {
+    "id": "e-preprocessor-model",
+    "s": "preprocessor",
+    "t": "ml-model",
+    "label": ""
+   },
+   {
+    "id": "e-model-metadata",
+    "s": "ml-model",
+    "t": "model-metadata",
+    "label": ""
+   },
+   {
+    "id": "e-preprocessor-metrics",
+    "s": "preprocessor",
+    "t": "metrics",
+    "label": ""
+   },
+   {
+    "id": "e-model-probabilities",
+    "s": "ml-model",
+    "t": "probabilities",
+    "label": "Predecir"
+   },
+   {
+    "id": "e-probabilities-threshold",
+    "s": "probabilities",
+    "t": "threshold-check",
+    "label": ""
+   },
+   {
+    "id": "e-prob-delivery",
+    "s": "probabilities",
+    "t": "delivery-route",
+    "label": "82%"
+   },
+   {
+    "id": "e-prob-order",
+    "s": "probabilities",
+    "t": "order-route",
+    "label": "9%"
+   },
+   {
+    "id": "e-prob-refund",
+    "s": "probabilities",
+    "t": "refund-route",
+    "label": "4%"
+   },
+   {
+    "id": "e-delivery-processor",
+    "s": "delivery-route",
+    "t": "delivery-processor",
+    "label": ""
+   },
+   {
+    "id": "e-processor-output",
+    "s": "delivery-processor",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada de la consulta",
+    "description": "El cliente envía una consulta que debe clasificarse y enrutarse.",
+    "input": "Consulta del cliente: \"Mi pedido no llegó y el seguimiento dice que fue entregado\"\n\nContexto:\n• Pedido #12345\n• Pedido realizado: hace 5 días\n• Nivel del cliente: Premium",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Preprocesamiento del texto",
+    "description": "La consulta se preprocesa para extraer las características para el modelo de ML.",
+    "input": "",
+    "nodes": [
+     "input",
+     "preprocessor"
+    ],
+    "edges": [
+     "e-input-preprocessor"
+    ]
+   },
+   {
+    "title": "Extracción de características",
+    "description": "Convierte el texto preprocesado en un vector numérico de características para el modelo de ML.",
+    "input": "",
+    "nodes": [
+     "preprocessor",
+     "feature-vector",
+     "metrics"
+    ],
+    "edges": [
+     "e-preprocessor-features",
+     "e-preprocessor-metrics"
+    ]
+   },
+   {
+    "title": "Inferencia del modelo de ML",
+    "description": "El clasificador Random Forest procesa el vector de características para predecir la categoría.",
+    "input": "",
+    "nodes": [
+     "feature-vector",
+     "ml-model",
+     "model-metadata"
+    ],
+    "edges": [
+     "e-features-model",
+     "e-preprocessor-model",
+     "e-model-metadata"
+    ]
+   },
+   {
+    "title": "Distribución de probabilidad",
+    "description": "El modelo produce una distribución de probabilidad sobre todas las clases posibles.",
+    "input": "",
+    "nodes": [
+     "ml-model",
+     "probabilities"
+    ],
+    "edges": [
+     "e-model-probabilities"
+    ]
+   },
+   {
+    "title": "Verificación del umbral de confianza",
+    "description": "Verifica si la probabilidad más alta supera el umbral de confianza.",
+    "input": "",
+    "nodes": [
+     "probabilities",
+     "threshold-check"
+    ],
+    "edges": [
+     "e-probabilities-threshold"
+    ]
+   },
+   {
+    "title": "Selección de la ruta",
+    "description": "Selecciona la ruta con la probabilidad más alta que supere el umbral.",
+    "input": "",
+    "nodes": [
+     "probabilities",
+     "delivery-route",
+     "order-route",
+     "refund-route"
+    ],
+    "edges": [
+     "e-prob-delivery",
+     "e-prob-order",
+     "e-prob-refund"
+    ]
+   },
+   {
+    "title": "Procesamiento especializado",
+    "description": "El equipo de soporte de entregas atiende el problema con su experiencia en el dominio.",
+    "input": "",
+    "nodes": [
+     "delivery-route",
+     "delivery-processor"
+    ],
+    "edges": [
+     "e-delivery-processor"
+    ]
+   },
+   {
+    "title": "Generación de la respuesta",
+    "description": "Genera y envía una respuesta adecuada al cliente.",
+    "input": "",
+    "nodes": [
+     "delivery-processor",
+     "output"
+    ],
+    "edges": [
+     "e-processor-output"
+    ]
+   },
+   {
+    "title": "Aprendizaje del modelo y feedback",
+    "description": "La decisión de enrutamiento y su resultado se registran para reentrenar el modelo.",
+    "input": "",
+    "nodes": [
+     "ml-model",
+     "metrics"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}

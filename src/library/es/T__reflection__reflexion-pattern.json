@@ -1,0 +1,567 @@
+{
+ "cat": "reflection",
+ "slug": "reflexion-pattern",
+ "name": "Reflexion(RX)",
+ "icon": "🔄",
+ "complexity": "high",
+ "description": "Los agentes aprenden de la experiencia mediante autorreflexión verbal y memoria episódica",
+ "features": [
+  "Aprendizaje por refuerzo verbal",
+  "Integración de memoria episódica",
+  "Aprendizaje a partir de fallos",
+  "No requiere fine-tuning"
+ ],
+ "tldr": {
+  "what": "El agente ejecuta una tarea, reflexiona sobre el fallo en lenguaje natural, guarda la reflexión y la usa para mejorar el siguiente intento sin reentrenamiento.",
+  "when": "Tareas en las que el agente puede fallar de forma segura, aprender de sus errores y reintentar; los fallos contienen señales accionables que el agente puede articular.",
+  "watchOut": "La calidad de la reflexión depende por completo de la capacidad del agente para diagnosticar las causas raíz; un autoanálisis vago o incorrecto acumula errores entre intentos."
+ },
+ "overview": {
+  "pattern": "Los agentes aprenden de la experiencia mediante autorreflexión verbal",
+  "why": "Convierte los fallos en aprendizajes lingüísticos, lo que permite aprender sin fine-tuning",
+  "insight": "Actor → Evaluador → Autorreflexión → Memoria → Mejor desempeño",
+  "impl": [
+   {
+    "t": "El actor ejecuta",
+    "d": "Genera acciones/texto para la tarea"
+   },
+   {
+    "t": "El entorno responde",
+    "d": "Obtiene feedback/resultados"
+   },
+   {
+    "t": "El evaluador puntúa",
+    "d": "Evalúa el desempeño de forma objetiva"
+   },
+   {
+    "t": "Autorreflexión",
+    "d": "Genera refuerzo verbal"
+   },
+   {
+    "t": "Actualizar memoria",
+    "d": "Guarda la reflexión para el siguiente intento"
+   }
+  ],
+  "example": "Actor(task) → Result → Evaluate → Reflect(verbal) → Memory → Actor(improved)",
+  "dos": [
+   "Convierte el feedback en pistas lingüísticas accionables",
+   "Mantén una memoria episódica de las reflexiones pasadas",
+   "Usa prompts de reflexión específicos y concretos",
+   "Implementa métricas de evaluación claras",
+   "Limita la profundidad de la reflexión para evitar sobrepensar"
+  ],
+  "donts": [
+   "Guardar trayectorias en bruto sin reflexión",
+   "Usar reflexiones vagas como \"hazlo mejor\"",
+   "Omitir la integración del feedback del entorno",
+   "Permitir ciclos de reflexión ilimitados",
+   "Ignorar las limitaciones de memoria en tareas largas"
+  ],
+  "use": [
+   "Tareas de razonamiento de múltiples pasos",
+   "Desafíos de programación",
+   "Toma de decisiones secuencial",
+   "Aprendizaje a partir de fallos"
+  ],
+  "avoid": [
+   "Tareas de una sola pasada",
+   "Aplicaciones con tiempo crítico",
+   "Preguntas y respuestas simples",
+   "Problemas deterministas"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito",
+    "d": "Tareas completadas a lo largo de los intentos"
+   },
+   {
+    "n": "Curva de aprendizaje",
+    "d": "Tasa de mejora del desempeño"
+   },
+   {
+    "n": "Calidad de la reflexión",
+    "d": "Qué tan accionables son los aprendizajes"
+   },
+   {
+    "n": "Eficiencia de memoria",
+    "d": "Recuperación relevante frente a almacenamiento"
+   },
+   {
+    "n": "Velocidad de convergencia",
+    "d": "Intentos hasta alcanzar el desempeño óptimo"
+   },
+   {
+    "n": "Generalización",
+    "d": "Transferencia a tareas similares"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Generación de código",
+    "d": "Escribir → Probar → Reflexionar sobre errores → Corregir bugs → Mejorar"
+   },
+   {
+    "n": "Juegos",
+    "d": "Mover → Observar → Evaluar → Reflexionar sobre la estrategia → Adaptar"
+   },
+   {
+    "n": "Resolución de problemas",
+    "d": "Intentar → Verificar → Analizar el fallo → Aprender → Reintentar"
+   },
+   {
+    "n": "Tareas de escritura",
+    "d": "Borrador → Revisar → Reflexionar sobre debilidades → Corregir → Pulir"
+   },
+   {
+    "n": "Entrenamiento de agentes",
+    "d": "Actuar → Obtener recompensa → Reflexionar sobre las decisiones → Actualizar la política"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Reflexion",
+  "description": "Muestra cómo los agentes aprenden de la experiencia mediante autorreflexión verbal y memoria episódica",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "Tarea\n\"Depurar y corregir una prueba unitaria que falla\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "episode1-attempt",
+    "label": "🎯 Episodio 1: Intento\nIntenta corregir la prueba cambiando la aserción",
+    "x": 100,
+    "y": 160,
+    "w": 220
+   },
+   {
+    "id": "episode1-execution",
+    "label": "⚡ Ejecución\nEjecuta la suite de pruebas",
+    "x": 100,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "episode1-result",
+    "label": "❌ Resultado: Falló\nLa prueba sigue fallando\nAhora con otro error",
+    "x": 100,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "episode1-reflection",
+    "label": "💭 Reflexión\n\"Solo corregí el síntoma,\nno la causa raíz.\nNecesito revisar la\nimplementación real.\"",
+    "x": 100,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "episode2-attempt",
+    "label": "🎯 Episodio 2: Intento\nRevisa la implementación\ncon base en la reflexión",
+    "x": 400,
+    "y": 160,
+    "w": 220
+   },
+   {
+    "id": "episode2-execution",
+    "label": "⚡ Ejecución\nDepura y corrige el error lógico",
+    "x": 400,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "episode2-result",
+    "label": "⚠️ Resultado: Parcial\n3/4 pruebas pasan\nFalla un caso límite",
+    "x": 400,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "episode2-reflection",
+    "label": "💭 Reflexión\n\"¡Buen progreso!\nLa implementación estaba mal.\nOlvidé un caso límite:\nmanejo de entrada null\"",
+    "x": 400,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "episode3-attempt",
+    "label": "🎯 Episodio 3: Intento\nAgrega verificación de null\ncon base en lo aprendido",
+    "x": 700,
+    "y": 160,
+    "w": 220
+   },
+   {
+    "id": "episode3-execution",
+    "label": "⚡ Ejecución\nImplementa el caso límite",
+    "x": 700,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "episode3-result",
+    "label": "✅ Resultado: Éxito\nTodas las pruebas pasan\nCobertura de código 100%",
+    "x": 700,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "episode3-reflection",
+    "label": "💭 Reflexión\n\"¡Éxito! Aprendizajes clave:\n1. Revisar la implementación\n2. Considerar casos límite\n3. Probar a fondo\"",
+    "x": 700,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "episodic-memory",
+    "label": "🧠 Memoria episódica\nAlmacena experiencias y reflexiones",
+    "x": 400,
+    "y": 660,
+    "w": 280
+   },
+   {
+    "id": "memory-entry1",
+    "label": "📝 Memoria 1\nPatrón: Fallos de pruebas\nLección: Revisar la implementación,\nno solo las aserciones",
+    "x": 100,
+    "y": 780,
+    "w": 200
+   },
+   {
+    "id": "memory-entry2",
+    "label": "📝 Memoria 2\nPatrón: Errores lógicos\nLección: Depurar sistemáticamente\ndesde la causa raíz",
+    "x": 320,
+    "y": 780,
+    "w": 200
+   },
+   {
+    "id": "memory-entry3",
+    "label": "📝 Memoria 3\nPatrón: Casos límite\nLección: Manejar siempre\nentradas null/vacías",
+    "x": 540,
+    "y": 780,
+    "w": 200
+   },
+   {
+    "id": "learning-synthesis",
+    "label": "🎓 Síntesis del aprendizaje\nEstrategia de depuración generalizada:\n1. Entender el modo de fallo\n2. Encontrar la causa raíz\n3. Considerar casos límite\n4. Verificar de forma exhaustiva",
+    "x": 400,
+    "y": 900,
+    "w": 320
+   },
+   {
+    "id": "reflection-prompts",
+    "label": "❓ Prompts de reflexión\n• ¿Qué salió mal?\n• ¿Por qué falló?\n• ¿Qué aprendí?\n• ¿Cómo mejorar?",
+    "x": 850,
+    "y": 520,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-ep1",
+    "s": "task",
+    "t": "episode1-attempt",
+    "label": ""
+   },
+   {
+    "id": "e-task-ep2",
+    "s": "task",
+    "t": "episode2-attempt",
+    "label": ""
+   },
+   {
+    "id": "e-task-ep3",
+    "s": "task",
+    "t": "episode3-attempt",
+    "label": ""
+   },
+   {
+    "id": "e-ep1-attempt-exec",
+    "s": "episode1-attempt",
+    "t": "episode1-execution",
+    "label": ""
+   },
+   {
+    "id": "e-ep1-exec-result",
+    "s": "episode1-execution",
+    "t": "episode1-result",
+    "label": ""
+   },
+   {
+    "id": "e-ep1-result-reflect",
+    "s": "episode1-result",
+    "t": "episode1-reflection",
+    "label": "Reflexionar"
+   },
+   {
+    "id": "e-ep2-attempt-exec",
+    "s": "episode2-attempt",
+    "t": "episode2-execution",
+    "label": ""
+   },
+   {
+    "id": "e-ep2-exec-result",
+    "s": "episode2-execution",
+    "t": "episode2-result",
+    "label": ""
+   },
+   {
+    "id": "e-ep2-result-reflect",
+    "s": "episode2-result",
+    "t": "episode2-reflection",
+    "label": "Reflexionar"
+   },
+   {
+    "id": "e-ep3-attempt-exec",
+    "s": "episode3-attempt",
+    "t": "episode3-execution",
+    "label": ""
+   },
+   {
+    "id": "e-ep3-exec-result",
+    "s": "episode3-execution",
+    "t": "episode3-result",
+    "label": ""
+   },
+   {
+    "id": "e-ep3-result-reflect",
+    "s": "episode3-result",
+    "t": "episode3-reflection",
+    "label": "Reflexionar"
+   },
+   {
+    "id": "e-ep1-reflect-ep2",
+    "s": "episode1-reflection",
+    "t": "episode2-attempt",
+    "label": "Aplicar lo aprendido"
+   },
+   {
+    "id": "e-ep2-reflect-ep3",
+    "s": "episode2-reflection",
+    "t": "episode3-attempt",
+    "label": "Aplicar lo aprendido"
+   },
+   {
+    "id": "e-ep1-memory",
+    "s": "episode1-reflection",
+    "t": "episodic-memory",
+    "label": ""
+   },
+   {
+    "id": "e-ep2-memory",
+    "s": "episode2-reflection",
+    "t": "episodic-memory",
+    "label": ""
+   },
+   {
+    "id": "e-ep3-memory",
+    "s": "episode3-reflection",
+    "t": "episodic-memory",
+    "label": ""
+   },
+   {
+    "id": "e-memory-entry1",
+    "s": "episodic-memory",
+    "t": "memory-entry1",
+    "label": ""
+   },
+   {
+    "id": "e-memory-entry2",
+    "s": "episodic-memory",
+    "t": "memory-entry2",
+    "label": ""
+   },
+   {
+    "id": "e-memory-entry3",
+    "s": "episodic-memory",
+    "t": "memory-entry3",
+    "label": ""
+   },
+   {
+    "id": "e-mem1-synthesis",
+    "s": "memory-entry1",
+    "t": "learning-synthesis",
+    "label": ""
+   },
+   {
+    "id": "e-mem2-synthesis",
+    "s": "memory-entry2",
+    "t": "learning-synthesis",
+    "label": ""
+   },
+   {
+    "id": "e-mem3-synthesis",
+    "s": "memory-entry3",
+    "t": "learning-synthesis",
+    "label": ""
+   },
+   {
+    "id": "e-reflect-prompts1",
+    "s": "episode1-reflection",
+    "t": "reflection-prompts",
+    "label": ""
+   },
+   {
+    "id": "e-reflect-prompts2",
+    "s": "episode2-reflection",
+    "t": "reflection-prompts",
+    "label": ""
+   },
+   {
+    "id": "e-reflect-prompts3",
+    "s": "episode3-reflection",
+    "t": "reflection-prompts",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea inicial",
+    "description": "El agente recibe una tarea a completar.",
+    "input": "Tarea: Depurar y corregir una prueba unitaria que falla\n\nError de la prueba: \"Expected 42 but got undefined\"\nArchivo: calculator.test.js\nFunción: calculateAnswer()",
+    "nodes": [
+     "task"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Episodio 1 - Primer intento",
+    "description": "El agente hace un intento inicial basado en una comprensión superficial.",
+    "input": "",
+    "nodes": [
+     "task",
+     "episode1-attempt"
+    ],
+    "edges": [
+     "e-task-ep1"
+    ]
+   },
+   {
+    "title": "Episodio 1 - Ejecución y fallo",
+    "description": "Ejecuta la corrección intentada y observa el resultado.",
+    "input": "",
+    "nodes": [
+     "episode1-attempt",
+     "episode1-execution",
+     "episode1-result"
+    ],
+    "edges": [
+     "e-ep1-attempt-exec",
+     "e-ep1-exec-result"
+    ]
+   },
+   {
+    "title": "Episodio 1 - Autorreflexión",
+    "description": "El agente reflexiona verbalmente sobre qué salió mal y qué aprender.",
+    "input": "",
+    "nodes": [
+     "episode1-result",
+     "episode1-reflection",
+     "reflection-prompts"
+    ],
+    "edges": [
+     "e-ep1-result-reflect",
+     "e-reflect-prompts1"
+    ]
+   },
+   {
+    "title": "Episodio 2 - Aprendizaje aplicado",
+    "description": "El agente lo intenta de nuevo, aplicando las lecciones de la reflexión.",
+    "input": "",
+    "nodes": [
+     "episode1-reflection",
+     "episode2-attempt",
+     "episode2-execution"
+    ],
+    "edges": [
+     "e-ep1-reflect-ep2",
+     "e-ep2-attempt-exec"
+    ]
+   },
+   {
+    "title": "Episodio 2 - Éxito parcial y reflexión",
+    "description": "Mejor resultado, pero incompleto. El agente reflexiona sobre su progreso.",
+    "input": "",
+    "nodes": [
+     "episode2-execution",
+     "episode2-result",
+     "episode2-reflection",
+     "reflection-prompts"
+    ],
+    "edges": [
+     "e-ep2-exec-result",
+     "e-ep2-result-reflect",
+     "e-reflect-prompts2"
+    ]
+   },
+   {
+    "title": "Episodio 3 - Solución integral",
+    "description": "El agente aplica el aprendizaje acumulado para lograr una solución completa.",
+    "input": "",
+    "nodes": [
+     "episode2-reflection",
+     "episode3-attempt",
+     "episode3-execution"
+    ],
+    "edges": [
+     "e-ep2-reflect-ep3",
+     "e-ep3-attempt-exec"
+    ]
+   },
+   {
+    "title": "Episodio 3 - Éxito y reflexión final",
+    "description": "Éxito total. El agente sintetiza todos los aprendizajes.",
+    "input": "",
+    "nodes": [
+     "episode3-execution",
+     "episode3-result",
+     "episode3-reflection",
+     "reflection-prompts"
+    ],
+    "edges": [
+     "e-ep3-exec-result",
+     "e-ep3-result-reflect",
+     "e-reflect-prompts3"
+    ]
+   },
+   {
+    "title": "Guardar en la memoria episódica",
+    "description": "Todas las experiencias y reflexiones se guardan en la memoria episódica.",
+    "input": "",
+    "nodes": [
+     "episode1-reflection",
+     "episode2-reflection",
+     "episode3-reflection",
+     "episodic-memory",
+     "memory-entry1",
+     "memory-entry2",
+     "memory-entry3"
+    ],
+    "edges": [
+     "e-ep1-memory",
+     "e-ep2-memory",
+     "e-ep3-memory",
+     "e-memory-entry1",
+     "e-memory-entry2",
+     "e-memory-entry3"
+    ]
+   },
+   {
+    "title": "Síntesis del aprendizaje",
+    "description": "El agente sintetiza todas las experiencias en conocimiento generalizado.",
+    "input": "",
+    "nodes": [
+     "memory-entry1",
+     "memory-entry2",
+     "memory-entry3",
+     "learning-synthesis"
+    ],
+    "edges": [
+     "e-mem1-synthesis",
+     "e-mem2-synthesis",
+     "e-mem3-synthesis"
+    ]
+   }
+  ]
+ }
+}

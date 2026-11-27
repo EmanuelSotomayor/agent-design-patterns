@@ -1,0 +1,382 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "skeleton-of-thoughts",
+ "name": "Skeleton of Thoughts(SoT)",
+ "icon": "🦴",
+ "complexity": "medium",
+ "description": "Genera un esquema base y luego desarrolla cada punto en paralelo para reducir la latencia sin perder la estructura",
+ "features": [
+  "Andamiajes de razonamiento flexibles",
+  "Esquemas estructurados pero adaptables",
+  "Plantillas reutilizables para resolver problemas",
+  "Favorece el razonamiento creativo",
+  "Organización eficiente del conocimiento",
+  "Pensamiento guiado pero no rígido"
+ ],
+ "tldr": {
+  "what": "Genera un esquema base de la estructura de un problema y luego desarrolla cada rama en paralelo para reducir la latencia sin perder la organización lógica.",
+  "when": "Problemas complejos con una estructura jerárquica clara, en los que necesitas respuestas rápidas y puedes paralelizar el desarrollo de subtemas independientes.",
+  "watchOut": "La calidad del esquema determina la calidad de la salida; una estructura inicial deficiente obliga a rehacer trabajo o produce desarrollos incoherentes entre las ramas."
+ },
+ "overview": {
+  "pattern": "Razonamiento estructurado que crea un esquema de alto nivel y luego desarrolla cada componente en paralelo para un procesamiento eficiente",
+  "why": "Acelera la generación de respuestas complejas mediante el desarrollo en paralelo, manteniendo la estructura lógica y la coherencia",
+  "insight": "Crear la estructura del esquema → Desarrollar los puntos en paralelo → Integrar las secciones → Asegurar la consistencia → Síntesis final",
+  "impl": [
+   {
+    "t": "Generación del esquema",
+    "d": "Crear una estructura de alto nivel con los puntos clave"
+   },
+   {
+    "t": "Desarrollo en paralelo",
+    "d": "Desarrollar cada punto del esquema de forma independiente"
+   },
+   {
+    "t": "Integración del contenido",
+    "d": "Combinar las secciones desarrolladas en un todo coherente"
+   },
+   {
+    "t": "Verificación de consistencia",
+    "d": "Asegurar el flujo lógico y la coherencia"
+   },
+   {
+    "t": "Síntesis final",
+    "d": "Pulir y refinar la respuesta completa"
+   }
+  ],
+  "example": "Problema → [Punto 1, Punto 2, Punto 3] → Desarrollar cada uno en paralelo → Integrar → Respuesta final",
+  "dos": [
+   "Crea un esquema completo que cubra todos los aspectos clave",
+   "Asegúrate de que los puntos del esquema estén ordenados lógicamente",
+   "Usa procesamiento en paralelo para desarrollar varios puntos",
+   "Mantén la consistencia entre los desarrollos en paralelo",
+   "Valida la coherencia de la integración final"
+  ],
+  "donts": [
+   "Crear un esquema sin una estructura lógica clara",
+   "Desarrollar los puntos secuencialmente cuando es posible hacerlo en paralelo",
+   "Ignorar las contradicciones entre secciones desarrolladas en paralelo",
+   "Omitir el paso de integración (respuesta fragmentada)",
+   "Descomponer en exceso en puntos triviales del esquema"
+  ],
+  "use": [
+   "Respuestas o análisis complejos de varias partes",
+   "Cuando el procesamiento en paralelo puede acelerar el razonamiento",
+   "Tareas de redacción o presentación estructuradas",
+   "Problemas con subcomponentes independientes",
+   "Cuando la consistencia entre secciones es crucial"
+  ],
+  "avoid": [
+   "Preguntas simples de un solo concepto",
+   "Tareas de razonamiento altamente secuenciales",
+   "Cuando el procesamiento en paralelo no aporta beneficios",
+   "Aplicaciones en tiempo real que requieren una respuesta inmediata",
+   "Problemas que requieren un razonamiento profundo e interconectado"
+  ],
+  "metrics": [
+   {
+    "n": "Completitud del esquema",
+    "d": "Cobertura de todos los aspectos esenciales en la estructura"
+   },
+   {
+    "n": "Eficiencia del paralelismo",
+    "d": "Mejora de velocidad gracias al desarrollo concurrente"
+   },
+   {
+    "n": "Calidad de la integración",
+    "d": "Coherencia y fluidez de las secciones combinadas"
+   },
+   {
+    "n": "Puntuación de consistencia",
+    "d": "Alineación lógica entre los desarrollos en paralelo"
+   },
+   {
+    "n": "Claridad de la estructura",
+    "d": "Organización y progresión lógicas"
+   },
+   {
+    "n": "Completitud de la respuesta",
+    "d": "Exhaustividad de la respuesta final sintetizada"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Redacción de ensayos",
+    "d": "Esbozar los argumentos principales → Desarrollar cada argumento en paralelo → Integrar en un ensayo coherente"
+   },
+   {
+    "n": "Documentación técnica",
+    "d": "Estructurar las secciones → Escribir cada sección de forma independiente → Combinar en un manual"
+   },
+   {
+    "n": "Análisis de negocio",
+    "d": "Componentes del marco → Analizar cada componente → Sintetizar una evaluación integral"
+   },
+   {
+    "n": "Informe de investigación",
+    "d": "Esquema de hallazgos clave → Detallar cada hallazgo → Integrar en un informe cohesivo"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Componentes del plan → Desarrollar cada área estratégica → Combinar en una estrategia unificada"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Skeleton of Thoughts",
+  "description": "Crea marcos de razonamiento estructurados pero adaptables, que ofrecen un andamiaje lógico consistente y a la vez son lo bastante flexibles para acomodar distintos detalles y contextos específicos",
+  "nodes": [
+   {
+    "id": "problem-category",
+    "label": "🎯 Categoría del problema\n\"Decisión de estrategia de negocio\"\nNecesita un marco estructurado\npara un análisis consistente",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "skeleton-framework",
+    "label": "🦴 Marco del esquema\n\"1. Análisis de la situación actual\n2. Definición de objetivos\n3. Generación de opciones\n4. Criterios de evaluación\n5. Decisión e implementación\"",
+    "x": 400,
+    "y": 180,
+    "w": 280
+   },
+   {
+    "id": "problem-1",
+    "label": "📋 Problema 1\n\"¿Deberíamos expandirnos\na los mercados europeos\nel próximo trimestre?\"",
+    "x": 150,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "filled-framework-1",
+    "label": "🔍 Marco aplicado\n1. Actual: mercado de EE. UU. saturado al 70%\n2. Objetivo: crecimiento de ingresos del 30%\n3. Opciones: UE, Asia, Canadá\n4. Criterios: ROI, riesgo, plazos\n5. Decisión: expansión a la UE en el T2",
+    "x": 150,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "problem-2",
+    "label": "📋 Problema 2\n\"¿Deberíamos adquirir\na Competitor X o desarrollar\ninternamente?\"",
+    "x": 650,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "filled-framework-2",
+    "label": "🔍 Marco aplicado\n1. Actual: falta capacidad de IA\n2. Objetivo: lanzar una línea de productos de IA\n3. Opciones: adquirir, desarrollar, asociarse\n4. Criterios: velocidad, costo, talento\n5. Decisión: adquirir a Competitor X",
+    "x": 650,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "skeleton-adaptation",
+    "label": "🔄 Adaptación del marco\n\"Misma estructura de esquema\nDistintos detalles de contenido\nProceso de razonamiento consistente\"",
+    "x": 400,
+    "y": 580,
+    "w": 240
+   },
+   {
+    "id": "domain-transfer",
+    "label": "🌐 Transferencia entre dominios\n\"El esquema se adapta a:\n• Decisiones de producto\n• Estrategias de contratación\n• Elecciones tecnológicas\"",
+    "x": 400,
+    "y": 710,
+    "w": 200
+   },
+   {
+    "id": "consistency-benefit",
+    "label": "✅ Beneficio de consistencia\n\"La misma estructura lógica\nasegura un análisis exhaustivo\nReduce la carga cognitiva\"",
+    "x": 150,
+    "y": 580,
+    "w": 180
+   },
+   {
+    "id": "flexibility-benefit",
+    "label": "🔧 Beneficio de flexibilidad\n\"El marco acomoda\ndistintos tipos de contenido\nsin perder la estructura\"",
+    "x": 650,
+    "y": 580,
+    "w": 180
+   },
+   {
+    "id": "skeleton-refinement",
+    "label": "📈 Refinamiento del esquema\n\"Agregar: paso de evaluación de riesgos\nModificar: pesos de evaluación\nMejorar: detalle de implementación\"",
+    "x": 400,
+    "y": 840,
+    "w": 220
+   },
+   {
+    "id": "rigid-comparison",
+    "label": "❌ Enfoque rígido\n\"Checklist fija\nSin adaptación\nFalla en casos límite\"",
+    "x": 100,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "ad-hoc-comparison",
+    "label": "❌ Enfoque improvisado\n\"Sin estructura\nAnálisis inconsistente\nConsideraciones omitidas\"",
+    "x": 700,
+    "y": 180,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "problem-category",
+    "t": "skeleton-framework",
+    "label": "crear esquema"
+   },
+   {
+    "id": "e2a",
+    "s": "problem-1",
+    "t": "filled-framework-1",
+    "label": "completar esquema"
+   },
+   {
+    "id": "e2b",
+    "s": "problem-2",
+    "t": "filled-framework-2",
+    "label": "completar esquema"
+   },
+   {
+    "id": "e3a",
+    "s": "skeleton-framework",
+    "t": "filled-framework-1",
+    "label": "aporta estructura"
+   },
+   {
+    "id": "e3b",
+    "s": "skeleton-framework",
+    "t": "filled-framework-2",
+    "label": "aporta estructura"
+   },
+   {
+    "id": "e4a",
+    "s": "filled-framework-1",
+    "t": "consistency-benefit",
+    "label": "demuestra"
+   },
+   {
+    "id": "e4b",
+    "s": "filled-framework-2",
+    "t": "flexibility-benefit",
+    "label": "demuestra"
+   },
+   {
+    "id": "e5a",
+    "s": "consistency-benefit",
+    "t": "skeleton-adaptation",
+    "label": "habilita"
+   },
+   {
+    "id": "e5b",
+    "s": "flexibility-benefit",
+    "t": "skeleton-adaptation",
+    "label": "habilita"
+   },
+   {
+    "id": "e6",
+    "s": "skeleton-adaptation",
+    "t": "domain-transfer",
+    "label": "habilita"
+   },
+   {
+    "id": "e7",
+    "s": "domain-transfer",
+    "t": "skeleton-refinement",
+    "label": "conduce a"
+   },
+   {
+    "id": "e8",
+    "s": "skeleton-refinement",
+    "t": "skeleton-framework",
+    "label": "mejora"
+   },
+   {
+    "id": "ec1",
+    "s": "problem-category",
+    "t": "rigid-comparison",
+    "label": "alternativa"
+   },
+   {
+    "id": "ec2",
+    "s": "problem-category",
+    "t": "ad-hoc-comparison",
+    "label": "alternativa"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Creación del marco del esquema",
+    "description": "Para decisiones de estrategia de negocio, crea un marco de esquema estructurado con 5 pasos clave: análisis de la situación actual, definición de objetivos, generación de opciones, criterios de evaluación e implementación de la decisión.",
+    "input": "",
+    "nodes": [
+     "problem-category",
+     "skeleton-framework",
+     "rigid-comparison",
+     "ad-hoc-comparison"
+    ],
+    "edges": [
+     "e1",
+     "ec1",
+     "ec2"
+    ]
+   },
+   {
+    "title": "Aplicación del marco a problemas específicos",
+    "description": "La misma estructura de esquema acomoda distintos problemas: la expansión europea (análisis de mercado) y la decisión de adquisición (análisis de capacidades), cada uno completando el marco con los detalles pertinentes.",
+    "input": "",
+    "nodes": [
+     "problem-1",
+     "problem-2",
+     "filled-framework-1",
+     "filled-framework-2"
+    ],
+    "edges": [
+     "e2a",
+     "e2b",
+     "e3a",
+     "e3b"
+    ]
+   },
+   {
+    "title": "Doble beneficio: consistencia y flexibilidad",
+    "description": "El marco ofrece una estructura lógica consistente (reduce la carga cognitiva) y a la vez sigue siendo lo bastante flexible para acomodar distintos tipos de contenido y contextos de problema.",
+    "input": "",
+    "nodes": [
+     "consistency-benefit",
+     "flexibility-benefit"
+    ],
+    "edges": [
+     "e4a",
+     "e4b"
+    ]
+   },
+   {
+    "title": "Evolución adaptativa del marco",
+    "description": "El esquema mantiene su estructura mientras se adapta a distintos dominios (decisiones de producto, estrategias de contratación, elecciones tecnológicas), lo que demuestra su transferibilidad entre contextos.",
+    "input": "",
+    "nodes": [
+     "skeleton-adaptation",
+     "domain-transfer"
+    ],
+    "edges": [
+     "e5a",
+     "e5b",
+     "e6"
+    ]
+   },
+   {
+    "title": "Refinamiento iterativo del esquema",
+    "description": "Al aplicarse en distintos dominios, el marco del esquema evoluciona: se agrega un paso de evaluación de riesgos, se modifican los pesos de evaluación y se mejoran los detalles de implementación para un mejor uso futuro.",
+    "input": "",
+    "nodes": [
+     "skeleton-refinement"
+    ],
+    "edges": [
+     "e7",
+     "e8"
+    ]
+   }
+  ]
+ }
+}

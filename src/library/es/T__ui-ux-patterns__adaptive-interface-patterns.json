@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "adaptive-interface-patterns",
+ "name": "Adaptive Interface Patterns(AIP)",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "Patrones de adaptación y creación dinámica de UI/UX que personalizan las interfaces de los agentes según el contexto, el comportamiento y las preferencias del usuario",
+ "features": [
+  "Adaptación de la interfaz en tiempo real según el contexto del usuario",
+  "Motores de personalización con aprendizaje del comportamiento",
+  "Ajuste y personalización de elementos de la UI según el contexto",
+  "Estilo de comunicación y patrones de interacción adaptativos"
+ ],
+ "tldr": {
+  "what": "Ajusta dinámicamente la disposición de la UI, la presentación del contenido y el estilo de comunicación según el comportamiento aprendido del usuario y las señales de contexto en tiempo real.",
+  "when": "Aplicaciones que atienden a usuarios diversos, donde las interfaces únicas para todos reducen el engagement, o donde los patrones de interacción varían significativamente según el segmento de usuarios.",
+  "watchOut": "La lógica de adaptación puede volverse opaca, lo que dificulta depurar por qué los usuarios ven experiencias distintas o predecir el comportamiento de la interfaz."
+ },
+ "overview": {
+  "pattern": "Adaptación y creación dinámica de UI/UX según el contexto, el comportamiento y las necesidades en tiempo real del usuario",
+  "why": "Las interfaces únicas para todos no logran atender a usuarios diversos con contextos y capacidades distintos",
+  "insight": "Combina múltiples señales (intención, entorno, necesidades de accesibilidad) para una personalización inteligente de la interfaz",
+  "impl": [
+   {
+    "t": "Detección de contexto",
+    "d": "Monitorea el comportamiento del usuario, el entorno y las señales de intención"
+   },
+   {
+    "t": "Motor de adaptación",
+    "d": "Análisis en tiempo real y decisiones de ajuste de la interfaz"
+   },
+   {
+    "t": "UI dinámica",
+    "d": "Componentes flexibles que adaptan la disposición, el estilo y el contenido"
+   },
+   {
+    "t": "Bucle de aprendizaje",
+    "d": "Captura el feedback y mejora la precisión de la adaptación"
+   },
+   {
+    "t": "Control del usuario",
+    "d": "Configuración para anular y preferencias de adaptación"
+   }
+  ],
+  "example": "user_stressed → simplify_interface + reduce_options + gentle_tone",
+  "dos": [
+   "Empieza con preferencias explícitas y el consentimiento del usuario",
+   "Ofrece explicaciones y controles claros sobre la adaptación",
+   "Usa múltiples señales para una detección de contexto robusta",
+   "Implementa alternativas elegantes ante fallos de adaptación",
+   "Permite a los usuarios anular cualquier adaptación automática"
+  ],
+  "donts": [
+   "Adaptar con demasiada frecuencia o de forma drástica sin aviso",
+   "Usar datos sensibles sin consentimiento explícito",
+   "Ocultar por completo la lógica de adaptación a los usuarios",
+   "Suponer que las preferencias de adaptación se transfieren entre contextos",
+   "Sacrificar funcionalidad central por funciones adaptativas"
+  ],
+  "use": [
+   "Los usuarios tienen necesidades y contextos diversos",
+   "Se requiere engagement de los usuarios a largo plazo",
+   "Interfaces complejas con muchas opciones",
+   "La accesibilidad y la inclusión son prioridades"
+  ],
+  "avoid": [
+   "Interfaces simples de propósito único",
+   "Entornos altamente regulados que requieren consistencia",
+   "Contextos sensibles a la privacidad sin mecanismos de consentimiento",
+   "Aplicaciones críticas en tiempo donde la estabilidad es crucial"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de la adaptación",
+    "d": "% de ajustes de interfaz apropiados"
+   },
+   {
+    "n": "Satisfacción del usuario",
+    "d": "Preferencia por una interfaz adaptativa vs estática"
+   },
+   {
+    "n": "Finalización de tareas",
+    "d": "Ganancias de eficiencia por la personalización"
+   },
+   {
+    "n": "Reducción de errores",
+    "d": "Errores evitados por adaptaciones según el contexto"
+   },
+   {
+    "n": "Engagement",
+    "d": "Tiempo invertido y uso de funciones con adaptaciones"
+   },
+   {
+    "n": "Tasa de anulación",
+    "d": "% de adaptaciones revertidas manualmente por los usuarios"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Detección de intención",
+    "d": "Adapta la complejidad de la interfaz según los objetivos del usuario (rápido vs detallado)"
+   },
+   {
+    "n": "Accesibilidad",
+    "d": "Ajustes en tiempo real para necesidades visuales, motrices o cognitivas"
+   },
+   {
+    "n": "Contexto del entorno",
+    "d": "Cambios de interfaz según la iluminación, el ruido y la orientación del dispositivo"
+   },
+   {
+    "n": "Carga cognitiva",
+    "d": "Simplifica en momentos de estrés y amplía durante sesiones de trabajo concentrado"
+   },
+   {
+    "n": "Nivel de experiencia",
+    "d": "Exposición progresiva de funciones a medida que aumenta la destreza del usuario"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Adaptive Interface Patterns",
+  "description": "Patrones de adaptación y personalización dinámica de UI/UX que ajustan las interfaces de los agentes según el contexto, el comportamiento y las preferencias del usuario",
+  "nodes": [
+   {
+    "id": "static-interface-limitations",
+    "label": "📱 Limitaciones de la interfaz estática\n\"¿Cómo crear interfaces que\nse adapten dinámicamente al contexto,\nlas preferencias y los patrones de comportamiento del usuario?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "adaptive-interface-framework",
+    "label": "🔄 Framework de interfaz adaptativa\n\"Personalización dinámica:\n• Conciencia del contexto\n• Aprendizaje del comportamiento\n• Adaptación en tiempo real\n• Optimización continua\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "context-aware-adaptation",
+    "label": "🌍 Adaptación según el contexto\n\"Detección del entorno:\n• Dispositivo y ubicación\n• Hora y actividad\n• Fusión de sensores IoT\n• Inferencia que preserva la privacidad\"",
+    "x": 200,
+    "y": 350,
+    "w": 260
+   },
+   {
+    "id": "environmental-integration",
+    "label": "🏠 Integración con el entorno\n\"Adaptación inteligente:\n• Iluminación y temperatura\n• Detección de ocupación\n• Optimización energética\n• Patrones de comportamiento\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "user-behavior-analysis",
+    "label": "📊 Análisis del comportamiento del usuario\n\"Reconocimiento de patrones:\n• Secuencias de interacción\n• Aprendizaje de preferencias\n• Precisión de predicción que mides\n• Procesamiento en tiempo real\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "ml-driven-personalization",
+    "label": "🤖 Personalización impulsada por ML\n\"Algoritmos avanzados:\n• Aprendizaje por refuerzo\n• Filtrado colaborativo\n• Modelos de deep learning\n• Optimización continua\"",
+    "x": 750,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "dynamic-ui-generation",
+    "label": "⚡ Generación dinámica de UI\n\"Creación en tiempo real:\n• Sistemas GenUI\n• Selección de componentes\n• Optimización de la disposición\n• Arquitectura modular\"",
+    "x": 400,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "accessibility-adaptation",
+    "label": "♿ Adaptación de accesibilidad\n\"Diseño inclusivo:\n• Ajuste en tiempo real\n• Opciones multimodales\n• Cumplimiento de WCAG\n• Acceso universal\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "multi-modal-interfaces",
+    "label": "🎭 Interfaces multimodales\n\"Modalidades adaptativas:\n• Voz + visual\n• Gestos + habla\n• Feedback por seguimiento ocular\n• Transiciones fluidas\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "privacy-preservation",
+    "label": "🔐 Preservación de la privacidad\n\"Personalización segura:\n• Aprendizaje federado\n• Privacidad diferencial\n• Procesamiento local\n• Protección de datos\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "continuous-optimization",
+    "label": "🔄 Optimización continua\n\"Interfaces vivas:\n• Pruebas A/B\n• Métricas de rendimiento\n• Evolución autónoma\n• Analítica en tiempo real\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "production-success",
+    "label": "🏆 Éxito en producción\n\"Resultados de la industria:\n• Netflix: la mayoría de las reproducciones empiezan desde recomendaciones\n• Los efectos en ingresos dependen de cada producto\n• Ganancias de eficiencia\n• Engagement, vigilado por efectos de burbuja de filtro\"",
+    "x": 400,
+    "y": 1100,
+    "w": 260
+   },
+   {
+    "id": "adaptive-principle",
+    "label": "🎯 Principio de la interfaz adaptativa\n\"La adaptación según el contexto es tan buena como el modelo de comportamiento que la respalda, así que mide la precisión de predicción directamente\nLa generación dinámica de UI con accesibilidad garantiza el acceso universal\nLa personalización que preserva la privacidad mantiene la confianza que hace bienvenida la personalización\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "static-interface-limitations",
+    "t": "adaptive-interface-framework",
+    "label": "evolucionó hacia"
+   },
+   {
+    "id": "e2",
+    "s": "adaptive-interface-framework",
+    "t": "context-aware-adaptation",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "adaptive-interface-framework",
+    "t": "user-behavior-analysis",
+    "label": "realiza"
+   },
+   {
+    "id": "e4",
+    "s": "adaptive-interface-framework",
+    "t": "dynamic-ui-generation",
+    "label": "permite"
+   },
+   {
+    "id": "e5",
+    "s": "context-aware-adaptation",
+    "t": "environmental-integration",
+    "label": "incluye"
+   },
+   {
+    "id": "e6",
+    "s": "user-behavior-analysis",
+    "t": "ml-driven-personalization",
+    "label": "impulsado por"
+   },
+   {
+    "id": "e7",
+    "s": "dynamic-ui-generation",
+    "t": "accessibility-adaptation",
+    "label": "garantiza"
+   },
+   {
+    "id": "e8",
+    "s": "dynamic-ui-generation",
+    "t": "multi-modal-interfaces",
+    "label": "crea"
+   },
+   {
+    "id": "e9",
+    "s": "environmental-integration",
+    "t": "accessibility-adaptation",
+    "label": "mejora"
+   },
+   {
+    "id": "e10",
+    "s": "ml-driven-personalization",
+    "t": "multi-modal-interfaces",
+    "label": "optimiza"
+   },
+   {
+    "id": "e11",
+    "s": "accessibility-adaptation",
+    "t": "privacy-preservation",
+    "label": "protegido por"
+   },
+   {
+    "id": "e12",
+    "s": "multi-modal-interfaces",
+    "t": "continuous-optimization",
+    "label": "mejorado por"
+   },
+   {
+    "id": "e13",
+    "s": "privacy-preservation",
+    "t": "production-success",
+    "label": "permite"
+   },
+   {
+    "id": "e14",
+    "s": "continuous-optimization",
+    "t": "production-success",
+    "label": "logra"
+   },
+   {
+    "id": "e15",
+    "s": "production-success",
+    "t": "adaptive-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Limitaciones de la interfaz estática",
+    "description": "¿Cómo pueden las interfaces ir más allá de los diseños estáticos para adaptarse dinámicamente al contexto, las preferencias y los patrones de comportamiento del usuario y así mejorar la usabilidad y el engagement?",
+    "input": "",
+    "nodes": [
+     "static-interface-limitations"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de interfaz adaptativa",
+    "description": "Un framework de personalización dinámica aborda las limitaciones mediante conciencia del contexto, aprendizaje del comportamiento, adaptación en tiempo real y mecanismos de optimización continua.",
+    "input": "",
+    "nodes": [
+     "adaptive-interface-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Análisis del contexto y del comportamiento",
+    "description": "La detección del entorno incluye fusión de IoT e inferencia que preserva la privacidad. El análisis del comportamiento del usuario predice la intención mediante reconocimiento de patrones y procesamiento en tiempo real.",
+    "input": "",
+    "nodes": [
+     "context-aware-adaptation",
+     "environmental-integration",
+     "user-behavior-analysis",
+     "ml-driven-personalization"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Generación dinámica y acceso multimodal",
+    "description": "Los sistemas GenUI crean interfaces en tiempo real con una arquitectura modular. La adaptación de accesibilidad garantiza el acceso universal, mientras que las interfaces multimodales integran voz, elementos visuales y gestos.",
+    "input": "",
+    "nodes": [
+     "dynamic-ui-generation",
+     "accessibility-adaptation",
+     "multi-modal-interfaces"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Privacidad y mejora continua",
+    "description": "El aprendizaje federado y la privacidad diferencial protegen los datos del usuario. La optimización continua mediante pruebas A/B y evolución autónoma mejora las métricas de rendimiento en tiempo real.",
+    "input": "",
+    "nodes": [
+     "privacy-preservation",
+     "continuous-optimization"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Éxito en producción y validación",
+    "description": "Netflix ha informado desde hace tiempo que la gran mayoría de lo que ven sus miembros proviene de sus recomendaciones y no de la búsqueda, lo que constituye el argumento público más claro de que la adaptación según el contexto tiene un peso real a escala. Los efectos en ingresos y eficiencia dependen de cada producto, así que mídelos en tu propia superficie en lugar de importar la cifra de otros.",
+    "input": "",
+    "nodes": [
+     "production-success",
+     "adaptive-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

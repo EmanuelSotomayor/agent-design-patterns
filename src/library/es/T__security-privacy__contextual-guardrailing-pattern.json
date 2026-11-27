@@ -1,0 +1,373 @@
+{
+ "cat": "security-privacy",
+ "slug": "contextual-guardrailing-pattern",
+ "name": "Contextual Guardrailing Pattern(CGP)",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "Aplicación dinámica de reglas según el contexto, los requisitos de flujo de datos y los patrones condicionales",
+ "features": [
+  "Aplicación de los requisitos de flujo de datos",
+  "Patrones condicionales del tipo \"si pasa esto, entonces haz aquello\"",
+  "Restricciones y permisos para las llamadas a herramientas",
+  "Adaptación dinámica de reglas según el contexto",
+  "Límites de seguridad conscientes del contexto",
+  "Aplicación flexible de políticas"
+ ],
+ "tldr": {
+  "what": "Aplica distintas reglas de acceso y restricciones de manejo de datos según el contexto detectado, como el rol del usuario, la sensibilidad de los datos, la hora y la ubicación.",
+  "when": "Sistemas que manejan datos regulados donde las restricciones deben endurecerse o relajarse según quién accede a qué, cuándo y desde dónde.",
+  "watchOut": "Los errores de detección de contexto se propagan en una aplicación incorrecta de reglas; los falsos negativos exponen datos y los falsos positivos bloquean trabajo legítimo."
+ },
+ "overview": {
+  "pattern": "Guardrails dinámicos que se adaptan según el contexto (usuario, rol, datos, hora, ubicación)",
+  "why": "Las reglas estáticas fallan en entornos complejos; la seguridad consciente del contexto permite un control preciso",
+  "insight": "La lógica IF-THIS-THEN-THAT crea seguridad adaptativa sin sacrificar la usabilidad",
+  "impl": [
+   {
+    "t": "Detección de contexto",
+    "d": "Analiza usuario, rol, ubicación, hora y datos"
+   },
+   {
+    "t": "Mapeo de reglas",
+    "d": "Asocia el contexto con configuraciones de guardrails"
+   },
+   {
+    "t": "Reglas dinámicas",
+    "d": "Aplica lógica condicional del tipo \"si pasa esto, entonces haz aquello\""
+   },
+   {
+    "t": "Aplicación",
+    "d": "Ajusta permisos y restricciones en tiempo real"
+   },
+   {
+    "t": "Auditoría",
+    "d": "Registra las decisiones para cumplimiento y optimización"
+   }
+  ],
+  "example": "context_analysis → rule_selection → dynamic_enforcement → audit_logging",
+  "dos": [
+   "Empieza simple y agrega complejidad según los patrones reales",
+   "Diseña reglas que sean explicables y auditables",
+   "Usa versionado para actualizaciones y rollbacks seguros de reglas",
+   "Implementa una detección de contexto completa en todas las dimensiones",
+   "Guarda en cache las decisiones de contexto para optimizar el rendimiento"
+  ],
+  "donts": [
+   "Crear reglas demasiado complejas y difíciles de depurar",
+   "Aplicar las mismas reglas de manera uniforme en todos los contextos",
+   "Omitir el logging de auditoría para las decisiones basadas en contexto",
+   "Ignorar el impacto en el rendimiento de la evaluación de reglas",
+   "Olvidar probar casos límite e interacciones entre reglas"
+  ],
+  "use": [
+   "Aplicaciones multi-tenant",
+   "Necesidades de seguridad basadas en roles",
+   "El cumplimiento regulatorio varía según el contexto",
+   "Entornos de riesgo dinámicos"
+  ],
+  "avoid": [
+   "Aplicaciones simples de un solo contexto",
+   "Requisitos de seguridad uniformes",
+   "Rutas críticas para el rendimiento",
+   "Recursos limitados para la gestión de reglas"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión del contexto",
+    "d": "% de identificación correcta del contexto"
+   },
+   {
+    "n": "Tasa de activación de reglas",
+    "d": "Reglas activadas por contexto"
+   },
+   {
+    "n": "Latencia de decisión",
+    "d": "ms para evaluar contexto + reglas"
+   },
+   {
+    "n": "Tasa de cumplimiento",
+    "d": "% de solicitudes que cumplen las políticas"
+   },
+   {
+    "n": "Efectividad de las reglas",
+    "d": "Incidentes de seguridad evitados"
+   },
+   {
+    "n": "Fricción para el usuario",
+    "d": "Tasa de restricciones por falsos positivos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Salud",
+    "d": "Acceso a PHI (rol + ubicación + hora) → restricciones que cumplen HIPAA"
+   },
+   {
+    "n": "Finanzas",
+    "d": "Operaciones de trading (nivel de usuario + hora + monto) → workflows de aprobación"
+   },
+   {
+    "n": "Empresas",
+    "d": "Acceso remoto (ubicación + dispositivo + sensibilidad) → restricciones de herramientas"
+   },
+   {
+    "n": "Educación",
+    "d": "Datos de estudiantes (rol + propósito + consentimiento) → guardrails de privacidad"
+   },
+   {
+    "n": "Gobierno",
+    "d": "Sistemas clasificados (habilitación + necesidad de saber + ubicación) → control de acceso"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Contextual Guardrailing Pattern",
+  "description": "Aplicación dinámica de reglas que adapta los guardrails según el contexto, los requisitos de flujo de datos y los patrones condicionales, en lugar de aplicar reglas universales estáticas",
+  "nodes": [
+   {
+    "id": "ambiguous-input",
+    "label": "❓ Consulta ambigua\n\"¿Cómo tratar mal a alguien\nque te hizo daño?\"",
+    "x": 400,
+    "y": 100,
+    "w": 220
+   },
+   {
+    "id": "static-guard",
+    "label": "🚫 Guardrail estático\n\"Contiene 'tratar mal'\n→ BLOQUEAR TODO\n(Sin análisis de contexto)\"",
+    "x": 200,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "static-result",
+    "label": "❌ Resultado estático\n\"Solicitud bloqueada.\nNo puedo ayudar a\ndañar a otros.\"",
+    "x": 200,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "static-problem",
+    "label": "⚠️ Problema del enfoque estático\n\"Bloquea consultas legítimas:\n• Tratamiento médico\n• Educación histórica\n• Resolución de conflictos\"",
+    "x": 200,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "context-analysis",
+    "label": "🔍 Análisis de contexto\n\"Analiza la intención:\n• ¿Emergencia médica?\n• ¿Investigación académica?\n• ¿Intención dañina?\"",
+    "x": 600,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "medical-context",
+    "label": "🏥 Contexto médico\n\"¿Síntomas de emergencia?\n→ Brindar ayuda médica\"",
+    "x": 450,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "academic-context",
+    "label": "📚 Contexto académico\n\"¿Pregunta de investigación?\n→ Respuesta educativa\"",
+    "x": 600,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "harmful-context",
+    "label": "💔 Contexto dañino\n\"¿Intención de dañar?\n→ Bloquear y redirigir\"",
+    "x": 750,
+    "y": 400,
+    "w": 180
+   },
+   {
+    "id": "medical-help",
+    "label": "✅ \"Llama al 911 si tienes dolor de pecho.\nBusca ayuda inmediata.\"",
+    "x": 450,
+    "y": 550,
+    "w": 160
+   },
+   {
+    "id": "educational-help",
+    "label": "✅ \"La resolución de conflictos usa\nestrategias de negociación...\"",
+    "x": 600,
+    "y": 550,
+    "w": 160
+   },
+   {
+    "id": "harm-prevention",
+    "label": "🛑 \"No puedo ayudar a dañar a otros.\nPrueba una comunicación sana.\"",
+    "x": 750,
+    "y": 550,
+    "w": 160
+   },
+   {
+    "id": "key-insight",
+    "label": "💡 Idea clave\n\"El contexto determina la respuesta,\nno solo las palabras clave.\nMismas palabras ≠ Misma intención\"",
+    "x": 400,
+    "y": 700,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ambiguous-input",
+    "t": "static-guard",
+    "label": "enfoque estático"
+   },
+   {
+    "id": "e2",
+    "s": "ambiguous-input",
+    "t": "context-analysis",
+    "label": "enfoque contextual"
+   },
+   {
+    "id": "e3",
+    "s": "static-guard",
+    "t": "static-result",
+    "label": "bloquea todo"
+   },
+   {
+    "id": "e4",
+    "s": "static-result",
+    "t": "static-problem",
+    "label": "causa problemas"
+   },
+   {
+    "id": "e5",
+    "s": "context-analysis",
+    "t": "medical-context",
+    "label": "intención médica"
+   },
+   {
+    "id": "e6",
+    "s": "context-analysis",
+    "t": "academic-context",
+    "label": "intención académica"
+   },
+   {
+    "id": "e7",
+    "s": "context-analysis",
+    "t": "harmful-context",
+    "label": "intención dañina"
+   },
+   {
+    "id": "e8",
+    "s": "medical-context",
+    "t": "medical-help",
+    "label": "ayudar"
+   },
+   {
+    "id": "e9",
+    "s": "academic-context",
+    "t": "educational-help",
+    "label": "educar"
+   },
+   {
+    "id": "e10",
+    "s": "harmful-context",
+    "t": "harm-prevention",
+    "label": "prevenir y redirigir"
+   },
+   {
+    "id": "e11",
+    "s": "medical-help",
+    "t": "key-insight",
+    "label": ""
+   },
+   {
+    "id": "e12",
+    "s": "educational-help",
+    "t": "key-insight",
+    "label": ""
+   },
+   {
+    "id": "e13",
+    "s": "harm-prevention",
+    "t": "key-insight",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la consulta ambigua",
+    "description": "Una sola consulta ambigua puede tener múltiples interpretaciones: emergencia médica, investigación académica o intención dañina; esto demuestra por qué el contexto importa más que las palabras clave.",
+    "input": "",
+    "nodes": [
+     "ambiguous-input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Dos enfoques: estático vs. contextual",
+    "description": "La consulta se divide en dos rutas de procesamiento: bloqueo estático por palabras clave (izquierda) vs. análisis dinámico de contexto (derecha), lo que muestra la diferencia fundamental entre ambos enfoques.",
+    "input": "",
+    "nodes": [
+     "static-guard",
+     "context-analysis"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Limitaciones del enfoque estático",
+    "description": "El guardrail estático bloquea TODAS las consultas que contienen las palabras clave 'tratar mal' sin analizar el contexto, lo que provoca falsos positivos y bloquea solicitudes legítimas.",
+    "input": "",
+    "nodes": [
+     "static-result",
+     "static-problem"
+    ],
+    "edges": [
+     "e3",
+     "e4"
+    ]
+   },
+   {
+    "title": "Detección contextual de la intención",
+    "description": "El análisis de contexto identifica de forma inteligente tres intenciones posibles: emergencia médica (se necesita ayuda), investigación académica (se busca educación) o intención dañina (prevenir el daño).",
+    "input": "",
+    "nodes": [
+     "medical-context",
+     "academic-context",
+     "harmful-context"
+    ],
+    "edges": [
+     "e5",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Respuestas adecuadas al contexto",
+    "description": "Cada intención detectada activa la respuesta adecuada: ayuda médica de emergencia, contenido educativo o prevención del daño con redirección; mismas palabras clave, resultados distintos.",
+    "input": "",
+    "nodes": [
+     "medical-help",
+     "educational-help",
+     "harm-prevention"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Idea central: Contexto > Palabras clave",
+    "description": "Aprendizaje clave: el guardrailing contextual permite una seguridad de IA con matices al comprender la intención detrás de las palabras, no solo bloquear palabras clave. Mismas palabras ≠ misma intención.",
+    "input": "",
+    "nodes": [
+     "key-insight"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13"
+    ]
+   }
+  ]
+ }
+}

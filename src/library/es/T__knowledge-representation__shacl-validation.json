@@ -1,0 +1,330 @@
+{
+ "cat": "knowledge-representation",
+ "slug": "shacl-validation",
+ "name": "SHACL Constraint Validation(SHACL)",
+ "icon": "✅",
+ "complexity": "high",
+ "description": "Shapes Constraint Language para validar datos RDF frente a esquemas y reglas de negocio definidos",
+ "features": [
+  "Validación de datos basada en shapes",
+  "Definición y verificación de restricciones",
+  "Validación de rutas de propiedades",
+  "Restricciones de cardinalidad",
+  "Validación de tipos de valor",
+  "Reglas de validación personalizadas"
+ ],
+ "tldr": {
+  "what": "Valida datos RDF frente a definiciones declarativas de shapes que especifican restricciones de cardinalidad, tipo y personalizadas sobre las propiedades.",
+  "when": "Los grafos de conocimiento RDF necesitan aplicar un esquema, puntos de control de calidad de datos o verificaciones de cumplimiento antes del procesamiento posterior.",
+  "watchOut": "Los shapes anidados complejos y las reglas de validación personalizadas se vuelven frágiles y costosos de depurar cuando las restricciones interactúan de forma inesperada."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Validación de restricciones SHACL",
+  "description": "Shapes Constraint Language valida datos RDF frente a shapes de nodos y de propiedades declarados antes de admitirlos en el grafo. Los datos de pacientes extraídos por el agente se verifican en cuanto a tipo de dato, cardinalidad, patrón y restricciones de valor, y solo se insertan los registros que cumplen.",
+  "nodes": [
+   {
+    "id": "incoming-data",
+    "label": "📥 Registros extraídos por el agente\nex:pat1 ex:patientId \"P123456\"\nex:pat2 ex:patientId \"P12\"",
+    "x": 340,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "shacl-engine",
+    "label": "✅ Motor de validación SHACL\nValida el grafo de datos frente al grafo de shapes",
+    "x": 360,
+    "y": 160,
+    "w": 280
+   },
+   {
+    "id": "patient-shape",
+    "label": "📐 ex:PatientShape\na sh:NodeShape ;\nsh:targetClass ex:Patient",
+    "x": 360,
+    "y": 280,
+    "w": 240
+   },
+   {
+    "id": "constraint-id",
+    "label": "🔒 Propiedad: patientId\nsh:datatype xsd:string\nsh:minCount 1 ; sh:maxCount 1\nsh:pattern \"^P[0-9]{6}$\"",
+    "x": 30,
+    "y": 410,
+    "w": 220
+   },
+   {
+    "id": "constraint-date",
+    "label": "🔒 Propiedad: birthDate\nsh:datatype xsd:date\nsh:minCount 1\nsh:lessThan ex:admissionDate",
+    "x": 290,
+    "y": 410,
+    "w": 220
+   },
+   {
+    "id": "constraint-record",
+    "label": "🔒 Propiedad: medicalRecord\nsh:node ex:MedicalRecordShape\nsh:minCount 1",
+    "x": 550,
+    "y": 410,
+    "w": 220
+   },
+   {
+    "id": "record-valid",
+    "label": "🟢 Registro ex:pat1\npatientId \"P123456\"\nbirthDate 1980-05-02",
+    "x": 80,
+    "y": 560,
+    "w": 210
+   },
+   {
+    "id": "record-invalid",
+    "label": "🔴 Registro ex:pat2\npatientId \"P12\"\nbirthDate posterior a admissionDate",
+    "x": 470,
+    "y": 560,
+    "w": 210
+   },
+   {
+    "id": "conforms",
+    "label": "✔️ Conforms: true\nSe cumplen todas las restricciones",
+    "x": 80,
+    "y": 680,
+    "w": 210
+   },
+   {
+    "id": "violation-pattern",
+    "label": "⛔ Violación\nsh:PatternConstraintComponent\npatientId \"P12\" no cumple ^P[0-9]{6}$",
+    "x": 330,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "violation-date",
+    "label": "⛔ Violación\nsh:LessThanConstraintComponent\nbirthDate no es < admissionDate",
+    "x": 600,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "report",
+    "label": "📋 sh:ValidationReport\nsh:conforms false\n2 resultado(s), severidad sh:Violation",
+    "x": 360,
+    "y": 810,
+    "w": 250
+   },
+   {
+    "id": "graph-insert",
+    "label": "🗄️ Insertar en el grafo de conocimiento\nSolo registros que cumplen",
+    "x": 60,
+    "y": 810,
+    "w": 230
+   },
+   {
+    "id": "quarantine",
+    "label": "🚫 Cuarentena\nRechazar y enviar a reparación",
+    "x": 680,
+    "y": 810,
+    "w": 210
+   }
+  ],
+  "edges": [
+   {
+    "id": "incoming-engine",
+    "s": "incoming-data",
+    "t": "shacl-engine",
+    "label": ""
+   },
+   {
+    "id": "engine-shape",
+    "s": "shacl-engine",
+    "t": "patient-shape",
+    "label": "Cargar shapes"
+   },
+   {
+    "id": "shape-cid",
+    "s": "patient-shape",
+    "t": "constraint-id",
+    "label": ""
+   },
+   {
+    "id": "shape-cdate",
+    "s": "patient-shape",
+    "t": "constraint-date",
+    "label": ""
+   },
+   {
+    "id": "shape-crecord",
+    "s": "patient-shape",
+    "t": "constraint-record",
+    "label": ""
+   },
+   {
+    "id": "cid-valid",
+    "s": "constraint-id",
+    "t": "record-valid",
+    "label": "verificar"
+   },
+   {
+    "id": "cid-invalid",
+    "s": "constraint-id",
+    "t": "record-invalid",
+    "label": "verificar"
+   },
+   {
+    "id": "cdate-invalid",
+    "s": "constraint-date",
+    "t": "record-invalid",
+    "label": "verificar"
+   },
+   {
+    "id": "crecord-valid",
+    "s": "constraint-record",
+    "t": "record-valid",
+    "label": ""
+   },
+   {
+    "id": "valid-conforms",
+    "s": "record-valid",
+    "t": "conforms",
+    "label": ""
+   },
+   {
+    "id": "invalid-vpattern",
+    "s": "record-invalid",
+    "t": "violation-pattern",
+    "label": ""
+   },
+   {
+    "id": "invalid-vdate",
+    "s": "record-invalid",
+    "t": "violation-date",
+    "label": ""
+   },
+   {
+    "id": "conforms-insert",
+    "s": "conforms",
+    "t": "graph-insert",
+    "label": "aceptar"
+   },
+   {
+    "id": "vpattern-report",
+    "s": "violation-pattern",
+    "t": "report",
+    "label": ""
+   },
+   {
+    "id": "vdate-report",
+    "s": "violation-date",
+    "t": "report",
+    "label": ""
+   },
+   {
+    "id": "report-quarantine",
+    "s": "report",
+    "t": "quarantine",
+    "label": "rechazar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recibir registros candidatos",
+    "description": "Los datos que un agente de extracción propone para el grafo llegan como un grafo de datos RDF, que incluye un paciente bien formado y otro mal formado.",
+    "input": "",
+    "nodes": [
+     "incoming-data",
+     "shacl-engine"
+    ],
+    "edges": [
+     "incoming-engine"
+    ]
+   },
+   {
+    "title": "Cargar el shape objetivo",
+    "description": "El motor selecciona ex:PatientShape, un sh:NodeShape cuyo sh:targetClass ex:Patient le indica qué nodos del grafo de datos debe validar.",
+    "input": "",
+    "nodes": [
+     "shacl-engine",
+     "patient-shape"
+    ],
+    "edges": [
+     "engine-shape"
+    ]
+   },
+   {
+    "title": "Expandir las restricciones de propiedades",
+    "description": "El shape se despliega en restricciones de propiedades: un patrón y una cardinalidad sobre patientId, un tipo de dato y una regla lessThan sobre birthDate, y un shape anidado sobre medicalRecord.",
+    "input": "",
+    "nodes": [
+     "patient-shape",
+     "constraint-id",
+     "constraint-date",
+     "constraint-record"
+    ],
+    "edges": [
+     "shape-cid",
+     "shape-cdate",
+     "shape-crecord"
+    ]
+   },
+   {
+    "title": "Evaluar cada registro",
+    "description": "Cada nodo foco se verifica contra cada restricción. El registro pat1 cumple el patrón y el shape anidado del registro médico; pat2 se prueba con las mismas reglas.",
+    "input": "",
+    "nodes": [
+     "constraint-id",
+     "constraint-date",
+     "constraint-record",
+     "record-valid",
+     "record-invalid"
+    ],
+    "edges": [
+     "cid-valid",
+     "cid-invalid",
+     "cdate-invalid",
+     "crecord-valid"
+    ]
+   },
+   {
+    "title": "Detectar violaciones",
+    "description": "pat1 cumple. pat2 genera dos resultados: un PatternConstraintComponent sobre \"P12\" y un LessThanConstraintComponent porque birthDate no es anterior a admissionDate.",
+    "input": "",
+    "nodes": [
+     "record-valid",
+     "conforms",
+     "record-invalid",
+     "violation-pattern",
+     "violation-date"
+    ],
+    "edges": [
+     "valid-conforms",
+     "invalid-vpattern",
+     "invalid-vdate"
+    ]
+   },
+   {
+    "title": "Emitir el informe de validación",
+    "description": "Un sh:ValidationReport agrega los resultados con sh:conforms false y detalles por nodo foco con severidad sh:Violation para su manejo posterior.",
+    "input": "",
+    "nodes": [
+     "violation-pattern",
+     "violation-date",
+     "report"
+    ],
+    "edges": [
+     "vpattern-report",
+     "vdate-report"
+    ]
+   },
+   {
+    "title": "Controlar el acceso al grafo de conocimiento",
+    "description": "Solo los registros que cumplen se insertan en el grafo; el registro que no cumple se pone en cuarentena y se devuelve para su reparación, manteniendo limpio el grafo.",
+    "input": "",
+    "nodes": [
+     "conforms",
+     "graph-insert",
+     "report",
+     "quarantine"
+    ],
+    "edges": [
+     "conforms-insert",
+     "report-quarantine"
+    ]
+   }
+  ]
+ }
+}

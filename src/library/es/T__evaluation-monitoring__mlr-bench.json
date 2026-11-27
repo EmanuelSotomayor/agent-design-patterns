@@ -1,0 +1,395 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "mlr-bench",
+ "name": "MLR-Bench(MLR-Bench)",
+ "icon": "🔬",
+ "complexity": "high",
+ "description": "Benchmark integral para evaluar agentes de IA en tareas abiertas de investigación en machine learning provenientes de las principales conferencias de ML.",
+ "features": [
+  "201 tareas de investigación de NeurIPS/ICLR/ICML",
+  "Evaluación automatizada con MLR-Judge",
+  "Cubre 9 áreas centrales de investigación en ML",
+  "Tareas basadas en artículos reales de workshops",
+  "Estructura modular de agente de investigación"
+ ],
+ "tldr": {
+  "what": "Benchmark estandarizado con 201 tareas de investigación en ML de las principales conferencias y evaluación automatizada en las dimensiones de metodología, implementación y análisis.",
+  "when": "Evaluar si tu agente de investigación puede abordar problemas abiertos de ML comparables al trabajo publicado en conferencias en múltiples subcampos.",
+  "watchOut": "Las puntuaciones reflejan el desempeño en tareas acotadas; los agentes pueden sobreajustarse a los patrones del benchmark sin generalizar a nuevas direcciones de investigación fuera de estas 9 áreas."
+ },
+ "overview": {
+  "pattern": "Benchmark integral con 201 tareas reales de investigación en ML de conferencias de primer nivel",
+  "why": "Evalúa el pipeline de investigación completo, desde la generación de ideas hasta la redacción del artículo, con validación automatizada y humana",
+  "insight": "Los modelos SOTA actuales destacan en ideas y redacción, pero tienen dificultades con la programación, lo que limita la innovación científica",
+  "impl": [
+   {
+    "t": "Clonar",
+    "d": "git clone del repositorio MLR-Bench desde GitHub"
+   },
+   {
+    "t": "Configurar",
+    "d": "Instala las dependencias y configura la estructura de MLR-Agent"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige entre 201 tareas de investigación en 9 dominios de ML"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Ejecuta el agente a través del pipeline de investigación de 4 etapas"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Usa MLR-Judge para la evaluación automatizada"
+   }
+  ],
+  "example": "python run_mlr_bench.py --task llm_safety --agent claude_code --stages all",
+  "dos": [
+   "Prueba en los 9 dominios de investigación en ML para una evaluación integral",
+   "Usa la evaluación automatizada de MLR-Judge con rúbricas de revisión estructuradas",
+   "Sigue el pipeline de investigación completo de 4 etapas (idea → código → análisis → artículo)",
+   "Valida los resultados con revisores expertos humanos de conferencias importantes",
+   "Enfócate en las capacidades de programación del agente: es el principal cuello de botella identificado"
+  ],
+  "donts": [
+   "Omitir la configuración adecuada del entorno para ejecutar las tareas de investigación",
+   "Ignorar los fallos de programación: impiden la calidad de la investigación posterior",
+   "Depender solo de la evaluación automatizada sin validación humana",
+   "Probar en un único dominio: la investigación requiere capacidades transversales a varios dominios",
+   "Pasar por alto la novedad y la relevancia en favor de la solidez técnica únicamente"
+  ],
+  "use": [
+   "Evaluar las capacidades de automatización de la investigación con IA",
+   "Probar el potencial de descubrimiento científico e innovación",
+   "Hacer benchmarking frente a tareas de investigación del mundo real",
+   "Evaluar el desempeño en el pipeline de investigación completo",
+   "Desarrollo de agentes de I+D académicos e industriales"
+  ],
+  "avoid": [
+   "Solo tareas simples de programación o análisis de datos",
+   "Evaluación en dominios ajenos a la investigación",
+   "Necesidad de demostraciones rápidas de capacidades",
+   "Entornos con recursos limitados (requiere el stack de investigación completo)",
+   "Dominios fuera de las áreas centrales de investigación en ML"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad general de la investigación",
+    "d": "Puntuación compuesta en 5 dimensiones de evaluación"
+   },
+   {
+    "n": "Desempeño por etapa",
+    "d": "Tasa de éxito en las etapas de idea, código, análisis y redacción"
+   },
+   {
+    "n": "Puntuaciones por dominio",
+    "d": "Desempeño en 9 áreas de investigación en ML"
+   },
+   {
+    "n": "Alineación de MLR-Judge",
+    "d": "Correlación con revisores expertos humanos"
+   },
+   {
+    "n": "Índice de innovación",
+    "d": "Novedad y relevancia de la investigación generada"
+   },
+   {
+    "n": "Solidez técnica",
+    "d": "Calidad del código y validez experimental"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Evaluación de la automatización de la investigación",
+    "d": "Evaluar agentes de IA en el pipeline completo de investigación en ML, desde la idea hasta la publicación"
+   },
+   {
+    "n": "Benchmarking del descubrimiento científico",
+    "d": "Probar las capacidades de innovación en los dominios de LLMs, AI4Science y teoría de ML"
+   },
+   {
+    "n": "Desarrollo de agentes académicos",
+    "d": "Construir investigadores de IA capaces de realizar investigación a nivel de workshop"
+   },
+   {
+    "n": "Herramientas de productividad para la investigación",
+    "d": "Medir la efectividad de la asistencia de IA en los flujos de trabajo de investigación científica"
+   },
+   {
+    "n": "Simulación de revisión de conferencias",
+    "d": "Entrenar agentes para realizar revisión por pares y evaluación de investigaciones"
+   }
+  ]
+ },
+ "flow": {
+  "title": "MLR-Bench: patrón de evaluación de agentes de investigación en ML",
+  "description": "Benchmark de 2024 que evalúa agentes de IA en investigación abierta de machine learning con 201 tareas de las principales conferencias, y revela brechas críticas en la confiabilidad experimental",
+  "nodes": [
+   {
+    "id": "research-agent-challenge",
+    "label": "🔬 Desafío de los agentes de investigación con IA\n\"¿Pueden los agentes de IA realizar investigación\nconfiable en machine learning desde\nla idea hasta la publicación?\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "mlr-bench-framework",
+    "label": "🏗️ Framework MLR-Bench\n\"Evaluación de investigación abierta en ML:\n• 201 tareas de nivel de conferencia\n• Puntuación automatizada con MLR-Judge\n• Evaluación del pipeline de investigación completo\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "research-task-corpus",
+    "label": "📚 Corpus de 201 tareas de investigación\n\"Desafíos reales de investigación en ML\ntomados de las principales conferencias:\n• Workshops de NeurIPS\n• Workshops de ICLR\n• Workshops de ICML\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "mlr-agent-pipeline",
+    "label": "🤖 Pipeline de investigación de MLR-Agent\n\"Estructura modular de agente que completa\nel ciclo de investigación completo a lo largo de\ncuatro etapas críticas\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "idea-generation",
+    "label": "💡 Etapa 1: Generación de ideas\n\"Conceptualización creativa:\n• Identificación del problema\n• Diseño de enfoques novedosos\n• Formulación de hipótesis de investigación\"",
+    "x": 450,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "proposal-formulation",
+    "label": "📝 Etapa 2: Formulación de la propuesta\n\"Planificación estructurada:\n• Diseño de la metodología\n• Marco experimental\n• Integración de la literatura\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "experimentation-stage",
+    "label": "🧪 Etapa 3: Experimentación\n\"DEBILIDAD CRÍTICA:\n• 80% de resultados fabricados\n• Implementaciones poco confiables\n• Resultados experimentales inválidos\"",
+    "x": 750,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "paper-writing",
+    "label": "📄 Etapa 4: Redacción del artículo\n\"Buen desempeño:\n• Estructura coherente\n• Presentación clara\n• Salida bien formateada\"",
+    "x": 900,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "mlr-judge-system",
+    "label": "⚖️ Sistema de evaluación MLR-Judge\n\"Framework de evaluación automatizada:\n• Revisores basados en LLM\n• Rúbricas cuidadosamente diseñadas\n• Validación por expertos humanos\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "performance-insights",
+    "label": "📊 Hallazgos de desempeño mixto\n\"Los agentes destacan en:\n• Generación de ideas\n• Estructura del artículo\n• Coherencia de la redacción\"",
+    "x": 200,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "experimental-reliability-gap",
+    "label": "🚨 Crisis de confiabilidad experimental\n\"El 80% de los experimentos produce:\n• Resultados fabricados\n• Implementaciones inválidas\n• Conclusiones poco confiables\"",
+    "x": 600,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "research-evaluation-principle",
+    "label": "🎯 Principio de evaluación de agentes de investigación\n\"Los agentes de IA son prometedores en el trabajo conceptual\npero fallan de forma catastrófica en la validación experimental\nLa confiabilidad requiere una experimentación confiable\"",
+    "x": 400,
+    "y": 950,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "research-agent-challenge",
+    "t": "mlr-bench-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "mlr-bench-framework",
+    "t": "research-task-corpus",
+    "label": "incluye tareas"
+   },
+   {
+    "id": "e3",
+    "s": "mlr-bench-framework",
+    "t": "mlr-agent-pipeline",
+    "label": "despliega agentes"
+   },
+   {
+    "id": "e4",
+    "s": "mlr-agent-pipeline",
+    "t": "idea-generation",
+    "label": "comienza con"
+   },
+   {
+    "id": "e5",
+    "s": "idea-generation",
+    "t": "proposal-formulation",
+    "label": "conduce a"
+   },
+   {
+    "id": "e6",
+    "s": "proposal-formulation",
+    "t": "experimentation-stage",
+    "label": "continúa con"
+   },
+   {
+    "id": "e7",
+    "s": "experimentation-stage",
+    "t": "paper-writing",
+    "label": "concluye con"
+   },
+   {
+    "id": "e8",
+    "s": "research-task-corpus",
+    "t": "mlr-judge-system",
+    "label": "evaluado por"
+   },
+   {
+    "id": "e9",
+    "s": "idea-generation",
+    "t": "mlr-judge-system",
+    "label": "valorado por"
+   },
+   {
+    "id": "e10",
+    "s": "proposal-formulation",
+    "t": "mlr-judge-system",
+    "label": "puntuado por"
+   },
+   {
+    "id": "e11",
+    "s": "experimentation-stage",
+    "t": "mlr-judge-system",
+    "label": "juzgado por"
+   },
+   {
+    "id": "e12",
+    "s": "paper-writing",
+    "t": "mlr-judge-system",
+    "label": "revisado por"
+   },
+   {
+    "id": "e13",
+    "s": "mlr-judge-system",
+    "t": "performance-insights",
+    "label": "revela fortalezas"
+   },
+   {
+    "id": "e14",
+    "s": "mlr-judge-system",
+    "t": "experimental-reliability-gap",
+    "label": "expone una falla crítica"
+   },
+   {
+    "id": "e15",
+    "s": "performance-insights",
+    "t": "research-evaluation-principle",
+    "label": "se muestra prometedor"
+   },
+   {
+    "id": "e16",
+    "s": "experimental-reliability-gap",
+    "t": "research-evaluation-principle",
+    "label": "exige confiabilidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de capacidades de los agentes de investigación con IA",
+    "description": "¿Pueden los agentes de IA realizar investigación confiable en machine learning desde la generación inicial de ideas hasta la publicación? Esta pregunta fundamental impulsa la necesidad de una evaluación integral de la investigación.",
+    "input": "",
+    "nodes": [
+     "research-agent-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework integral de investigación MLR-Bench",
+    "description": "Un benchmark revolucionario crea un sistema completo de evaluación de investigación con 201 tareas de nivel de conferencia de workshops de NeurIPS/ICLR/ICML, puntuación automatizada con MLR-Judge y evaluación del pipeline de investigación completo.",
+    "input": "",
+    "nodes": [
+     "mlr-bench-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Tareas de investigación reales y despliegue del pipeline del agente",
+    "description": "El framework despliega 201 desafíos auténticos de investigación en ML tomados de workshops de las principales conferencias, evaluados mediante la estructura modular de MLR-Agent que completa el ciclo de investigación completo.",
+    "input": "",
+    "nodes": [
+     "research-task-corpus",
+     "mlr-agent-pipeline"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Flujo del proceso de investigación en cuatro etapas",
+    "description": "MLR-Agent ejecuta el pipeline de investigación completo: generación creativa de ideas → formulación estructurada de la propuesta → implementación experimental → redacción coherente del artículo, lo que revela capacidades específicas de cada etapa.",
+    "input": "",
+    "nodes": [
+     "idea-generation",
+     "proposal-formulation",
+     "experimentation-stage",
+     "paper-writing"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Sistema de evaluación automatizada MLR-Judge",
+    "description": "Un framework de evaluación sofisticado usa revisores basados en LLM con rúbricas cuidadosamente diseñadas, validados mediante un alto nivel de acuerdo con revisores expertos humanos para una evaluación escalable de la investigación.",
+    "input": "",
+    "nodes": [
+     "mlr-judge-system"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Hallazgos críticos sobre la confiabilidad de la investigación",
+    "description": "La evaluación revela capacidades mixtas: los agentes destacan en la generación de ideas y la redacción de artículos, pero fallan de forma catastrófica en la experimentación (80% de resultados fabricados), lo que demuestra que una investigación confiable requiere una validación experimental confiable.",
+    "input": "",
+    "nodes": [
+     "performance-insights",
+     "experimental-reliability-gap",
+     "research-evaluation-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15",
+     "e16"
+    ]
+   }
+  ]
+ }
+}

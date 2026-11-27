@@ -1,0 +1,297 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "codebase-structure-retrieval",
+ "name": "Structure-Aware Codebase Retrieval (Repo Map)",
+ "icon": "🗺️",
+ "complexity": "high",
+ "description": "Recuperación especializada para código que aprovecha la estructura del programa en lugar de los embeddings (o junto con ellos). El repositorio se parsea en ASTs y en un grafo de símbolos y dependencias con tree-sitter; los archivos y símbolos se ordenan por centralidad en el grafo (el mapa de etiquetas ponderado con PageRank de Aider), las herramientas de recorrido del grafo siguen las aristas de llamadas, definiciones e importaciones (AutoCodeRover y agentes de grafos de código), y la localización de fallas basada en espectro puede acotar la búsqueda a partir de las pruebas que fallan. Esto permite que un agente de programación arme un contexto mínimo y relevante a partir de un repositorio mucho más grande que su ventana de contexto. Se diferencia de `graph-rag`, cuyo grafo se construye a partir de entidades de documentos y no de la semántica del código.",
+ "features": [
+  "Parseo del AST con tree-sitter hacia una tabla de símbolos",
+  "Grafo de símbolos y dependencias sobre aristas de llamadas, definiciones e importaciones",
+  "Ordenamiento de archivos y símbolos por centralidad estilo PageRank",
+  "Herramientas de recorrido sobre el grafo de código",
+  "Los identificadores mencionados en la conversación reciben más peso en el ordenamiento",
+  "Localización opcional de fallas basada en espectro a partir de las pruebas que fallan"
+ ],
+ "tldr": {
+  "what": "Parsea el código en ASTs y construye un grafo de dependencias entre símbolos; luego ordena archivos y funciones por centralidad para recuperar solo el código más relevante para una tarea.",
+  "when": "Bases de código grandes en las que los embeddings por sí solos no captan las relaciones estructurales, o cuando un agente de programación necesita recorrer cadenas de llamadas e importaciones para entender el contexto.",
+  "watchOut": "La construcción y el ordenamiento del grafo son costosos al inicio; los grafos desactualizados provocan fallas de recuperación si la estructura del código cambia entre un parseo y otro."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Recuperación de código consciente de la estructura (Repo Map)",
+  "description": "Recuperación de código que aprovecha la estructura del programa en lugar de solo embeddings. Un parseo con tree-sitter construye un grafo de símbolos y dependencias, la centralidad estilo PageRank ordena los símbolos relevantes y el recorrido del grafo sobre las aristas de llamadas encuentra la ruta de escritura, armando un contexto mínimo a partir de un repositorio de 500k líneas que nunca cabría en la ventana del modelo.",
+  "nodes": [
+   {
+    "id": "bug-task",
+    "label": "🐛 Tarea de bug\n\"La configuración no persiste después\nde cerrar sesión\" - repositorio de 500k líneas",
+    "x": 320,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "tree-sitter",
+    "label": "🌲 Parseo con tree-sitter\nASTs de cada archivo fuente",
+    "x": 280,
+    "y": 160,
+    "w": 240
+   },
+   {
+    "id": "naive-load",
+    "label": "🚫 Cargar todo el repositorio\n500k líneas >> ventana de contexto\n(evitado)",
+    "x": 660,
+    "y": 160,
+    "w": 220
+   },
+   {
+    "id": "symbol-table",
+    "label": "🔤 Tabla de símbolos\nDefiniciones y referencias",
+    "x": 280,
+    "y": 270,
+    "w": 240
+   },
+   {
+    "id": "code-graph",
+    "label": "🕸️ Grafo de código\nNodos: símbolos y archivos\nAristas: llamada, definición, importación",
+    "x": 280,
+    "y": 380,
+    "w": 240
+   },
+   {
+    "id": "pagerank",
+    "label": "📊 Ordenamiento con PageRank\nCentralidad sobre el grafo\nRefuerzo: settings, logout, persist",
+    "x": 280,
+    "y": 490,
+    "w": 240
+   },
+   {
+    "id": "ranked-symbols",
+    "label": "🏅 Símbolos mejor ubicados\nSettingsStore.save\nAuthService.logout, useSettings",
+    "x": 280,
+    "y": 600,
+    "w": 240
+   },
+   {
+    "id": "traversal",
+    "label": "🧭 Recorrido de dependencias\nSigue las aristas de llamadas desde\nAuthService.logout",
+    "x": 260,
+    "y": 710,
+    "w": 240
+   },
+   {
+    "id": "root-cause",
+    "label": "⚠️ Causa raíz\nlogout() limpia la sesión\nantes de SettingsStore.flush()",
+    "x": 620,
+    "y": 710,
+    "w": 230
+   },
+   {
+    "id": "write-path",
+    "label": "➡️ Ruta de escritura\nuseSettings -> SettingsStore.save\n-> db.write",
+    "x": 80,
+    "y": 820,
+    "w": 230
+   },
+   {
+    "id": "minimal-context",
+    "label": "📦 Contexto mínimo\n~6 símbolos + firmas\n~1,200 tokens",
+    "x": 440,
+    "y": 820,
+    "w": 230
+   },
+   {
+    "id": "fix",
+    "label": "🔧 Corrección\nGuardar la configuración antes\nde limpiar la sesión",
+    "x": 130,
+    "y": 930,
+    "w": 220
+   },
+   {
+    "id": "verify",
+    "label": "✅ Verificación\nLa prueba que fallaba pasa; la localización\nde fallas apuntaba aquí",
+    "x": 450,
+    "y": 930,
+    "w": 230
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-treesitter",
+    "s": "bug-task",
+    "t": "tree-sitter",
+    "label": ""
+   },
+   {
+    "id": "task-naive",
+    "s": "bug-task",
+    "t": "naive-load",
+    "label": "Evitado"
+   },
+   {
+    "id": "treesitter-symbols",
+    "s": "tree-sitter",
+    "t": "symbol-table",
+    "label": ""
+   },
+   {
+    "id": "symbols-graph",
+    "s": "symbol-table",
+    "t": "code-graph",
+    "label": ""
+   },
+   {
+    "id": "graph-pagerank",
+    "s": "code-graph",
+    "t": "pagerank",
+    "label": ""
+   },
+   {
+    "id": "pagerank-ranked",
+    "s": "pagerank",
+    "t": "ranked-symbols",
+    "label": "Símbolos principales"
+   },
+   {
+    "id": "ranked-traversal",
+    "s": "ranked-symbols",
+    "t": "traversal",
+    "label": ""
+   },
+   {
+    "id": "traversal-writepath",
+    "s": "traversal",
+    "t": "write-path",
+    "label": "Rastrear escrituras"
+   },
+   {
+    "id": "traversal-rootcause",
+    "s": "traversal",
+    "t": "root-cause",
+    "label": "Bug de orden"
+   },
+   {
+    "id": "writepath-context",
+    "s": "write-path",
+    "t": "minimal-context",
+    "label": ""
+   },
+   {
+    "id": "rootcause-context",
+    "s": "root-cause",
+    "t": "minimal-context",
+    "label": ""
+   },
+   {
+    "id": "context-fix",
+    "s": "minimal-context",
+    "t": "fix",
+    "label": ""
+   },
+   {
+    "id": "fix-verify",
+    "s": "fix",
+    "t": "verify",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Bug en un repositorio grande",
+    "description": "Hay que corregir un bug en una base de código de 500k líneas. Cargar todo el repositorio en el contexto es imposible, así que el agente recupera por estructura.",
+    "input": "",
+    "nodes": [
+     "bug-task",
+     "tree-sitter",
+     "naive-load"
+    ],
+    "edges": [
+     "task-treesitter",
+     "task-naive"
+    ]
+   },
+   {
+    "title": "Parseo a símbolos",
+    "description": "Tree-sitter parsea cada archivo fuente en ASTs y extrae una tabla de símbolos con definiciones y referencias.",
+    "input": "",
+    "nodes": [
+     "tree-sitter",
+     "symbol-table"
+    ],
+    "edges": [
+     "treesitter-symbols"
+    ]
+   },
+   {
+    "title": "Construcción del grafo de código",
+    "description": "Los símbolos y archivos se convierten en nodos; las relaciones de llamada, definición e importación se convierten en aristas, lo que da un grafo derivado de la semántica del código y no de la similitud de texto.",
+    "input": "",
+    "nodes": [
+     "symbol-table",
+     "code-graph"
+    ],
+    "edges": [
+     "symbols-graph"
+    ]
+   },
+   {
+    "title": "Ordenamiento por centralidad",
+    "description": "Una pasada estilo PageRank ordena los nodos por centralidad, reforzando los identificadores mencionados en la tarea, y destaca los símbolos principales: SettingsStore.save, AuthService.logout y useSettings.",
+    "input": "",
+    "nodes": [
+     "code-graph",
+     "pagerank",
+     "ranked-symbols"
+    ],
+    "edges": [
+     "graph-pagerank",
+     "pagerank-ranked"
+    ]
+   },
+   {
+    "title": "Recorrido de dependencias",
+    "description": "Desde AuthService.logout el agente recorre las aristas de llamadas, rastrea la ruta de escritura y encuentra el bug de orden: logout limpia la sesión antes de que se ejecute el guardado de la configuración.",
+    "input": "",
+    "nodes": [
+     "ranked-symbols",
+     "traversal",
+     "write-path",
+     "root-cause"
+    ],
+    "edges": [
+     "ranked-traversal",
+     "traversal-writepath",
+     "traversal-rootcause"
+    ]
+   },
+   {
+    "title": "Armado del contexto mínimo",
+    "description": "Solo los ~6 símbolos relevantes y sus firmas se incorporan al contexto, unos 1,200 tokens en lugar de todo el repositorio.",
+    "input": "",
+    "nodes": [
+     "write-path",
+     "root-cause",
+     "minimal-context"
+    ],
+    "edges": [
+     "writepath-context",
+     "rootcause-context"
+    ]
+   },
+   {
+    "title": "Corrección y verificación",
+    "description": "El agente reordena logout para que guarde la configuración antes de limpiar la sesión; la prueba que fallaba ahora pasa, lo que coincide con lo que señalaba la localización de fallas basada en espectro.",
+    "input": "",
+    "nodes": [
+     "minimal-context",
+     "fix",
+     "verify"
+    ],
+    "edges": [
+     "context-fix",
+     "fix-verify"
+    ]
+   }
+  ]
+ }
+}

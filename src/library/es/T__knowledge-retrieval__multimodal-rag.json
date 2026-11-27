@@ -1,0 +1,374 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "multimodal-rag",
+ "name": "Multimodal RAG(MMRAG)",
+ "icon": "🎭",
+ "complexity": "high",
+ "description": "Generación aumentada por recuperación que maneja e integra fuentes de texto, imágenes, audio, video y datos estructurados",
+ "features": [
+  "Recuperación intermodal",
+  "Alineación de embeddings multimodales",
+  "Espacios de representación unificados",
+  "Adaptación al tipo de contenido",
+  "Razonamiento intermodal",
+  "Generación integrada"
+ ],
+ "tldr": {
+  "what": "Recupera y combina texto, imágenes, audio, video y datos estructurados usando embeddings alineados para fundamentar la generación en evidencia multimodal.",
+  "when": "Problemas que requieren respuestas fundamentadas en distintos tipos de medios, como el diagnóstico médico a partir de imágenes y texto, o la revisión de diseño a partir de documentos y capturas de pantalla.",
+  "watchOut": "La alineación de embeddings entre modalidades es frágil; los espacios mal alineados hacen que la recuperación favorezca una sola modalidad, lo que degrada las respuestas que necesitan una verdadera fusión."
+ },
+ "overview": {
+  "pattern": "Sistema de RAG multimodal que recupera y fusiona evidencia de texto, imágenes, audio y video usando codificadores especializados",
+  "why": "Permite una comprensión integral al combinar información de múltiples modalidades que los sistemas solo de texto pasan por alto",
+  "insight": "Codificadores por modalidad (CLIP, Whisper, BLIP-2) con pesos de fusión aprendidos para integrar evidencia intermodal",
+  "impl": [
+   {
+    "t": "Ingesta multimodal",
+    "d": "Procesa texto, imágenes, audio y video con un preprocesamiento específico para cada modalidad"
+   },
+   {
+    "t": "Indexar y codificar",
+    "d": "Crea embeddings por modalidad usando codificadores especializados (CLIP, BLIP-2)"
+   },
+   {
+    "t": "Consultar y recuperar",
+    "d": "Busca a través de las modalidades usando estrategias de recuperación híbrida"
+   },
+   {
+    "t": "Fusionar y reordenar",
+    "d": "Combina los resultados multimodales con pesos de fusión aprendidos"
+   },
+   {
+    "t": "Generar y citar",
+    "d": "Usa modelos de visión y lenguaje con citas de evidencia intermodal"
+   }
+  ],
+  "example": "multi_modal_query → [text_search, image_search, audio_search] → fusion → vlm_generation → response",
+  "dos": [
+   "Usa codificadores específicos para cada modalidad (CLIP para visión, Whisper para audio)",
+   "Implementa una recuperación híbrida que combine búsqueda léxica y vectorial por modalidad",
+   "Aplica pesos de fusión aprendidos y calibrados para distintas combinaciones de modalidades",
+   "Guarda en cache las características de OCR, ASR y visuales para reducir la sobrecarga de preprocesamiento",
+   "Incluye alineación temporal para audio/video con marcas de tiempo precisas"
+  ],
+  "donts": [
+   "Depender solo de embeddings de texto para contenido visual o de audio",
+   "Omitir la validación de calidad de las salidas de OCR/ASR que pueden tener ruido",
+   "Incrustar archivos multimedia sin procesar en lugar de usar referencias a características",
+   "Mezclar puntuaciones de similitud no comparables entre modalidades sin calibración",
+   "Ignorar los requisitos de privacidad y cumplimiento para contenido multimedia sensible"
+  ],
+  "use": [
+   "Análisis de documentos que requiere comprender tanto el texto como los elementos visuales",
+   "Búsqueda de contenido rico en medios a través de imágenes, videos y audio",
+   "E-commerce y descubrimiento de productos con atributos visuales y textuales",
+   "Contenido educativo que combina diapositivas, clases en audio y apuntes",
+   "Aplicaciones de salud que integran imágenes médicas con texto clínico"
+  ],
+  "avoid": [
+   "Aplicaciones puramente de texto en las que otras modalidades no aportan valor",
+   "Requisitos de latencia estrictos incompatibles con el procesamiento multimodal",
+   "Recursos computacionales limitados que no pueden manejar modelos de visión/audio",
+   "Entornos sensibles a la privacidad que restringen el procesamiento de imágenes/audio",
+   "Dominios con mala calidad de OCR/ASR donde las señales visuales/de audio no son confiables"
+  ],
+  "metrics": [
+   {
+    "n": "Recuperación intermodal",
+    "d": "Recall@k y MRR en distintas combinaciones de modalidades"
+   },
+   {
+    "n": "Efectividad de la fusión",
+    "d": "Mejora de desempeño de la recuperación multimodal frente a la de una sola modalidad"
+   },
+   {
+    "n": "Fidelidad de la generación",
+    "d": "Precisión de las salidas del modelo de visión y lenguaje con evidencia multimodal"
+   },
+   {
+    "n": "Calidad de las citas",
+    "d": "Precisión de la atribución de evidencia intermodal y del enlace a las fuentes"
+   },
+   {
+    "n": "Cobertura de modalidades",
+    "d": "Uso equilibrado de las modalidades disponibles en los resultados de recuperación"
+   },
+   {
+    "n": "Eficiencia de procesamiento",
+    "d": "Latencia y costo por modalidad, incluida la sobrecarga de preprocesamiento"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de documentos científicos",
+    "d": "Artículos de investigación con figuras, tablas y ecuaciones matemáticas"
+   },
+   {
+    "n": "Búsqueda en e-commerce",
+    "d": "Descubrimiento de productos que combina la apariencia visual con las descripciones textuales"
+   },
+   {
+    "n": "Contenido educativo",
+    "d": "Materiales de curso que integran diapositivas de clase, audio y texto complementario"
+   },
+   {
+    "n": "Soporte técnico",
+    "d": "Guías de solución de problemas con capturas de pantalla, videos e instrucciones escritas"
+   },
+   {
+    "n": "Investigación médica",
+    "d": "Estudios clínicos que combinan imágenes médicas, historias clínicas y literatura"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Multimodal RAG (generación aumentada por recuperación de múltiples fuentes)",
+  "description": "Sistema avanzado de generación aumentada por recuperación capaz de procesar y recuperar información de múltiples modalidades de datos, incluidas fuentes de texto, imágenes, audio y video, para dar respuestas integrales a las consultas.",
+  "nodes": [
+   {
+    "id": "user-query",
+    "label": "❓ Consulta multimodal\n\"Explica el procedimiento\nquirúrgico que se muestra en\nesta imagen médica\"",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "query-analysis",
+    "label": "🔍 Análisis de la consulta\nModalidades necesarias detectadas:\n✓ Análisis de imágenes\n✓ Texto médico\n✓ Videos de procedimientos",
+    "x": 400,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "text-retrieval",
+    "label": "📝 Recuperación de texto\nLibros de medicina\nProtocolos quirúrgicos\nDescripciones de procedimientos",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "image-retrieval",
+    "label": "🖼️ Recuperación de imágenes\nImágenes quirúrgicas similares\nDiagramas anatómicos\nImágenes paso a paso",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "video-retrieval",
+    "label": "🎥 Recuperación de video\nGrabaciones de cirugías\nVideos de procedimientos\nContenido educativo",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "structured-data",
+    "label": "📊 Datos estructurados\nBases de datos quirúrgicas\nResultados de pacientes\nDatos de complicaciones",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "multimodal-encoding",
+    "label": "🔢 Codificación multimodal\nTexto → embeddings\nImágenes → vectores CLIP\nVideo → características temporales",
+    "x": 400,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "cross-modal-fusion",
+    "label": "🔗 Fusión intermodal\nAlinear descripciones de texto\ncon el contenido visual\n+ secuencias temporales",
+    "x": 400,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "relevance-ranking",
+    "label": "📊 Ranking de relevancia\nPuntuar la relevancia\nintermodal para la consulta\nimagen + contexto",
+    "x": 400,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "multimodal-context",
+    "label": "🌐 Contexto multimodal\nTexto: \"Procedimiento laparoscópico\"\nImagen: casos similares\nVideo: pasos clave",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "multimodal-generation",
+    "label": "🤖 Generación multimodal\nGenerar una respuesta de texto\nque haga referencia al contexto\nvisual y del procedimiento",
+    "x": 400,
+    "y": 750,
+    "w": 220
+   },
+   {
+    "id": "final-answer",
+    "label": "✅ Respuesta multimodal enriquecida\n\"Esto muestra una cirugía\nlaparoscópica. Según casos\nsimilares, la duración típica\nes de 45-60 minutos...\"",
+    "x": 400,
+    "y": 850,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "user-query",
+    "t": "query-analysis",
+    "label": "analizar"
+   },
+   {
+    "id": "e2a",
+    "s": "query-analysis",
+    "t": "text-retrieval",
+    "label": "texto"
+   },
+   {
+    "id": "e2b",
+    "s": "query-analysis",
+    "t": "image-retrieval",
+    "label": "imágenes"
+   },
+   {
+    "id": "e2c",
+    "s": "query-analysis",
+    "t": "video-retrieval",
+    "label": "videos"
+   },
+   {
+    "id": "e2d",
+    "s": "query-analysis",
+    "t": "structured-data",
+    "label": "datos"
+   },
+   {
+    "id": "e3a",
+    "s": "text-retrieval",
+    "t": "multimodal-encoding",
+    "label": "documentos de texto"
+   },
+   {
+    "id": "e3b",
+    "s": "image-retrieval",
+    "t": "multimodal-encoding",
+    "label": "imágenes"
+   },
+   {
+    "id": "e3c",
+    "s": "video-retrieval",
+    "t": "multimodal-encoding",
+    "label": "videos"
+   },
+   {
+    "id": "e3d",
+    "s": "structured-data",
+    "t": "multimodal-encoding",
+    "label": "datos"
+   },
+   {
+    "id": "e4",
+    "s": "multimodal-encoding",
+    "t": "cross-modal-fusion",
+    "label": "codificar"
+   },
+   {
+    "id": "e5",
+    "s": "cross-modal-fusion",
+    "t": "relevance-ranking",
+    "label": "fusionar"
+   },
+   {
+    "id": "e6",
+    "s": "relevance-ranking",
+    "t": "multimodal-context",
+    "label": "ordenar"
+   },
+   {
+    "id": "e7",
+    "s": "multimodal-context",
+    "t": "multimodal-generation",
+    "label": "contextualizar"
+   },
+   {
+    "id": "e8",
+    "s": "multimodal-generation",
+    "t": "final-answer",
+    "label": "generar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis de la consulta multimodal",
+    "description": "La consulta sobre la imagen quirúrgica se analiza para determinar las modalidades necesarias: texto médico sobre procedimientos, imágenes similares, videos instructivos y datos de resultados.",
+    "input": "",
+    "nodes": [
+     "user-query",
+     "query-analysis"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Recuperación multimodal en paralelo",
+    "description": "El sistema recupera simultáneamente de múltiples fuentes específicas por modalidad: bases de datos de texto, colecciones de imágenes, bibliotecas de video y datos médicos estructurados.",
+    "input": "",
+    "nodes": [
+     "text-retrieval",
+     "image-retrieval",
+     "video-retrieval",
+     "structured-data"
+    ],
+    "edges": [
+     "e2a",
+     "e2b",
+     "e2c",
+     "e2d"
+    ]
+   },
+   {
+    "title": "Codificación y alineación intermodal",
+    "description": "Las distintas modalidades se codifican en espacios vectoriales compatibles: embeddings de texto, vectores de imagen CLIP y características temporales de video, alineados para poder compararse.",
+    "input": "",
+    "nodes": [
+     "multimodal-encoding",
+     "cross-modal-fusion"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c",
+     "e3d",
+     "e4"
+    ]
+   },
+   {
+    "title": "Evaluación de relevancia multimodal",
+    "description": "La puntuación de relevancia intermodal considera qué tan bien coinciden las descripciones de texto con el contenido visual y el contexto del procedimiento de múltiples fuentes.",
+    "input": "",
+    "nodes": [
+     "relevance-ranking",
+     "multimodal-context"
+    ],
+    "edges": [
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Respuesta multimodal enriquecida",
+    "description": "La respuesta final integra información de todas las modalidades: conocimiento de libros de texto, similitud visual, videos de procedimientos y datos estadísticos de resultados.",
+    "input": "",
+    "nodes": [
+     "multimodal-generation",
+     "final-answer"
+    ],
+    "edges": [
+     "e7",
+     "e8"
+    ]
+   }
+  ]
+ }
+}

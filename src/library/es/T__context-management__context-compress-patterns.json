@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "context-compress-patterns",
+ "name": "Context Compress Patterns(CCP)",
+ "icon": "🗜️",
+ "complexity": "high",
+ "description": "Técnicas de compresión semántica, resumen y poda para maximizar la densidad de información dentro de las ventanas de contexto",
+ "features": [
+  "Compresión de contexto con conciencia semántica",
+  "Resumen inteligente del historial de conversación",
+  "Poda de contexto basada en puntuación de relevancia",
+  "Compresión con pérdida que preserva el significado"
+ ],
+ "tldr": {
+  "what": "Reduce el tamaño del contexto agrupando contenido similar, eliminando redundancia y extrayendo la información clave mientras preserva el significado semántico.",
+  "when": "Las conversaciones largas o secuencias de documentos superan los límites de contexto y necesitas conservar el significado a lo largo de muchos turnos.",
+  "watchOut": "La compresión agresiva pierde matices, lo que hace que el agente pase por alto detalles importantes o tome decisiones con información incompleta."
+ },
+ "overview": {
+  "pattern": "Técnicas de compresión semántica, resumen y poda para maximizar la densidad de información dentro de las ventanas de contexto",
+  "why": "Reduce los costos en tokens mientras preserva la información esencial y mantiene la coherencia semántica para un procesamiento eficiente",
+  "insight": "La compresión inteligente con conciencia semántica logra una reducción de tamaño significativa mientras preserva el significado",
+  "impl": [
+   {
+    "t": "Analizar el contenido",
+    "d": "Identifica clusters semánticos y redundancias"
+   },
+   {
+    "t": "Extraer información clave",
+    "d": "Preserva la información y las relaciones esenciales"
+   },
+   {
+    "t": "Comprimir semánticamente",
+    "d": "Aplica técnicas de compresión que preservan el significado"
+   },
+   {
+    "t": "Validar la calidad",
+    "d": "Asegura que el contexto comprimido mantenga la fidelidad"
+   },
+   {
+    "t": "Optimizar el presupuesto",
+    "d": "Equilibra la tasa de compresión con la densidad de información"
+   }
+  ],
+  "example": "analyze_semantics → extract_essentials → compress_intelligently → validate_fidelity → optimize_tokens",
+  "dos": [
+   "Usa clustering semántico para identificar información redundante",
+   "Preserva las relaciones clave y las conexiones causales",
+   "Implementa compresión progresiva basada en la importancia",
+   "Valida la fidelidad semántica después de comprimir",
+   "Guarda en cache los contextos comprimidos para reutilizarlos"
+  ],
+  "donts": [
+   "Comprimir sin entender la importancia semántica",
+   "Eliminar contexto que afecta las cadenas de razonamiento",
+   "Usar compresión agresiva para información crítica",
+   "Omitir la validación de calidad después de comprimir",
+   "Aplicar compresión uniforme a todos los tipos de contenido"
+  ],
+  "use": [
+   "Necesidades de optimización de la ventana de contexto",
+   "Reducción de costos en el uso de APIs",
+   "Requisitos de eficiencia de memoria",
+   "Gestión de historiales de conversación extensos"
+  ],
+  "avoid": [
+   "Requisitos de información de alta precisión",
+   "Contextos legales o críticos para el cumplimiento normativo",
+   "Contextos cortos que caben dentro de los límites",
+   "Procesamiento en tiempo real con requisitos estrictos de latencia"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de compresión",
+    "d": "Tamaño original / tamaño comprimido"
+   },
+   {
+    "n": "Fidelidad semántica",
+    "d": "% de significado preservado después de la compresión"
+   },
+   {
+    "n": "Densidad de información",
+    "d": "Hechos clave por token en la salida"
+   },
+   {
+    "n": "Ahorro de costos",
+    "d": "% de reducción en los costos de tokens de la API"
+   },
+   {
+    "n": "Velocidad de procesamiento",
+    "d": "Tiempo para comprimir el contexto"
+   },
+   {
+    "n": "Puntuación de calidad",
+    "d": "Evaluación de calidad humana/automatizada"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Resumen de conversaciones",
+    "d": "analyze_history → cluster_topics → extract_key_points → compress_semantically → maintain_coherence"
+   },
+   {
+    "n": "Compresión de documentos",
+    "d": "parse_content → identify_redundancy → preserve_structure → semantic_compression → quality_validation"
+   },
+   {
+    "n": "Optimización de memoria",
+    "d": "analyze_context → prioritize_information → progressive_compression → validate_completeness → cost_optimization"
+   },
+   {
+    "n": "Destilación de conocimiento",
+    "d": "extract_knowledge → organize_hierarchically → compress_representations → preserve_relationships → optimize_density"
+   },
+   {
+    "n": "Gestión de la ventana de contexto",
+    "d": "monitor_usage → identify_candidates → intelligent_compression → maintain_quality → track_savings"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de compresión de contexto",
+  "description": "Técnicas avanzadas de compresión que reducen el tamaño del prompt mientras preservan la información clave mediante poda de tokens, resumen extractivo/abstractivo y filtrado contextual, logrando hasta 20x de compresión",
+  "nodes": [
+   {
+    "id": "compression-challenge",
+    "label": "🗜️ Desafío de compresión\n\"¿Cómo reducir el tamaño del contexto\npreservando la información crítica\ny manteniendo el rendimiento del LLM?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "compression-framework",
+    "label": "📦 Framework de compresión\n\"Enfoque multitécnica:\n• Clasificación de tokens\n• Filtrado de documentos\n• Resumen\n• Reducción de embeddings\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "llmlingua-approach",
+    "label": "🔬 LLMLingua\n\"Compresión a nivel de token:\n• Tasa de compresión de 20x\n• Pérdida mínima de rendimiento\n• Contexto bidireccional\n• Clasificación de tokens\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "longllmlingua",
+    "label": "📜 LongLLMLingua\n\"Optimización de contexto largo:\n• Hasta 17.1% de mejora en precisión (Jiang et al., 2023)\n• Compresión de 4x\n• Mitigación del sesgo de posición\n• 94% de reducción de costos\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "extractive-compression",
+    "label": "✂️ Compresión extractiva\n\"Selección de frases clave:\n• Extracción directa\n• Redacción original\n• Compilación de oraciones\n• LLMChainExtractor\"",
+    "x": 600,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "abstractive-compression",
+    "label": "✍️ Compresión abstractiva\n\"Enfoque de reformulación:\n• Generación de frases nuevas\n• Narrativa coherente\n• Preservación semántica\n• Adaptación de estilo\"",
+    "x": 750,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "contextual-compression-retriever",
+    "label": "🎯 Compresión contextual\n\"Filtrado consciente de la consulta:\n• Compresor de documentos\n• Envoltorio del retriever base\n• Extracción de relevancia\n• Compresión dinámica\"",
+    "x": 400,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "embeddings-filter",
+    "label": "🔢 Filtro de embeddings\n\"Basado en similitud:\n• Filtrado rápido\n• Similitud coseno\n• Corte por umbral\n• Sin llamadas al LLM\"",
+    "x": 200,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "document-pipeline",
+    "label": "⚙️ Pipeline de documentos\n\"Procesamiento secuencial:\n• División de texto\n• Eliminación de redundancia\n• Filtrado por relevancia\n• Reranking\"",
+    "x": 600,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "token-pruning",
+    "label": "✂️ Poda de tokens\n\"Eliminación selectiva:\n• Puntuación de importancia\n• Pesos de atención\n• Detección de redundancia\n• Preservar tokens clave\"",
+    "x": 200,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "cohere-rerank",
+    "label": "🏆 Cohere Rerank\n\"Reordenamiento avanzado:\n• Puntuación con cross-encoder\n• Ranking por listas (listwise)\n• Basado en API\n• Alta precisión\"",
+    "x": 600,
+    "y": 950,
+    "w": 200
+   },
+   {
+    "id": "compression-metrics",
+    "label": "📊 Métricas de rendimiento\n\"Resultados de compresión:\n• Aceleración de 1.4x-2.6x\n• Compresión de hasta 20x posible\n• hasta 17.1% de mejora en precisión (Jiang et al., 2023)\n• 94% de reducción de costos\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "compression-principle",
+    "label": "🎯 Principio de compresión de contexto\n\"La redundancia del lenguaje natural permite una compresión agresiva\nEl filtrado consciente de la consulta preserva la información específica de la tarea\nLos pipelines de varias etapas equilibran velocidad y precisión\"",
+    "x": 400,
+    "y": 1250,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "compression-challenge",
+    "t": "compression-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "compression-framework",
+    "t": "llmlingua-approach",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "compression-framework",
+    "t": "extractive-compression",
+    "label": "aplica"
+   },
+   {
+    "id": "e4",
+    "s": "compression-framework",
+    "t": "contextual-compression-retriever",
+    "label": "utiliza"
+   },
+   {
+    "id": "e5",
+    "s": "llmlingua-approach",
+    "t": "longllmlingua",
+    "label": "se extiende a"
+   },
+   {
+    "id": "e6",
+    "s": "extractive-compression",
+    "t": "abstractive-compression",
+    "label": "complementa"
+   },
+   {
+    "id": "e7",
+    "s": "contextual-compression-retriever",
+    "t": "embeddings-filter",
+    "label": "usa"
+   },
+   {
+    "id": "e8",
+    "s": "contextual-compression-retriever",
+    "t": "document-pipeline",
+    "label": "orquesta"
+   },
+   {
+    "id": "e9",
+    "s": "embeddings-filter",
+    "t": "token-pruning",
+    "label": "se combina con"
+   },
+   {
+    "id": "e10",
+    "s": "document-pipeline",
+    "t": "cohere-rerank",
+    "label": "integra"
+   },
+   {
+    "id": "e11",
+    "s": "longllmlingua",
+    "t": "token-pruning",
+    "label": "realiza"
+   },
+   {
+    "id": "e12",
+    "s": "abstractive-compression",
+    "t": "document-pipeline",
+    "label": "alimenta a"
+   },
+   {
+    "id": "e13",
+    "s": "token-pruning",
+    "t": "compression-metrics",
+    "label": "logra"
+   },
+   {
+    "id": "e14",
+    "s": "cohere-rerank",
+    "t": "compression-metrics",
+    "label": "contribuye a"
+   },
+   {
+    "id": "e15",
+    "s": "compression-metrics",
+    "t": "compression-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la compresión de contexto",
+    "description": "¿Cómo podemos reducir drásticamente el tamaño del contexto para bajar los costos computacionales y la latencia, preservando la información crítica necesaria para respuestas precisas del LLM?",
+    "input": "",
+    "nodes": [
+     "compression-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Panorama del framework de compresión",
+    "description": "Un framework multitécnica aborda el desafío mediante clasificación de tokens para un control granular, filtrado de documentos para la relevancia, resumen para la condensación y reducción de embeddings para la eficiencia.",
+    "input": "",
+    "nodes": [
+     "compression-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Compresión a nivel de token con LLMLingua",
+    "description": "LLMLingua logra una compresión de 20x con pérdida mínima usando contexto bidireccional y clasificación de tokens, mientras que LongLLMLingua lo extiende a contextos largos, reportando mejoras de precisión de hasta 17.1% (Jiang et al., 2023) con un 94% de reducción de costos.",
+    "input": "",
+    "nodes": [
+     "llmlingua-approach",
+     "longllmlingua"
+    ],
+    "edges": [
+     "e2",
+     "e5"
+    ]
+   },
+   {
+    "title": "Compresión extractiva vs. abstractiva",
+    "description": "La compresión extractiva selecciona frases clave manteniendo la redacción original con LLMChainExtractor, mientras que la compresión abstractiva genera narrativas nuevas y coherentes que preservan la semántica con adaptación de estilo.",
+    "input": "",
+    "nodes": [
+     "extractive-compression",
+     "abstractive-compression"
+    ],
+    "edges": [
+     "e3",
+     "e6"
+    ]
+   },
+   {
+    "title": "Compresión y filtrado contextual",
+    "description": "La compresión contextual consciente de la consulta envuelve los retrievers con compresores de documentos para un filtrado dinámico, usando filtros de embeddings para una selección rápida basada en similitud sin costosas llamadas al LLM.",
+    "input": "",
+    "nodes": [
+     "contextual-compression-retriever",
+     "embeddings-filter",
+     "document-pipeline"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Técnicas avanzadas y rendimiento",
+    "description": "La poda de tokens con puntuación de importancia se combina con el reranking de Cohere para lograr alta precisión, alcanzando aceleraciones de 1.4x-2.6x y mejoras de precisión de hasta 17.1%, lo que demuestra que la redundancia del lenguaje natural permite una compresión agresiva mientras los pipelines de varias etapas equilibran velocidad y precisión.",
+    "input": "",
+    "nodes": [
+     "token-pruning",
+     "cohere-rerank",
+     "compression-metrics",
+     "compression-principle"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

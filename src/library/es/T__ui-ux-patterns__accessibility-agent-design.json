@@ -1,0 +1,468 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "accessibility-agent-design",
+ "name": "Accessibility in Agent Design(AAD)",
+ "icon": "♿",
+ "complexity": "high",
+ "description": "Patrones de diseño universal para interfaces de agentes accesibles que admiten capacidades diversas y tecnologías de asistencia",
+ "features": [
+  "Diseño universal de interfaces de agentes para capacidades diversas",
+  "Integración y optimización de tecnologías de asistencia",
+  "Múltiples modalidades de comunicación para la accesibilidad",
+  "Accesibilidad cognitiva con patrones de interacción simplificados"
+ ],
+ "tldr": {
+  "what": "Diseña interfaces de agentes con múltiples modos de entrada/salida, ritmo ajustable y adaptación en tiempo real a las capacidades del usuario y a los requisitos de las tecnologías de asistencia.",
+  "when": "Construcción de agentes que atienden a usuarios con necesidades físicas, sensoriales o cognitivas diversas, o donde el cumplimiento normativo exige un diseño accesible.",
+  "watchOut": "Adaptar la accesibilidad a posteriori cuesta más que diseñarla desde el inicio; las pruebas con usuarios reales de tecnologías de asistencia suelen revelar brechas que los verificadores automáticos no detectan."
+ },
+ "overview": {
+  "pattern": "Patrones de diseño universal para interfaces de agentes accesibles que admiten capacidades diversas y tecnologías de asistencia",
+  "why": "Los agentes de IA deben ser accesibles para usuarios con discapacidad para garantizar un acceso equitativo y el cumplimiento legal",
+  "insight": "Diseña experiencias inclusivas desde el inicio con acceso multimodal, integración de tecnologías de asistencia y apoyo cognitivo",
+  "impl": [
+   {
+    "t": "Diseño universal",
+    "d": "Diseña para capacidades diversas desde el inicio, no como una idea tardía"
+   },
+   {
+    "t": "Tecnologías de asistencia",
+    "d": "Integra lectores de pantalla, control por voz y dispositivos adaptativos"
+   },
+   {
+    "t": "Acceso multimodal",
+    "d": "Ofrece múltiples canales de comunicación: texto, voz, visual, háptico"
+   },
+   {
+    "t": "Apoyo cognitivo",
+    "d": "Simplifica el lenguaje, reduce la carga cognitiva y ofrece ayudas de memoria"
+   },
+   {
+    "t": "Adaptación dinámica",
+    "d": "Ajuste en tiempo real impulsado por IA según las necesidades de accesibilidad del usuario"
+   }
+  ],
+  "example": "detect_needs → adapt_interface → multiple_modalities → assistive_integration → cognitive_support",
+  "dos": [
+   "Sigue los estándares WCAG 2.1 AA como base mínima",
+   "Prueba con usuarios reales que tengan discapacidades",
+   "Ofrece múltiples formas de acceder a la misma funcionalidad",
+   "Usa HTML semántico y atributos ARIA adecuados",
+   "Diseña con la navegación por teclado como interacción principal"
+  ],
+  "donts": [
+   "Depender solo del color para transmitir información importante",
+   "Usar overlays de accesibilidad como solución principal",
+   "Suponer que una sola solución sirve para todos los tipos de discapacidad",
+   "Ocultar las funciones de accesibilidad en interfaces separadas",
+   "Ignorar las discapacidades cognitivas y de aprendizaje en el diseño"
+  ],
+  "use": [
+   "Aplicaciones y servicios de IA de cara al público",
+   "Sistemas empresariales con bases de usuarios diversas",
+   "Herramientas de IA educativas y de salud",
+   "Sistemas gubernamentales y con requisitos de cumplimiento"
+  ],
+  "avoid": [
+   "Prototipos internos solo para equipos técnicos",
+   "Herramientas especializadas para usuarios expertos homogéneos",
+   "Sistemas experimentales temporales",
+   "Aplicaciones de demostración de un solo uso"
+  ],
+  "metrics": [
+   {
+    "n": "Puntuación de cumplimiento WCAG",
+    "d": "Porcentaje de criterios AA/AAA cumplidos"
+   },
+   {
+    "n": "Soporte de tecnologías de asistencia",
+    "d": "Compatibilidad con lectores de pantalla y control por voz"
+   },
+   {
+    "n": "Equidad en la finalización de tareas",
+    "d": "Tasas de éxito entre distintos grupos de capacidades"
+   },
+   {
+    "n": "Evaluación de la carga cognitiva",
+    "d": "Esfuerzo mental necesario para completar tareas"
+   },
+   {
+    "n": "Paridad en la satisfacción del usuario",
+    "d": "Satisfacción equivalente entre distintas necesidades de accesibilidad"
+   },
+   {
+    "n": "Efectividad de la adaptación",
+    "d": "Éxito de los ajustes dinámicos de accesibilidad"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Accesibilidad visual",
+    "d": "Optimización para lectores de pantalla, alto contraste y navegación por voz en asistentes de IA"
+   },
+   {
+    "n": "Accesibilidad motriz",
+    "d": "Control por voz, seguimiento ocular y navegación por conmutador en interfaces de agentes"
+   },
+   {
+    "n": "Accesibilidad auditiva",
+    "d": "Indicadores visuales, subtítulos y lengua de señas para la comunicación con IA"
+   },
+   {
+    "n": "Accesibilidad cognitiva",
+    "d": "Lenguaje simplificado, ayudas de memoria y asistencia para la concentración en herramientas de IA complejas"
+   },
+   {
+    "n": "Apoyo a la neurodiversidad",
+    "d": "Adaptaciones sensoriales y patrones de interacción flexibles para autismo/TDAH"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Accesibilidad en el diseño de agentes",
+  "description": "Patrones de diseño universal para interfaces de agentes accesibles que admiten capacidades diversas y tecnologías de asistencia, con el objetivo de cumplir WCAG 2.2 AA",
+  "nodes": [
+   {
+    "id": "accessibility-challenge",
+    "label": "♿ Desafío de accesibilidad\n\"¿Cómo diseñar interfaces de agentes que sirvan a\n1.300 millones de personas con discapacidad y cumplan\nlos estándares WCAG 2.2 y los objetivos del negocio?\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "universal-design",
+    "label": "🌍 Base del diseño universal\n\"Siete principios centrales:\n• Uso equitativo para todos\n• Flexibilidad en la interacción\n• Simple e intuitivo\n• Información perceptible\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "visual-accessibility",
+    "label": "👁️ Accesibilidad visual\n\"Cumplimiento WCAG:\n• Relación de contraste 4.5:1\n• Soporte para daltonismo (8% de los hombres)\n• Escalado de texto al 200%\n• Modos de alto contraste\"",
+    "x": 100,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "auditory-accessibility",
+    "label": "🔊 Accesibilidad auditiva\n\"Soporte multisensorial:\n• Subtítulos en tiempo real, con el margen de precisión que definas\n• Audiodescripciones\n• Integración de lengua de señas\n• Alternativas de feedback háptico\"",
+    "x": 350,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "motor-accessibility",
+    "label": "🤲 Accesibilidad motriz\n\"Entradas alternativas:\n• Control por voz como entrada de primer nivel\n• Seguimiento ocular, considerando la latencia de permanencia\n• Navegación por conmutador\n• Personalización de gestos\"",
+    "x": 600,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "cognitive-accessibility",
+    "label": "🧠 Accesibilidad cognitiva\n\"Apoyo mental:\n• Patrones de lenguaje claros\n• Asistencia de memoria para reducir la carga de recordar\n• Gestión de la atención\n• Ayudas para la función ejecutiva\"",
+    "x": 850,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "assistive-tech",
+    "label": "🦾 Tecnologías de asistencia\n\"Estándares de integración:\n• Lectores de pantalla (NVDA, JAWS)\n• Sistemas de control por voz\n• Interfaces BCI\n• Navegación por conmutador (48x48dp)\"",
+    "x": 150,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "cultural-linguistic",
+    "label": "🌐 Acceso cultural y lingüístico\n\"Inclusión global:\n• Soporte para más de 42 idiomas\n• Lectura de derecha a izquierda\n• Lenguas indígenas\n• Estándares regionales (EN 301 549)\"",
+    "x": 400,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "ai-powered-features",
+    "label": "🤖 Accesibilidad impulsada por IA\n\"Adaptación inteligente:\n• Personalización en tiempo real\n• Asistencia predictiva\n• Apoyo consciente del contexto\n• Descripciones automáticas\"",
+    "x": 650,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "regulatory-compliance",
+    "label": "⚖️ Cumplimiento normativo\n\"Requisitos legales:\n• Nivel AA de WCAG 2.1/2.2\n• Section 508 (federal de EE. UU.)\n• Cumplimiento del Título III de la ADA\n• Estándares ISO 14289\"",
+    "x": 200,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "business-impact",
+    "label": "💰 Impacto en el negocio y ROI\n\"De dónde proviene el valor:\n• Una audiencia alcanzable más amplia\n• Menor exposición legal bajo la ADA y la EAA\n• Marcado semántico que también ayuda a los rastreadores\n• Correcciones que hoy son baratas y caras si se adaptan después\"",
+    "x": 600,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "industry-success",
+    "label": "🏆 Casos de éxito de la industria\n\"Impacto real:\n• Microsoft: accesibilidad de Copilot\n• Apple: Vision Pro visionOS\n• Google: Live Caption en más de 40 idiomas\n• Tesco: £35K → £13M en ventas anuales\"",
+    "x": 150,
+    "y": 800,
+    "w": 280
+   },
+   {
+    "id": "emerging-tech",
+    "label": "🚀 Tecnologías emergentes\n\"Innovaciones futuras:\n• Sistemas BCI híbridos\n• Traducción con IA en tiempo real\n• Accesibilidad predictiva\n• Adaptación consciente del contexto\"",
+    "x": 650,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "accessibility-principle",
+    "label": "🎯 Principio del diseño universal\n\"El diseño accesible beneficia a todos: los subtítulos se leen en lugares ruidosos y los atajos de teclado los usan los usuarios avanzados\nLa conformidad con WCAG es un nivel contra el que se audita, no algo que otorgue un principio, y reduce el esfuerzo para todos los usuarios\nLas interfaces inclusivas amplían el alcance de mercado a 1.300 millones de personas con discapacidad\"",
+    "x": 400,
+    "y": 950,
+    "w": 520
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "accessibility-challenge",
+    "t": "universal-design",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "universal-design",
+    "t": "visual-accessibility",
+    "label": "habilita"
+   },
+   {
+    "id": "e3",
+    "s": "universal-design",
+    "t": "auditory-accessibility",
+    "label": "respalda"
+   },
+   {
+    "id": "e4",
+    "s": "universal-design",
+    "t": "motor-accessibility",
+    "label": "facilita"
+   },
+   {
+    "id": "e5",
+    "s": "universal-design",
+    "t": "cognitive-accessibility",
+    "label": "mejora"
+   },
+   {
+    "id": "e6",
+    "s": "visual-accessibility",
+    "t": "assistive-tech",
+    "label": "integra"
+   },
+   {
+    "id": "e7",
+    "s": "motor-accessibility",
+    "t": "assistive-tech",
+    "label": "utiliza"
+   },
+   {
+    "id": "e8",
+    "s": "auditory-accessibility",
+    "t": "cultural-linguistic",
+    "label": "incluye"
+   },
+   {
+    "id": "e9",
+    "s": "cognitive-accessibility",
+    "t": "ai-powered-features",
+    "label": "aprovecha"
+   },
+   {
+    "id": "e10",
+    "s": "assistive-tech",
+    "t": "ai-powered-features",
+    "label": "potenciado por"
+   },
+   {
+    "id": "e11",
+    "s": "visual-accessibility",
+    "t": "regulatory-compliance",
+    "label": "asegura"
+   },
+   {
+    "id": "e12",
+    "s": "cultural-linguistic",
+    "t": "regulatory-compliance",
+    "label": "cumple"
+   },
+   {
+    "id": "e13",
+    "s": "regulatory-compliance",
+    "t": "business-impact",
+    "label": "impulsa"
+   },
+   {
+    "id": "e14",
+    "s": "ai-powered-features",
+    "t": "industry-success",
+    "label": "comprobado en"
+   },
+   {
+    "id": "e15",
+    "s": "business-impact",
+    "t": "industry-success",
+    "label": "evidenciado por"
+   },
+   {
+    "id": "e16",
+    "s": "industry-success",
+    "t": "emerging-tech",
+    "label": "inspira"
+   },
+   {
+    "id": "e17",
+    "s": "ai-powered-features",
+    "t": "emerging-tech",
+    "label": "evoluciona hacia"
+   },
+   {
+    "id": "e18",
+    "s": "motor-accessibility",
+    "t": "cultural-linguistic",
+    "label": "se adapta a"
+   },
+   {
+    "id": "e19",
+    "s": "auditory-accessibility",
+    "t": "ai-powered-features",
+    "label": "impulsado por"
+   },
+   {
+    "id": "e20",
+    "s": "emerging-tech",
+    "t": "business-impact",
+    "label": "multiplica"
+   },
+   {
+    "id": "e21",
+    "s": "emerging-tech",
+    "t": "accessibility-principle",
+    "label": "demuestra"
+   },
+   {
+    "id": "e22",
+    "s": "business-impact",
+    "t": "accessibility-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de accesibilidad en el diseño de agentes",
+    "description": "Las organizaciones enfrentan el desafío crítico de diseñar interfaces de agentes que sirvan a 1.300 millones de personas con discapacidad, cumpliendo los estándares WCAG 2.2, evitando riesgos legales y alcanzando los objetivos del negocio en mercados globales diversos.",
+    "input": "",
+    "nodes": [
+     "accessibility-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Base del diseño universal",
+    "description": "Aborda los desafíos de accesibilidad mediante principios de diseño universal que crean uso equitativo, modos de interacción flexibles, interfaces simples y sistemas de información perceptibles que benefician a todos los usuarios, sin importar sus capacidades.",
+    "input": "",
+    "nodes": [
+     "universal-design"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dominios centrales de la accesibilidad",
+    "description": "El diseño universal permite una accesibilidad integral en cuatro dominios críticos: accesibilidad visual con relaciones de contraste de 4.5:1, accesibilidad auditiva con subtítulos en tiempo real, accesibilidad motriz con entradas alternativas y accesibilidad cognitiva con patrones de lenguaje claros.",
+    "input": "",
+    "nodes": [
+     "visual-accessibility",
+     "auditory-accessibility",
+     "motor-accessibility",
+     "cognitive-accessibility"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Integración de tecnologías de asistencia",
+    "description": "La accesibilidad visual y motriz se integra con tecnologías de asistencia como lectores de pantalla (NVDA, JAWS), sistemas de control por voz con 99% de precisión, seguimiento ocular con 36ms de latencia y navegación por conmutador con objetivos mínimos de 48x48dp.",
+    "input": "",
+    "nodes": [
+     "assistive-tech"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Mejora cultural e impulsada por IA",
+    "description": "La accesibilidad auditiva incluye soporte cultural y lingüístico para más de 42 idiomas y lectura de derecha a izquierda, mientras que la accesibilidad cognitiva aprovecha funciones impulsadas por IA para la personalización en tiempo real y la asistencia predictiva. Las tecnologías de asistencia se potencian con capacidades de IA.",
+    "input": "",
+    "nodes": [
+     "cultural-linguistic",
+     "ai-powered-features"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Cumplimiento normativo e impacto en el negocio",
+    "description": "La accesibilidad visual y el soporte cultural/lingüístico aseguran el cumplimiento normativo con WCAG 2.1/2.2, Section 508 y estándares internacionales. El cumplimiento impulsa un impacto medible en el negocio, con un ROI de $100 por cada $1 invertido y acceso a $13 billones de poder de gasto global.",
+    "input": "",
+    "nodes": [
+     "regulatory-compliance",
+     "business-impact"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13",
+     "e18"
+    ]
+   },
+   {
+    "title": "Éxito e innovación en la industria",
+    "description": "Las funciones impulsadas por IA y el impacto en el negocio se comprueban con casos de éxito de la industria como la accesibilidad de Copilot de Microsoft, Vision Pro visionOS de Apple y Live Caption de Google. Los casos de éxito inspiran tecnologías emergentes, mientras que las funciones de IA evolucionan hacia innovaciones de vanguardia.",
+    "input": "",
+    "nodes": [
+     "industry-success",
+     "emerging-tech"
+    ],
+    "edges": [
+     "e14",
+     "e15",
+     "e16",
+     "e17",
+     "e19"
+    ]
+   },
+   {
+    "title": "Validación del principio de diseño universal",
+    "description": "El diseño accesible beneficia a todos, no solo a las personas para quienes se construye: los subtítulos se usan en lugares ruidosos y los atajos de teclado los usan los usuarios avanzados. La OMS estima que unos 1.300 millones de personas viven con una discapacidad significativa, por lo que la audiencia alcanzable es grande. La conformidad con WCAG es un nivel contra el que se audita, no algo que otorgue un principio de diseño, y el retorno depende de tu producto y no de una proporción publicada.",
+    "input": "",
+    "nodes": [
+     "accessibility-principle"
+    ],
+    "edges": [
+     "e20",
+     "e21",
+     "e22"
+    ]
+   }
+  ]
+ }
+}

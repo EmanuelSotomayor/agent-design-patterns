@@ -1,0 +1,265 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "sleep-time-compute",
+ "name": "Sleep-Time Compute(STC)",
+ "icon": "🌙",
+ "complexity": "medium",
+ "description": "Usa el tiempo inactivo entre interacciones del usuario para hacer razonamiento en segundo plano en lugar de esperar la siguiente consulta. El agente reorganiza y comprime la memoria, precalcula inferencias que probablemente se necesitarán y responde por adelantado preguntas anticipadas, de modo que el trabajo sale de la ruta crítica de latencia. En el momento de la inferencia, la respuesta ya está prácticamente lista, lo que reduce el cómputo en tiempo de prueba y la latencia.",
+ "features": [
+  "Razonamiento en segundo plano durante periodos inactivos",
+  "Reorganización y compresión de la memoria",
+  "Inferencias precalculadas sobre el contexto almacenado",
+  "Respuesta anticipada a consultas previstas",
+  "Costo amortizado entre consultas futuras",
+  "Latencia trasladada fuera de la ruta crítica"
+ ],
+ "tldr": {
+  "what": "Realiza razonamiento e inferencia durante los periodos inactivos entre interacciones del usuario, precalculando respuestas y reorganizando la memoria para reducir la latencia cuando llegan las consultas.",
+  "when": "Interacciones esporádicas del usuario con un contexto grande y estable, donde existe capacidad de cómputo en segundo plano y los patrones de consulta son relativamente predecibles.",
+  "watchOut": "Las respuestas precalculadas quedan desactualizadas o son incorrectas si el contexto cambia entre el tiempo inactivo y la consulta, desperdiciando cómputo y la confianza del usuario."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Sleep-Time Compute",
+  "description": "Usa el tiempo inactivo entre interacciones para razonar en segundo plano. El agente reorganiza la memoria, precalcula inferencias probablemente necesarias y responde por adelantado preguntas anticipadas, almacenando un contexto aprendido. La siguiente consulta se responde al instante, fuera de la ruta crítica de latencia.",
+  "nodes": [
+   {
+    "id": "day-context",
+    "label": "🗂️ Contexto del día\nCódigo, documentos, notas\n(grande, cambia lentamente)",
+    "x": 60,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "idle-detector",
+    "label": "🕰️ Detector de inactividad\nSin actividad por minutos /\ndurante la noche",
+    "x": 360,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "sleep-agent",
+    "label": "🌙 Agente de tiempo inactivo\nRazonamiento en segundo plano\nfuera de la ruta crítica",
+    "x": 340,
+    "y": 180,
+    "w": 240
+   },
+   {
+    "id": "memory-reorg",
+    "label": "🧹 Reorganización de memoria\nDeduplicar, fusionar, comprimir",
+    "x": 60,
+    "y": 310,
+    "w": 210
+   },
+   {
+    "id": "precompute-inferences",
+    "label": "🧮 Precalcular inferencias\nMódulos cambiados + dependencias",
+    "x": 300,
+    "y": 310,
+    "w": 210
+   },
+   {
+    "id": "pre-answer",
+    "label": "📝 Respuesta anticipada\nBorradores de resúmenes probables",
+    "x": 540,
+    "y": 310,
+    "w": 210
+   },
+   {
+    "id": "learned-context",
+    "label": "💾 Contexto aprendido\nResultados precalculados\nalmacenados y consultables",
+    "x": 340,
+    "y": 440,
+    "w": 240
+   },
+   {
+    "id": "morning-query",
+    "label": "❓ Consulta matutina\n\"¿Qué se rompió en el refactor,\nqué reviso primero?\"",
+    "x": 60,
+    "y": 570,
+    "w": 220
+   },
+   {
+    "id": "fast-responder",
+    "label": "⚡ Respondedor rápido\nArma la respuesta desde lo precalculado",
+    "x": 340,
+    "y": 570,
+    "w": 240
+   },
+   {
+    "id": "metrics",
+    "label": "📊 Beneficio fuera de la ruta\n~5x menos cómputo en tiempo de prueba\n+13% y +18% con presupuesto fijo",
+    "x": 650,
+    "y": 570,
+    "w": 220
+   },
+   {
+    "id": "answer",
+    "label": "✅ Respuesta instantánea\nNo se deriva desde cero",
+    "x": 340,
+    "y": 700,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "context-agent",
+    "s": "day-context",
+    "t": "sleep-agent",
+    "label": "alimentar contexto"
+   },
+   {
+    "id": "idle-agent",
+    "s": "idle-detector",
+    "t": "sleep-agent",
+    "label": "inactivo -> despertar"
+   },
+   {
+    "id": "agent-reorg",
+    "s": "sleep-agent",
+    "t": "memory-reorg",
+    "label": ""
+   },
+   {
+    "id": "agent-precompute",
+    "s": "sleep-agent",
+    "t": "precompute-inferences",
+    "label": ""
+   },
+   {
+    "id": "agent-preanswer",
+    "s": "sleep-agent",
+    "t": "pre-answer",
+    "label": ""
+   },
+   {
+    "id": "reorg-learned",
+    "s": "memory-reorg",
+    "t": "learned-context",
+    "label": ""
+   },
+   {
+    "id": "precompute-learned",
+    "s": "precompute-inferences",
+    "t": "learned-context",
+    "label": ""
+   },
+   {
+    "id": "preanswer-learned",
+    "s": "pre-answer",
+    "t": "learned-context",
+    "label": ""
+   },
+   {
+    "id": "query-responder",
+    "s": "morning-query",
+    "t": "fast-responder",
+    "label": ""
+   },
+   {
+    "id": "learned-responder",
+    "s": "learned-context",
+    "t": "fast-responder",
+    "label": "contexto precalculado"
+   },
+   {
+    "id": "responder-answer",
+    "s": "fast-responder",
+    "t": "answer",
+    "label": ""
+   },
+   {
+    "id": "answer-metrics",
+    "s": "fast-responder",
+    "t": "metrics",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "El contexto se acumula",
+    "description": "El agente mantiene un contexto grande que cambia lentamente: un repositorio de código, un conjunto de documentos, las notas del día. Las consultas llegan solo de forma esporádica.",
+    "input": "",
+    "nodes": [
+     "day-context",
+     "sleep-agent"
+    ],
+    "edges": [
+     "context-agent"
+    ]
+   },
+   {
+    "title": "Periodo inactivo detectado",
+    "description": "Sin actividad del usuario durante minutos o durante la noche, hay cómputo disponible fuera de la ruta crítica, así que el detector de inactividad despierta al agente de tiempo inactivo.",
+    "input": "",
+    "nodes": [
+     "idle-detector",
+     "sleep-agent"
+    ],
+    "edges": [
+     "idle-agent"
+    ]
+   },
+   {
+    "title": "Razonamiento en segundo plano",
+    "description": "El agente reorganiza la memoria (deduplica, fusiona, comprime), precalcula inferencias (qué módulos cambiaron y qué depende de ellos) y responde por adelantado los resúmenes que el usuario suele pedir.",
+    "input": "",
+    "nodes": [
+     "sleep-agent",
+     "memory-reorg",
+     "precompute-inferences",
+     "pre-answer"
+    ],
+    "edges": [
+     "agent-reorg",
+     "agent-precompute",
+     "agent-preanswer"
+    ]
+   },
+   {
+    "title": "Almacenar el contexto aprendido",
+    "description": "Las tres salidas se escriben en un contexto aprendido almacenado y consultable, listo antes de la siguiente interacción.",
+    "input": "",
+    "nodes": [
+     "memory-reorg",
+     "precompute-inferences",
+     "pre-answer",
+     "learned-context"
+    ],
+    "edges": [
+     "reorg-learned",
+     "precompute-learned",
+     "preanswer-learned"
+    ]
+   },
+   {
+    "title": "Consulta matutina respondida al instante",
+    "description": "La consulta \"¿Qué se rompió en el refactor?\" se arma a partir del análisis de dependencias y el resumen de cambios precalculados, en lugar de derivarse desde cero.",
+    "input": "",
+    "nodes": [
+     "morning-query",
+     "fast-responder",
+     "learned-context",
+     "answer"
+    ],
+    "edges": [
+     "query-responder",
+     "learned-responder",
+     "responder-answer"
+    ]
+   },
+   {
+    "title": "Beneficio fuera de la ruta",
+    "description": "Trasladar el razonamiento fuera de la ruta crítica logra aproximadamente 5x menos cómputo en tiempo de prueba con la misma precisión y mejoras de precisión de hasta 13% y 18% (en Stateful GSM-Symbolic y Stateful AIME, respectivamente) con un presupuesto fijo, amortizándose aún más cuando muchas consultas comparten el contexto.",
+    "input": "",
+    "nodes": [
+     "fast-responder",
+     "metrics"
+    ],
+    "edges": [
+     "answer-metrics"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,312 @@
+{
+ "cat": "planning-execution",
+ "slug": "plan-execute-decoupling",
+ "name": "Plan-Execute Decoupling (ReWOO/LLMCompiler)(PED)",
+ "icon": "🗺️",
+ "complexity": "high",
+ "description": "Genera el plan completo o el grafo de llamadas a herramientas por adelantado, desacoplado de las observaciones de las herramientas, y solo después lo ejecuta. ReWOO escribe una cadena de llamadas a herramientas parametrizada con variables antes de que se ejecute nada, lo que reduce invocaciones redundantes del modelo; LLMCompiler construye un DAG de dependencias y despacha en paralelo las llamadas a herramientas independientes. Esto difiere de ReAct, que intercala un pensamiento y una acción a la vez y vuelve a introducir cada observación en el prompt.",
+ "features": [
+  "Plan completo o DAG de llamadas a herramientas generado antes de que empiece la ejecución",
+  "Razonamiento desacoplado de las observaciones de las herramientas (ReWOO)",
+  "La sustitución de variables pasa los resultados entre los pasos planificados",
+  "El grafo de dependencias permite despachar herramientas en paralelo (LLMCompiler)",
+  "Alrededor de 5x menos tokens que ReAct con observaciones intercaladas",
+  "Alrededor de 3.7x menos latencia gracias a la ejecución paralela de herramientas"
+ ],
+ "tldr": {
+  "what": "Genera el plan completo de llamadas a herramientas o el grafo de dependencias antes de la ejecución, y luego ejecuta todos los pasos (o subconjuntos seguros para paralelizar) sin volver a invocar al modelo con cada observación.",
+  "when": "Tareas con varias herramientas en las que los pasos son independientes o tienen dependencias claras, y necesitas menor latencia o costo en tokens que con los bucles intercalados de pensamiento y acción.",
+  "watchOut": "El plan queda obsoleto o es incorrecto si los primeros resultados de las herramientas difieren de lo supuesto; replanificar a mitad de la ejecución agrega complejidad y puede anular el ahorro de tokens."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Desacoplamiento de plan y ejecución (ReWOO / LLMCompiler)",
+  "description": "Genera todo el plan o el DAG de llamadas a herramientas por adelantado, desacoplado de las observaciones, y luego ejecútalo. ReWOO escribe cadenas parametrizadas con variables antes de que se ejecute cualquier herramienta (~5x menos tokens); LLMCompiler despacha en paralelo las llamadas a herramientas independientes a partir del grafo de dependencias (~3.7x menos latencia). A diferencia de ReAct, ninguna observación se reintroduce a mitad del plan.",
+  "nodes": [
+   {
+    "id": "query",
+    "label": "❓ Consulta de investigación\n\"¿Qué tiene más calorías, un Big Mac\no un Whopper, y por cuánto?\"",
+    "x": 320,
+    "y": 30,
+    "w": 340
+   },
+   {
+    "id": "planner",
+    "label": "🗺️ Planificador ReWOO\nEscribe el plan COMPLETO antes de ejecutar cualquier herramienta",
+    "x": 350,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "plan-artifact",
+    "label": "📜 Plan parametrizado con variables\n#E1 = search \"Big Mac calories\"\n#E2 = search \"Whopper calories\"\n#E3 = compute #E1 - #E2\n(sin consumir observaciones)",
+    "x": 10,
+    "y": 150,
+    "w": 290
+   },
+   {
+    "id": "compiler",
+    "label": "🧩 LLMCompiler\nCompila el plan en un DAG de dependencias de 6 nodos",
+    "x": 350,
+    "y": 290,
+    "w": 290
+   },
+   {
+    "id": "parallel-note",
+    "label": "⚡ Despacho en paralelo\nn1 y n2 no tienen dependencias,\nasí que se ejecutan al mismo tiempo",
+    "x": 660,
+    "y": 290,
+    "w": 240
+   },
+   {
+    "id": "n1",
+    "label": "🔍 n1: búsqueda\n\"Big Mac calories\"\n(independiente)",
+    "x": 120,
+    "y": 410,
+    "w": 180
+   },
+   {
+    "id": "n2",
+    "label": "🔍 n2: búsqueda\n\"Whopper calories\"\n(independiente)",
+    "x": 360,
+    "y": 410,
+    "w": 180
+   },
+   {
+    "id": "n3",
+    "label": "📄 n3: obtener página A\ndepende de n1",
+    "x": 120,
+    "y": 520,
+    "w": 190
+   },
+   {
+    "id": "n4",
+    "label": "📄 n4: obtener página B\ndepende de n2",
+    "x": 360,
+    "y": 520,
+    "w": 190
+   },
+   {
+    "id": "joiner",
+    "label": "🔀 n5: Unificador\ncombina n3 + n4\nBig Mac 563 kcal, Whopper 657 kcal",
+    "x": 230,
+    "y": 630,
+    "w": 300
+   },
+   {
+    "id": "solver",
+    "label": "🧮 n6: Solucionador\n657 - 563",
+    "x": 290,
+    "y": 740,
+    "w": 220
+   },
+   {
+    "id": "answer",
+    "label": "✨ Respuesta\nEl Whopper tiene 94 calorías más",
+    "x": 280,
+    "y": 830,
+    "w": 300
+   },
+   {
+    "id": "efficiency-note",
+    "label": "📉 Eficiencia de tokens\nPlan desacoplado de las observaciones:\n~5x menos tokens que ReAct",
+    "x": 640,
+    "y": 610,
+    "w": 240
+   },
+   {
+    "id": "react-contrast",
+    "label": "🐌 vs ReAct\nIntercala más de 6 turnos de pensamiento/acción\nen secuencia, reintroduciendo cada resultado",
+    "x": 640,
+    "y": 720,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-query-planner",
+    "s": "query",
+    "t": "planner",
+    "label": ""
+   },
+   {
+    "id": "e-planner-plan",
+    "s": "planner",
+    "t": "plan-artifact",
+    "label": "escribir el plan completo"
+   },
+   {
+    "id": "e-planner-compiler",
+    "s": "planner",
+    "t": "compiler",
+    "label": "compilar"
+   },
+   {
+    "id": "e-plan-efficiency",
+    "s": "plan-artifact",
+    "t": "efficiency-note",
+    "label": ""
+   },
+   {
+    "id": "e-compiler-react",
+    "s": "compiler",
+    "t": "react-contrast",
+    "label": "vs ReAct"
+   },
+   {
+    "id": "e-compiler-parallel",
+    "s": "compiler",
+    "t": "parallel-note",
+    "label": ""
+   },
+   {
+    "id": "e-compiler-n1",
+    "s": "compiler",
+    "t": "n1",
+    "label": "despachar"
+   },
+   {
+    "id": "e-compiler-n2",
+    "s": "compiler",
+    "t": "n2",
+    "label": "despachar"
+   },
+   {
+    "id": "e-n1-n3",
+    "s": "n1",
+    "t": "n3",
+    "label": "depende"
+   },
+   {
+    "id": "e-n2-n4",
+    "s": "n2",
+    "t": "n4",
+    "label": "depende"
+   },
+   {
+    "id": "e-n3-joiner",
+    "s": "n3",
+    "t": "joiner",
+    "label": ""
+   },
+   {
+    "id": "e-n4-joiner",
+    "s": "n4",
+    "t": "joiner",
+    "label": ""
+   },
+   {
+    "id": "e-joiner-solver",
+    "s": "joiner",
+    "t": "solver",
+    "label": ""
+   },
+   {
+    "id": "e-solver-answer",
+    "s": "solver",
+    "t": "answer",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta de investigación",
+    "description": "Llega una pregunta de varios pasos que necesita varias llamadas a herramientas y un cálculo final.",
+    "input": "",
+    "nodes": [
+     "query"
+    ],
+    "edges": [
+     "e-query-planner"
+    ]
+   },
+   {
+    "title": "Planificar antes de ejecutar (ReWOO)",
+    "description": "El planificador escribe todo el plan por adelantado como una cadena de pasos parametrizados con variables (#E1, #E2, #E3). Lo crucial es que no consume observaciones de herramientas mientras planifica, así que no se gastan tokens releyendo resultados intermedios.",
+    "input": "",
+    "nodes": [
+     "planner",
+     "plan-artifact",
+     "efficiency-note"
+    ],
+    "edges": [
+     "e-planner-plan",
+     "e-plan-efficiency"
+    ]
+   },
+   {
+    "title": "Compilar el DAG de dependencias",
+    "description": "LLMCompiler convierte el plan en un grafo de 6 nodos y registra qué llamadas dependen de cuáles. A diferencia de ReAct, no intercala un pensamiento nuevo antes de cada acción.",
+    "input": "",
+    "nodes": [
+     "planner",
+     "compiler",
+     "react-contrast"
+    ],
+    "edges": [
+     "e-planner-compiler",
+     "e-compiler-react"
+    ]
+   },
+   {
+    "title": "Despachar herramientas independientes en paralelo",
+    "description": "Las dos búsquedas n1 y n2 no comparten dependencias, así que el compilador las lanza simultáneamente en lugar de una tras otra.",
+    "input": "",
+    "nodes": [
+     "compiler",
+     "n1",
+     "n2",
+     "parallel-note"
+    ],
+    "edges": [
+     "e-compiler-n1",
+     "e-compiler-n2",
+     "e-compiler-parallel"
+    ]
+   },
+   {
+    "title": "Resolver dependencias",
+    "description": "Cuando cada búsqueda termina, se ejecuta la obtención que depende de ella: n3 después de n1 y n4 después de n2, nuevamente en paralelo entre sí.",
+    "input": "",
+    "nodes": [
+     "n1",
+     "n2",
+     "n3",
+     "n4"
+    ],
+    "edges": [
+     "e-n1-n3",
+     "e-n2-n4"
+    ]
+   },
+   {
+    "title": "Unir las observaciones",
+    "description": "El unificador combina ambas páginas obtenidas: Big Mac 563 kcal y Whopper 657 kcal.",
+    "input": "",
+    "nodes": [
+     "n3",
+     "n4",
+     "joiner"
+    ],
+    "edges": [
+     "e-n3-joiner",
+     "e-n4-joiner"
+    ]
+   },
+   {
+    "title": "Resolver y responder",
+    "description": "El solucionador calcula 657 - 563 y devuelve la respuesta en 4 rondas secuenciales en lugar de más de 6 turnos de ReAct: alrededor de 3.7x menos latencia y 5x menos tokens.",
+    "input": "",
+    "nodes": [
+     "joiner",
+     "solver",
+     "answer"
+    ],
+    "edges": [
+     "e-joiner-solver",
+     "e-solver-answer"
+    ]
+   }
+  ]
+ }
+}

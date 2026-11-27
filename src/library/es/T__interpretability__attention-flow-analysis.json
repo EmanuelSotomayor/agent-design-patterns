@@ -1,0 +1,361 @@
+{
+ "cat": "interpretability",
+ "slug": "attention-flow-analysis",
+ "name": "Attention Flow Analysis(AFA)",
+ "icon": "👁️",
+ "complexity": "medium",
+ "description": "Rastrea y visualiza dónde enfocan su atención los sistemas de IA durante el razonamiento",
+ "features": [
+  "Visualización de patrones de atención",
+  "Mapeo de la intensidad del foco",
+  "Seguimiento temporal de la atención",
+  "Análisis de atención multi-head",
+  "Flujos de atención intermodales",
+  "Detección de anomalías de atención"
+ ],
+ "tldr": {
+  "what": "Visualiza qué entradas o pasos de razonamiento prioriza un modelo de IA mapeando los pesos de atención a través de capas, cabezas y pasos temporales.",
+  "when": "Depurar salidas inesperadas del modelo, validar la calidad del razonamiento o entender por qué un sistema ignoró información relevante.",
+  "watchOut": "Los patrones de atención no siempre reflejan el razonamiento real; una alta atención a un token no garantiza que haya influido en la decisión final."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Análisis del flujo de atención",
+  "description": "Rastrea dónde se enfoca un transformer leyendo los pesos de atención por tokens, secciones, capas y cabezas. Mapear la intensidad del foco en una tarea de resumen revela que la metodología recibe poca atención.",
+  "nodes": [
+   {
+    "id": "task-input",
+    "label": "📄 Tarea\n\"Resume este artículo de investigación\"",
+    "x": 360,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "transformer-agent",
+    "label": "🤖 Agente Transformer\nAtención multi-head\nsobre todo el documento",
+    "x": 360,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "tokenizer",
+    "label": "🔤 Tokenizador\nDivide el documento en\nsecciones y tokens",
+    "x": 360,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "attention-extractor",
+    "label": "👁️ Extractor de atención\nLee los pesos por\ncapa y cabeza",
+    "x": 360,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "sec-title",
+    "label": "🏷️ Título\n90% ████████",
+    "x": 20,
+    "y": 460,
+    "w": 170
+   },
+   {
+    "id": "sec-abstract",
+    "label": "📝 Resumen\n75% ██████",
+    "x": 230,
+    "y": 460,
+    "w": 170
+   },
+   {
+    "id": "sec-intro",
+    "label": "📖 Introducción\n45% ████",
+    "x": 440,
+    "y": 460,
+    "w": 170
+   },
+   {
+    "id": "sec-methods",
+    "label": "🧪 Métodos\n25% ██ (baja)",
+    "x": 650,
+    "y": 460,
+    "w": 170
+   },
+   {
+    "id": "sec-results",
+    "label": "📊 Resultados\n70% ██████",
+    "x": 20,
+    "y": 560,
+    "w": 170
+   },
+   {
+    "id": "sec-conclusion",
+    "label": "🎯 Conclusión\n85% ████████",
+    "x": 230,
+    "y": 560,
+    "w": 170
+   },
+   {
+    "id": "sec-references",
+    "label": "🔖 Referencias\n10% █ (baja)",
+    "x": 440,
+    "y": 560,
+    "w": 170
+   },
+   {
+    "id": "multihead-analysis",
+    "label": "🧠 Análisis multi-head\nMapa de foco por cabeza\na través de las capas",
+    "x": 650,
+    "y": 560,
+    "w": 200
+   },
+   {
+    "id": "anomaly-detector",
+    "label": "⚠️ Detector de anomalías\nMétodos + referencias\ncon poca atención",
+    "x": 180,
+    "y": 670,
+    "w": 220
+   },
+   {
+    "id": "insight-panel",
+    "label": "💡 Hallazgo\nPrivilegia las conclusiones,\nomite la metodología",
+    "x": 470,
+    "y": 670,
+    "w": 240
+   },
+   {
+    "id": "summary-output",
+    "label": "📄 Resumen + informe de atención\nMapa de foco con una advertencia\nsobre la precisión técnica",
+    "x": 360,
+    "y": 780,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-agent",
+    "s": "task-input",
+    "t": "transformer-agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-tokenizer",
+    "s": "transformer-agent",
+    "t": "tokenizer",
+    "label": "Tokenizar"
+   },
+   {
+    "id": "e-tokenizer-extractor",
+    "s": "tokenizer",
+    "t": "attention-extractor",
+    "label": "Extraer"
+   },
+   {
+    "id": "e-extractor-title",
+    "s": "attention-extractor",
+    "t": "sec-title",
+    "label": "90%"
+   },
+   {
+    "id": "e-extractor-abstract",
+    "s": "attention-extractor",
+    "t": "sec-abstract",
+    "label": "75%"
+   },
+   {
+    "id": "e-extractor-intro",
+    "s": "attention-extractor",
+    "t": "sec-intro",
+    "label": "45%"
+   },
+   {
+    "id": "e-extractor-methods",
+    "s": "attention-extractor",
+    "t": "sec-methods",
+    "label": "25%"
+   },
+   {
+    "id": "e-extractor-results",
+    "s": "attention-extractor",
+    "t": "sec-results",
+    "label": "70%"
+   },
+   {
+    "id": "e-extractor-conclusion",
+    "s": "attention-extractor",
+    "t": "sec-conclusion",
+    "label": "85%"
+   },
+   {
+    "id": "e-extractor-references",
+    "s": "attention-extractor",
+    "t": "sec-references",
+    "label": "10%"
+   },
+   {
+    "id": "e-extractor-multihead",
+    "s": "attention-extractor",
+    "t": "multihead-analysis",
+    "label": ""
+   },
+   {
+    "id": "e-methods-anomaly",
+    "s": "sec-methods",
+    "t": "anomaly-detector",
+    "label": "poca"
+   },
+   {
+    "id": "e-references-anomaly",
+    "s": "sec-references",
+    "t": "anomaly-detector",
+    "label": ""
+   },
+   {
+    "id": "e-conclusion-insight",
+    "s": "sec-conclusion",
+    "t": "insight-panel",
+    "label": "mucha"
+   },
+   {
+    "id": "e-multihead-insight",
+    "s": "multihead-analysis",
+    "t": "insight-panel",
+    "label": ""
+   },
+   {
+    "id": "e-anomaly-insight",
+    "s": "anomaly-detector",
+    "t": "insight-panel",
+    "label": ""
+   },
+   {
+    "id": "e-insight-summary",
+    "s": "insight-panel",
+    "t": "summary-output",
+    "label": ""
+   },
+   {
+    "id": "e-anomaly-summary",
+    "s": "anomaly-detector",
+    "t": "summary-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recibir la tarea de resumen",
+    "description": "Se le pide al agente que resuma un artículo de investigación, y su atención multi-head se inspeccionará mientras trabaja.",
+    "input": "",
+    "nodes": [
+     "task-input",
+     "transformer-agent"
+    ],
+    "edges": [
+     "e-task-agent"
+    ]
+   },
+   {
+    "title": "Tokenizar el documento",
+    "description": "El artículo se divide en secciones y tokens para que la atención pueda atribuirse a fragmentos con significado.",
+    "input": "",
+    "nodes": [
+     "transformer-agent",
+     "tokenizer"
+    ],
+    "edges": [
+     "e-agent-tokenizer"
+    ]
+   },
+   {
+    "title": "Extraer los pesos de atención",
+    "description": "El extractor lee los pesos de atención de cada capa y cabeza, listos para agregarlos por sección.",
+    "input": "",
+    "nodes": [
+     "tokenizer",
+     "attention-extractor"
+    ],
+    "edges": [
+     "e-tokenizer-extractor"
+    ]
+   },
+   {
+    "title": "Mapear la intensidad del foco por sección",
+    "description": "Los pesos agregados muestran un foco intenso en el Título (90%), la Conclusión (85%) y el Resumen (75%), un foco menor en los Resultados y la Introducción, y escaso en los Métodos y las Referencias.",
+    "input": "",
+    "nodes": [
+     "attention-extractor",
+     "sec-title",
+     "sec-abstract",
+     "sec-intro",
+     "sec-methods",
+     "sec-results",
+     "sec-conclusion",
+     "sec-references"
+    ],
+    "edges": [
+     "e-extractor-title",
+     "e-extractor-abstract",
+     "e-extractor-intro",
+     "e-extractor-methods",
+     "e-extractor-results",
+     "e-extractor-conclusion",
+     "e-extractor-references"
+    ]
+   },
+   {
+    "title": "Analizar los patrones multi-head",
+    "description": "Los mapas por cabeza a través de las capas confirman que el foco se concentra en el planteamiento de alto nivel en lugar de distribuirse por todo el artículo.",
+    "input": "",
+    "nodes": [
+     "attention-extractor",
+     "multihead-analysis"
+    ],
+    "edges": [
+     "e-extractor-multihead"
+    ]
+   },
+   {
+    "title": "Detectar anomalías de atención",
+    "description": "El detector marca los Métodos y las Referencias como anómalamente desatendidos para una tarea de resumen técnico.",
+    "input": "",
+    "nodes": [
+     "sec-methods",
+     "sec-references",
+     "anomaly-detector"
+    ],
+    "edges": [
+     "e-methods-anomaly",
+     "e-references-anomaly"
+    ]
+   },
+   {
+    "title": "Presentar el hallazgo",
+    "description": "El panel concluye que el modelo privilegia las conclusiones y omite la metodología, lo que arriesga pasar por alto matices técnicos importantes.",
+    "input": "",
+    "nodes": [
+     "sec-conclusion",
+     "multihead-analysis",
+     "anomaly-detector",
+     "insight-panel"
+    ],
+    "edges": [
+     "e-conclusion-insight",
+     "e-multihead-insight",
+     "e-anomaly-insight"
+    ]
+   },
+   {
+    "title": "Entregar el resumen con una advertencia",
+    "description": "El resumen se entrega junto con el mapa de foco y una nota que sugiere preguntar específicamente por los métodos para asegurar la precisión técnica.",
+    "input": "",
+    "nodes": [
+     "insight-panel",
+     "anomaly-detector",
+     "summary-output"
+    ],
+    "edges": [
+     "e-insight-summary",
+     "e-anomaly-summary"
+    ]
+   }
+  ]
+ }
+}

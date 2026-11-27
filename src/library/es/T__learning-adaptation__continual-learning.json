@@ -1,0 +1,445 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "continual-learning",
+ "name": "Continual Learning(CL)",
+ "icon": "🔄",
+ "complexity": "high",
+ "description": "Aprendizaje a partir de una secuencia de tareas o distribuciones de datos, midiendo y mitigando la pérdida de capacidades anteriores",
+ "features": [
+  "Medición del olvido catastrófico",
+  "Aprendizaje secuencial de tareas",
+  "Regularización como EWC",
+  "Ensayo y replay",
+  "Adaptadores específicos por tarea",
+  "Evaluación de la transferencia hacia adelante y hacia atrás"
+ ],
+ "tldr": {
+  "what": "Entrena secuencialmente en tareas nuevas mientras mide y previene la pérdida de desempeño en tareas anteriores mediante ensayo, regularización o adaptadores específicos por tarea.",
+  "when": "Los sistemas deben aprender de múltiples tareas o distribuciones de datos a lo largo del tiempo sin olvidar capacidades previas ni requerir acceso a todos los datos históricos.",
+  "watchOut": "Medir el verdadero olvido catastrófico requiere mantener una matriz de evaluación completa para todas las tareas en cada etapa, lo que se vuelve costoso a medida que crece la cantidad de tareas."
+ },
+ "overview": {
+  "pattern": "Aprende tareas nuevas de forma secuencial conservando el conocimiento de las tareas anteriores, sin olvido catastrófico",
+  "why": "Permite el aprendizaje a lo largo de toda la vida, se adapta a entornos cambiantes y mantiene el conocimiento acumulado con el tiempo",
+  "insight": "Equilibra la plasticidad para el nuevo aprendizaje con la estabilidad del conocimiento previo mediante mecanismos de retención especializados",
+  "impl": [
+   {
+    "t": "Línea base",
+    "d": "Entrenar el modelo inicial en la primera tarea/dominio"
+   },
+   {
+    "t": "Estrategia",
+    "d": "Elegir el enfoque de mitigación del olvido catastrófico"
+   },
+   {
+    "t": "Secuencial",
+    "d": "Aprender tareas nuevas preservando el conocimiento previo"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Probar el desempeño en todas las tareas vistas hasta el momento"
+   },
+   {
+    "t": "Adaptar",
+    "d": "Ajustar la estrategia según las métricas de olvido"
+   }
+  ],
+  "example": "task_sequence → continual_strategy → updated_model → performance_retention",
+  "dos": [
+   "Usa técnicas de regularización para restringir los cambios en los pesos",
+   "Implementa experience replay con una selección diversa de muestras",
+   "Monitorea las métricas de transferencia hacia atrás y hacia adelante",
+   "Aplica arquitecturas dinámicas para expandir la capacidad",
+   "Usa meta-aprendizaje para una adaptación rápida a las tareas",
+   "Implementa estrategias de almacenamiento eficientes en memoria"
+  ],
+  "donts": [
+   "Ignorar la medición del olvido catastrófico",
+   "Usar un fine-tuning ingenuo sin mecanismos de protección",
+   "Almacenar todos los datos previos (problemas de privacidad/almacenamiento)",
+   "Omitir la comparación con una línea base de aprendizaje multitarea",
+   "Usar una sola métrica para evaluar el aprendizaje continuo"
+  ],
+  "use": [
+   "Llegada secuencial de tareas con memoria limitada",
+   "Restricciones de privacidad que impiden almacenar datos antiguos",
+   "Entornos no estacionarios que requieren adaptación",
+   "Despliegue de sistemas de aprendizaje a lo largo de toda la vida",
+   "Escenarios de edge computing con recursos limitados"
+  ],
+  "avoid": [
+   "Todas las tareas están disponibles simultáneamente",
+   "Recursos de memoria y cómputo ilimitados",
+   "Las tareas no tienen ninguna relación entre sí",
+   "Entorno estático con requisitos fijos",
+   "Basta con un aprendizaje multitarea simple"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión promedio",
+    "d": "Desempeño medio en todas las tareas"
+   },
+   {
+    "n": "Transferencia hacia atrás",
+    "d": "Cambio de desempeño en las tareas anteriores"
+   },
+   {
+    "n": "Transferencia hacia adelante",
+    "d": "Desempeño inicial en las tareas nuevas"
+   },
+   {
+    "n": "Olvido catastrófico",
+    "d": "Tasa de degradación del desempeño"
+   },
+   {
+    "n": "Eficiencia de aprendizaje",
+    "d": "Muestras necesarias por tarea"
+   },
+   {
+    "n": "Huella de memoria",
+    "d": "Tasa de crecimiento de los requisitos de almacenamiento"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA conversacional",
+    "d": "Aprender continuamente nuevos patrones y dominios de diálogo"
+   },
+   {
+    "n": "Sistemas de recomendación",
+    "d": "Adaptarse a las preferencias cambiantes de los usuarios con el tiempo"
+   },
+   {
+    "n": "Vehículos autónomos",
+    "d": "Aprender nuevos escenarios de conducción sin olvidar las habilidades existentes"
+   },
+   {
+    "n": "Diagnóstico médico",
+    "d": "Aprender de forma incremental nuevas enfermedades y afecciones"
+   },
+   {
+    "n": "Ciberseguridad",
+    "d": "Adaptarse continuamente a nuevos patrones de ataque y amenazas"
+   },
+   {
+    "n": "Dispositivos de Edge AI",
+    "d": "Actualizar capacidades manteniendo la funcionalidad existente"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Continual Learning",
+  "description": "Sistema de aprendizaje adaptativo que adquiere nuevo conocimiento con el tiempo mientras previene el olvido catastrófico, usando técnicas como elastic weight consolidation y progressive neural networks.",
+  "nodes": [
+   {
+    "id": "assistant-v1",
+    "label": "🤖 Asistente de IA v1.0\nSabe: clima, noticias, deportes",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "task-1",
+    "label": "📚 Mes 1: aprender cocina\nRecetas, técnicas,\ningredientes",
+    "x": 50,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "task-2",
+    "label": "🏥 Mes 2: aprender medicina\nSíntomas, tratamientos,\nmedicamentos",
+    "x": 250,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "task-3",
+    "label": "💰 Mes 3: aprender finanzas\nAcciones, presupuestos,\nimpuestos",
+    "x": 450,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "task-4",
+    "label": "🎨 Mes 4: aprender arte\nTécnicas, historia,\nestilos",
+    "x": 650,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "catastrophic-forgetting",
+    "label": "❌ Olvido catastrófico\n\"¿Cómo está el clima?\"\n\"¡Ahora solo sé de arte!\"",
+    "x": 100,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "memory-replay",
+    "label": "🔄 Memory Replay\nAlmacenar y repasar\nejemplos pasados",
+    "x": 350,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "elastic-weights",
+    "label": "🔒 Pesos elásticos\nProteger los parámetros\nimportantes",
+    "x": 580,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "knowledge-buffer",
+    "label": "💾 Búfer de conocimiento\n• Patrones del clima\n• Recetas básicas\n• Interacciones de medicamentos",
+    "x": 100,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "importance-weights",
+    "label": "⚖️ Puntuaciones de importancia\nClima: 0.9\nDeportes: 0.7\nCocina: 0.8",
+    "x": 320,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "task-boundaries",
+    "label": "🎯 Detección de tareas\nIdentificar cuándo\nllega un nuevo dominio",
+    "x": 540,
+    "y": 460,
+    "w": 180
+   },
+   {
+    "id": "test-old",
+    "label": "❓ Probar el conocimiento previo\n\"¿Cómo está el clima\nen París?\"",
+    "x": 200,
+    "y": 580,
+    "w": 180
+   },
+   {
+    "id": "test-new",
+    "label": "❓ Probar el conocimiento nuevo\n\"¿Cómo se pinta\ncon acuarelas?\"",
+    "x": 500,
+    "y": 580,
+    "w": 180
+   },
+   {
+    "id": "assistant-v2",
+    "label": "🎉 Asistente de IA v2.0\nSabe: clima + cocina + medicina + finanzas + arte\n¡Sin olvidar nada!",
+    "x": 400,
+    "y": 700,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "v1-task1",
+    "s": "assistant-v1",
+    "t": "task-1",
+    "label": ""
+   },
+   {
+    "id": "task1-task2",
+    "s": "task-1",
+    "t": "task-2",
+    "label": ""
+   },
+   {
+    "id": "task2-task3",
+    "s": "task-2",
+    "t": "task-3",
+    "label": ""
+   },
+   {
+    "id": "task3-task4",
+    "s": "task-3",
+    "t": "task-4",
+    "label": ""
+   },
+   {
+    "id": "task4-forgetting",
+    "s": "task-4",
+    "t": "catastrophic-forgetting",
+    "label": "¡Problema!"
+   },
+   {
+    "id": "forgetting-replay",
+    "s": "catastrophic-forgetting",
+    "t": "memory-replay",
+    "label": ""
+   },
+   {
+    "id": "forgetting-elastic",
+    "s": "catastrophic-forgetting",
+    "t": "elastic-weights",
+    "label": ""
+   },
+   {
+    "id": "replay-buffer",
+    "s": "memory-replay",
+    "t": "knowledge-buffer",
+    "label": ""
+   },
+   {
+    "id": "elastic-importance",
+    "s": "elastic-weights",
+    "t": "importance-weights",
+    "label": ""
+   },
+   {
+    "id": "replay-boundaries",
+    "s": "memory-replay",
+    "t": "task-boundaries",
+    "label": ""
+   },
+   {
+    "id": "elastic-boundaries",
+    "s": "elastic-weights",
+    "t": "task-boundaries",
+    "label": ""
+   },
+   {
+    "id": "buffer-test-old",
+    "s": "knowledge-buffer",
+    "t": "test-old",
+    "label": ""
+   },
+   {
+    "id": "importance-test-old",
+    "s": "importance-weights",
+    "t": "test-old",
+    "label": ""
+   },
+   {
+    "id": "boundaries-test-new",
+    "s": "task-boundaries",
+    "t": "test-new",
+    "label": ""
+   },
+   {
+    "id": "test-old-success",
+    "s": "test-old",
+    "t": "assistant-v2",
+    "label": "✓ Recuerda"
+   },
+   {
+    "id": "test-new-success",
+    "s": "test-new",
+    "t": "assistant-v2",
+    "label": "✓ Sabe lo nuevo"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Punto de partida",
+    "description": "El asistente de IA sabe de clima, noticias y deportes",
+    "input": "",
+    "nodes": [
+     "assistant-v1"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Aprender nuevos dominios",
+    "description": "Cada mes aprende un dominio completamente nuevo",
+    "input": "",
+    "nodes": [
+     "assistant-v1",
+     "task-1",
+     "task-2",
+     "task-3",
+     "task-4"
+    ],
+    "edges": [
+     "v1-task1",
+     "task1-task2",
+     "task2-task3",
+     "task3-task4"
+    ]
+   },
+   {
+    "title": "El problema: olvido catastrófico",
+    "description": "¡Después de aprender arte, el modelo olvida el clima!",
+    "input": "",
+    "nodes": [
+     "task-4",
+     "catastrophic-forgetting"
+    ],
+    "edges": [
+     "task4-forgetting"
+    ]
+   },
+   {
+    "title": "Estrategias de solución",
+    "description": "Usar memory replay y elastic weight consolidation",
+    "input": "",
+    "nodes": [
+     "catastrophic-forgetting",
+     "memory-replay",
+     "elastic-weights"
+    ],
+    "edges": [
+     "forgetting-replay",
+     "forgetting-elastic"
+    ]
+   },
+   {
+    "title": "Detalles de implementación",
+    "description": "Almacenar ejemplos, proteger los pesos importantes, detectar cambios de tarea",
+    "input": "",
+    "nodes": [
+     "memory-replay",
+     "elastic-weights",
+     "knowledge-buffer",
+     "importance-weights",
+     "task-boundaries"
+    ],
+    "edges": [
+     "replay-buffer",
+     "elastic-importance",
+     "replay-boundaries",
+     "elastic-boundaries"
+    ]
+   },
+   {
+    "title": "Probar el conocimiento previo",
+    "description": "¿Todavía puede responder preguntas sobre el clima?",
+    "input": "",
+    "nodes": [
+     "knowledge-buffer",
+     "importance-weights",
+     "test-old"
+    ],
+    "edges": [
+     "buffer-test-old",
+     "importance-test-old"
+    ]
+   },
+   {
+    "title": "Probar el conocimiento nuevo",
+    "description": "¿También puede responder preguntas sobre arte?",
+    "input": "",
+    "nodes": [
+     "task-boundaries",
+     "test-new"
+    ],
+    "edges": [
+     "boundaries-test-new"
+    ]
+   },
+   {
+    "title": "Éxito: aprendizaje continuo",
+    "description": "¡Conoce todos los dominios sin olvidar!",
+    "input": "",
+    "nodes": [
+     "test-old",
+     "test-new",
+     "assistant-v2"
+    ],
+    "edges": [
+     "test-old-success",
+     "test-new-success"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,322 @@
+{
+ "cat": "tool-use",
+ "slug": "mcp-tool-gateway",
+ "name": "MCP Gateway (Tool Federation & Governance)(MCPG)",
+ "icon": "🛡️",
+ "complexity": "high",
+ "description": "Un único punto de entrada MCP gobernado que se ubica delante de muchos servidores MCP de backend como proxy inverso, federando sus herramientas en una sola superficie de herramientas curada y administrada a la que se conecta el agente. Cada llamada a herramienta pasa por el gateway, que aplica autenticación centralizada, autorización por herramienta que separa la identidad de quien llama de los permisos del servidor de destino, verificaciones de políticas, límites de tasa, logging de auditoría y telemetría. Esto convierte un montón desordenado de servidores desplegados por separado en un único contrato de integración controlado, de modo que las herramientas se pueden curar, versionar y revocar sin tocar cada agente. Se diferencia de `control-plane`: el plano de control es el patrón general de exponer una sola interfaz mientras se enruta internamente a cualquier herramienta, servicio o modelo, mientras que el gateway MCP es su realización específica del ecosistema MCP, enfocada en federar muchos servidores MCP y gobernar la superficie compartida de acceso a herramientas.",
+ "features": [
+  "Proxy inverso delante de muchos servidores MCP de backend",
+  "Federa sus herramientas en una sola superficie curada y administrada",
+  "Autenticación centralizada en un único punto de entrada",
+  "Autorización por herramienta que separa la identidad de quien llama de los permisos de destino",
+  "Aplicación de políticas, límites de tasa y modelado de solicitudes en cada llamada",
+  "Log de auditoría completo y telemetría de cada invocación de herramienta"
+ ],
+ "tldr": {
+  "what": "Un único proxy inverso se ubica delante de muchos servidores MCP y federa sus herramientas en una superficie curada con autenticación centralizada, autorización por herramienta, límites de tasa y logging de auditoría.",
+  "when": "Varios servidores MCP independientes necesitan control de acceso unificado, curaduría de herramientas y trazas de auditoría sin modificar cada agente ni cada backend.",
+  "watchOut": "El gateway se convierte en un cuello de botella crítico y en un punto único de falla; cualquier caída bloquea el acceso a las herramientas para todos los agentes y servidores."
+ },
+ "overview": null,
+ "flow": {
+  "title": "MCP Gateway (federación y gobernanza de herramientas)",
+  "description": "Un único punto de entrada MCP gobernado federa las herramientas de muchos servidores MCP de backend en una sola superficie curada. Cada llamada pasa por él para autenticación centralizada, autorización por herramienta, políticas y límites de tasa, y auditoría, de modo que una llamada permitida se redirige al backend correcto, mientras que una llamada con privilegios excesivos se rechaza antes de llegar a ningún servidor.",
+  "nodes": [
+   {
+    "id": "agent",
+    "label": "🤖 Agente\n\"Crea un issue de Jira para el ticket 4821\"",
+    "x": 400,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "gateway",
+    "label": "🛡️ Gateway MCP\nPunto de entrada único gobernado (proxy inverso)",
+    "x": 360,
+    "y": 140,
+    "w": 300
+   },
+   {
+    "id": "authn",
+    "label": "🔐 Autenticar\nValida el token del gateway",
+    "x": 40,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "authz",
+    "label": "🪪 Autorización por herramienta\nAlcance de quien llama vs permisos de destino",
+    "x": 250,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "policy",
+    "label": "🚦 Políticas y límite de tasa\nCuota de 60 llamadas/min",
+    "x": 480,
+    "y": 250,
+    "w": 190
+   },
+   {
+    "id": "audit",
+    "label": "📝 Auditoría y telemetría\nCada llamada queda registrada",
+    "x": 710,
+    "y": 250,
+    "w": 190
+   },
+   {
+    "id": "router",
+    "label": "🔀 Enrutador de herramientas\nResuelve herramienta -> servidor de backend",
+    "x": 360,
+    "y": 370,
+    "w": 260
+   },
+   {
+    "id": "srv-github",
+    "label": "🐙 GitHub MCP\ncreate_pr, delete_repo",
+    "x": 30,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "srv-jira",
+    "label": "📋 Jira MCP\ncreate_issue (enrutada)",
+    "x": 230,
+    "y": 500,
+    "w": 170
+   },
+   {
+    "id": "srv-files",
+    "label": "🗄️ S3 Files MCP\nget_object, put_object",
+    "x": 440,
+    "y": 500,
+    "w": 170
+   },
+   {
+    "id": "srv-payments",
+    "label": "💳 Payments MCP\nrefund, charge",
+    "x": 650,
+    "y": 500,
+    "w": 170
+   },
+   {
+    "id": "blocked",
+    "label": "⛔ delete_repo RECHAZADA\nFuera del alcance de quien llama, bloqueada antes del backend",
+    "x": 590,
+    "y": 620,
+    "w": 240
+   },
+   {
+    "id": "allowed",
+    "label": "✅ create_issue redirigida\nEl gateway sustituye por una credencial de Jira con alcance limitado",
+    "x": 150,
+    "y": 620,
+    "w": 250
+   },
+   {
+    "id": "result",
+    "label": "🎯 Resultado gobernado\nIssue JIRA-4821 creado, totalmente auditado",
+    "x": 360,
+    "y": 730,
+    "w": 270
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-agent-gateway",
+    "s": "agent",
+    "t": "gateway",
+    "label": "una llamada a herramienta"
+   },
+   {
+    "id": "e-gw-authn",
+    "s": "gateway",
+    "t": "authn",
+    "label": "autenticar"
+   },
+   {
+    "id": "e-authn-authz",
+    "s": "authn",
+    "t": "authz",
+    "label": "identidad: support-bot"
+   },
+   {
+    "id": "e-authz-policy",
+    "s": "authz",
+    "t": "policy",
+    "label": "permitir create_issue"
+   },
+   {
+    "id": "e-authz-blocked",
+    "s": "authz",
+    "t": "blocked",
+    "label": "rechazar delete_repo"
+   },
+   {
+    "id": "e-policy-router",
+    "s": "policy",
+    "t": "router",
+    "label": "dentro de la cuota"
+   },
+   {
+    "id": "e-router-jira",
+    "s": "router",
+    "t": "srv-jira",
+    "label": "enrutar"
+   },
+   {
+    "id": "e-router-github",
+    "s": "router",
+    "t": "srv-github",
+    "label": "federado"
+   },
+   {
+    "id": "e-router-files",
+    "s": "router",
+    "t": "srv-files",
+    "label": "federado"
+   },
+   {
+    "id": "e-router-payments",
+    "s": "router",
+    "t": "srv-payments",
+    "label": "federado"
+   },
+   {
+    "id": "e-router-audit",
+    "s": "router",
+    "t": "audit",
+    "label": "registrar permiso"
+   },
+   {
+    "id": "e-blocked-audit",
+    "s": "blocked",
+    "t": "audit",
+    "label": "registrar rechazo"
+   },
+   {
+    "id": "e-jira-allowed",
+    "s": "srv-jira",
+    "t": "allowed",
+    "label": "llamada redirigida"
+   },
+   {
+    "id": "e-allowed-result",
+    "s": "allowed",
+    "t": "result",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Un único punto de entrada",
+    "description": "El agente se conecta solo al gateway y emite una sola llamada a herramienta, create_issue, en lugar de hablar directamente con algún servidor MCP de backend.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "gateway"
+    ],
+    "edges": [
+     "e-agent-gateway"
+    ]
+   },
+   {
+    "title": "Autenticar a quien llama",
+    "description": "El gateway valida el token de gateway del agente y resuelve una identidad estable de quien llama (agent:support-bot) antes de que se ejecute cualquier lógica de herramienta.",
+    "input": "",
+    "nodes": [
+     "gateway",
+     "authn"
+    ],
+    "edges": [
+     "e-gw-authn"
+    ]
+   },
+   {
+    "title": "Autorización por herramienta",
+    "description": "El alcance de quien llama se verifica por herramienta. A support-bot se le concede jira:create_issue, y el gateway separa la identidad de quien llama de los permisos del servidor de destino.",
+    "input": "",
+    "nodes": [
+     "authn",
+     "authz"
+    ],
+    "edges": [
+     "e-authn-authz"
+    ]
+   },
+   {
+    "title": "Rechazar una llamada con privilegios excesivos",
+    "description": "Cuando el mismo llamador intenta luego delete_repo, esa herramienta no está en el alcance de support-bot, así que el gateway la rechaza antes de que llegue al servidor de GitHub y registra el rechazo.",
+    "input": "",
+    "nodes": [
+     "authz",
+     "blocked",
+     "audit"
+    ],
+    "edges": [
+     "e-authz-blocked",
+     "e-blocked-audit"
+    ]
+   },
+   {
+    "title": "Políticas y límite de tasa",
+    "description": "La llamada permitida create_issue pasa las verificaciones de políticas y está dentro de la cuota de 60 llamadas/min, así que continúa al enrutamiento.",
+    "input": "",
+    "nodes": [
+     "authz",
+     "policy",
+     "router"
+    ],
+    "edges": [
+     "e-authz-policy",
+     "e-policy-router"
+    ]
+   },
+   {
+    "title": "Enrutar entre servidores federados",
+    "description": "El enrutador asigna create_issue al servidor Jira MCP. Cuatro servidores de backend (GitHub, Jira, S3 Files, Payments) están federados detrás de una única superficie curada; solo se despacha a Jira.",
+    "input": "",
+    "nodes": [
+     "router",
+     "srv-github",
+     "srv-jira",
+     "srv-files",
+     "srv-payments"
+    ],
+    "edges": [
+     "e-router-jira",
+     "e-router-github",
+     "e-router-files",
+     "e-router-payments"
+    ]
+   },
+   {
+    "title": "Redirigir con credencial de alcance limitado",
+    "description": "El gateway sustituye por su propia credencial de servicio de Jira con alcance limitado (el agente nunca ve el secreto), redirige la llamada y registra la decisión de permiso junto con la latencia.",
+    "input": "",
+    "nodes": [
+     "srv-jira",
+     "allowed",
+     "audit"
+    ],
+    "edges": [
+     "e-jira-allowed",
+     "e-router-audit"
+    ]
+   },
+   {
+    "title": "Resultado gobernado",
+    "description": "Se crea y devuelve el issue JIRA-4821. Cuatro servidores quedaron federados detrás de un único punto de entrada, y cada llamada se autenticó, se autorizó por herramienta, se sometió a límites de tasa y se auditó en un solo lugar.",
+    "input": "",
+    "nodes": [
+     "allowed",
+     "result"
+    ],
+    "edges": [
+     "e-allowed-result"
+    ]
+   }
+  ]
+ }
+}

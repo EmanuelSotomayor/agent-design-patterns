@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "progressive-disclosure-patterns",
+ "name": "Progressive Disclosure UI Patterns(PDP)",
+ "icon": "📋",
+ "complexity": "high",
+ "description": "Patrones de interfaz para revelar gradualmente las capacidades, el razonamiento y la información compleja del agente, evitando la sobrecarga cognitiva",
+ "features": [
+  "Árboles de razonamiento expandibles con revelación paso a paso",
+  "Paneles de explicación plegables con niveles de detalle",
+  "Introducción escalonada de capacidades durante el onboarding",
+  "Revelación de información sensible al contexto"
+ ],
+ "tldr": {
+  "what": "Revela el razonamiento, las capacidades y las explicaciones del agente mediante secciones expandibles y niveles de detalle, y deja que el usuario controle la profundidad de la información.",
+  "when": "Las salidas complejas del agente necesitan explicación, pero el detalle completo abruma a los usuarios, o las capacidades deben presentarse gradualmente durante el onboarding.",
+  "watchOut": "Los usuarios pueden pasar por alto información crítica si nunca expanden las secciones, o frustrarse por tener que hacer demasiados clics para llegar a los detalles que necesitan."
+ },
+ "overview": {
+  "pattern": "Revela gradualmente capas de información para evitar la sobrecarga cognitiva",
+  "why": "Los usuarios necesitan el razonamiento complejo de la IA, pero se abruman con los detalles técnicos de entrada",
+  "insight": "Empieza simple y expande bajo demanda: resumen → detallado → técnico, con una jerarquía visual clara",
+  "impl": [
+   {
+    "t": "Capas de información",
+    "d": "Define los niveles resumen → detallado → técnico"
+   },
+   {
+    "t": "Disparadores de UI",
+    "d": "Controles de clic/expandir para cada nivel"
+   },
+   {
+    "t": "Consciente del contexto",
+    "d": "Muestra la profundidad relevante según el tipo de usuario"
+   },
+   {
+    "t": "Jerarquía visual",
+    "d": "Niveles claros de tipografía y espaciado"
+   },
+   {
+    "t": "Gestión del estado",
+    "d": "Recuerda las preferencias de revelación del usuario"
+   }
+  ],
+  "example": "agent_response → [show reasoning] → [technical details] → [full trace]",
+  "dos": [
+   "Empieza solo con la información esencial",
+   "Usa íconos de expandir/contraer consistentes en toda la UI",
+   "Implementa animaciones suaves para las transiciones",
+   "Recuerda las preferencias de revelación del usuario",
+   "Ofrece opciones de \"expandir todo\" / \"contraer todo\""
+  ],
+  "donts": [
+   "Mostrar toda la información compleja de una sola vez",
+   "Usar etiquetas engañosas o poco claras para la revelación",
+   "Anidar los niveles de revelación demasiado profundo (máx. 3-4)",
+   "Ocultar información crítica detrás de varios clics",
+   "Ignorar la navegación por teclado en los controles de revelación"
+  ],
+  "use": [
+   "Se necesita explicar razonamientos complejos",
+   "Flujos de educación del usuario y onboarding",
+   "Introducción de las capacidades del agente",
+   "Se requiere gestionar la carga cognitiva"
+  ],
+  "avoid": [
+   "Respuestas simples de un solo paso",
+   "Alertas críticas que requieren atención inmediata",
+   "Flujos de trabajo lineales sin complejidad",
+   "Toma de decisiones con tiempo crítico"
+  ],
+  "metrics": [
+   {
+    "n": "Carga cognitiva",
+    "d": "Tiempo que tarda el usuario en completar la tarea"
+   },
+   {
+    "n": "Comprensión",
+    "d": "% de usuarios que entienden las acciones del agente"
+   },
+   {
+    "n": "Interacción",
+    "d": "Tasas de interacción con la revelación"
+   },
+   {
+    "n": "Satisfacción del usuario",
+    "d": "Preferencia por la revelación progresiva frente a la completa"
+   },
+   {
+    "n": "Tasa de errores",
+    "d": "Errores por información insuficiente"
+   },
+   {
+    "n": "Eficiencia de aprendizaje",
+    "d": "Tiempo para entender las nuevas capacidades"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Razonamiento del agente",
+    "d": "Muestra resumen → pasos detallados → traza técnica del razonamiento"
+   },
+   {
+    "n": "Introducción de capacidades",
+    "d": "Funciones básicas → herramientas avanzadas → funciones para expertos"
+   },
+   {
+    "n": "Explicación de errores",
+    "d": "Qué pasó → por qué ocurrió → cómo solucionarlo"
+   },
+   {
+    "n": "Proceso de decisión",
+    "d": "Recomendación final → factores considerados → análisis detallado"
+   },
+   {
+    "n": "Onboarding",
+    "d": "Conceptos centrales → funciones intermedias → flujos de trabajo avanzados"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de UI de Progressive Disclosure",
+  "description": "Jerarquía de información e interfaces por capas que reducen la carga cognitiva al revelar la complejidad gradualmente, lo que mejora las tasas de finalización de tareas y la satisfacción del usuario en las interacciones con agentes de IA",
+  "nodes": [
+   {
+    "id": "cognitive-overload-challenge",
+    "label": "🧠 Desafío de la sobrecarga cognitiva\n\"¿Cómo presentar información compleja\ndel agente de IA sin abrumar\na los usuarios ni reducir la efectividad?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "progressive-disclosure-framework",
+    "label": "📋 Framework de revelación progresiva\n\"Información por capas:\n• Contenido principal primero\n• Secundario bajo demanda\n• Revelación sensible al contexto\n• Gestión de la carga cognitiva\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "information-hierarchy",
+    "label": "🏗️ Jerarquía de información\n\"Estructura por capas:\n• Capa primaria (esencial)\n• Capa secundaria (de apoyo)\n• Capa terciaria (avanzada)\n• Priorización visual\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "cognitive-load-theory",
+    "label": "🧩 Teoría de la carga cognitiva\n\"Tres tipos:\n• Intrínseca (tarea central)\n• Extrínseca (irrelevante)\n• Germánica (aprendizaje)\n• Regla 7±2 de Miller\"",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "disclosure-patterns",
+    "label": "🎨 Patrones de revelación\n\"Componentes de UI:\n• Acordeones y pestañas\n• Modales y superposiciones\n• Navegación drill-down\n• Tooltips y popovers\"",
+    "x": 600,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "interaction-mechanisms",
+    "label": "👆 Mecanismos de interacción\n\"Disparadores de revelación:\n• Expansión con clic/toque\n• Estados hover/focus\n• Gestos de deslizamiento\n• Comandos de voz\"",
+    "x": 750,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "context-sensitive-display",
+    "label": "🎯 Visualización sensible al contexto\n\"Contenido adaptativo:\n• Filtrado según la tarea\n• Niveles de experiencia del usuario\n• Conciencia situacional\n• Valores predeterminados inteligentes\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "agent-workflow-visualization",
+    "label": "🔄 Visualización del flujo de trabajo del agente\n\"Revelación del proceso:\n• Revelación paso a paso\n• Indicadores de progreso\n• Visualización del árbol de decisiones\n• Transparencia en la ejecución\"",
+    "x": 200,
+    "y": 800,
+    "w": 260
+   },
+   {
+    "id": "multi-agent-complexity",
+    "label": "🤖 Complejidad multiagente\n\"Gestión del sistema:\n• Coordinación jerárquica\n• Mapeo de interacciones\n• Dashboards de coordinación\n• Complejidad progresiva\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "accessibility-considerations",
+    "label": "♿ Diseño accesible\n\"Interfaces inclusivas:\n• Soporte para lectores de pantalla\n• Navegación por teclado\n• Regiones ARIA live\n• Cumplimiento de WCAG\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "mobile-optimization",
+    "label": "📱 Optimización para móviles\n\"Diseño para pantallas pequeñas:\n• Objetivos táctiles cómodos\n• Interacciones por deslizamiento\n• Priorización del espacio\n• Optimización del rendimiento\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "performance-metrics",
+    "label": "📊 Métricas de desempeño\n\"Medidas de efectividad:\n• Tasas de finalización de tareas\n• Tiempo hasta completar\n• Reducción de la carga cognitiva\n• Puntajes de satisfacción del usuario\"",
+    "x": 400,
+    "y": 1100,
+    "w": 260
+   },
+   {
+    "id": "disclosure-principle",
+    "label": "🎯 Principio de revelación progresiva\n\"Revelar la información gradualmente reduce la carga cognitiva al posponer la complejidad\nUna estructura de contenido jerárquica mejora las tasas de finalización de tareas\nLa visualización sensible al contexto mejora la satisfacción y la eficiencia del usuario\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "cognitive-overload-challenge",
+    "t": "progressive-disclosure-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "progressive-disclosure-framework",
+    "t": "information-hierarchy",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "progressive-disclosure-framework",
+    "t": "disclosure-patterns",
+    "label": "utiliza"
+   },
+   {
+    "id": "e4",
+    "s": "progressive-disclosure-framework",
+    "t": "context-sensitive-display",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "information-hierarchy",
+    "t": "cognitive-load-theory",
+    "label": "basado en"
+   },
+   {
+    "id": "e6",
+    "s": "disclosure-patterns",
+    "t": "interaction-mechanisms",
+    "label": "activado por"
+   },
+   {
+    "id": "e7",
+    "s": "context-sensitive-display",
+    "t": "agent-workflow-visualization",
+    "label": "se aplica a"
+   },
+   {
+    "id": "e8",
+    "s": "context-sensitive-display",
+    "t": "multi-agent-complexity",
+    "label": "gestiona"
+   },
+   {
+    "id": "e9",
+    "s": "cognitive-load-theory",
+    "t": "agent-workflow-visualization",
+    "label": "guía"
+   },
+   {
+    "id": "e10",
+    "s": "interaction-mechanisms",
+    "t": "multi-agent-complexity",
+    "label": "respalda"
+   },
+   {
+    "id": "e11",
+    "s": "agent-workflow-visualization",
+    "t": "accessibility-considerations",
+    "label": "requiere"
+   },
+   {
+    "id": "e12",
+    "s": "multi-agent-complexity",
+    "t": "mobile-optimization",
+    "label": "optimizado para"
+   },
+   {
+    "id": "e13",
+    "s": "accessibility-considerations",
+    "t": "performance-metrics",
+    "label": "medido por"
+   },
+   {
+    "id": "e14",
+    "s": "mobile-optimization",
+    "t": "performance-metrics",
+    "label": "evaluado mediante"
+   },
+   {
+    "id": "e15",
+    "s": "performance-metrics",
+    "t": "disclosure-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la sobrecarga cognitiva",
+    "description": "¿Cómo se puede presentar información compleja de un agente de IA sin abrumar a los usuarios, gestionando la carga cognitiva sin perder funcionalidad ni efectividad?",
+    "input": "",
+    "nodes": [
+     "cognitive-overload-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de revelación progresiva",
+    "description": "El enfoque de información por capas aborda el desafío mediante la priorización del contenido principal, la información secundaria bajo demanda y patrones de revelación sensibles al contexto.",
+    "input": "",
+    "nodes": [
+     "progressive-disclosure-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Arquitectura de la información y patrones",
+    "description": "Jerarquía de tres capas (primaria/secundaria/terciaria) basada en la teoría de la carga cognitiva, que gestiona la regla 7±2 de Miller. Los patrones de UI incluyen acordeones, pestañas, modales y navegación drill-down.",
+    "input": "",
+    "nodes": [
+     "information-hierarchy",
+     "cognitive-load-theory",
+     "disclosure-patterns",
+     "interaction-mechanisms"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Aplicaciones sensibles al contexto",
+    "description": "Filtrado de contenido adaptativo según las tareas y la experiencia del usuario. La visualización del flujo de trabajo del agente ofrece revelación paso a paso, mientras que los sistemas multiagente usan vistas de coordinación jerárquica.",
+    "input": "",
+    "nodes": [
+     "context-sensitive-display",
+     "agent-workflow-visualization",
+     "multi-agent-complexity"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Optimización de la implementación",
+    "description": "El diseño accesible asegura soporte para lectores de pantalla y cumplimiento de WCAG. La optimización para móviles prioriza interfaces táctiles cómodas y diseños eficientes en espacio para pantallas pequeñas.",
+    "input": "",
+    "nodes": [
+     "accessibility-considerations",
+     "mobile-optimization"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Validación del desempeño",
+    "description": "La efectividad se mide mediante las tasas de finalización de tareas, la reducción de tiempo y la satisfacción del usuario. Revelar la información gradualmente reduce la carga cognitiva al posponer la complejidad hasta que el usuario la solicita, lo que suele reflejarse en una mayor finalización de tareas.",
+    "input": "",
+    "nodes": [
+     "performance-metrics",
+     "disclosure-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

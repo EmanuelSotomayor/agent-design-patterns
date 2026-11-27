@@ -1,0 +1,318 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "event-driven-hierarchical",
+ "name": "Event-Driven Hierarchical Agents(EDHA)",
+ "icon": "🏗️",
+ "complexity": "high",
+ "description": "Jerarquía de agentes de varios niveles con coordinación basada en eventos",
+ "features": [
+  "Patrones orquestador-worker recursivos",
+  "Estructura jerárquica de topics de eventos",
+  "Descomposición de tareas en cascada",
+  "Grupos de consumidores específicos por nivel",
+  "Aislamiento de fallas por nivel de la jerarquía",
+  "Reconfiguración dinámica de la jerarquía"
+ ],
+ "tldr": {
+  "what": "Organiza a los agentes en niveles donde cada uno consume eventos, descompone el trabajo y publica en el topic del nivel siguiente.",
+  "when": "Organizaciones grandes con estructuras jerárquicas claras que necesitan delegación de tareas, aislamiento de fallas y escalado independiente por nivel.",
+  "watchOut": "Los retrasos en la propagación de eventos y las fallas en cascada entre niveles se vuelven difíciles de depurar; los topics mal configurados hacen que el trabajo desaparezca en silencio."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Event-Driven Hierarchical Agents",
+  "description": "Una jerarquía de orquestadores de varios niveles se coordina mediante topics de eventos en capas. Las directivas descienden en cascada a medida que cada nivel descompone el trabajo para el nivel inferior, mientras que los reportes de estado suben de vuelta, aislando las fallas en cada nivel.",
+  "nodes": [
+   {
+    "id": "strategic-goal",
+    "label": "🎯 Objetivo estratégico\n\"Lanzar una nueva línea de productos en Q3\"",
+    "x": 360,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "executive-agent",
+    "label": "👔 Orquestador ejecutivo\nDefine la estrategia y las prioridades",
+    "x": 375,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "exec-directives-topic",
+    "label": "📡 Topic executive-directives\nEventos de intención estratégica",
+    "x": 375,
+    "y": 250,
+    "w": 280
+   },
+   {
+    "id": "manager-eng",
+    "label": "📊 Gerente de ingeniería\nAsigna los recursos de desarrollo",
+    "x": 170,
+    "y": 355,
+    "w": 210
+   },
+   {
+    "id": "manager-mkt",
+    "label": "📊 Gerente de marketing\nPlanifica la salida al mercado",
+    "x": 560,
+    "y": 355,
+    "w": 210
+   },
+   {
+    "id": "manager-assignments-topic",
+    "label": "📡 Topic manager-assignments\nPaquetes de trabajo descompuestos",
+    "x": 375,
+    "y": 455,
+    "w": 280
+   },
+   {
+    "id": "team-dev",
+    "label": "🧑‍💻 Líder del equipo de desarrollo\nCrea tareas del sprint",
+    "x": 60,
+    "y": 560,
+    "w": 180
+   },
+   {
+    "id": "team-design",
+    "label": "🎨 Líder del equipo de diseño\nCrea tareas de assets",
+    "x": 375,
+    "y": 560,
+    "w": 180
+   },
+   {
+    "id": "team-campaign",
+    "label": "📣 Líder del equipo de campañas\nCrea tareas de lanzamiento",
+    "x": 680,
+    "y": 560,
+    "w": 180
+   },
+   {
+    "id": "team-tasks-topic",
+    "label": "📡 Topic team-tasks\nEventos de unidades de trabajo ejecutables",
+    "x": 375,
+    "y": 660,
+    "w": 280
+   },
+   {
+    "id": "execution",
+    "label": "⚙️ Ejecución de los equipos\nLos workers completan las tareas asignadas",
+    "x": 375,
+    "y": 760,
+    "w": 240
+   },
+   {
+    "id": "status-reports-topic",
+    "label": "📈 Topic status-reports\nLos eventos de progreso suben",
+    "x": 720,
+    "y": 660,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✅ Lanzamiento del producto\nTodos los niveles convergieron en el objetivo",
+    "x": 320,
+    "y": 860,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-executive",
+    "s": "strategic-goal",
+    "t": "executive-agent",
+    "label": ""
+   },
+   {
+    "id": "executive-directives",
+    "s": "executive-agent",
+    "t": "exec-directives-topic",
+    "label": "Publicar"
+   },
+   {
+    "id": "directives-mgreng",
+    "s": "exec-directives-topic",
+    "t": "manager-eng",
+    "label": "Consumir"
+   },
+   {
+    "id": "directives-mgrmkt",
+    "s": "exec-directives-topic",
+    "t": "manager-mkt",
+    "label": "Consumir"
+   },
+   {
+    "id": "mgreng-assignments",
+    "s": "manager-eng",
+    "t": "manager-assignments-topic",
+    "label": "Descomponer"
+   },
+   {
+    "id": "mgrmkt-assignments",
+    "s": "manager-mkt",
+    "t": "manager-assignments-topic",
+    "label": "Descomponer"
+   },
+   {
+    "id": "assignments-teamdev",
+    "s": "manager-assignments-topic",
+    "t": "team-dev",
+    "label": "Consumir"
+   },
+   {
+    "id": "assignments-teamdesign",
+    "s": "manager-assignments-topic",
+    "t": "team-design",
+    "label": "Consumir"
+   },
+   {
+    "id": "assignments-teamcampaign",
+    "s": "manager-assignments-topic",
+    "t": "team-campaign",
+    "label": "Consumir"
+   },
+   {
+    "id": "teamdev-tasks",
+    "s": "team-dev",
+    "t": "team-tasks-topic",
+    "label": ""
+   },
+   {
+    "id": "teamdesign-tasks",
+    "s": "team-design",
+    "t": "team-tasks-topic",
+    "label": ""
+   },
+   {
+    "id": "teamcampaign-tasks",
+    "s": "team-campaign",
+    "t": "team-tasks-topic",
+    "label": ""
+   },
+   {
+    "id": "tasks-execution",
+    "s": "team-tasks-topic",
+    "t": "execution",
+    "label": ""
+   },
+   {
+    "id": "execution-reports",
+    "s": "execution",
+    "t": "status-reports-topic",
+    "label": "Reportar"
+   },
+   {
+    "id": "reports-executive",
+    "s": "status-reports-topic",
+    "t": "executive-agent",
+    "label": "Subir"
+   },
+   {
+    "id": "execution-output",
+    "s": "execution",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Objetivo estratégico",
+    "description": "Un objetivo de alto nivel entra por la cima de la jerarquía, demasiado amplio para que un solo equipo actúe directamente sobre él.",
+    "input": "",
+    "nodes": [
+     "strategic-goal",
+     "executive-agent"
+    ],
+    "edges": [
+     "goal-executive"
+    ]
+   },
+   {
+    "title": "Directivas ejecutivas",
+    "description": "El orquestador ejecutivo publica la intención estratégica en el topic executive-directives en lugar de asignar el trabajo a mano.",
+    "input": "",
+    "nodes": [
+     "executive-agent",
+     "exec-directives-topic"
+    ],
+    "edges": [
+     "executive-directives"
+    ]
+   },
+   {
+    "title": "Descomposición por los gerentes",
+    "description": "Los gerentes de cada nivel consumen las directivas y las descomponen en paquetes de trabajo en el topic manager-assignments.",
+    "input": "",
+    "nodes": [
+     "exec-directives-topic",
+     "manager-eng",
+     "manager-mkt",
+     "manager-assignments-topic"
+    ],
+    "edges": [
+     "directives-mgreng",
+     "directives-mgrmkt",
+     "mgreng-assignments",
+     "mgrmkt-assignments"
+    ]
+   },
+   {
+    "title": "Creación de tareas de los equipos",
+    "description": "Los líderes de equipo consumen las asignaciones y emiten tareas concretas y ejecutables al topic team-tasks, completando la cascada.",
+    "input": "",
+    "nodes": [
+     "manager-assignments-topic",
+     "team-dev",
+     "team-design",
+     "team-campaign",
+     "team-tasks-topic"
+    ],
+    "edges": [
+     "assignments-teamdev",
+     "assignments-teamdesign",
+     "assignments-teamcampaign",
+     "teamdev-tasks",
+     "teamdesign-tasks",
+     "teamcampaign-tasks"
+    ]
+   },
+   {
+    "title": "Ejecución",
+    "description": "Los workers del nivel inferior toman las tareas y las ejecutan de forma independiente, con las fallas contenidas en este nivel.",
+    "input": "",
+    "nodes": [
+     "team-tasks-topic",
+     "execution"
+    ],
+    "edges": [
+     "tasks-execution"
+    ]
+   },
+   {
+    "title": "Los reportes de estado suben",
+    "description": "Los eventos de progreso fluyen al topic status-reports y se propagan hacia arriba, dando visibilidad al nivel ejecutivo sin necesidad de polling.",
+    "input": "",
+    "nodes": [
+     "execution",
+     "status-reports-topic",
+     "executive-agent"
+    ],
+    "edges": [
+     "execution-reports",
+     "reports-executive"
+    ]
+   },
+   {
+    "title": "Objetivo alcanzado",
+    "description": "Con cada nivel reaccionando a los eventos de los niveles adyacentes, la jerarquía converge y se concreta el lanzamiento del producto.",
+    "input": "",
+    "nodes": [
+     "execution",
+     "output"
+    ],
+    "edges": [
+     "execution-output"
+    ]
+   }
+  ]
+ }
+}

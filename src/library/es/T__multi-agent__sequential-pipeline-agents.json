@@ -1,0 +1,674 @@
+{
+ "cat": "multi-agent",
+ "slug": "sequential-pipeline-agents",
+ "name": "Sequential Pipeline Agents(SPA)",
+ "icon": "🔄",
+ "complexity": "medium",
+ "description": "Agentes especializados procesan tareas en un pipeline lineal donde la salida de cada agente se convierte en la entrada del siguiente",
+ "features": [
+  "Procesamiento de flujo de trabajo lineal",
+  "Roles de agente especializados",
+  "Encadenamiento de salida a entrada",
+  "Checkpoints de calidad",
+  "Optimización específica por etapa",
+  "Aislamiento de errores"
+ ],
+ "tldr": {
+  "what": "Divide el trabajo en etapas ordenadas donde cada agente especializado procesa la salida de la etapa anterior antes de pasar los resultados hacia adelante.",
+  "when": "Flujos de trabajo de varias etapas donde cada fase necesita una experiencia distinta y los resultados intermedios se benefician de una validación antes de continuar.",
+  "watchOut": "Los errores o la baja calidad en las primeras etapas se acumulan aguas abajo, desperdiciando el esfuerzo de los agentes posteriores en entradas defectuosas."
+ },
+ "overview": {
+  "pattern": "Agentes especializados procesan tareas de forma secuencial, donde la salida de cada agente alimenta la entrada del siguiente",
+  "why": "Permite la especialización por experiencia, puertas de control de calidad, optimización independiente y un aislamiento claro de errores por etapa",
+  "insight": "Pipeline lineal de agentes con checkpoints de validación: cada etapa se optimiza para capacidades específicas",
+  "impl": [
+   {
+    "t": "Diseñar etapas",
+    "d": "Define roles y capacidades de agentes especializados"
+   },
+   {
+    "t": "Definir interfaces",
+    "d": "Estandariza los esquemas de entrada/salida entre agentes"
+   },
+   {
+    "t": "Implementar el pipeline",
+    "d": "Encadena agentes con validación y manejo de errores"
+   },
+   {
+    "t": "Agregar checkpoints",
+    "d": "Puertas de calidad y mecanismos de respaldo"
+   },
+   {
+    "t": "Monitorear el flujo",
+    "d": "Haz seguimiento del rendimiento y los cuellos de botella por etapa"
+   }
+  ],
+  "example": "ResearchAgent → ContentAgent → EditorAgent → ReviewAgent → PublishAgent",
+  "dos": [
+   "Diseña agentes con responsabilidades únicas y especializadas",
+   "Usa formatos de datos estructurados entre agentes (JSON/esquemas)",
+   "Implementa checkpoints de calidad en cada transición de etapa",
+   "Agrega circuit breakers para las etapas que fallen",
+   "Registra trazas de ejecución detalladas para depuración",
+   "Guarda en cache los resultados intermedios de las etapas costosas"
+  ],
+  "donts": [
+   "Crear agentes monolíticos que manejen múltiples responsabilidades",
+   "Permitir que fluyan datos no estructurados entre etapas",
+   "Omitir la validación entre etapas del pipeline",
+   "Dejar que las fallas del pipeline se propaguen en cascada sin recuperación",
+   "Ignorar los cuellos de botella de rendimiento específicos de cada etapa"
+  ],
+  "use": [
+   "Flujos de trabajo de varios pasos con fases diferenciadas",
+   "Tareas que requieren experiencia especializada en cada etapa",
+   "Procesos críticos en calidad que necesitan puertas de validación",
+   "Flujos de trabajo donde las etapas se pueden optimizar de forma independiente",
+   "Transformaciones complejas con dependencias claras"
+  ],
+  "avoid": [
+   "Tareas simples de un solo paso",
+   "Flujos altamente interactivos o conversacionales",
+   "Sistemas en tiempo real que requieren baja latencia",
+   "Tareas que requieren ramificaciones dinámicas o bucles",
+   "Cuando las dependencias entre etapas no son claras"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito del pipeline",
+    "d": "Porcentaje de finalización de extremo a extremo"
+   },
+   {
+    "n": "Rendimiento por etapa",
+    "d": "Latencia y throughput por agente"
+   },
+   {
+    "n": "Puertas de calidad",
+    "d": "Tasa de éxito de la validación en los checkpoints"
+   },
+   {
+    "n": "Recuperación de errores",
+    "d": "Porcentaje de recuperación de etapas fallidas"
+   },
+   {
+    "n": "Utilización de recursos",
+    "d": "Costos de cómputo/API por etapa"
+   },
+   {
+    "n": "Análisis de cuellos de botella",
+    "d": "Identificación de la etapa más lenta"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Producción de contenido",
+    "d": "Investigación → Borrador → Edición → Revisión → Publicación (periodismo, marketing)"
+   },
+   {
+    "n": "Procesamiento de datos",
+    "d": "Extraer → Transformar → Validar → Enriquecer → Cargar (pipelines ETL)"
+   },
+   {
+    "n": "Revisión de código",
+    "d": "Parsear → Analizar → Probar → Revisar → Fusionar (desarrollo de software)"
+   },
+   {
+    "n": "Análisis de documentos",
+    "d": "OCR → Extraer → Clasificar → Resumir → Archivar (legal, finanzas)"
+   },
+   {
+    "n": "Análisis científico",
+    "d": "Recolección de datos → Procesamiento → Análisis → Validación → Reporte"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Sequential Pipeline Agents",
+  "description": "Cadena de procesamiento lineal donde agentes especializados manejan los datos de forma secuencial, cada uno agregando valor y transformando la entrada para la siguiente etapa del pipeline.",
+  "nodes": [
+   {
+    "id": "raw-input",
+    "label": "📥 Entrada sin procesar\n\"Datos de feedback de clientes\n10,000 reseñas\"",
+    "x": 50,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "stage1-header",
+    "label": "🔹 Etapa 1: Recolección de datos",
+    "x": 250,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "collector-agent",
+    "label": "📊 Agente recolector de datos\nReunir y normalizar datos",
+    "x": 250,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "stage1-output",
+    "label": "📦 Salida: datos estructurados\nFormato JSON, validado",
+    "x": 250,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "stage2-header",
+    "label": "🔹 Etapa 2: Preprocesamiento",
+    "x": 500,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "preprocessor-agent",
+    "label": "🔧 Agente preprocesador\nLimpiar y tokenizar texto",
+    "x": 500,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "stage2-output",
+    "label": "📦 Salida: tokens limpios\nNormalizados, deduplicados",
+    "x": 500,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "stage3-header",
+    "label": "🔹 Etapa 3: Análisis",
+    "x": 750,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "analyzer-agent",
+    "label": "🧠 Analizador de sentimiento\nExtraer sentimiento y temas",
+    "x": 750,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "stage3-output",
+    "label": "📦 Salida: sentimientos\nPuntuaciones, temas, entidades",
+    "x": 750,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "stage4-header",
+    "label": "🔹 Etapa 4: Categorización",
+    "x": 250,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "categorizer-agent",
+    "label": "🏷️ Agente categorizador\nClasificar por temas",
+    "x": 250,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "stage4-output",
+    "label": "📦 Salida: categorías\nGrupos etiquetados",
+    "x": 250,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "stage5-header",
+    "label": "🔹 Etapa 5: Insights",
+    "x": 500,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "insights-agent",
+    "label": "💡 Generador de insights\nExtraer hallazgos clave",
+    "x": 500,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "stage5-output",
+    "label": "📦 Salida: insights\nHallazgos accionables",
+    "x": 500,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "stage6-header",
+    "label": "🔹 Etapa 6: Reporte",
+    "x": 750,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "reporter-agent",
+    "label": "📄 Generador de reportes\nCrear el reporte final",
+    "x": 750,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "stage6-output",
+    "label": "📦 Salida: reporte\nResumen ejecutivo",
+    "x": 750,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "pipeline-controller",
+    "label": "🎛️ Controlador del pipeline\nOrquestar el flujo y monitorear",
+    "x": 100,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "queue-manager",
+    "label": "📋 Gestor de colas\nBúfer entre etapas",
+    "x": 350,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "validator",
+    "label": "✅ Validador de salida\nControles de calidad",
+    "x": 550,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "error-handler",
+    "label": "⚠️ Manejador de errores\nReintento y respaldo",
+    "x": 750,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "throughput-monitor",
+    "label": "📈 Monitor de throughput\n150 elementos/min",
+    "x": 200,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "latency-tracker",
+    "label": "⏱️ Rastreador de latencia\nDemoras por etapa",
+    "x": 400,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "bottleneck-detector",
+    "label": "🚧 Detector de cuellos de botella\nIdentificar etapas lentas",
+    "x": 600,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "final-output",
+    "label": "✨ Salida final\nReporte integral de insights de clientes",
+    "x": 400,
+    "y": 900,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-collector",
+    "s": "raw-input",
+    "t": "collector-agent",
+    "label": "Inicio"
+   },
+   {
+    "id": "collector-output1",
+    "s": "collector-agent",
+    "t": "stage1-output",
+    "label": ""
+   },
+   {
+    "id": "stage1-stage2",
+    "s": "stage1-output",
+    "t": "preprocessor-agent",
+    "label": "Alimentar"
+   },
+   {
+    "id": "preprocessor-output2",
+    "s": "preprocessor-agent",
+    "t": "stage2-output",
+    "label": ""
+   },
+   {
+    "id": "stage2-stage3",
+    "s": "stage2-output",
+    "t": "analyzer-agent",
+    "label": "Alimentar"
+   },
+   {
+    "id": "analyzer-output3",
+    "s": "analyzer-agent",
+    "t": "stage3-output",
+    "label": ""
+   },
+   {
+    "id": "stage3-stage4",
+    "s": "stage3-output",
+    "t": "categorizer-agent",
+    "label": "Alimentar"
+   },
+   {
+    "id": "categorizer-output4",
+    "s": "categorizer-agent",
+    "t": "stage4-output",
+    "label": ""
+   },
+   {
+    "id": "stage4-stage5",
+    "s": "stage4-output",
+    "t": "insights-agent",
+    "label": "Alimentar"
+   },
+   {
+    "id": "insights-output5",
+    "s": "insights-agent",
+    "t": "stage5-output",
+    "label": ""
+   },
+   {
+    "id": "stage5-stage6",
+    "s": "stage5-output",
+    "t": "reporter-agent",
+    "label": "Alimentar"
+   },
+   {
+    "id": "reporter-output6",
+    "s": "reporter-agent",
+    "t": "stage6-output",
+    "label": ""
+   },
+   {
+    "id": "stage6-final",
+    "s": "stage6-output",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "controller-collector",
+    "s": "pipeline-controller",
+    "t": "collector-agent",
+    "label": "Controlar"
+   },
+   {
+    "id": "controller-preprocessor",
+    "s": "pipeline-controller",
+    "t": "preprocessor-agent",
+    "label": ""
+   },
+   {
+    "id": "controller-analyzer",
+    "s": "pipeline-controller",
+    "t": "analyzer-agent",
+    "label": ""
+   },
+   {
+    "id": "controller-categorizer",
+    "s": "pipeline-controller",
+    "t": "categorizer-agent",
+    "label": ""
+   },
+   {
+    "id": "controller-insights",
+    "s": "pipeline-controller",
+    "t": "insights-agent",
+    "label": ""
+   },
+   {
+    "id": "controller-reporter",
+    "s": "pipeline-controller",
+    "t": "reporter-agent",
+    "label": ""
+   },
+   {
+    "id": "queue-stage1",
+    "s": "queue-manager",
+    "t": "stage1-output",
+    "label": "Búfer"
+   },
+   {
+    "id": "queue-stage2",
+    "s": "queue-manager",
+    "t": "stage2-output",
+    "label": ""
+   },
+   {
+    "id": "queue-stage3",
+    "s": "queue-manager",
+    "t": "stage3-output",
+    "label": ""
+   },
+   {
+    "id": "validator-stage1",
+    "s": "validator",
+    "t": "stage1-output",
+    "label": "Verificar"
+   },
+   {
+    "id": "validator-stage3",
+    "s": "validator",
+    "t": "stage3-output",
+    "label": ""
+   },
+   {
+    "id": "validator-stage6",
+    "s": "validator",
+    "t": "stage6-output",
+    "label": ""
+   },
+   {
+    "id": "error-preprocessor",
+    "s": "error-handler",
+    "t": "preprocessor-agent",
+    "label": "Reintentar"
+   },
+   {
+    "id": "error-analyzer",
+    "s": "error-handler",
+    "t": "analyzer-agent",
+    "label": ""
+   },
+   {
+    "id": "collector-throughput",
+    "s": "collector-agent",
+    "t": "throughput-monitor",
+    "label": ""
+   },
+   {
+    "id": "preprocessor-latency",
+    "s": "preprocessor-agent",
+    "t": "latency-tracker",
+    "label": ""
+   },
+   {
+    "id": "analyzer-bottleneck",
+    "s": "analyzer-agent",
+    "t": "bottleneck-detector",
+    "label": ""
+   },
+   {
+    "id": "bottleneck-controller",
+    "s": "bottleneck-detector",
+    "t": "pipeline-controller",
+    "label": "Alertar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Inicialización del pipeline",
+    "description": "Configura el controlador del pipeline y los sistemas de monitoreo",
+    "input": "",
+    "nodes": [
+     "pipeline-controller",
+     "queue-manager",
+     "validator",
+     "error-handler"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Etapa 1: Recolección de datos",
+    "description": "La entrada sin procesar ingresa al pipeline y el agente recolector la procesa",
+    "input": "",
+    "nodes": [
+     "raw-input",
+     "collector-agent",
+     "stage1-output"
+    ],
+    "edges": [
+     "input-collector",
+     "collector-output1",
+     "controller-collector"
+    ]
+   },
+   {
+    "title": "Traspaso de la etapa 1→2",
+    "description": "La salida de la etapa 1 se convierte en la entrada de la etapa 2",
+    "input": "",
+    "nodes": [
+     "stage1-output",
+     "preprocessor-agent"
+    ],
+    "edges": [
+     "stage1-stage2",
+     "queue-stage1"
+    ]
+   },
+   {
+    "title": "Etapa 2: Preprocesamiento",
+    "description": "El agente preprocesador limpia y tokeniza los datos",
+    "input": "",
+    "nodes": [
+     "preprocessor-agent",
+     "stage2-output"
+    ],
+    "edges": [
+     "preprocessor-output2",
+     "controller-preprocessor"
+    ]
+   },
+   {
+    "title": "Traspaso de la etapa 2→3",
+    "description": "Los datos preprocesados alimentan al analizador",
+    "input": "",
+    "nodes": [
+     "stage2-output",
+     "analyzer-agent"
+    ],
+    "edges": [
+     "stage2-stage3",
+     "queue-stage2"
+    ]
+   },
+   {
+    "title": "Etapa 3: Análisis",
+    "description": "El analizador de sentimiento procesa los tokens",
+    "input": "",
+    "nodes": [
+     "analyzer-agent",
+     "stage3-output"
+    ],
+    "edges": [
+     "analyzer-output3",
+     "controller-analyzer",
+     "validator-stage3"
+    ]
+   },
+   {
+    "title": "Traspaso de la etapa 3→4",
+    "description": "Los resultados del análisis fluyen hacia el categorizador",
+    "input": "",
+    "nodes": [
+     "stage3-output",
+     "categorizer-agent"
+    ],
+    "edges": [
+     "stage3-stage4",
+     "queue-stage3"
+    ]
+   },
+   {
+    "title": "Etapa 4: Categorización",
+    "description": "El agente categorizador clasifica por temas",
+    "input": "",
+    "nodes": [
+     "categorizer-agent",
+     "stage4-output"
+    ],
+    "edges": [
+     "categorizer-output4",
+     "controller-categorizer"
+    ]
+   },
+   {
+    "title": "Etapa 5: Generación de insights",
+    "description": "Extrae los hallazgos clave de los datos categorizados",
+    "input": "",
+    "nodes": [
+     "insights-agent",
+     "stage5-output"
+    ],
+    "edges": [
+     "stage4-stage5",
+     "insights-output5",
+     "controller-insights"
+    ]
+   },
+   {
+    "title": "Etapa 6: Generación del reporte",
+    "description": "Crea el reporte final integral",
+    "input": "",
+    "nodes": [
+     "reporter-agent",
+     "stage6-output"
+    ],
+    "edges": [
+     "stage5-stage6",
+     "reporter-output6",
+     "controller-reporter",
+     "validator-stage6"
+    ]
+   },
+   {
+    "title": "Monitoreo del rendimiento",
+    "description": "Haz seguimiento del throughput, la latencia y los cuellos de botella",
+    "input": "",
+    "nodes": [
+     "throughput-monitor",
+     "latency-tracker",
+     "bottleneck-detector"
+    ],
+    "edges": [
+     "collector-throughput",
+     "preprocessor-latency",
+     "analyzer-bottleneck",
+     "bottleneck-controller"
+    ]
+   },
+   {
+    "title": "Salida final",
+    "description": "Entrega los resultados procesados a través del pipeline completo",
+    "input": "",
+    "nodes": [
+     "stage6-output",
+     "final-output"
+    ],
+    "edges": [
+     "stage6-final"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,336 @@
+{
+ "cat": "security-privacy",
+ "slug": "secure-multi-party-computation",
+ "name": "Secure Multi-Party Computation(SMPC)",
+ "icon": "🔐",
+ "complexity": "high",
+ "description": "Colaboración que preserva la privacidad entre varios agentes sin revelar datos privados",
+ "features": [
+  "Esquemas de compartición de secretos",
+  "Cifrado homomórfico",
+  "Circuitos garbled",
+  "Protocolos que preservan la privacidad",
+  "Garantías de privacidad entre múltiples partes",
+  "Cómputo verificable"
+ ],
+ "tldr": {
+  "what": "Varios agentes calculan resultados sobre datos cifrados sin que ninguna parte vea las entradas de las demás, usando compartición de secretos y cifrado homomórfico.",
+  "when": "Organizaciones competidoras necesitan colaborar en análisis (detección de fraude, evaluación de riesgos) manteniendo los datos sensibles completamente privados.",
+  "watchOut": "El costo criptográfico lo vuelve extremadamente lento; solo es viable para cálculos de baja frecuencia y alto riesgo, no para sistemas en tiempo real."
+ },
+ "overview": {
+  "pattern": "Colaboración que preserva la privacidad entre varios agentes sin revelar datos privados, mediante protocolos criptográficos",
+  "why": "Permite la colaboración segura con datos, mantiene las ventajas competitivas, garantiza el cumplimiento normativo y genera confianza",
+  "insight": "Compartición de secretos + cómputo homomórfico + pruebas criptográficas → análisis seguro entre múltiples partes",
+  "impl": [
+   {
+    "t": "Compartición de secretos",
+    "d": "Distribuye los datos entre varias partes"
+   },
+   {
+    "t": "Configuración del protocolo",
+    "d": "Establece los protocolos criptográficos"
+   },
+   {
+    "t": "Cómputo privado",
+    "d": "Ejecuta operaciones sobre datos cifrados"
+   },
+   {
+    "t": "Agregación de resultados",
+    "d": "Combina los resultados parciales de forma segura"
+   },
+   {
+    "t": "Verificación",
+    "d": "Prueba criptográfica de corrección"
+   }
+  ],
+  "example": "secret_sharing → protocol_setup → private_computation → result_aggregation → verification",
+  "dos": [
+   "Usa protocolos criptográficos probados (Shamir, BGW, GMW)",
+   "Implementa canales seguros para todas las comunicaciones entre partes",
+   "Verifica la integridad del cómputo con pruebas criptográficas",
+   "Planifica mecanismos ante el abandono de partes y para la recuperación",
+   "Usa esquemas de umbral para evitar puntos únicos de falla"
+  ],
+  "donts": [
+   "Confiar en que las partes sigan los protocolos sin verificarlo",
+   "Ignorar el impacto en el rendimiento del costo criptográfico",
+   "Usar generación de números aleatorios insegura para los secretos",
+   "Omitir el análisis de seguridad en modificaciones personalizadas del protocolo",
+   "Suponer que todas las partes tienen los mismos recursos computacionales"
+  ],
+  "use": [
+   "Análisis de datos entre varias organizaciones",
+   "Compartición de inteligencia competitiva",
+   "Aprendizaje federado que preserva la privacidad",
+   "Requisitos de cumplimiento normativo"
+  ],
+  "avoid": [
+   "Procesamiento de datos de una sola parte",
+   "Cálculos sobre datos públicos",
+   "Requisitos de tiempo real y baja latencia",
+   "Tareas de agregación simples"
+  ],
+  "metrics": [
+   {
+    "n": "Preservación de la privacidad",
+    "d": "Garantía de cero fuga de datos"
+   },
+   {
+    "n": "Precisión del cómputo",
+    "d": "Corrección de los resultados frente al texto plano"
+   },
+   {
+    "n": "Eficiencia del protocolo",
+    "d": "Rondas de comunicación y ancho de banda"
+   },
+   {
+    "n": "Escalabilidad",
+    "d": "Rendimiento a medida que aumentan las partes"
+   },
+   {
+    "n": "Pruebas de seguridad",
+    "d": "Garantías de seguridad criptográfica"
+   },
+   {
+    "n": "Tolerancia a fallas",
+    "d": "Resiliencia ante fallas de las partes"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Consorcio bancario",
+    "d": "Detección conjunta de fraude sin compartir datos de clientes"
+   },
+   {
+    "n": "Investigación en salud",
+    "d": "Estudios entre varios hospitales que preservan la privacidad de los pacientes"
+   },
+   {
+    "n": "Cadena de suministro",
+    "d": "Analítica colaborativa sin revelar secretos comerciales"
+   },
+   {
+    "n": "Tecnología publicitaria",
+    "d": "Medición y atribución de audiencias que preservan la privacidad"
+   },
+   {
+    "n": "Gobierno",
+    "d": "Compartición de inteligencia entre agencias con protección de la información clasificada"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de cómputo seguro entre múltiples partes",
+  "description": "Permite que varias partes calculen conjuntamente funciones sobre sus entradas privadas sin revelarse esas entradas entre sí, mediante protocolos criptográficos",
+  "nodes": [
+   {
+    "id": "fraud-detection-need",
+    "label": "🏦 Detección de fraude entre varios bancos\n\"3 bancos competidores quieren detectar\npatrones de fraude entre bancos sin\ncompartir datos sensibles de clientes\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "privacy-challenge",
+    "label": "🔒 Desafío de privacidad\n\"Los bancos no pueden compartir datos en bruto:\n• Leyes de privacidad de clientes\n• Ventaja competitiva\n• Cumplimiento normativo\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "traditional-sharing",
+    "label": "❌ Compartición de datos tradicional\n\"Los bancos comparten todos los datos de transacciones\ncon un sistema central de detección de fraude\n(viola la privacidad)\"",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "privacy-violations",
+    "label": "🚨 Violaciones de privacidad\n\"Datos de clientes expuestos\nInteligencia competitiva filtrada\nInfracciones normativas\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "legal-consequences",
+    "label": "⚖️ Consecuencias legales\n\"Multas por GDPR\nDemandas de clientes\nPérdida de posición competitiva\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "smpc-protocol",
+    "label": "🛡️ Cómputo seguro entre múltiples partes\n\"Protocolo criptográfico:\n• Compartición de secretos\n• Cifrado homomórfico\n• Pruebas de conocimiento cero\"",
+    "x": 650,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "encrypted-computation",
+    "label": "🔐 Cómputo conjunto cifrado\n\"Los bancos calculan patrones de fraude\nsobre fragmentos de datos cifrados\nsin ver las entradas en bruto\"",
+    "x": 650,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "fraud-insights",
+    "label": "🎯 Hallazgos de fraude revelados\n\"Patrones de fraude entre bancos detectados:\n• Redes de toma de control de cuentas\n• Redes de lavado de dinero\n• Fraude de identidad sintética\"",
+    "x": 650,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "privacy-preserved",
+    "label": "✅ Privacidad preservada\n\"Los datos de cada cliente\npermanecen completamente privados\nCumplimiento mantenido\"",
+    "x": 650,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "smpc-principle",
+    "label": "🎯 Principio SMPC\n\"Calcula sobre secretos sin revelarlos\nColaboración sin concesiones\nInteligencia conjunta que preserva la privacidad\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "fraud-detection-need",
+    "t": "privacy-challenge",
+    "label": "entra en conflicto con la privacidad"
+   },
+   {
+    "id": "e2",
+    "s": "privacy-challenge",
+    "t": "traditional-sharing",
+    "label": "enfoque tradicional"
+   },
+   {
+    "id": "e3",
+    "s": "privacy-challenge",
+    "t": "smpc-protocol",
+    "label": "enfoque SMPC"
+   },
+   {
+    "id": "e4",
+    "s": "traditional-sharing",
+    "t": "privacy-violations",
+    "label": "provoca violaciones"
+   },
+   {
+    "id": "e5",
+    "s": "privacy-violations",
+    "t": "legal-consequences",
+    "label": "genera sanciones"
+   },
+   {
+    "id": "e6",
+    "s": "smpc-protocol",
+    "t": "encrypted-computation",
+    "label": "habilita el cómputo seguro"
+   },
+   {
+    "id": "e7",
+    "s": "encrypted-computation",
+    "t": "fraud-insights",
+    "label": "produce resultados conjuntos"
+   },
+   {
+    "id": "e8",
+    "s": "fraud-insights",
+    "t": "privacy-preserved",
+    "label": "mantiene la privacidad"
+   },
+   {
+    "id": "e9",
+    "s": "legal-consequences",
+    "t": "smpc-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e10",
+    "s": "privacy-preserved",
+    "t": "smpc-principle",
+    "label": "demuestra la capacidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de detección de fraude entre varios bancos",
+    "description": "Tres bancos competidores necesitan detectar patrones de fraude entre bancos, pero no pueden compartir datos sensibles de clientes debido a las leyes de privacidad y a preocupaciones competitivas.",
+    "input": "",
+    "nodes": [
+     "fraud-detection-need"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Conflicto entre privacidad y colaboración",
+    "description": "La detección de fraude esencial requiere compartir datos, pero las leyes de privacidad de los clientes, la ventaja competitiva y el cumplimiento normativo impiden los enfoques tradicionales de compartición de datos.",
+    "input": "",
+    "nodes": [
+     "privacy-challenge"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques: compartición tradicional vs. SMPC",
+    "description": "El problema se aborda con la centralización tradicional de datos (izquierda), que viola la privacidad, frente al cómputo seguro entre múltiples partes (derecha), que usa protocolos criptográficos.",
+    "input": "",
+    "nodes": [
+     "traditional-sharing",
+     "smpc-protocol"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Enfoque tradicional: violaciones de privacidad y riesgo legal",
+    "description": "La compartición centralizada de datos expone información de clientes, filtra inteligencia competitiva e infringe normativas, lo que deriva en multas por GDPR y demandas.",
+    "input": "",
+    "nodes": [
+     "privacy-violations",
+     "legal-consequences"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "SMPC: cómputo conjunto cifrado",
+    "description": "Los protocolos criptográficos (compartición de secretos, cifrado homomórfico, pruebas de conocimiento cero) permiten a los bancos calcular patrones de fraude sobre fragmentos de datos cifrados.",
+    "input": "",
+    "nodes": [
+     "encrypted-computation"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Inteligencia que preserva la privacidad y principio central",
+    "description": "SMPC revela patrones de fraude entre bancos (redes de toma de control de cuentas, lavado de dinero) preservando la privacidad de cada cliente, lo que demuestra el principio de 'calcular sobre secretos sin revelarlos'.",
+    "input": "",
+    "nodes": [
+     "fraud-insights",
+     "privacy-preserved",
+     "smpc-principle"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   }
+  ]
+ }
+}

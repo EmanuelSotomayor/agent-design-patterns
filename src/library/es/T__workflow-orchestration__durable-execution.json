@@ -1,0 +1,306 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "durable-execution",
+ "name": "Durable Execution & Checkpointing(DE)",
+ "icon": "💾",
+ "complexity": "high",
+ "description": "Persiste el estado del workflow y del agente en cada paso para que las ejecuciones largas puedan reanudarse tras una caída desde el último checkpoint, repetirse de forma determinista sin rehacer el trabajo completado, pausarse y reanudarse para recibir intervención humana, y viajar en el tiempo bifurcándose desde un checkpoint anterior. Los motores de grafos respaldados por checkpointers, como LangGraph, y los motores durables al estilo de Temporal ofrecen la base para agentes confiables, de larga duración y con humano en el bucle.",
+ "features": [
+  "Checkpoint del estado después de cada paso",
+  "La recuperación ante caídas reanuda desde el último checkpoint",
+  "La repetición determinista omite los pasos completados",
+  "Interrupción y reanudación para humano en el bucle",
+  "Viaje en el tiempo: bifurca ejecuciones alternativas desde cualquier checkpoint",
+  "Temporizadores durables para esperas largas y reintentos"
+ ],
+ "tldr": {
+  "what": "Persiste el estado del workflow después de cada paso para que las caídas se reanuden desde el último checkpoint, las repeticiones omitan el trabajo completado y las ejecuciones se bifurquen desde puntos anteriores.",
+  "when": "Trabajo largo de varios pasos en el que las caídas son costosas, se necesita aprobación humana a mitad del flujo o hay que reintentar sin rehacer los pasos terminados.",
+  "watchOut": "El almacenamiento de checkpoints y la sobrecarga de serialización pueden dominar el tiempo de ejecución; los pasos no deterministas (aleatoriedad, llamadas externas) rompen las garantías de repetición."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Ejecución durable y checkpointing",
+  "description": "Un agente de larga duración persiste su estado en cada paso para poder reanudarse tras una caída desde el último checkpoint, repetirse de forma determinista sin rehacer el trabajo completado, pausarse y reanudarse para recibir intervención humana, y viajar en el tiempo bifurcándose desde un checkpoint anterior. Es la base detrás de los checkpointers de LangGraph y de los motores durables al estilo de Temporal.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Ejecución\nAgente de 40 pasos que compila un reporte de mercado",
+    "x": 300,
+    "y": 30,
+    "w": 340
+   },
+   {
+    "id": "engine",
+    "label": "⚙️ Motor de workflows durable\nEstilo LangGraph / Temporal",
+    "x": 320,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "checkpointer",
+    "label": "🗄️ Checkpointer / almacén de estado\nSQLite / Postgres, una escritura por paso",
+    "x": 660,
+    "y": 150,
+    "w": 230
+   },
+   {
+    "id": "steps",
+    "label": "🔢 Pasos 1-22 ejecutados\nestado guardado después de cada paso",
+    "x": 30,
+    "y": 290,
+    "w": 220
+   },
+   {
+    "id": "ckpt22",
+    "label": "💾 Checkpoint 22\n{ sources: 18, draft: 60% }",
+    "x": 300,
+    "y": 290,
+    "w": 210
+   },
+   {
+    "id": "crash",
+    "label": "💥 CAÍDA en el paso 23\nTimeout de la API del LLM, el proceso muere",
+    "x": 560,
+    "y": 290,
+    "w": 220
+   },
+   {
+    "id": "replay",
+    "label": "⏩ Repetición determinista\npasos completados omitidos\nsin volver a facturar ni rehacer trabajo",
+    "x": 30,
+    "y": 420,
+    "w": 230
+   },
+   {
+    "id": "resume",
+    "label": "♻️ Reanudar desde el checkpoint 22\ncontinuar los pasos 23-40",
+    "x": 300,
+    "y": 420,
+    "w": 250
+   },
+   {
+    "id": "interrupt",
+    "label": "⏸️ Interrupción humana @ paso 31\naprobar / editar el estado",
+    "x": 600,
+    "y": 420,
+    "w": 230
+   },
+   {
+    "id": "state-edit",
+    "label": "✏️ Estado editado\npresupuesto 5M -> 8M, luego reanudar",
+    "x": 600,
+    "y": 540,
+    "w": 230
+   },
+   {
+    "id": "fork",
+    "label": "🌱 Bifurcación por viaje en el tiempo\nrama desde el checkpoint 18\nsupuesto alternativo",
+    "x": 30,
+    "y": 545,
+    "w": 240
+   },
+   {
+    "id": "output",
+    "label": "✨ Reporte completado\n40/40 pasos, rama principal + bifurcada archivadas",
+    "x": 300,
+    "y": 680,
+    "w": 340
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-engine",
+    "s": "task",
+    "t": "engine",
+    "label": ""
+   },
+   {
+    "id": "engine-ckpt",
+    "s": "engine",
+    "t": "checkpointer",
+    "label": "persistir cada paso"
+   },
+   {
+    "id": "engine-steps",
+    "s": "engine",
+    "t": "steps",
+    "label": "ejecutar 1-22"
+   },
+   {
+    "id": "steps-ckpt22",
+    "s": "steps",
+    "t": "ckpt22",
+    "label": "guardar"
+   },
+   {
+    "id": "ckpt22-crash",
+    "s": "ckpt22",
+    "t": "crash",
+    "label": "paso 23"
+   },
+   {
+    "id": "crash-resume",
+    "s": "crash",
+    "t": "resume",
+    "label": "recuperar"
+   },
+   {
+    "id": "ckpt-resume",
+    "s": "checkpointer",
+    "t": "resume",
+    "label": "cargar ckpt 22"
+   },
+   {
+    "id": "resume-replay",
+    "s": "resume",
+    "t": "replay",
+    "label": "repetir"
+   },
+   {
+    "id": "resume-engine",
+    "s": "resume",
+    "t": "engine",
+    "label": "continuar 23-40"
+   },
+   {
+    "id": "engine-interrupt",
+    "s": "engine",
+    "t": "interrupt",
+    "label": "pausa @ 31"
+   },
+   {
+    "id": "interrupt-edit",
+    "s": "interrupt",
+    "t": "state-edit",
+    "label": ""
+   },
+   {
+    "id": "edit-ckpt",
+    "s": "state-edit",
+    "t": "checkpointer",
+    "label": "nuevo checkpoint"
+   },
+   {
+    "id": "ckpt-fork",
+    "s": "checkpointer",
+    "t": "fork",
+    "label": "bifurcar @ ckpt 18"
+   },
+   {
+    "id": "fork-engine",
+    "s": "fork",
+    "t": "engine",
+    "label": "rama B"
+   },
+   {
+    "id": "engine-output",
+    "s": "engine",
+    "t": "output",
+    "label": "listo"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Persistir cada paso",
+    "description": "Comienza la ejecución. El motor durable ejecuta cada paso y escribe el estado resultante en el checkpointer, así que ningún progreso vive solo en memoria.",
+    "input": "",
+    "nodes": [
+     "task",
+     "engine",
+     "checkpointer"
+    ],
+    "edges": [
+     "task-engine",
+     "engine-ckpt"
+    ]
+   },
+   {
+    "title": "Checkpoint 22 escrito",
+    "description": "Los pasos 1-22 se completan. El último checkpoint durable registra { sources: 18, draft: 60% }.",
+    "input": "",
+    "nodes": [
+     "engine",
+     "steps",
+     "ckpt22"
+    ],
+    "edges": [
+     "engine-steps",
+     "steps-ckpt22"
+    ]
+   },
+   {
+    "title": "Caída en el paso 23",
+    "description": "El paso 23 falla por un timeout de la API del LLM y el proceso en vivo muere. Sin durabilidad, toda la ejecución se reiniciaría desde cero.",
+    "input": "",
+    "nodes": [
+     "ckpt22",
+     "crash"
+    ],
+    "edges": [
+     "ckpt22-crash"
+    ]
+   },
+   {
+    "title": "Reanudación tras la caída + repetición",
+    "description": "El motor recarga el checkpoint 22 desde el almacén y repite de forma determinista, omitiendo los pasos 1-22 (sin volver a facturar ni rehacer trabajo), y luego continúa con los pasos 23-40.",
+    "input": "",
+    "nodes": [
+     "crash",
+     "resume",
+     "replay",
+     "checkpointer",
+     "engine"
+    ],
+    "edges": [
+     "crash-resume",
+     "ckpt-resume",
+     "resume-replay",
+     "resume-engine"
+    ]
+   },
+   {
+    "title": "Interrupción humana",
+    "description": "En el paso 31, una interrupción pausa la ejecución para su revisión. Una persona edita el estado (presupuesto 5M -> 8M); la edición se guarda como un nuevo checkpoint y la ejecución se reanuda.",
+    "input": "",
+    "nodes": [
+     "engine",
+     "interrupt",
+     "state-edit",
+     "checkpointer"
+    ],
+    "edges": [
+     "engine-interrupt",
+     "interrupt-edit",
+     "edit-ckpt"
+    ]
+   },
+   {
+    "title": "Bifurcación por viaje en el tiempo",
+    "description": "Por separado, se bifurca una rama alternativa desde el checkpoint 18 para probar un supuesto distinto sin alterar la ejecución principal.",
+    "input": "",
+    "nodes": [
+     "checkpointer",
+     "fork",
+     "engine"
+    ],
+    "edges": [
+     "ckpt-fork",
+     "fork-engine"
+    ]
+   },
+   {
+    "title": "Finalización",
+    "description": "La ejecución termina con 40/40 pasos. Tanto la ejecución principal como la rama bifurcada se archivan como historiales que se pueden repetir.",
+    "input": "",
+    "nodes": [
+     "engine",
+     "output"
+    ],
+    "edges": [
+     "engine-output"
+    ]
+   }
+  ]
+ }
+}

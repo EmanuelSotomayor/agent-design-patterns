@@ -1,0 +1,401 @@
+{
+ "cat": "context-management",
+ "slug": "context-lifecycle-management",
+ "name": "Context Lifecycle Management(CLM)",
+ "icon": "📋",
+ "complexity": "high",
+ "description": "Versionado de contexto, registros de auditoría, archivado y gestión de cumplimiento de nivel empresarial para sistemas en producción",
+ "features": [
+  "Mecanismos de versionado y rollback del contexto",
+  "Registros de auditoría del contexto y seguimiento del cumplimiento",
+  "Archivado del contexto y políticas de retención",
+  "Gobernanza del contexto y control de acceso"
+ ],
+ "tldr": {
+  "what": "Registra las versiones, los cambios y los accesos al contexto con logs de auditoría, capacidad de rollback e informes de cumplimiento para entornos regulados.",
+  "when": "Sistemas en producción que requieren cumplimiento normativo, colaboración entre varios equipos o recuperación ante corrupción o deriva del contexto.",
+  "watchOut": "La sobrecarga de la infraestructura de versionado y auditoría puede ralentizar las actualizaciones del contexto y complicar la depuración en entornos no regulados."
+ },
+ "overview": {
+  "pattern": "Versionado de contexto, registros de auditoría, archivado y gestión de cumplimiento de nivel empresarial para sistemas en producción",
+  "why": "Garantiza el cumplimiento normativo, la gobernanza de datos y una gestión confiable del contexto en entornos empresariales",
+  "insight": "La gestión sistemática del ciclo de vida permite el cumplimiento, la rendición de cuentas y un seguimiento confiable de la evolución del contexto",
+  "impl": [
+   {
+    "t": "Control de versiones",
+    "d": "Implementa versionado semántico para los cambios de contexto"
+   },
+   {
+    "t": "Registro de auditoría",
+    "d": "Registra todas las modificaciones del contexto con atribución de usuario"
+   },
+   {
+    "t": "Gobernanza",
+    "d": "Define controles de acceso y flujos de aprobación"
+   },
+   {
+    "t": "Retención",
+    "d": "Establece políticas de archivado y requisitos de cumplimiento"
+   },
+   {
+    "t": "Recuperación",
+    "d": "Habilita mecanismos de rollback y recuperación ante desastres"
+   }
+  ],
+  "example": "create_context → version_track → audit_log → govern_access → archive_retain → recover_rollback",
+  "dos": [
+   "Implementa un control de versiones integral con versionado semántico",
+   "Mantén registros de auditoría completos para el cumplimiento",
+   "Define políticas de retención claras según las necesidades del negocio",
+   "Usa control de acceso basado en roles para la gobernanza del contexto",
+   "Automatiza los informes y el monitoreo de cumplimiento"
+  ],
+  "donts": [
+   "Omitir el control de versiones para cambios \"menores\" del contexto",
+   "Almacenar datos sensibles sin el cifrado adecuado",
+   "Ignorar las regulaciones de retención de datos (GDPR, CCPA)",
+   "Permitir almacenamiento ilimitado de contexto sin archivado",
+   "Implementar cambios sin flujos de aprobación"
+  ],
+  "use": [
+   "Sistemas empresariales en producción",
+   "Requisitos de cumplimiento en industrias reguladas",
+   "Colaboración multiusuario sobre el contexto",
+   "Necesidades de preservación del contexto a largo plazo"
+  ],
+  "avoid": [
+   "Prototipos simples o sistemas de desarrollo",
+   "Aplicaciones personales de un solo usuario",
+   "Contextos temporales o desechables",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Cobertura de auditoría",
+    "d": "% de cambios de contexto registrados"
+   },
+   {
+    "n": "Puntaje de cumplimiento",
+    "d": "% de requisitos regulatorios cumplidos"
+   },
+   {
+    "n": "Integridad de versiones",
+    "d": "% de rollbacks de versión exitosos"
+   },
+   {
+    "n": "Precisión del control de acceso",
+    "d": "% de accesos no autorizados evitados"
+   },
+   {
+    "n": "Cumplimiento de retención",
+    "d": "% de políticas aplicadas automáticamente"
+   },
+   {
+    "n": "Tiempo de recuperación",
+    "d": "Tiempo promedio para restaurar el contexto"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Servicios financieros",
+    "d": "audit_trails → compliance_reporting → risk_management → regulatory_approval"
+   },
+   {
+    "n": "Sistemas de salud",
+    "d": "patient_context → HIPAA_compliance → audit_logs → data_retention"
+   },
+   {
+    "n": "Gestión de documentos legales",
+    "d": "version_control → approval_workflows → retention_policies → discovery_support"
+   },
+   {
+    "n": "Gobernanza de IA empresarial",
+    "d": "context_versioning → change_approval → compliance_monitoring → audit_reporting"
+   },
+   {
+    "n": "Gestión de datos de investigación",
+    "d": "data_lineage → version_tracking → collaboration_governance → long_term_preservation"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de gestión del ciclo de vida del contexto",
+  "description": "Framework integral para gestionar el contexto del LLM a través de las fases de inicialización, evolución, persistencia, poda y expiración, asegurando un uso óptimo de la memoria y la coherencia de la conversación",
+  "nodes": [
+   {
+    "id": "context-management-challenge",
+    "label": "🔄 Desafío de gestión del contexto\n\"¿Cómo gestionar el estado del contexto del LLM\nentre sesiones mientras se manejan\nlos límites de memoria y los costos?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "context-lifecycle-framework",
+    "label": "⚙️ Framework del ciclo de vida del contexto\n\"Gestión completa del ciclo de vida:\n• 6 fases del ciclo de vida\n• Optimización de memoria\n• Persistencia del estado\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "initialization-phase",
+    "label": "🚀 Fase 1: Inicialización\n\"Configuración del contexto:\n• Creación de la sesión\n• Negociación de capacidades\n• Asignación de memoria\"",
+    "x": 200,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "static-context",
+    "label": "📌 Contexto estático\n\"Datos inmutables:\n• Metadatos del usuario\n• Prompts del sistema\n• Configuraciones de herramientas\"",
+    "x": 50,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "evolution-phase",
+    "label": "📈 Fase 2: Evolución\n\"Operación activa:\n• Acumulación de mensajes\n• Expansión del contexto\n• Actualizaciones del estado\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "dynamic-context",
+    "label": "🔄 Contexto dinámico\n\"Estado mutable:\n• Historial de la conversación\n• Variables de sesión\n• Documentos recuperados\"",
+    "x": 750,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "persistence-phase",
+    "label": "💾 Fase 3: Persistencia\n\"Gestión del estado:\n• Memoria de corto plazo\n• Almacenamiento de largo plazo\n• Datos entre sesiones\"",
+    "x": 200,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "memory-types",
+    "label": "🧠 Tipos de memoria\n\"Patrones de almacenamiento:\n• Checkpoints por hilo\n• LangGraph store\n• Bases de datos externas\"",
+    "x": 200,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "pruning-phase",
+    "label": "✂️ Fase 4: Poda\n\"Optimización del contexto:\n• Ventana deslizante\n• Resumen\n• Filtrado por relevancia\"",
+    "x": 600,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "pruning-strategies",
+    "label": "🎯 Estrategias de poda\n\"Métodos de optimización:\n• Eliminación FIFO/LIFO\n• Puntuación de importancia\n• Compresión semántica\"",
+    "x": 600,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "refresh-phase",
+    "label": "🔃 Fase 5: Actualización\n\"Renovación del contexto:\n• Invalidación de cache\n• Actualizaciones de datos\n• Gestión de TTL\"",
+    "x": 400,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "expiration-phase",
+    "label": "⏰ Fase 6: Expiración\n\"Cierre del ciclo de vida:\n• Terminación de la sesión\n• Limpieza de memoria\n• Archivado del estado\"",
+    "x": 400,
+    "y": 1100,
+    "w": 220
+   },
+   {
+    "id": "optimization-benefits",
+    "label": "📊 Resultados de la optimización\n\"Qué medir:\n• Tiempo de respuesta frente a la ruta sin cache\n• Carga de base de datos evitada\n• Optimización del costo en tokens\"",
+    "x": 200,
+    "y": 1250,
+    "w": 230
+   },
+   {
+    "id": "lifecycle-principle",
+    "label": "🎯 Principio del ciclo de vida del contexto\n\"Los LLM sin estado requieren una gestión con estado\nLas fases adecuadas del ciclo de vida aseguran conversaciones coherentes\nUn contexto optimizado permite aplicaciones de IA escalables\"",
+    "x": 600,
+    "y": 1250,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "context-management-challenge",
+    "t": "context-lifecycle-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "context-lifecycle-framework",
+    "t": "initialization-phase",
+    "label": "Fase 1"
+   },
+   {
+    "id": "e3",
+    "s": "context-lifecycle-framework",
+    "t": "evolution-phase",
+    "label": "Fase 2"
+   },
+   {
+    "id": "e4",
+    "s": "initialization-phase",
+    "t": "static-context",
+    "label": "establece"
+   },
+   {
+    "id": "e5",
+    "s": "evolution-phase",
+    "t": "dynamic-context",
+    "label": "gestiona"
+   },
+   {
+    "id": "e6",
+    "s": "evolution-phase",
+    "t": "persistence-phase",
+    "label": "requiere"
+   },
+   {
+    "id": "e7",
+    "s": "persistence-phase",
+    "t": "memory-types",
+    "label": "implementa"
+   },
+   {
+    "id": "e8",
+    "s": "dynamic-context",
+    "t": "pruning-phase",
+    "label": "dispara"
+   },
+   {
+    "id": "e9",
+    "s": "pruning-phase",
+    "t": "pruning-strategies",
+    "label": "aplica"
+   },
+   {
+    "id": "e10",
+    "s": "pruning-phase",
+    "t": "refresh-phase",
+    "label": "habilita"
+   },
+   {
+    "id": "e11",
+    "s": "memory-types",
+    "t": "refresh-phase",
+    "label": "actualiza mediante"
+   },
+   {
+    "id": "e12",
+    "s": "refresh-phase",
+    "t": "expiration-phase",
+    "label": "finalmente"
+   },
+   {
+    "id": "e13",
+    "s": "expiration-phase",
+    "t": "optimization-benefits",
+    "label": "logra"
+   },
+   {
+    "id": "e14",
+    "s": "optimization-benefits",
+    "t": "lifecycle-principle",
+    "label": "demuestra"
+   },
+   {
+    "id": "e15",
+    "s": "expiration-phase",
+    "t": "lifecycle-principle",
+    "label": "completa"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de gestión del contexto",
+    "description": "¿Cómo podemos gestionar el contexto de un LLM sin estado entre sesiones mientras manejamos los límites de memoria, mantenemos la coherencia y controlamos los costos?",
+    "input": "",
+    "nodes": [
+     "context-management-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework del ciclo de vida del contexto",
+    "description": "Un framework integral aborda el desafío mediante 6 fases del ciclo de vida que gestionan la evolución completa del contexto, desde la inicialización hasta la expiración.",
+    "input": "",
+    "nodes": [
+     "context-lifecycle-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Fases 1-2: Inicialización y evolución",
+    "description": "La inicialización establece el contexto estático (metadatos del usuario, prompts del sistema), mientras que la fase de evolución gestiona la acumulación del contexto dinámico (historial de la conversación, variables de sesión).",
+    "input": "",
+    "nodes": [
+     "initialization-phase",
+     "static-context",
+     "evolution-phase",
+     "dynamic-context"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Fase 3: Persistencia y gestión de memoria",
+    "description": "La fase de persistencia implementa patrones de almacenamiento: checkpoints por hilo para la memoria de corto plazo, LangGraph store para la de largo plazo y bases de datos externas para los datos entre sesiones.",
+    "input": "",
+    "nodes": [
+     "persistence-phase",
+     "memory-types"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Fase 4: Poda y optimización del contexto",
+    "description": "La fase de poda optimiza el contexto mediante ventanas deslizantes, resúmenes y filtrado por relevancia, usando estrategias de eliminación FIFO/LIFO, puntuación de importancia y compresión semántica.",
+    "input": "",
+    "nodes": [
+     "pruning-phase",
+     "pruning-strategies"
+    ],
+    "edges": [
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Fases 5-6: Actualización, expiración y cierre del ciclo de vida",
+    "description": "La fase de actualización gestiona la invalidación de cache y el TTL, la expiración se encarga de la terminación de la sesión y la limpieza, reduciendo el tiempo de respuesta y la carga de la base de datos, lo que demuestra que los LLM sin estado requieren una gestión con estado.",
+    "input": "",
+    "nodes": [
+     "refresh-phase",
+     "expiration-phase",
+     "optimization-benefits",
+     "lifecycle-principle"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

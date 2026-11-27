@@ -1,0 +1,298 @@
+{
+ "cat": "fault-tolerance-infrastructure",
+ "slug": "agent-communication-fault-tolerance",
+ "name": "Agent Communication Fault Tolerance(ACF)",
+ "icon": "📡",
+ "complexity": "high",
+ "description": "Mecanismos integrales de tolerancia a fallos para fallas de comunicación entre agentes, recuperación del enrutamiento de mensajes y resiliencia independiente del protocolo",
+ "features": [
+  "Garantías de entrega de mensajes",
+  "Manejo de errores a nivel de protocolo",
+  "Adaptación de la topología de comunicación",
+  "Colas de mensajes y reintentos",
+  "Sincronización de contexto",
+  "Tolerancia a particiones de red"
+ ],
+ "tldr": {
+  "what": "Persiste los mensajes, reintenta con backoff, enruta alrededor de las fallas y sincroniza el contexto cuando los agentes no pueden comunicarse entre sí.",
+  "when": "Sistemas multiagente donde la comunicación se rompe de forma impredecible y los mensajes perdidos o el estado desactualizado provocan decisiones incorrectas.",
+  "watchOut": "La complejidad crece rápidamente; depurar inconsistencias de estado distribuido a través de ciclos de reintento y cambios de topología consume un esfuerzo de ingeniería considerable."
+ },
+ "overview": {
+  "pattern": "Mecanismos integrales de tolerancia a fallos para la comunicación entre agentes usando protocolos modernos",
+  "why": "Previene fallas en cascada, habilita la tolerancia a particiones de red y logra un 99.94% de confiabilidad en la entrega de mensajes",
+  "insight": "Resiliencia independiente del protocolo (MCP/A2A/ACP/ANP) + circuit breakers + enrutamiento dinámico = comunicación robusta entre agentes",
+  "impl": [
+   {
+    "t": "Configuración del protocolo",
+    "d": "Implementa MCP/A2A/ACP con garantías de entrega de mensajes"
+   },
+   {
+    "t": "Circuit breakers",
+    "d": "Despliega circuit breakers por cada par de agentes, con umbrales"
+   },
+   {
+    "t": "Lógica de reintentos",
+    "d": "Configura backoff exponencial con jitter y colas de mensajes fallidos (dead letter queues)"
+   },
+   {
+    "t": "Descubrimiento de rutas",
+    "d": "Habilita la adaptación dinámica de la topología y el enrutamiento alternativo"
+   },
+   {
+    "t": "Monitorear la salud",
+    "d": "Implementa monitoreo en tiempo real de la salud de la comunicación"
+   }
+  ],
+  "example": "agent_message → protocol_send → failure_detection → circuit_breaker → retry_backoff → alternative_route → success",
+  "dos": [
+   "Usa tolerancia a fallos independiente del protocolo (MCP/A2A/ACP/ANP)",
+   "Implementa circuit breakers con un umbral de 3-5 fallas por minuto",
+   "Usa backoff exponencial con jitter para evitar el efecto de estampida (thundering herd)",
+   "Habilita la persistencia de mensajes con dead letter queues",
+   "Soporta patrones de comunicación tanto síncronos como asíncronos"
+  ],
+  "donts": [
+   "Depender de una única ruta de comunicación sin redundancia",
+   "Ignorar las garantías de orden de mensajes en escenarios distribuidos",
+   "Omitir la autenticación y el cifrado en la comunicación entre agentes",
+   "Usar enrutamiento estático sin adaptación dinámica de la topología",
+   "Olvidar implementar mecanismos de timeout y limitación de tasa"
+  ],
+  "use": [
+   "Sistemas colaborativos multiagente",
+   "Flujos de trabajo de agentes multiplataforma",
+   "Redes de agentes empresariales",
+   "Coordinación de agentes de misión crítica"
+  ],
+  "avoid": [
+   "Aplicaciones de un solo agente",
+   "Sistemas de agentes solo locales",
+   "Patrones simples de solicitud-respuesta",
+   "Sistemas en tiempo real críticos en latencia"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de entrega de mensajes",
+    "d": "% de mensajes entregados con éxito (objetivo: 99.94%)"
+   },
+   {
+    "n": "Eficiencia del circuit breaker",
+    "d": "% de fallas a las que se les impidió propagarse en cascada"
+   },
+   {
+    "n": "Tiempo de recuperación",
+    "d": "Segundos para restablecer la comunicación tras una falla"
+   },
+   {
+    "n": "Éxito de rutas alternativas",
+    "d": "% de mensajes entregados por rutas de respaldo"
+   },
+   {
+    "n": "Sobrecarga del protocolo",
+    "d": "% de latencia adicional por la tolerancia a fallos"
+   },
+   {
+    "n": "Tolerancia a particiones de red",
+    "d": "Tiempo para detectar particiones y adaptarse a ellas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Orquestación de IA empresarial",
+    "d": "Coordina más de 100 agentes entre departamentos con una tasa de entrega del 99.94%"
+   },
+   {
+    "n": "Sistemas de investigación distribuidos",
+    "d": "Enruta tareas de análisis entre agentes especializados con rutas de respaldo"
+   },
+   {
+    "n": "Control de manufactura",
+    "d": "Mantiene la coordinación de los agentes de la fábrica durante la inestabilidad de la red"
+   },
+   {
+    "n": "Redes de trading financiero",
+    "d": "Asegura el flujo de datos de mercado entre agentes de trading con recuperación en menos de un segundo"
+   },
+   {
+    "n": "Redes de IA para salud",
+    "d": "Coordina agentes de diagnóstico con requisitos estrictos de confiabilidad"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Tolerancia a fallos en la comunicación entre agentes",
+  "description": "Garantiza una comunicación confiable entre agentes mediante detección de fallas, sistemas de respaldo y mecanismos de recuperación automática para mantener la continuidad del negocio durante fallas de red o de servicio.",
+  "nodes": [
+   {
+    "id": "order-agent",
+    "label": "🛒 Agente de pedidos\n\"Procesar pedido B2B\nde $50K\"",
+    "x": 50,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "inventory-agent",
+    "label": "📦 Agente de inventario\n\"Verificar disponibilidad\nde stock\"",
+    "x": 300,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "payment-agent",
+    "label": "💳 Agente de pagos\n\"Procesar pago\nde $50,000\"",
+    "x": 550,
+    "y": 50,
+    "w": 180
+   },
+   {
+    "id": "message-router",
+    "label": "📡 Enrutador de mensajes\nEnruta mensajes\nentre agentes",
+    "x": 300,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "failure-detection",
+    "label": "⚠️ Detección de fallas\n\"¡Agente de pagos\ninalcanzable!\"",
+    "x": 50,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "backup-payment",
+    "label": "🔄 Pago de respaldo\nServicio de pago secundario\nactivado",
+    "x": 300,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "message-queue",
+    "label": "📬 Cola de mensajes\nAlmacena mensajes\nhasta la recuperación",
+    "x": 550,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "recovery-complete",
+    "label": "✅ Recuperación completa\nPedido procesado\ncon éxito",
+    "x": 300,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "resilience-update",
+    "label": "🛡️ Actualización de resiliencia\nMejorar los patrones\nde tolerancia a fallos",
+    "x": 550,
+    "y": 500,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "order-agent",
+    "t": "message-router",
+    "label": "solicitud"
+   },
+   {
+    "id": "e2",
+    "s": "message-router",
+    "t": "inventory-agent",
+    "label": "verificar stock"
+   },
+   {
+    "id": "e3",
+    "s": "message-router",
+    "t": "payment-agent",
+    "label": "procesar pago"
+   },
+   {
+    "id": "e4",
+    "s": "payment-agent",
+    "t": "failure-detection",
+    "label": "timeout"
+   },
+   {
+    "id": "e5",
+    "s": "failure-detection",
+    "t": "backup-payment",
+    "label": "activar respaldo"
+   },
+   {
+    "id": "e6",
+    "s": "failure-detection",
+    "t": "message-queue",
+    "label": "almacenar mensajes"
+   },
+   {
+    "id": "e7",
+    "s": "backup-payment",
+    "t": "recovery-complete",
+    "label": "pago exitoso"
+   },
+   {
+    "id": "e8",
+    "s": "message-queue",
+    "t": "recovery-complete",
+    "label": "reenviar mensajes"
+   },
+   {
+    "id": "e9",
+    "s": "recovery-complete",
+    "t": "resilience-update",
+    "label": "aprender"
+   },
+   {
+    "id": "e10",
+    "s": "inventory-agent",
+    "t": "recovery-complete",
+    "label": "stock confirmado"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Flujo de comunicación normal",
+    "description": "El agente de pedidos envía una solicitud de pedido B2B de $50K a través del enrutador de mensajes a los agentes de inventario y de pagos para su procesamiento.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Detección de la falla de comunicación",
+    "description": "El agente de pagos queda inalcanzable por problemas de red o una falla del servicio. El enrutador de mensajes detecta el timeout después de 3 segundos.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Activación automática de failover",
+    "description": "El sistema activa de inmediato el servicio de pago de respaldo y almacena los mensajes pendientes en una cola persistente para evitar la pérdida de datos.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Reenvío de mensajes y recuperación",
+    "description": "Los mensajes almacenados se reenvían al agente de pagos de respaldo, lo que garantiza que no se pierdan datos de transacciones durante el proceso de failover.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Finalización exitosa del pedido",
+    "description": "El pedido se procesa con éxito usando el servicio de pago de respaldo mientras la confirmación de inventario continúa con normalidad, manteniendo la continuidad del negocio.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   },
+   {
+    "title": "Aprendizaje de patrones de resiliencia",
+    "description": "El sistema analiza los patrones de falla para acelerar la detección de fallas en el futuro y optimizar las estrategias de selección del servicio de respaldo.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   }
+  ]
+ }
+}

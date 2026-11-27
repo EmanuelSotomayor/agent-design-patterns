@@ -1,0 +1,280 @@
+{
+ "cat": "planning-execution",
+ "slug": "plan-todo-recitation",
+ "name": "Plan & TODO Recitation(PTR)",
+ "icon": "📝",
+ "complexity": "medium",
+ "description": "El agente mantiene un artefacto explícito y editable de tareas pendientes o de plan (por ejemplo, una llamada a la herramienta write_todos o un archivo todo.md) y lo reescribe y recita continuamente a medida que avanza el trabajo. Volver a emitir el plan actualizado al final de la ventana de contexto devuelve el objetivo global a la atención reciente del modelo en cada paso, lo que resiste la deriva del objetivo y el olvido tipo lost-in-the-middle en ejecuciones largas.",
+ "features": [
+  "Artefacto explícito y editable de tareas o plan, propiedad del agente",
+  "Plan recitado y reescrito después de cada paso",
+  "Mantiene el objetivo global en el contexto reciente",
+  "Los elementos marcados funcionan como memoria externa del progreso",
+  "Contrarresta la deriva del objetivo y el olvido tipo lost-in-the-middle",
+  "Se usa en Claude Code, Deep Agents y Manus"
+ ],
+ "tldr": {
+  "what": "El agente mantiene un artefacto editable con la lista de tareas, lo reescribe después de cada paso y lo recita para mantener el objetivo global en el contexto reciente durante toda la ejecución.",
+  "when": "Tareas de larga duración en las que hay que seguir el progreso intermedio y el agente corre el riesgo de olvidar el objetivo original o desviarse entre pasos.",
+  "watchOut": "Recitar el plan consume tokens en cada paso; si el plan crece mucho o las tareas son numerosas, el costo adicional puede superar el beneficio de reducir la deriva del objetivo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Plan & TODO Recitation",
+  "description": "El agente mantiene un artefacto explícito y editable de tareas o plan (write_todos o todo.md) y lo recita y reescribe continuamente, volviendo a emitir el objetivo global al final del contexto en cada paso. Esto mantiene el objetivo en la atención reciente y resiste la deriva y el olvido tipo lost-in-the-middle en ejecuciones largas. Popularizado por Claude Code, Deep Agents y Manus.",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "🎯 Tarea de horizonte largo\n\"Migrar un servicio de 50 archivos de Flask\na FastAPI sin romper la API\"",
+    "x": 300,
+    "y": 30,
+    "w": 340
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente de horizonte largo\nEjecuta más de 50 pasos a lo largo de muchos turnos",
+    "x": 350,
+    "y": 150,
+    "w": 240
+   },
+   {
+    "id": "todo-v0",
+    "label": "📝 todo.md v0\n[ ] 1 inventariar 50 rutas\n[ ] 2 portar el middleware\n[ ] 3-52 convertir cada ruta\n[ ] 53 pruebas  [ ] 54 verificar\nObjetivo: mantener compatibles los endpoints",
+    "x": 20,
+    "y": 145,
+    "w": 280
+   },
+   {
+    "id": "step-exec",
+    "label": "⚙️ Ejecutar el siguiente paso\nConvertir un archivo de rutas",
+    "x": 360,
+    "y": 265,
+    "w": 230
+   },
+   {
+    "id": "recite",
+    "label": "🔁 Recitar + reescribir el plan\nVolver a emitir la lista al final del contexto\ndespués de cada paso",
+    "x": 360,
+    "y": 375,
+    "w": 250
+   },
+   {
+    "id": "todo-v12",
+    "label": "📝 todo.md @ paso 12\n[x] 1-2 listos\n[x] 3-12 rutas (10/50)\n[ ] 13 pedidos  <- SIGUIENTE\nObjetivo reformulado",
+    "x": 20,
+    "y": 370,
+    "w": 260
+   },
+   {
+    "id": "todo-v40",
+    "label": "📝 todo.md @ paso 40\n[x] 38/50 rutas listas\n[ ] reportes, exportaciones, webhooks\nObjetivo reformulado",
+    "x": 650,
+    "y": 370,
+    "w": 260
+   },
+   {
+    "id": "context-window",
+    "label": "🧠 Contexto reciente\nEl objetivo queda al final, así que permanece\nen la atención reciente del modelo",
+    "x": 20,
+    "y": 500,
+    "w": 280
+   },
+   {
+    "id": "drift-guard",
+    "label": "🛡️ Protección contra la deriva del objetivo\nObjetivo sin cambios a lo largo de 50 pasos",
+    "x": 360,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "external-memory",
+    "label": "💾 Memoria externa\nLos elementos marcados registran el progreso;\nningún archivo se vuelve a convertir",
+    "x": 660,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "lost-middle",
+    "label": "⚠️ Sin recitación\nEl objetivo se hunde en la\nzona muerta lost-in-the-middle: deriva + repeticiones",
+    "x": 330,
+    "y": 615,
+    "w": 340
+   },
+   {
+    "id": "final",
+    "label": "✨ Resultado\n50/50 rutas migradas, pruebas de contrato en verde,\nobjetivo preservado de principio a fin",
+    "x": 320,
+    "y": 730,
+    "w": 360
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-agent",
+    "s": "task",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-todo0",
+    "s": "agent",
+    "t": "todo-v0",
+    "label": "borrador del plan"
+   },
+   {
+    "id": "e-agent-step",
+    "s": "agent",
+    "t": "step-exec",
+    "label": ""
+   },
+   {
+    "id": "e-step-recite",
+    "s": "step-exec",
+    "t": "recite",
+    "label": "después de cada paso"
+   },
+   {
+    "id": "e-recite-step",
+    "s": "recite",
+    "t": "step-exec",
+    "label": "siguiente paso"
+   },
+   {
+    "id": "e-recite-todo12",
+    "s": "recite",
+    "t": "todo-v12",
+    "label": "actualizar"
+   },
+   {
+    "id": "e-recite-todo40",
+    "s": "recite",
+    "t": "todo-v40",
+    "label": "actualizar"
+   },
+   {
+    "id": "e-recite-context",
+    "s": "recite",
+    "t": "context-window",
+    "label": ""
+   },
+   {
+    "id": "e-recite-drift",
+    "s": "recite",
+    "t": "drift-guard",
+    "label": ""
+   },
+   {
+    "id": "e-recite-memory",
+    "s": "recite",
+    "t": "external-memory",
+    "label": ""
+   },
+   {
+    "id": "e-drift-lost",
+    "s": "drift-guard",
+    "t": "lost-middle",
+    "label": "sin recitación"
+   },
+   {
+    "id": "e-drift-final",
+    "s": "drift-guard",
+    "t": "final",
+    "label": "todos los pasos listos"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea de horizonte largo",
+    "description": "Una migración que toca 50 archivos tomará muchos pasos a lo largo de muchos turnos, mucho más de lo que cabe con holgura en una sola ventana de contexto.",
+    "input": "",
+    "nodes": [
+     "task"
+    ],
+    "edges": [
+     "e-task-agent"
+    ]
+   },
+   {
+    "title": "Escribir el plan inicial",
+    "description": "Antes de trabajar, el agente escribe un todo.md explícito que enumera cada paso y declara el objetivo global: mantener la compatibilidad de las respuestas de todos los endpoints públicos.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "todo-v0",
+     "step-exec"
+    ],
+    "edges": [
+     "e-agent-todo0",
+     "e-agent-step"
+    ]
+   },
+   {
+    "title": "Ciclo de ejecución y recitación",
+    "description": "El agente convierte una ruta y luego recita y reescribe el plan. Este ciclo se repite: ejecutar un paso, volver a emitir la lista actualizada y pasar al siguiente paso.",
+    "input": "",
+    "nodes": [
+     "step-exec",
+     "recite"
+    ],
+    "edges": [
+     "e-step-recite",
+     "e-recite-step"
+    ]
+   },
+   {
+    "title": "Actualizar el artefacto de tareas",
+    "description": "Después del paso 12 y de nuevo después del paso 40, la lista se reescribe: las rutas completadas se marcan y se señala el siguiente objetivo. El artefacto es la única fuente de verdad sobre el progreso.",
+    "input": "",
+    "nodes": [
+     "recite",
+     "todo-v12",
+     "todo-v40"
+    ],
+    "edges": [
+     "e-recite-todo12",
+     "e-recite-todo40"
+    ]
+   },
+   {
+    "title": "El objetivo permanece en el contexto reciente",
+    "description": "Como el plan se vuelve a emitir al final del contexto en cada turno, el objetivo queda en la atención reciente, y los elementos marcados sirven como memoria externa para que ningún archivo se vuelva a convertir.",
+    "input": "",
+    "nodes": [
+     "recite",
+     "context-window",
+     "external-memory"
+    ],
+    "edges": [
+     "e-recite-context",
+     "e-recite-memory"
+    ]
+   },
+   {
+    "title": "Protección contra la deriva",
+    "description": "La protección contra la deriva confirma que el objetivo no cambia a lo largo de los 50 pasos. Sin recitación, el objetivo se hundiría en la zona muerta lost-in-the-middle, provocando deriva y trabajo repetido.",
+    "input": "",
+    "nodes": [
+     "recite",
+     "drift-guard",
+     "lost-middle"
+    ],
+    "edges": [
+     "e-recite-drift",
+     "e-drift-lost"
+    ]
+   },
+   {
+    "title": "Objetivo preservado",
+    "description": "Las 50 rutas quedan migradas, las pruebas de contrato pasan y el objetivo original se respeta de principio a fin, sin desviarse hacia refactorizaciones no relacionadas.",
+    "input": "",
+    "nodes": [
+     "drift-guard",
+     "final"
+    ],
+    "edges": [
+     "e-drift-final"
+    ]
+   }
+  ]
+ }
+}

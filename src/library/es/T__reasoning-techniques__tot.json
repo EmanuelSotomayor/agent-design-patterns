@@ -1,0 +1,369 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "tot",
+ "name": "Tree-of-Thought(ToT)",
+ "icon": "🌳",
+ "complexity": "high",
+ "description": "Explora múltiples caminos de razonamiento mediante ramificación y retroceso",
+ "features": [
+  "Estructura de árbol para explorar alternativas",
+  "Admite retroceso y revisión",
+  "Evalúa múltiples caminos de solución",
+  "Ideal para la planificación estratégica y las decisiones complejas"
+ ],
+ "tldr": {
+  "what": "Explora múltiples ramas de razonamiento en paralelo, evalúa cada camino, retrocede a los nodos prometedores y selecciona la mejor solución.",
+  "when": "Decisiones complejas con varios enfoques válidos, planificación estratégica que requiere análisis de compensaciones, o problemas donde las primeras elecciones limitan las opciones posteriores.",
+  "watchOut": "El costo en tokens y la latencia crecen exponencialmente y muy rápido; la mayoría de las ramas desperdician cómputo en caminos que no se seleccionarán."
+ },
+ "overview": {
+  "pattern": "Explora múltiples caminos de razonamiento mediante una estructura de árbol ramificada con evaluación y poda",
+  "why": "Permite el retroceso, la anticipación y la exploración de alternativas para resolver problemas complejos",
+  "insight": "Generar K candidatos → Evaluar → Podar caminos débiles → Expandir los prometedores → Repetir hasta encontrar la solución",
+  "impl": [
+   {
+    "t": "Definir el árbol",
+    "d": "Define el factor de ramificación K y la profundidad máxima"
+   },
+   {
+    "t": "Generar",
+    "d": "Crea K pensamientos candidatos por nodo"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Puntúa cada candidato (rúbricas/verificador)"
+   },
+   {
+    "t": "Podar",
+    "d": "Conserva los mejores candidatos y descarta los caminos débiles"
+   },
+   {
+    "t": "Buscar",
+    "d": "BFS/DFS/beam hasta encontrar la solución"
+   }
+  ],
+  "example": "Problema → [Rama 1, Rama 2, Rama 3] → Evaluar → Podar → Expandir la mejor → Solución",
+  "dos": [
+   "Usa un factor de ramificación pequeño (K=3-5) para controlar los costos",
+   "Implementa criterios de evaluación o rúbricas explícitos",
+   "Guarda en cache y deduplica los estados equivalentes",
+   "Define límites de presupuesto (máx. de tokens/tiempo) con alternativas de respaldo",
+   "Usa beam search para una exploración equilibrada"
+  ],
+  "donts": [
+   "Permitir ramificación ilimitada (explosión combinatoria)",
+   "Omitir los pasos de evaluación (lleva a una exploración aleatoria)",
+   "Usarlo para problemas simples (excesivo frente a CoT)",
+   "Ignorar ciclos o bucles en los caminos de razonamiento",
+   "Podar en exceso caminos prometedores en etapas tempranas"
+  ],
+  "use": [
+   "Problemas complejos con múltiples caminos de solución",
+   "Planificación estratégica que requiere anticipación",
+   "Tareas creativas que necesitan exploración",
+   "Acertijos con decisiones tempranas críticas",
+   "Cuando el retroceso aporta valor"
+  ],
+  "avoid": [
+   "Tareas de razonamiento lineal simples",
+   "Requisitos de tiempo real o baja latencia",
+   "Presupuestos computacionales ajustados",
+   "Tareas sin criterios de evaluación claros",
+   "Cuando CoT ya funciona bien"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de la solución",
+    "d": "Precisión frente a la línea base de CoT"
+   },
+   {
+    "n": "Eficiencia de búsqueda",
+    "d": "Nodos explorados por solución"
+   },
+   {
+    "n": "Costo en tokens",
+    "d": "Tokens totales frente a enfoques lineales"
+   },
+   {
+    "n": "Diversidad de caminos",
+    "d": "Estrategias de razonamiento únicas exploradas"
+   },
+   {
+    "n": "Precisión de la evaluación",
+    "d": "Calidad de la poda (conservar lo bueno, descartar lo malo)"
+   },
+   {
+    "n": "Uso del presupuesto",
+    "d": "% de la profundidad máxima/tokens usados"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Juego del 24",
+    "d": "Explorar distintas combinaciones de operadores → evaluar su validez → podar los caminos imposibles"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Generar ramas de escenarios → evaluar los resultados → seleccionar la estrategia óptima"
+   },
+   {
+    "n": "Escritura creativa",
+    "d": "Desarrollar alternativas de trama → evaluar la coherencia narrativa → seguir las mejores líneas argumentales"
+   },
+   {
+    "n": "Acertijos matemáticos",
+    "d": "Probar varios enfoques de solución → verificar que sean correctos → retroceder si hace falta"
+   },
+   {
+    "n": "Arquitectura de código",
+    "d": "Explorar patrones de diseño → evaluar compensaciones → seleccionar el mejor enfoque"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Tree of Thoughts (ToT)",
+  "description": "Muestra la exploración en paralelo de múltiples caminos de solución con evaluación",
+  "nodes": [
+   {
+    "id": "problem",
+    "label": "Problema complejo\n\"Planificar la ruta óptima para 5 ciudades\"",
+    "x": 300,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "generate",
+    "label": "Generar múltiples enfoques",
+    "x": 300,
+    "y": 180,
+    "w": 150
+   },
+   {
+    "id": "branch1",
+    "label": "Rama 1: Vecino más cercano",
+    "x": 100,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "branch2",
+    "label": "Rama 2: Camino más corto primero",
+    "x": 300,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "branch3",
+    "label": "Rama 3: Algoritmo genético",
+    "x": 500,
+    "y": 310,
+    "w": 180
+   },
+   {
+    "id": "eval1",
+    "label": "Evaluar: Distancia = 450km",
+    "x": 100,
+    "y": 440,
+    "w": 160
+   },
+   {
+    "id": "eval2",
+    "label": "Evaluar: Distancia = 380km",
+    "x": 300,
+    "y": 440,
+    "w": 160
+   },
+   {
+    "id": "eval3",
+    "label": "Evaluar: Distancia = 420km",
+    "x": 500,
+    "y": 440,
+    "w": 160
+   },
+   {
+    "id": "decision",
+    "label": "¿Mejor camino?\nCamino más corto primero",
+    "x": 300,
+    "y": 570,
+    "w": 150
+   },
+   {
+    "id": "continue",
+    "label": "Continuar con la mejor solución",
+    "x": 300,
+    "y": 700,
+    "w": 180
+   },
+   {
+    "id": "final",
+    "label": "Ruta óptima: 380km",
+    "x": 300,
+    "y": 830,
+    "w": 150
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-prob-gen",
+    "s": "problem",
+    "t": "generate",
+    "label": ""
+   },
+   {
+    "id": "e-gen-b1",
+    "s": "generate",
+    "t": "branch1",
+    "label": ""
+   },
+   {
+    "id": "e-gen-b2",
+    "s": "generate",
+    "t": "branch2",
+    "label": ""
+   },
+   {
+    "id": "e-gen-b3",
+    "s": "generate",
+    "t": "branch3",
+    "label": ""
+   },
+   {
+    "id": "e-b1-eval1",
+    "s": "branch1",
+    "t": "eval1",
+    "label": ""
+   },
+   {
+    "id": "e-b2-eval2",
+    "s": "branch2",
+    "t": "eval2",
+    "label": ""
+   },
+   {
+    "id": "e-b3-eval3",
+    "s": "branch3",
+    "t": "eval3",
+    "label": ""
+   },
+   {
+    "id": "e-eval1-dec",
+    "s": "eval1",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-eval2-dec",
+    "s": "eval2",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-eval3-dec",
+    "s": "eval3",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-dec-cont",
+    "s": "decision",
+    "t": "continue",
+    "label": ""
+   },
+   {
+    "id": "e-cont-final",
+    "s": "continue",
+    "t": "final",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Introducción al problema",
+    "description": "Problema de optimización complejo que requiere explorar múltiples estrategias de solución.",
+    "input": "Encontrar la ruta óptima que visite 5 ciudades: A, B, C, D, E con la mínima distancia total.",
+    "nodes": [
+     "problem"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Generación de estrategias",
+    "description": "Generar múltiples enfoques algorítmicos distintos para resolver el problema del viajante.",
+    "input": "",
+    "nodes": [
+     "problem",
+     "generate"
+    ],
+    "edges": [
+     "e-prob-gen"
+    ]
+   },
+   {
+    "title": "Exploración en paralelo",
+    "description": "Explorar tres algoritmos distintos de forma simultánea: Vecino más cercano, Camino más corto primero y Algoritmo genético.",
+    "input": "",
+    "nodes": [
+     "generate",
+     "branch1",
+     "branch2",
+     "branch3"
+    ],
+    "edges": [
+     "e-gen-b1",
+     "e-gen-b2",
+     "e-gen-b3"
+    ]
+   },
+   {
+    "title": "Evaluación de soluciones",
+    "description": "Cada rama calcula su solución y mide la distancia total.",
+    "input": "Calcular la distancia total de cada ruta",
+    "nodes": [
+     "eval1",
+     "eval2",
+     "eval3"
+    ],
+    "edges": [
+     "e-b1-eval1",
+     "e-b2-eval2",
+     "e-b3-eval3"
+    ]
+   },
+   {
+    "title": "Selección del mejor camino",
+    "description": "Comparar todas las soluciones e identificar la rama con la menor distancia total.",
+    "input": "",
+    "nodes": [
+     "decision"
+    ],
+    "edges": [
+     "e-eval1-dec",
+     "e-eval2-dec",
+     "e-eval3-dec"
+    ]
+   },
+   {
+    "title": "Refinamiento de la solución",
+    "description": "Seguir optimizando la mejor solución encontrada (enfoque Camino más corto primero).",
+    "input": "",
+    "nodes": [
+     "continue"
+    ],
+    "edges": [
+     "e-dec-cont"
+    ]
+   },
+   {
+    "title": "Solución óptima final",
+    "description": "Presentar la ruta óptima con una distancia total de 380km.",
+    "input": "",
+    "nodes": [
+     "final"
+    ],
+    "edges": [
+     "e-cont-final"
+    ]
+   }
+  ]
+ }
+}

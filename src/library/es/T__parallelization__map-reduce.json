@@ -1,0 +1,708 @@
+{
+ "cat": "parallelization",
+ "slug": "map-reduce",
+ "name": "Map-Reduce",
+ "icon": "🗺️",
+ "complexity": "high",
+ "description": "Distribuye el cómputo entre múltiples nodos usando operaciones map y reduce",
+ "features": [
+  "Procesamiento de datos en paralelo",
+  "Ejecución tolerante a fallas",
+  "Arquitectura escalable",
+  "Agregación de resultados"
+ ],
+ "tldr": {
+  "what": "Divide un dataset grande entre workers paralelos, cada uno procesa un subconjunto de forma independiente, y luego combina los resultados en una respuesta final.",
+  "when": "Procesamiento de datasets masivos donde la ejecución en una sola máquina es demasiado lenta y los resultados intermedios pueden calcularse de forma independiente.",
+  "watchOut": "La sobrecarga de coordinación y la latencia de red pueden superar las ganancias de la paralelización en datasets pequeños o con operaciones reduce costosas."
+ },
+ "overview": {
+  "pattern": "Divide los datos en chunks, procésalos en paralelo y luego agrega los resultados",
+  "why": "Maximiza el throughput, aprovecha múltiples núcleos/servicios y escala horizontalmente",
+  "insight": "Chunk[1..N] → Map(f) → [Result1..N] → Reduce → Final_Output",
+  "impl": [
+   {
+    "t": "Dividir en chunks",
+    "d": "Divide los datos en unidades procesables en paralelo"
+   },
+   {
+    "t": "Map",
+    "d": "Aplica la misma operación a cada chunk"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Procesa los chunks en paralelo"
+   },
+   {
+    "t": "Reduce",
+    "d": "Agrega los resultados en la salida final"
+   },
+   {
+    "t": "Validar",
+    "d": "Verifica la completitud y la consistencia"
+   }
+  ],
+  "example": "documents → [analyze, analyze, analyze] → combine insights → final_report",
+  "dos": [
+   "Asegúrate de que los chunks sean independientes y estén balanceados",
+   "Usa funciones reduce deterministas para mantener la consistencia",
+   "Maneja las fallas parciales de forma controlada",
+   "Dimensiona los chunks según la complejidad del procesamiento",
+   "Guarda en cache los resultados de map para operaciones reduce repetidas"
+  ],
+  "donts": [
+   "Crear chunks con interdependencias",
+   "Usar operaciones reduce no conmutativas",
+   "Ignorar las restricciones de memoria con datasets grandes",
+   "Hacer chunks demasiado pequeños (sobrecarga) o demasiado grandes (desbalance)",
+   "Olvidar manejar chunks vacíos o mal formados"
+  ],
+  "use": [
+   "Datasets grandes por procesar",
+   "Operaciones independientes y repetibles",
+   "Tareas limitadas por CPU/IO",
+   "Necesidad de escalado horizontal"
+  ],
+  "avoid": [
+   "Datasets pequeños (la sobrecarga supera el beneficio)",
+   "Dependencias secuenciales",
+   "Agregación con uso intensivo de memoria",
+   "Necesidades de streaming en tiempo real"
+  ],
+  "metrics": [
+   {
+    "n": "Throughput",
+    "d": "Elementos procesados por segundo"
+   },
+   {
+    "n": "Eficiencia de paralelización",
+    "d": "% de la aceleración ideal alcanzada"
+   },
+   {
+    "n": "Utilización de recursos",
+    "d": "Uso de CPU/memoria entre los workers"
+   },
+   {
+    "n": "Tolerancia a fallas",
+    "d": "% de fallas parciales manejadas"
+   },
+   {
+    "n": "Balance de carga",
+    "d": "Varianza en los tiempos de procesamiento de los chunks"
+   },
+   {
+    "n": "Eficiencia de costos",
+    "d": "Costo por elemento procesado vs. secuencial"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Análisis de documentos",
+    "d": "Dividir documentos grandes → analizar secciones → combinar hallazgos"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "Agrupar publicaciones en batches → clasificar cada una → agregar los reportes de infracciones"
+   },
+   {
+    "n": "Validación de datos",
+    "d": "Dividir registros en chunks → validar cada uno → compilar un resumen de errores"
+   },
+   {
+    "n": "Análisis de sentimiento",
+    "d": "Dividir reseñas → analizar el sentimiento → generar un puntaje general"
+   },
+   {
+    "n": "Análisis de código",
+    "d": "Dividir la base de código → analizar archivos → generar un reporte de calidad"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Map-Reduce",
+  "description": "Muestra el cómputo distribuido usando operaciones map y reduce para procesar datasets grandes entre múltiples nodos",
+  "nodes": [
+   {
+    "id": "input-data",
+    "label": "Dataset grande\n\"Archivos de log de 100TB\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "job-coordinator",
+    "label": "Coordinador de trabajos\nOrquestación de tareas",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "data-partitioner",
+    "label": "Particionador de datos\nDividir en chunks",
+    "x": 300,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "task-scheduler",
+    "label": "Planificador de tareas\nDistribuir la carga de trabajo",
+    "x": 700,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "chunk-1",
+    "label": "Chunk 1\n25TB de datos",
+    "x": 100,
+    "y": 460,
+    "w": 120
+   },
+   {
+    "id": "chunk-2",
+    "label": "Chunk 2\n25TB de datos",
+    "x": 250,
+    "y": 460,
+    "w": 120
+   },
+   {
+    "id": "chunk-3",
+    "label": "Chunk 3\n25TB de datos",
+    "x": 400,
+    "y": 460,
+    "w": 120
+   },
+   {
+    "id": "chunk-4",
+    "label": "Chunk 4\n25TB de datos",
+    "x": 550,
+    "y": 460,
+    "w": 120
+   },
+   {
+    "id": "map-worker-1",
+    "label": "Map Worker 1\nProcesar y transformar",
+    "x": 100,
+    "y": 600,
+    "w": 140
+   },
+   {
+    "id": "map-worker-2",
+    "label": "Map Worker 2\nProcesar y transformar",
+    "x": 250,
+    "y": 600,
+    "w": 140
+   },
+   {
+    "id": "map-worker-3",
+    "label": "Map Worker 3\nProcesar y transformar",
+    "x": 400,
+    "y": 600,
+    "w": 140
+   },
+   {
+    "id": "map-worker-4",
+    "label": "Map Worker 4\nProcesar y transformar",
+    "x": 550,
+    "y": 600,
+    "w": 140
+   },
+   {
+    "id": "intermediate-storage",
+    "label": "Almacenamiento intermedio\nPares clave-valor ordenados",
+    "x": 325,
+    "y": 750,
+    "w": 200
+   },
+   {
+    "id": "shuffle-sort",
+    "label": "Shuffle y ordenamiento\nAgrupar por clave",
+    "x": 325,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "reduce-worker-1",
+    "label": "Reduce Worker 1\nAgregar resultados",
+    "x": 150,
+    "y": 1050,
+    "w": 140
+   },
+   {
+    "id": "reduce-worker-2",
+    "label": "Reduce Worker 2\nAgregar resultados",
+    "x": 325,
+    "y": 1050,
+    "w": 140
+   },
+   {
+    "id": "reduce-worker-3",
+    "label": "Reduce Worker 3\nAgregar resultados",
+    "x": 500,
+    "y": 1050,
+    "w": 140
+   },
+   {
+    "id": "final-output",
+    "label": "Salida final\nResultados agregados",
+    "x": 325,
+    "y": 1200,
+    "w": 180
+   },
+   {
+    "id": "resource-manager",
+    "label": "Gestor de recursos\nRecursos del clúster",
+    "x": 750,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "fault-tolerance",
+    "label": "Tolerancia a fallas\nManejo de fallas",
+    "x": 250,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "progress-monitor",
+    "label": "Monitor de progreso\nSeguimiento de tareas",
+    "x": 850,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "performance-metrics",
+    "label": "Métricas de rendimiento\n• Throughput: 2TB/hora\n• Latencia: 45 minutos\n• Eficiencia: 94%\n• Utilización de nodos: 89%",
+    "x": 50,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "data-locality",
+    "label": "Localidad de datos\nOptimizar la ubicación",
+    "x": 750,
+    "y": 460,
+    "w": 140
+   },
+   {
+    "id": "map-output-1",
+    "label": "Salidas de map\n• Pares clave-valor\n• Resultados parciales\n• Datos intermedios\n• Ordenar por clave",
+    "x": 700,
+    "y": 600,
+    "w": 140
+   },
+   {
+    "id": "combiner",
+    "label": "Combinador\nAgregación local",
+    "x": 550,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "load-balancer",
+    "label": "Balanceador de carga\nDistribuir la carga de forma pareja",
+    "x": 850,
+    "y": 600,
+    "w": 140
+   },
+   {
+    "id": "result-validator",
+    "label": "Validador de resultados\nVerificar la completitud",
+    "x": 500,
+    "y": 1200,
+    "w": 140
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-coordinator",
+    "s": "input-data",
+    "t": "job-coordinator",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-partitioner",
+    "s": "job-coordinator",
+    "t": "data-partitioner",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-scheduler",
+    "s": "job-coordinator",
+    "t": "task-scheduler",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-resource",
+    "s": "job-coordinator",
+    "t": "resource-manager",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-fault",
+    "s": "job-coordinator",
+    "t": "fault-tolerance",
+    "label": ""
+   },
+   {
+    "id": "e-partitioner-chunk1",
+    "s": "data-partitioner",
+    "t": "chunk-1",
+    "label": ""
+   },
+   {
+    "id": "e-partitioner-chunk2",
+    "s": "data-partitioner",
+    "t": "chunk-2",
+    "label": ""
+   },
+   {
+    "id": "e-partitioner-chunk3",
+    "s": "data-partitioner",
+    "t": "chunk-3",
+    "label": ""
+   },
+   {
+    "id": "e-partitioner-chunk4",
+    "s": "data-partitioner",
+    "t": "chunk-4",
+    "label": ""
+   },
+   {
+    "id": "e-scheduler-map1",
+    "s": "task-scheduler",
+    "t": "map-worker-1",
+    "label": ""
+   },
+   {
+    "id": "e-scheduler-map2",
+    "s": "task-scheduler",
+    "t": "map-worker-2",
+    "label": ""
+   },
+   {
+    "id": "e-scheduler-map3",
+    "s": "task-scheduler",
+    "t": "map-worker-3",
+    "label": ""
+   },
+   {
+    "id": "e-scheduler-map4",
+    "s": "task-scheduler",
+    "t": "map-worker-4",
+    "label": ""
+   },
+   {
+    "id": "e-chunk1-map1",
+    "s": "chunk-1",
+    "t": "map-worker-1",
+    "label": ""
+   },
+   {
+    "id": "e-chunk2-map2",
+    "s": "chunk-2",
+    "t": "map-worker-2",
+    "label": ""
+   },
+   {
+    "id": "e-chunk3-map3",
+    "s": "chunk-3",
+    "t": "map-worker-3",
+    "label": ""
+   },
+   {
+    "id": "e-chunk4-map4",
+    "s": "chunk-4",
+    "t": "map-worker-4",
+    "label": ""
+   },
+   {
+    "id": "e-map1-intermediate",
+    "s": "map-worker-1",
+    "t": "intermediate-storage",
+    "label": ""
+   },
+   {
+    "id": "e-map2-intermediate",
+    "s": "map-worker-2",
+    "t": "intermediate-storage",
+    "label": ""
+   },
+   {
+    "id": "e-map3-intermediate",
+    "s": "map-worker-3",
+    "t": "intermediate-storage",
+    "label": ""
+   },
+   {
+    "id": "e-map4-intermediate",
+    "s": "map-worker-4",
+    "t": "intermediate-storage",
+    "label": ""
+   },
+   {
+    "id": "e-map3-combiner",
+    "s": "map-worker-3",
+    "t": "combiner",
+    "label": ""
+   },
+   {
+    "id": "e-combiner-intermediate",
+    "s": "combiner",
+    "t": "intermediate-storage",
+    "label": ""
+   },
+   {
+    "id": "e-intermediate-shuffle",
+    "s": "intermediate-storage",
+    "t": "shuffle-sort",
+    "label": ""
+   },
+   {
+    "id": "e-shuffle-reduce1",
+    "s": "shuffle-sort",
+    "t": "reduce-worker-1",
+    "label": ""
+   },
+   {
+    "id": "e-shuffle-reduce2",
+    "s": "shuffle-sort",
+    "t": "reduce-worker-2",
+    "label": ""
+   },
+   {
+    "id": "e-shuffle-reduce3",
+    "s": "shuffle-sort",
+    "t": "reduce-worker-3",
+    "label": ""
+   },
+   {
+    "id": "e-reduce1-output",
+    "s": "reduce-worker-1",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "e-reduce2-output",
+    "s": "reduce-worker-2",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "e-reduce3-output",
+    "s": "reduce-worker-3",
+    "t": "final-output",
+    "label": ""
+   },
+   {
+    "id": "e-output-validator",
+    "s": "final-output",
+    "t": "result-validator",
+    "label": ""
+   },
+   {
+    "id": "e-metrics-partitioner",
+    "s": "performance-metrics",
+    "t": "data-partitioner",
+    "label": ""
+   },
+   {
+    "id": "e-monitor-scheduler",
+    "s": "progress-monitor",
+    "t": "task-scheduler",
+    "label": ""
+   },
+   {
+    "id": "e-locality-chunks",
+    "s": "data-locality",
+    "t": "chunk-4",
+    "label": ""
+   },
+   {
+    "id": "e-balancer-maps",
+    "s": "load-balancer",
+    "t": "map-worker-4",
+    "label": ""
+   },
+   {
+    "id": "e-maps-output",
+    "s": "map-worker-4",
+    "t": "map-output-1",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Inicialización del trabajo",
+    "description": "Se envía al sistema MapReduce un trabajo de procesamiento de un dataset grande.",
+    "input": "Envío del trabajo: procesar 100TB de logs de servidores web para extraer patrones de comportamiento de usuarios.",
+    "nodes": [
+     "input-data"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Configuración de la coordinación del trabajo",
+    "description": "El coordinador de trabajos inicializa el flujo de trabajo MapReduce y prepara los recursos.",
+    "input": "Coordinación del trabajo: asignación de recursos, planificación de tareas, configuración de tolerancia a fallas",
+    "nodes": [
+     "input-data",
+     "job-coordinator"
+    ],
+    "edges": [
+     "e-input-coordinator"
+    ]
+   },
+   {
+    "title": "Gestión de recursos",
+    "description": "El gestor de recursos asigna los recursos del clúster y se activan los sistemas de tolerancia a fallas.",
+    "input": "Gestión de recursos: evaluación de la capacidad del clúster, verificaciones de salud de los nodos, estrategias de respaldo",
+    "nodes": [
+     "job-coordinator",
+     "resource-manager",
+     "fault-tolerance"
+    ],
+    "edges": [
+     "e-coordinator-resource",
+     "e-coordinator-fault"
+    ]
+   },
+   {
+    "title": "Particionamiento de datos",
+    "description": "El dataset grande se particiona en chunks más pequeños y manejables para su procesamiento en paralelo.",
+    "input": "Particionamiento de datos: dividir el dataset de 100TB en chunks de tamaño óptimo para el procesamiento distribuido",
+    "nodes": [
+     "data-partitioner",
+     "performance-metrics"
+    ],
+    "edges": [
+     "e-coordinator-partitioner",
+     "e-metrics-partitioner"
+    ]
+   },
+   {
+    "title": "Planificación de tareas",
+    "description": "El planificador de tareas distribuye las tareas map entre los nodos worker disponibles.",
+    "input": "Planificación de tareas: asignar tareas map a los nodos worker según la localidad de datos y la disponibilidad de recursos",
+    "nodes": [
+     "task-scheduler",
+     "progress-monitor"
+    ],
+    "edges": [
+     "e-coordinator-scheduler",
+     "e-monitor-scheduler"
+    ]
+   },
+   {
+    "title": "Distribución de chunks de datos",
+    "description": "Los chunks de datos se distribuyen a los nodos de procesamiento asignados.",
+    "input": "Distribución de datos: transferir los chunks a los nodos worker asignados con optimización de localidad",
+    "nodes": [
+     "chunk-1",
+     "chunk-2",
+     "chunk-3",
+     "chunk-4",
+     "data-locality"
+    ],
+    "edges": [
+     "e-partitioner-chunk1",
+     "e-partitioner-chunk2",
+     "e-partitioner-chunk3",
+     "e-partitioner-chunk4",
+     "e-locality-chunks"
+    ]
+   },
+   {
+    "title": "Ejecución de la fase map",
+    "description": "Los map workers procesan en paralelo los chunks de datos asignados.",
+    "input": "Procesamiento map: extraer pares clave-valor de los logs de servidores web (direcciones IP, user agents, marcas de tiempo)",
+    "nodes": [
+     "map-worker-1",
+     "map-worker-2",
+     "map-worker-3",
+     "map-worker-4",
+     "load-balancer"
+    ],
+    "edges": [
+     "e-scheduler-map1",
+     "e-scheduler-map2",
+     "e-scheduler-map3",
+     "e-scheduler-map4",
+     "e-chunk1-map1",
+     "e-chunk2-map2",
+     "e-chunk3-map3",
+     "e-chunk4-map4",
+     "e-balancer-maps"
+    ]
+   },
+   {
+    "title": "Generación de la salida de map",
+    "description": "Los map workers generan pares clave-valor intermedios con agregación local opcional.",
+    "input": "Salida de map: pares clave-valor con combinación y ordenamiento local para una fase reduce eficiente",
+    "nodes": [
+     "map-output-1",
+     "combiner"
+    ],
+    "edges": [
+     "e-maps-output",
+     "e-map3-combiner"
+    ]
+   },
+   {
+    "title": "Almacenamiento intermedio",
+    "description": "Las salidas de map se guardan en un almacenamiento intermedio con tolerancia a fallas.",
+    "input": "Almacenamiento intermedio: almacenamiento persistente de las salidas de map con replicación y checksums",
+    "nodes": [
+     "intermediate-storage"
+    ],
+    "edges": [
+     "e-map1-intermediate",
+     "e-map2-intermediate",
+     "e-map3-intermediate",
+     "e-map4-intermediate",
+     "e-combiner-intermediate"
+    ]
+   },
+   {
+    "title": "Fase de shuffle y ordenamiento",
+    "description": "Los datos intermedios se redistribuyen (shuffle) y se ordenan por clave para la fase reduce.",
+    "input": "Shuffle y ordenamiento: redistribuir los datos por clave y ordenarlos para un procesamiento reduce eficiente",
+    "nodes": [
+     "shuffle-sort"
+    ],
+    "edges": [
+     "e-intermediate-shuffle"
+    ]
+   },
+   {
+    "title": "Ejecución de la fase reduce",
+    "description": "Los reduce workers agregan los valores de cada clave para producir los resultados finales.",
+    "input": "Procesamiento reduce: agregar los datos de comportamiento de usuarios, calcular estadísticas, generar hallazgos",
+    "nodes": [
+     "reduce-worker-1",
+     "reduce-worker-2",
+     "reduce-worker-3"
+    ],
+    "edges": [
+     "e-shuffle-reduce1",
+     "e-shuffle-reduce2",
+     "e-shuffle-reduce3"
+    ]
+   },
+   {
+    "title": "Agregación y validación de resultados",
+    "description": "Las salidas finales se recopilan, se validan y se almacenan para su entrega.",
+    "input": "",
+    "nodes": [
+     "final-output",
+     "result-validator"
+    ],
+    "edges": [
+     "e-reduce1-output",
+     "e-reduce2-output",
+     "e-reduce3-output",
+     "e-output-validator"
+    ]
+   }
+  ]
+ }
+}

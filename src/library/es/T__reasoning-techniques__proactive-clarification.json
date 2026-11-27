@@ -1,0 +1,325 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "proactive-clarification",
+ "name": "Proactive Clarification & Active Disambiguation(PCAD)",
+ "icon": "❓",
+ "complexity": "medium",
+ "description": "Antes de planificar o actuar ante una solicitud poco especificada, el agente primero decide si debe preguntar (detección de ambigüedad), luego genera la pregunta aclaratoria más informativa posible (planteada como la ganancia de información esperada sobre las interpretaciones plausibles) y solo entonces se compromete con un plan. Los LLM estándar reconocen la ambigüedad cuando se les pregunta explícitamente, pero en la gran mayoría de los casos responden por defecto con una única suposición silenciosa, por lo que preguntar es un comportamiento explícito que se entrena o se induce con el prompt. Se distingue de mixed-initiative-interface-patterns, que trata sobre el cambio de control en la UI, y de human-in-the-loop, que aprueba una acción ya elegida en lugar de desambiguar la intención.",
+ "features": [
+  "Un detector de ambigüedad decide si realmente hace falta una pregunta",
+  "Selecciona la pregunta con la mayor ganancia de información esperada",
+  "Una sola pregunta bien elegida puede separar muchas interpretaciones a la vez",
+  "Responde directamente cuando la solicitud ya no es ambigua",
+  "Evita fallas silenciosas por elegir una sola interpretación ante entradas vagas",
+  "Es un comportamiento explícito, porque los modelos reconocen la ambigüedad pero rara vez la expresan"
+ ],
+ "tldr": {
+  "what": "El agente detecta ambigüedad en una solicitud y hace una pregunta de alta información antes de actuar, en lugar de suponer en silencio una única interpretación.",
+  "when": "Las solicitudes están poco especificadas o son vagas, las acciones son costosas o difíciles de revertir, y una aclaración puede eliminar muchos caminos equivocados a la vez.",
+  "watchOut": "Los usuarios pueden percibir las aclaraciones repetidas como ineficientes; equilibra el preguntar frente al exceso de interrogatorio en solicitudes realmente obvias."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Aclaración proactiva y desambiguación activa",
+  "description": "Ante una solicitud de reserva poco especificada, el agente primero detecta la ambigüedad, decide que una acción costosa justifica preguntar, selecciona la única pregunta con mayor ganancia de información esperada y solo entonces se compromete, evitando la suposición silenciosa y equivocada que haría un LLM por defecto.",
+  "nodes": [
+   {
+    "id": "request",
+    "label": "🎯 Solicitud\n\"Resérvame un vuelo a Springfield\"",
+    "x": 350,
+    "y": 30,
+    "w": 300
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente\nPlanificador proactivo",
+    "x": 360,
+    "y": 120,
+    "w": 220
+   },
+   {
+    "id": "ambiguity-detector",
+    "label": "🔍 Detector de ambigüedad\n¿Cuántas interpretaciones válidas hay?",
+    "x": 110,
+    "y": 215,
+    "w": 230
+   },
+   {
+    "id": "cost-check",
+    "label": "💰 Verificación del costo de la acción\nLa reserva es costosa y difícil de revertir",
+    "x": 600,
+    "y": 215,
+    "w": 230
+   },
+   {
+    "id": "candidates",
+    "label": "🗺️ Interpretaciones\n5 Springfields con aeropuerto:\nSPI IL, SGF MO, BDL MA, EUG OR, DAY OH",
+    "x": 350,
+    "y": 310,
+    "w": 280
+   },
+   {
+    "id": "decide-to-ask",
+    "label": "❓ Decide preguntar\nMuchas interpretaciones + acción costosa -> PREGUNTAR",
+    "x": 330,
+    "y": 415,
+    "w": 250
+   },
+   {
+    "id": "silent-guess",
+    "label": "⚠️ Suposición silenciosa (LLM por defecto)\nAsume la más poblada -> SPI (IL)",
+    "x": 640,
+    "y": 415,
+    "w": 240
+   },
+   {
+    "id": "question-selector",
+    "label": "🧮 Selector de preguntas\nMaximiza la ganancia de información esperada",
+    "x": 330,
+    "y": 510,
+    "w": 250
+   },
+   {
+    "id": "wrong-outcome",
+    "label": "❌ Ciudad equivocada\nReservó SPI, reversión costosa",
+    "x": 640,
+    "y": 510,
+    "w": 220
+   },
+   {
+    "id": "weak-q1",
+    "label": "💤 \"¿Cuál Springfield?\"\nabierta, poca estructura",
+    "x": 40,
+    "y": 605,
+    "w": 210
+   },
+   {
+    "id": "weak-q2",
+    "label": "💤 \"¿Te refieres a IL?\"\ndescarta solo 1 de 5",
+    "x": 300,
+    "y": 605,
+    "w": 210
+   },
+   {
+    "id": "best-q",
+    "label": "✅ \"¿IL, MO, MA, OR u OH?\"\nsepara las 5 a la vez",
+    "x": 560,
+    "y": 605,
+    "w": 240
+   },
+   {
+    "id": "user-answer",
+    "label": "💬 El usuario responde\n\"MO\"",
+    "x": 330,
+    "y": 700,
+    "w": 200
+   },
+   {
+    "id": "commit",
+    "label": "📌 Compromete el plan\nReserva Springfield-Branson (SGF)",
+    "x": 300,
+    "y": 790,
+    "w": 230
+   },
+   {
+    "id": "output",
+    "label": "✨ Reserva correcta\nSGF, correcta al primer intento",
+    "x": 570,
+    "y": 790,
+    "w": 220
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-agent",
+    "s": "request",
+    "t": "agent",
+    "label": "Solicitud"
+   },
+   {
+    "id": "agent-ambiguity",
+    "s": "agent",
+    "t": "ambiguity-detector",
+    "label": "Detectar"
+   },
+   {
+    "id": "agent-cost",
+    "s": "agent",
+    "t": "cost-check",
+    "label": "Evaluar costo"
+   },
+   {
+    "id": "ambiguity-candidates",
+    "s": "ambiguity-detector",
+    "t": "candidates",
+    "label": "Enumerar"
+   },
+   {
+    "id": "candidates-decide",
+    "s": "candidates",
+    "t": "decide-to-ask",
+    "label": ""
+   },
+   {
+    "id": "cost-decide",
+    "s": "cost-check",
+    "t": "decide-to-ask",
+    "label": "costosa + irreversible"
+   },
+   {
+    "id": "decide-selector",
+    "s": "decide-to-ask",
+    "t": "question-selector",
+    "label": "PREGUNTAR"
+   },
+   {
+    "id": "selector-weak1",
+    "s": "question-selector",
+    "t": "weak-q1",
+    "label": "poca ganancia"
+   },
+   {
+    "id": "selector-weak2",
+    "s": "question-selector",
+    "t": "weak-q2",
+    "label": "separa 1 de 5"
+   },
+   {
+    "id": "selector-best",
+    "s": "question-selector",
+    "t": "best-q",
+    "label": "máxima ganancia de información"
+   },
+   {
+    "id": "best-user",
+    "s": "best-q",
+    "t": "user-answer",
+    "label": "preguntada"
+   },
+   {
+    "id": "user-commit",
+    "s": "user-answer",
+    "t": "commit",
+    "label": "MO"
+   },
+   {
+    "id": "commit-output",
+    "s": "commit",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "candidates-silent",
+    "s": "candidates",
+    "t": "silent-guess",
+    "label": "sin aclaración"
+   },
+   {
+    "id": "silent-wrong",
+    "s": "silent-guess",
+    "t": "wrong-outcome",
+    "label": "ciudad equivocada"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud ambigua",
+    "description": "El usuario pide reservar un vuelo a Springfield, un nombre que comparten muchas ciudades de EE. UU.",
+    "input": "",
+    "nodes": [
+     "request",
+     "agent"
+    ],
+    "edges": [
+     "request-agent"
+    ]
+   },
+   {
+    "title": "Detectar la ambigüedad y enumerar",
+    "description": "El detector de ambigüedad encuentra que cinco Springfields tienen aeropuertos comerciales, así que la solicitud tiene múltiples interpretaciones válidas.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "ambiguity-detector",
+     "candidates"
+    ],
+    "edges": [
+     "agent-ambiguity",
+     "ambiguity-candidates"
+    ]
+   },
+   {
+    "title": "Evaluar el costo y decidir preguntar",
+    "description": "Como la reserva es costosa y difícil de revertir, y las interpretaciones son muchas, el agente decide preguntar en lugar de suponer.",
+    "input": "",
+    "nodes": [
+     "cost-check",
+     "candidates",
+     "decide-to-ask"
+    ],
+    "edges": [
+     "agent-cost",
+     "candidates-decide",
+     "cost-decide"
+    ]
+   },
+   {
+    "title": "Seleccionar la mejor pregunta",
+    "description": "El selector de preguntas compara las candidatas según la ganancia de información esperada: las preguntas abiertas o sobre una sola ciudad aportan poco, mientras que una pregunta sobre las cinco ciudades las separa todas a la vez.",
+    "input": "",
+    "nodes": [
+     "question-selector",
+     "weak-q1",
+     "weak-q2",
+     "best-q"
+    ],
+    "edges": [
+     "decide-selector",
+     "selector-weak1",
+     "selector-weak2",
+     "selector-best"
+    ]
+   },
+   {
+    "title": "Preguntar y obtener la respuesta",
+    "description": "El agente hace la única pregunta más informativa posible y el usuario responde \"MO\".",
+    "input": "",
+    "nodes": [
+     "best-q",
+     "user-answer"
+    ],
+    "edges": [
+     "best-user"
+    ]
+   },
+   {
+    "title": "Comprometerse con el plan correcto",
+    "description": "Con la intención desambiguada, el agente reserva Springfield-Branson (SGF), correctamente al primer intento.",
+    "input": "",
+    "nodes": [
+     "user-answer",
+     "commit",
+     "output"
+    ],
+    "edges": [
+     "user-commit",
+     "commit-output"
+    ]
+   },
+   {
+    "title": "Contraste: la suposición silenciosa falla",
+    "description": "Un LLM por defecto omite la aclaración, asume la coincidencia más poblada, reserva Springfield IL (SPI) y termina en la ciudad equivocada con una reversión costosa.",
+    "input": "",
+    "nodes": [
+     "candidates",
+     "silent-guess",
+     "wrong-outcome"
+    ],
+    "edges": [
+     "candidates-silent",
+     "silent-wrong"
+    ]
+   }
+  ]
+ }
+}

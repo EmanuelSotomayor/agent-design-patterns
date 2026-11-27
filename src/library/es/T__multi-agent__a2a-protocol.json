@@ -1,0 +1,652 @@
+{
+ "cat": "multi-agent",
+ "slug": "a2a-protocol",
+ "name": "A2A Protocol (Agent2Agent)(A2A)",
+ "icon": "🤝",
+ "complexity": "high",
+ "description": "Estándar abierto de interoperabilidad entre agentes de IA que permite una colaboración fluida entre plataformas",
+ "features": [
+  "Interoperabilidad universal",
+  "Seguridad de nivel empresarial",
+  "Comunicación multimodal",
+  "Soporte para tareas de larga duración",
+  "Actualizaciones de estado en tiempo real",
+  "Compatibilidad entre plataformas"
+ ],
+ "tldr": {
+  "what": "Los agentes descubren las capacidades de los demás mediante tarjetas estandarizadas y luego intercambian mensajes con IDs de tarea para coordinar el trabajo entre plataformas.",
+  "when": "Varios agentes independientes de sistemas diferentes necesitan colaborar en tareas de larga duración con sincronización de estado en tiempo real.",
+  "watchOut": "La alta complejidad de implementación y la sobrecarga operativa suelen superar los beneficios, a menos que realmente necesites interoperabilidad entre plataformas a escala."
+ },
+ "overview": {
+  "pattern": "Estándar abierto que permite una interoperabilidad fluida entre agentes de IA de distintas plataformas",
+  "why": "Elimina la dependencia de proveedores, habilita ecosistemas de agentes y acelera la adopción empresarial con una comunicación estandarizada",
+  "insight": "Descubrimiento universal mediante Agent Card + autenticación OAuth + correlación por Task ID + streaming SSE = colaboración entre plataformas",
+  "impl": [
+   {
+    "t": "Descubrir",
+    "d": "Obtén la Agent Card desde /.well-known/agent.json"
+   },
+   {
+    "t": "Autenticar",
+    "d": "Intercambio de OAuth 2.0 o de API key"
+   },
+   {
+    "t": "Iniciar",
+    "d": "POST /tasks con un Task ID único"
+   },
+   {
+    "t": "Hacer streaming",
+    "d": "SSE para actualizaciones de estado en tiempo real"
+   },
+   {
+    "t": "Monitorear",
+    "d": "Sigue el progreso y maneja las fallas"
+   }
+  ],
+  "example": "discover() → auth() → initiate_task() → stream_updates() → aggregate_results()",
+  "dos": [
+   "Usa el formato estándar de Agent Card para descubrir capacidades",
+   "Implementa autenticación OAuth 2.0 o JWT adecuada",
+   "Soporta Server-Sent Events para actualizaciones en tiempo real",
+   "Usa Task IDs únicos para la correlación y el seguimiento",
+   "Maneja las fallas de red con backoff exponencial",
+   "Implementa versionado de mensajes para mantener la compatibilidad",
+   "Usa contratos basados primero en esquemas para mensajes y artefactos",
+   "Evita bucles circulares entre agentes con límites de cantidad de saltos"
+  ],
+  "donts": [
+   "Codificar de forma rígida los endpoints o las capacidades de los agentes",
+   "Enviar datos sensibles sin cifrar",
+   "Ignorar la gestión del estado del ciclo de vida de las tareas",
+   "Bloquear con llamadas síncronas a agentes remotos",
+   "Omitir la validación de capacidades antes de delegar tareas",
+   "Usar tokens de larga duración o con permisos demasiado amplios"
+  ],
+  "use": [
+   "Colaboración de agentes entre plataformas",
+   "Sistemas empresariales con múltiples proveedores",
+   "Ecosistemas de agentes escalables",
+   "Necesidades de interoperabilidad estandarizada",
+   "Tareas colaborativas de larga duración",
+   "Coordinación de agentes en tiempo real"
+  ],
+  "avoid": [
+   "Despliegues en una sola plataforma",
+   "Workflows simples de un solo agente",
+   "Requisitos de latencia ultrabaja",
+   "Aplicaciones exclusivamente offline",
+   "Fases de prototipo o desarrollo",
+   "Sistemas de agentes fuertemente acoplados"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de interoperabilidad",
+    "d": "% de tareas entre plataformas exitosas"
+   },
+   {
+    "n": "Latencia de descubrimiento",
+    "d": "Tiempo para obtener y analizar la Agent Card"
+   },
+   {
+    "n": "Éxito de autenticación",
+    "d": "% de handshakes de autenticación exitosos"
+   },
+   {
+    "n": "Tasa de finalización de tareas",
+    "d": "% de tareas completadas de principio a fin"
+   },
+   {
+    "n": "Actualizaciones en tiempo real",
+    "d": "Tasa de entrega de mensajes SSE"
+   },
+   {
+    "n": "Resiliencia de red",
+    "d": "% de recuperación ante fallas de conexión"
+   },
+   {
+    "n": "Cumplimiento del protocolo",
+    "d": "% de mensajes que siguen la especificación A2A"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación entre plataformas",
+    "d": "Agente de investigación (LangChain) → Agente de análisis (Google ADK) → Agente de visualización (personalizado)"
+   },
+   {
+    "n": "Integración empresarial",
+    "d": "Agente de Salesforce ↔ agente de ServiceNow ↔ agente de Slack para workflows automatizados"
+   },
+   {
+    "n": "Ecosistemas multiproveedor",
+    "d": "Un agente de cliente (Proveedor A) delega en agentes especialistas (Proveedores B, C, D)"
+   },
+   {
+    "n": "Computación distribuida",
+    "d": "Balanceo de carga entre instancias de agentes en distintos proveedores de nube"
+   },
+   {
+    "n": "Colaboración en tiempo real",
+    "d": "Varios agentes transmiten actualizaciones mientras procesan documentos compartidos"
+   },
+   {
+    "n": "Marketplaces de agentes",
+    "d": "Descubrimiento dinámico e integración de agentes especialistas de terceros"
+   },
+   {
+    "n": "Aprendizaje federado",
+    "d": "Agentes que comparten actualizaciones del modelo preservando la localidad de los datos"
+   },
+   {
+    "n": "Coordinación de la cadena de suministro",
+    "d": "Agentes de proveedores, fabricantes y logística que se coordinan mediante A2A"
+   }
+  ]
+ },
+ "flow": {
+  "title": "A2A Protocol (Agent2Agent)",
+  "description": "Un protocolo para la comunicación y coordinación entre agentes en sistemas multiagente",
+  "nodes": [
+   {
+    "id": "enterprise-request",
+    "label": "🎯 Solicitud empresarial\n\"Analiza los datos de mercado y crea una estrategia de ventas\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "a2a-orchestrator",
+    "label": "🌐 Orquestador del protocolo A2A\nDescubrimiento y coordinación de agentes",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "agent-registry",
+    "label": "📚 Registro de agentes\nAgent Cards y capacidades",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "capability-matcher",
+    "label": "🔍 Comparador de capacidades\nEmpareja los requisitos de la tarea",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "auth-manager",
+    "label": "🔐 Gestor de autenticación\nAutenticación OpenAPI",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "modality-negotiator",
+    "label": "💬 Negociador de modalidades\nTexto, formularios, multimedia, etc.",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "salesforce-agent",
+    "label": "☁️ Agente de Salesforce\nAnalítica de CRM\nAgent Card: v2.1",
+    "x": 50,
+    "y": 380,
+    "w": 150
+   },
+   {
+    "id": "azure-agent",
+    "label": "🔷 Agente de Azure AI\nAnálisis de datos\nAgent Card: v1.8",
+    "x": 200,
+    "y": 380,
+    "w": 150
+   },
+   {
+    "id": "aws-agent",
+    "label": "🟠 Agente de AWS Q\nInteligencia de mercado\nAgent Card: v3.0",
+    "x": 350,
+    "y": 380,
+    "w": 150
+   },
+   {
+    "id": "google-agent",
+    "label": "🔵 Agente de Google\nGeneración de estrategias\nAgent Card: v2.5",
+    "x": 500,
+    "y": 380,
+    "w": 150
+   },
+   {
+    "id": "servicenow-agent",
+    "label": "🟢 Agente de ServiceNow\nAutomatización de workflows\nAgent Card: v1.2",
+    "x": 650,
+    "y": 380,
+    "w": 150
+   },
+   {
+    "id": "jsonrpc-handler",
+    "label": "📡 Manejador JSON-RPC\nMensajería estandarizada",
+    "x": 150,
+    "y": 520,
+    "w": 180
+   },
+   {
+    "id": "http-sse-transport",
+    "label": "🚀 Transporte HTTP/SSE\nStreaming y notificaciones push",
+    "x": 350,
+    "y": 520,
+    "w": 180
+   },
+   {
+    "id": "session-manager",
+    "label": "🔄 Gestor de sesiones\nCoordinación de tareas de larga duración",
+    "x": 550,
+    "y": 520,
+    "w": 180
+   },
+   {
+    "id": "task-coordinator",
+    "label": "📋 Coordinador de tareas\nDistribuye y sigue las subtareas",
+    "x": 100,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "context-sharer",
+    "label": "🔗 Compartidor de contexto\nIntercambio seguro de información",
+    "x": 300,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "privacy-guardian",
+    "label": "🛡️ Guardián de privacidad\nSin exposición del estado interno",
+    "x": 500,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "result-aggregator",
+    "label": "📊 Agregador de resultados\nCombina las salidas de los agentes",
+    "x": 700,
+    "y": 650,
+    "w": 180
+   },
+   {
+    "id": "mcp-bridge",
+    "label": "🌉 Puente MCP\nConecta con herramientas y fuentes de datos",
+    "x": 250,
+    "y": 780,
+    "w": 200
+   },
+   {
+    "id": "error-handler",
+    "label": "⚠️ Manejador de errores\nLógica de respaldo y reintentos",
+    "x": 450,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "audit-logger",
+    "label": "📝 Registro de auditoría\nCumplimiento y seguimiento",
+    "x": 650,
+    "y": 780,
+    "w": 180
+   },
+   {
+    "id": "output",
+    "label": "✨ Resultado unificado\nEstrategia de ventas integral a partir de varios agentes",
+    "x": 400,
+    "y": 900,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-orchestrator",
+    "s": "enterprise-request",
+    "t": "a2a-orchestrator",
+    "label": ""
+   },
+   {
+    "id": "orchestrator-registry",
+    "s": "a2a-orchestrator",
+    "t": "agent-registry",
+    "label": "Descubrir"
+   },
+   {
+    "id": "orchestrator-matcher",
+    "s": "a2a-orchestrator",
+    "t": "capability-matcher",
+    "label": "Emparejar"
+   },
+   {
+    "id": "orchestrator-auth",
+    "s": "a2a-orchestrator",
+    "t": "auth-manager",
+    "label": "Autenticar"
+   },
+   {
+    "id": "orchestrator-modality",
+    "s": "a2a-orchestrator",
+    "t": "modality-negotiator",
+    "label": "Negociar"
+   },
+   {
+    "id": "registry-salesforce",
+    "s": "agent-registry",
+    "t": "salesforce-agent",
+    "label": "Tarjeta"
+   },
+   {
+    "id": "registry-azure",
+    "s": "agent-registry",
+    "t": "azure-agent",
+    "label": "Tarjeta"
+   },
+   {
+    "id": "registry-aws",
+    "s": "agent-registry",
+    "t": "aws-agent",
+    "label": "Tarjeta"
+   },
+   {
+    "id": "registry-google",
+    "s": "agent-registry",
+    "t": "google-agent",
+    "label": "Tarjeta"
+   },
+   {
+    "id": "registry-servicenow",
+    "s": "agent-registry",
+    "t": "servicenow-agent",
+    "label": "Tarjeta"
+   },
+   {
+    "id": "salesforce-jsonrpc",
+    "s": "salesforce-agent",
+    "t": "jsonrpc-handler",
+    "label": ""
+   },
+   {
+    "id": "azure-jsonrpc",
+    "s": "azure-agent",
+    "t": "jsonrpc-handler",
+    "label": ""
+   },
+   {
+    "id": "aws-http",
+    "s": "aws-agent",
+    "t": "http-sse-transport",
+    "label": ""
+   },
+   {
+    "id": "google-http",
+    "s": "google-agent",
+    "t": "http-sse-transport",
+    "label": ""
+   },
+   {
+    "id": "servicenow-session",
+    "s": "servicenow-agent",
+    "t": "session-manager",
+    "label": ""
+   },
+   {
+    "id": "jsonrpc-coordinator",
+    "s": "jsonrpc-handler",
+    "t": "task-coordinator",
+    "label": ""
+   },
+   {
+    "id": "http-context",
+    "s": "http-sse-transport",
+    "t": "context-sharer",
+    "label": ""
+   },
+   {
+    "id": "session-privacy",
+    "s": "session-manager",
+    "t": "privacy-guardian",
+    "label": ""
+   },
+   {
+    "id": "coordinator-aggregator",
+    "s": "task-coordinator",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "context-aggregator",
+    "s": "context-sharer",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "privacy-aggregator",
+    "s": "privacy-guardian",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "coordinator-mcp",
+    "s": "task-coordinator",
+    "t": "mcp-bridge",
+    "label": "Herramientas"
+   },
+   {
+    "id": "aggregator-error",
+    "s": "result-aggregator",
+    "t": "error-handler",
+    "label": "Validar"
+   },
+   {
+    "id": "aggregator-audit",
+    "s": "result-aggregator",
+    "t": "audit-logger",
+    "label": "Registrar"
+   },
+   {
+    "id": "mcp-output",
+    "s": "mcp-bridge",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "error-output",
+    "s": "error-handler",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "audit-output",
+    "s": "audit-logger",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "salesforce-azure",
+    "s": "salesforce-agent",
+    "t": "azure-agent",
+    "label": "A2A"
+   },
+   {
+    "id": "azure-aws",
+    "s": "azure-agent",
+    "t": "aws-agent",
+    "label": "A2A"
+   },
+   {
+    "id": "aws-google",
+    "s": "aws-agent",
+    "t": "google-agent",
+    "label": "A2A"
+   },
+   {
+    "id": "google-servicenow",
+    "s": "google-agent",
+    "t": "servicenow-agent",
+    "label": "A2A"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud empresarial",
+    "description": "Tarea compleja que requiere la colaboración de varios agentes",
+    "input": "",
+    "nodes": [
+     "enterprise-request"
+    ],
+    "edges": [
+     "request-orchestrator"
+    ]
+   },
+   {
+    "title": "Descubrimiento A2A",
+    "description": "Descubre los agentes disponibles y sus capacidades mediante Agent Cards",
+    "input": "",
+    "nodes": [
+     "a2a-orchestrator",
+     "agent-registry",
+     "capability-matcher"
+    ],
+    "edges": [
+     "orchestrator-registry",
+     "orchestrator-matcher"
+    ]
+   },
+   {
+    "title": "Autenticación y negociación",
+    "description": "Autentica a los agentes y negocia las modalidades de interacción",
+    "input": "",
+    "nodes": [
+     "auth-manager",
+     "modality-negotiator"
+    ],
+    "edges": [
+     "orchestrator-auth",
+     "orchestrator-modality"
+    ]
+   },
+   {
+    "title": "Registro de agentes",
+    "description": "Agentes de distintas plataformas se registran mediante Agent Cards",
+    "input": "",
+    "nodes": [
+     "agent-registry",
+     "salesforce-agent",
+     "azure-agent",
+     "aws-agent",
+     "google-agent",
+     "servicenow-agent"
+    ],
+    "edges": [
+     "registry-salesforce",
+     "registry-azure",
+     "registry-aws",
+     "registry-google",
+     "registry-servicenow"
+    ]
+   },
+   {
+    "title": "Comunicación entre plataformas",
+    "description": "Los agentes se comunican usando los estándares del protocolo A2A",
+    "input": "",
+    "nodes": [
+     "salesforce-agent",
+     "azure-agent",
+     "aws-agent",
+     "google-agent",
+     "servicenow-agent"
+    ],
+    "edges": [
+     "salesforce-azure",
+     "azure-aws",
+     "aws-google",
+     "google-servicenow"
+    ]
+   },
+   {
+    "title": "Manejo del protocolo",
+    "description": "Mensajería JSON-RPC y transporte HTTP/SSE para la comunicación",
+    "input": "",
+    "nodes": [
+     "jsonrpc-handler",
+     "http-sse-transport",
+     "session-manager"
+    ],
+    "edges": [
+     "salesforce-jsonrpc",
+     "azure-jsonrpc",
+     "aws-http",
+     "google-http",
+     "servicenow-session"
+    ]
+   },
+   {
+    "title": "Coordinación de tareas",
+    "description": "Distribuye tareas y comparte el contexto de forma segura entre agentes",
+    "input": "",
+    "nodes": [
+     "task-coordinator",
+     "context-sharer",
+     "privacy-guardian"
+    ],
+    "edges": [
+     "jsonrpc-coordinator",
+     "http-context",
+     "session-privacy"
+    ]
+   },
+   {
+    "title": "Agregación de resultados",
+    "description": "Combina las salidas de todos los agentes participantes",
+    "input": "",
+    "nodes": [
+     "result-aggregator",
+     "task-coordinator",
+     "context-sharer",
+     "privacy-guardian"
+    ],
+    "edges": [
+     "coordinator-aggregator",
+     "context-aggregator",
+     "privacy-aggregator"
+    ]
+   },
+   {
+    "title": "Integración con MCP",
+    "description": "Conecta con herramientas y fuentes de datos mediante Model Context Protocol",
+    "input": "",
+    "nodes": [
+     "mcp-bridge",
+     "error-handler",
+     "audit-logger"
+    ],
+    "edges": [
+     "coordinator-mcp",
+     "aggregator-error",
+     "aggregator-audit"
+    ]
+   },
+   {
+    "title": "Salida unificada",
+    "description": "Entrega un resultado integral a partir de la colaboración entre plataformas",
+    "input": "",
+    "nodes": [
+     "output",
+     "mcp-bridge",
+     "error-handler",
+     "audit-logger"
+    ],
+    "edges": [
+     "mcp-output",
+     "error-output",
+     "audit-output"
+    ]
+   }
+  ]
+ }
+}

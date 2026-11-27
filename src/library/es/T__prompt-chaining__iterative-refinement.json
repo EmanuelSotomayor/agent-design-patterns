@@ -1,0 +1,343 @@
+{
+ "cat": "prompt-chaining",
+ "slug": "iterative-refinement",
+ "name": "Iterative Refinement",
+ "icon": "🔄",
+ "complexity": "medium",
+ "description": "Aplica un refinamiento sistemático en múltiples pasadas, donde cada iteración se enfoca en mejoras de calidad específicas y unas pocas pasadas suelen capturar la mayor parte de las mejoras antes de llegar a rendimientos decrecientes; es esencial para pulir contenido y optimizar código",
+ "features": [
+  "Proceso de mejora en múltiples ciclos",
+  "Evaluación de calidad entre iteraciones",
+  "Seguimiento de mejoras incrementales",
+  "Evaluación de criterios de convergencia"
+ ],
+ "tldr": {
+  "what": "Ejecuta varias pasadas sobre el contenido, cada una orientada a mejoras específicas, hasta que la calidad se estanca o se cumplen los criterios.",
+  "when": "El contenido necesita pulirse, el código necesita optimizarse o la calidad de la salida debe superar lo que se logra en una sola pasada antes de la entrega.",
+  "watchOut": "Cada pasada cuesta tokens; detenerse demasiado pronto deja mejoras sin aprovechar, y continuar demasiado tiempo desperdicia presupuesto con mejoras mínimas."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón de refinamiento iterativo",
+  "description": "Muestra la mejora continua a través de múltiples ciclos de refinamiento con mejoras incrementales",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Tarea inicial\n\"Escribe un ensayo sobre energía renovable\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "draft",
+    "label": "Crear borrador inicial\nGenerar contenido base",
+    "x": 400,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "cycle1",
+    "label": "Ciclo de refinamiento 1\nEstructura y claridad",
+    "x": 200,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "cycle2",
+    "label": "Ciclo de refinamiento 2\nContenido y evidencia",
+    "x": 400,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "cycle3",
+    "label": "Ciclo de refinamiento 3\nEstilo y pulido",
+    "x": 600,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "convergence",
+    "label": "Verificación de convergencia\nEvaluar la tasa de mejora",
+    "x": 400,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "output",
+    "label": "Salida pulida\nContenido refinado de alta calidad",
+    "x": 400,
+    "y": 590,
+    "w": 220
+   },
+   {
+    "id": "structure-detail",
+    "label": "Enfoque en estructura\n• Introducción clara\n• Flujo lógico\n• Mejores transiciones",
+    "x": 50,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "content-detail",
+    "label": "Enfoque en contenido\n• Agregar evidencia\n• Incluir ejemplos\n• Fortalecer argumentos",
+    "x": 400,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "style-detail",
+    "label": "Enfoque en estilo\n• Mejorar la legibilidad\n• Corregir la gramática\n• Mejorar el tono",
+    "x": 750,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "quality-track",
+    "label": "Seguimiento de calidad\nBorrador: 4/10\nCiclo 1: 6/10\nCiclo 2: 7.5/10\nCiclo 3: 9/10",
+    "x": 800,
+    "y": 320,
+    "w": 140
+   },
+   {
+    "id": "criteria",
+    "label": "Criterios de parada\n• Umbral de calidad\n• Máximo de iteraciones\n• Rendimientos decrecientes",
+    "x": 650,
+    "y": 460,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-draft",
+    "s": "input",
+    "t": "draft",
+    "label": ""
+   },
+   {
+    "id": "e-draft-cycle1",
+    "s": "draft",
+    "t": "cycle1",
+    "label": ""
+   },
+   {
+    "id": "e-cycle1-cycle2",
+    "s": "cycle1",
+    "t": "cycle2",
+    "label": ""
+   },
+   {
+    "id": "e-cycle2-cycle3",
+    "s": "cycle2",
+    "t": "cycle3",
+    "label": ""
+   },
+   {
+    "id": "e-cycle3-convergence",
+    "s": "cycle3",
+    "t": "convergence",
+    "label": ""
+   },
+   {
+    "id": "e-convergence-output",
+    "s": "convergence",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "e-structure-cycle1",
+    "s": "structure-detail",
+    "t": "cycle1",
+    "label": ""
+   },
+   {
+    "id": "e-content-cycle2",
+    "s": "content-detail",
+    "t": "cycle2",
+    "label": ""
+   },
+   {
+    "id": "e-style-cycle3",
+    "s": "style-detail",
+    "t": "cycle3",
+    "label": ""
+   },
+   {
+    "id": "e-draft-quality",
+    "s": "draft",
+    "t": "quality-track",
+    "label": ""
+   },
+   {
+    "id": "e-quality-convergence",
+    "s": "quality-track",
+    "t": "convergence",
+    "label": ""
+   },
+   {
+    "id": "e-criteria-convergence",
+    "s": "criteria",
+    "t": "convergence",
+    "label": ""
+   },
+   {
+    "id": "e-cycle2-cycle1-loop",
+    "s": "cycle2",
+    "t": "cycle1",
+    "label": ""
+   },
+   {
+    "id": "e-cycle3-cycle2-loop",
+    "s": "cycle3",
+    "t": "cycle2",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Definición de la tarea inicial",
+    "description": "Define la tarea de creación de contenido que se refinará a lo largo de varias iteraciones.",
+    "input": "Escribe un ensayo completo sobre la energía renovable y su impacto en el cambio climático.",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Creación del borrador inicial",
+    "description": "Crea una versión base que cubra los requisitos básicos.",
+    "input": "Tema: Ensayo sobre energía renovable\nExtensión: 1000 palabras\nPúblico: Público general",
+    "nodes": [
+     "input",
+     "draft"
+    ],
+    "edges": [
+     "e-input-draft"
+    ]
+   },
+   {
+    "title": "Contenido base generado",
+    "description": "El primer borrador aporta el contenido fundamental, pero necesita refinarse.",
+    "input": "",
+    "nodes": [
+     "draft",
+     "quality-track"
+    ],
+    "edges": [
+     "e-draft-quality"
+    ]
+   },
+   {
+    "title": "Ciclo de refinamiento 1: Estructura y claridad",
+    "description": "Enfócate en mejorar la organización, el flujo y la estructura lógica.",
+    "input": "Enfoque del refinamiento: mejoras de estructura y claridad",
+    "nodes": [
+     "cycle1",
+     "structure-detail"
+    ],
+    "edges": [
+     "e-draft-cycle1",
+     "e-structure-cycle1"
+    ]
+   },
+   {
+    "title": "Mejoras de estructura aplicadas",
+    "description": "Se logró una mejor organización y una estructura argumentativa más clara.",
+    "input": "",
+    "nodes": [
+     "cycle1",
+     "cycle2"
+    ],
+    "edges": [
+     "e-cycle1-cycle2"
+    ]
+   },
+   {
+    "title": "Ciclo de refinamiento 2: Contenido y evidencia",
+    "description": "Agrega evidencia de respaldo y ejemplos, y fortalece los argumentos.",
+    "input": "Enfoque del refinamiento: profundidad del contenido y evidencia",
+    "nodes": [
+     "cycle2",
+     "content-detail"
+    ],
+    "edges": [
+     "e-content-cycle2"
+    ]
+   },
+   {
+    "title": "Mejoras de contenido agregadas",
+    "description": "Argumentos más sólidos con datos, ejemplos y evidencia integrados.",
+    "input": "",
+    "nodes": [
+     "cycle2",
+     "cycle3"
+    ],
+    "edges": [
+     "e-cycle2-cycle3"
+    ]
+   },
+   {
+    "title": "Ciclo de refinamiento 3: Estilo y pulido",
+    "description": "Enfócate en la legibilidad, la gramática, el tono y el pulido final.",
+    "input": "Enfoque del refinamiento: estilo de redacción y pulido",
+    "nodes": [
+     "cycle3",
+     "style-detail"
+    ],
+    "edges": [
+     "e-style-cycle3"
+    ]
+   },
+   {
+    "title": "Refinamientos de estilo aplicados",
+    "description": "Mejor legibilidad, un flujo más fluido y un acabado profesional.",
+    "input": "",
+    "nodes": [
+     "cycle3",
+     "convergence",
+     "quality-track"
+    ],
+    "edges": [
+     "e-cycle3-convergence",
+     "e-quality-convergence"
+    ]
+   },
+   {
+    "title": "Evaluación de convergencia",
+    "description": "Evalúa si seguir refinando produce rendimientos decrecientes.",
+    "input": "Progresión de calidad: 4→6→7.5→9\nTasa de mejora: 2→1.5→1.5 (decreciente)\nObjetivo: 8+ alcanzado",
+    "nodes": [
+     "convergence",
+     "criteria"
+    ],
+    "edges": [
+     "e-criteria-convergence"
+    ]
+   },
+   {
+    "title": "Polinización cruzada iterativa",
+    "description": "Los ciclos posteriores pueden retroalimentar a los anteriores para lograr una mejora integral.",
+    "input": "Los hallazgos de estilo mejoran la estructura y los de contenido mejoran la claridad",
+    "nodes": [
+     "cycle1",
+     "cycle2",
+     "cycle3"
+    ],
+    "edges": [
+     "e-cycle2-cycle1-loop",
+     "e-cycle3-cycle2-loop"
+    ]
+   },
+   {
+    "title": "Salida refinada completa",
+    "description": "El refinamiento en múltiples ciclos produce contenido pulido y de alta calidad.",
+    "input": "",
+    "nodes": [
+     "output"
+    ],
+    "edges": [
+     "e-convergence-output"
+    ]
+   }
+  ]
+ }
+}

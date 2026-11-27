@@ -1,0 +1,413 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "reflective-mcts",
+ "name": "Reflective Monte Carlo Tree Search(R-MCTS)",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "MCTS mejorado con reflexión contrastiva para una mejor exploración",
+ "features": [
+  "Mecanismo de reflexión contrastiva",
+  "Estrategias de exploración mejoradas",
+  "Búsqueda que se mejora a sí misma",
+  "Expansión del árbol guiada por la calidad",
+  "Políticas de selección adaptativas",
+  "Mejoras que escalan según qué tan ramificado sea el espacio de búsqueda"
+ ],
+ "tldr": {
+  "what": "Expande un árbol de decisión muestreando rutas y luego reflexiona sobre los contrastes entre las ramas exitosas y las fallidas para guiar la exploración futura.",
+  "when": "Problemas estratégicos complejos que requieren explorar a fondo muchas opciones, en los que puedes evaluar soluciones parciales y aprender de sus diferencias.",
+  "watchOut": "El costo computacional crece rápidamente con la profundidad del árbol y el factor de ramificación, y a menudo supera las mejoras a menos que la reflexión pode de forma significativa el espacio de búsqueda."
+ },
+ "overview": {
+  "pattern": "Monte Carlo Tree Search mejorado con análisis reflexivo en cada fase para mejorar la calidad de las decisiones",
+  "why": "Combina la búsqueda sistemática en árbol con la autorreflexión para identificar y corregir errores de razonamiento durante la exploración",
+  "insight": "Seleccionar con reflexión → Expandir el razonamiento → Simular con evaluación de calidad → Reflexionar sobre los errores → Retropropagar los aprendizajes",
+  "impl": [
+   {
+    "t": "Selección",
+    "d": "Navega el árbol usando UCB1 + puntaje de reflexión"
+   },
+   {
+    "t": "Expansión",
+    "d": "Genera nuevos nodos hijos con razonamiento"
+   },
+   {
+    "t": "Simulación",
+    "d": "Rollout con evaluación reflexiva de la política"
+   },
+   {
+    "t": "Reflexión",
+    "d": "Analiza la calidad de la ruta y los errores de razonamiento"
+   },
+   {
+    "t": "Retropropagación",
+    "d": "Actualiza los valores con los aprendizajes de la reflexión"
+   }
+  ],
+  "example": "Selección UCB1 → Expandir con razonamiento → Simular → Reflexionar sobre los errores → Actualizar el árbol",
+  "dos": [
+   "Integra la reflexión en todas las fases de MCTS",
+   "Usa criterios de reflexión específicos del dominio",
+   "Equilibra la exploración frente a la sobrecarga de la reflexión",
+   "Mantén redes de reflexión y de valor separadas",
+   "Guarda en cache los resultados de la reflexión para estados similares"
+  ],
+  "donts": [
+   "Agregar reflexión sin métricas de calidad claras",
+   "Reflexionar en cada nodo (explosión computacional)",
+   "Usar una reflexión superficial que pasa por alto aprendizajes clave",
+   "Ignorar el feedback de la reflexión en selecciones futuras",
+   "Aplicar una profundidad de reflexión uniforme sin importar la incertidumbre"
+  ],
+  "use": [
+   "Dominios estratégicos complejos con consecuencias a largo plazo",
+   "Problemas que requieren corrección de errores y aprendizaje",
+   "Cuando la calidad de la simulación importa más que la velocidad",
+   "Dominios con criterios de reflexión claros",
+   "Razonamiento de varios pasos con errores que se acumulan"
+  ],
+  "avoid": [
+   "Problemas de búsqueda simples con evaluación clara",
+   "Aplicaciones en tiempo real con límites de latencia estrictos",
+   "Dominios que carecen de señales de reflexión significativas",
+   "Cuando el MCTS estándar ya funciona bien",
+   "Entornos altamente estocásticos"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de la solución",
+    "d": "Rendimiento frente a la línea base de MCTS estándar"
+   },
+   {
+    "n": "Precisión de la reflexión",
+    "d": "Corrección de las evaluaciones de calidad de las rutas"
+   },
+   {
+    "n": "Eficiencia de la búsqueda",
+    "d": "Mejora de calidad por simulación"
+   },
+   {
+    "n": "Tasa de corrección de errores",
+    "d": "Recuperación de rutas iniciales deficientes"
+   },
+   {
+    "n": "Sobrecarga computacional",
+    "d": "Costo adicional frente a las mejoras de calidad"
+   },
+   {
+    "n": "Transferencia del aprendizaje",
+    "d": "Reutilización del conocimiento de la reflexión entre problemas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA para juegos estratégicos",
+    "d": "Ajedrez/Go con reflexión sobre la evaluación de posiciones → Identificar jugadas débiles → Mejorar las selecciones futuras"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Generar una solución → Reflexionar sobre bugs/eficiencia → Retropropagar los aprendizajes → Mejores rutas de código"
+   },
+   {
+    "n": "Razonamiento matemático",
+    "d": "Explorar pasos de demostración → Reflexionar sobre la validez lógica → Corregir errores de razonamiento → Demostraciones más sólidas"
+   },
+   {
+    "n": "Estrategia de negocios",
+    "d": "Evaluar opciones estratégicas → Reflexionar sobre riesgos/supuestos → Actualizar los criterios de decisión → Estrategia óptima"
+   },
+   {
+    "n": "Planificación de investigación",
+    "d": "Diseñar experimentos → Reflexionar sobre fallas metodológicas → Mejorar el diseño de la investigación → Mejores resultados"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Reflective Monte Carlo Tree Search",
+  "description": "MCTS mejorado con reflexión contrastiva que aprende tanto de las rutas exitosas como de las fallidas para mejorar la exploración y la calidad de las decisiones",
+  "nodes": [
+   {
+    "id": "game-state",
+    "label": "♛ Posición de ajedrez\n\"Medio juego: juegan las blancas\nMaterial igualado\nLa seguridad del rey es crítica\"",
+    "x": 400,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "root-node",
+    "label": "🌳 Nodo raíz\nPosición actual\nVisitas: 0\nValor: desconocido",
+    "x": 400,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "move-a",
+    "label": "♞ Jugada A: Nf3\nVisitas: 150\nTasa de victoria: 45%",
+    "x": 200,
+    "y": 250,
+    "w": 150
+   },
+   {
+    "id": "move-b",
+    "label": "♝ Jugada B: Bc4\nVisitas: 200\nTasa de victoria: 52%",
+    "x": 400,
+    "y": 250,
+    "w": 150
+   },
+   {
+    "id": "move-c",
+    "label": "♜ Jugada C: 0-0-0\nVisitas: 100\nTasa de victoria: 38%",
+    "x": 600,
+    "y": 250,
+    "w": 150
+   },
+   {
+    "id": "simulation-bc4",
+    "label": "🎲 Simulación: Bc4\n\"Llevó a un error táctico\nen 8 jugadas → Derrota\"",
+    "x": 400,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "reflection-engine",
+    "label": "🔍 Motor de reflexión\n\"¿Por qué falló Bc4?\nAnalizando la ruta de decisión\ny los modos de fallo\"",
+    "x": 400,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "contrastive-analysis",
+    "label": "⚖️ Análisis contrastivo\n\"Bc4 expuso al rey\nvs Nf3 desarrolló con seguridad\nPatrón: desarrollo vs ataque\"",
+    "x": 150,
+    "y": 550,
+    "w": 220
+   },
+   {
+    "id": "failure-pattern",
+    "label": "❌ Patrón de fallo\n\"Los ataques prematuros\nsin seguridad del rey\ngeneran debilidades tácticas\"",
+    "x": 400,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "success-pattern",
+    "label": "✅ Patrón de éxito\n\"Primero un desarrollo\nsólido, luego atacar\ncuando la posición es segura\"",
+    "x": 650,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "enhanced-selection",
+    "label": "🧠 Selección mejorada\n\"Sesgo en contra de ataques riesgosos\nFavorecer jugadas sólidas\nExplorar variantes de Nf3\"",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "new-candidate",
+    "label": "🆕 Nueva jugada: Nf3\nGuiada por la reflexión\nVisitas: 300\nTasa de victoria: 58%",
+    "x": 100,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "avoided-move",
+    "label": "🚫 Evitada: Qh5\n\"La reflexión la marcó:\nataque prematuro\nsimilar al fallo de Bc4\"",
+    "x": 300,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "final-decision",
+    "label": "✅ Mejor jugada: Nf3\n\"El MCTS reflexivo encontró\nun desarrollo sólido\npor sobre ataques vistosos\"",
+    "x": 400,
+    "y": 850,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "game-state",
+    "t": "root-node",
+    "label": "inicializar"
+   },
+   {
+    "id": "e2a",
+    "s": "root-node",
+    "t": "move-a",
+    "label": "explorar"
+   },
+   {
+    "id": "e2b",
+    "s": "root-node",
+    "t": "move-b",
+    "label": "explorar"
+   },
+   {
+    "id": "e2c",
+    "s": "root-node",
+    "t": "move-c",
+    "label": "explorar"
+   },
+   {
+    "id": "e3",
+    "s": "move-b",
+    "t": "simulation-bc4",
+    "label": "simular"
+   },
+   {
+    "id": "e4",
+    "s": "simulation-bc4",
+    "t": "reflection-engine",
+    "label": "analizar el fallo"
+   },
+   {
+    "id": "e5a",
+    "s": "reflection-engine",
+    "t": "contrastive-analysis",
+    "label": "comparar jugadas"
+   },
+   {
+    "id": "e5b",
+    "s": "reflection-engine",
+    "t": "failure-pattern",
+    "label": "extraer el patrón"
+   },
+   {
+    "id": "e5c",
+    "s": "reflection-engine",
+    "t": "success-pattern",
+    "label": "identificar el éxito"
+   },
+   {
+    "id": "e6",
+    "s": "contrastive-analysis",
+    "t": "enhanced-selection",
+    "label": "guiar la exploración"
+   },
+   {
+    "id": "e7",
+    "s": "failure-pattern",
+    "t": "enhanced-selection",
+    "label": "sesgo en contra"
+   },
+   {
+    "id": "e8",
+    "s": "success-pattern",
+    "t": "enhanced-selection",
+    "label": "sesgo a favor"
+   },
+   {
+    "id": "e9a",
+    "s": "enhanced-selection",
+    "t": "new-candidate",
+    "label": "priorizar"
+   },
+   {
+    "id": "e9b",
+    "s": "enhanced-selection",
+    "t": "avoided-move",
+    "label": "evitar"
+   },
+   {
+    "id": "e10",
+    "s": "new-candidate",
+    "t": "final-decision",
+    "label": "mejor ruta"
+   },
+   {
+    "id": "e11",
+    "s": "enhanced-selection",
+    "t": "move-a",
+    "label": "volver a explorar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Exploración con MCTS estándar",
+    "description": "El MCTS tradicional explora tres jugadas candidatas (Nf3, Bc4, 0-0-0) mediante simulación, y Bc4 parece prometedora al inicio con una tasa de victoria del 52%.",
+    "input": "",
+    "nodes": [
+     "game-state",
+     "root-node",
+     "move-a",
+     "move-b",
+     "move-c"
+    ],
+    "edges": [
+     "e1",
+     "e2a",
+     "e2b",
+     "e2c"
+    ]
+   },
+   {
+    "title": "Simulación y detección de fallos",
+    "description": "La simulación profunda de Bc4 revela que lleva a un error táctico y a la derrota en 8 jugadas, pese a lo prometedora que parecía: un momento clave de aprendizaje.",
+    "input": "",
+    "nodes": [
+     "simulation-bc4"
+    ],
+    "edges": [
+     "e3"
+    ]
+   },
+   {
+    "title": "Motor de análisis reflexivo",
+    "description": "A diferencia del MCTS estándar, el sistema analiza POR QUÉ falló Bc4, examinando la ruta de decisión y extrayendo los modos de fallo para el aprendizaje futuro.",
+    "input": "",
+    "nodes": [
+     "reflection-engine"
+    ],
+    "edges": [
+     "e4"
+    ]
+   },
+   {
+    "title": "Aprendizaje contrastivo de patrones",
+    "description": "El sistema contrasta la fallida Bc4 (ataque prematuro) con la más segura Nf3 (desarrollo sólido) e identifica patrones clave: la seguridad del rey antes del ataque.",
+    "input": "",
+    "nodes": [
+     "contrastive-analysis",
+     "failure-pattern",
+     "success-pattern"
+    ],
+    "edges": [
+     "e5a",
+     "e5b",
+     "e5c"
+    ]
+   },
+   {
+    "title": "Estrategia de exploración mejorada",
+    "description": "Los aprendizajes de la reflexión guían la exploración futura: sesgo a favor de jugadas de desarrollo sólido, evitar ataques prematuros y priorizar patrones de seguridad del rey.",
+    "input": "",
+    "nodes": [
+     "enhanced-selection",
+     "new-candidate",
+     "avoided-move"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9a",
+     "e9b",
+     "e11"
+    ]
+   },
+   {
+    "title": "Decisión mejorada por la reflexión",
+    "description": "El MCTS mejorado encuentra Nf3 (tasa de victoria del 58%) como la opción óptima y evita jugadas riesgosas similares como Qh5 gracias a los patrones de fallo aprendidos.",
+    "input": "",
+    "nodes": [
+     "final-decision"
+    ],
+    "edges": [
+     "e10"
+    ]
+   }
+  ]
+ }
+}

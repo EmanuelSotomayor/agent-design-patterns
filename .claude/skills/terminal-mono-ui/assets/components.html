@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>terminal-mono-ui · hoja de componentes</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  body{margin:0;}
+  .sheet{max-width:1240px;margin:0 auto;padding:22px;}
+  .demo-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .label{font-size:11px;color:var(--t-text-3);margin:18px 0 8px;}
+</style>
+</head>
+<body class="t-root">
+<div class="sheet">
+
+  <!-- COMPONENT: brand -->
+  <a class="t-brand" href="#"><span class="t-logo" aria-hidden="true">&gt;_</span><h1>Nombre del producto</h1></a>
+
+  <!-- COMPONENT: tabs -->
+  <div class="label">tabs · menú principal (la activa se invierte en verde)</div>
+  <nav class="t-tabs" aria-label="Secciones">
+    <a class="t-tab" aria-current="page"><span class="t-n">~</span>Inicio</a>
+    <a class="t-tab"><span class="t-n">≡</span>Visión general</a>
+    <a class="t-tab"><span class="t-n">01</span>Prompt Chaining</a>
+    <a class="t-tab"><span class="t-n">02</span>Routing</a>
+    <a class="t-tab"><span class="t-n">/</span>Biblioteca</a>
+  </nav>
+
+  <!-- COMPONENT: pathbar -->
+  <div class="label">pathbar · prompt con la ruta actual y un comando que describe la vista</div>
+  <div class="t-pathbar"><span class="u">visitante@app</span>:<span class="p">~/patrones/01-prompt-chaining</span>$ <span class="c">./ejecutar --paso-a-paso</span></div>
+
+  <!-- COMPONENT: status-bar -->
+  <div class="label">status-bar · métricas calculadas a partir de los datos</div>
+  <div class="t-status" role="status"><span class="t-led" aria-hidden="true"></span><b>SISTEMA EN LÍNEA</b>
+    <span class="t-sep">│</span>12 patrones<span class="t-sep">│</span>288 técnicas<span class="t-right">offline · sin dependencias</span></div>
+
+  <!-- COMPONENT: hero -->
+  <div class="t-grid" style="margin-top:26px">
+    <div style="grid-column:1/8">
+      <div class="t-pathbar" style="margin-bottom:14px"><span class="u">visitante@app</span>:<span class="p">~</span>$ ./explorar --modo=aprendizaje</div>
+      <h2 style="font:700 clamp(38px,6vw,72px)/.98 var(--t-display);letter-spacing:-2px;margin:0 0 18px">Título<br>en tres<br><span class="t-acc">líneas</span><span class="t-cursor" aria-hidden="true"></span></h2>
+      <p class="t-muted" style="max-width:62ch">Párrafo de introducción. Las palabras clave van en <b style="color:var(--t-text)">negrita del color de texto principal</b>, no en el acento.</p>
+      <div class="demo-row" style="margin-top:20px">
+        <button class="t-btn is-primary"><span class="t-k">[↵]</span>acción principal</button>
+        <button class="t-btn"><span class="t-k">[≡]</span>acción secundaria</button>
+        <button class="t-btn"><span class="t-k">[/]</span>otra acción</button>
+      </div>
+    </div>
+    <!-- COMPONENT: terminal-log -->
+    <div style="grid-column:8/13">
+      <div class="t-term" style="min-height:260px">
+        <div class="t-term-bar"><span class="t-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="t-name">agent.log</span><span>· simulación</span>
+          <button class="t-btn is-sm" type="button" aria-pressed="false">❚❚ pausa</button></div>
+<pre class="t-log"><span class="hl">$ agent run --pattern orchestrator</span>
+<span class="ts">[00.41]</span> <span class="ok">[plan]  </span> orchestrator → 3 subtemas
+<span class="ts">[01.13]</span> <span class="in">[fan-out]</span> 3 workers en paralelo
+<span class="ts">[03.40]</span> <span class="in">[worker]</span> w3 <span class="wr">! timeout → reintento 1/3</span>
+<span class="ts">[04.22]</span> <span class="in">[worker]</span> w3 <span class="ok">✓ 2 fuentes</span>
+<span class="ts">[06.55]</span> <span class="er">[eval]  </span> score 6.4 &lt; 7.0 → refinar
+<span class="ts">[07.82]</span> <span class="ok">✓ completado</span> · 9 llamadas</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: section-header -->
+  <div class="t-sech"><span class="t-n">// 01</span><h3>Encabezado de sección</h3><span class="t-rule"></span><span class="t-meta">metadato</span></div>
+
+  <!-- COMPONENT: panel -->
+  <div class="t-grid">
+    <div class="t-panel is-link" style="grid-column:1/8" tabindex="0" role="link">
+      <div class="t-ptitle"><span><b>[01]</b> panel enlazable</span><span>meta</span></div>
+      <h4 style="margin:0 0 6px;font:700 17px var(--t-display)">Panel asimétrico (7 de 12 columnas)</h4>
+      <p class="t-muted" style="margin:0">Las marcas de esquina verdes identifican un panel. Hover: borde más claro y fondo elevado.</p>
+<pre class="t-dim" style="font-size:11px;margin:8px 0 0">topic --&gt; [outliner] --&gt; <span class="t-acc">[writer]</span> --&gt; post</pre>
+    </div>
+    <!-- COMPONENT: card-title -->
+    <div class="t-panel" style="grid-column:8/13">
+      <h3 class="t-card-title">Título de tarjeta</h3>
+      <p class="t-muted" style="margin:0 0 10px">Los títulos de tarjeta son comentarios de código en mayúsculas.</p>
+      <ul class="t-list-ok"><li>Recomendado</li></ul>
+      <ul class="t-list-bad"><li>Evitar</li></ul>
+    </div>
+  </div>
+
+  <!-- COMPONENT: badges -->
+  <div class="label">badges · etiqueta: valor (sin emojis)</div>
+  <div class="demo-row">
+    <span class="t-badge is-info">modelo: Sonnet 4.6</span><span class="t-badge is-tool">tool: web_search</span>
+    <span class="t-badge is-ok">evento: step_start</span><span class="t-badge is-warn">media</span><span class="t-badge is-err">alta</span>
+  </div>
+
+  <!-- COMPONENT: chips-search-segmented -->
+  <div class="label">input + segmented + chips</div>
+  <div class="demo-row"><input class="t-input" style="flex:1;min-width:220px" placeholder="Buscar…">
+    <div class="t-seg"><span class="is-on">Fuente A · 288</span><span>Fuente B · 41</span></div></div>
+  <div class="demo-row" style="margin-top:10px"><span class="t-chip">Grupo uno <small>65</small></span><span class="t-chip">Grupo dos <small>57</small></span></div>
+
+  <!-- COMPONENT: detail-tabs -->
+  <div class="label">detail-tabs</div>
+  <div class="t-dtabs"><span class="t-dtab is-on">[1] resumen</span><span class="t-dtab">[2] visualización del flujo</span></div>
+
+  <!-- COMPONENT: before-after -->
+  <div class="label">before-after · estado alrededor de una acción</div>
+  <div class="t-bc">
+    <div class="t-before"><h4>&lt;&lt; antes de la acción</h4><ul><li>Solo existe el tópico.</li></ul></div>
+    <div class="t-after"><h4>&gt;&gt; después de la acción</h4><ul><li>outline: título + 3-5 ítems.</li></ul></div>
+  </div>
+
+  <!-- COMPONENT: stats -->
+  <div class="t-sech"><span class="t-n">// 02</span><h3>Índice</h3><span class="t-rule"></span></div>
+  <div class="t-stats"><div><div class="v">12</div><div class="l">patrones</div></div><div><div class="v">288</div><div class="l">técnicas</div></div>
+    <div><div class="v">2.734</div><div class="l">líneas de código</div></div></div>
+
+  <div class="t-grid" style="margin-top:18px">
+    <!-- COMPONENT: tree -->
+    <div class="t-panel" style="grid-column:1/7"><div class="t-ptitle"><span><b>$ tree</b> catalogo/</span><span>2 grupos</span></div>
+<pre class="t-tree"><span class="d">reasoning-control-flow/</span> <span class="c"># Razonamiento</span>
+<span class="br">├──</span> <span class="f">prompt-chaining</span> <span class="n">(7)</span>
+<span class="br">└──</span> <span class="f">routing</span> <span class="n">(9)</span></pre></div>
+    <!-- COMPONENT: keys -->
+    <div class="t-panel" style="grid-column:7/13">
+      <table class="t-keys"><tr><td><kbd>→</kbd> <kbd>←</kbd></td><td>avanzar o retroceder</td></tr>
+        <tr><td><kbd>Espacio</kbd></td><td>reproducir / pausar</td></tr></table></div>
+  </div>
+
+  <!-- COMPONENT: code-viewer -->
+  <div class="label">code-viewer · líneas del paso actual resaltadas</div>
+  <div class="t-code">
+    <div class="ln-row"><span class="ln">151</span><span class="lc"><span class="tk-kw">def</span> <span class="tk-fn">_step_outline</span>(self, topic):</span></div>
+    <div class="ln-row is-hl"><span class="ln">152</span><span class="lc">    <span class="tk-kw">return</span> self._call_llm_text(<span class="tk-str">"system"</span>, topic)</span></div>
+    <div class="ln-row"><span class="ln">153</span><span class="lc"><span class="tk-cm"># comentario</span></span></div>
+  </div>
+
+  <!-- COMPONENT: diagram -->
+  <div class="label">diagram · nodos tipados + flecha activa + placa de etiqueta + controles</div>
+  <div class="t-panel" style="padding:0">
+    <svg viewBox="0 0 760 150" style="width:100%;max-width:760px;display:block;margin:0 auto" role="img" aria-label="Diagrama de ejemplo">
+      <defs>
+        <marker id="t-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="t-ahead"/></marker>
+        <marker id="t-ah-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="t-ahead-a"/></marker>
+      </defs>
+      <path class="t-edge is-active" d="M 190 75 L 290 75"/>
+      <path class="t-edge" d="M 470 75 L 570 75"/>
+      <g><rect class="t-edge-plate" x="212" y="65" width="56" height="20" rx="2"/><text class="t-edge-label" x="240" y="78.6" text-anchor="middle">topic</text></g>
+      <g><rect class="t-edge-plate" x="492" y="65" width="56" height="20" rx="2"/><text class="t-edge-label" x="520" y="78.6" text-anchor="middle">draft</text></g>
+      <foreignObject x="30" y="35" width="160" height="80"><div xmlns="http://www.w3.org/1999/xhtml" class="t-node is-input"><div class="nt">Topic</div><div class="ns">entrada del usuario</div></div></foreignObject>
+      <foreignObject x="290" y="35" width="180" height="80"><div xmlns="http://www.w3.org/1999/xhtml" class="t-node is-llm is-active"><div class="nt">Writer</div><div class="ns">redacta el borrador</div><div class="nm">sonnet 4.6</div></div></foreignObject>
+      <foreignObject x="570" y="35" width="160" height="80"><div xmlns="http://www.w3.org/1999/xhtml" class="t-node is-output"><div class="nt">Final</div><div class="ns">salida</div></div></foreignObject>
+    </svg>
+    <!-- COMPONENT: player-controls -->
+    <div class="demo-row" style="padding:12px 16px;border-top:1px dashed var(--t-outline-strong)">
+      <button class="t-btn is-sm">⏮</button><button class="t-btn is-sm">◀</button>
+      <button class="t-btn is-sm is-primary">▶ reproducir</button><button class="t-btn is-sm">▶</button>
+      <div class="t-progress"><div class="fill" style="width:50%"></div></div><span class="t-dim">Paso 2 de 4</span>
+    </div>
+    <div class="t-dots-steps" style="padding:0 16px 14px"><i class="is-done"></i><i class="is-on"></i><i></i><i></i></div>
+  </div>
+
+</div>
+</body>
+</html>

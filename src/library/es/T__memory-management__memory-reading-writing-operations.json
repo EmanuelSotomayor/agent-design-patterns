@@ -1,0 +1,737 @@
+{
+ "cat": "memory-management",
+ "slug": "memory-reading-writing-operations",
+ "name": "Memory Reading/Writing Operations(MRWO)",
+ "icon": "📚",
+ "complexity": "medium",
+ "description": "Operaciones sistemáticas para leer, escribir y gestionar patrones de acceso a memoria según recencia, relevancia e importancia en sistemas de IA agéntica multiagente",
+ "features": [
+  "Recuperación basada en recencia",
+  "Algoritmos de puntuación de relevancia",
+  "Sistemas de ponderación de importancia",
+  "Coordinación de acceso multiagente"
+ ],
+ "tldr": {
+  "what": "Recupera y almacena memorias de agentes usando puntuaciones ponderadas que combinan recencia, relevancia e importancia para priorizar a qué accede cada agente.",
+  "when": "Sistemas multiagente donde los agentes comparten contexto y necesitan acceso rápido a las interacciones previas más útiles sin recorrer todo el historial.",
+  "watchOut": "El ajuste de pesos es frágil; pequeños cambios en los coeficientes pueden hacer que los agentes ignoren información crítica o se atasquen con datos antiguos irrelevantes."
+ },
+ "overview": {
+  "pattern": "Operaciones sistemáticas para leer, escribir y gestionar el acceso a memoria basadas en puntuación inteligente",
+  "why": "Rendimiento de recuperación optimizado, coordinación multiagente, priorización inteligente de memoria",
+  "insight": "Puntuación compuesta (R×0.3 + R×0.5 + I×0.2) + Cache + Control de concurrencia → Acceso inteligente a memoria",
+  "impl": [
+   {
+    "t": "Puntuar memorias",
+    "d": "Calcular pesos de recencia, relevancia e importancia"
+   },
+   {
+    "t": "Optimizar recuperación",
+    "d": "Usar puntuación compuesta para seleccionar memorias"
+   },
+   {
+    "t": "Coordinar acceso",
+    "d": "Sincronización de lectura/escritura multiagente"
+   },
+   {
+    "t": "Cachear con frecuencia",
+    "d": "Cachear memorias con puntuación alta para mejorar el rendimiento"
+   },
+   {
+    "t": "Actualizar dinámicamente",
+    "d": "Actualizaciones de puntuación en tiempo real según el uso"
+   }
+  ],
+  "example": "memory_scoring → retrieval_optimization → access_coordination → caching_strategy → dynamic_updates",
+  "dos": [
+   "Usa puntuación compuesta: (Recencia × 0.3) + (Relevancia × 0.5) + (Importancia × 0.2)",
+   "Implementa bloqueos de lectura-escritura para la consistencia de memoria multiagente",
+   "Cachea las memorias de acceso frecuente con expiración por TTL",
+   "Usa búsqueda aproximada de vecinos más cercanos para almacenes de memoria grandes",
+   "Implementa analítica de patrones de acceso a memoria para optimizar"
+  ],
+  "donts": [
+   "Usar pesos de puntuación fijos: adáptalos a las necesidades del agente/dominio",
+   "Ignorar los conflictos de acceso a memoria en entornos multiagente",
+   "Cachear sin considerar la obsolescencia y las actualizaciones de la memoria",
+   "Usar búsqueda lineal para recuperación de memoria a gran escala",
+   "Olvidar implementar estrategias de recolección de basura de memoria"
+  ],
+  "use": [
+   "Sistemas de memoria a gran escala (más de 1M de entradas)",
+   "Acceso concurrente a memoria multiagente",
+   "Escenarios de recuperación con rendimiento crítico",
+   "Requisitos complejos de ranking de memoria",
+   "Se necesita optimización de memoria en tiempo real"
+  ],
+  "avoid": [
+   "Almacenes de memoria pequeños (< 1000 entradas)",
+   "Recuperación simple con un solo agente",
+   "Memoria estática sin actualizaciones",
+   "Se requiere aislamiento de privacidad de la memoria",
+   "Requisitos de latencia ultrabaja (< 1ms)"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de recuperación",
+    "d": "% de memorias relevantes devueltas"
+   },
+   {
+    "n": "Latencia de acceso",
+    "d": "Tiempos de lectura de memoria P50/P95/P99"
+   },
+   {
+    "n": "Tasa de aciertos de cache",
+    "d": "% de solicitudes servidas desde cache"
+   },
+   {
+    "n": "Eficiencia de concurrencia",
+    "d": "Throughput de acceso multiagente"
+   },
+   {
+    "n": "Frescura de la memoria",
+    "d": "Antigüedad promedio de las memorias recuperadas"
+   },
+   {
+    "n": "Eficiencia de almacenamiento",
+    "d": "Memorias útiles / almacenamiento total"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Sistemas de atención al cliente",
+    "d": "Historial de más de 10M de interacciones con recuperación en 50ms (puntuación por recencia + relevancia para el cliente)"
+   },
+   {
+    "n": "Motores de recomendación",
+    "d": "Patrones de comportamiento del usuario con ponderación de preferencias en tiempo real (optimización de filtrado colaborativo)"
+   },
+   {
+    "n": "IA conversacional",
+    "d": "Historial de diálogo consciente del contexto con ranking por similitud semántica (conversaciones largas coherentes)"
+   },
+   {
+    "n": "Gestión del conocimiento",
+    "d": "Base de conocimiento corporativa con recuperación ponderada por experiencia (enrutamiento a expertos en la materia)"
+   },
+   {
+    "n": "Juegos multiagente",
+    "d": "Estado del mundo compartido con acceso a memoria espacio-temporal (toma de decisiones coordinada)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Operaciones de lectura/escritura de memoria",
+  "description": "Sistema integral para orquestar operaciones de lectura y escritura de memoria con almacenamiento multinivel, control de acceso, estrategias de cache y optimización para una gestión eficiente de la memoria de los agentes.",
+  "nodes": [
+   {
+    "id": "agent-request",
+    "label": "🤖 Solicitud de memoria del agente\n\"Almacenar experiencia + Recuperar casos similares\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "memory-controller",
+    "label": "🎛️ Controlador de memoria\nOrquesta operaciones de L/E",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "recency-manager",
+    "label": "🕐 Gestor de recencia\nOrdenamiento temporal\nSeguimiento LRU/MRU",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "relevance-scorer",
+    "label": "🎯 Puntuador de relevancia\nSimilitud semántica\nCoincidencia de contexto",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "importance-evaluator",
+    "label": "⭐ Evaluador de importancia\nEvaluación de criticidad\nPuntuación de impacto",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "access-optimizer",
+    "label": "⚡ Optimizador de acceso\nEstrategia de cache\nLógica de precarga",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "write-request",
+    "label": "✍️ Solicitud de escritura\nDatos de nueva experiencia",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "data-validation",
+    "label": "✅ Validación de datos\nVerificación de esquema\nVerificación de integridad",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "encoding-processor",
+    "label": "🔐 Codificación\nEmbedding vectorial\nCompresión",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "index-update",
+    "label": "📇 Actualización de índices\nEtiquetado de metadatos\nÍndices de búsqueda",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "storage-commit",
+    "label": "💾 Confirmación en almacenamiento\nEscritura persistente\nReplicación",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "read-request",
+    "label": "📖 Solicitud de lectura\n\"Problemas de envío similares\"",
+    "x": 50,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "query-parsing",
+    "label": "🔍 Análisis de la consulta\nExtracción de intención\nCriterios de filtro",
+    "x": 220,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "memory-search",
+    "label": "🔎 Búsqueda en memoria\nSimilitud vectorial\nCoincidencia de palabras clave",
+    "x": 390,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "ranking-filter",
+    "label": "📊 Ranking y filtrado\nUmbral de puntuación\nSelección Top-K",
+    "x": 560,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "retrieval-output",
+    "label": "📤 Salida de recuperación\nResultados formateados\nMetadatos incluidos",
+    "x": 730,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "hot-cache",
+    "label": "🔥 Cache caliente\nAcceso frecuente\nLatencia < 100ms",
+    "x": 100,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "warm-storage",
+    "label": "♨️ Almacenamiento tibio\nMemorias recientes\nLatencia < 1s",
+    "x": 280,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "cold-archive",
+    "label": "❄️ Archivo frío\nDatos históricos\nLatencia < 10s",
+    "x": 460,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "vector-db",
+    "label": "🗄️ Vector DB\nAlmacén de embeddings\nBúsqueda por similitud",
+    "x": 640,
+    "y": 640,
+    "w": 160
+   },
+   {
+    "id": "permission-check",
+    "label": "🔒 Verificación de permisos\nAutorización del agente",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "rate-limiter",
+    "label": "🚦 Limitador de tasa\nControl de throttling",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "concurrency-control",
+    "label": "🔄 Control de concurrencia\nGestión de bloqueos",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "audit-logging",
+    "label": "📝 Logging de auditoría\nSeguimiento de accesos",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "adaptive-caching",
+    "label": "🎯 Cache adaptativa\nDimensionamiento dinámico de la cache",
+    "x": 150,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "predictive-prefetch",
+    "label": "🔮 Precarga predictiva\nCarga anticipada",
+    "x": 350,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "memory-compaction",
+    "label": "🗜️ Compactación de memoria\nDesfragmentación",
+    "x": 550,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "operation-complete",
+    "label": "✨ Operación completada\nMemoria escrita + Casos similares recuperados eficientemente",
+    "x": 400,
+    "y": 1000,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-controller",
+    "s": "agent-request",
+    "t": "memory-controller",
+    "label": ""
+   },
+   {
+    "id": "controller-recency",
+    "s": "memory-controller",
+    "t": "recency-manager",
+    "label": "Rastrear"
+   },
+   {
+    "id": "controller-relevance",
+    "s": "memory-controller",
+    "t": "relevance-scorer",
+    "label": "Puntuar"
+   },
+   {
+    "id": "controller-importance",
+    "s": "memory-controller",
+    "t": "importance-evaluator",
+    "label": "Evaluar"
+   },
+   {
+    "id": "controller-optimizer",
+    "s": "memory-controller",
+    "t": "access-optimizer",
+    "label": "Optimizar"
+   },
+   {
+    "id": "controller-write",
+    "s": "memory-controller",
+    "t": "write-request",
+    "label": ""
+   },
+   {
+    "id": "write-validation",
+    "s": "write-request",
+    "t": "data-validation",
+    "label": ""
+   },
+   {
+    "id": "validation-encoding",
+    "s": "data-validation",
+    "t": "encoding-processor",
+    "label": ""
+   },
+   {
+    "id": "encoding-index",
+    "s": "encoding-processor",
+    "t": "index-update",
+    "label": ""
+   },
+   {
+    "id": "index-storage",
+    "s": "index-update",
+    "t": "storage-commit",
+    "label": ""
+   },
+   {
+    "id": "controller-read",
+    "s": "memory-controller",
+    "t": "read-request",
+    "label": ""
+   },
+   {
+    "id": "read-parsing",
+    "s": "read-request",
+    "t": "query-parsing",
+    "label": ""
+   },
+   {
+    "id": "parsing-search",
+    "s": "query-parsing",
+    "t": "memory-search",
+    "label": ""
+   },
+   {
+    "id": "search-ranking",
+    "s": "memory-search",
+    "t": "ranking-filter",
+    "label": ""
+   },
+   {
+    "id": "ranking-retrieval",
+    "s": "ranking-filter",
+    "t": "retrieval-output",
+    "label": ""
+   },
+   {
+    "id": "storage-hot",
+    "s": "storage-commit",
+    "t": "hot-cache",
+    "label": "Escribir"
+   },
+   {
+    "id": "storage-warm",
+    "s": "storage-commit",
+    "t": "warm-storage",
+    "label": "Escribir"
+   },
+   {
+    "id": "storage-cold",
+    "s": "storage-commit",
+    "t": "cold-archive",
+    "label": "Archivar"
+   },
+   {
+    "id": "encoding-vector",
+    "s": "encoding-processor",
+    "t": "vector-db",
+    "label": "Almacenar"
+   },
+   {
+    "id": "search-hot",
+    "s": "memory-search",
+    "t": "hot-cache",
+    "label": "Consultar"
+   },
+   {
+    "id": "search-warm",
+    "s": "memory-search",
+    "t": "warm-storage",
+    "label": "Consultar"
+   },
+   {
+    "id": "search-vector",
+    "s": "memory-search",
+    "t": "vector-db",
+    "label": "Buscar"
+   },
+   {
+    "id": "controller-permission",
+    "s": "memory-controller",
+    "t": "permission-check",
+    "label": ""
+   },
+   {
+    "id": "permission-rate",
+    "s": "permission-check",
+    "t": "rate-limiter",
+    "label": ""
+   },
+   {
+    "id": "rate-concurrency",
+    "s": "rate-limiter",
+    "t": "concurrency-control",
+    "label": ""
+   },
+   {
+    "id": "concurrency-audit",
+    "s": "concurrency-control",
+    "t": "audit-logging",
+    "label": ""
+   },
+   {
+    "id": "recency-hot",
+    "s": "recency-manager",
+    "t": "hot-cache",
+    "label": "Gestionar"
+   },
+   {
+    "id": "relevance-ranking",
+    "s": "relevance-scorer",
+    "t": "ranking-filter",
+    "label": "Puntuar"
+   },
+   {
+    "id": "importance-storage",
+    "s": "importance-evaluator",
+    "t": "storage-commit",
+    "label": "Priorizar"
+   },
+   {
+    "id": "optimizer-caching",
+    "s": "access-optimizer",
+    "t": "adaptive-caching",
+    "label": ""
+   },
+   {
+    "id": "optimizer-prefetch",
+    "s": "access-optimizer",
+    "t": "predictive-prefetch",
+    "label": ""
+   },
+   {
+    "id": "optimizer-compaction",
+    "s": "access-optimizer",
+    "t": "memory-compaction",
+    "label": ""
+   },
+   {
+    "id": "caching-hot",
+    "s": "adaptive-caching",
+    "t": "hot-cache",
+    "label": ""
+   },
+   {
+    "id": "prefetch-warm",
+    "s": "predictive-prefetch",
+    "t": "warm-storage",
+    "label": ""
+   },
+   {
+    "id": "compaction-cold",
+    "s": "memory-compaction",
+    "t": "cold-archive",
+    "label": ""
+   },
+   {
+    "id": "storage-complete",
+    "s": "storage-commit",
+    "t": "operation-complete",
+    "label": ""
+   },
+   {
+    "id": "retrieval-complete",
+    "s": "retrieval-output",
+    "t": "operation-complete",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud de memoria",
+    "description": "El agente solicita operaciones de escritura y lectura",
+    "input": "",
+    "nodes": [
+     "agent-request",
+     "memory-controller"
+    ],
+    "edges": [
+     "request-controller"
+    ]
+   },
+   {
+    "title": "Análisis de patrones de acceso",
+    "description": "Analizando recencia, relevancia e importancia",
+    "input": "",
+    "nodes": [
+     "memory-controller",
+     "recency-manager",
+     "relevance-scorer",
+     "importance-evaluator",
+     "access-optimizer"
+    ],
+    "edges": [
+     "controller-recency",
+     "controller-relevance",
+     "controller-importance",
+     "controller-optimizer"
+    ]
+   },
+   {
+    "title": "Operación de escritura",
+    "description": "Procesando la solicitud de escritura mediante validación y codificación",
+    "input": "",
+    "nodes": [
+     "write-request",
+     "data-validation",
+     "encoding-processor"
+    ],
+    "edges": [
+     "controller-write",
+     "write-validation",
+     "validation-encoding"
+    ]
+   },
+   {
+    "title": "Indexación y almacenamiento",
+    "description": "Actualizando índices y confirmando en el almacenamiento",
+    "input": "",
+    "nodes": [
+     "encoding-processor",
+     "index-update",
+     "storage-commit",
+     "vector-db"
+    ],
+    "edges": [
+     "encoding-index",
+     "index-storage",
+     "encoding-vector"
+    ]
+   },
+   {
+    "title": "Distribución del almacenamiento",
+    "description": "Escribiendo en los niveles de almacenamiento adecuados",
+    "input": "",
+    "nodes": [
+     "storage-commit",
+     "hot-cache",
+     "warm-storage",
+     "cold-archive"
+    ],
+    "edges": [
+     "storage-hot",
+     "storage-warm",
+     "storage-cold"
+    ]
+   },
+   {
+    "title": "Operación de lectura",
+    "description": "Procesando la solicitud de lectura y analizando la consulta",
+    "input": "",
+    "nodes": [
+     "read-request",
+     "query-parsing",
+     "memory-search"
+    ],
+    "edges": [
+     "controller-read",
+     "read-parsing",
+     "parsing-search"
+    ]
+   },
+   {
+    "title": "Búsqueda en memoria",
+    "description": "Buscando en los niveles de almacenamiento y en la base de datos vectorial",
+    "input": "",
+    "nodes": [
+     "memory-search",
+     "hot-cache",
+     "warm-storage",
+     "vector-db"
+    ],
+    "edges": [
+     "search-hot",
+     "search-warm",
+     "search-vector"
+    ]
+   },
+   {
+    "title": "Ranking y filtrado",
+    "description": "Puntuando y filtrando resultados por relevancia",
+    "input": "",
+    "nodes": [
+     "memory-search",
+     "ranking-filter",
+     "relevance-scorer",
+     "retrieval-output"
+    ],
+    "edges": [
+     "search-ranking",
+     "relevance-ranking",
+     "ranking-retrieval"
+    ]
+   },
+   {
+    "title": "Control de acceso",
+    "description": "Aplicando permisos y límites de tasa",
+    "input": "",
+    "nodes": [
+     "permission-check",
+     "rate-limiter",
+     "concurrency-control",
+     "audit-logging"
+    ],
+    "edges": [
+     "controller-permission",
+     "permission-rate",
+     "rate-concurrency",
+     "concurrency-audit"
+    ]
+   },
+   {
+    "title": "Gestión de cache",
+    "description": "Gestionando la cache según patrones de recencia",
+    "input": "",
+    "nodes": [
+     "recency-manager",
+     "hot-cache",
+     "importance-evaluator",
+     "storage-commit"
+    ],
+    "edges": [
+     "recency-hot",
+     "importance-storage"
+    ]
+   },
+   {
+    "title": "Estrategias de optimización",
+    "description": "Aplicando cache adaptativa y precarga",
+    "input": "",
+    "nodes": [
+     "access-optimizer",
+     "adaptive-caching",
+     "predictive-prefetch",
+     "memory-compaction"
+    ],
+    "edges": [
+     "optimizer-caching",
+     "optimizer-prefetch",
+     "optimizer-compaction"
+    ]
+   },
+   {
+    "title": "Operación completada",
+    "description": "Memoria escrita y casos similares recuperados con éxito",
+    "input": "",
+    "nodes": [
+     "storage-commit",
+     "retrieval-output",
+     "operation-complete"
+    ],
+    "edges": [
+     "storage-complete",
+     "retrieval-complete"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,294 @@
+{
+ "cat": "prompt-chaining",
+ "slug": "conditional-chaining",
+ "name": "Conditional Chaining",
+ "icon": "🔀",
+ "complexity": "high",
+ "description": "Implementa una lógica de ramificación dinámica donde las rutas de ejecución de los prompts se determinan según salidas intermedias, lo que permite flujos de trabajo adaptativos que responden de forma inteligente a entradas y contextos variables; es esencial para la personalización y los árboles de decisión",
+ "features": [
+  "Selección dinámica de rutas",
+  "Lógica de evaluación de condiciones",
+  "Estrategias de ramificación y fusión",
+  "Enrutamiento consciente del contexto"
+ ],
+ "tldr": {
+  "what": "Dirige la ejecución por distintos prompts según las salidas intermedias, con cada rama adaptada a condiciones o clasificaciones específicas.",
+  "when": "Flujos de trabajo que necesitan distintas rutas de manejo según el tipo de entrada, el nivel de complejidad o los resultados previos de pasos anteriores.",
+  "watchOut": "Los errores en la lógica de condiciones o los casos límite no contemplados hacen que las solicitudes caigan en ramas equivocadas, produciendo respuestas inadecuadas o irrelevantes."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón Conditional Chaining",
+  "description": "Demuestra la selección dinámica de rutas a través de distintas cadenas de prompts según condiciones",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud de soporte al cliente\n\"Mi chatbot de IA no funciona correctamente\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "classifier",
+    "label": "Clasificador de solicitudes\nAnalizar el tipo de problema y su complejidad",
+    "x": 400,
+    "y": 180,
+    "w": 220
+   },
+   {
+    "id": "decision",
+    "label": "Decisión de enrutamiento\nTécnico | Facturación | General",
+    "x": 400,
+    "y": 310,
+    "w": 200
+   },
+   {
+    "id": "technical-path",
+    "label": "Ruta de soporte técnico\nProblemas de API e integración",
+    "x": 100,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "billing-path",
+    "label": "Ruta de soporte de facturación\nProblemas de suscripción y pago",
+    "x": 400,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "general-path",
+    "label": "Ruta de soporte general\nUso y buenas prácticas",
+    "x": 700,
+    "y": 440,
+    "w": 180
+   },
+   {
+    "id": "tech-diagnosis",
+    "label": "Diagnóstico técnico\nAnálisis de logs de la API",
+    "x": 100,
+    "y": 570,
+    "w": 160
+   },
+   {
+    "id": "tech-solution",
+    "label": "Solución técnica\nCorrección de código + documentación",
+    "x": 100,
+    "y": 700,
+    "w": 160
+   },
+   {
+    "id": "billing-review",
+    "label": "Revisión de cuenta\n(No se usa en este escenario)",
+    "x": 400,
+    "y": 570,
+    "w": 160
+   },
+   {
+    "id": "general-guide",
+    "label": "Guía de uso\n(No se usa en este escenario)",
+    "x": 700,
+    "y": 570,
+    "w": 160
+   },
+   {
+    "id": "complexity-check",
+    "label": "Evaluación de complejidad\n¿Se necesita escalar?",
+    "x": 100,
+    "y": 830,
+    "w": 180
+   },
+   {
+    "id": "resolved",
+    "label": "Problema resuelto\nSolución entregada",
+    "x": 50,
+    "y": 960,
+    "w": 150
+   },
+   {
+    "id": "escalated",
+    "label": "Escalado a un humano\nProblema técnico complejo",
+    "x": 250,
+    "y": 960,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-classifier",
+    "s": "input",
+    "t": "classifier",
+    "label": ""
+   },
+   {
+    "id": "e-classifier-decision",
+    "s": "classifier",
+    "t": "decision",
+    "label": ""
+   },
+   {
+    "id": "e-decision-technical",
+    "s": "decision",
+    "t": "technical-path",
+    "label": "Problema técnico detectado"
+   },
+   {
+    "id": "e-decision-billing",
+    "s": "decision",
+    "t": "billing-path",
+    "label": "No seleccionado"
+   },
+   {
+    "id": "e-decision-general",
+    "s": "decision",
+    "t": "general-path",
+    "label": "No seleccionado"
+   },
+   {
+    "id": "e-technical-diagnosis",
+    "s": "technical-path",
+    "t": "tech-diagnosis",
+    "label": ""
+   },
+   {
+    "id": "e-diagnosis-solution",
+    "s": "tech-diagnosis",
+    "t": "tech-solution",
+    "label": ""
+   },
+   {
+    "id": "e-solution-complexity",
+    "s": "tech-solution",
+    "t": "complexity-check",
+    "label": ""
+   },
+   {
+    "id": "e-complexity-resolved",
+    "s": "complexity-check",
+    "t": "resolved",
+    "label": "Corrección simple"
+   },
+   {
+    "id": "e-complexity-escalated",
+    "s": "complexity-check",
+    "t": "escalated",
+    "label": "Problema complejo"
+   },
+   {
+    "id": "e-billing-review",
+    "s": "billing-path",
+    "t": "billing-review",
+    "label": ""
+   },
+   {
+    "id": "e-general-guide",
+    "s": "general-path",
+    "t": "general-guide",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud de soporte al cliente",
+    "description": "Un cliente envía una solicitud de soporte que debe dirigirse al equipo especialista adecuado.",
+    "input": "Solicitud del cliente: \"Hola, tengo problemas con la integración de mi chatbot de IA. Las llamadas a la API devuelven errores 500 y mis tokens de autenticación parecen expirar cada pocos minutos. Revisé la documentación pero no logro entender qué está mal. Esto está afectando nuestro sistema de producción.\"",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Clasificación de la solicitud",
+    "description": "El clasificador analiza el contenido de la solicitud para identificar indicadores clave y categorizar el tipo de problema.",
+    "input": "Analizando la solicitud en busca de:\n• Palabras clave técnicas: API, errores 500, autenticación, tokens\n• Indicadores de urgencia: sistema de producción\n• Marcadores de complejidad: problemas de integración\n• Sentimiento del cliente: frustrado pero con perfil técnico",
+    "nodes": [
+     "input",
+     "classifier"
+    ],
+    "edges": [
+     "e-input-classifier"
+    ]
+   },
+   {
+    "title": "Análisis de la decisión de enrutamiento",
+    "description": "El sistema evalúa los resultados de la clasificación para determinar la ruta de soporte óptima.",
+    "input": "",
+    "nodes": [
+     "classifier",
+     "decision"
+    ],
+    "edges": [
+     "e-classifier-decision"
+    ]
+   },
+   {
+    "title": "Selección de la ruta técnica",
+    "description": "Según la alta puntuación técnica, la solicitud se dirige al flujo de trabajo especializado de soporte técnico.",
+    "input": "",
+    "nodes": [
+     "decision",
+     "technical-path"
+    ],
+    "edges": [
+     "e-decision-technical"
+    ]
+   },
+   {
+    "title": "Fase de diagnóstico técnico",
+    "description": "El flujo de trabajo de soporte técnico comienza con un diagnóstico detallado de los problemas de API y autenticación.",
+    "input": "Tareas de análisis técnico:\n• Analizar los patrones de errores de la API\n• Revisar la configuración de los tokens de autenticación\n• Revisar la configuración de límites de tasa\n• Examinar los logs del servidor y las métricas de rendimiento",
+    "nodes": [
+     "technical-path",
+     "tech-diagnosis"
+    ],
+    "edges": [
+     "e-technical-diagnosis"
+    ]
+   },
+   {
+    "title": "Resultados del diagnóstico",
+    "description": "El diagnóstico técnico identifica la causa raíz y determina el enfoque de solución adecuado.",
+    "input": "",
+    "nodes": [
+     "tech-diagnosis",
+     "tech-solution"
+    ],
+    "edges": [
+     "e-diagnosis-solution"
+    ]
+   },
+   {
+    "title": "Implementación de la solución técnica",
+    "description": "El equipo técnico entrega una solución integral con correcciones de código y documentación.",
+    "input": "",
+    "nodes": [
+     "tech-solution",
+     "complexity-check"
+    ],
+    "edges": [
+     "e-solution-complexity"
+    ]
+   },
+   {
+    "title": "Evaluación de complejidad",
+    "description": "El sistema evalúa si la solución resuelve adecuadamente el problema o si requiere escalar a un humano.",
+    "input": "Evaluación de complejidad:\n• Completitud de la solución: alta (aborda todos los problemas identificados)\n• Dificultad de implementación: media (requiere cambios de código)\n• Nivel técnico del cliente: alto (puede implementar la solución entregada)\n• Nivel de riesgo: bajo (enfoque de solución bien probado)\n• Necesidad de seguimiento: mínima (se entregó documentación)",
+    "nodes": [
+     "complexity-check"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Resolución del problema",
+    "description": "El problema se resuelve con éxito con la documentación técnica y las correcciones de código entregadas.",
+    "input": "",
+    "nodes": [
+     "resolved"
+    ],
+    "edges": [
+     "e-complexity-resolved"
+    ]
+   }
+  ]
+ }
+}

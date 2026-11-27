@@ -1,0 +1,359 @@
+{
+ "cat": "prioritization",
+ "slug": "weighted-scoring",
+ "name": "Multi-Criteria Weighted Scoring(MCWS)",
+ "icon": "⚖️",
+ "complexity": "medium",
+ "description": "Priorización sistemática mediante puntuación ponderada a través de múltiples criterios de evaluación",
+ "features": [
+  "Evaluación multicriterio",
+  "Optimización de la asignación de pesos",
+  "Integración de las preferencias de las partes interesadas",
+  "Análisis de sensibilidad",
+  "Visualización de compensaciones",
+  "Transparencia en las decisiones"
+ ],
+ "tldr": {
+  "what": "Puntúa a los candidatos según múltiples criterios ponderados y luego los clasifica por puntaje total para mostrar las compensaciones y justificar las decisiones.",
+  "when": "Elegir entre opciones que compiten cuando distintas partes interesadas valoran factores diferentes y la transparencia es importante.",
+  "watchOut": "Los pesos y las escalas de puntuación son subjetivos; pequeños cambios pueden invertir la clasificación y ocultar que el verdadero desacuerdo es sobre valores."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Puntuación ponderada multicriterio",
+  "description": "Un agente de triaje de soporte clasifica los tickets entrantes puntuando cada uno según criterios ponderados (severidad 35%, nivel del cliente 25%, impacto en ingresos 20%, riesgo de SLA 15%, esfuerzo 5%) y luego ejecuta un análisis de sensibilidad antes de enrutar la cola.",
+  "nodes": [
+   {
+    "id": "incoming-tickets",
+    "label": "📥 Tickets entrantes\n47 tickets de soporte abiertos en esta hora",
+    "x": 340,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "triage-agent",
+    "label": "🤖 Agente de triaje\nEvalúa y prioriza cada ticket",
+    "x": 355,
+    "y": 150,
+    "w": 270
+   },
+   {
+    "id": "severity-criterion",
+    "label": "🔥 Severidad\nPeso: 35%",
+    "x": 10,
+    "y": 270,
+    "w": 150
+   },
+   {
+    "id": "tier-criterion",
+    "label": "💼 Nivel del cliente\nPeso: 25%",
+    "x": 195,
+    "y": 270,
+    "w": 150
+   },
+   {
+    "id": "revenue-criterion",
+    "label": "💰 Impacto en ingresos\nPeso: 20%",
+    "x": 380,
+    "y": 270,
+    "w": 150
+   },
+   {
+    "id": "sla-criterion",
+    "label": "⏱️ Riesgo de SLA\nPeso: 15%",
+    "x": 565,
+    "y": 270,
+    "w": 150
+   },
+   {
+    "id": "effort-criterion",
+    "label": "🛠️ Esfuerzo (inverso)\nPeso: 5%",
+    "x": 750,
+    "y": 270,
+    "w": 150
+   },
+   {
+    "id": "scoring-engine",
+    "label": "⚖️ Motor de puntuación\nPuntaje = Σ (calificación × peso), escala 0-10",
+    "x": 340,
+    "y": 390,
+    "w": 300
+   },
+   {
+    "id": "ticket-a",
+    "label": "🎫 Ticket A: pasarela de pagos caída\nsev 10 / nivel 9 / ing 9 / sla 8 / esf 6\nPuntaje: 9.05",
+    "x": 90,
+    "y": 510,
+    "w": 210
+   },
+   {
+    "id": "ticket-b",
+    "label": "🎫 Ticket B: inicio de sesión lento (Enterprise)\nsev 6 / nivel 8 / ing 6 / sla 7 / esf 7\nPuntaje: 6.70",
+    "x": 360,
+    "y": 510,
+    "w": 210
+   },
+   {
+    "id": "ticket-c",
+    "label": "🎫 Ticket C: error tipográfico en la ayuda\nsev 2 / nivel 3 / ing 1 / sla 2 / esf 9\nPuntaje: 2.40",
+    "x": 630,
+    "y": 510,
+    "w": 210
+   },
+   {
+    "id": "ranked-results",
+    "label": "🏆 Cola clasificada\nP1 A (9.05) > P2 B (6.70) > P3 C (2.40)",
+    "x": 150,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "sensitivity-check",
+    "label": "📈 Análisis de sensibilidad\nA se mantiene como P1 en el 84% de los escenarios de pesos",
+    "x": 620,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "routed-output",
+    "label": "📤 Cola enrutada\nA escalado a guardia, B a nivel 2, C al backlog",
+    "x": 300,
+    "y": 770,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "tickets-agent",
+    "s": "incoming-tickets",
+    "t": "triage-agent",
+    "label": ""
+   },
+   {
+    "id": "agent-severity",
+    "s": "triage-agent",
+    "t": "severity-criterion",
+    "label": "0.35"
+   },
+   {
+    "id": "agent-tier",
+    "s": "triage-agent",
+    "t": "tier-criterion",
+    "label": "0.25"
+   },
+   {
+    "id": "agent-revenue",
+    "s": "triage-agent",
+    "t": "revenue-criterion",
+    "label": "0.20"
+   },
+   {
+    "id": "agent-sla",
+    "s": "triage-agent",
+    "t": "sla-criterion",
+    "label": "0.15"
+   },
+   {
+    "id": "agent-effort",
+    "s": "triage-agent",
+    "t": "effort-criterion",
+    "label": "0.05"
+   },
+   {
+    "id": "severity-engine",
+    "s": "severity-criterion",
+    "t": "scoring-engine",
+    "label": ""
+   },
+   {
+    "id": "tier-engine",
+    "s": "tier-criterion",
+    "t": "scoring-engine",
+    "label": ""
+   },
+   {
+    "id": "revenue-engine",
+    "s": "revenue-criterion",
+    "t": "scoring-engine",
+    "label": ""
+   },
+   {
+    "id": "sla-engine",
+    "s": "sla-criterion",
+    "t": "scoring-engine",
+    "label": ""
+   },
+   {
+    "id": "effort-engine",
+    "s": "effort-criterion",
+    "t": "scoring-engine",
+    "label": ""
+   },
+   {
+    "id": "engine-ticket-a",
+    "s": "scoring-engine",
+    "t": "ticket-a",
+    "label": "puntuar"
+   },
+   {
+    "id": "engine-ticket-b",
+    "s": "scoring-engine",
+    "t": "ticket-b",
+    "label": "puntuar"
+   },
+   {
+    "id": "engine-ticket-c",
+    "s": "scoring-engine",
+    "t": "ticket-c",
+    "label": "puntuar"
+   },
+   {
+    "id": "ticket-a-ranked",
+    "s": "ticket-a",
+    "t": "ranked-results",
+    "label": ""
+   },
+   {
+    "id": "ticket-b-ranked",
+    "s": "ticket-b",
+    "t": "ranked-results",
+    "label": ""
+   },
+   {
+    "id": "ticket-c-ranked",
+    "s": "ticket-c",
+    "t": "ranked-results",
+    "label": ""
+   },
+   {
+    "id": "ranked-sensitivity",
+    "s": "ranked-results",
+    "t": "sensitivity-check",
+    "label": "validar"
+   },
+   {
+    "id": "sensitivity-ranked",
+    "s": "sensitivity-check",
+    "t": "ranked-results",
+    "label": "robusto"
+   },
+   {
+    "id": "ranked-output",
+    "s": "ranked-results",
+    "t": "routed-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de tickets",
+    "description": "El agente de triaje obtiene 47 tickets abiertos que deben priorizarse en esta hora.",
+    "input": "",
+    "nodes": [
+     "incoming-tickets",
+     "triage-agent"
+    ],
+    "edges": [
+     "tickets-agent"
+    ]
+   },
+   {
+    "title": "Definir criterios ponderados",
+    "description": "Cinco criterios tienen pesos fijos que suman 100%: severidad 35%, nivel del cliente 25%, impacto en ingresos 20%, riesgo de SLA 15% y esfuerzo (inverso) 5%.",
+    "input": "",
+    "nodes": [
+     "triage-agent",
+     "severity-criterion",
+     "tier-criterion",
+     "revenue-criterion",
+     "sla-criterion",
+     "effort-criterion"
+    ],
+    "edges": [
+     "agent-severity",
+     "agent-tier",
+     "agent-revenue",
+     "agent-sla",
+     "agent-effort"
+    ]
+   },
+   {
+    "title": "Calificar cada ticket",
+    "description": "El motor de puntuación recopila una calificación de 0 a 10 por criterio para cada ticket antes de combinarlas.",
+    "input": "",
+    "nodes": [
+     "severity-criterion",
+     "tier-criterion",
+     "revenue-criterion",
+     "sla-criterion",
+     "effort-criterion",
+     "scoring-engine"
+    ],
+    "edges": [
+     "severity-engine",
+     "tier-engine",
+     "revenue-engine",
+     "sla-engine",
+     "effort-engine"
+    ]
+   },
+   {
+    "title": "Calcular puntajes ponderados",
+    "description": "Puntaje = Σ (calificación × peso). Ticket A = 9.05, Ticket B = 6.70, Ticket C = 2.40 en la escala de 0 a 10.",
+    "input": "",
+    "nodes": [
+     "scoring-engine",
+     "ticket-a",
+     "ticket-b",
+     "ticket-c"
+    ],
+    "edges": [
+     "engine-ticket-a",
+     "engine-ticket-b",
+     "engine-ticket-c"
+    ]
+   },
+   {
+    "title": "Clasificar la cola",
+    "description": "Los tickets se ordenan por puntaje ponderado: P1 Ticket A (9.05), P2 Ticket B (6.70), P3 Ticket C (2.40).",
+    "input": "",
+    "nodes": [
+     "ticket-a",
+     "ticket-b",
+     "ticket-c",
+     "ranked-results"
+    ],
+    "edges": [
+     "ticket-a-ranked",
+     "ticket-b-ranked",
+     "ticket-c-ranked"
+    ]
+   },
+   {
+    "title": "Análisis de sensibilidad",
+    "description": "El agente perturba los pesos para probar la robustez. El Ticket A conserva el primer lugar en el 84% de los escenarios de pesos plausibles, así que la clasificación es confiable.",
+    "input": "",
+    "nodes": [
+     "ranked-results",
+     "sensitivity-check"
+    ],
+    "edges": [
+     "ranked-sensitivity",
+     "sensitivity-ranked"
+    ]
+   },
+   {
+    "title": "Enrutar la cola",
+    "description": "Enrutamiento final: el Ticket A se escala a guardia, el Ticket B pasa a soporte de nivel 2 y el Ticket C baja al backlog.",
+    "input": "",
+    "nodes": [
+     "ranked-results",
+     "routed-output"
+    ],
+    "edges": [
+     "ranked-output"
+    ]
+   }
+  ]
+ }
+}

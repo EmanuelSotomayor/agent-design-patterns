@@ -1,0 +1,425 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "advanced-rag",
+ "name": "Advanced RAG(ARAG)",
+ "icon": "⚡",
+ "complexity": "medium",
+ "description": "RAG mejorado con optimizaciones previas y posteriores a la recuperación, que incluyen expansión de consultas, reranking y curación del contexto",
+ "features": [
+  "Optimización previa a la recuperación",
+  "Técnicas de expansión de consultas",
+  "Procesamiento posterior a la recuperación",
+  "Curación del contexto",
+  "Reranking de documentos",
+  "Evaluación de calidad",
+  "Fusión híbrida dispersa-densa con reciprocal rank fusion (RRF)",
+  "Recuperación de interacción tardía (estilo ColBERT) y reranking con cross-encoders"
+ ],
+ "tldr": {
+  "what": "Recupera documentos usando expansión de consultas, búsqueda híbrida dispersa-densa, reranking con cross-encoders y ensamblado curado del contexto antes de pasarlo al modelo.",
+  "when": "Tareas con mucha carga de conocimiento donde la calidad de la recuperación impacta directamente en la precisión de la respuesta, especialmente con colecciones de documentos grandes o ruidosas.",
+  "watchOut": "La latencia acumulada de varias pasadas de recuperación y etapas de reranking puede volver inaceptable el tiempo de respuesta para aplicaciones en tiempo real."
+ },
+ "overview": {
+  "pattern": "Pipeline de recuperación mejorado con preprocesamiento de consultas, recuperación en múltiples etapas, reranking neuronal y optimización del contexto",
+  "why": "Resuelve las limitaciones del RAG ingenuo mediante la comprensión de la consulta, la puntuación de relevancia y la optimización de la calidad del contexto",
+  "insight": "La optimización previa a la recuperación + el procesamiento posterior mejoran significativamente la precisión y la relevancia",
+  "impl": [
+   {
+    "t": "Preprocesar",
+    "d": "Expansión, reescritura y enrutamiento de consultas"
+   },
+   {
+    "t": "Recuperación múltiple",
+    "d": "Múltiples estrategias y fuentes de recuperación"
+   },
+   {
+    "t": "Rerankear",
+    "d": "Rerankers neuronales (BGE, Cohere, etc.)"
+   },
+   {
+    "t": "Filtrar",
+    "d": "Puntuación de relevancia y selección del contexto"
+   },
+   {
+    "t": "Generar",
+    "d": "Generación optimizada según el contexto, con citas"
+   }
+  ],
+  "example": "expand_query → multi_retrieve → neural_rerank → filter_context → generate_with_citations",
+  "dos": [
+   "Implementa expansión de consultas (HyDE, query2doc)",
+   "Usa rerankers neuronales (BGE-reranker, Cohere rerank)",
+   "Aplica sentence window retrieval para preservar el contexto",
+   "Implementa filtrado por relevancia con umbrales de confianza",
+   "Usa varios modelos de embedding para diversificar la recuperación"
+  ],
+  "donts": [
+   "Omitir el preprocesamiento y la expansión de consultas",
+   "Depender únicamente de la similitud semántica para el ranking",
+   "Ignorar las señales de calidad y actualidad de los documentos",
+   "Recuperar en exceso sin mecanismos de filtrado adecuados",
+   "Descuidar la optimización de la ventana de contexto"
+  ],
+  "use": [
+   "Sistemas RAG en producción que requieren alta precisión",
+   "Consultas complejas que necesitan comprensión contextual",
+   "Bases de conocimiento grandes con contenido ruidoso",
+   "Fuentes de datos multidominio o heterogéneas",
+   "Aplicaciones que requieren atribución de fuentes"
+  ],
+  "avoid": [
+   "Preguntas y respuestas factuales simples con datos limpios",
+   "Entornos con recursos limitados",
+   "Aplicaciones en tiempo real (<100ms de latencia)",
+   "Bases de conocimiento pequeñas con contenido de alta calidad",
+   "Sistemas de prueba de concepto o prototipos"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de recuperación",
+    "d": "Documentos relevantes en el top-k después del reranking"
+   },
+   {
+    "n": "Fidelidad de la respuesta",
+    "d": "Contenido generado fundamentado en los documentos recuperados"
+   },
+   {
+    "n": "Relevancia del contexto",
+    "d": "Relevancia del contexto recuperado respecto a la consulta"
+   },
+   {
+    "n": "Efectividad del reranking",
+    "d": "Mejora de NDCG@k frente a la recuperación base"
+   },
+   {
+    "n": "Comprensión de la consulta",
+    "d": "Similitud semántica después de la expansión/reescritura"
+   },
+   {
+    "n": "Latencia de extremo a extremo",
+    "d": "Incluye la sobrecarga del preprocesamiento y el reranking"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Búsqueda empresarial",
+    "d": "Consultas complejas sobre grandes bases de conocimiento corporativas con reranking"
+   },
+   {
+    "n": "Investigación legal",
+    "d": "Razonamiento multi-hop sobre jurisprudencia con expansión de consultas y filtrado por relevancia"
+   },
+   {
+    "n": "Preguntas y respuestas médicas",
+    "d": "Consultas clínicas con rerankers específicos del dominio y puntuación de confianza"
+   },
+   {
+    "n": "Documentación técnica",
+    "d": "Consultas de desarrolladores con recuperación consciente del código y optimización del contexto"
+   },
+   {
+    "n": "Asistente de investigación",
+    "d": "Consultas académicas con seguimiento de citas y recuperación de múltiples fuentes"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Advanced RAG (generación aumentada por recuperación mejorada)",
+  "description": "Un sistema mejorado de generación aumentada por recuperación con indexación, procesamiento de consultas y capacidades de generación optimizadas",
+  "nodes": [
+   {
+    "id": "indexing-phase-header",
+    "label": "📚 FASE DE INDEXACIÓN\n(Configuración única)",
+    "x": 150,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "document-collection",
+    "label": "📄 Colección de documentos\nArtículos médicos, estudios,\nbases de datos de fármacos",
+    "x": 150,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "document-chunking",
+    "label": "✂️ Fragmentación de documentos\nDividir en chunks semánticos\nde 500 tokens",
+    "x": 150,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "embedding-creation",
+    "label": "🔢 Creación de embeddings\nGenerar vectores densos\npara cada chunk",
+    "x": 150,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "vector-storage",
+    "label": "💾 Almacenamiento vectorial\nGuardar en una base de datos vectorial\ncon metadatos",
+    "x": 150,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "inference-phase-header",
+    "label": "🔍 FASE DE INFERENCIA\n(Por consulta)",
+    "x": 650,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "user-query",
+    "label": "❓ Consulta del usuario\n\"¿Mejores tratamientos para\nla diabetes tipo 2?\"",
+    "x": 650,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "query-expansion",
+    "label": "🔍 Expansión de la consulta\n+ \"metformina\"\n+ \"terapia con insulina\"\n+ \"cambios en el estilo de vida\"",
+    "x": 650,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "multi-vector-search",
+    "label": "🎯 Búsqueda multivector\nDensa + dispersa\nRecuperación híbrida",
+    "x": 650,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "initial-retrieval",
+    "label": "📚 Recuperación inicial\n50 documentos candidatos\nde la base de datos vectorial",
+    "x": 650,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "reranking",
+    "label": "📊 Reranking\nPuntuaciones del cross-encoder\nTop 10 más relevantes",
+    "x": 650,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "context-curation",
+    "label": "✂️ Curación del contexto\nEliminar contradicciones\nResumir puntos clave",
+    "x": 650,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "enhanced-prompt",
+    "label": "📝 Prompt mejorado\nContexto estructurado +\nconsulta original",
+    "x": 650,
+    "y": 750,
+    "w": 200
+   },
+   {
+    "id": "llm-generation",
+    "label": "🤖 Generación del LLM\nGenerar un plan de\ntratamiento integral",
+    "x": 650,
+    "y": 850,
+    "w": 200
+   },
+   {
+    "id": "answer-validation",
+    "label": "✅ Validación de la respuesta\nVerificar los hechos contra\nlos documentos fuente",
+    "x": 650,
+    "y": 950,
+    "w": 200
+   },
+   {
+    "id": "final-answer",
+    "label": "🎯 Respuesta final\n\"Tratamiento de la diabetes tipo 2:\n1. Metformina (primera línea)\n2. Cambios en el estilo de vida\n3. Insulina si es necesario\"",
+    "x": 650,
+    "y": 1050,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "indexing-header",
+    "s": "indexing-phase-header",
+    "t": "document-collection",
+    "label": "inicio"
+   },
+   {
+    "id": "indexing-e1",
+    "s": "document-collection",
+    "t": "document-chunking",
+    "label": "fragmentar"
+   },
+   {
+    "id": "indexing-e2",
+    "s": "document-chunking",
+    "t": "embedding-creation",
+    "label": "generar embeddings"
+   },
+   {
+    "id": "indexing-e3",
+    "s": "embedding-creation",
+    "t": "vector-storage",
+    "label": "almacenar"
+   },
+   {
+    "id": "inference-header",
+    "s": "inference-phase-header",
+    "t": "user-query",
+    "label": "inicio"
+   },
+   {
+    "id": "inference-e1",
+    "s": "user-query",
+    "t": "query-expansion",
+    "label": "expandir"
+   },
+   {
+    "id": "inference-e2",
+    "s": "query-expansion",
+    "t": "multi-vector-search",
+    "label": "buscar"
+   },
+   {
+    "id": "inference-e3",
+    "s": "multi-vector-search",
+    "t": "initial-retrieval",
+    "label": "recuperar"
+   },
+   {
+    "id": "inference-e4",
+    "s": "initial-retrieval",
+    "t": "reranking",
+    "label": "rankear"
+   },
+   {
+    "id": "inference-e5",
+    "s": "reranking",
+    "t": "context-curation",
+    "label": "curar"
+   },
+   {
+    "id": "inference-e6",
+    "s": "context-curation",
+    "t": "enhanced-prompt",
+    "label": "estructurar"
+   },
+   {
+    "id": "inference-e7",
+    "s": "enhanced-prompt",
+    "t": "llm-generation",
+    "label": "generar"
+   },
+   {
+    "id": "inference-e8",
+    "s": "llm-generation",
+    "t": "answer-validation",
+    "label": "validar"
+   },
+   {
+    "id": "inference-e9",
+    "s": "answer-validation",
+    "t": "final-answer",
+    "label": "finalizar"
+   },
+   {
+    "id": "cross-phase",
+    "s": "vector-storage",
+    "t": "initial-retrieval",
+    "label": "consultar índice"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Fase de indexación de documentos",
+    "description": "Configuración única: los documentos médicos se recopilan, se dividen en fragmentos semánticos, se convierten en vectores mediante embeddings y se almacenan en una base de datos vectorial con metadatos.",
+    "input": "",
+    "nodes": [
+     "indexing-phase-header",
+     "document-collection",
+     "document-chunking",
+     "embedding-creation",
+     "vector-storage"
+    ],
+    "edges": [
+     "indexing-header",
+     "indexing-e1",
+     "indexing-e2",
+     "indexing-e3"
+    ]
+   },
+   {
+    "title": "Procesamiento de la consulta",
+    "description": "La consulta del usuario sobre el tratamiento de la diabetes se expande con términos médicos relacionados para abarcar opciones y enfoques de tratamiento completos.",
+    "input": "",
+    "nodes": [
+     "inference-phase-header",
+     "user-query",
+     "query-expansion"
+    ],
+    "edges": [
+     "inference-header",
+     "inference-e1"
+    ]
+   },
+   {
+    "title": "Recuperación híbrida",
+    "description": "La búsqueda multivector combina la coincidencia semántica densa con la búsqueda dispersa por palabras clave para recuperar los 50 chunks de documentos más relevantes de la base de datos indexada.",
+    "input": "",
+    "nodes": [
+     "multi-vector-search",
+     "initial-retrieval",
+     "vector-storage"
+    ],
+    "edges": [
+     "inference-e2",
+     "inference-e3",
+     "cross-phase"
+    ]
+   },
+   {
+    "title": "Reranking inteligente",
+    "description": "El modelo cross-encoder puntúa los 50 candidatos según su relevancia para la consulta y selecciona los 10 documentos médicos más apropiados para el contexto.",
+    "input": "",
+    "nodes": [
+     "reranking"
+    ],
+    "edges": [
+     "inference-e4"
+    ]
+   },
+   {
+    "title": "Curación del contexto",
+    "description": "El contenido médico recuperado se procesa para eliminar contradicciones y redundancias, y para estructurar las recomendaciones clave de tratamiento.",
+    "input": "",
+    "nodes": [
+     "context-curation"
+    ],
+    "edges": [
+     "inference-e5"
+    ]
+   },
+   {
+    "title": "Generación mejorada y validación",
+    "description": "El LLM genera un plan de tratamiento integral a partir del contexto curado y luego valida la respuesta contra los documentos fuente para evitar la desinformación médica.",
+    "input": "",
+    "nodes": [
+     "enhanced-prompt",
+     "llm-generation",
+     "answer-validation",
+     "final-answer"
+    ],
+    "edges": [
+     "inference-e6",
+     "inference-e7",
+     "inference-e8",
+     "inference-e9"
+    ]
+   }
+  ]
+ }
+}

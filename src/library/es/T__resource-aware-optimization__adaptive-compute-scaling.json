@@ -1,0 +1,358 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "adaptive-compute-scaling",
+ "name": "Adaptive Compute Scaling(ACS)",
+ "icon": "📈",
+ "complexity": "high",
+ "description": "Ajusta dinámicamente los recursos computacionales según las demandas de carga de trabajo y los requisitos de rendimiento",
+ "features": [
+  "Monitoreo de recursos en tiempo real",
+  "Decisiones de escalado dinámicas",
+  "Ajustes basados en el rendimiento",
+  "Optimización de costos",
+  "Mantenimiento de la calidad",
+  "Escalado predictivo"
+ ],
+ "tldr": {
+  "what": "Monitorea métricas de carga de trabajo en tiempo real y agrega o quita recursos computacionales automáticamente para mantener los objetivos de rendimiento mientras controla los costos.",
+  "when": "Servicios que enfrentan picos de tráfico impredecibles, demandas computacionales variables o que necesitan equilibrar garantías de rendimiento con el gasto en infraestructura.",
+  "watchOut": "Las decisiones de escalado van por detrás de los cambios de demanda, lo que provoca fallas en cascada o recursos desperdiciados si los umbrales y los modelos de predicción están mal ajustados."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Adaptive Compute Scaling",
+  "description": "Sube o baja dinámicamente el cómputo en tiempo de inferencia por consulta y escala la infraestructura de servicio en tiempo real, invirtiendo razonamiento intensivo solo donde la consulta es difícil y manteniendo el tráfico fácil barato y rápido.",
+  "nodes": [
+   {
+    "id": "incoming-query",
+    "label": "📥 Consultas entrantes\n45 solicitudes en cola\nDificultad mixta",
+    "x": 340,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "resource-monitor",
+    "label": "📊 Monitor de recursos\nCPU 85% | Mem 77%\nCola 45 | p95 1.2s",
+    "x": 680,
+    "y": 50,
+    "w": 210
+   },
+   {
+    "id": "difficulty-classifier",
+    "label": "🧭 Clasificador de dificultad\nPuntúa cada consulta de 0 a 1\nEnruta a un nivel de cómputo",
+    "x": 340,
+    "y": 160,
+    "w": 240
+   },
+   {
+    "id": "easy-tier",
+    "label": "🟢 Fácil (puntuación < 0.3)\n\"¿Cuánto es 2 + 2?\"\n1 pasada, 0 tokens de razonamiento",
+    "x": 40,
+    "y": 290,
+    "w": 210
+   },
+   {
+    "id": "medium-tier",
+    "label": "🟡 Media (0.3 - 0.7)\n\"Resume un documento de 5 páginas\"\n1 pasada + 2k tokens de razonamiento",
+    "x": 340,
+    "y": 290,
+    "w": 220
+   },
+   {
+    "id": "hard-tier",
+    "label": "🔴 Difícil (puntuación > 0.7)\n\"Demuestra el teorema\"\n8 muestras + 32k de razonamiento",
+    "x": 660,
+    "y": 290,
+    "w": 210
+   },
+   {
+    "id": "compute-scheduler",
+    "label": "🎛️ Planificador de cómputo\nAsigna el presupuesto de inferencia\ny ejecuta best-of-N",
+    "x": 340,
+    "y": 430,
+    "w": 230
+   },
+   {
+    "id": "quality-guard",
+    "label": "🎯 Guardián de calidad\nDetiene el razonamiento antes cuando\nla confianza > 0.95",
+    "x": 680,
+    "y": 430,
+    "w": 210
+   },
+   {
+    "id": "autoscaler",
+    "label": "⚖️ Autoescalador\nEscala +2 instancias\ncuando CPU > 80% y cola > 30",
+    "x": 40,
+    "y": 430,
+    "w": 220
+   },
+   {
+    "id": "gpu-pool",
+    "label": "🖥️ Pool de GPU\nDe 4 a 6 instancias A100\nCon balanceo de carga",
+    "x": 340,
+    "y": 560,
+    "w": 220
+   },
+   {
+    "id": "spot-instances",
+    "label": "💸 Instancias spot\nCapacidad de ráfaga\n70% más baratas",
+    "x": 40,
+    "y": 560,
+    "w": 200
+   },
+   {
+    "id": "over-budget",
+    "label": "🚨 Tope de presupuesto alcanzado\nConsultas difíciles limitadas\nSe reduce a 4 muestras",
+    "x": 680,
+    "y": 560,
+    "w": 210
+   },
+   {
+    "id": "predictive-scaler",
+    "label": "🔮 Escalador predictivo\nPronóstico de +40% de carga a las 2pm\nPrecalentar a la 1:45pm",
+    "x": 40,
+    "y": 690,
+    "w": 210
+   },
+   {
+    "id": "output",
+    "label": "✅ Respuestas servidas\np95 450ms | $18/hr\nCalidad mantenida al 98%",
+    "x": 360,
+    "y": 700,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-classifier",
+    "s": "incoming-query",
+    "t": "difficulty-classifier",
+    "label": ""
+   },
+   {
+    "id": "monitor-scheduler",
+    "s": "resource-monitor",
+    "t": "compute-scheduler",
+    "label": "Señales"
+   },
+   {
+    "id": "monitor-autoscaler",
+    "s": "resource-monitor",
+    "t": "autoscaler",
+    "label": "CPU 85%"
+   },
+   {
+    "id": "classifier-easy",
+    "s": "difficulty-classifier",
+    "t": "easy-tier",
+    "label": "Baja"
+   },
+   {
+    "id": "classifier-medium",
+    "s": "difficulty-classifier",
+    "t": "medium-tier",
+    "label": "Media"
+   },
+   {
+    "id": "classifier-hard",
+    "s": "difficulty-classifier",
+    "t": "hard-tier",
+    "label": "Alta"
+   },
+   {
+    "id": "easy-scheduler",
+    "s": "easy-tier",
+    "t": "compute-scheduler",
+    "label": ""
+   },
+   {
+    "id": "medium-scheduler",
+    "s": "medium-tier",
+    "t": "compute-scheduler",
+    "label": ""
+   },
+   {
+    "id": "hard-scheduler",
+    "s": "hard-tier",
+    "t": "compute-scheduler",
+    "label": ""
+   },
+   {
+    "id": "scheduler-gpu",
+    "s": "compute-scheduler",
+    "t": "gpu-pool",
+    "label": ""
+   },
+   {
+    "id": "autoscaler-gpu",
+    "s": "autoscaler",
+    "t": "gpu-pool",
+    "label": "Escalar"
+   },
+   {
+    "id": "autoscaler-spot",
+    "s": "autoscaler",
+    "t": "spot-instances",
+    "label": ""
+   },
+   {
+    "id": "spot-gpu",
+    "s": "spot-instances",
+    "t": "gpu-pool",
+    "label": "Agregar capacidad"
+   },
+   {
+    "id": "predictive-autoscaler",
+    "s": "predictive-scaler",
+    "t": "autoscaler",
+    "label": "Precalentar"
+   },
+   {
+    "id": "scheduler-quality",
+    "s": "compute-scheduler",
+    "t": "quality-guard",
+    "label": ""
+   },
+   {
+    "id": "quality-hard",
+    "s": "quality-guard",
+    "t": "hard-tier",
+    "label": "Parada temprana"
+   },
+   {
+    "id": "hard-overbudget",
+    "s": "hard-tier",
+    "t": "over-budget",
+    "label": "Tope de presupuesto"
+   },
+   {
+    "id": "overbudget-scheduler",
+    "s": "over-budget",
+    "t": "compute-scheduler",
+    "label": "Limitar"
+   },
+   {
+    "id": "gpu-output",
+    "s": "gpu-pool",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "quality-output",
+    "s": "quality-guard",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción y monitoreo de consultas",
+    "description": "Llegan solicitudes mientras el monitor de recursos rastrea CPU, memoria, profundidad de la cola y latencia p95 en tiempo real.",
+    "input": "",
+    "nodes": [
+     "incoming-query",
+     "resource-monitor",
+     "difficulty-classifier"
+    ],
+    "edges": [
+     "query-classifier"
+    ]
+   },
+   {
+    "title": "Clasificación de dificultad",
+    "description": "Cada consulta se puntúa de 0 a 1 y se enruta a un nivel fácil, medio o difícil para que el cómputo corresponda al trabajo requerido.",
+    "input": "",
+    "nodes": [
+     "difficulty-classifier",
+     "easy-tier",
+     "medium-tier",
+     "hard-tier"
+    ],
+    "edges": [
+     "classifier-easy",
+     "classifier-medium",
+     "classifier-hard"
+    ]
+   },
+   {
+    "title": "Asignación de cómputo en tiempo de inferencia",
+    "description": "El planificador fija el presupuesto de razonamiento por nivel: 0 tokens para fácil, 2k para medio y best-of-8 con 32k de razonamiento para difícil.",
+    "input": "",
+    "nodes": [
+     "easy-tier",
+     "medium-tier",
+     "hard-tier",
+     "compute-scheduler",
+     "resource-monitor"
+    ],
+    "edges": [
+     "easy-scheduler",
+     "medium-scheduler",
+     "hard-scheduler",
+     "monitor-scheduler"
+    ]
+   },
+   {
+    "title": "Autoescalado de infraestructura",
+    "description": "La CPU al 85% y una profundidad de cola mayor a 30 hacen que el autoescalador agregue 2 instancias de GPU, respaldadas por capacidad spot más barata.",
+    "input": "",
+    "nodes": [
+     "resource-monitor",
+     "autoscaler",
+     "spot-instances",
+     "gpu-pool"
+    ],
+    "edges": [
+     "monitor-autoscaler",
+     "autoscaler-gpu",
+     "autoscaler-spot",
+     "spot-gpu"
+    ]
+   },
+   {
+    "title": "Precalentamiento predictivo",
+    "description": "Un pronóstico de +40% de carga a las 2pm precalienta instancias a la 1:45pm, lo que evita la latencia de arranque en frío y ahorra ~30% en escalado de emergencia.",
+    "input": "",
+    "nodes": [
+     "predictive-scaler",
+     "autoscaler"
+    ],
+    "edges": [
+     "predictive-autoscaler"
+    ]
+   },
+   {
+    "title": "Control de calidad y topes de presupuesto",
+    "description": "El guardián de calidad detiene el razonamiento adicional cuando la confianza supera 0.95, y un tope de presupuesto limita el nivel difícil a 4 muestras cuando el gasto es alto.",
+    "input": "",
+    "nodes": [
+     "compute-scheduler",
+     "quality-guard",
+     "hard-tier",
+     "over-budget"
+    ],
+    "edges": [
+     "scheduler-quality",
+     "quality-hard",
+     "hard-overbudget",
+     "overbudget-scheduler"
+    ]
+   },
+   {
+    "title": "Respuestas servidas",
+    "description": "La cantidad justa de cómputo por consulta deja el p95 en 450ms y mantiene el costo en $18/hr mientras la calidad se mantiene en 98%.",
+    "input": "",
+    "nodes": [
+     "gpu-pool",
+     "quality-guard",
+     "output"
+    ],
+    "edges": [
+     "scheduler-gpu",
+     "gpu-output",
+     "quality-output"
+    ]
+   }
+  ]
+ }
+}

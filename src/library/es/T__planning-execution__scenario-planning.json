@@ -1,0 +1,540 @@
+{
+ "cat": "planning-execution",
+ "slug": "scenario-planning",
+ "name": "Scenario-Based Planning(SBP)",
+ "icon": "🎭",
+ "complexity": "high",
+ "description": "Planificación con múltiples escenarios que prepara para distintos futuros posibles y condiciones inciertas",
+ "features": [
+  "Modelado de múltiples escenarios",
+  "Cuantificación de la incertidumbre",
+  "Desarrollo de estrategias robustas",
+  "Planificación de contingencias",
+  "Evaluación de riesgos",
+  "Toma de decisiones adaptativa"
+ ],
+ "tldr": {
+  "what": "Modela múltiples futuros posibles con probabilidades asignadas y luego desarrolla estrategias robustas en todos los escenarios en lugar de optimizadas para uno solo.",
+  "when": "Planificación con alta incertidumbre donde los resultados dependen de factores incontrolables como las condiciones del mercado, la competencia o los cambios regulatorios.",
+  "watchOut": "Las probabilidades de los escenarios son conjeturas; los planes optimizados para escenarios improbables desperdician recursos y descuidan la preparación para los probables."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Scenario Planning Pattern",
+  "description": "Muestra la planificación estratégica para múltiples escenarios futuros posibles en el diseño de sistemas de IA agéntica con ejemplos del mundo real",
+  "nodes": [
+   {
+    "id": "strategic-context",
+    "label": "Contexto estratégico\n\"Diseñar un sistema de IA para vehículos autónomos\npara los próximos 5 años con incertidumbre regulatoria\"",
+    "x": 500,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "environmental-scanning",
+    "label": "Análisis del entorno\nAnaliza factores externos y tendencias",
+    "x": 500,
+    "y": 180,
+    "w": 220
+   },
+   {
+    "id": "key-drivers",
+    "label": "Impulsores clave\n• Cambios regulatorios\n• Avance tecnológico\n• Adopción del mercado\n• Estándares de seguridad\n• Competencia",
+    "x": 200,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "uncertainty-factors",
+    "label": "Factores de incertidumbre\n• Cambios en las políticas gubernamentales\n• Tecnologías disruptivas\n• Aceptación pública\n• Marcos de seguros",
+    "x": 500,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "trend-analysis",
+    "label": "Análisis de tendencias\n• Mejoras en los modelos de IA\n• Reducción del costo de los sensores\n• Despliegue de 5G/6G\n• Crecimiento del edge computing",
+    "x": 800,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "scenario-generation",
+    "label": "Generación de escenarios\nCrea escenarios futuros distintos",
+    "x": 500,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "scenario-a",
+    "label": "Escenario A: Adopción rápida\nProbabilidad: 30%\n• Regulaciones favorables\n• Alta confianza pública\n• Progreso tecnológico rápido",
+    "x": 150,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "scenario-b",
+    "label": "Escenario B: Integración gradual\nProbabilidad: 45%\n• Regulaciones moderadas\n• Adopción cautelosa\n• Progreso constante",
+    "x": 400,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "scenario-c",
+    "label": "Escenario C: Restricciones regulatorias\nProbabilidad: 20%\n• Regulaciones estrictas\n• Preocupaciones de seguridad\n• Despliegue limitado",
+    "x": 650,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "scenario-d",
+    "label": "Escenario D: Avance tecnológico disruptivo\nProbabilidad: 5%\n• Avance hacia la AGI\n• Computación cuántica\n• Cambio revolucionario",
+    "x": 900,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "strategy-development",
+    "label": "Desarrollo de estrategias\nCrea estrategias específicas para cada escenario",
+    "x": 500,
+    "y": 740,
+    "w": 220
+   },
+   {
+    "id": "strategy-a",
+    "label": "Estrategia A: Expansión agresiva\n• Autonomía L5 completa\n• Despliegue global\n• Alta inversión en I+D\n• Enfoque en alianzas",
+    "x": 150,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "strategy-b",
+    "label": "Estrategia B: Crecimiento conservador\n• Enfoque en L3/L4\n• Lanzamiento regional\n• Inversión equilibrada\n• Énfasis en la seguridad",
+    "x": 400,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "strategy-c",
+    "label": "Estrategia C: Enfoque en cumplimiento\n• Asistencia L2+\n• Alineación regulatoria\n• Validación de seguridad\n• Alcance limitado",
+    "x": 650,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "strategy-d",
+    "label": "Estrategia D: Giro hacia la innovación\n• Enfoque en investigación\n• Enfoque de plataforma\n• Licenciamiento de tecnología\n• Posicionamiento a futuro",
+    "x": 900,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "risk-assessment",
+    "label": "Evaluación de riesgos\nEvalúa los riesgos de cada escenario",
+    "x": 300,
+    "y": 1020,
+    "w": 180
+   },
+   {
+    "id": "contingency-planning",
+    "label": "Planificación de contingencias\nPrepara respuestas adaptativas",
+    "x": 700,
+    "y": 1020,
+    "w": 180
+   },
+   {
+    "id": "resource-allocation",
+    "label": "Asignación de recursos\nOptimiza las inversiones entre escenarios",
+    "x": 500,
+    "y": 1160,
+    "w": 220
+   },
+   {
+    "id": "core-capabilities",
+    "label": "Capacidades centrales\n• Fusión de sensores\n• Planificación de rutas\n• Sistemas de seguridad\n• Actualizaciones OTA",
+    "x": 200,
+    "y": 1300,
+    "w": 160
+   },
+   {
+    "id": "flexible-architecture",
+    "label": "Arquitectura flexible\n• Diseño modular\n• Modelos de IA configurables\n• Infraestructura escalable\n• Lista para múltiples despliegues",
+    "x": 500,
+    "y": 1300,
+    "w": 180
+   },
+   {
+    "id": "strategic-options",
+    "label": "Opciones estratégicas\n• Acuerdos de alianza\n• Licenciamiento de tecnología\n• Expansión de mercado\n• Capacidad de cambiar de rumbo",
+    "x": 800,
+    "y": 1300,
+    "w": 160
+   },
+   {
+    "id": "early-warning",
+    "label": "Sistema de alerta temprana\nMonitorea los indicadores de escenario",
+    "x": 350,
+    "y": 1440,
+    "w": 180
+   },
+   {
+    "id": "decision-triggers",
+    "label": "Disparadores de decisión\nDefine umbrales de adaptación",
+    "x": 650,
+    "y": 1440,
+    "w": 180
+   },
+   {
+    "id": "monitoring-indicators",
+    "label": "Indicadores de monitoreo\n• Anuncios regulatorios\n• Hitos tecnológicos\n• Tasas de adopción del mercado\n• Reportes de incidentes de seguridad",
+    "x": 200,
+    "y": 1580,
+    "w": 180
+   },
+   {
+    "id": "adaptive-responses",
+    "label": "Respuestas adaptativas\n• Ajustes de estrategia\n• Reasignación de recursos\n• Cambios en alianzas\n• Giros tecnológicos",
+    "x": 500,
+    "y": 1580,
+    "w": 180
+   },
+   {
+    "id": "scenario-transitions",
+    "label": "Transiciones entre escenarios\n• Ajustes del cronograma\n• Migración de estrategia\n• Escalado de capacidades\n• Reposicionamiento en el mercado",
+    "x": 800,
+    "y": 1580,
+    "w": 180
+   },
+   {
+    "id": "implementation-roadmap",
+    "label": "Hoja de ruta de implementación\nEjecuta la estrategia adaptativa",
+    "x": 500,
+    "y": 1720,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "strategic-context",
+    "t": "environmental-scanning",
+    "label": ""
+   },
+   {
+    "id": "e2",
+    "s": "environmental-scanning",
+    "t": "key-drivers",
+    "label": ""
+   },
+   {
+    "id": "e3",
+    "s": "environmental-scanning",
+    "t": "uncertainty-factors",
+    "label": ""
+   },
+   {
+    "id": "e4",
+    "s": "environmental-scanning",
+    "t": "trend-analysis",
+    "label": ""
+   },
+   {
+    "id": "e5",
+    "s": "key-drivers",
+    "t": "scenario-generation",
+    "label": ""
+   },
+   {
+    "id": "e6",
+    "s": "uncertainty-factors",
+    "t": "scenario-generation",
+    "label": ""
+   },
+   {
+    "id": "e7",
+    "s": "trend-analysis",
+    "t": "scenario-generation",
+    "label": ""
+   },
+   {
+    "id": "e8",
+    "s": "scenario-generation",
+    "t": "scenario-a",
+    "label": ""
+   },
+   {
+    "id": "e9",
+    "s": "scenario-generation",
+    "t": "scenario-b",
+    "label": ""
+   },
+   {
+    "id": "e10",
+    "s": "scenario-generation",
+    "t": "scenario-c",
+    "label": ""
+   },
+   {
+    "id": "e11",
+    "s": "scenario-generation",
+    "t": "scenario-d",
+    "label": ""
+   },
+   {
+    "id": "e12",
+    "s": "scenario-a",
+    "t": "strategy-development",
+    "label": ""
+   },
+   {
+    "id": "e13",
+    "s": "scenario-b",
+    "t": "strategy-development",
+    "label": ""
+   },
+   {
+    "id": "e14",
+    "s": "scenario-c",
+    "t": "strategy-development",
+    "label": ""
+   },
+   {
+    "id": "e15",
+    "s": "scenario-d",
+    "t": "strategy-development",
+    "label": ""
+   },
+   {
+    "id": "e16",
+    "s": "strategy-development",
+    "t": "strategy-a",
+    "label": ""
+   },
+   {
+    "id": "e17",
+    "s": "strategy-development",
+    "t": "strategy-b",
+    "label": ""
+   },
+   {
+    "id": "e18",
+    "s": "strategy-development",
+    "t": "strategy-c",
+    "label": ""
+   },
+   {
+    "id": "e19",
+    "s": "strategy-development",
+    "t": "strategy-d",
+    "label": ""
+   },
+   {
+    "id": "e20",
+    "s": "strategy-a",
+    "t": "risk-assessment",
+    "label": ""
+   },
+   {
+    "id": "e21",
+    "s": "strategy-b",
+    "t": "risk-assessment",
+    "label": ""
+   },
+   {
+    "id": "e22",
+    "s": "strategy-c",
+    "t": "contingency-planning",
+    "label": ""
+   },
+   {
+    "id": "e23",
+    "s": "strategy-d",
+    "t": "contingency-planning",
+    "label": ""
+   },
+   {
+    "id": "e24",
+    "s": "risk-assessment",
+    "t": "resource-allocation",
+    "label": ""
+   },
+   {
+    "id": "e25",
+    "s": "contingency-planning",
+    "t": "resource-allocation",
+    "label": ""
+   },
+   {
+    "id": "e26",
+    "s": "resource-allocation",
+    "t": "core-capabilities",
+    "label": ""
+   },
+   {
+    "id": "e27",
+    "s": "resource-allocation",
+    "t": "flexible-architecture",
+    "label": ""
+   },
+   {
+    "id": "e28",
+    "s": "resource-allocation",
+    "t": "strategic-options",
+    "label": ""
+   },
+   {
+    "id": "e29",
+    "s": "core-capabilities",
+    "t": "early-warning",
+    "label": ""
+   },
+   {
+    "id": "e30",
+    "s": "flexible-architecture",
+    "t": "early-warning",
+    "label": ""
+   },
+   {
+    "id": "e31",
+    "s": "strategic-options",
+    "t": "decision-triggers",
+    "label": ""
+   },
+   {
+    "id": "e32",
+    "s": "early-warning",
+    "t": "monitoring-indicators",
+    "label": ""
+   },
+   {
+    "id": "e33",
+    "s": "decision-triggers",
+    "t": "adaptive-responses",
+    "label": ""
+   },
+   {
+    "id": "e34",
+    "s": "early-warning",
+    "t": "adaptive-responses",
+    "label": ""
+   },
+   {
+    "id": "e35",
+    "s": "decision-triggers",
+    "t": "scenario-transitions",
+    "label": ""
+   },
+   {
+    "id": "e36",
+    "s": "monitoring-indicators",
+    "t": "implementation-roadmap",
+    "label": ""
+   },
+   {
+    "id": "e37",
+    "s": "adaptive-responses",
+    "t": "implementation-roadmap",
+    "label": ""
+   },
+   {
+    "id": "e38",
+    "s": "scenario-transitions",
+    "t": "implementation-roadmap",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Análisis del contexto estratégico",
+    "description": "Define el desafío estratégico y el horizonte de planificación para el sistema de IA agéntica",
+    "input": "",
+    "nodes": [
+     "strategic-context",
+     "environmental-scanning"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Análisis del entorno",
+    "description": "Identifica los impulsores clave, las incertidumbres y las tendencias que podrían afectar al sistema",
+    "input": "",
+    "nodes": [
+     "key-drivers",
+     "uncertainty-factors",
+     "trend-analysis"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Generación de escenarios",
+    "description": "Crea escenarios futuros distintos y plausibles a partir de diferentes combinaciones de factores clave",
+    "input": "",
+    "nodes": [
+     "scenario-generation",
+     "scenario-a",
+     "scenario-b",
+     "scenario-c",
+     "scenario-d"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Desarrollo de respuestas estratégicas",
+    "description": "Diseña estrategias específicas adaptadas a las condiciones y requisitos de cada escenario",
+    "input": "",
+    "nodes": [
+     "strategy-development",
+     "strategy-a",
+     "strategy-b",
+     "strategy-c",
+     "strategy-d"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Evaluación de riesgos y planificación de contingencias",
+    "description": "Evalúa los riesgos de cada escenario y desarrolla planes de contingencia",
+    "input": "",
+    "nodes": [
+     "risk-assessment",
+     "contingency-planning"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Estrategia de asignación de recursos",
+    "description": "Optimiza la asignación de recursos entre escenarios y desarrolla capacidades centrales",
+    "input": "",
+    "nodes": [
+     "resource-allocation",
+     "core-capabilities",
+     "flexible-architecture",
+     "strategic-options"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Sistemas de alerta temprana y de decisión",
+    "description": "Establece sistemas de monitoreo para detectar cambios de escenario y activar respuestas",
+    "input": "",
+    "nodes": [
+     "early-warning",
+     "decision-triggers",
+     "monitoring-indicators"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Implementación adaptativa",
+    "description": "Ejecuta la hoja de ruta con mecanismos de adaptación integrados para las transiciones entre escenarios",
+    "input": "",
+    "nodes": [
+     "adaptive-responses",
+     "scenario-transitions",
+     "implementation-roadmap"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}

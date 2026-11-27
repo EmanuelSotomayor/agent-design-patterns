@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "error-recovery-patterns",
+ "name": "Error Handling and Recovery Patterns(ERP)",
+ "icon": "🔧",
+ "complexity": "medium",
+ "description": "Patrones integrales de interfaz para comunicar errores y recuperarse de ellos, con un manejo elegante de fallas en sistemas de agentes",
+ "features": [
+  "Divulgación progresiva de errores con soluciones accionables",
+  "Múltiples modalidades de visualización de errores (en línea, modal, banner)",
+  "Sugerencia e implementación automáticas de la recuperación",
+  "Preservación del contexto durante los procesos de recuperación de errores"
+ ],
+ "tldr": {
+  "what": "Presenta los errores con el problema, la causa y una solución accionable; muestra cada uno en línea, en tooltip, en modal o en banner según su gravedad.",
+  "when": "Los sistemas de agentes necesitan que los usuarios entiendan las fallas, se recuperen rápido y conserven el contexto de su trabajo a través de los estados de error.",
+  "watchOut": "Comunicar en exceso errores menores o sugerir pasos de recuperación que en realidad no funcionan erosiona la confianza del usuario más rápido que el silencio."
+ },
+ "overview": {
+  "pattern": "Interfaces integrales de comunicación y recuperación de errores para un manejo elegante de fallas",
+  "why": "Las fallas de los sistemas de agentes requieren una comunicación clara y caminos de recuperación efectivos para mantener la confianza del usuario",
+  "insight": "Usa una estructura de tres elementos: problema + causa + solución, con preservación del contexto y divulgación progresiva",
+  "impl": [
+   {
+    "t": "Clasificación de errores",
+    "d": "Clasifica los errores por gravedad, recuperabilidad e impacto en el usuario"
+   },
+   {
+    "t": "Estrategia de visualización",
+    "d": "Elige la modalidad adecuada: en línea, tooltip, modal o banner"
+   },
+   {
+    "t": "Estructura del mensaje",
+    "d": "Problema + causa + solución con divulgación progresiva"
+   },
+   {
+    "t": "Mecanismos de recuperación",
+    "d": "Reintento automático, preservación del contexto y recuperación manual"
+   },
+   {
+    "t": "Patrones de prevención",
+    "d": "Validación de entradas, diálogos de confirmación y capacidad de deshacer"
+   }
+  ],
+  "example": "agent_failure → classify_error → context_preserved → recovery_options → user_choice",
+  "dos": [
+   "Usa un lenguaje claro y sin jerga en los mensajes de error",
+   "Ofrece soluciones específicas y accionables, no consejos genéricos",
+   "Preserva el contexto y el trabajo del usuario durante la recuperación de errores",
+   "Implementa divulgación progresiva para los detalles técnicos",
+   "Usa un diseño visual consistente para los estados de error"
+  ],
+  "donts": [
+   "Culpar a los usuarios o usar lenguaje negativo en los mensajes de error",
+   "Mostrar stack traces técnicos o códigos de error a los usuarios finales",
+   "Usar diálogos de error para mensajes de validación no críticos",
+   "Dejar a los usuarios varados sin próximos pasos claros",
+   "Ocultar errores o fallar en silencio sin notificar al usuario"
+  ],
+  "use": [
+   "Sistemas en producción con alta dependencia de los usuarios",
+   "Workflows críticos que requieren confiabilidad",
+   "Operaciones complejas de agentes propensas a fallar",
+   "Sistemas que manejan datos sensibles o valiosos"
+  ],
+  "avoid": [
+   "Sistemas simples de prototipo o demostración",
+   "Herramientas internas usadas solo por usuarios técnicos",
+   "Aplicaciones experimentales de bajo riesgo",
+   "Sistemas con operaciones 100% confiables"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de recuperación de errores",
+    "d": "% de errores resueltos automáticamente con éxito"
+   },
+   {
+    "n": "Resolución de errores por el usuario",
+    "d": "Tiempo desde el error hasta que el usuario lo resuelve con éxito"
+   },
+   {
+    "n": "Preservación del contexto",
+    "d": "% del trabajo del usuario conservado durante la recuperación de errores"
+   },
+   {
+    "n": "Comprensión del error",
+    "d": "Comprensión del usuario sobre la causa del error y su solución"
+   },
+   {
+    "n": "Eficacia de la prevención",
+    "d": "Reducción de los errores evitables con el tiempo"
+   },
+   {
+    "n": "Reducción de tickets de soporte",
+    "d": "Disminución de las solicitudes de soporte relacionadas con errores"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Fallas de comunicación del agente",
+    "d": "Timeouts de red con reintento automático y anulación manual"
+   },
+   {
+    "n": "Errores de validación de entradas",
+    "d": "Feedback en tiempo real con sugerencias de corrección"
+   },
+   {
+    "n": "Limitaciones de recursos del sistema",
+    "d": "Degradación gradual con opciones alternativas"
+   },
+   {
+    "n": "Problemas de permisos/autenticación",
+    "d": "Explicaciones claras con caminos de resolución"
+   },
+   {
+    "n": "Errores de procesamiento de datos",
+    "d": "Preservación del contexto con recuperación de resultados parciales"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de manejo y recuperación de errores",
+  "description": "Patrones integrales de interfaz para comunicar errores y recuperarse de ellos, con un manejo elegante de fallas que logra 95% de resolución automática de errores con 99.8% de detección de amenazas",
+  "nodes": [
+   {
+    "id": "system-failure-challenge",
+    "label": "💥 Desafío de fallas del sistema\n\"¿Cómo manejar los errores con elegancia,\ncon una comunicación clara y\nmecanismos de recuperación efectivos?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "error-handling-framework",
+    "label": "🛡️ Framework de manejo de errores\n\"Gestión elegante de fallas:\n• Comunicación de errores\n• Mecanismos de recuperación\n• Preservación del contexto\n• Guía para el usuario\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "error-communication",
+    "label": "💬 Comunicación de errores\n\"Estructura de tres elementos:\n• Enunciado del problema\n• Explicación de la causa\n• Sugerencia de solución\n• Lenguaje amigable\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "message-patterns",
+    "label": "📝 Patrones de mensajes\n\"Modalidades de visualización:\n• Validación en línea\n• Tooltips contextuales\n• Modales críticos\n• Banners persistentes\"",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "graceful-degradation",
+    "label": "🔄 Degradación gradual\n\"Estrategias de respaldo:\n• Arquitectura en capas\n• Cambio por rendimiento\n• Redistribución de carga\n• Preservación del contexto\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "fallback-mechanisms",
+    "label": "⚡ Mecanismos de respaldo\n\"Cambio automático:\n• Enrutamiento por timeout\n• Monitoreo de calidad\n• Balanceo de recursos\n• Sistemas autorreparables\"",
+    "x": 750,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "recovery-systems",
+    "label": "🔧 Sistemas de recuperación\n\"Restauración inteligente:\n• 95% de resolución automática\n• Backoff exponencial\n• Circuit breakers\n• Restauración del contexto\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "error-categorization",
+    "label": "🏷️ Categorización de errores\n\"Sistemas de gravedad:\n• Entrada/Sistema/Red\n• Jerarquía por colores\n• Insignias de prioridad\n• Indicadores de accesibilidad\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "progressive-disclosure",
+    "label": "📊 Divulgación progresiva\n\"Guías de resolución de problemas:\n• Razonamiento expandible\n• Divulgación paso a paso\n• Tutoriales interactivos\n• Recuperación autoservicio\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "developer-debugging",
+    "label": "🔍 Depuración para desarrolladores\n\"Interfaces técnicas:\n• Paneles tipo centro de control\n• Detección de anomalías\n• Trazas de auditoría\n• Métricas de rendimiento\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "cross-system-handling",
+    "label": "🌐 Manejo entre sistemas\n\"Coordinación multiagente:\n• 99.94% de tasa de entrega\n• 2.3s de tiempo de recuperación\n• Garantías de mensajes\n• Tolerancia de red\"",
+    "x": 600,
+    "y": 950,
+    "w": 250
+   },
+   {
+    "id": "production-success",
+    "label": "🏆 Éxito en producción\n\"Qué medir:\n• Fallas detectadas antes de que el usuario las vea\n• Tickets generados cada mil sesiones\n• Sesiones recuperadas sin reiniciar\n• Tiempo desde la falla hasta un mensaje útil\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "recovery-principle",
+    "label": "🎯 Principio de recuperación de errores\n\"La comunicación en tres elementos con degradación gradual logra 95% de resolución automática\nLa preservación del contexto con divulgación progresiva mantiene la confianza del usuario\nLa coordinación entre sistemas asegura 99.8% de detección de amenazas con confiabilidad empresarial\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "system-failure-challenge",
+    "t": "error-handling-framework",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e2",
+    "s": "error-handling-framework",
+    "t": "error-communication",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "error-handling-framework",
+    "t": "graceful-degradation",
+    "label": "proporciona"
+   },
+   {
+    "id": "e4",
+    "s": "error-handling-framework",
+    "t": "recovery-systems",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "error-communication",
+    "t": "message-patterns",
+    "label": "usa"
+   },
+   {
+    "id": "e6",
+    "s": "graceful-degradation",
+    "t": "fallback-mechanisms",
+    "label": "impulsado por"
+   },
+   {
+    "id": "e7",
+    "s": "recovery-systems",
+    "t": "error-categorization",
+    "label": "organizado por"
+   },
+   {
+    "id": "e8",
+    "s": "recovery-systems",
+    "t": "progressive-disclosure",
+    "label": "guiado por"
+   },
+   {
+    "id": "e9",
+    "s": "message-patterns",
+    "t": "error-categorization",
+    "label": "se adapta a"
+   },
+   {
+    "id": "e10",
+    "s": "fallback-mechanisms",
+    "t": "progressive-disclosure",
+    "label": "explica mediante"
+   },
+   {
+    "id": "e11",
+    "s": "error-categorization",
+    "t": "developer-debugging",
+    "label": "da soporte a"
+   },
+   {
+    "id": "e12",
+    "s": "progressive-disclosure",
+    "t": "cross-system-handling",
+    "label": "coordina"
+   },
+   {
+    "id": "e13",
+    "s": "developer-debugging",
+    "t": "production-success",
+    "label": "habilita"
+   },
+   {
+    "id": "e14",
+    "s": "cross-system-handling",
+    "t": "production-success",
+    "label": "logra"
+   },
+   {
+    "id": "e15",
+    "s": "production-success",
+    "t": "recovery-principle",
+    "label": "valida"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de fallas del sistema",
+    "description": "¿Cómo pueden los sistemas de agentes manejar los errores con elegancia, con una comunicación clara, mecanismos de recuperación efectivos y una interrupción mínima para el usuario durante las fallas?",
+    "input": "",
+    "nodes": [
+     "system-failure-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de manejo de errores",
+    "description": "El framework de gestión elegante de fallas aborda el desafío mediante una comunicación integral de errores, mecanismos de recuperación, preservación del contexto y sistemas de guía para el usuario.",
+    "input": "",
+    "nodes": [
+     "error-handling-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Estrategias de comunicación y degradación",
+    "description": "Estructura de error de tres elementos (problema/causa/solución) con lenguaje amigable. La degradación gradual usa una arquitectura en capas con mecanismos de respaldo automáticos y cambio por rendimiento.",
+    "input": "",
+    "nodes": [
+     "error-communication",
+     "message-patterns",
+     "graceful-degradation",
+     "fallback-mechanisms"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Sistemas de recuperación y categorización",
+    "description": "La restauración inteligente logra 95% de resolución automática mediante backoff exponencial y circuit breakers. La categorización de errores proporciona una jerarquía de gravedad con indicadores que cumplen las normas de accesibilidad.",
+    "input": "",
+    "nodes": [
+     "recovery-systems",
+     "error-categorization",
+     "progressive-disclosure"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Herramientas para desarrolladores y coordinación entre sistemas",
+    "description": "Los paneles tipo centro de control con detección de anomalías dan soporte a la depuración técnica. El manejo entre sistemas logra 99.94% de tasa de entrega con 2.3s de tiempo de recuperación gracias a la coordinación multiagente.",
+    "input": "",
+    "nodes": [
+     "developer-debugging",
+     "cross-system-handling"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Éxito en producción y validación",
+    "description": "Un manejo integral de errores se nota en fallas detectadas antes de que el usuario se dé cuenta y en tickets que nunca llegan a generarse. La comunicación en tres elementos con preservación del contexto asegura confiabilidad empresarial y la confianza del usuario.",
+    "input": "",
+    "nodes": [
+     "production-success",
+     "recovery-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

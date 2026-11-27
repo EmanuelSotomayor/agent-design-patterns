@@ -1,0 +1,384 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "test-time-compute",
+ "name": "Test-Time Compute Scaling(TTC)",
+ "icon": "⚡",
+ "complexity": "high",
+ "description": "Asigna recursos computacionales de forma dinámica según la complejidad del problema",
+ "features": [
+  "Asignación dinámica de cómputo",
+  "Escalado consciente de la complejidad",
+  "Tiempo de reflexión adaptativo",
+  "Optimización de recursos",
+  "Equilibrio entre calidad y cómputo",
+  "Ajuste en tiempo real"
+ ],
+ "tldr": {
+  "what": "Asigna más pasos de razonamiento o capacidad de procesamiento a los problemas más difíciles y menos a los más simples, ajustándose en tiempo real según la dificultad detectada.",
+  "when": "Los problemas varían mucho en complejidad y puedes permitirte una latencia variable, o cuando algunas consultas necesitan razonamiento profundo mientras otras necesitan respuestas rápidas.",
+  "watchOut": "Estimar la complejidad del problema de antemano es poco confiable; puedes gastar de más en problemas fáciles o de menos en problemas difíciles antes de detectar el desajuste."
+ },
+ "overview": {
+  "pattern": "Asignación dinámica de recursos computacionales según la dificultad del problema y los requisitos de calidad",
+  "why": "Optimiza el equilibrio entre rendimiento y costo invirtiendo más cómputo en los problemas más difíciles y ahorrando recursos en los más fáciles",
+  "insight": "Evaluar la dificultad → Escalar la asignación de cómputo → Monitorear las mejoras de calidad → Ajustar los recursos dinámicamente",
+  "impl": [
+   {
+    "t": "Evaluación de dificultad",
+    "d": "Estima la complejidad del problema y el cómputo requerido"
+   },
+   {
+    "t": "Asignación de recursos",
+    "d": "Escala tokens/tiempo/iteraciones según la dificultad"
+   },
+   {
+    "t": "Búsqueda adaptativa",
+    "d": "Usa más búsqueda/razonamiento para los problemas más difíciles"
+   },
+   {
+    "t": "Monitoreo de calidad",
+    "d": "Haz seguimiento de la calidad de la solución vs. el cómputo gastado"
+   },
+   {
+    "t": "Ajuste dinámico",
+    "d": "Aumenta el cómputo si la calidad es insuficiente"
+   }
+  ],
+  "example": "Fácil: 100 tokens → Medio: 500 tokens → Difícil: 2000 tokens + búsqueda",
+  "dos": [
+   "Implementa heurísticas de detección de dificultad desde el inicio",
+   "Usa una asignación progresiva de cómputo (empieza con poco)",
+   "Monitorea las razones de eficiencia calidad/cómputo",
+   "Establece presupuestos máximos de cómputo para evitar descontroles",
+   "Guarda en cache los resultados intermedios para reutilizarlos"
+  ],
+  "donts": [
+   "Usar cómputo fijo sin importar la dificultad del problema",
+   "Escalar linealmente sin analizar los rendimientos decrecientes",
+   "Ignorar las señales tempranas de calidad (continuar por caminos malos)",
+   "Asignar el cómputo máximo a problemas triviales",
+   "Omitir la calibración de dificultad en conjuntos de problemas diversos"
+  ],
+  "use": [
+   "Problemas con niveles de complejidad variables",
+   "La calidad es más importante que la velocidad",
+   "Cuando el presupuesto de cómputo permite escalar",
+   "Dominios de problemas diversos que requieren adaptación",
+   "Escenarios de optimización del rendimiento"
+  ],
+  "avoid": [
+   "Problemas de dificultad uniforme",
+   "Restricciones estrictas de tiempo real",
+   "Recursos computacionales limitados",
+   "Tareas de clasificación simples",
+   "Cuando la velocidad importa más que la calidad"
+  ],
+  "metrics": [
+   {
+    "n": "Eficiencia calidad-cómputo",
+    "d": "Mejora de rendimiento por cada unidad adicional de cómputo"
+   },
+   {
+    "n": "Precisión en la predicción de dificultad",
+    "d": "Identificación correcta de la complejidad del problema"
+   },
+   {
+    "n": "Uso de recursos",
+    "d": "Asignación óptima vs. sobre/subaprovisionamiento"
+   },
+   {
+    "n": "Cumplimiento de las leyes de escalado",
+    "d": "Mejoras de rendimiento que siguen las curvas de escalado previstas"
+   },
+   {
+    "n": "Efectividad de la detención temprana",
+    "d": "Velocidad para alcanzar el umbral de calidad"
+   },
+   {
+    "n": "Relación costo-beneficio",
+    "d": "Valor de la solución vs. gasto computacional"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Resolución de problemas matemáticos",
+    "d": "Álgebra fácil (50 tokens) → Demostraciones complejas (2000+ tokens + verificación)"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Funciones simples (200 tokens) → Algoritmos complejos (1000+ tokens + pruebas)"
+   },
+   {
+    "n": "Análisis de investigación",
+    "d": "Consultas básicas (100 tokens) → Síntesis profunda (1500+ tokens + referencias cruzadas)"
+   },
+   {
+    "n": "Escritura creativa",
+    "d": "Respuestas cortas (150 tokens) → Narrativas detalladas (1000+ tokens + revisión)"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Decisiones rápidas (200 tokens) → Estrategias integrales (2000+ tokens + análisis de escenarios)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Test-Time Compute Scaling",
+  "description": "Asigna dinámicamente recursos computacionales y profundidad de razonamiento según la complejidad del problema y el tiempo disponible",
+  "nodes": [
+   {
+    "id": "problem-input",
+    "label": "📥 Entrada del problema\n\"Optimizar la cadena de suministro\npara más de 1000 ubicaciones\ncon restricciones de presupuesto\"",
+    "x": 400,
+    "y": 50,
+    "w": 220
+   },
+   {
+    "id": "complexity-analyzer",
+    "label": "🔍 Analizador de complejidad\nTamaño del problema: Grande\nRestricciones: Altas\nPuntuación de complejidad: 8.5/10",
+    "x": 400,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "resource-allocator",
+    "label": "⚙️ Asignador de recursos\nAsignado: 16 núcleos de CPU\n32GB de RAM, 45 minutos\nProfundidad de razonamiento: Nivel 3",
+    "x": 400,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "quick-heuristic",
+    "label": "⚡ Heurística rápida\n(2 minutos, 1 núcleo)\n\"Usar enfoque de vecino más cercano\npara la solución inicial\"",
+    "x": 150,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "intermediate-search",
+    "label": "🔍 Búsqueda intermedia\n(15 minutos, 8 núcleos)\n\"Algoritmo genético con\noptimización local\"",
+    "x": 400,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "deep-optimization",
+    "label": "🧠 Optimización profunda\n(28 minutos, 16 núcleos)\n\"Programación entera mixta\ncon satisfacción de restricciones\"",
+    "x": 650,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "progress-monitor",
+    "label": "📊 Monitor de progreso\nTiempo: 15/45 minutos\nCalidad de la solución: 65%\n¿Continuar la búsqueda profunda?",
+    "x": 400,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "adaptive-decision",
+    "label": "🎯 Decisión adaptativa\n\"La calidad mejora lentamente.\nAsignar más recursos\na las ramas prometedoras.\"",
+    "x": 400,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "resource-boost",
+    "label": "🚀 Aumento de recursos\nEscalar a: 24 núcleos\nExploración de ramas en paralelo\nTiempo restante: 30 min",
+    "x": 400,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "final-solution",
+    "label": "✅ Solución optimizada\n\"87% de reducción de costos\nSe usaron 42/45 minutos\nCómputo total: 18.5 horas-núcleo\"",
+    "x": 400,
+    "y": 750,
+    "w": 220
+   },
+   {
+    "id": "simple-problem",
+    "label": "📝 Problema simple\n\"¿Cuánto es 2+2?\"\nComplejidad: 0.1/10",
+    "x": 100,
+    "y": 150,
+    "w": 150
+   },
+   {
+    "id": "minimal-compute",
+    "label": "💻 Cómputo mínimo\n1 núcleo, 0.01 segundos\nCálculo directo",
+    "x": 100,
+    "y": 250,
+    "w": 150
+   },
+   {
+    "id": "instant-answer",
+    "label": "⚡ Respuesta: 4\nEficiencia: 100%",
+    "x": 100,
+    "y": 350,
+    "w": 120
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "problem-input",
+    "t": "complexity-analyzer",
+    "label": "analizar"
+   },
+   {
+    "id": "e2",
+    "s": "complexity-analyzer",
+    "t": "resource-allocator",
+    "label": "alta complejidad"
+   },
+   {
+    "id": "e3a",
+    "s": "resource-allocator",
+    "t": "quick-heuristic",
+    "label": "pista paralela 1"
+   },
+   {
+    "id": "e3b",
+    "s": "resource-allocator",
+    "t": "intermediate-search",
+    "label": "pista paralela 2"
+   },
+   {
+    "id": "e3c",
+    "s": "resource-allocator",
+    "t": "deep-optimization",
+    "label": "pista paralela 3"
+   },
+   {
+    "id": "e4a",
+    "s": "intermediate-search",
+    "t": "progress-monitor",
+    "label": "monitorear progreso"
+   },
+   {
+    "id": "e4b",
+    "s": "deep-optimization",
+    "t": "progress-monitor",
+    "label": "monitorear progreso"
+   },
+   {
+    "id": "e5",
+    "s": "progress-monitor",
+    "t": "adaptive-decision",
+    "label": "evaluar estado"
+   },
+   {
+    "id": "e6",
+    "s": "adaptive-decision",
+    "t": "resource-boost",
+    "label": "se necesita más cómputo"
+   },
+   {
+    "id": "e7",
+    "s": "resource-boost",
+    "t": "final-solution",
+    "label": "optimizar más"
+   },
+   {
+    "id": "es1",
+    "s": "simple-problem",
+    "t": "minimal-compute",
+    "label": "baja complejidad"
+   },
+   {
+    "id": "es2",
+    "s": "minimal-compute",
+    "t": "instant-answer",
+    "label": "resolver directo"
+   },
+   {
+    "id": "e8",
+    "s": "progress-monitor",
+    "t": "deep-optimization",
+    "label": "concentrar recursos"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Evaluación de la complejidad del problema",
+    "description": "El sistema analiza el problema entrante (optimización de la cadena de suministro) y le asigna una puntuación de complejidad de 8.5/10 según su tamaño, sus restricciones y el espacio de soluciones.",
+    "input": "",
+    "nodes": [
+     "problem-input",
+     "complexity-analyzer"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Asignación dinámica de recursos",
+    "description": "Dada la alta complejidad, el sistema asigna recursos de cómputo significativos: 16 núcleos, 32GB de RAM, un presupuesto de tiempo de 45 minutos y profundidad de razonamiento nivel 3.",
+    "input": "",
+    "nodes": [
+     "resource-allocator"
+    ],
+    "edges": [
+     "e2"
+    ]
+   },
+   {
+    "title": "Procesamiento paralelo en múltiples pistas",
+    "description": "El sistema lanza tres enfoques en paralelo con distintas intensidades de cómputo: heurística rápida (1 núcleo), búsqueda intermedia (8 núcleos) y optimización profunda (16 núcleos).",
+    "input": "",
+    "nodes": [
+     "quick-heuristic",
+     "intermediate-search",
+     "deep-optimization"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c"
+    ]
+   },
+   {
+    "title": "Monitoreo adaptativo del progreso",
+    "description": "El sistema monitorea continuamente la calidad de la solución (65%) y el uso del tiempo (15/45 minutos), y decide si continuar o reasignar recursos.",
+    "input": "",
+    "nodes": [
+     "progress-monitor",
+     "adaptive-decision"
+    ],
+    "edges": [
+     "e4a",
+     "e4b",
+     "e5",
+     "e8"
+    ]
+   },
+   {
+    "title": "Escalado dinámico de recursos",
+    "description": "El sistema detecta una dirección de optimización prometedora y escala a 24 núcleos, lo que demuestra una asignación de cómputo adaptativa basada en resultados intermedios, gastando cómputo donde cambia la respuesta.",
+    "input": "",
+    "nodes": [
+     "resource-boost",
+     "final-solution"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Comparación de eficiencia",
+    "description": "El contraste con un problema simple (2+2) muestra la eficiencia del sistema: cómputo mínimo (0.01 segundos, 1 núcleo) para tareas triviales vs. cómputo intensivo para la optimización compleja.",
+    "input": "",
+    "nodes": [
+     "simple-problem",
+     "minimal-compute",
+     "instant-answer"
+    ],
+    "edges": [
+     "es1",
+     "es2"
+    ]
+   }
+  ]
+ }
+}

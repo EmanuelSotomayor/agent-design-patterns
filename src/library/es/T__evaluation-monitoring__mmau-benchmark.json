@@ -1,0 +1,367 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "mmau-benchmark",
+ "name": "MMAU: Massive Multitask Agent Understanding(MMAU)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Benchmark holístico que evalúa agentes en cinco dominios con 20 tareas y más de 3K prompts. El ejemplo conserva la lista de modelos de la época de su publicación.",
+ "features": [
+  "Cinco dominios centrales: uso de herramientas, DAG QA, ciencia de datos, programación, matemáticas",
+  "Evaluación de cinco capacidades esenciales",
+  "20 tareas meticulosamente diseñadas",
+  "Más de 3K prompts distintos",
+  "Evaluación offline integral",
+  "No requiere configurar entornos complejos"
+ ],
+ "tldr": {
+  "what": "Benchmark que prueba agentes en cinco dominios con más de 3000 prompts y mide comprensión, razonamiento, planificación, resolución de problemas y autocorrección.",
+  "when": "Comparar el desempeño de agentes en distintos tipos de problemas o verificar si las mejoras del modelo se traducen en ganancias reales de capacidad en todos los dominios.",
+  "watchOut": "Alto costo de configuración y cómputo; los resultados reflejan las decisiones de diseño del benchmark, no necesariamente el desempeño real en tus tareas específicas."
+ },
+ "overview": {
+  "pattern": "Benchmark holístico que evalúa agentes LLM en cinco dominios con 20 tareas y más de 3K prompts, y cubre comprensión, razonamiento, planificación, resolución de problemas y autocorrección",
+  "why": "Aborda las limitaciones de los métodos de evaluación existentes con tareas offline que eliminan la configuración de entornos complejos y ofrecen un análisis centrado en las capacidades",
+  "insight": "En la versión publicada del benchmark, la familia GPT-4 encabezó los modelos comerciales evaluados y muchas líneas base de código abierto carecían de capacidades de uso de herramientas",
+  "impl": [
+   {
+    "t": "Configurar",
+    "d": "Instala el framework del benchmark MMAU desde el repositorio axlearn de Apple"
+   },
+   {
+    "t": "Ajustar",
+    "d": "Selecciona entre 5 dominios: uso de herramientas, DAG QA, ciencia de datos, programación, matemáticas"
+   },
+   {
+    "t": "Habilitar",
+    "d": "Prepara el entorno de evaluación offline (no requiere configuración compleja)"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Ejecuta el agente en 20 tareas con 3,220 prompts distintos que abarcan 64 temas"
+   },
+   {
+    "t": "Analizar",
+    "d": "Evalúa 5 capacidades: comprensión, razonamiento, planificación, resolución de problemas, autocorrección"
+   }
+  ],
+  "example": "mmau_eval = MMAU(agent=llm_agent, domains=[\"tool_use\", \"dag_qa\", \"data_science\", \"programming\", \"math\"], offline=True)",
+  "dos": [
+   "Evalúa en los 5 dominios para una valoración integral de las capacidades",
+   "Usa la evaluación offline para obtener resultados estables y reproducibles",
+   "Analiza el desempeño desglosado tanto por dominio como por capacidad",
+   "Compara con 18 modelos representativos (basados en API y de código abierto)",
+   "Aprovecha fuentes de datos heterogéneas: Kaggle, CodeContest, herramientas internas"
+  ],
+  "donts": [
+   "Esperar que los modelos de código abierto igualen el desempeño de los comerciales basados en API",
+   "Omitir la evaluación del uso de herramientas: muchos modelos de código abierto carecen de esta capacidad",
+   "Ignorar la descomposición de capacidades: entender las fortalezas individuales es clave",
+   "Depender únicamente de puntuaciones agregadas sin análisis por dominio",
+   "Usarlo como reemplazo de las evaluaciones interactivas: está diseñado para complementarlas"
+  ],
+  "use": [
+   "Evaluación integral de las capacidades de agentes en múltiples dominios",
+   "Evaluación offline que requiere resultados estables y reproducibles",
+   "Investigación académica sobre las capacidades y limitaciones de los agentes LLM",
+   "Análisis comparativo entre modelos comerciales y de código abierto",
+   "Evaluación centrada en capacidades más allá de la simple finalización de tareas"
+  ],
+  "avoid": [
+   "Pruebas en entornos interactivos (usa benchmarks especializados)",
+   "Necesidades de evaluación en un único dominio (usa benchmarks específicos del dominio)",
+   "Evaluación de la interacción del agente en tiempo real",
+   "Evaluación simple de finalización de tareas sin análisis de capacidades",
+   "Entornos que requieren configuraciones interactivas complejas"
+  ],
+  "metrics": [
+   {
+    "n": "Desempeño por dominio",
+    "d": "Desglose en uso de herramientas, DAG QA, ciencia de datos, programación y matemáticas"
+   },
+   {
+    "n": "Evaluación de capacidades",
+    "d": "Puntuaciones de comprensión, razonamiento, planificación, resolución de problemas y autocorrección"
+   },
+   {
+    "n": "Brecha publicada entre modelos comerciales y de código abierto",
+    "d": "El artículo reportó que su línea base de la familia GPT-4 encabezaba los modelos comerciales evaluados"
+   },
+   {
+    "n": "Tasa de finalización de tareas",
+    "d": "Tasa de éxito en 20 tareas meticulosamente diseñadas"
+   },
+   {
+    "n": "Competencia en el uso de herramientas",
+    "d": "Evaluación especializada de las capacidades de interacción con herramientas"
+   },
+   {
+    "n": "Cobertura de temas",
+    "d": "Desempeño en 64 temas dentro de los 5 dominios centrales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación académica",
+    "d": "Framework integral de Apple para el análisis de capacidades y el estudio de limitaciones de agentes LLM"
+   },
+   {
+    "n": "Comparación de modelos",
+    "d": "Reproduce la instantánea de 18 modelos del artículo, incluidas sus líneas base de GPT-4, Claude y código abierto"
+   },
+   {
+    "n": "Descomposición de capacidades",
+    "d": "Análisis detallado de las habilidades de comprensión, razonamiento, planificación, resolución de problemas y autocorrección"
+   },
+   {
+    "n": "Evaluación por dominio",
+    "d": "Evaluación focalizada en uso de herramientas, ciencia de datos, programación, matemáticas y DAG QA"
+   },
+   {
+    "n": "Evaluación offline",
+    "d": "Evaluación estable y reproducible sin requisitos de configuración de entornos complejos"
+   }
+  ]
+ },
+ "flow": {
+  "title": "MMAU: patrón Massive Multitask Agent Understanding",
+  "description": "El benchmark publicado por Apple usó 20 tareas en 5 dominios y 5 capacidades, con más de 3000 prompts y comparaciones entre modelos comerciales y de código abierto de la época del benchmark",
+  "nodes": [
+   {
+    "id": "agent-evaluation-limitation",
+    "label": "🔍 Limitación de la evaluación de agentes de IA\n\"Los benchmarks existentes se enfocan en la finalización de tareas\npero no desglosan las habilidades subyacentes\nlo que vuelve poco claro el análisis de fallos\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "mmau-framework",
+    "label": "🏗️ Framework integral MMAU\n\"Massive Multitask Agent Understanding:\n• 5 dominios × 5 capacidades\n• 20 tareas con más de 3000 prompts\n• Diseño de evaluación offline\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "five-domains",
+    "label": "🌐 5 dominios diversos\n\"Cobertura integral:\n• Uso de herramientas\n• DAG QA\n• Programación de ciencia de datos/ML\"",
+    "x": 200,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "additional-domains",
+    "label": "💻 Dominios de programación y matemáticas\n\"Experiencia técnica:\n• Programación de nivel de competencia\n• Resolución de problemas matemáticos\n• Tareas de razonamiento complejo\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "five-capabilities",
+    "label": "🧠 5 capacidades centrales\n\"Habilidades fundamentales del agente:\n• Comprensión\n• Razonamiento\n• Planificación\"",
+    "x": 600,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "additional-capabilities",
+    "label": "🎯 Resolución de problemas y autocorrección\n\"Habilidades avanzadas del agente:\n• Ejecución de la resolución de problemas\n• Capacidades de autocorrección\n• Habilidades de reflexión sobre errores\"",
+    "x": 600,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "two-stage-design",
+    "label": "⚙️ Innovación de diseño de tareas en dos etapas\n\"Descomposición de capacidades:\n• Planner-shift: estrategia de alto nivel\n• Solver-shift: ejecución del plan\n• Separa el razonamiento de la resolución\"",
+    "x": 400,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "dataset-construction",
+    "label": "📊 Construcción de un dataset heterogéneo\n\"Integración de múltiples fuentes:\n• Datos internos de uso de herramientas\n• Datasets de DS/ML de Kaggle\n• Programación de CodeContest\n• Problemas de DeepMind-Math\"",
+    "x": 100,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "model-evaluation-results",
+    "label": "📈 Resultados de la evaluación de 18 modelos\n\"Evaluación integral:\n• La familia GPT-4 lidera el desempeño\n• Brechas significativas en código abierto\n• La autocorrección revela limitaciones\"",
+    "x": 700,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "capability-insights",
+    "label": "💡 Hallazgos centrados en capacidades\n\"Análisis granular del desempeño:\n• Entender dónde ocurren los fallos\n• Distinguir tipos de error\n• Mayor interpretabilidad\"",
+    "x": 400,
+    "y": 950,
+    "w": 270
+   },
+   {
+    "id": "holistic-evaluation-principle",
+    "label": "🎯 Principio de evaluación holística de agentes\n\"Desglosa las habilidades subyacentes más allá de la finalización de tareas\nLa evaluación centrada en capacidades revela el origen de los fallos\nEl diseño offline garantiza una evaluación estable y reproducible\"",
+    "x": 400,
+    "y": 1100,
+    "w": 370
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "agent-evaluation-limitation",
+    "t": "mmau-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "mmau-framework",
+    "t": "five-domains",
+    "label": "implementa 5 dominios"
+   },
+   {
+    "id": "e3",
+    "s": "mmau-framework",
+    "t": "five-capabilities",
+    "label": "evalúa 5 capacidades"
+   },
+   {
+    "id": "e4",
+    "s": "five-domains",
+    "t": "additional-domains",
+    "label": "se extiende a programación"
+   },
+   {
+    "id": "e5",
+    "s": "five-capabilities",
+    "t": "additional-capabilities",
+    "label": "incluye habilidades avanzadas"
+   },
+   {
+    "id": "e6",
+    "s": "mmau-framework",
+    "t": "two-stage-design",
+    "label": "usa un diseño innovador"
+   },
+   {
+    "id": "e7",
+    "s": "additional-domains",
+    "t": "dataset-construction",
+    "label": "obtiene datos de"
+   },
+   {
+    "id": "e8",
+    "s": "two-stage-design",
+    "t": "dataset-construction",
+    "label": "estructura el dataset"
+   },
+   {
+    "id": "e9",
+    "s": "additional-capabilities",
+    "t": "model-evaluation-results",
+    "label": "evaluado en"
+   },
+   {
+    "id": "e10",
+    "s": "two-stage-design",
+    "t": "model-evaluation-results",
+    "label": "habilita la evaluación"
+   },
+   {
+    "id": "e11",
+    "s": "dataset-construction",
+    "t": "capability-insights",
+    "label": "habilita el análisis"
+   },
+   {
+    "id": "e12",
+    "s": "model-evaluation-results",
+    "t": "capability-insights",
+    "label": "revela hallazgos"
+   },
+   {
+    "id": "e13",
+    "s": "capability-insights",
+    "t": "holistic-evaluation-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de las limitaciones en la evaluación de agentes de IA",
+    "description": "Los benchmarks existentes se enfocan en la finalización de tareas, pero no desglosan las habilidades subyacentes que impulsan el desempeño, lo que dificulta entender dónde se originan los fallos y obstaculiza el desarrollo de agentes.",
+    "input": "",
+    "nodes": [
+     "agent-evaluation-limitation"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework integral MMAU",
+    "description": "Massive Multitask Agent Understanding de Apple aborda estas limitaciones mediante una evaluación integral: una matriz de 5 dominios × 5 capacidades con 20 tareas, más de 3000 prompts y un diseño offline para una evaluación estable.",
+    "input": "",
+    "nodes": [
+     "mmau-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Matriz de 5 dominios y 5 capacidades",
+    "description": "El framework evalúa sistemáticamente en dominios diversos (uso de herramientas, DAG QA, ciencia de datos/ML, programación, matemáticas) y capacidades centrales (comprensión, razonamiento, planificación, resolución de problemas, autocorrección).",
+    "input": "",
+    "nodes": [
+     "five-domains",
+     "additional-domains",
+     "five-capabilities",
+     "additional-capabilities"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Innovación de diseño de tareas en dos etapas",
+    "description": "Una descomposición de capacidades revolucionaria separa el razonamiento/planificación de la resolución de problemas: Planner-shift genera la estrategia de alto nivel y Solver-shift ejecuta el plan, lo que permite una evaluación granular de las habilidades.",
+    "input": "",
+    "nodes": [
+     "two-stage-design"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Construcción de un dataset heterogéneo y evaluación de modelos",
+    "description": "La integración de múltiples fuentes (datos internos de herramientas, datasets de Kaggle, CodeContest, DeepMind-Math) permite una evaluación integral de 18 modelos, que revela la superioridad de GPT-4 y brechas significativas en autocorrección en los modelos de código abierto.",
+    "input": "",
+    "nodes": [
+     "dataset-construction",
+     "model-evaluation-results"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Hallazgos centrados en capacidades y evaluación holística",
+    "description": "El análisis granular del desempeño revela dónde ocurren los fallos, distingue tipos de error y mejora la interpretabilidad, lo que demuestra que desglosar las habilidades subyacentes más allá de la finalización de tareas proporciona una comprensión más profunda de los agentes.",
+    "input": "",
+    "nodes": [
+     "capability-insights",
+     "holistic-evaluation-principle"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13"
+    ]
+   }
+  ]
+ }
+}

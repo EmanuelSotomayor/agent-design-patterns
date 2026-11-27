@@ -1,0 +1,323 @@
+{
+ "cat": "interpretability",
+ "slug": "contrastive-explanations",
+ "name": "Contrastive Explanations(CE)",
+ "icon": "⚖️",
+ "complexity": "medium",
+ "description": "Explica las decisiones de la IA mostrando qué cambiaría el resultado",
+ "features": [
+  "Análisis contrafactual",
+  "Exploración de la frontera de decisión",
+  "Generación de caminos alternativos",
+  "Identificación del cambio mínimo",
+  "Ranking de importancia de características",
+  "Mapeo de relaciones causales"
+ ],
+ "tldr": {
+  "what": "Muestra qué cambios en la entrada invertirían una decisión de la IA, encontrando las modificaciones mínimas para cruzar la frontera de decisión.",
+  "when": "Los usuarios necesitan entender por qué fueron rechazados y qué acciones concretas podrían cambiar el resultado, sobre todo en decisiones de alto impacto.",
+  "watchOut": "Los contrafactuales pueden sugerir cambios poco realistas o injustos, lo que confunde a los usuarios sobre lo que realmente es alcanzable o apropiado intentar."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Contrastive Explanations",
+  "description": "Explica una decisión mostrando qué la invertiría. Una búsqueda contrafactual encuentra el cambio mínimo en las entradas que convierte el rechazo de un préstamo en una aprobación y luego lo informa como una guía accionable.",
+  "nodes": [
+   {
+    "id": "applicant-input",
+    "label": "🧑 Solicitud de préstamo\nCrédito 580, ingresos $60K\nPie del 15%",
+    "x": 360,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "decision-agent",
+    "label": "🏦 Agente de evaluación crediticia\nClasificador aprobar / rechazar",
+    "x": 360,
+    "y": 140,
+    "w": 240
+   },
+   {
+    "id": "factual-decision",
+    "label": "❌ Resultado real: RECHAZADO\nFactor: puntaje crediticio 580\nbajo el umbral de 620",
+    "x": 360,
+    "y": 240,
+    "w": 240
+   },
+   {
+    "id": "contrast-engine",
+    "label": "⚖️ Motor contrastivo\nBusca las entradas más cercanas\nque invierten el resultado",
+    "x": 360,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "feature-space",
+    "label": "📊 Importancia de características\nOrdena los factores de la decisión",
+    "x": 80,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "decision-boundary",
+    "label": "🧭 Frontera de decisión\nExplora la región de APROBACIÓN",
+    "x": 620,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "cf-credit",
+    "label": "🔀 Contrafactual A\nCrédito 580 -> 620 (+40)",
+    "x": 20,
+    "y": 570,
+    "w": 200
+   },
+   {
+    "id": "cf-income",
+    "label": "🔀 Contrafactual B\nIngresos $60K -> $75K (+$15K)",
+    "x": 300,
+    "y": 570,
+    "w": 200
+   },
+   {
+    "id": "cf-down",
+    "label": "🔀 Contrafactual C\nPie 15% -> 25% (+10%)",
+    "x": 580,
+    "y": 570,
+    "w": 200
+   },
+   {
+    "id": "minimal-change",
+    "label": "✨ Cambio mínimo\n+40 puntos de crédito\nes la inversión más pequeña",
+    "x": 300,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "irrelevant-factors",
+    "label": "🟰 Factores irrelevantes\nHistorial laboral OK\nRelación deuda-ingresos aceptable",
+    "x": 610,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "counterfactual-outcome",
+    "label": "✅ Resultado contrastivo: APROBADO\nsi el puntaje crediticio >= 620",
+    "x": 300,
+    "y": 790,
+    "w": 240
+   },
+   {
+    "id": "explanation-output",
+    "label": "📄 Explicación accionable\nPasos que invierten la decisión",
+    "x": 610,
+    "y": 790,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-applicant-agent",
+    "s": "applicant-input",
+    "t": "decision-agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-factual",
+    "s": "decision-agent",
+    "t": "factual-decision",
+    "label": "Rechazado"
+   },
+   {
+    "id": "e-factual-engine",
+    "s": "factual-decision",
+    "t": "contrast-engine",
+    "label": "Explicar"
+   },
+   {
+    "id": "e-engine-features",
+    "s": "contrast-engine",
+    "t": "feature-space",
+    "label": ""
+   },
+   {
+    "id": "e-engine-boundary",
+    "s": "contrast-engine",
+    "t": "decision-boundary",
+    "label": ""
+   },
+   {
+    "id": "e-boundary-credit",
+    "s": "decision-boundary",
+    "t": "cf-credit",
+    "label": ""
+   },
+   {
+    "id": "e-boundary-income",
+    "s": "decision-boundary",
+    "t": "cf-income",
+    "label": ""
+   },
+   {
+    "id": "e-boundary-down",
+    "s": "decision-boundary",
+    "t": "cf-down",
+    "label": ""
+   },
+   {
+    "id": "e-features-irrelevant",
+    "s": "feature-space",
+    "t": "irrelevant-factors",
+    "label": "bajo peso"
+   },
+   {
+    "id": "e-credit-minimal",
+    "s": "cf-credit",
+    "t": "minimal-change",
+    "label": "el menor"
+   },
+   {
+    "id": "e-income-minimal",
+    "s": "cf-income",
+    "t": "minimal-change",
+    "label": ""
+   },
+   {
+    "id": "e-down-minimal",
+    "s": "cf-down",
+    "t": "minimal-change",
+    "label": ""
+   },
+   {
+    "id": "e-minimal-outcome",
+    "s": "minimal-change",
+    "t": "counterfactual-outcome",
+    "label": "invierte"
+   },
+   {
+    "id": "e-outcome-explanation",
+    "s": "counterfactual-outcome",
+    "t": "explanation-output",
+    "label": ""
+   },
+   {
+    "id": "e-irrelevant-explanation",
+    "s": "irrelevant-factors",
+    "t": "explanation-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Decisión real",
+    "description": "El agente de evaluación crediticia rechaza la solicitud e indica el puntaje crediticio de 580 como factor determinante.",
+    "input": "",
+    "nodes": [
+     "applicant-input",
+     "decision-agent",
+     "factual-decision"
+    ],
+    "edges": [
+     "e-applicant-agent",
+     "e-agent-factual"
+    ]
+   },
+   {
+    "title": "Invocar el motor contrastivo",
+    "description": "En lugar de repetir el puntaje, el motor pregunta qué tendría que ser distinto para que el modelo aprobara la solicitud.",
+    "input": "",
+    "nodes": [
+     "factual-decision",
+     "contrast-engine"
+    ],
+    "edges": [
+     "e-factual-engine"
+    ]
+   },
+   {
+    "title": "Ordenar las características y explorar la frontera",
+    "description": "La importancia de características ordena los factores mientras una exploración de la frontera busca la región más cercana donde el resultado pasa a ser APROBADO.",
+    "input": "",
+    "nodes": [
+     "contrast-engine",
+     "feature-space",
+     "decision-boundary"
+    ],
+    "edges": [
+     "e-engine-features",
+     "e-engine-boundary"
+    ]
+   },
+   {
+    "title": "Generar contrafactuales",
+    "description": "Tres cambios candidatos cruzan la frontera: +40 puntos de crédito, +$15K de ingresos o +10% de pie.",
+    "input": "",
+    "nodes": [
+     "decision-boundary",
+     "cf-credit",
+     "cf-income",
+     "cf-down"
+    ],
+    "edges": [
+     "e-boundary-credit",
+     "e-boundary-income",
+     "e-boundary-down"
+    ]
+   },
+   {
+    "title": "Identificar el cambio mínimo",
+    "description": "Al comparar los candidatos, subir el puntaje crediticio en 40 puntos es el cambio más pequeño que invierte la decisión.",
+    "input": "",
+    "nodes": [
+     "cf-credit",
+     "cf-income",
+     "cf-down",
+     "minimal-change"
+    ],
+    "edges": [
+     "e-credit-minimal",
+     "e-income-minimal",
+     "e-down-minimal"
+    ]
+   },
+   {
+    "title": "Confirmar el resultado invertido",
+    "description": "Con un puntaje crediticio de 620 o más, el modelo ahora aprueba, lo que verifica que el contrafactual es válido.",
+    "input": "",
+    "nodes": [
+     "minimal-change",
+     "counterfactual-outcome"
+    ],
+    "edges": [
+     "e-minimal-outcome"
+    ]
+   },
+   {
+    "title": "Señalar lo que no importó",
+    "description": "El historial laboral y la relación deuda-ingresos ya eran suficientes, por lo que se destacan como factores que no afectaron el resultado.",
+    "input": "",
+    "nodes": [
+     "feature-space",
+     "irrelevant-factors"
+    ],
+    "edges": [
+     "e-features-irrelevant"
+    ]
+   },
+   {
+    "title": "Entregar una explicación accionable",
+    "description": "El solicitante recibe pasos concretos: reducir saldos, corregir errores en su informe y subir el puntaje por encima de 620.",
+    "input": "",
+    "nodes": [
+     "counterfactual-outcome",
+     "irrelevant-factors",
+     "explanation-output"
+    ],
+    "edges": [
+     "e-outcome-explanation",
+     "e-irrelevant-explanation"
+    ]
+   }
+  ]
+ }
+}

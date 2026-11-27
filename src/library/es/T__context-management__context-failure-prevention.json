@@ -1,0 +1,393 @@
+{
+ "cat": "context-management",
+ "slug": "context-failure-prevention",
+ "name": "Context Failure Prevention(CFP)",
+ "icon": "🛡️",
+ "complexity": "high",
+ "description": "Protección contra el envenenamiento, la distracción y la degradación del contexto mediante mecanismos de monitoreo y recuperación",
+ "features": [
+  "Detección y prevención del envenenamiento de contexto",
+  "Monitoreo de la distracción del contexto",
+  "Mecanismos de recuperación ante la degradación del contexto",
+  "Evaluación de la salud del contexto en tiempo real"
+ ],
+ "tldr": {
+  "what": "Monitorea el contexto en busca de envenenamiento y degradación, valida las entradas, verifica la integridad y restaura un estado limpio cuando detecta amenazas.",
+  "when": "Conversaciones de varios turnos en las que entradas maliciosas o accidentales podrían corromper la comprensión que tiene el agente de su tarea o de sus restricciones.",
+  "watchOut": "La sobrecarga de detección y los falsos positivos pueden ralentizar las respuestas; los mecanismos de recuperación pueden descartar contexto legítimo necesario para la tarea."
+ },
+ "overview": {
+  "pattern": "Protección contra el envenenamiento, la distracción y la degradación del contexto mediante mecanismos de monitoreo y recuperación",
+  "why": "Garantiza la confiabilidad y la seguridad del contexto en sistemas en producción al prevenir y mitigar ataques y fallas basados en el contexto",
+  "insight": "La detección proactiva de amenazas con recuperación automática permite una protección robusta del contexto frente a ataques sofisticados",
+  "impl": [
+   {
+    "t": "Detección de amenazas",
+    "d": "Identifica el envenenamiento de contexto y las entradas adversarias"
+   },
+   {
+    "t": "Validación de entradas",
+    "d": "Sanitiza y valida todas las entradas de contexto"
+   },
+   {
+    "t": "Monitoreo de integridad",
+    "d": "Monitorea continuamente la salud y la calidad del contexto"
+   },
+   {
+    "t": "Sistemas de recuperación",
+    "d": "Implementa mecanismos automáticos de restauración del contexto"
+   },
+   {
+    "t": "Control de acceso",
+    "d": "Aplica controles estrictos de acceso y modificación del contexto"
+   }
+  ],
+  "example": "detect_threats → validate_inputs → monitor_integrity → recover_automatically → control_access",
+  "dos": [
+   "Implementa una validación y sanitización exhaustivas de las entradas",
+   "Monitorea la salud del contexto con detección de anomalías en tiempo real",
+   "Usa estados de contexto de respaldo para una recuperación rápida",
+   "Aplica controles de acceso y sistemas de permisos estrictos",
+   "Registra todas las modificaciones del contexto para tener pistas de auditoría"
+  ],
+  "donts": [
+   "Aceptar contexto no confiable sin validarlo",
+   "Ignorar señales sutiles de degradación del contexto",
+   "Omitir la creación de respaldos antes de modificar el contexto",
+   "Permitir acceso irrestricto al contexto entre componentes",
+   "Desactivar medidas de seguridad para ganar rendimiento"
+  ],
+  "use": [
+   "Sistemas en producción con requisitos de seguridad",
+   "Aplicaciones multiusuario o abiertas al público",
+   "Contextos de toma de decisiones de alto riesgo",
+   "Sistemas que procesan datos externos no confiables"
+  ],
+  "avoid": [
+   "Entornos confiables de un solo usuario",
+   "Fases de desarrollo y pruebas",
+   "Aplicaciones simples de prueba de concepto",
+   "Sistemas con recursos extremadamente limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de detección de amenazas",
+    "d": "% de intentos de contexto malicioso detectados"
+   },
+   {
+    "n": "Tasa de éxito de recuperación",
+    "d": "% de recuperaciones automáticas de contexto exitosas"
+   },
+   {
+    "n": "Tasa de falsos positivos",
+    "d": "% de contexto legítimo marcado incorrectamente"
+   },
+   {
+    "n": "Tiempo de respuesta",
+    "d": "Tiempo desde la detección de la amenaza hasta su mitigación"
+   },
+   {
+    "n": "Puntuación de integridad del contexto",
+    "d": "Evaluación general de la salud del contexto"
+   },
+   {
+    "n": "Cobertura de seguridad",
+    "d": "% de operaciones de contexto bajo protección"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Seguridad de IA en producción",
+    "d": "threat_detection → input_validation → integrity_monitoring → automatic_recovery → access_control"
+   },
+   {
+    "n": "Protección de contexto empresarial",
+    "d": "security_scanning → anomaly_detection → backup_restoration → audit_logging → compliance_reporting"
+   },
+   {
+    "n": "Seguridad multi-tenant",
+    "d": "tenant_isolation → context_validation → threat_monitoring → recovery_systems → access_governance"
+   },
+   {
+    "n": "Servicios públicos de IA",
+    "d": "input_sanitization → poisoning_detection → degradation_prevention → state_recovery → security_enforcement"
+   },
+   {
+    "n": "Sistemas de decisiones críticas",
+    "d": "context_verification → integrity_assurance → backup_maintenance → recovery_procedures → audit_compliance"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de prevención de fallas de contexto",
+  "description": "Defensa en múltiples capas contra fallas de contexto, como desbordamiento, corrupción, inyección y deriva, que logra 99.8% de detección de amenazas con mecanismos de recuperación automática",
+  "nodes": [
+   {
+    "id": "context-failure-challenge",
+    "label": "⚠️ Desafío de las fallas de contexto\n\"¿Cómo prevenir el desbordamiento del contexto,\nla corrupción, los ataques de inyección\ny la degradación del rendimiento?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "failure-prevention-framework",
+    "label": "🛡️ Framework de prevención\n\"Defensa en múltiples capas:\n• Mecanismos de detección\n• Estrategias de prevención\n• Sistemas de recuperación\n• Monitoreo continuo\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "failure-modes",
+    "label": "🚨 Modos de falla\n\"Amenazas críticas:\n• Desbordamiento del contexto\n• Corrupción de memoria\n• Inyección de prompt\n• Deriva del contexto\"",
+    "x": 200,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "overflow-prevention",
+    "label": "📦 Prevención del desbordamiento\n\"Gestión de la ventana:\n• Ventanas deslizantes\n• Preservación por prioridad\n• Compresión semántica\n• 80% de reducción\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "detection-systems",
+    "label": "🔍 Sistemas de detección\n\"Monitoreo en tiempo real:\n• Detección de anomalías\n• Verificación por hash\n• Análisis de comportamiento\n• 99.8% de tasa de detección\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "injection-defense",
+    "label": "💉 Defensa contra inyección\n\"Capas de seguridad:\n• Sanitización de entradas\n• Aislamiento del contexto\n• Validación de salidas\n• Task Shield 2.07% ASR\"",
+    "x": 750,
+    "y": 500,
+    "w": 240
+   },
+   {
+    "id": "prevention-strategies",
+    "label": "🚧 Estrategias de prevención\n\"Protección integral:\n• Validación de entradas\n• Verificación de límites\n• Monitoreo de integridad\n• Controles RBAC\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "recovery-mechanisms",
+    "label": "🔄 Mecanismos de recuperación\n\"Sistemas de resiliencia:\n• Contextos de respaldo\n• Reparación del contexto\n• Degradación controlada\n• 95% de tasa de recuperación\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "corruption-prevention",
+    "label": "🔒 Prevención de la corrupción\n\"Integridad de los datos:\n• Defensa contra envenenamiento de memoria\n• Verificación de fuentes\n• Sistemas de cuarentena\n• Protección por hash\"",
+    "x": 600,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "drift-detection",
+    "label": "📈 Detección de deriva\n\"Monitoreo del rendimiento:\n• Seguimiento de la deriva de datos\n• Análisis de la deriva del modelo\n• Alineación con la tarea\n• 35% de prevención de errores\"",
+    "x": 200,
+    "y": 950,
+    "w": 230
+   },
+   {
+    "id": "testing-frameworks",
+    "label": "🧪 Frameworks de pruebas\n\"Evaluación de robustez:\n• Pruebas adversarias\n• Ejercicios de red team\n• LLM-as-Judge\n• LiveCodeBench\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "production-metrics",
+    "label": "📊 Métricas de producción\n\"Qué medir:\n• Sesiones recuperadas sin perder el estado\n• Escalamientos atribuidos a contexto perdido\n• Tokens gastados en restablecer el contexto\n• Costo por tarea completada, antes y después\"",
+    "x": 400,
+    "y": 1100,
+    "w": 260
+   },
+   {
+    "id": "prevention-principle",
+    "label": "🎯 Principio de prevención de fallas de contexto\n\"La defensa en múltiples capas asegura 99.8% de detección de amenazas\nLos mecanismos de recuperación automática logran 95% de éxito en la restauración\nEl monitoreo continuo previene el 35% de los errores relacionados con la deriva\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "context-failure-challenge",
+    "t": "failure-prevention-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "failure-prevention-framework",
+    "t": "failure-modes",
+    "label": "identifica"
+   },
+   {
+    "id": "e3",
+    "s": "failure-prevention-framework",
+    "t": "detection-systems",
+    "label": "implementa"
+   },
+   {
+    "id": "e4",
+    "s": "failure-prevention-framework",
+    "t": "prevention-strategies",
+    "label": "aplica"
+   },
+   {
+    "id": "e5",
+    "s": "failure-modes",
+    "t": "overflow-prevention",
+    "label": "se aborda con"
+   },
+   {
+    "id": "e6",
+    "s": "detection-systems",
+    "t": "injection-defense",
+    "label": "activa"
+   },
+   {
+    "id": "e7",
+    "s": "prevention-strategies",
+    "t": "recovery-mechanisms",
+    "label": "permite"
+   },
+   {
+    "id": "e8",
+    "s": "prevention-strategies",
+    "t": "corruption-prevention",
+    "label": "incluye"
+   },
+   {
+    "id": "e9",
+    "s": "overflow-prevention",
+    "t": "drift-detection",
+    "label": "previene"
+   },
+   {
+    "id": "e10",
+    "s": "injection-defense",
+    "t": "testing-frameworks",
+    "label": "se valida con"
+   },
+   {
+    "id": "e11",
+    "s": "recovery-mechanisms",
+    "t": "drift-detection",
+    "label": "monitorea"
+   },
+   {
+    "id": "e12",
+    "s": "corruption-prevention",
+    "t": "testing-frameworks",
+    "label": "se prueba con"
+   },
+   {
+    "id": "e13",
+    "s": "drift-detection",
+    "t": "production-metrics",
+    "label": "mejora"
+   },
+   {
+    "id": "e14",
+    "s": "testing-frameworks",
+    "t": "production-metrics",
+    "label": "valida"
+   },
+   {
+    "id": "e15",
+    "s": "production-metrics",
+    "t": "prevention-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de las fallas de contexto",
+    "description": "¿Cómo podemos prevenir fallas de contexto como el desbordamiento a los 32k tokens, la corrupción por envenenamiento de memoria, los ataques de inyección con una tasa de éxito del 89.6% y la degradación del rendimiento?",
+    "input": "",
+    "nodes": [
+     "context-failure-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de prevención en múltiples capas",
+    "description": "Un framework integral aborda el desafío mediante mecanismos de detección, estrategias de prevención, sistemas de recuperación y monitoreo continuo para una gestión resiliente del contexto.",
+    "input": "",
+    "nodes": [
+     "failure-prevention-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Modos de falla y detección",
+    "description": "Las amenazas críticas incluyen el desbordamiento del contexto, la corrupción de memoria, la inyección de prompt y la deriva. La detección en tiempo real logra 99.8% de identificación de amenazas mediante detección de anomalías y análisis de comportamiento.",
+    "input": "",
+    "nodes": [
+     "failure-modes",
+     "overflow-prevention",
+     "detection-systems",
+     "injection-defense"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Estrategias de prevención y recuperación",
+    "description": "Protección integral mediante validación de entradas, verificación de límites y controles RBAC. Los mecanismos de recuperación logran 95% de éxito en la restauración con contextos de respaldo y degradación controlada.",
+    "input": "",
+    "nodes": [
+     "prevention-strategies",
+     "recovery-mechanisms",
+     "corruption-prevention"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Detección de deriva y pruebas",
+    "description": "El monitoreo del rendimiento sigue la deriva de datos y del modelo, lo que previene el 35% de los errores. Evaluación de robustez mediante pruebas adversarias, ejercicios de red team y validación con LLM-as-Judge.",
+    "input": "",
+    "nodes": [
+     "drift-detection",
+     "testing-frameworks"
+    ],
+    "edges": [
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Métricas de éxito en producción",
+    "description": "Las medidas que importan son las sesiones recuperadas sin perder el estado y los escalamientos atribuidos a contexto perdido; el costo se deriva de ambas. La defensa en múltiples capas con recuperación automática asegura una gestión confiable del contexto.",
+    "input": "",
+    "nodes": [
+     "production-metrics",
+     "prevention-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

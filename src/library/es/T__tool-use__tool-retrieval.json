@@ -1,0 +1,351 @@
+{
+ "cat": "tool-use",
+ "slug": "tool-retrieval",
+ "name": "Tool Retrieval (Tool RAG)(TR)",
+ "icon": "🔎",
+ "complexity": "medium",
+ "description": "Cuando un agente puede acceder a cientos o miles de herramientas o servidores MCP, cargar todos los esquemas en el prompt es costoso y perjudica la precisión de la selección. Tool retrieval indexa las definiciones de herramientas y, para cada consulta, recupera solo las semánticamente relevantes (búsqueda por embeddings, descubrimiento activo y reranking) antes de que el modelo elija. RAG-MCP reporta que la precisión de selección de herramientas sube de aproximadamente 13 por ciento a 43 por ciento, mientras reduce los tokens del prompt a menos de la mitad.",
+ "features": [
+  "Índice vectorial sobre las definiciones de herramientas y servidores MCP",
+  "Recuperación semántica por consulta, solo de las herramientas relevantes",
+  "Reranking para preseleccionar las top-k herramientas candidatas",
+  "Descubrimiento activo y bajo demanda en lugar de precargar todos los esquemas",
+  "Gran reducción de tokens del prompt frente a cargar todos los esquemas",
+  "Mayor precisión de selección de herramientas a escala (miles de herramientas)"
+ ],
+ "tldr": {
+  "what": "Indexa las definiciones de herramientas mediante embeddings, recupera solo los esquemas semánticamente relevantes para cada consulta y luego aplica reranking antes de que el modelo seleccione.",
+  "when": "Los agentes acceden a cientos o miles de herramientas y cargar todos los esquemas desperdicia tokens y degrada la precisión de la selección.",
+  "watchOut": "Los fallos de recuperación (mala coincidencia de embeddings o mal ranking) omiten en silencio la herramienta correcta, lo que lleva al agente a elegir una alternativa subóptima."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Tool Retrieval (Tool RAG)",
+  "description": "Con miles de herramientas o servidores MCP disponibles, cargar todos los esquemas es costoso y confunde la selección. Tool retrieval indexa las definiciones de herramientas y, por consulta, recupera y reordena solo las semánticamente relevantes, de modo que únicamente los pocos esquemas principales entran al prompt.",
+  "nodes": [
+   {
+    "id": "query",
+    "label": "🎯 Consulta\nConvierte esta factura PDF a CSV\ny envíala por correo a finanzas",
+    "x": 350,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente\nTool Retrieval (Tool RAG)",
+    "x": 360,
+    "y": 125,
+    "w": 260
+   },
+   {
+    "id": "embedder",
+    "label": "🔢 Embedding de la consulta\nconsulta -> vector",
+    "x": 360,
+    "y": 215,
+    "w": 200
+   },
+   {
+    "id": "tool-index",
+    "label": "🗂️ Índice de herramientas\n4000 definiciones de herramientas MCP\n(~600K tokens si se cargan todas)",
+    "x": 650,
+    "y": 215,
+    "w": 230
+   },
+   {
+    "id": "retriever",
+    "label": "🔎 Búsqueda vectorial\ndefiniciones de herramientas más cercanas",
+    "x": 360,
+    "y": 310,
+    "w": 200
+   },
+   {
+    "id": "reranker",
+    "label": "📊 Reranker\npuntúa y preselecciona el top-5",
+    "x": 360,
+    "y": 405,
+    "w": 200
+   },
+   {
+    "id": "tool-pdf",
+    "label": "🧩 pdf_extract\npuntaje 0.94",
+    "x": 20,
+    "y": 505,
+    "w": 150
+   },
+   {
+    "id": "tool-csv",
+    "label": "🧩 table_to_csv\npuntaje 0.91",
+    "x": 195,
+    "y": 505,
+    "w": 150
+   },
+   {
+    "id": "tool-email",
+    "label": "🧩 email_send\npuntaje 0.88",
+    "x": 370,
+    "y": 505,
+    "w": 150
+   },
+   {
+    "id": "tool-ocr",
+    "label": "🧩 ocr_scan\npuntaje 0.71",
+    "x": 545,
+    "y": 505,
+    "w": 150
+   },
+   {
+    "id": "tool-sheet",
+    "label": "🧩 sheet_read\npuntaje 0.66",
+    "x": 720,
+    "y": 505,
+    "w": 150
+   },
+   {
+    "id": "loaded-schemas",
+    "label": "📥 Cargar esquemas\nsolo el top-5 (~2K tokens)",
+    "x": 360,
+    "y": 600,
+    "w": 210
+   },
+   {
+    "id": "token-monitor",
+    "label": "📉 Presupuesto del prompt\n~2K vs ~600K tokens",
+    "x": 640,
+    "y": 600,
+    "w": 210
+   },
+   {
+    "id": "selector",
+    "label": "🧠 Selección de herramientas\npdf_extract -> table_to_csv -> email_send",
+    "x": 320,
+    "y": 695,
+    "w": 250
+   },
+   {
+    "id": "calls",
+    "label": "⚙️ Llamadas a herramientas\nejecutan el pipeline",
+    "x": 640,
+    "y": 695,
+    "w": 170
+   },
+   {
+    "id": "output",
+    "label": "🎉 CSV enviado a finanzas\nherramientas correctas, mínimos tokens",
+    "x": 350,
+    "y": 790,
+    "w": 270
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-query-agent",
+    "s": "query",
+    "t": "agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-embedder",
+    "s": "agent",
+    "t": "embedder",
+    "label": "Codificar"
+   },
+   {
+    "id": "e-embedder-retriever",
+    "s": "embedder",
+    "t": "retriever",
+    "label": "Vector"
+   },
+   {
+    "id": "e-retriever-index",
+    "s": "retriever",
+    "t": "tool-index",
+    "label": "Buscar entre 4000"
+   },
+   {
+    "id": "e-retriever-reranker",
+    "s": "retriever",
+    "t": "reranker",
+    "label": "Candidatas"
+   },
+   {
+    "id": "e-rerank-pdf",
+    "s": "reranker",
+    "t": "tool-pdf",
+    "label": "0.94"
+   },
+   {
+    "id": "e-rerank-csv",
+    "s": "reranker",
+    "t": "tool-csv",
+    "label": "0.91"
+   },
+   {
+    "id": "e-rerank-email",
+    "s": "reranker",
+    "t": "tool-email",
+    "label": "0.88"
+   },
+   {
+    "id": "e-rerank-ocr",
+    "s": "reranker",
+    "t": "tool-ocr",
+    "label": "0.71"
+   },
+   {
+    "id": "e-rerank-sheet",
+    "s": "reranker",
+    "t": "tool-sheet",
+    "label": "0.66"
+   },
+   {
+    "id": "e-pdf-load",
+    "s": "tool-pdf",
+    "t": "loaded-schemas",
+    "label": ""
+   },
+   {
+    "id": "e-csv-load",
+    "s": "tool-csv",
+    "t": "loaded-schemas",
+    "label": ""
+   },
+   {
+    "id": "e-email-load",
+    "s": "tool-email",
+    "t": "loaded-schemas",
+    "label": ""
+   },
+   {
+    "id": "e-load-monitor",
+    "s": "loaded-schemas",
+    "t": "token-monitor",
+    "label": "~2K vs 600K"
+   },
+   {
+    "id": "e-load-selector",
+    "s": "loaded-schemas",
+    "t": "selector",
+    "label": "Esquemas top-5"
+   },
+   {
+    "id": "e-selector-calls",
+    "s": "selector",
+    "t": "calls",
+    "label": "Invocar"
+   },
+   {
+    "id": "e-calls-output",
+    "s": "calls",
+    "t": "output",
+    "label": "Pipeline completado"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Consulta y sobrecarga de herramientas",
+    "description": "El agente puede acceder a 4000 herramientas MCP. Cargar todos los esquemas costaría unos 600K tokens y abrumaría al modelo con opciones irrelevantes.",
+    "input": "",
+    "nodes": [
+     "query",
+     "agent",
+     "tool-index"
+    ],
+    "edges": [
+     "e-query-agent"
+    ]
+   },
+   {
+    "title": "Generar el embedding de la consulta",
+    "description": "La consulta se codifica como vector para poder compararla con las definiciones de herramientas indexadas.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "embedder",
+     "retriever"
+    ],
+    "edges": [
+     "e-agent-embedder",
+     "e-embedder-retriever"
+    ]
+   },
+   {
+    "title": "Búsqueda vectorial en el índice de herramientas",
+    "description": "El recuperador busca en el índice de 4000 definiciones de herramientas y pasa las candidatas más cercanas al reranker.",
+    "input": "",
+    "nodes": [
+     "retriever",
+     "tool-index",
+     "reranker"
+    ],
+    "edges": [
+     "e-retriever-index",
+     "e-retriever-reranker"
+    ]
+   },
+   {
+    "title": "Reranking al top-5",
+    "description": "El reranker puntúa las candidatas y preselecciona las cinco herramientas más relevantes; las de facturas obtienen el puntaje más alto.",
+    "input": "",
+    "nodes": [
+     "reranker",
+     "tool-pdf",
+     "tool-csv",
+     "tool-email",
+     "tool-ocr",
+     "tool-sheet"
+    ],
+    "edges": [
+     "e-rerank-pdf",
+     "e-rerank-csv",
+     "e-rerank-email",
+     "e-rerank-ocr",
+     "e-rerank-sheet"
+    ]
+   },
+   {
+    "title": "Cargar solo los esquemas relevantes",
+    "description": "Solo los esquemas del top-5 se cargan en el prompt: unos 2K tokens en lugar de 600K para todo el catálogo.",
+    "input": "",
+    "nodes": [
+     "tool-pdf",
+     "tool-csv",
+     "tool-email",
+     "loaded-schemas",
+     "token-monitor"
+    ],
+    "edges": [
+     "e-pdf-load",
+     "e-csv-load",
+     "e-email-load",
+     "e-load-monitor"
+    ]
+   },
+   {
+    "title": "Seleccionar y llamar a las herramientas",
+    "description": "Con un conjunto de esquemas pequeño y enfocado, el modelo elige de forma confiable pdf_extract, table_to_csv y email_send, y los ejecuta en orden.",
+    "input": "",
+    "nodes": [
+     "loaded-schemas",
+     "selector",
+     "calls"
+    ],
+    "edges": [
+     "e-load-selector",
+     "e-selector-calls"
+    ]
+   },
+   {
+    "title": "Tarea completada",
+    "description": "El CSV se genera y se envía por correo a finanzas, con una selección de herramientas correcta a una fracción del costo en tokens.",
+    "input": "",
+    "nodes": [
+     "calls",
+     "output"
+    ],
+    "edges": [
+     "e-calls-output"
+    ]
+   }
+  ]
+ }
+}

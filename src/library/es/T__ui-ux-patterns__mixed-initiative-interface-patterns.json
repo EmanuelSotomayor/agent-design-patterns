@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "mixed-initiative-interface-patterns",
+ "name": "Mixed-Initiative Interface Patterns(MIP)",
+ "icon": "🔄",
+ "complexity": "high",
+ "description": "Patrones de UI para alternar el control de forma fluida entre humanos y agentes de IA, permitiendo tomar la iniciativa de manera colaborativa",
+ "features": [
+  "Botones de traspaso de control con indicadores de estado claros",
+  "Indicadores de iniciativa que muestran quién lidera en cada momento",
+  "Interfaces de transición fluida para alternar el control",
+  "Mecanismos colaborativos de sugerencia y anulación"
+ ],
+ "tldr": {
+  "what": "Muestra quién controla la interacción en cada momento, con botones para alternar el control entre el humano y la IA, además de un historial de traspasos.",
+  "when": "Trabajo colaborativo donde importan tanto el juicio humano como la capacidad de la IA, y el control debe cambiar según la fase de la tarea o la preferencia del usuario.",
+  "watchOut": "Los usuarios a menudo pasan por alto o ignoran los indicadores de estado, pierden la noción de quién tiene realmente el control y terminan confundidos o frustrados."
+ },
+ "overview": {
+  "pattern": "Control compartido dinámico entre humanos e IA según el contexto de la tarea",
+  "why": "Ni la automatización total ni el control manual por sí solos maximizan el potencial de colaboración humano-IA",
+  "insight": "Diseña traspasos flexibles: la IA propone → el humano decide → cualquiera puede tomar la iniciativa según se necesite",
+  "impl": [
+   {
+    "t": "Definir roles",
+    "d": "Aclara cuándo lidera la IA y cuándo lidera el humano la interacción"
+   },
+   {
+    "t": "Traspasos de control",
+    "d": "Transiciones fluidas entre la iniciativa de la IA y la del humano"
+   },
+   {
+    "t": "Mecanismos de anulación",
+    "d": "Formas sencillas para que los humanos tomen el control en cualquier momento"
+   },
+   {
+    "t": "Indicadores de estado",
+    "d": "Muestra quién está conduciendo la interacción actualmente"
+   },
+   {
+    "t": "Señales de colaboración",
+    "d": "Pistas visuales sobre cuándo colaborar y cuándo liderar"
+   }
+  ],
+  "example": "La IA sugiere → El humano revisa → El humano modifica → La IA se adapta → Ejecución conjunta",
+  "dos": [
+   "Deja claro quién tiene el control en todo momento",
+   "Ofrece opciones inmediatas de anulación/toma de control",
+   "Muestra las sugerencias de la IA como puntos de partida, no como respuestas finales",
+   "Permite traspasos fluidos entre el control de la IA y el del humano",
+   "Diseña para distintos niveles de participación humana"
+  ],
+  "donts": [
+   "Forzar a los usuarios a patrones de interacción rígidos",
+   "Hacer que la toma de control de la IA se sienta repentina o inesperada",
+   "Ocultar cómo recuperar el control frente a la automatización de la IA",
+   "Asumir que todos los usuarios quieren el mismo nivel de participación de la IA",
+   "Hacer que la colaboración se sienta como una competencia por el control"
+  ],
+  "use": [
+   "Tareas complejas de resolución de problemas",
+   "Flujos de trabajo creativos e iterativos",
+   "Usuarios expertos con conocimiento del dominio",
+   "Tareas que requieren juicio humano y eficiencia de la IA"
+  ],
+  "avoid": [
+   "Operaciones simples de un solo paso",
+   "Procesos en segundo plano totalmente automatizados",
+   "Situaciones de emergencia que requieren acción inmediata",
+   "Usuarios que prefieren autonomía total de la IA"
+  ],
+  "metrics": [
+   {
+    "n": "Equilibrio de iniciativa",
+    "d": "% del tiempo en que lidera el humano vs. la IA"
+   },
+   {
+    "n": "Calidad del traspaso",
+    "d": "Transiciones fluidas sin fricción"
+   },
+   {
+    "n": "Satisfacción del usuario",
+    "d": "Preferencia por iniciativa mixta vs. única"
+   },
+   {
+    "n": "Finalización de tareas",
+    "d": "Tasa de éxito de las tareas colaborativas"
+   },
+   {
+    "n": "Uso de anulaciones",
+    "d": "Frecuencia de tomas de control humanas"
+   },
+   {
+    "n": "Eficiencia de la colaboración",
+    "d": "Tiempo ahorrado vs. trabajo completamente manual"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Creación de contenido",
+    "d": "La IA redacta → El humano edita → La IA sugiere mejoras → El humano finaliza"
+   },
+   {
+    "n": "Análisis de datos",
+    "d": "El humano define la pregunta → La IA explora los datos → El humano interpreta → La IA visualiza"
+   },
+   {
+    "n": "Desarrollo de código",
+    "d": "La IA sugiere implementaciones → El humano revisa → El humano personaliza → La IA optimiza"
+   },
+   {
+    "n": "Tareas de investigación",
+    "d": "La IA reúne fuentes → El humano evalúa → La IA sintetiza → El humano valida"
+   },
+   {
+    "n": "Proceso de diseño",
+    "d": "El humano fija la dirección → La IA genera opciones → El humano selecciona → La IA refina"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Mixed-Initiative Interface Pattern",
+  "description": "Patrones de UI colaborativos que permiten alternar el control de forma fluida entre humanos y agentes de IA, tomando la iniciativa de manera oportunista, con ganancias de productividad de 3 horas/semana",
+  "nodes": [
+   {
+    "id": "control-switching-challenge",
+    "label": "🔄 Desafío de alternar el control\n\"¿Cómo permitir transiciones fluidas\nentre el control humano y el de la IA\npreservando el contexto y la agencia?\"",
+    "x": 400,
+    "y": 50,
+    "w": 340
+   },
+   {
+    "id": "mixed-initiative-framework",
+    "label": "🤝 Framework de iniciativa mixta\n\"Control colaborativo:\n• Alternancia oportunista\n• Agencia flexible\n• Traspasos transparentes\n• Preservación del estado\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "initiative-patterns",
+    "label": "🎯 Patrones de iniciativa\n\"Cuándo liderar/seguir:\n• IA: tareas rutinarias y de datos\n• Humano: estratégicas y éticas\n• Colaborativo: trabajo creativo\n• Decisiones según el contexto\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "decision-framework",
+    "label": "⚖️ Framework de decisión\n\"Asignación de la iniciativa:\n• Complejidad de la tarea\n• Evaluación de riesgos\n• Experiencia del usuario\n• Restricciones de tiempo\"",
+    "x": 50,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "control-handoff-mechanisms",
+    "label": "🔀 Mecanismos de traspaso de control\n\"Tipos de transición:\n• Basada en confianza\n• Iniciada por el usuario\n• Disparada por el contexto\n• Programada en el tiempo\"",
+    "x": 600,
+    "y": 350,
+    "w": 260
+   },
+   {
+    "id": "state-management",
+    "label": "💾 Gestión del estado\n\"Preservación del contexto:\n• Estado de la sesión\n• Memoria del agente\n• Contexto compartido\n• Capacidad de rollback\"",
+    "x": 750,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "collaboration-models",
+    "label": "👥 Modelos de colaboración\n\"Patrones de trabajo:\n• Secuencias por turnos\n• Especialización en paralelo\n• Control compartido\n• Supervisor-worker\"",
+    "x": 400,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "interface-affordances",
+    "label": "🖥️ Affordances de la interfaz\n\"Indicadores de control:\n• Insignias de estado\n• Botones para tomar el control\n• Animaciones de transición\n• Paradas de emergencia\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "negotiation-protocols",
+    "label": "🗣️ Protocolos de negociación\n\"Patrones de comunicación:\n• Mecanismos de consentimiento\n• Solicitudes de aclaración\n• Opciones alternativas\n• Recolección de feedback\"",
+    "x": 600,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "error-recovery",
+    "label": "🔧 Recuperación ante errores\n\"Manejo de fallos:\n• Restauración del contexto\n• Rollback del estado\n• Anulación manual\n• Adaptación por aprendizaje\"",
+    "x": 200,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "production-implementations",
+    "label": "🏢 Casos en producción\n\"Éxitos reales:\n• Microsoft Copilot (amplio despliegue empresarial)\n• Google Gemini 2.0\n• Apple Intelligence\n• 3 horas/semana ahorradas\"",
+    "x": 600,
+    "y": 950,
+    "w": 270
+   },
+   {
+    "id": "design-principles",
+    "label": "📐 Principios de diseño\n\"Guía de implementación:\n• Enfoque centrado en el humano\n• Transparencia y confianza\n• Granularidad del control\n• Preservación de la agencia\"",
+    "x": 400,
+    "y": 1100,
+    "w": 260
+   },
+   {
+    "id": "initiative-principle",
+    "label": "🎯 Principio de iniciativa mixta\n\"Alternar el control de forma oportunista es la razón por la que estos asistentes se adoptan\nLos traspasos fluidos con preservación del estado mantienen la continuidad del contexto\nPreservar la agencia humana con las ganancias de eficiencia de la IA logra una colaboración óptima\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "control-switching-challenge",
+    "t": "mixed-initiative-framework",
+    "label": "resuelto por"
+   },
+   {
+    "id": "e2",
+    "s": "mixed-initiative-framework",
+    "t": "initiative-patterns",
+    "label": "define"
+   },
+   {
+    "id": "e3",
+    "s": "mixed-initiative-framework",
+    "t": "control-handoff-mechanisms",
+    "label": "implementa"
+   },
+   {
+    "id": "e4",
+    "s": "mixed-initiative-framework",
+    "t": "collaboration-models",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "initiative-patterns",
+    "t": "decision-framework",
+    "label": "guiado por"
+   },
+   {
+    "id": "e6",
+    "s": "control-handoff-mechanisms",
+    "t": "state-management",
+    "label": "requiere"
+   },
+   {
+    "id": "e7",
+    "s": "collaboration-models",
+    "t": "interface-affordances",
+    "label": "respaldado por"
+   },
+   {
+    "id": "e8",
+    "s": "collaboration-models",
+    "t": "negotiation-protocols",
+    "label": "usa"
+   },
+   {
+    "id": "e9",
+    "s": "decision-framework",
+    "t": "interface-affordances",
+    "label": "informa"
+   },
+   {
+    "id": "e10",
+    "s": "state-management",
+    "t": "negotiation-protocols",
+    "label": "habilita"
+   },
+   {
+    "id": "e11",
+    "s": "interface-affordances",
+    "t": "error-recovery",
+    "label": "incluye"
+   },
+   {
+    "id": "e12",
+    "s": "negotiation-protocols",
+    "t": "production-implementations",
+    "label": "desplegado en"
+   },
+   {
+    "id": "e13",
+    "s": "error-recovery",
+    "t": "design-principles",
+    "label": "guía"
+   },
+   {
+    "id": "e14",
+    "s": "production-implementations",
+    "t": "design-principles",
+    "label": "valida"
+   },
+   {
+    "id": "e15",
+    "s": "design-principles",
+    "t": "initiative-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de alternar el control",
+    "description": "¿Cómo pueden los sistemas permitir transiciones fluidas entre el control humano y el de la IA preservando el contexto, manteniendo la agencia del usuario y garantizando una colaboración efectiva?",
+    "input": "",
+    "nodes": [
+     "control-switching-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de iniciativa mixta",
+    "description": "El framework de control colaborativo aborda el desafío mediante la alternancia oportunista, la agencia flexible, los traspasos transparentes y mecanismos completos de preservación del estado.",
+    "input": "",
+    "nodes": [
+     "mixed-initiative-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Patrones de iniciativa y mecanismos de traspaso",
+    "description": "El framework de decisión guía cuándo lidera la IA (tareas rutinarias/de datos) y cuándo lidera el humano (estratégicas/éticas). Los traspasos de control usan transiciones basadas en confianza, iniciadas por el usuario y disparadas por el contexto.",
+    "input": "",
+    "nodes": [
+     "initiative-patterns",
+     "decision-framework",
+     "control-handoff-mechanisms",
+     "state-management"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Modelos de colaboración y comunicación",
+    "description": "Los patrones de trabajo incluyen turnos, especialización en paralelo y control compartido. Las affordances de la interfaz proporcionan indicadores de estado, mientras que los protocolos de negociación permiten el consentimiento y la aclaración.",
+    "input": "",
+    "nodes": [
+     "collaboration-models",
+     "interface-affordances",
+     "negotiation-protocols"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Recuperación ante errores y éxito en producción",
+    "description": "El manejo de fallos incluye la restauración del contexto y el rollback del estado. Implementaciones en producción como Microsoft Copilot muestran el patrón a escala. El tiempo ahorrado por usuario es el número que vale la pena medir, no la cantidad de logos. Ganancias de productividad de 3 horas/semana.",
+    "input": "",
+    "nodes": [
+     "error-recovery",
+     "production-implementations"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Principios de diseño y validación",
+    "description": "Enfoque centrado en el humano con transparencia, granularidad del control y preservación de la agencia. La alternancia oportunista con traspasos fluidos permite una colaboración humano-IA óptima a escala empresarial.",
+    "input": "",
+    "nodes": [
+     "design-principles",
+     "initiative-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

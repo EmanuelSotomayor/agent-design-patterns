@@ -1,0 +1,296 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "semantic-caching",
+ "name": "Semantic Caching(SCA)",
+ "icon": "🗂️",
+ "complexity": "medium",
+ "description": "Guarda en cache las respuestas del LLM o del agente usando como clave la similitud de embeddings en lugar de una coincidencia exacta de texto, de modo que las consultas semánticamente equivalentes reutilicen una respuesta almacenada. Un umbral de similitud decide si hay acierto, un TTL de frescura limita la desactualización y una política de invalidación elimina entradas cuando cambian los datos de origen. Esto reduce el costo y la latencia en tráfico de alto volumen y es distinto del caching de prefijo de prompt o de KV.",
+ "features": [
+  "Claves de cache por similitud de embeddings",
+  "Umbral de similitud ajustable para los aciertos",
+  "TTL de frescura para limitar la desactualización",
+  "Invalidación ante cambios en los datos de origen",
+  "Búsqueda respaldada por un almacén vectorial",
+  "Reducción de costo y latencia en alto volumen"
+ ],
+ "tldr": {
+  "what": "Guarda en cache las respuestas del LLM por similitud de embeddings en lugar de coincidencia exacta de texto, reutilizando respuestas cuando las nuevas consultas superan un umbral de similitud.",
+  "when": "Cargas de consultas de alto volumen donde se repiten muchas preguntas semánticamente equivalentes y reducir el costo o la latencia importa más que la frescura.",
+  "watchOut": "Ajustar el umbral de similitud es delicado: si es demasiado bajo, produce respuestas desactualizadas en temas que cambiaron; si es demasiado alto, pierde aciertos de cache válidos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Semantic Caching",
+  "description": "Guarda en cache las respuestas del LLM usando como clave la similitud de embeddings en lugar de una coincidencia exacta de texto. Un bot de soporte responde dos formulaciones distintas de la misma intención desde una sola entrada de cache con similitud 0.93, usando un umbral de similitud, un TTL de frescura y una política de invalidación.",
+  "nodes": [
+   {
+    "id": "incoming-query",
+    "label": "❓ Consulta entrante\n\"restablecer mi contraseña\"",
+    "x": 340,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "embed-query",
+    "label": "🔢 Embedding de la consulta\nTexto -> vector",
+    "x": 340,
+    "y": 155,
+    "w": 240
+   },
+   {
+    "id": "cache-lookup",
+    "label": "🔍 Búsqueda en cache\nVecino más cercano en la cache",
+    "x": 340,
+    "y": 260,
+    "w": 240
+   },
+   {
+    "id": "cache-store",
+    "label": "🗂️ Almacén de cache\nAlmacén vectorial de\n(consulta -> respuesta)",
+    "x": 650,
+    "y": 260,
+    "w": 220
+   },
+   {
+    "id": "cached-entry",
+    "label": "📄 Entrada más cercana\n\"¿cómo cambio mi\ncontraseña?\" @ cos 0.93",
+    "x": 650,
+    "y": 380,
+    "w": 220
+   },
+   {
+    "id": "freshness-ttl",
+    "label": "⏳ Frescura + invalidación\nTTL 24h; eliminar al\nactualizar la política",
+    "x": 650,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "threshold-check",
+    "label": "📐 Verificación de umbral\n0.93 >= 0.90 umbral de acierto",
+    "x": 340,
+    "y": 380,
+    "w": 240
+   },
+   {
+    "id": "cache-hit",
+    "label": "✅ ACIERTO de cache\nServir la respuesta almacenada",
+    "x": 100,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "cache-miss",
+    "label": "❌ FALLO de cache\nPor debajo del umbral",
+    "x": 380,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "response",
+    "label": "💬 Respuesta al usuario\np50 40ms desde la cache",
+    "x": 100,
+    "y": 620,
+    "w": 240
+   },
+   {
+    "id": "llm-call",
+    "label": "🤖 Llamada al LLM\nGenerar respuesta (2.1s)",
+    "x": 380,
+    "y": 620,
+    "w": 220
+   },
+   {
+    "id": "store-new",
+    "label": "📥 Guardar el nuevo par\n(embedding -> respuesta)",
+    "x": 380,
+    "y": 730,
+    "w": 220
+   },
+   {
+    "id": "metrics",
+    "label": "📊 Resultado del tráfico\n68% de aciertos; 40ms vs 2.1s",
+    "x": 60,
+    "y": 730,
+    "w": 260
+   }
+  ],
+  "edges": [
+   {
+    "id": "query-embed",
+    "s": "incoming-query",
+    "t": "embed-query",
+    "label": ""
+   },
+   {
+    "id": "embed-lookup",
+    "s": "embed-query",
+    "t": "cache-lookup",
+    "label": "vector"
+   },
+   {
+    "id": "lookup-store",
+    "s": "cache-lookup",
+    "t": "cache-store",
+    "label": "vecino más cercano"
+   },
+   {
+    "id": "store-entry",
+    "s": "cache-store",
+    "t": "cached-entry",
+    "label": "mejor coincidencia"
+   },
+   {
+    "id": "entry-threshold",
+    "s": "cached-entry",
+    "t": "threshold-check",
+    "label": "cos 0.93"
+   },
+   {
+    "id": "freshness-store",
+    "s": "freshness-ttl",
+    "t": "cache-store",
+    "label": "TTL + invalidar"
+   },
+   {
+    "id": "threshold-hit",
+    "s": "threshold-check",
+    "t": "cache-hit",
+    "label": ">= 0.90"
+   },
+   {
+    "id": "threshold-miss",
+    "s": "threshold-check",
+    "t": "cache-miss",
+    "label": "< 0.90"
+   },
+   {
+    "id": "hit-response",
+    "s": "cache-hit",
+    "t": "response",
+    "label": "servir"
+   },
+   {
+    "id": "miss-llm",
+    "s": "cache-miss",
+    "t": "llm-call",
+    "label": "generar"
+   },
+   {
+    "id": "llm-store",
+    "s": "llm-call",
+    "t": "store-new",
+    "label": "guardar en cache"
+   },
+   {
+    "id": "store-cache",
+    "s": "store-new",
+    "t": "cache-store",
+    "label": "escribir"
+   },
+   {
+    "id": "llm-response",
+    "s": "llm-call",
+    "t": "response",
+    "label": "devolver"
+   },
+   {
+    "id": "response-metrics",
+    "s": "response",
+    "t": "metrics",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Llega la consulta y se convierte en embedding",
+    "description": "El bot de soporte recibe \"restablecer mi contraseña\" y la convierte en un vector para buscar por similitud en lugar de por coincidencia exacta de texto.",
+    "input": "",
+    "nodes": [
+     "incoming-query",
+     "embed-query",
+     "cache-lookup"
+    ],
+    "edges": [
+     "query-embed",
+     "embed-lookup"
+    ]
+   },
+   {
+    "title": "Búsqueda en cache por vecino más cercano",
+    "description": "Una búsqueda de vecino más cercano en el almacén de cache encuentra una entrada existente, \"¿cómo cambio mi contraseña?\", con similitud coseno 0.93.",
+    "input": "",
+    "nodes": [
+     "cache-lookup",
+     "cache-store",
+     "cached-entry"
+    ],
+    "edges": [
+     "lookup-store",
+     "store-entry"
+    ]
+   },
+   {
+    "title": "Verificación de umbral",
+    "description": "La similitud de 0.93 supera el umbral de acierto de 0.90, por lo que ambas formulaciones se tratan como la misma intención y se sirven desde una sola entrada.",
+    "input": "",
+    "nodes": [
+     "cached-entry",
+     "threshold-check"
+    ],
+    "edges": [
+     "entry-threshold"
+    ]
+   },
+   {
+    "title": "Se sirve el acierto de cache",
+    "description": "Ante un acierto, la respuesta almacenada se devuelve directamente sin llamar al LLM: latencia p50 de unos 40ms frente a 2.1s de una generación nueva.",
+    "input": "",
+    "nodes": [
+     "threshold-check",
+     "cache-hit",
+     "response"
+    ],
+    "edges": [
+     "threshold-hit",
+     "hit-response"
+    ]
+   },
+   {
+    "title": "Ruta de fallo y escritura de vuelta",
+    "description": "Cuando la similitud está por debajo del umbral, es un fallo: el LLM genera la respuesta y luego el nuevo par (embedding -> respuesta) se escribe de vuelta en el almacén de cache.",
+    "input": "",
+    "nodes": [
+     "threshold-check",
+     "cache-miss",
+     "llm-call",
+     "store-new",
+     "cache-store",
+     "response"
+    ],
+    "edges": [
+     "threshold-miss",
+     "miss-llm",
+     "llm-store",
+     "store-cache",
+     "llm-response"
+    ]
+   },
+   {
+    "title": "Frescura, invalidación y resultado",
+    "description": "Un TTL de 24h limita la desactualización y una actualización del documento de políticas elimina las entradas correspondientes. Con tráfico real, esto produce una alta tasa de aciertos y una gran reducción de latencia y de costo en tokens. Es distinto del caching de prefijo de prompt / KV.",
+    "input": "",
+    "nodes": [
+     "freshness-ttl",
+     "cache-store",
+     "response",
+     "metrics"
+    ],
+    "edges": [
+     "freshness-store",
+     "response-metrics"
+    ]
+   }
+  ]
+ }
+}

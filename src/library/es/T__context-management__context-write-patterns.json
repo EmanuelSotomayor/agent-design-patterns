@@ -1,0 +1,415 @@
+{
+ "cat": "context-management",
+ "slug": "context-write-patterns",
+ "name": "Context Write Patterns(CWP)",
+ "icon": "📝",
+ "complexity": "medium",
+ "description": "Externalización sistemática del contexto mediante scratchpads, toma de notas e integración con el sistema de archivos para lograr un contexto persistente ilimitado",
+ "features": [
+  "Memoria externa mediante operaciones del sistema de archivos",
+  "Toma de notas basada en scratchpads durante la ejecución del agente",
+  "Almacenamiento persistente del contexto entre sesiones",
+  "Externalización estructurada de la información"
+ ],
+ "tldr": {
+  "what": "El agente externaliza su memoria de trabajo en archivos y scratchpads, y almacena pensamientos intermedios y contexto fuera del prompt entre sesiones.",
+  "when": "Tareas de larga duración en las que el contexto supera los límites de tokens o en las que el trabajo debe reanudarse tras una interrupción con recuperación completa del estado.",
+  "watchOut": "La E/S de archivos se convierte en un cuello de botella; un estado externo desactualizado o corrupto hace que el agente actúe con información obsoleta."
+ },
+ "overview": {
+  "pattern": "Externalización sistemática del contexto mediante scratchpads, toma de notas e integración con el sistema de archivos para lograr un contexto persistente ilimitado",
+  "why": "Supera las limitaciones de la ventana de contexto y permite una memoria persistente entre sesiones con acumulación estructurada de conocimiento",
+  "insight": "La memoria externa mediante operaciones con archivos permite una capacidad de contexto ilimitada y continuidad entre sesiones",
+  "impl": [
+   {
+    "t": "Configuración del scratchpad",
+    "d": "Inicializa las operaciones de memoria externa en el sistema de archivos"
+   },
+   {
+    "t": "Estructura de notas",
+    "d": "Diseña esquemas jerárquicos de toma de notas"
+   },
+   {
+    "t": "Operaciones de escritura",
+    "d": "Implementa la externalización del contexto en tiempo real"
+   },
+   {
+    "t": "Persistencia de sesión",
+    "d": "Habilita la restauración del contexto entre sesiones"
+   },
+   {
+    "t": "Manejo del desbordamiento",
+    "d": "Gestiona con elegancia el desbordamiento de la ventana de contexto"
+   }
+  ],
+  "example": "init_scratchpad → structure_notes → write_context → persist_session → handle_overflow",
+  "dos": [
+   "Usa formatos de archivo estructurados (JSON, YAML) para almacenar el contexto",
+   "Implementa una organización jerárquica para la memoria externa",
+   "Escribe los pensamientos intermedios y los pasos de razonamiento",
+   "Habilita la restauración del contexto entre sesiones",
+   "Usa marcas de tiempo y metadatos para el seguimiento del contexto"
+  ],
+  "donts": [
+   "Almacenar información sensible en archivos externos sin cifrado",
+   "Escribir bloques de texto no estructurado sin organización",
+   "Ignorar los permisos y controles de acceso del sistema de archivos",
+   "Omitir la validación al leer el contexto externo",
+   "Permitir que los archivos crezcan sin límite y sin políticas de limpieza"
+  ],
+  "use": [
+   "Requisitos de memoria persistente entre sesiones",
+   "Situaciones de desbordamiento de la ventana de contexto",
+   "Necesidades de externalización del conocimiento",
+   "Tareas de agentes de larga duración"
+  ],
+  "avoid": [
+   "Requisitos de procesamiento sin estado",
+   "Entornos de alta seguridad sin acceso a archivos",
+   "Rutas críticas de rendimiento en tiempo real",
+   "Tareas simples de corta duración"
+  ],
+  "metrics": [
+   {
+    "n": "Eficiencia de almacenamiento",
+    "d": "Tasa de compresión del contexto"
+   },
+   {
+    "n": "Velocidad de recuperación",
+    "d": "Tiempo para cargar el contexto externo"
+   },
+   {
+    "n": "Continuidad de sesión",
+    "d": "% de restauraciones de contexto exitosas"
+   },
+   {
+    "n": "Integridad del contexto",
+    "d": "% de contexto válido después de la persistencia"
+   },
+   {
+    "n": "Organización de archivos",
+    "d": "Profundidad promedio de la jerarquía de contexto"
+   },
+   {
+    "n": "Manejo del desbordamiento",
+    "d": "% de desbordamientos de la ventana de contexto manejados con éxito"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Scratchpad del agente",
+    "d": "init_workspace → write_thoughts → structure_reasoning → persist_state → resume_session"
+   },
+   {
+    "n": "Acumulación de conocimiento",
+    "d": "capture_insights → organize_hierarchically → cross_reference → build_knowledge_base"
+   },
+   {
+    "n": "Razonamiento extenso",
+    "d": "break_down_problem → externalize_steps → track_progress → synthesize_solution"
+   },
+   {
+    "n": "Asistente de investigación",
+    "d": "collect_sources → take_notes → organize_findings → generate_reports → maintain_context"
+   },
+   {
+    "n": "Desarrollo de código",
+    "d": "capture_requirements → design_notes → implementation_log → testing_results → documentation"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de escritura de contexto",
+  "description": "Estrategias para actualizar y gestionar la memoria de contexto del LLM mediante técnicas de anexado, sobrescritura, fusión y compresión que permiten una gestión eficiente de conversaciones a largo plazo",
+  "nodes": [
+   {
+    "id": "context-update-challenge",
+    "label": "📝 Desafío de actualización del contexto\n\"¿Cómo actualizar eficientemente la memoria del LLM\npreservando la información importante\ny gestionando los límites de tokens?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "write-patterns-framework",
+    "label": "🔄 Framework de patrones de escritura\n\"Estrategias de actualización de memoria:\n• Patrones de anexado\n• Patrones de sobrescritura\n• Estrategias de fusión\n• Técnicas de compresión\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "append-pattern",
+    "label": "➕ Patrón de anexado\n\"Adición secuencial:\n• ConversationBufferMemory\n• Gestión de cola FIFO\n• Crecimiento lineal\n• Retención del historial completo\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "append-implementation",
+    "label": "📚 Implementación del buffer\n\"Almacenamiento en memoria:\n• Método save_context()\n• Acumulación de mensajes\n• Seguimiento del conteo de tokens\n• Manejo del desbordamiento\"",
+    "x": 50,
+    "y": 500,
+    "w": 210
+   },
+   {
+    "id": "overwrite-pattern",
+    "label": "✏️ Patrón de sobrescritura\n\"Estrategia de reemplazo:\n• Memoria de tamaño fijo\n• Procesamiento por segmentos\n• Reemplazo del estado\n• Costo constante\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "window-memory",
+    "label": "🪟 Memoria de ventana\n\"Contexto reciente:\n• BufferWindowMemory\n• Últimos k mensajes\n• Ventana deslizante\n• Tokens acotados\"",
+    "x": 750,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "merge-patterns",
+    "label": "🔀 Patrones de fusión\n\"Combinación jerárquica:\n• Enfoque HOMER\n• Divide y vencerás\n• Fusión de contextos\n• Agregación multinivel\"",
+    "x": 200,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "summary-memory",
+    "label": "📋 Memoria de resumen\n\"Historial condensado:\n• ConversationSummaryMemory\n• Resumen impulsado por LLM\n• Compresión progresiva\n• Optimización de tokens\"",
+    "x": 50,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "compression-strategies",
+    "label": "🗜️ Estrategias de compresión\n\"Reducción de tamaño:\n• Resumen recursivo\n• Puntuación de importancia\n• Compresión semántica\n• Compactación automática\"",
+    "x": 600,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "hybrid-buffer",
+    "label": "🔄 Buffer híbrido\n\"Enfoque combinado:\n• SummaryBufferMemory\n• Mensajes recientes sin procesar\n• Mensajes antiguos resumidos\n• Umbral dinámico\"",
+    "x": 750,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "write-optimization",
+    "label": "⚡ Optimización de escritura\n\"Ajuste de rendimiento:\n• Actualizaciones en batch\n• Evaluación diferida\n• Invalidación de cache\n• Pooling de memoria\"",
+    "x": 400,
+    "y": 950,
+    "w": 220
+   },
+   {
+    "id": "rl-based-updates",
+    "label": "🤖 Actualizaciones basadas en RL\n\"Selección inteligente:\n• Algoritmo DAPO\n• Retención basada en recompensas\n• Priorización dinámica\n• Aprendizaje adaptativo\"",
+    "x": 200,
+    "y": 1100,
+    "w": 230
+   },
+   {
+    "id": "persistence-layer",
+    "label": "💾 Capa de persistencia\n\"Almacenamiento a largo plazo:\n• Bases de datos vectoriales\n• Almacenamiento SQL\n• Servicios externos\n• Recuperación de sesiones\"",
+    "x": 600,
+    "y": 1100,
+    "w": 220
+   },
+   {
+    "id": "write-principle",
+    "label": "🎯 Principio de escritura de contexto\n\"Las actualizaciones de memoria eficientes equilibran retención y compresión\nMúltiples patrones de escritura permiten una gestión flexible del contexto\nLas estrategias inteligentes optimizan tanto el rendimiento como la relevancia\"",
+    "x": 400,
+    "y": 1250,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "context-update-challenge",
+    "t": "write-patterns-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "write-patterns-framework",
+    "t": "append-pattern",
+    "label": "implementa"
+   },
+   {
+    "id": "e3",
+    "s": "write-patterns-framework",
+    "t": "overwrite-pattern",
+    "label": "implementa"
+   },
+   {
+    "id": "e4",
+    "s": "write-patterns-framework",
+    "t": "merge-patterns",
+    "label": "implementa"
+   },
+   {
+    "id": "e5",
+    "s": "write-patterns-framework",
+    "t": "compression-strategies",
+    "label": "aplica"
+   },
+   {
+    "id": "e6",
+    "s": "append-pattern",
+    "t": "append-implementation",
+    "label": "usa"
+   },
+   {
+    "id": "e7",
+    "s": "overwrite-pattern",
+    "t": "window-memory",
+    "label": "crea"
+   },
+   {
+    "id": "e8",
+    "s": "merge-patterns",
+    "t": "summary-memory",
+    "label": "habilita"
+   },
+   {
+    "id": "e9",
+    "s": "compression-strategies",
+    "t": "hybrid-buffer",
+    "label": "produce"
+   },
+   {
+    "id": "e10",
+    "s": "summary-memory",
+    "t": "hybrid-buffer",
+    "label": "se combina con"
+   },
+   {
+    "id": "e11",
+    "s": "window-memory",
+    "t": "hybrid-buffer",
+    "label": "integra"
+   },
+   {
+    "id": "e12",
+    "s": "hybrid-buffer",
+    "t": "write-optimization",
+    "label": "optimiza mediante"
+   },
+   {
+    "id": "e13",
+    "s": "append-implementation",
+    "t": "write-optimization",
+    "label": "se mejora con"
+   },
+   {
+    "id": "e14",
+    "s": "write-optimization",
+    "t": "rl-based-updates",
+    "label": "habilita"
+   },
+   {
+    "id": "e15",
+    "s": "write-optimization",
+    "t": "persistence-layer",
+    "label": "persiste en"
+   },
+   {
+    "id": "e16",
+    "s": "rl-based-updates",
+    "t": "write-principle",
+    "label": "valida"
+   },
+   {
+    "id": "e17",
+    "s": "persistence-layer",
+    "t": "write-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de actualización del contexto",
+    "description": "¿Cómo podemos actualizar eficientemente la memoria del LLM para preservar la información importante mientras gestionamos los límites de tokens y los costos computacionales en conversaciones de larga duración?",
+    "input": "",
+    "nodes": [
+     "context-update-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework de patrones de escritura",
+    "description": "Un framework integral aborda el desafío mediante múltiples estrategias de actualización de memoria: patrones de anexado para el historial completo, sobrescritura para una memoria acotada, fusión para la combinación jerárquica y compresión para la optimización.",
+    "input": "",
+    "nodes": [
+     "write-patterns-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Patrones de anexado y sobrescritura",
+    "description": "El patrón de anexado usa ConversationBufferMemory para la adición secuencial con crecimiento lineal, mientras que el patrón de sobrescritura implementa una memoria de tamaño fijo con procesamiento por segmentos y costo computacional constante.",
+    "input": "",
+    "nodes": [
+     "append-pattern",
+     "append-implementation",
+     "overwrite-pattern",
+     "window-memory"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Patrones de fusión y estrategias de compresión",
+    "description": "La fusión jerárquica de HOMER usa divide y vencerás para la agregación multinivel, mientras que las estrategias de compresión aplican resumen recursivo, puntuación de importancia y compresión semántica para optimizar tokens.",
+    "input": "",
+    "nodes": [
+     "merge-patterns",
+     "summary-memory",
+     "compression-strategies",
+     "hybrid-buffer"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e8",
+     "e9",
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Optimización de escritura y técnicas avanzadas",
+    "description": "La capa de optimización implementa actualizaciones en batch, evaluación diferida y pooling de memoria, lo que habilita actualizaciones basadas en RL con el algoritmo DAPO para una retención inteligente y un aprendizaje adaptativo.",
+    "input": "",
+    "nodes": [
+     "write-optimization",
+     "rl-based-updates",
+     "persistence-layer"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Validación del principio de escritura de contexto",
+    "description": "Múltiples patrones de escritura permiten una gestión flexible de la memoria, con estrategias inteligentes que equilibran retención y compresión, lo que demuestra que las actualizaciones eficientes optimizan tanto el rendimiento como la relevancia en conversaciones a largo plazo.",
+    "input": "",
+    "nodes": [
+     "write-principle"
+    ],
+    "edges": [
+     "e16",
+     "e17"
+    ]
+   }
+  ]
+ }
+}

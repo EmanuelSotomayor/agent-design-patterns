@@ -1,0 +1,345 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "react",
+ "name": "ReAct",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "Combina el razonamiento con la acción mediante el uso de herramientas externas",
+ "features": [
+  "Ciclo Pensamiento → Acción → Observación",
+  "Integra herramientas externas",
+  "Adaptación dinámica de la estrategia",
+  "Feedback del entorno en tiempo real"
+ ],
+ "tldr": {
+  "what": "El agente recorre un ciclo: piensa, llama a herramientas externas, observa los resultados y luego razona sobre los nuevos datos para decidir la siguiente acción.",
+  "when": "Tareas que requieren consultar información en tiempo real, verificar datos o encadenar herramientas en varios pasos, donde cada paso depende del feedback en vivo.",
+  "watchOut": "Las llamadas a herramientas pueden fallar o devolver datos desactualizados, lo que fuerza al agente a ciclos de reintento o a intentos de recuperación alucinados."
+ },
+ "overview": {
+  "pattern": "Razonamiento y acción intercalados mediante ciclos iterativos de Pensamiento → Acción → Observación",
+  "why": "Permite resolver problemas de forma dinámica con información en tiempo real e integración de herramientas",
+  "insight": "Pensar antes de actuar → Ejecutar herramientas → Observar resultados → Razonar sobre el siguiente paso",
+  "impl": [
+   {
+    "t": "Pensar",
+    "d": "Analiza el problema y planifica el enfoque"
+   },
+   {
+    "t": "Actuar",
+    "d": "Ejecuta la llamada a la herramienta o función"
+   },
+   {
+    "t": "Observar",
+    "d": "Procesa los resultados de la acción"
+   },
+   {
+    "t": "Razonar",
+    "d": "Evalúa y planifica el siguiente paso"
+   },
+   {
+    "t": "Ciclo",
+    "d": "Repite hasta lograr el objetivo"
+   }
+  ],
+  "example": "Pensamiento → search(\"weather NYC\") → Observación: \"72°F sunny\" → Pensamiento → Listo",
+  "dos": [
+   "Separa claramente las fases de Pensamiento y Acción",
+   "Usa formatos de acción estructurados (llamadas a funciones)",
+   "Procesa todas las observaciones antes del siguiente razonamiento",
+   "Implementa un manejo adecuado de los errores de las herramientas",
+   "Define límites máximos de iteraciones para evitar ciclos infinitos"
+  ],
+  "donts": [
+   "Omitir la fase de observación después de las acciones",
+   "Usar formatos de acción ambiguos o no estructurados",
+   "Permitir ciclos de razonamiento infinitos sin convergencia",
+   "Ignorar fallas de herramientas o resultados parciales",
+   "Mezclar razonamiento y acción en un solo paso"
+  ],
+  "use": [
+   "Tareas que requieren datos o herramientas externas",
+   "Investigación y análisis de varios pasos",
+   "Flujos de trabajo dinámicos de resolución de problemas",
+   "Necesidades de información en tiempo real",
+   "Cuando la interacción con el entorno es clave"
+  ],
+  "avoid": [
+   "Preguntas simples basadas en conocimiento",
+   "Tareas que se resuelven solo con razonamiento",
+   "Aplicaciones muy sensibles a la latencia",
+   "Cuando las herramientas no son confiables o no están disponibles",
+   "Generación de contenido estático"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de éxito de las tareas",
+    "d": "Objetivos logrados vs. intentados"
+   },
+   {
+    "n": "Uso de herramientas",
+    "d": "Llamadas a herramientas efectivas vs. innecesarias"
+   },
+   {
+    "n": "Eficiencia del razonamiento",
+    "d": "Pasos hasta converger en la solución"
+   },
+   {
+    "n": "Recuperación de errores",
+    "d": "Éxito después de fallas de herramientas"
+   },
+   {
+    "n": "Calidad de la información",
+    "d": "Relevancia de los datos recopilados"
+   },
+   {
+    "n": "Cantidad de iteraciones",
+    "d": "Ciclos de Pensamiento-Acción por tarea"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Investigación web",
+    "d": "Pensamiento → search(\"AI trends 2024\") → Observar resultados → search(\"specific trend\") → Sintetizar"
+   },
+   {
+    "n": "Análisis de datos",
+    "d": "Pensamiento → query_database() → Observar datos → calculate_stats() → Interpretar resultados"
+   },
+   {
+    "n": "Depuración de código",
+    "d": "Pensamiento → run_tests() → Observar fallas → examine_code() → Corregir y volver a probar"
+   },
+   {
+    "n": "Planificación de viajes",
+    "d": "Pensamiento → check_flights() → Observar opciones → check_hotels() → Reservar la mejor combinación"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "Pensamiento → lookup_account() → Observar historial → check_policy() → Ofrecer solución"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón ReAct (razonamiento + acción)",
+  "description": "Ciclo iterativo de razonar, actuar y observar que permite resolver problemas paso a paso con herramientas externas",
+  "nodes": [
+   {
+    "id": "task",
+    "label": "❓ Tarea compleja\n\"Encuentra el precio más reciente\nde la acción y calcula\nsi puedo comprar 100 acciones\ncon mi presupuesto de $10K\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "think-1",
+    "label": "🤔 Pensamiento 1\n\"Primero necesito el precio\nactual de la acción. Voy a\nbuscar datos bursátiles.\"",
+    "x": 150,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "act-1",
+    "label": "🔧 Acción 1\nBuscar: \"AAPL current\nstock price API\"",
+    "x": 150,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "observe-1",
+    "label": "👁️ Observación 1\n\"Encontré la API de Alpha Vantage.\nAAPL: $175.50 por acción\"",
+    "x": 150,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "think-2",
+    "label": "🤔 Pensamiento 2\n\"Ahora puedo calcular:\n100 × $175.50 = $17,550\nEso supera mis $10K\"",
+    "x": 400,
+    "y": 380,
+    "w": 220
+   },
+   {
+    "id": "act-2",
+    "label": "🔧 Acción 2\nCalcular: máximo de\nacciones que puedo pagar\n$10,000 ÷ $175.50",
+    "x": 400,
+    "y": 480,
+    "w": 200
+   },
+   {
+    "id": "observe-2",
+    "label": "👁️ Observación 2\n\"Puedo comprar 56 acciones\n(56 × $175.50 = $9,828)\nQuedan $172 de sobra\"",
+    "x": 400,
+    "y": 580,
+    "w": 220
+   },
+   {
+    "id": "think-3",
+    "label": "🤔 Pensamiento 3\n\"Voy a verificarlo\ncon datos en tiempo real\npara ser preciso\"",
+    "x": 650,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "act-3",
+    "label": "🔧 Acción 3\nLlamar a la API: obtener el\nprecio de AAPL en vivo",
+    "x": 650,
+    "y": 480,
+    "w": 200
+   },
+   {
+    "id": "observe-3",
+    "label": "👁️ Observación 3\n\"Actual: $174.25\n¡Mejor! Se pueden comprar 57 acciones\n57 × $174.25 = $9,932\"",
+    "x": 650,
+    "y": 580,
+    "w": 220
+   },
+   {
+    "id": "final-answer",
+    "label": "✅ Respuesta final\n\"No puedes comprar 100 acciones.\nCon $10K, puedes comprar\n57 acciones de AAPL a $174.25,\ncosto total: $9,932.25\"",
+    "x": 400,
+    "y": 700,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "task",
+    "t": "think-1",
+    "label": "razonar"
+   },
+   {
+    "id": "e2",
+    "s": "think-1",
+    "t": "act-1",
+    "label": "planificar acción"
+   },
+   {
+    "id": "e3",
+    "s": "act-1",
+    "t": "observe-1",
+    "label": "obtener resultado"
+   },
+   {
+    "id": "e4",
+    "s": "observe-1",
+    "t": "think-2",
+    "label": "procesar información"
+   },
+   {
+    "id": "e5",
+    "s": "think-2",
+    "t": "act-2",
+    "label": "calcular"
+   },
+   {
+    "id": "e6",
+    "s": "act-2",
+    "t": "observe-2",
+    "label": "ver resultado"
+   },
+   {
+    "id": "e7",
+    "s": "observe-2",
+    "t": "think-3",
+    "label": "verificar necesidad"
+   },
+   {
+    "id": "e8",
+    "s": "think-3",
+    "t": "act-3",
+    "label": "volver a verificar"
+   },
+   {
+    "id": "e9",
+    "s": "act-3",
+    "t": "observe-3",
+    "label": "datos en vivo"
+   },
+   {
+    "id": "e10",
+    "s": "observe-3",
+    "t": "final-answer",
+    "label": "concluir"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Razonamiento inicial",
+    "description": "El agente analiza la tarea compleja que requiere datos externos y la descompone: primero necesita el precio de la acción y luego calcular si le alcanza.",
+    "input": "",
+    "nodes": [
+     "task",
+     "think-1"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Primer ciclo de acción-observación",
+    "description": "El agente busca una API bursátil, encuentra Alpha Vantage y observa que el precio de AAPL es de $175.50 por acción.",
+    "input": "",
+    "nodes": [
+     "act-1",
+     "observe-1"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Razonamiento a partir de la observación",
+    "description": "El agente procesa los datos del precio y razona: 100 × $175.50 = $17,550 supera el presupuesto de $10K.",
+    "input": "",
+    "nodes": [
+     "think-2"
+    ],
+    "edges": [
+     "e4"
+    ]
+   },
+   {
+    "title": "Acción de cálculo",
+    "description": "El agente realiza un cálculo matemático para determinar el máximo de acciones que puede pagar: $10,000 ÷ $175.50 = 56 acciones.",
+    "input": "",
+    "nodes": [
+     "act-2",
+     "observe-2"
+    ],
+    "edges": [
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Refinamiento iterativo",
+    "description": "El agente decide verificar con datos en tiempo real, llama a la API en vivo y encuentra un mejor precio de $174.25, lo que permite comprar 57 acciones.",
+    "input": "",
+    "nodes": [
+     "think-3",
+     "act-3",
+     "observe-3"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Síntesis y respuesta final",
+    "description": "El agente sintetiza todas las observaciones para dar una respuesta completa: no puede comprar 100 acciones, pero sí 57 acciones por $9,932.25.",
+    "input": "",
+    "nodes": [
+     "final-answer"
+    ],
+    "edges": [
+     "e10"
+    ]
+   }
+  ]
+ }
+}

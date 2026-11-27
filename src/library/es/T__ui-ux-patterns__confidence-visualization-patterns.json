@@ -1,0 +1,393 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "confidence-visualization-patterns",
+ "name": "Confidence Visualization UI Patterns(CVP)",
+ "icon": "📊",
+ "complexity": "high",
+ "description": "Elementos visuales de interfaz para mostrar los niveles de confianza de la IA, la incertidumbre y la fiabilidad de las predicciones en formatos fáciles de entender",
+ "features": [
+  "Medidores de confianza con indicadores de fiabilidad codificados por color",
+  "Rangos de incertidumbre y visualizaciones probabilísticas",
+  "Clasificación N-best con sugerencias alternativas",
+  "Evaluación visual del riesgo y puntajes de fiabilidad"
+ ],
+ "tldr": {
+  "what": "Muestra puntajes de confianza de la IA, rangos de incertidumbre y predicciones alternativas mediante medidores con código de colores, rangos, insignias o visualizaciones de probabilidad.",
+  "when": "Los usuarios necesitan juzgar si confiar en una predicción antes de actuar en consecuencia, especialmente en decisiones de alto riesgo o en dominios poco familiares.",
+  "watchOut": "El puntaje de un modelo o la autoevaluación de un LLM no es una probabilidad verificada de acierto. Verifica la calibración con datos de evaluación etiquetados antes de presentarlo como tal."
+ },
+ "overview": {
+  "pattern": "Muestra la confianza del modelo de IA para ayudar a los usuarios a tomar decisiones informadas",
+  "why": "Los usuarios necesitan evidencia sobre la fiabilidad y una forma clara de revisar las predicciones inciertas",
+  "insight": "Indica el origen del puntaje, prueba la calibración y conecta la incertidumbre con una siguiente acción útil",
+  "impl": [
+   {
+    "t": "Validar puntajes",
+    "d": "Ajusta la calibración con etiquetas reservadas y evalúa con datos separados"
+   },
+   {
+    "t": "Diseño visual",
+    "d": "Combina etiquetas de texto e íconos con el color"
+   },
+   {
+    "t": "Mostrar el contexto",
+    "d": "Indica la tarea y los datos de evaluación detrás de cada puntaje"
+   },
+   {
+    "t": "Disparadores de acción",
+    "d": "Define umbrales de revisión según el costo de los errores y la capacidad de revisión"
+   },
+   {
+    "t": "Educación del usuario",
+    "d": "Explica que un puntaje alto igual puede estar equivocado"
+   }
+  ],
+  "example": "Política ilustrativa: puntaje más alto → sugerencia; puntaje bajo o alternativas cercanas → revisión humana. Valida los umbrales en tu tarea.",
+  "dos": [
+   "Usa esquemas de color consistentes para los niveles de confianza",
+   "Explica qué factores influyen en los puntajes de confianza",
+   "Ajusta la calibración con etiquetas reservadas y evalúa con datos separados",
+   "Muestra rangos de incertidumbre, no solo estimaciones puntuales",
+   "Incluye la confianza en interfaces de voz/conversacionales"
+  ],
+  "donts": [
+   "Mostrar falsa precisión (99.73% vs ~muy alta)",
+   "Tratar el puntaje de un modelo o la autoevaluación de un LLM como una probabilidad verificada",
+   "Usar la confianza como único factor de decisión",
+   "Abrumar a los usuarios con detalles técnicos de probabilidad",
+   "Hacer que la baja confianza se vea alarmante ante una incertidumbre normal"
+  ],
+  "use": [
+   "Toma de decisiones de alto riesgo",
+   "Predicciones del modelo con distintos grados de certeza",
+   "El usuario necesita entender las limitaciones de la IA",
+   "Existen múltiples interpretaciones en competencia"
+  ],
+  "avoid": [
+   "Tareas simples de confirmación",
+   "Salidas deterministas basadas en reglas",
+   "No hay evidencia de que el puntaje mostrado prediga el acierto",
+   "Interacciones casuales de bajo riesgo"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión de la calibración",
+    "d": "Alineación entre la confianza y el acierto real"
+   },
+   {
+    "n": "Confianza del usuario",
+    "d": "Dependencia adecuada de las recomendaciones de la IA"
+   },
+   {
+    "n": "Calidad de las decisiones",
+    "d": "Mejores resultados con información de confianza"
+   },
+   {
+    "n": "Tasa de comprensión",
+    "d": "% de usuarios que entienden el significado de la confianza"
+   },
+   {
+    "n": "Tolerancia a la incertidumbre",
+    "d": "Comodidad del usuario con las limitaciones del modelo"
+   },
+   {
+    "n": "Frecuencia de anulación",
+    "d": "Decisiones humanas contrarias a la confianza de la IA"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Diagnóstico médico",
+    "d": "Muestra la confianza diagnóstica junto con la solidez de la evidencia de respaldo"
+   },
+   {
+    "n": "Asesoría financiera",
+    "d": "Muestra la confianza de la predicción junto con factores de incertidumbre del mercado"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "Indica la confianza de detección para contenido limítrofe"
+   },
+   {
+    "n": "Calidad de traducción",
+    "d": "Muestra la confianza en la preservación del significado y la precisión"
+   },
+   {
+    "n": "Resultados de búsqueda",
+    "d": "Ordena con confianza de relevancia y fiabilidad de la fuente"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de UI de visualización de confianza",
+  "description": "Representación visual de la incertidumbre y los niveles de confianza de la IA mediante barras de progreso, códigos de color y visualizaciones interactivas, para que el usuario pueda distinguir una respuesta segura de una dudosa antes de actuar",
+  "nodes": [
+   {
+    "id": "ai-trust-challenge",
+    "label": "🤔 Desafío de confianza en la IA\n\"¿Cómo ayudar a los usuarios a entender\nlos niveles de confianza de la IA y\ntomar decisiones de confianza adecuadas?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "confidence-visualization-framework",
+    "label": "📊 Framework de visualización de confianza\n\"Calibración de la confianza:\n• Visualización de la incertidumbre\n• Medidores visuales de confianza\n• Exploración interactiva\n• Comunicación transparente\"",
+    "x": 400,
+    "y": 200,
+    "w": 290
+   },
+   {
+    "id": "uncertainty-types",
+    "label": "🎯 Tipos de incertidumbre\n\"Enfoque de espectro:\n• Incertidumbre de parámetros\n• Incertidumbre estructural\n• Incertidumbre de los datos\n• Incertidumbre computacional\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "modern-uncertainty-theory",
+    "label": "🔬 Teoría moderna de la incertidumbre\n\"Perspectiva 2025:\n• Más allá de aleatoria/epistémica\n• Espectro de incertidumbres\n• Dependiente del contexto\n• Evaluación dinámica\"",
+    "x": 50,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "visual-representations",
+    "label": "🎨 Representaciones visuales\n\"Métodos de visualización:\n• Barras de progreso\n• Gráficos de medidor\n• Gráficos de distribución\n• Sistemas de insignias\"",
+    "x": 600,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "color-coding-systems",
+    "label": "🌈 Sistemas de código de colores\n\"Comunicación de la confianza:\n• Degradados verde-amarillo-rojo\n• Escalas de fiabilidad en azul\n• Cumplimiento de WCAG 2.2\n• Sensibilidad cultural\"",
+    "x": 750,
+    "y": 500,
+    "w": 230
+   },
+   {
+    "id": "trust-calibration",
+    "label": "🤝 Calibración de la confianza\n\"Dependencia adecuada:\n• La confianza sigue a la precisión\n• Mitigación del exceso de confianza\n• Los usuarios conocen los límites\n• Duda donde corresponde dudar\"",
+    "x": 400,
+    "y": 650,
+    "w": 260
+   },
+   {
+    "id": "interactive-exploration",
+    "label": "🔍 Exploración interactiva\n\"Control del usuario:\n• Desglose de la confianza\n• Visualización del razonamiento\n• Confianza histórica\n• Análisis comparativo\"",
+    "x": 200,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "real-time-updates",
+    "label": "⚡ Actualizaciones en tiempo real\n\"Visualización dinámica:\n• Confianza en streaming\n• Seguimiento de la evolución\n• Frecuencia adaptativa\n• Conciencia del contexto\"",
+    "x": 600,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "multi-modal-design",
+    "label": "🎭 Diseño multimodal\n\"Enfoque en accesibilidad:\n• Visual-auditivo-táctil\n• Soporte para lectores de pantalla\n• Interfaz de voz\n• Feedback háptico\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "production-implementations",
+    "label": "🏢 Casos en producción\n\"Dónde se usa:\n• Soporte a decisiones clínicas\n• Servicios financieros\n• Generación de contenido\n• Donde actuar sobre una respuesta errónea es costoso\"",
+    "x": 600,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "design-principles",
+    "label": "📐 Principios de diseño\n\"Guía de implementación:\n• Transparencia primero\n• Divulgación progresiva\n• Adaptación al contexto\n• Pruebas continuas\"",
+    "x": 400,
+    "y": 1100,
+    "w": 250
+   },
+   {
+    "id": "visualization-principle",
+    "label": "🎯 Principio de visualización de confianza\n\"Muestra la incertidumbre para que la dependencia siga al acierto del modelo, no a su tono\nLa calibración importa más que el widget: una respuesta segura pero errónea es el fallo\nComunica la confianza con algo más que el color\"",
+    "x": 400,
+    "y": 1250,
+    "w": 420
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-trust-challenge",
+    "t": "confidence-visualization-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "confidence-visualization-framework",
+    "t": "uncertainty-types",
+    "label": "identifica"
+   },
+   {
+    "id": "e3",
+    "s": "confidence-visualization-framework",
+    "t": "visual-representations",
+    "label": "implementa"
+   },
+   {
+    "id": "e4",
+    "s": "confidence-visualization-framework",
+    "t": "trust-calibration",
+    "label": "habilita"
+   },
+   {
+    "id": "e5",
+    "s": "uncertainty-types",
+    "t": "modern-uncertainty-theory",
+    "label": "basado en"
+   },
+   {
+    "id": "e6",
+    "s": "visual-representations",
+    "t": "color-coding-systems",
+    "label": "mejorado por"
+   },
+   {
+    "id": "e7",
+    "s": "trust-calibration",
+    "t": "interactive-exploration",
+    "label": "respalda"
+   },
+   {
+    "id": "e8",
+    "s": "trust-calibration",
+    "t": "real-time-updates",
+    "label": "requiere"
+   },
+   {
+    "id": "e9",
+    "s": "modern-uncertainty-theory",
+    "t": "interactive-exploration",
+    "label": "informa"
+   },
+   {
+    "id": "e10",
+    "s": "color-coding-systems",
+    "t": "real-time-updates",
+    "label": "aplicado en"
+   },
+   {
+    "id": "e11",
+    "s": "interactive-exploration",
+    "t": "multi-modal-design",
+    "label": "accesible mediante"
+   },
+   {
+    "id": "e12",
+    "s": "real-time-updates",
+    "t": "production-implementations",
+    "label": "desplegado en"
+   },
+   {
+    "id": "e13",
+    "s": "multi-modal-design",
+    "t": "design-principles",
+    "label": "guiado por"
+   },
+   {
+    "id": "e14",
+    "s": "production-implementations",
+    "t": "design-principles",
+    "label": "valida"
+   },
+   {
+    "id": "e15",
+    "s": "design-principles",
+    "t": "visualization-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de confianza en la IA",
+    "description": "¿Cómo pueden los usuarios entender los niveles de confianza de la IA y tomar decisiones de confianza adecuadas cuando los sistemas de IA ofrecen distintos grados de certeza en sus salidas?",
+    "input": "",
+    "nodes": [
+     "ai-trust-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de visualización de confianza",
+    "description": "El framework de calibración de la confianza aborda el desafío mediante la visualización de la incertidumbre, medidores visuales de confianza, herramientas de exploración interactiva y mecanismos de comunicación transparentes.",
+    "input": "",
+    "nodes": [
+     "confidence-visualization-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Tipos de incertidumbre y diseño visual",
+    "description": "El enfoque moderno de 2025 reconoce un espectro de incertidumbres más allá de las categorías tradicionales. Las representaciones visuales incluyen barras de progreso, gráficos de medidor y gráficos de distribución con códigos de color que cumplen WCAG.",
+    "input": "",
+    "nodes": [
+     "uncertainty-types",
+     "modern-uncertainty-theory",
+     "visual-representations",
+     "color-coding-systems"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Calibración de la confianza e interacción",
+    "description": "El objetivo es una dependencia adecuada: que los usuarios confíen en el modelo donde es fiable y lo verifiquen donde no lo es. La exploración interactiva permite desglosar la confianza, mientras que las actualizaciones en tiempo real muestran cómo evoluciona.",
+    "input": "",
+    "nodes": [
+     "trust-calibration",
+     "interactive-exploration",
+     "real-time-updates"
+    ],
+    "edges": [
+     "e4",
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Accesibilidad y éxito en producción",
+    "description": "El diseño multimodal asegura accesibilidad visual-auditiva-táctil, ya que el color por sí solo excluye a una parte real de los usuarios. Los dominios regulados, como el soporte a decisiones clínicas y los servicios financieros, suelen fijar un umbral de confianza explícito por debajo del cual el sistema delega en un humano; elige ese umbral a partir de tus propios costos de error.",
+    "input": "",
+    "nodes": [
+     "multi-modal-design",
+     "production-implementations"
+    ],
+    "edges": [
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Principios de diseño y validación",
+    "description": "Diseño con transparencia primero, divulgación progresiva y adaptación al contexto. La visualización de la incertidumbre junto con la calibración de la confianza crea una comunicación inclusiva de la confianza que favorece una dependencia adecuada de la IA.",
+    "input": "",
+    "nodes": [
+     "design-principles",
+     "visualization-principle"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

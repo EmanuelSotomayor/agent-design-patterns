@@ -1,0 +1,510 @@
+{
+ "cat": "ui-ux-patterns",
+ "slug": "visual-reasoning-patterns",
+ "name": "Visual Reasoning Patterns(VRP)",
+ "icon": "👁️",
+ "complexity": "high",
+ "description": "Patrones de representación visual del razonamiento del agente, de sus procesos de toma de decisiones y de su transparencia cognitiva",
+ "features": [
+  "Visualización del proceso de razonamiento del agente y árboles de decisión",
+  "Indicadores de progreso paso a paso para workflows complejos",
+  "Métricas de confianza y visualización de la incertidumbre",
+  "Resaltado de fuentes y visualización de la procedencia de la información"
+ ],
+ "tldr": {
+  "what": "Muestra los pasos de razonamiento del agente, sus caminos de decisión, puntajes de confianza y fuentes de datos mediante diagramas interactivos, árboles e indicadores de progreso.",
+  "when": "Los usuarios necesitan entender por qué un agente eligió una acción, verificar decisiones complejas de varios pasos o auditar recomendaciones de alto riesgo.",
+  "watchOut": "La complejidad visual puede oscurecer en lugar de aclarar; los usuarios pueden interpretar los puntajes de confianza como garantías o ignorar las advertencias de baja confianza."
+ },
+ "overview": {
+  "pattern": "Representación visual de los procesos de razonamiento del agente, árboles de decisión y transparencia cognitiva para una mejor comprensión",
+  "why": "Genera confianza en el usuario, facilita la depuración, apoya el aprendizaje y mejora la calidad de las decisiones gracias a la transparencia",
+  "insight": "Caminos de razonamiento visuales + métricas de confianza + exploración interactiva → decisiones de IA transparentes",
+  "impl": [
+   {
+    "t": "Árboles de decisión",
+    "d": "Visualiza los caminos de razonamiento y el flujo lógico"
+   },
+   {
+    "t": "Indicadores de progreso",
+    "d": "Transparencia del workflow paso a paso"
+   },
+   {
+    "t": "Métricas de confianza",
+    "d": "Visualización de la incertidumbre y la confiabilidad"
+   },
+   {
+    "t": "Atribución de fuentes",
+    "d": "Resaltado de la procedencia de la información"
+   },
+   {
+    "t": "Exploración interactiva",
+    "d": "Capacidades de profundización y comparación"
+   }
+  ],
+  "example": "reasoning_data → decision_tree → progress_visualization → confidence_display → interactive_exploration",
+  "dos": [
+   "Muestra visualmente el proceso de razonamiento paso a paso",
+   "Usa divulgación progresiva para los árboles de decisión complejos",
+   "Muestra los niveles de confianza y los rangos de incertidumbre",
+   "Resalta las fuentes de información y las influencias clave",
+   "Ofrece exploración interactiva de los caminos de razonamiento"
+  ],
+  "donts": [
+   "Abrumar a los usuarios con demasiado detalle a la vez",
+   "Ocultar la incertidumbre o las zonas de baja confianza",
+   "Usar visualizaciones estáticas para razonamientos complejos",
+   "Ignorar la necesidad de vistas comparativas",
+   "Hacer visualizaciones puramente decorativas, sin función"
+  ],
+  "use": [
+   "Sistemas de apoyo a decisiones de alto riesgo",
+   "Necesidad de transparencia en razonamientos complejos",
+   "Contextos educativos y de capacitación",
+   "Depuración del comportamiento del agente"
+  ],
+  "avoid": [
+   "Interacciones simples de consulta-respuesta",
+   "Aplicaciones donde la velocidad es crítica",
+   "Requisitos de UI mínimos",
+   "Decisiones de baja complejidad"
+  ],
+  "metrics": [
+   {
+    "n": "Claridad del razonamiento",
+    "d": "Comprensión del usuario sobre la lógica del agente"
+   },
+   {
+    "n": "Calibración de la confianza",
+    "d": "Confianza adecuada en las decisiones"
+   },
+   {
+    "n": "Profundidad de exploración",
+    "d": "Interacción del usuario con los caminos de razonamiento"
+   },
+   {
+    "n": "Calidad de las decisiones",
+    "d": "Mejores resultados gracias a la transparencia"
+   },
+   {
+    "n": "Eficacia del aprendizaje",
+    "d": "Transferencia de conocimiento a partir de las visualizaciones"
+   },
+   {
+    "n": "Detección de errores",
+    "d": "Capacidad del usuario para detectar fallas en el razonamiento"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Diagnóstico médico",
+    "d": "visualización de árboles de decisión, intervalos de confianza, evidencia de las fuentes"
+   },
+   {
+    "n": "Análisis financiero",
+    "d": "caminos de evaluación de riesgo, explicaciones del modelo, procedencia de los datos"
+   },
+   {
+    "n": "Investigación jurídica",
+    "d": "conexiones de jurisprudencia, estructuras argumentativas, peso de los precedentes"
+   },
+   {
+    "n": "Descubrimiento científico",
+    "d": "exploración de hipótesis, cadenas de evidencia, mapeo de la incertidumbre"
+   },
+   {
+    "n": "Estrategia de negocio",
+    "d": "análisis de escenarios, factores de decisión, probabilidades de resultados"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrones de razonamiento visual",
+  "description": "Patrones avanzados de razonamiento visual que combinan la percepción con razonamiento lógico paso a paso para tareas complejas de comprensión visual",
+  "nodes": [
+   {
+    "id": "visual-reasoning-challenge",
+    "label": "👁️ Desafío de razonamiento visual\n\"¿Cómo combinar la percepción visual con el razonamiento lógico\npara entender escenas visuales complejas, analizar relaciones\ny generar explicaciones precisas en sistemas de IA?\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "visual-perception",
+    "label": "🔍 Percepción visual\n\"Comprensión de escenas:\n• Detección y reconocimiento de objetos\n• Análisis de relaciones espaciales\n• Análisis y segmentación de escenas\n• Anclaje visual (88% de precisión)\"",
+    "x": 100,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "logical-reasoning",
+    "label": "🧠 Razonamiento lógico\n\"Análisis paso a paso:\n• Inferencia causal\n• Razonamiento temporal\n• Reconocimiento de patrones abstractos\n• Resolución de problemas en varios pasos\"",
+    "x": 400,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "cross-modal-integration",
+    "label": "🔗 Integración intermodal\n\"Fusión visión-lenguaje:\n• Alineación visual-texto\n• Transformers multimodales\n• Mecanismos de atención\n• Puente de contexto\"",
+    "x": 700,
+    "y": 200,
+    "w": 260
+   },
+   {
+    "id": "vctp-see",
+    "label": "👀 VCTP: etapa See\n\"Anclaje de conceptos visuales:\n• Modelos de detección de objetos\n• Redes de análisis de escenas\n• Candidatos de conceptos visuales\n• Comprensión espacial\"",
+    "x": 150,
+    "y": 380,
+    "w": 240
+   },
+   {
+    "id": "vctp-think",
+    "label": "💭 VCTP: etapa Think\n\"Razonamiento adaptativo:\n• Atención a conceptos clave\n• Descripción visual de imágenes\n• Cadena de razonamiento del LLM\n• Transformación del contexto\"",
+    "x": 400,
+    "y": 380,
+    "w": 240
+   },
+   {
+    "id": "vctp-confirm",
+    "label": "✅ VCTP: etapa Confirm\n\"Verificación e iteración:\n• Generación de justificaciones\n• Verificación intermodal\n• Comprobación de consistencia\n• Refinamiento iterativo\"",
+    "x": 650,
+    "y": 380,
+    "w": 250
+   },
+   {
+    "id": "attention-extraction",
+    "label": "🎯 Extracción de características\n\"Procesamiento multiescala:\n• Mapas de características CNN\n• Atención espacial\n• Atención por canal\n• Características jerárquicas\"",
+    "x": 200,
+    "y": 560,
+    "w": 240
+   },
+   {
+    "id": "attention-computation",
+    "label": "⚡ Cálculo de atención\n\"Foco dinámico:\n• Atención basada en consultas\n• Mecanismos de self-attention\n• Capas de cross-attention\n• Ponderación adaptativa\"",
+    "x": 450,
+    "y": 560,
+    "w": 240
+   },
+   {
+    "id": "attention-aggregation",
+    "label": "🔄 Agregación ponderada\n\"Fusión de características:\n• Combinación ponderada por atención\n• Pooling dinámico\n• Integración del contexto\n• Decodificación específica de la tarea\"",
+    "x": 700,
+    "y": 560,
+    "w": 240
+   },
+   {
+    "id": "medical-imaging",
+    "label": "🏥 Análisis de imágenes médicas\n\"Razonamiento diagnóstico:\n• Interpretación de radiografías\n• Análisis de resonancias magnéticas\n• Detección de anomalías\n• Apoyo a decisiones clínicas\"",
+    "x": 150,
+    "y": 740,
+    "w": 240
+   },
+   {
+    "id": "scene-understanding",
+    "label": "🌆 Comprensión de escenas\n\"Análisis de entornos complejos:\n• Seguridad en escenas de tránsito\n• Navegación autónoma\n• Sistemas de vigilancia\n• Reconocimiento de actividades\"",
+    "x": 400,
+    "y": 740,
+    "w": 250
+   },
+   {
+    "id": "document-analysis",
+    "label": "📄 Análisis de documentos\n\"Razonamiento estructurado:\n• Interpretación de gráficos\n• Análisis de artículos científicos\n• Comprensión de diagramas técnicos\n• Extracción de información\"",
+    "x": 650,
+    "y": 740,
+    "w": 250
+   },
+   {
+    "id": "performance-metrics",
+    "label": "📊 Métricas de rendimiento\n\"Qué medir:\n• Precisión en tus propias imágenes reservadas\n• Tiempo hasta una decisión revisada, no hasta un borrador\n• Si un profesional clínico puede seguir el razonamiento expuesto\n• Errores detectados en la revisión vs los que llegan al paciente\"",
+    "x": 250,
+    "y": 920,
+    "w": 260
+   },
+   {
+    "id": "business-impact",
+    "label": "💰 Impacto en el negocio\n\"Valor en el mundo real:\n• Triaje que pone primero los casos urgentes frente a un humano\n• Apoyo como segundo lector en lugar de reemplazo\n• Menos estudios repetidos por lecturas ambiguas\n• Mejoras de seguridad solo si la revisión sigue en el bucle\"",
+    "x": 550,
+    "y": 920,
+    "w": 250
+   },
+   {
+    "id": "visual-reasoning-principle",
+    "label": "🎯 Principio de razonamiento visual\n\"Análisis visual sistemático: la metodología See-Think-Confirm permite un razonamiento transparente paso a paso\nIntegración multimodal: la fusión visión-lenguaje con mecanismos de atención logra una comprensión robusta\nVerificación iterativa: la comprobación de consistencia intermodal asegura precisión y explicabilidad\"",
+    "x": 400,
+    "y": 1100,
+    "w": 520
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "visual-reasoning-challenge",
+    "t": "visual-perception",
+    "label": "requiere"
+   },
+   {
+    "id": "e2",
+    "s": "visual-reasoning-challenge",
+    "t": "logical-reasoning",
+    "label": "necesita"
+   },
+   {
+    "id": "e3",
+    "s": "visual-reasoning-challenge",
+    "t": "cross-modal-integration",
+    "label": "exige"
+   },
+   {
+    "id": "e4",
+    "s": "visual-perception",
+    "t": "vctp-see",
+    "label": "implementa"
+   },
+   {
+    "id": "e5",
+    "s": "logical-reasoning",
+    "t": "vctp-think",
+    "label": "impulsa"
+   },
+   {
+    "id": "e6",
+    "s": "cross-modal-integration",
+    "t": "vctp-confirm",
+    "label": "habilita"
+   },
+   {
+    "id": "e7",
+    "s": "vctp-see",
+    "t": "vctp-think",
+    "label": "alimenta a"
+   },
+   {
+    "id": "e8",
+    "s": "vctp-think",
+    "t": "vctp-confirm",
+    "label": "genera"
+   },
+   {
+    "id": "e9",
+    "s": "vctp-confirm",
+    "t": "vctp-think",
+    "label": "refina"
+   },
+   {
+    "id": "e10",
+    "s": "visual-perception",
+    "t": "attention-extraction",
+    "label": "inicia"
+   },
+   {
+    "id": "e11",
+    "s": "logical-reasoning",
+    "t": "attention-computation",
+    "label": "guía"
+   },
+   {
+    "id": "e12",
+    "s": "cross-modal-integration",
+    "t": "attention-aggregation",
+    "label": "coordina"
+   },
+   {
+    "id": "e13",
+    "s": "attention-extraction",
+    "t": "attention-computation",
+    "label": "aporta características"
+   },
+   {
+    "id": "e14",
+    "s": "attention-computation",
+    "t": "attention-aggregation",
+    "label": "pondera"
+   },
+   {
+    "id": "e15",
+    "s": "vctp-confirm",
+    "t": "medical-imaging",
+    "label": "da soporte a"
+   },
+   {
+    "id": "e16",
+    "s": "vctp-think",
+    "t": "scene-understanding",
+    "label": "impulsa"
+   },
+   {
+    "id": "e17",
+    "s": "attention-aggregation",
+    "t": "document-analysis",
+    "label": "habilita"
+   },
+   {
+    "id": "e18",
+    "s": "vctp-see",
+    "t": "attention-extraction",
+    "label": "sincroniza"
+   },
+   {
+    "id": "e19",
+    "s": "attention-computation",
+    "t": "vctp-think",
+    "label": "mejora"
+   },
+   {
+    "id": "e20",
+    "s": "attention-aggregation",
+    "t": "scene-understanding",
+    "label": "da soporte a"
+   },
+   {
+    "id": "e21",
+    "s": "vctp-confirm",
+    "t": "document-analysis",
+    "label": "valida"
+   },
+   {
+    "id": "e22",
+    "s": "medical-imaging",
+    "t": "performance-metrics",
+    "label": "demuestra"
+   },
+   {
+    "id": "e23",
+    "s": "scene-understanding",
+    "t": "performance-metrics",
+    "label": "comprueba"
+   },
+   {
+    "id": "e24",
+    "s": "document-analysis",
+    "t": "performance-metrics",
+    "label": "valida"
+   },
+   {
+    "id": "e25",
+    "s": "performance-metrics",
+    "t": "business-impact",
+    "label": "impulsa"
+   },
+   {
+    "id": "e26",
+    "s": "business-impact",
+    "t": "visual-reasoning-principle",
+    "label": "valida"
+   },
+   {
+    "id": "e27",
+    "s": "performance-metrics",
+    "t": "visual-reasoning-principle",
+    "label": "comprueba"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de razonamiento visual",
+    "description": "Los sistemas de IA necesitan combinar la percepción visual con el razonamiento lógico para entender escenas visuales complejas, analizar relaciones espaciales y temporales, y generar explicaciones precisas. La visión por computadora tradicional se centra en el reconocimiento, pero las aplicaciones modernas requieren capacidades más profundas de comprensión y razonamiento.",
+    "input": "",
+    "nodes": [
+     "visual-reasoning-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Componentes centrales del razonamiento",
+    "description": "El razonamiento visual requiere tres componentes fundamentales: percepción visual para la comprensión de escenas y el reconocimiento de objetos con 88% de precisión, razonamiento lógico para el análisis paso a paso y el reconocimiento de patrones, e integración intermodal para la fusión visión-lenguaje mediante transformers multimodales.",
+    "input": "",
+    "nodes": [
+     "visual-perception",
+     "logical-reasoning",
+     "cross-modal-integration"
+    ],
+    "edges": [
+     "e1",
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Proceso de Visual Chain-of-Thought (VCTP)",
+    "description": "Los componentes centrales implementan la metodología VCTP: la etapa See usa la percepción visual para detectar objetos y anclar conceptos, la etapa Think aplica razonamiento lógico con atención adaptativa y cadenas de razonamiento del LLM, y la etapa Confirm aprovecha la integración intermodal para la verificación y el refinamiento iterativo.",
+    "input": "",
+    "nodes": [
+     "vctp-see",
+     "vctp-think",
+     "vctp-confirm"
+    ],
+    "edges": [
+     "e4",
+     "e5",
+     "e6",
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Mecanismos de atención visual",
+    "description": "En paralelo a VCTP, mecanismos de atención sofisticados procesan la información visual: la extracción de características crea mapas de características CNN multiescala, el cálculo de atención usa atención basada en consultas y self-attention para un foco dinámico, y la agregación ponderada realiza una fusión de características ponderada por atención para una decodificación específica de la tarea.",
+    "input": "",
+    "nodes": [
+     "attention-extraction",
+     "attention-computation",
+     "attention-aggregation"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e18",
+     "e19"
+    ]
+   },
+   {
+    "title": "Aplicaciones en el mundo real",
+    "description": "VCTP y los mecanismos de atención habilitan aplicaciones diversas: imágenes médicas para el razonamiento diagnóstico y el apoyo a decisiones clínicas, comprensión de escenas para la seguridad vial y la navegación autónoma, y análisis de documentos para la interpretación de gráficos y el análisis de artículos científicos. Las conexiones cruzadas aseguran un rendimiento robusto en distintos dominios.",
+    "input": "",
+    "nodes": [
+     "medical-imaging",
+     "scene-understanding",
+     "document-analysis"
+    ],
+    "edges": [
+     "e15",
+     "e16",
+     "e17",
+     "e20",
+     "e21"
+    ]
+   },
+   {
+    "title": "Rendimiento e impacto en el negocio",
+    "description": "Los modelos de visión-lenguaje mejoraron notablemente en los benchmarks de razonamiento visual, pero las cifras publicadas cambian con cada lanzamiento de modelo y rara vez se trasladan a un conjunto clínico específico. Mide con tus propios datos antes de confiar en cualquiera de ellas. Donde esto rinde frutos es en el triaje y el apoyo como segundo lector, no en el reemplazo, así que dimensiónalo según tu propio volumen de trabajo. Mejoras en la eficiencia diagnóstica y 25% de reducción de costos.",
+    "input": "",
+    "nodes": [
+     "performance-metrics",
+     "business-impact"
+    ],
+    "edges": [
+     "e22",
+     "e23",
+     "e24",
+     "e25"
+    ]
+   },
+   {
+    "title": "Validación del principio de razonamiento visual",
+    "description": "Las métricas de rendimiento y el impacto en el negocio validan los principios centrales: la metodología sistemática See-Think-Confirm permite un razonamiento transparente, la integración multimodal con mecanismos de atención logra una comprensión robusta y la verificación iterativa asegura precisión y explicabilidad en aplicaciones del mundo real.",
+    "input": "",
+    "nodes": [
+     "visual-reasoning-principle"
+    ],
+    "edges": [
+     "e26",
+     "e27"
+    ]
+   }
+  ]
+ }
+}

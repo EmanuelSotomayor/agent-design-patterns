@@ -1,0 +1,696 @@
+{
+ "cat": "memory-management",
+ "slug": "hierarchical-memory",
+ "name": "Hierarchical Memory",
+ "icon": "🗂️",
+ "complexity": "high",
+ "description": "Estructura de memoria de varios niveles con distintas políticas de retención",
+ "features": [
+  "Almacenamiento en varios niveles",
+  "Retención basada en la importancia",
+  "Promoción/degradación automática",
+  "Recuperación eficiente"
+ ],
+ "tldr": {
+  "what": "Organiza la memoria del agente en niveles con distintas reglas de retención y mueve automáticamente los elementos entre niveles según su importancia y sus patrones de acceso.",
+  "when": "Agentes de larga duración que manejan miles de interacciones, donde mantener todo en la memoria activa se vuelve demasiado lento o costoso.",
+  "watchOut": "La lógica de promoción y degradación puede perder silenciosamente contexto crítico si la puntuación de importancia no capta lo que realmente importa para tus tareas."
+ },
+ "overview": {
+  "pattern": "Estructura de memoria de varios niveles con distintas políticas de retención y gestión inteligente de niveles",
+  "why": "Costos de almacenamiento optimizados, mejor rendimiento de recuperación y asignación adaptativa de recursos",
+  "insight": "Niveles de datos calientes/tibios/fríos + políticas de promoción + consolidación en segundo plano → rendimiento eficiente en costos",
+  "impl": [
+   {
+    "t": "Diseñar niveles",
+    "d": "Crea los niveles de trabajo, corto plazo, largo plazo y archivo"
+   },
+   {
+    "t": "Definir políticas",
+    "d": "Define reglas de promoción/degradación según los patrones de acceso"
+   },
+   {
+    "t": "Indexar capas",
+    "d": "Optimiza los mecanismos de recuperación de cada nivel"
+   },
+   {
+    "t": "Operaciones en segundo plano",
+    "d": "Consolidación, compresión y optimización de niveles"
+   },
+   {
+    "t": "Monitorear y adaptar",
+    "d": "Dimensionamiento dinámico de los niveles según los patrones de uso"
+   }
+  ],
+  "example": "tier_design → policy_rules → indexing_optimization → background_consolidation → adaptive_monitoring",
+  "dos": [
+   "Diseña los límites de los niveles según los patrones de acceso (datos calientes/tibios/fríos)",
+   "Usa políticas de promoción inteligentes que combinen recencia, frecuencia e importancia",
+   "Implementa una indexación eficiente optimizada para cada nivel de memoria",
+   "Ejecuta la consolidación en segundo plano sin bloquear el acceso a la memoria",
+   "Monitorea el rendimiento de los niveles y adapta sus tamaños dinámicamente"
+  ],
+  "donts": [
+   "Crear jerarquías demasiado complejas que ralenticen la recuperación simple",
+   "Usar límites de nivel fijos: adáptalos a las características de la carga de trabajo",
+   "Ignorar fugas de memoria en la gestión de niveles que provoquen un crecimiento ilimitado",
+   "Dejar que las políticas de promoción queden obsoletas sin actualizar los patrones de acceso",
+   "Implementar una gestión jerárquica más difícil de depurar que una memoria plana"
+  ],
+  "use": [
+   "Almacenes de memoria grandes con patrones de acceso variados",
+   "Sistemas de larga duración que requieren persistencia",
+   "Aplicaciones con datos calientes/tibios/fríos bien definidos",
+   "Cuando se necesita optimizar el costo del almacenamiento",
+   "Cuando se requiere optimizar el rendimiento entre niveles"
+  ],
+  "avoid": [
+   "Requisitos de memoria pequeños (< 1GB)",
+   "Patrones de acceso uniformes en todos los datos",
+   "Sistemas en tiempo real con requisitos de latencia estrictos",
+   "Operaciones sin estado que no necesitan persistencia",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de aciertos por nivel",
+    "d": "% de solicitudes resueltas en cada nivel"
+   },
+   {
+    "n": "Precisión de la promoción",
+    "d": "% de asignaciones de nivel correctas"
+   },
+   {
+    "n": "Utilización de memoria",
+    "d": "Uso efectivo del almacenamiento entre niveles"
+   },
+   {
+    "n": "Latencia de recuperación",
+    "d": "Tiempos de acceso P50/P95 por nivel"
+   },
+   {
+    "n": "Eficiencia de la consolidación",
+    "d": "Impacto de la optimización en segundo plano"
+   },
+   {
+    "n": "Reducción del costo de almacenamiento",
+    "d": "% de ahorro frente a una memoria plana"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA conversacional",
+    "d": "Contexto reciente en la memoria de trabajo, preferencias del usuario en la de largo plazo (reducción de tokens del 40-60%)"
+   },
+   {
+    "n": "Gestión del conocimiento",
+    "d": "Datos de acceso frecuente en el nivel caliente, archivos en almacenamiento frío (sistemas empresariales)"
+   },
+   {
+    "n": "Sistemas de personalización",
+    "d": "Perfiles de usuarios activos en memoria, patrones históricos en archivo (motores de recomendación)"
+   },
+   {
+    "n": "Plataformas de investigación",
+    "d": "Proyectos actuales en el nivel de trabajo, base de datos bibliográfica en el archivo (sistemas académicos)"
+   },
+   {
+    "n": "Plataformas de contenido",
+    "d": "Contenido en tendencia en el nivel caliente, contenido más antiguo en almacenamiento frío de bajo costo (sistemas de medios)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Memoria jerárquica",
+  "description": "Arquitectura de memoria de varias capas que organiza la información en distintos niveles de abstracción, desde hechos detallados hasta conceptos de alto nivel, y permite un almacenamiento eficiente y una recuperación contextual.",
+  "nodes": [
+   {
+    "id": "information-input",
+    "label": "📥 Entrada de información\n\"Datos de interacción del cliente + contexto\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "memory-controller",
+    "label": "🧠 Controlador de memoria\nGestión y enrutamiento de niveles",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "working-memory",
+    "label": "⚡ Memoria de trabajo\nNivel 1: Inmediata\n50 elementos | retención de 5 min",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "short-term-memory",
+    "label": "🔄 Memoria de corto plazo\nNivel 2: Reciente\n200 elementos | retención de 1 semana",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "medium-term-memory",
+    "label": "📊 Memoria de mediano plazo\nNivel 3: Importante\n500 elementos | retención de 1 mes",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "long-term-memory",
+    "label": "🗄️ Memoria de largo plazo\nNivel 4: Permanente\nIlimitada | Sin vencimiento",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "lru-policy",
+    "label": "🕐 Política LRU\nMenos usado recientemente\nEstrategia de desalojo",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "frequency-policy",
+    "label": "📈 Política de frecuencia\nConteo de accesos\nDisparador de promoción",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "importance-policy",
+    "label": "⭐ Política de importancia\nPuntuación de criticidad\nRetención prioritaria",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "decay-policy",
+    "label": "📉 Política de decaimiento\nRelevancia temporal\nCurva del olvido",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "consolidation-policy",
+    "label": "🔗 Consolidación\nExtracción de patrones\nFusión de conocimiento",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "tier-promotion",
+    "label": "⬆️ Promoción de nivel\nSubir en la jerarquía",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "tier-demotion",
+    "label": "⬇️ Degradación de nivel\nBajar en la jerarquía",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "cross-tier-search",
+    "label": "🔍 Búsqueda entre niveles\nRecuperación unificada",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "memory-compaction",
+    "label": "🗜️ Compactación\nDesfragmentación",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "hot-access",
+    "label": "🔥 Acceso caliente\nConsultas frecuentes\nAcierto en memoria de trabajo",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "warm-access",
+    "label": "♨️ Acceso tibio\nConsultas recientes\nAcierto en corto plazo",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "cold-access",
+    "label": "❄️ Acceso frío\nConsultas históricas\nRecuperación de largo plazo",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "miss-handling",
+    "label": "❌ Manejo de fallos\nNo encontrado\nEstrategia alternativa",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "hit-ratio",
+    "label": "📊 Tasa de aciertos\n95% L1, 85% L2\n70% L3, 100% L4",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "latency-profile",
+    "label": "⏱️ Perfil de latencia\nL1: <10ms\nL2: <50ms\nL3: <200ms\nL4: <1s",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "memory-usage",
+    "label": "💾 Uso de memoria\nL1: 2MB\nL2: 10MB\nL3: 50MB\nL4: 500MB+",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "eviction-stats",
+    "label": "📈 Estadísticas de desalojo\nAciertos LRU: 1.2K/h\nPromociones: 450/h",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "adaptive-sizing",
+    "label": "🎯 Dimensionamiento adaptativo\nCapacidad dinámica por nivel",
+    "x": 150,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "predictive-caching",
+    "label": "🔮 Cache predictiva\nCarga anticipada",
+    "x": 320,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "policy-tuning",
+    "label": "⚙️ Ajuste de políticas\nOptimización basada en ML",
+    "x": 490,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "garbage-collection",
+    "label": "🗑️ Recolección de basura\nLimpieza automática",
+    "x": 660,
+    "y": 880,
+    "w": 160
+   },
+   {
+    "id": "optimized-retrieval",
+    "label": "✨ Recuperación optimizada\nAcceso rápido y eficiente a la memoria multinivel",
+    "x": 400,
+    "y": 1000,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-controller",
+    "s": "information-input",
+    "t": "memory-controller",
+    "label": ""
+   },
+   {
+    "id": "controller-working",
+    "s": "memory-controller",
+    "t": "working-memory",
+    "label": "Almacenar"
+   },
+   {
+    "id": "controller-short",
+    "s": "memory-controller",
+    "t": "short-term-memory",
+    "label": "Enrutar"
+   },
+   {
+    "id": "controller-medium",
+    "s": "memory-controller",
+    "t": "medium-term-memory",
+    "label": "Enrutar"
+   },
+   {
+    "id": "controller-long",
+    "s": "memory-controller",
+    "t": "long-term-memory",
+    "label": "Enrutar"
+   },
+   {
+    "id": "working-short",
+    "s": "working-memory",
+    "t": "short-term-memory",
+    "label": "Promover"
+   },
+   {
+    "id": "short-medium",
+    "s": "short-term-memory",
+    "t": "medium-term-memory",
+    "label": "Promover"
+   },
+   {
+    "id": "medium-long",
+    "s": "medium-term-memory",
+    "t": "long-term-memory",
+    "label": "Promover"
+   },
+   {
+    "id": "lru-working",
+    "s": "lru-policy",
+    "t": "working-memory",
+    "label": ""
+   },
+   {
+    "id": "frequency-short",
+    "s": "frequency-policy",
+    "t": "short-term-memory",
+    "label": ""
+   },
+   {
+    "id": "importance-medium",
+    "s": "importance-policy",
+    "t": "medium-term-memory",
+    "label": ""
+   },
+   {
+    "id": "decay-short",
+    "s": "decay-policy",
+    "t": "short-term-memory",
+    "label": ""
+   },
+   {
+    "id": "consolidation-long",
+    "s": "consolidation-policy",
+    "t": "long-term-memory",
+    "label": ""
+   },
+   {
+    "id": "working-promotion",
+    "s": "working-memory",
+    "t": "tier-promotion",
+    "label": ""
+   },
+   {
+    "id": "short-demotion",
+    "s": "short-term-memory",
+    "t": "tier-demotion",
+    "label": ""
+   },
+   {
+    "id": "controller-search",
+    "s": "memory-controller",
+    "t": "cross-tier-search",
+    "label": ""
+   },
+   {
+    "id": "long-compaction",
+    "s": "long-term-memory",
+    "t": "memory-compaction",
+    "label": ""
+   },
+   {
+    "id": "working-hot",
+    "s": "working-memory",
+    "t": "hot-access",
+    "label": ""
+   },
+   {
+    "id": "short-warm",
+    "s": "short-term-memory",
+    "t": "warm-access",
+    "label": ""
+   },
+   {
+    "id": "long-cold",
+    "s": "long-term-memory",
+    "t": "cold-access",
+    "label": ""
+   },
+   {
+    "id": "search-miss",
+    "s": "cross-tier-search",
+    "t": "miss-handling",
+    "label": ""
+   },
+   {
+    "id": "hot-hit",
+    "s": "hot-access",
+    "t": "hit-ratio",
+    "label": ""
+   },
+   {
+    "id": "warm-latency",
+    "s": "warm-access",
+    "t": "latency-profile",
+    "label": ""
+   },
+   {
+    "id": "cold-usage",
+    "s": "cold-access",
+    "t": "memory-usage",
+    "label": ""
+   },
+   {
+    "id": "miss-eviction",
+    "s": "miss-handling",
+    "t": "eviction-stats",
+    "label": ""
+   },
+   {
+    "id": "hit-adaptive",
+    "s": "hit-ratio",
+    "t": "adaptive-sizing",
+    "label": ""
+   },
+   {
+    "id": "latency-predictive",
+    "s": "latency-profile",
+    "t": "predictive-caching",
+    "label": ""
+   },
+   {
+    "id": "usage-policy",
+    "s": "memory-usage",
+    "t": "policy-tuning",
+    "label": ""
+   },
+   {
+    "id": "eviction-gc",
+    "s": "eviction-stats",
+    "t": "garbage-collection",
+    "label": ""
+   },
+   {
+    "id": "adaptive-output",
+    "s": "adaptive-sizing",
+    "t": "optimized-retrieval",
+    "label": ""
+   },
+   {
+    "id": "predictive-output",
+    "s": "predictive-caching",
+    "t": "optimized-retrieval",
+    "label": ""
+   },
+   {
+    "id": "policy-output",
+    "s": "policy-tuning",
+    "t": "optimized-retrieval",
+    "label": ""
+   },
+   {
+    "id": "gc-output",
+    "s": "garbage-collection",
+    "t": "optimized-retrieval",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada de información",
+    "description": "Llega nueva información para almacenar",
+    "input": "",
+    "nodes": [
+     "information-input",
+     "memory-controller"
+    ],
+    "edges": [
+     "input-controller"
+    ]
+   },
+   {
+    "title": "Enrutamiento por nivel",
+    "description": "El controlador enruta al nivel de memoria adecuado",
+    "input": "",
+    "nodes": [
+     "memory-controller",
+     "working-memory",
+     "short-term-memory",
+     "medium-term-memory",
+     "long-term-memory"
+    ],
+    "edges": [
+     "controller-working",
+     "controller-short",
+     "controller-medium",
+     "controller-long"
+    ]
+   },
+   {
+    "title": "Políticas de retención",
+    "description": "Aplica las políticas de retención y desalojo específicas de cada nivel",
+    "input": "",
+    "nodes": [
+     "lru-policy",
+     "frequency-policy",
+     "importance-policy",
+     "decay-policy",
+     "consolidation-policy"
+    ],
+    "edges": [
+     "lru-working",
+     "frequency-short",
+     "importance-medium",
+     "decay-short",
+     "consolidation-long"
+    ]
+   },
+   {
+    "title": "Promoción de nivel",
+    "description": "Los elementos de acceso frecuente se promueven a niveles superiores",
+    "input": "",
+    "nodes": [
+     "working-memory",
+     "short-term-memory",
+     "medium-term-memory",
+     "long-term-memory"
+    ],
+    "edges": [
+     "working-short",
+     "short-medium",
+     "medium-long"
+    ]
+   },
+   {
+    "title": "Operaciones de memoria",
+    "description": "Promoción, degradación, búsqueda y compactación",
+    "input": "",
+    "nodes": [
+     "tier-promotion",
+     "tier-demotion",
+     "cross-tier-search",
+     "memory-compaction"
+    ],
+    "edges": [
+     "working-promotion",
+     "short-demotion",
+     "controller-search",
+     "long-compaction"
+    ]
+   },
+   {
+    "title": "Patrones de acceso",
+    "description": "Patrones de acceso distintos para cada nivel",
+    "input": "",
+    "nodes": [
+     "working-memory",
+     "short-term-memory",
+     "long-term-memory",
+     "hot-access",
+     "warm-access",
+     "cold-access"
+    ],
+    "edges": [
+     "working-hot",
+     "short-warm",
+     "long-cold"
+    ]
+   },
+   {
+    "title": "Búsqueda entre niveles",
+    "description": "Búsqueda en todos los niveles de memoria",
+    "input": "",
+    "nodes": [
+     "cross-tier-search",
+     "working-memory",
+     "short-term-memory",
+     "medium-term-memory",
+     "long-term-memory",
+     "miss-handling"
+    ],
+    "edges": [
+     "controller-search",
+     "search-miss"
+    ]
+   },
+   {
+    "title": "Métricas de rendimiento",
+    "description": "Seguimiento de tasas de aciertos, latencia y uso",
+    "input": "",
+    "nodes": [
+     "hit-ratio",
+     "latency-profile",
+     "memory-usage",
+     "eviction-stats"
+    ],
+    "edges": [
+     "hot-hit",
+     "warm-latency",
+     "cold-usage",
+     "miss-eviction"
+    ]
+   },
+   {
+    "title": "Estrategias de optimización",
+    "description": "Dimensionamiento adaptativo, cache predictiva y ajuste",
+    "input": "",
+    "nodes": [
+     "adaptive-sizing",
+     "predictive-caching",
+     "policy-tuning",
+     "garbage-collection"
+    ],
+    "edges": [
+     "hit-adaptive",
+     "latency-predictive",
+     "usage-policy",
+     "eviction-gc"
+    ]
+   },
+   {
+    "title": "Recuperación optimizada",
+    "description": "Se logra un acceso eficiente a la memoria multinivel",
+    "input": "",
+    "nodes": [
+     "adaptive-sizing",
+     "predictive-caching",
+     "policy-tuning",
+     "garbage-collection",
+     "optimized-retrieval"
+    ],
+    "edges": [
+     "adaptive-output",
+     "predictive-output",
+     "policy-output",
+     "gc-output"
+    ]
+   }
+  ]
+ }
+}

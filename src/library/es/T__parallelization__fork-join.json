@@ -1,0 +1,774 @@
+{
+ "cat": "parallelization",
+ "slug": "fork-join",
+ "name": "Fork-Join",
+ "icon": "🍴",
+ "complexity": "high",
+ "description": "Bifurca las tareas en subtareas paralelas y une los resultados cuando terminan",
+ "features": [
+  "Descomposición de tareas",
+  "Ejecución en paralelo",
+  "Puntos de sincronización",
+  "Combinación de resultados"
+ ],
+ "tldr": {
+  "what": "Divide una tarea en subtareas paralelas independientes, espera a que todas terminen y luego combina sus resultados.",
+  "when": "Problemas grandes que se pueden descomponer en trabajo independiente, donde la ejecución en paralelo ahorra tiempo frente al procesamiento secuencial.",
+  "watchOut": "El costo de sincronización y la complejidad de combinar resultados pueden anular la ganancia de velocidad en tareas pequeñas o muy acopladas."
+ },
+ "overview": {
+  "pattern": "Descompone las tareas de forma recursiva, ejecútalas en paralelo y luego combina los resultados",
+  "why": "Paralelismo óptimo mediante divide y vencerás con balanceo de carga dinámico",
+  "insight": "Task → [Subtask1, Subtask2, ...] → Parallel_Execute → Join → Result",
+  "impl": [
+   {
+    "t": "Descomponer",
+    "d": "Divide la tarea en subtareas independientes"
+   },
+   {
+    "t": "Fork",
+    "d": "Crea workers en paralelo para cada subtarea"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Procesa las subtareas de forma concurrente con recursión"
+   },
+   {
+    "t": "Join",
+    "d": "Espera a que todas las subtareas terminen"
+   },
+   {
+    "t": "Combinar",
+    "d": "Agrega los resultados usando lógica de síntesis"
+   }
+  ],
+  "example": "large_task → [subtask_A, subtask_B, subtask_C] → parallel_process → combine → result",
+  "dos": [
+   "Define umbrales de caso base adecuados",
+   "Equilibra la granularidad de las subtareas para lograr un paralelismo óptimo",
+   "Implementa work-stealing para el balanceo de carga",
+   "Usa pools de hilos para evitar el costo de creación",
+   "Guarda en cache los resultados intermedios para evitar redundancia"
+  ],
+  "donts": [
+   "Generar un costo excesivo de descomposición",
+   "Ignorar el balanceo de carga entre workers",
+   "Permitir la contención de recursos y los deadlocks",
+   "Definir casos base inadecuados",
+   "Omitir el manejo de errores en las ramas paralelas"
+  ],
+  "use": [
+   "Problemas recursivos con una descomposición natural",
+   "Estructuras de datos jerárquicas",
+   "Algoritmos de divide y vencerás",
+   "Tareas de cómputo con subtareas paralelizables"
+  ],
+  "avoid": [
+   "Dependencias secuenciales fuertes",
+   "Problemas de tamaño pequeño",
+   "Entornos con memoria limitada",
+   "Requisitos estrictos de tiempos deterministas"
+  ],
+  "metrics": [
+   {
+    "n": "Eficiencia paralela",
+    "d": "Aceleración frente al máximo teórico"
+   },
+   {
+    "n": "Calidad del balanceo de carga",
+    "d": "Varianza en los tiempos de ejecución de los workers"
+   },
+   {
+    "n": "Utilización de recursos",
+    "d": "Eficiencia de CPU, memoria e hilos"
+   },
+   {
+    "n": "Relación de granularidad de tareas",
+    "d": "Paralelismo frente al costo de coordinación"
+   },
+   {
+    "n": "Profundidad de recursión",
+    "d": "Análisis del patrón de descomposición"
+   },
+   {
+    "n": "Tasa de recuperación ante fallos",
+    "d": "Tasa de éxito en el manejo de fallos de subtareas"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Recorrido de árboles",
+    "d": "Procesamiento recursivo en paralelo → explorar ramas → combinar resultados"
+   },
+   {
+    "n": "Algoritmos de ordenamiento",
+    "d": "Dividir los datos → ordenar en paralelo → fusionar los segmentos ordenados"
+   },
+   {
+    "n": "Operaciones con matrices",
+    "d": "Dividir matrices → calcular en paralelo → agregar resultados"
+   },
+   {
+    "n": "Problemas de búsqueda",
+    "d": "Descomponer el espacio de búsqueda → exploración en paralelo → combinar hallazgos"
+   },
+   {
+    "n": "Procesamiento de datos",
+    "d": "Particionar el dataset → análisis en paralelo → sintetizar conclusiones"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón Fork-Join",
+  "description": "Muestra la descomposición recursiva de tareas con ejecución en paralelo y combinación sincronizada de resultados usando un enfoque de divide y vencerás",
+  "nodes": [
+   {
+    "id": "initial-task",
+    "label": "Tarea inicial\n\"Ordenar el arreglo [8,3,5,1,7,6,2,4]\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "task-analyzer",
+    "label": "Analizador de tareas\nEvalúa la estrategia de descomposición",
+    "x": 500,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "fork-coordinator",
+    "label": "Coordinador de fork\nGestiona la descomposición de tareas",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "fork-left-1",
+    "label": "Subtarea izquierda L1\n[8,3,5,1]",
+    "x": 250,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "fork-right-1",
+    "label": "Subtarea derecha L1\n[7,6,2,4]",
+    "x": 750,
+    "y": 480,
+    "w": 160
+   },
+   {
+    "id": "fork-left-2a",
+    "label": "Subtarea izquierda L2A\n[8,3]",
+    "x": 150,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "fork-left-2b",
+    "label": "Subtarea derecha L2B\n[5,1]",
+    "x": 350,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "fork-right-2a",
+    "label": "Subtarea izquierda L2C\n[7,6]",
+    "x": 650,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "fork-right-2b",
+    "label": "Subtarea derecha L2D\n[2,4]",
+    "x": 850,
+    "y": 620,
+    "w": 140
+   },
+   {
+    "id": "element-1",
+    "label": "Elemento\n[8]",
+    "x": 100,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "element-2",
+    "label": "Elemento\n[3]",
+    "x": 200,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "element-3",
+    "label": "Elemento\n[5]",
+    "x": 300,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "element-4",
+    "label": "Elemento\n[1]",
+    "x": 400,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "element-5",
+    "label": "Elemento\n[7]",
+    "x": 600,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "element-6",
+    "label": "Elemento\n[6]",
+    "x": 700,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "element-7",
+    "label": "Elemento\n[2]",
+    "x": 800,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "element-8",
+    "label": "Elemento\n[4]",
+    "x": 900,
+    "y": 760,
+    "w": 80
+   },
+   {
+    "id": "join-3a",
+    "label": "Join L3A\n[3,8]",
+    "x": 150,
+    "y": 900,
+    "w": 120
+   },
+   {
+    "id": "join-3b",
+    "label": "Join L3B\n[1,5]",
+    "x": 350,
+    "y": 900,
+    "w": 120
+   },
+   {
+    "id": "join-3c",
+    "label": "Join L3C\n[6,7]",
+    "x": 650,
+    "y": 900,
+    "w": 120
+   },
+   {
+    "id": "join-3d",
+    "label": "Join L3D\n[2,4]",
+    "x": 850,
+    "y": 900,
+    "w": 120
+   },
+   {
+    "id": "join-2a",
+    "label": "Join L2A\n[1,3,5,8]",
+    "x": 250,
+    "y": 1040,
+    "w": 140
+   },
+   {
+    "id": "join-2b",
+    "label": "Join L2B\n[2,4,6,7]",
+    "x": 750,
+    "y": 1040,
+    "w": 140
+   },
+   {
+    "id": "join-1",
+    "label": "Join final\n[1,2,3,4,5,6,7,8]",
+    "x": 500,
+    "y": 1180,
+    "w": 200
+   },
+   {
+    "id": "thread-pool",
+    "label": "Pool de hilos\nGestiona la ejecución en paralelo",
+    "x": 200,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "synchronizer",
+    "label": "Sincronizador\nCoordina las operaciones de join",
+    "x": 800,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "work-stealing",
+    "label": "Work stealing\nBalanceo de carga",
+    "x": 100,
+    "y": 480,
+    "w": 140
+   },
+   {
+    "id": "task-scheduler",
+    "label": "Planificador de tareas\nOptimiza la ejecución",
+    "x": 900,
+    "y": 480,
+    "w": 140
+   },
+   {
+    "id": "performance-monitor",
+    "label": "Monitor de rendimiento\n• Eficiencia paralela: 85%\\n• Utilización de hilos: 92%\\n• Costo del fork: 12ms\\n• Latencia del join: 8ms\\n• Factor de aceleración: 3.2x",
+    "x": 50,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "memory-manager",
+    "label": "Gestor de memoria\n• Asignación en pila: 2.4MB\\n• Uso del heap: 1.8MB\\n• Presión del GC: baja\\n• Localidad de memoria: alta\\n• Eficiencia de cache: 94%",
+    "x": 950,
+    "y": 180,
+    "w": 160
+   },
+   {
+    "id": "recursion-tracker",
+    "label": "Rastreador de recursión\nProfundidad: 3 niveles\\nMarcos de pila: 15\\nCasos base: 8",
+    "x": 500,
+    "y": 1320,
+    "w": 180
+   },
+   {
+    "id": "result-validator",
+    "label": "Validador de resultados\nVerifica el orden\\nComprobación de integridad",
+    "x": 300,
+    "y": 1320,
+    "w": 160
+   },
+   {
+    "id": "complexity-analyzer",
+    "label": "Analizador de complejidad\nTiempo: O(n log n)\\nEspacio: O(log n)\\nParalelo: O(n)",
+    "x": 700,
+    "y": 1320,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-initial-analyzer",
+    "s": "initial-task",
+    "t": "task-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-analyzer-coordinator",
+    "s": "task-analyzer",
+    "t": "fork-coordinator",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-pool",
+    "s": "fork-coordinator",
+    "t": "thread-pool",
+    "label": ""
+   },
+   {
+    "id": "e-coordinator-sync",
+    "s": "fork-coordinator",
+    "t": "synchronizer",
+    "label": ""
+   },
+   {
+    "id": "e-fork-left-1",
+    "s": "fork-coordinator",
+    "t": "fork-left-1",
+    "label": "Fork izquierdo"
+   },
+   {
+    "id": "e-fork-right-1",
+    "s": "fork-coordinator",
+    "t": "fork-right-1",
+    "label": "Fork derecho"
+   },
+   {
+    "id": "e-stealing-left",
+    "s": "work-stealing",
+    "t": "fork-left-1",
+    "label": ""
+   },
+   {
+    "id": "e-scheduler-right",
+    "s": "task-scheduler",
+    "t": "fork-right-1",
+    "label": ""
+   },
+   {
+    "id": "e-left-1-2a",
+    "s": "fork-left-1",
+    "t": "fork-left-2a",
+    "label": ""
+   },
+   {
+    "id": "e-left-1-2b",
+    "s": "fork-left-1",
+    "t": "fork-left-2b",
+    "label": ""
+   },
+   {
+    "id": "e-right-1-2a",
+    "s": "fork-right-1",
+    "t": "fork-right-2a",
+    "label": ""
+   },
+   {
+    "id": "e-right-1-2b",
+    "s": "fork-right-1",
+    "t": "fork-right-2b",
+    "label": ""
+   },
+   {
+    "id": "e-2a-e1",
+    "s": "fork-left-2a",
+    "t": "element-1",
+    "label": ""
+   },
+   {
+    "id": "e-2a-e2",
+    "s": "fork-left-2a",
+    "t": "element-2",
+    "label": ""
+   },
+   {
+    "id": "e-2b-e3",
+    "s": "fork-left-2b",
+    "t": "element-3",
+    "label": ""
+   },
+   {
+    "id": "e-2b-e4",
+    "s": "fork-left-2b",
+    "t": "element-4",
+    "label": ""
+   },
+   {
+    "id": "e-2c-e5",
+    "s": "fork-right-2a",
+    "t": "element-5",
+    "label": ""
+   },
+   {
+    "id": "e-2c-e6",
+    "s": "fork-right-2a",
+    "t": "element-6",
+    "label": ""
+   },
+   {
+    "id": "e-2d-e7",
+    "s": "fork-right-2b",
+    "t": "element-7",
+    "label": ""
+   },
+   {
+    "id": "e-2d-e8",
+    "s": "fork-right-2b",
+    "t": "element-8",
+    "label": ""
+   },
+   {
+    "id": "e-e1-j3a",
+    "s": "element-1",
+    "t": "join-3a",
+    "label": ""
+   },
+   {
+    "id": "e-e2-j3a",
+    "s": "element-2",
+    "t": "join-3a",
+    "label": ""
+   },
+   {
+    "id": "e-e3-j3b",
+    "s": "element-3",
+    "t": "join-3b",
+    "label": ""
+   },
+   {
+    "id": "e-e4-j3b",
+    "s": "element-4",
+    "t": "join-3b",
+    "label": ""
+   },
+   {
+    "id": "e-e5-j3c",
+    "s": "element-5",
+    "t": "join-3c",
+    "label": ""
+   },
+   {
+    "id": "e-e6-j3c",
+    "s": "element-6",
+    "t": "join-3c",
+    "label": ""
+   },
+   {
+    "id": "e-e7-j3d",
+    "s": "element-7",
+    "t": "join-3d",
+    "label": ""
+   },
+   {
+    "id": "e-e8-j3d",
+    "s": "element-8",
+    "t": "join-3d",
+    "label": ""
+   },
+   {
+    "id": "e-j3a-j2a",
+    "s": "join-3a",
+    "t": "join-2a",
+    "label": ""
+   },
+   {
+    "id": "e-j3b-j2a",
+    "s": "join-3b",
+    "t": "join-2a",
+    "label": ""
+   },
+   {
+    "id": "e-j3c-j2b",
+    "s": "join-3c",
+    "t": "join-2b",
+    "label": ""
+   },
+   {
+    "id": "e-j3d-j2b",
+    "s": "join-3d",
+    "t": "join-2b",
+    "label": ""
+   },
+   {
+    "id": "e-j2a-j1",
+    "s": "join-2a",
+    "t": "join-1",
+    "label": ""
+   },
+   {
+    "id": "e-j2b-j1",
+    "s": "join-2b",
+    "t": "join-1",
+    "label": ""
+   },
+   {
+    "id": "e-j1-validator",
+    "s": "join-1",
+    "t": "result-validator",
+    "label": ""
+   },
+   {
+    "id": "e-j1-tracker",
+    "s": "join-1",
+    "t": "recursion-tracker",
+    "label": ""
+   },
+   {
+    "id": "e-j1-complexity",
+    "s": "join-1",
+    "t": "complexity-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-perf-coordinator",
+    "s": "performance-monitor",
+    "t": "fork-coordinator",
+    "label": ""
+   },
+   {
+    "id": "e-memory-coordinator",
+    "s": "memory-manager",
+    "t": "fork-coordinator",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de la tarea inicial",
+    "description": "Recibe el problema inicial que requiere un enfoque de divide y vencerás.",
+    "input": "Tarea: ordenar el arreglo [8,3,5,1,7,6,2,4] usando el algoritmo merge sort en paralelo",
+    "nodes": [
+     "initial-task"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Análisis de la tarea y estrategia",
+    "description": "Analiza la tarea para determinar la estrategia de descomposición y el enfoque de paralelización óptimos.",
+    "input": "Análisis: tamaño del arreglo 8, apto para divide y vencerás, profundidad objetivo de 3 niveles, 8 casos base",
+    "nodes": [
+     "initial-task",
+     "task-analyzer"
+    ],
+    "edges": [
+     "e-initial-analyzer"
+    ]
+   },
+   {
+    "title": "Configuración del coordinador de fork",
+    "description": "Inicializa el coordinador de fork para gestionar la descomposición de tareas y la asignación de hilos.",
+    "input": "Configuración del coordinador: configuración del pool de hilos, estrategia de sincronización, asignación de memoria",
+    "nodes": [
+     "fork-coordinator",
+     "thread-pool",
+     "synchronizer"
+    ],
+    "edges": [
+     "e-analyzer-coordinator",
+     "e-coordinator-pool",
+     "e-coordinator-sync"
+    ]
+   },
+   {
+    "title": "Fork de nivel 1 - División primaria",
+    "description": "Divide el arreglo inicial en dos mitades para procesarlas en paralelo.",
+    "input": "Operación de fork: dividir el arreglo [8,3,5,1,7,6,2,4] en izquierda [8,3,5,1] y derecha [7,6,2,4]",
+    "nodes": [
+     "fork-left-1",
+     "fork-right-1",
+     "work-stealing",
+     "task-scheduler"
+    ],
+    "edges": [
+     "e-fork-left-1",
+     "e-fork-right-1",
+     "e-stealing-left",
+     "e-scheduler-right"
+    ]
+   },
+   {
+    "title": "Fork de nivel 2 - División secundaria",
+    "description": "Descompone aún más las mitades en cuartos para aumentar el paralelismo.",
+    "input": "Fork secundario: dividir [8,3,5,1] en [8,3] y [5,1], dividir [7,6,2,4] en [7,6] y [2,4]",
+    "nodes": [
+     "fork-left-2a",
+     "fork-left-2b",
+     "fork-right-2a",
+     "fork-right-2b"
+    ],
+    "edges": [
+     "e-left-1-2a",
+     "e-left-1-2b",
+     "e-right-1-2a",
+     "e-right-1-2b"
+    ]
+   },
+   {
+    "title": "Fork de nivel 3 - Descomposición al caso base",
+    "description": "Descompone hasta los elementos individuales (caso base) para un ordenamiento trivial.",
+    "input": "Fork al caso base: descomponer los pares en elementos individuales como caso base de ordenamiento trivial",
+    "nodes": [
+     "element-1",
+     "element-2",
+     "element-3",
+     "element-4",
+     "element-5",
+     "element-6",
+     "element-7",
+     "element-8"
+    ],
+    "edges": [
+     "e-2a-e1",
+     "e-2a-e2",
+     "e-2b-e3",
+     "e-2b-e4",
+     "e-2c-e5",
+     "e-2c-e6",
+     "e-2d-e7",
+     "e-2d-e8"
+    ]
+   },
+   {
+    "title": "Join de nivel 3 - Fusión de pares",
+    "description": "Comienza el join fusionando pares de elementos individuales en pares ordenados.",
+    "input": "Fusión de pares: combinar [8],[3] → [3,8], [5],[1] → [1,5], [7],[6] → [6,7], [2],[4] → [2,4]",
+    "nodes": [
+     "join-3a",
+     "join-3b",
+     "join-3c",
+     "join-3d"
+    ],
+    "edges": [
+     "e-e1-j3a",
+     "e-e2-j3a",
+     "e-e3-j3b",
+     "e-e4-j3b",
+     "e-e5-j3c",
+     "e-e6-j3c",
+     "e-e7-j3d",
+     "e-e8-j3d"
+    ]
+   },
+   {
+    "title": "Join de nivel 2 - Fusión de cuartetos",
+    "description": "Fusiona los pares ordenados en cuartetos ordenados usando operaciones de fusión en paralelo.",
+    "input": "Fusión de cuartetos: combinar [3,8] + [1,5] → [1,3,5,8], [6,7] + [2,4] → [2,4,6,7]",
+    "nodes": [
+     "join-2a",
+     "join-2b"
+    ],
+    "edges": [
+     "e-j3a-j2a",
+     "e-j3b-j2a",
+     "e-j3c-j2b",
+     "e-j3d-j2b"
+    ]
+   },
+   {
+    "title": "Join de nivel 1 - Fusión final",
+    "description": "Realiza la fusión final para combinar todos los elementos en el resultado totalmente ordenado.",
+    "input": "Fusión final: combinar los cuartetos ordenados [1,3,5,8] + [2,4,6,7] → [1,2,3,4,5,6,7,8]",
+    "nodes": [
+     "join-1"
+    ],
+    "edges": [
+     "e-j2a-j1",
+     "e-j2b-j1"
+    ]
+   },
+   {
+    "title": "Validación y verificación del resultado",
+    "description": "Valida el resultado ordenado y verifica la corrección del algoritmo.",
+    "input": "Validación: comprobar el orden, verificar que estén todos los elementos y validar la corrección del algoritmo",
+    "nodes": [
+     "result-validator",
+     "recursion-tracker",
+     "complexity-analyzer"
+    ],
+    "edges": [
+     "e-j1-validator",
+     "e-j1-tracker",
+     "e-j1-complexity"
+    ]
+   },
+   {
+    "title": "Análisis de rendimiento y métricas",
+    "description": "Analiza las métricas de rendimiento y la utilización de recursos del sistema.",
+    "input": "",
+    "nodes": [
+     "performance-monitor",
+     "memory-manager"
+    ],
+    "edges": [
+     "e-perf-coordinator",
+     "e-memory-coordinator"
+    ]
+   },
+   {
+    "title": "Resumen de la finalización del Fork-Join",
+    "description": "Resume la ejecución completa del fork-join con los resultados finales y las conclusiones.",
+    "input": "",
+    "nodes": [],
+    "edges": []
+   }
+  ]
+ }
+}

@@ -1,0 +1,389 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "swe-bench-suite",
+ "name": "SWE-bench Suite(SWE-bench)",
+ "icon": "💻",
+ "complexity": "high",
+ "description": "Suite de benchmarks de ingeniería de software que incluye SWE-bench, SWE-bench Verified y SWE-bench Live. Los modelos de comparación mencionados en el ejemplo son líneas base históricas.",
+ "features": [
+  "Issues reales de GitHub de más de 12 repositorios populares",
+  "Subconjunto de problemas validados por humanos (SWE-bench Verified)",
+  "Benchmark vivo actualizado mensualmente (SWE-bench Live)",
+  "Variante multimodal con elementos visuales",
+  "Evaluación libre de contaminación",
+  "Estándar de la industria para agentes de programación"
+ ],
+ "tldr": {
+  "what": "Evalúa agentes de programación contra issues reales de GitHub de repositorios populares, con subconjuntos validados por humanos y variantes vivas actualizadas mensualmente para medir la capacidad de resolución de problemas.",
+  "when": "Comparar el rendimiento de agentes en tareas auténticas de ingeniería de software, hacer seguimiento de la mejora a lo largo del tiempo o validar que los agentes resuelven problemas sin contaminación de los datos de entrenamiento.",
+  "watchOut": "Los resultados dependen mucho de qué repositorios y tipos de issues se incluyen; el rendimiento en SWE-bench puede no trasladarse a los patrones o al stack tecnológico de tu código base."
+ },
+ "overview": {
+  "pattern": "Suite integral de benchmarks de ingeniería de software que evalúa agentes LLM sobre issues reales de GitHub en múltiples variantes",
+  "why": "Estándar de la industria para probar capacidades de programación automatizada usando más de 2,294 bugs de software auténticos de repositorios populares de Python",
+  "insight": "En la instantánea publicada, Claude 3.5 Sonnet logró un 49% en Verified (500 issues); el benchmark original también mostró un 32.67% de filtración de soluciones, lo que hace crítica la selección de la variante",
+  "impl": [
+   {
+    "t": "Preparación",
+    "d": "Instala el framework de evaluación de SWE-bench y sus dependencias"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige la variante: SWE-bench (2,294 issues), Verified (500), Live (1,319) o Multimodal (517)"
+   },
+   {
+    "t": "Configurar",
+    "d": "Configura el acceso a los repositorios de GitHub y el entorno de pruebas"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Ejecuta el agente sobre issues reales de GitHub de más de 12 repositorios populares de Python"
+   },
+   {
+    "t": "Valorar",
+    "d": "Mide el éxito en la generación de parches y la corrección funcional"
+   }
+  ],
+  "example": "swe_bench = SWEBench(variant=\"verified\", repos=[\"django\", \"flask\"], model=coding_agent, timeout=1800)",
+  "dos": [
+   "Usa SWE-bench Verified (500 issues) para una evaluación confiable validada por humanos",
+   "Prueba en múltiples tipos de repositorios (Django, Flask, Requests, Matplotlib, etc.)",
+   "Vigila la contaminación de datos: muchos issues son anteriores a las fechas de corte de entrenamiento de los modelos",
+   "Incluye la variante multimodal (517 issues) para tareas de depuración visual",
+   "Usa SWE-bench Live para una evaluación libre de contaminación con issues posteriores a 2024"
+  ],
+  "donts": [
+   "Depender únicamente del SWE-bench original: el 32.67% tiene problemas de filtración de soluciones",
+   "Ignorar la validación de la corrección de los parches: los casos de prueba débiles afectan al 31% de los resultados",
+   "Omitir los requisitos de configuración específicos de cada repositorio y la gestión de dependencias",
+   "Dar por buenas las puntuaciones altas sin validar la capacidad real de resolución de problemas",
+   "Pasar por alto los elementos visuales en issues multimodales que requieren interpretar imágenes"
+  ],
+  "use": [
+   "Evaluar agentes de programación en tareas de ingeniería de software del mundo real",
+   "Hacer benchmarking de la capacidad de resolver issues de GitHub",
+   "Probar la generación automatizada de parches y la corrección de bugs",
+   "Evaluar la comprensión de código en múltiples repositorios",
+   "Investigación sobre el rendimiento de los LLMs en ingeniería de software"
+  ],
+  "avoid": [
+   "Evaluación de tareas de programación simples (usa HumanEval en su lugar)",
+   "Evaluación de lenguajes de programación distintos de Python",
+   "Evaluación de prototipado rápido sin el contexto completo del repositorio",
+   "Ejercicios de programación educativos en lugar de bugs reales",
+   "Evaluaciones con restricciones de tiempo (puede tomar horas por issue)"
+  ],
+  "metrics": [
+   {
+    "n": "% Resuelto (principal)",
+    "d": "Porcentaje de issues de GitHub resueltos con éxito mediante parches funcionales"
+   },
+   {
+    "n": "Tasa de éxito Pass@k",
+    "d": "Tasa de éxito en k intentos (normalmente k=1)"
+   },
+   {
+    "n": "Corrección funcional",
+    "d": "Parches que realmente corrigen el issue sin romper las pruebas existentes"
+   },
+   {
+    "n": "Cobertura de repositorios",
+    "d": "Rendimiento en más de 12 repositorios diversos de Python"
+   },
+   {
+    "n": "Calidad de la solución",
+    "d": "Elegancia del parche, mantenibilidad y apego a los estándares de código"
+   },
+   {
+    "n": "Tiempo de resolución",
+    "d": "Tiempo promedio que toma generar parches funcionales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Evaluación de la instantánea publicada",
+    "d": "Reproduce el resultado reportado de Claude 3.5 Sonnet (49% en Verified)"
+   },
+   {
+    "n": "Investigación académica",
+    "d": "Framework de Princeton/CMU para evaluar la capacidad de los LLMs en ingeniería de software"
+   },
+   {
+    "n": "Pruebas de preparación para producción",
+    "d": "Validar asistentes de programación con IA sobre issues reales de GitHub antes del despliegue"
+   },
+   {
+    "n": "Depuración automatizada",
+    "d": "Probar la capacidad de los agentes de IA para entender, analizar y corregir bugs de software complejos"
+   },
+   {
+    "n": "Evaluación en múltiples repositorios",
+    "d": "Evaluar la comprensión de código en Django, Flask, Matplotlib, Requests y más"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Suite SWE-bench: patrón de evaluación de ingeniería de software del mundo real",
+  "description": "La suite SWE-bench usa 2,294 issues reales de GitHub de 12 repositorios de Python; los resultados de modelos mencionados a continuación son instantáneas históricas del benchmark",
+  "nodes": [
+   {
+    "id": "code-evaluation-challenge",
+    "label": "💻 Desafío de la evaluación de código de IA\n\"¿Cómo evaluar sistemas de IA en tareas\nrealistas de ingeniería de software más allá\nde problemas algorítmicos simples?\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "swe-bench-framework",
+    "label": "🏗️ Framework integral SWE-bench\n\"Benchmark de ingeniería de software del mundo real:\n• 2,294 issues/PRs de GitHub\n• 12 repositorios de Python\n• Evaluación basada en ejecución\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "dataset-construction",
+    "label": "📊 Construcción del dataset del mundo real\n\"Problemas de software auténticos:\n• Issues de GitHub enviados por usuarios\n• Soluciones de los pull requests correspondientes\n• Validación con pruebas fail-to-pass\"",
+    "x": 200,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "twelve-repositories",
+    "label": "📚 12 repositorios de Python\n\"Proyectos populares de código abierto:\n• Códigos base diversos\n• Problemas reales de mantenimiento\n• Código con calidad de producción\"",
+    "x": 50,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "issue-instances",
+    "label": "🐛 2,294 instancias de issues\n\"Problemas de software complejos:\n• Requieren cambios en múltiples archivos\n• Comprensión de contexto largo\n• Se necesita razonamiento complejo\"",
+    "x": 250,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "benchmark-variants",
+    "label": "🎯 Múltiples variantes del benchmark\n\"Subconjuntos de evaluación especializados:\n• SWE-bench Full (2,294)\n• SWE-bench Lite (300)\n• SWE-bench Verified (500)\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "swe-bench-verified",
+    "label": "✅ SWE-bench Verified (500)\n\"Resolubilidad confirmada por humanos:\n• Validación por ingenieros de software\n• Problemas con calidad asegurada\n• Evaluación realista de la dificultad\"",
+    "x": 500,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "swe-bench-multimodal",
+    "label": "🖼️ SWE-bench Multimodal (517)\n\"Issues de software visuales:\n• Imágenes en las descripciones de los problemas\n• Problemas de UI/renderizado\n• Se requiere comprensión multimodal\"",
+    "x": 700,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "docker-evaluation-harness",
+    "label": "🐳 Arnés de evaluación con Docker\n\"Entorno de pruebas reproducible:\n• Ejecución en contenedores\n• Pruebas de aplicación de parches\n• Validación con pruebas unitarias/de sistema\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "performance-results",
+    "label": "📉 Resultados de rendimiento desafiantes\n\"Limitaciones de la IA expuestas:\n• Claude 2: 1.96% de éxito (original)\n• Mejores modelos: ~65% (Verified)\n• Brechas significativas de capacidad\"",
+    "x": 200,
+    "y": 800,
+    "w": 230
+   },
+   {
+    "id": "benchmark-evolution",
+    "label": "🔄 Evolución continua del benchmark\n\"Plataforma de evaluación viva:\n• Actualizaciones periódicas con issues nuevos\n• Contribuciones de la comunidad\n• Métodos de evaluación mejorados\"",
+    "x": 600,
+    "y": 800,
+    "w": 240
+   },
+   {
+    "id": "software-evaluation-principle",
+    "label": "🎯 Principio de evaluación de software del mundo real\n\"Las tareas auténticas de ingeniería de software revelan las verdaderas capacidades de la IA\nLos problemas complejos de múltiples archivos exponen las limitaciones de razonamiento\nEl benchmarking continuo en el mundo real impulsa el progreso práctico\"",
+    "x": 400,
+    "y": 950,
+    "w": 380
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "code-evaluation-challenge",
+    "t": "swe-bench-framework",
+    "label": "abordado por"
+   },
+   {
+    "id": "e2",
+    "s": "swe-bench-framework",
+    "t": "dataset-construction",
+    "label": "implementa la construcción"
+   },
+   {
+    "id": "e3",
+    "s": "swe-bench-framework",
+    "t": "benchmark-variants",
+    "label": "crea variantes"
+   },
+   {
+    "id": "e4",
+    "s": "dataset-construction",
+    "t": "twelve-repositories",
+    "label": "se obtiene de"
+   },
+   {
+    "id": "e5",
+    "s": "dataset-construction",
+    "t": "issue-instances",
+    "label": "crea instancias"
+   },
+   {
+    "id": "e6",
+    "s": "benchmark-variants",
+    "t": "swe-bench-verified",
+    "label": "incluye verified"
+   },
+   {
+    "id": "e7",
+    "s": "benchmark-variants",
+    "t": "swe-bench-multimodal",
+    "label": "incluye multimodal"
+   },
+   {
+    "id": "e8",
+    "s": "twelve-repositories",
+    "t": "docker-evaluation-harness",
+    "label": "se prueba mediante"
+   },
+   {
+    "id": "e9",
+    "s": "issue-instances",
+    "t": "docker-evaluation-harness",
+    "label": "se ejecuta en"
+   },
+   {
+    "id": "e10",
+    "s": "swe-bench-verified",
+    "t": "docker-evaluation-harness",
+    "label": "validado por"
+   },
+   {
+    "id": "e11",
+    "s": "swe-bench-multimodal",
+    "t": "docker-evaluation-harness",
+    "label": "procesado por"
+   },
+   {
+    "id": "e12",
+    "s": "docker-evaluation-harness",
+    "t": "performance-results",
+    "label": "produce resultados"
+   },
+   {
+    "id": "e13",
+    "s": "docker-evaluation-harness",
+    "t": "benchmark-evolution",
+    "label": "habilita la evolución"
+   },
+   {
+    "id": "e14",
+    "s": "performance-results",
+    "t": "software-evaluation-principle",
+    "label": "revela limitaciones"
+   },
+   {
+    "id": "e15",
+    "s": "benchmark-evolution",
+    "t": "software-evaluation-principle",
+    "label": "impulsa el progreso"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de las limitaciones en la evaluación de código de IA",
+    "description": "¿Cómo podemos evaluar sistemas de IA en tareas realistas de ingeniería de software que vayan más allá de problemas algorítmicos simples para probar capacidades de razonamiento complejas sobre múltiples archivos?",
+    "input": "",
+    "nodes": [
+     "code-evaluation-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Introducción al framework integral SWE-bench",
+    "description": "Un benchmark revolucionario de ingeniería de software del mundo real aborda el desafío con 2,294 issues auténticos de GitHub de 12 repositorios de Python, usando una metodología de evaluación basada en ejecución.",
+    "input": "",
+    "nodes": [
+     "swe-bench-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Construcción del dataset del mundo real y fuentes de repositorios",
+    "description": "El framework implementa una construcción auténtica del dataset a partir de issues de GitHub enviados por usuarios con las soluciones de sus pull requests correspondientes, obtenidos de 12 repositorios populares de Python, creando 2,294 instancias de problemas complejos.",
+    "input": "",
+    "nodes": [
+     "dataset-construction",
+     "twelve-repositories",
+     "issue-instances"
+    ],
+    "edges": [
+     "e2",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Múltiples variantes especializadas del benchmark",
+    "description": "El framework integral crea subconjuntos de evaluación específicos: SWE-bench Full (2,294 en total), SWE-bench Verified (500 confirmados por humanos) y SWE-bench Multimodal (517 issues visuales) para distintas necesidades de prueba.",
+    "input": "",
+    "nodes": [
+     "benchmark-variants",
+     "swe-bench-verified",
+     "swe-bench-multimodal"
+    ],
+    "edges": [
+     "e3",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Arnés de evaluación basado en Docker",
+    "description": "Todas las variantes del benchmark se procesan con un arnés de evaluación reproducible en Docker: ejecución en contenedores, pruebas de aplicación de parches y validación con pruebas unitarias/de sistema que aseguran condiciones de evaluación consistentes.",
+    "input": "",
+    "nodes": [
+     "docker-evaluation-harness"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10",
+     "e11"
+    ]
+   },
+   {
+    "title": "Resultados de rendimiento y evolución continua",
+    "description": "La evaluación expone las limitaciones de la IA (Claude 2: 1.96% de éxito en el original, ~65% en Verified) mientras impulsa la evolución continua del benchmark con actualizaciones periódicas, contribuciones de la comunidad y métodos mejorados, lo que demuestra que las tareas de software del mundo real revelan las verdaderas capacidades de la IA.",
+    "input": "",
+    "nodes": [
+     "performance-results",
+     "benchmark-evolution",
+     "software-evaluation-principle"
+    ],
+    "edges": [
+     "e12",
+     "e13",
+     "e14",
+     "e15"
+    ]
+   }
+  ]
+ }
+}

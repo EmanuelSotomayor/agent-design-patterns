@@ -1,0 +1,531 @@
+{
+ "cat": "fault-tolerance-infrastructure",
+ "slug": "agent-context-preservation",
+ "name": "Agent Context Preservation and Recovery(ACP)",
+ "icon": "💾",
+ "complexity": "medium",
+ "description": "Preservación y recuperación sistemáticas del contexto de conversación, el estado de memoria y las cadenas de razonamiento del agente durante las fallas",
+ "features": [
+  "Snapshots del estado del contexto",
+  "Preservación de la jerarquía de memoria",
+  "Reconstrucción de la cadena de razonamiento",
+  "Continuidad de la conversación",
+  "Recuperación de diálogos de varios turnos",
+  "Validación semántica del estado"
+ ],
+ "tldr": {
+  "what": "Guarda el estado de la conversación, la memoria y las cadenas de razonamiento del agente en checkpoints, y luego los reconstruye después de las fallas para retomar el trabajo.",
+  "when": "Conversaciones de varios turnos de larga duración en las que las interrupciones hacen perder el progreso, o cuando las cadenas de razonamiento del agente deben sobrevivir a reinicios del sistema.",
+  "watchOut": "Los snapshots obsoletos o corruptos pueden hacer que los agentes repitan trabajo, contradigan decisiones anteriores o alucinen el contexto faltante."
+ },
+ "overview": {
+  "pattern": "Preservación y recuperación sistemáticas del contexto de conversación, el estado de memoria y las cadenas de razonamiento del agente",
+  "why": "Permite una continuidad fluida de la conversación ante fallas, una reducción del 73% en cómputos redundantes y una mejora del 89% en la relevancia del contexto",
+  "insight": "Memoria jerárquica (STM/LTM/semántica) + búsqueda vectorial + compartición segura del contexto = inteligencia persistente del agente",
+  "impl": [
+   {
+    "t": "Definir la memoria",
+    "d": "Establece la jerarquía de memoria (STM, LTM, semántica)"
+   },
+   {
+    "t": "Implementar el almacenamiento",
+    "d": "Base de datos vectorial + grafo de conocimiento para el contexto"
+   },
+   {
+    "t": "Snapshots del contexto",
+    "d": "Captura el estado de la conversación en checkpoints"
+   },
+   {
+    "t": "Lógica de recuperación",
+    "d": "Reconstruye el estado del agente a partir del contexto almacenado"
+   },
+   {
+    "t": "Validar la continuidad",
+    "d": "Asegura un flujo de conversación sin interrupciones"
+   }
+  ],
+  "example": "conversation_state → memory_snapshot → failure_recovery → context_reconstruction → seamless_continuation",
+  "dos": [
+   "Usa memoria jerárquica (corto plazo, largo plazo, semántica)",
+   "Implementa búsqueda semántica vectorial para descubrir contexto",
+   "Guarda en cache el estado de la conversación con un TTL basado en su importancia",
+   "Usa grafos de conocimiento para razonamiento temporal y de múltiples saltos",
+   "Implementa controles de acceso seguros (protocolo SAMEP)"
+  ],
+  "donts": [
+   "Almacenar todo el historial de la conversación sin estrategias de depuración",
+   "Ignorar la validación semántica durante la reconstrucción del contexto",
+   "Mezclar memoria episódica y semántica sin límites claros",
+   "Omitir el cifrado del contexto de conversación sensible",
+   "Suponer que todo el contexto pasado es igualmente relevante para la recuperación"
+  ],
+  "use": [
+   "Sistemas conversacionales de varios turnos",
+   "Sesiones de agente de larga duración",
+   "Tareas colaborativas multiagente",
+   "Asistentes de IA personalizados"
+  ],
+  "avoid": [
+   "Sistemas sin estado de una sola consulta",
+   "Interacciones únicas sensibles a la privacidad",
+   "Respuestas en tiempo real de baja latencia",
+   "Chatbots simples de preguntas frecuentes"
+  ],
+  "metrics": [
+   {
+    "n": "Relevancia del contexto",
+    "d": "% de reconstrucciones de contexto precisas"
+   },
+   {
+    "n": "Tiempo de recuperación",
+    "d": "Segundos para restaurar el estado de la conversación"
+   },
+   {
+    "n": "Eficiencia de memoria",
+    "d": "% de reducción del procesamiento redundante"
+   },
+   {
+    "n": "Puntuación de continuidad",
+    "d": "Fluidez de la conversación percibida por el usuario"
+   },
+   {
+    "n": "Sobrecarga de almacenamiento",
+    "d": "MB por sesión de conversación"
+   },
+   {
+    "n": "Cumplimiento de seguridad",
+    "d": "% de accesos al contexto cifrados"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Atención al cliente",
+    "d": "Mantiene el contexto entre sesiones de tickets de soporte y traspasos entre agentes"
+   },
+   {
+    "n": "Asistentes personales",
+    "d": "Recuerdan las preferencias, el historial y los proyectos en curso del usuario"
+   },
+   {
+    "n": "Tutores educativos",
+    "d": "Siguen el progreso del aprendizaje y se adaptan según el historial del estudiante"
+   },
+   {
+    "n": "Agentes de salud",
+    "d": "Preservan el historial de interacciones del paciente para la continuidad de la atención"
+   },
+   {
+    "n": "Chatbots empresariales",
+    "d": "Mantienen el contexto a lo largo de workflows de negocio de varias sesiones"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Preservación y recuperación del contexto del agente",
+  "description": "Mantiene el contexto de la conversación, el estado de memoria y la continuidad de la relación durante las fallas del sistema, lo que permite una recuperación fluida sin perder el progreso ni obligar a los usuarios a reiniciar las interacciones.",
+  "nodes": [
+   {
+    "id": "therapy-session",
+    "label": "🧠 Asistente de terapia con IA\nSesión profunda de 2 horas ayudando al usuario con su ansiedad",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "hour-1-context",
+    "label": "💬 Contexto de la hora 1\n• Antecedentes del usuario\n• Situación familiar\n• Estrés laboral\n• Historial de salud",
+    "x": 100,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "breakthroughs",
+    "label": "💡 Avances\n• Causa raíz encontrada\n• Trauma infantil\n• Patrones de afrontamiento\n• Confianza establecida",
+    "x": 300,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "current-topic",
+    "label": "🎯 Tema actual\n\"Trabajando el\nmiedo al fracaso\"",
+    "x": 500,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "emotional-state",
+    "label": "❤️ Estado emocional\nUsuario: Vulnerable\nAgente: Contenedor\nRapport: Alto",
+    "x": 700,
+    "y": 150,
+    "w": 180
+   },
+   {
+    "id": "connection-lost",
+    "label": "💥 ¡CONEXIÓN PERDIDA!\nCaída del servidor a la 1 h 45 min\n¡Sesión interrumpida!",
+    "x": 400,
+    "y": 270,
+    "w": 250
+   },
+   {
+    "id": "without-preservation",
+    "label": "😱 Sin preservación\n\"Hola, ¿en qué puedo ayudarte?\"\nSin memoria de la sesión\nEl usuario debe empezar de nuevo\n¡Confianza rota!",
+    "x": 100,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "context-snapshot",
+    "label": "📸 Snapshot del contexto\nSe guarda cada 5 minutos",
+    "x": 400,
+    "y": 380,
+    "w": 200
+   },
+   {
+    "id": "preserved-data",
+    "label": "💾 Datos preservados\n• Conversación completa\n• Marcadores emocionales\n• Ideas clave\n• Hilo actual",
+    "x": 650,
+    "y": 380,
+    "w": 180
+   },
+   {
+    "id": "conversation-history",
+    "label": "📜 Conversación\n90 mensajes\nTranscripción completa",
+    "x": 150,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "memory-state",
+    "label": "🧩 Estado de memoria\nDatos del usuario\nPreferencias\nDetonantes",
+    "x": 310,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "reasoning-chain",
+    "label": "🔗 Razonamiento\nEnfoque terapéutico\nTécnicas usadas\nPróximos pasos",
+    "x": 470,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "relationship-state",
+    "label": "💫 Relación\nNivel de confianza: 9/10\nComodidad: Alta\nProgreso: 70%",
+    "x": 630,
+    "y": 500,
+    "w": 140
+   },
+   {
+    "id": "detect-disconnect",
+    "label": "🔍 Detectar la desconexión\nEl usuario se reconecta",
+    "x": 200,
+    "y": 620,
+    "w": 160
+   },
+   {
+    "id": "load-context",
+    "label": "📂 Cargar el contexto\nRestaura el estado completo\nde hace 5 min",
+    "x": 380,
+    "y": 620,
+    "w": 160
+   },
+   {
+    "id": "rebuild-state",
+    "label": "🔄 Reconstruir el estado\nReconstruye la memoria\nRetoma el razonamiento",
+    "x": 560,
+    "y": 620,
+    "w": 160
+   },
+   {
+    "id": "acknowledge-disruption",
+    "label": "👋 Reconocer\n\"Perdón por la interrupción.\nEstábamos hablando de tu\nmiedo al fracaso...\"",
+    "x": 250,
+    "y": 740,
+    "w": 200
+   },
+   {
+    "id": "continue-session",
+    "label": "✨ Continuar sin interrupciones\n\"Mencionaste las expectativas\nde tu padre. Exploremos\neso un poco más...\"",
+    "x": 500,
+    "y": 740,
+    "w": 220
+   },
+   {
+    "id": "preserved-trust",
+    "label": "🎉 ¡Confianza preservada!\nEl usuario se siente escuchado y recordado\nEl progreso terapéutico continúa\n¡No hace falta repetir historias dolorosas!",
+    "x": 400,
+    "y": 860,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "session-hour1",
+    "s": "therapy-session",
+    "t": "hour-1-context",
+    "label": ""
+   },
+   {
+    "id": "session-breakthroughs",
+    "s": "therapy-session",
+    "t": "breakthroughs",
+    "label": ""
+   },
+   {
+    "id": "session-current",
+    "s": "therapy-session",
+    "t": "current-topic",
+    "label": ""
+   },
+   {
+    "id": "session-emotional",
+    "s": "therapy-session",
+    "t": "emotional-state",
+    "label": ""
+   },
+   {
+    "id": "current-crash",
+    "s": "current-topic",
+    "t": "connection-lost",
+    "label": "¡CAÍDA!"
+   },
+   {
+    "id": "crash-without",
+    "s": "connection-lost",
+    "t": "without-preservation",
+    "label": ""
+   },
+   {
+    "id": "crash-snapshot",
+    "s": "connection-lost",
+    "t": "context-snapshot",
+    "label": ""
+   },
+   {
+    "id": "snapshot-preserved",
+    "s": "context-snapshot",
+    "t": "preserved-data",
+    "label": ""
+   },
+   {
+    "id": "preserved-conversation",
+    "s": "preserved-data",
+    "t": "conversation-history",
+    "label": ""
+   },
+   {
+    "id": "preserved-memory",
+    "s": "preserved-data",
+    "t": "memory-state",
+    "label": ""
+   },
+   {
+    "id": "preserved-reasoning",
+    "s": "preserved-data",
+    "t": "reasoning-chain",
+    "label": ""
+   },
+   {
+    "id": "preserved-relationship",
+    "s": "preserved-data",
+    "t": "relationship-state",
+    "label": ""
+   },
+   {
+    "id": "crash-detect",
+    "s": "connection-lost",
+    "t": "detect-disconnect",
+    "label": ""
+   },
+   {
+    "id": "detect-load",
+    "s": "detect-disconnect",
+    "t": "load-context",
+    "label": ""
+   },
+   {
+    "id": "load-rebuild",
+    "s": "load-context",
+    "t": "rebuild-state",
+    "label": ""
+   },
+   {
+    "id": "conversation-load",
+    "s": "conversation-history",
+    "t": "load-context",
+    "label": ""
+   },
+   {
+    "id": "memory-load",
+    "s": "memory-state",
+    "t": "load-context",
+    "label": ""
+   },
+   {
+    "id": "reasoning-load",
+    "s": "reasoning-chain",
+    "t": "load-context",
+    "label": ""
+   },
+   {
+    "id": "relationship-load",
+    "s": "relationship-state",
+    "t": "load-context",
+    "label": ""
+   },
+   {
+    "id": "rebuild-acknowledge",
+    "s": "rebuild-state",
+    "t": "acknowledge-disruption",
+    "label": ""
+   },
+   {
+    "id": "acknowledge-continue",
+    "s": "acknowledge-disruption",
+    "t": "continue-session",
+    "label": ""
+   },
+   {
+    "id": "continue-trust",
+    "s": "continue-session",
+    "t": "preserved-trust",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Sesión de terapia profunda",
+    "description": "Sesión de terapia con IA de 2 horas en curso",
+    "input": "",
+    "nodes": [
+     "therapy-session"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Contexto rico construido",
+    "description": "Una hora de conversación, avances, confianza establecida",
+    "input": "",
+    "nodes": [
+     "therapy-session",
+     "hour-1-context",
+     "breakthroughs",
+     "current-topic",
+     "emotional-state"
+    ],
+    "edges": [
+     "session-hour1",
+     "session-breakthroughs",
+     "session-current",
+     "session-emotional"
+    ]
+   },
+   {
+    "title": "¡Conexión perdida!",
+    "description": "El servidor se cae a la 1 h 45 min, en un momento crítico",
+    "input": "",
+    "nodes": [
+     "current-topic",
+     "connection-lost"
+    ],
+    "edges": [
+     "current-crash"
+    ]
+   },
+   {
+    "title": "Sin preservación",
+    "description": "¡El agente no tiene memoria y el usuario debe empezar de nuevo!",
+    "input": "",
+    "nodes": [
+     "connection-lost",
+     "without-preservation"
+    ],
+    "edges": [
+     "crash-without"
+    ]
+   },
+   {
+    "title": "Con preservación del contexto",
+    "description": "El sistema guardó snapshots cada 5 minutos",
+    "input": "",
+    "nodes": [
+     "connection-lost",
+     "context-snapshot",
+     "preserved-data"
+    ],
+    "edges": [
+     "crash-snapshot",
+     "snapshot-preserved"
+    ]
+   },
+   {
+    "title": "Componentes preservados",
+    "description": "Se guardan la conversación, la memoria, el razonamiento y la relación",
+    "input": "",
+    "nodes": [
+     "preserved-data",
+     "conversation-history",
+     "memory-state",
+     "reasoning-chain",
+     "relationship-state"
+    ],
+    "edges": [
+     "preserved-conversation",
+     "preserved-memory",
+     "preserved-reasoning",
+     "preserved-relationship"
+    ]
+   },
+   {
+    "title": "Proceso de recuperación",
+    "description": "Detecta la reconexión, carga el contexto, reconstruye el estado",
+    "input": "",
+    "nodes": [
+     "connection-lost",
+     "detect-disconnect",
+     "load-context",
+     "rebuild-state",
+     "conversation-history",
+     "memory-state",
+     "reasoning-chain",
+     "relationship-state"
+    ],
+    "edges": [
+     "crash-detect",
+     "detect-load",
+     "load-rebuild",
+     "conversation-load",
+     "memory-load",
+     "reasoning-load",
+     "relationship-load"
+    ]
+   },
+   {
+    "title": "Continuación sin interrupciones",
+    "description": "Reconoce la interrupción y continúa donde se quedó",
+    "input": "",
+    "nodes": [
+     "rebuild-state",
+     "acknowledge-disruption",
+     "continue-session"
+    ],
+    "edges": [
+     "rebuild-acknowledge",
+     "acknowledge-continue"
+    ]
+   },
+   {
+    "title": "Confianza preservada",
+    "description": "El usuario se siente escuchado; la terapia continúa sin repeticiones",
+    "input": "",
+    "nodes": [
+     "continue-session",
+     "preserved-trust"
+    ],
+    "edges": [
+     "continue-trust"
+    ]
+   }
+  ]
+ }
+}

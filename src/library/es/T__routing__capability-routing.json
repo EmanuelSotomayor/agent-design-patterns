@@ -1,0 +1,472 @@
+{
+ "cat": "routing",
+ "slug": "capability-routing",
+ "name": "Capability Routing",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "Enruta las tareas hacia los agentes según sus capacidades especializadas",
+ "features": [
+  "Algoritmos de emparejamiento de capacidades",
+  "Asignación basada en habilidades",
+  "Enrutamiento consciente del rendimiento",
+  "Balanceo de carga según experiencia"
+ ],
+ "tldr": {
+  "what": "Analiza los requisitos de la tarea frente a los perfiles de habilidades de los agentes y luego asigna el trabajo al especialista que mejor se ajusta.",
+  "when": "Varios agentes con distintos niveles de experiencia atienden tareas variadas que requieren combinaciones específicas de habilidades.",
+  "watchOut": "El costo del enrutamiento y las evaluaciones de habilidades desactualizadas pueden hacer perder tiempo en asignaciones mal emparejadas, pese a las buenas intenciones."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Patrón de enrutamiento por capacidades",
+  "description": "Muestra decisiones de enrutamiento basadas en las capacidades del sistema, la disponibilidad de recursos y la optimización del rendimiento",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "Solicitud de tarea\n\"Procesa esta carga de trabajo\"",
+    "x": 500,
+    "y": 50,
+    "w": 200
+   },
+   {
+    "id": "task-analyzer",
+    "label": "Analizador de tareas\nRequisitos y restricciones",
+    "x": 300,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "capability-scanner",
+    "label": "Escáner de capacidades\nDescubre los recursos disponibles",
+    "x": 700,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "resource-monitor",
+    "label": "Monitor de recursos\nUso actual y límites",
+    "x": 500,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "capability-matcher",
+    "label": "Emparejador de capacidades\nEmpareja requisitos con recursos",
+    "x": 500,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "load-balancer",
+    "label": "Balanceador de carga\nAsignación óptima de recursos",
+    "x": 500,
+    "y": 460,
+    "w": 200
+   },
+   {
+    "id": "cpu-intensive",
+    "label": "Nodo intensivo en CPU\nAlta capacidad de cómputo",
+    "x": 150,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "memory-optimized",
+    "label": "Nodo optimizado para memoria\nGran capacidad de RAM",
+    "x": 350,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "gpu-accelerated",
+    "label": "Nodo acelerado por GPU\nProcesamiento en paralelo",
+    "x": 550,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "specialized-node",
+    "label": "Nodo especializado\nHardware específico del dominio",
+    "x": 750,
+    "y": 600,
+    "w": 160
+   },
+   {
+    "id": "compute-engine",
+    "label": "Motor de cómputo\nProcesamiento limitado por CPU",
+    "x": 150,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "memory-engine",
+    "label": "Motor de memoria\nManejo de datasets grandes",
+    "x": 350,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "parallel-engine",
+    "label": "Motor paralelo\nAceleración GPU/ML",
+    "x": 550,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "custom-engine",
+    "label": "Motor personalizado\nProcesamiento FPGA/ASIC",
+    "x": 750,
+    "y": 750,
+    "w": 140
+   },
+   {
+    "id": "capability-registry",
+    "label": "Registro de capacidades\n• Núcleos de CPU: 128\n• RAM: 512GB\n• GPU: 8x V100\n• Almacenamiento: 10TB NVMe\n• Red: 100Gbps",
+    "x": 900,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "task-requirements",
+    "label": "Requisitos de la tarea\n• Intensidad de cómputo\n• Necesidades de memoria\n• Paralelización\n• Restricciones de latencia\n• Objetivos de throughput",
+    "x": 100,
+    "y": 320,
+    "w": 160
+   },
+   {
+    "id": "performance-monitor",
+    "label": "Monitor de rendimiento\nLatencia, throughput, uso",
+    "x": 300,
+    "y": 460,
+    "w": 160
+   },
+   {
+    "id": "routing-decisions",
+    "label": "Decisiones de enrutamiento\n• Coincidencia de capacidades: 95%\n• Distribución de carga\n• Planificación de failover\n• Optimización del rendimiento",
+    "x": 700,
+    "y": 460,
+    "w": 160
+   },
+   {
+    "id": "result-aggregator",
+    "label": "Agregador de resultados\nCombina y optimiza las salidas",
+    "x": 500,
+    "y": 900,
+    "w": 180
+   },
+   {
+    "id": "capability-optimizer",
+    "label": "Optimizador de capacidades\nAprende y adapta el enrutamiento",
+    "x": 200,
+    "y": 460,
+    "w": 160
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-input-task",
+    "s": "input",
+    "t": "task-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-input-monitor",
+    "s": "input",
+    "t": "resource-monitor",
+    "label": ""
+   },
+   {
+    "id": "e-input-scanner",
+    "s": "input",
+    "t": "capability-scanner",
+    "label": ""
+   },
+   {
+    "id": "e-task-matcher",
+    "s": "task-analyzer",
+    "t": "capability-matcher",
+    "label": ""
+   },
+   {
+    "id": "e-monitor-matcher",
+    "s": "resource-monitor",
+    "t": "capability-matcher",
+    "label": ""
+   },
+   {
+    "id": "e-scanner-matcher",
+    "s": "capability-scanner",
+    "t": "capability-matcher",
+    "label": ""
+   },
+   {
+    "id": "e-matcher-balancer",
+    "s": "capability-matcher",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-balancer-cpu",
+    "s": "load-balancer",
+    "t": "cpu-intensive",
+    "label": "Tareas de CPU"
+   },
+   {
+    "id": "e-balancer-memory",
+    "s": "load-balancer",
+    "t": "memory-optimized",
+    "label": "Tareas de memoria"
+   },
+   {
+    "id": "e-balancer-gpu",
+    "s": "load-balancer",
+    "t": "gpu-accelerated",
+    "label": "Tareas paralelas"
+   },
+   {
+    "id": "e-balancer-specialized",
+    "s": "load-balancer",
+    "t": "specialized-node",
+    "label": "Tareas especializadas"
+   },
+   {
+    "id": "e-cpu-compute",
+    "s": "cpu-intensive",
+    "t": "compute-engine",
+    "label": ""
+   },
+   {
+    "id": "e-memory-engine",
+    "s": "memory-optimized",
+    "t": "memory-engine",
+    "label": ""
+   },
+   {
+    "id": "e-gpu-parallel",
+    "s": "gpu-accelerated",
+    "t": "parallel-engine",
+    "label": ""
+   },
+   {
+    "id": "e-specialized-custom",
+    "s": "specialized-node",
+    "t": "custom-engine",
+    "label": ""
+   },
+   {
+    "id": "e-compute-result",
+    "s": "compute-engine",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-memory-result",
+    "s": "memory-engine",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-parallel-result",
+    "s": "parallel-engine",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-custom-result",
+    "s": "custom-engine",
+    "t": "result-aggregator",
+    "label": ""
+   },
+   {
+    "id": "e-requirements-task",
+    "s": "task-requirements",
+    "t": "task-analyzer",
+    "label": ""
+   },
+   {
+    "id": "e-registry-scanner",
+    "s": "capability-registry",
+    "t": "capability-scanner",
+    "label": ""
+   },
+   {
+    "id": "e-performance-balancer",
+    "s": "performance-monitor",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-decisions-balancer",
+    "s": "routing-decisions",
+    "t": "load-balancer",
+    "label": ""
+   },
+   {
+    "id": "e-optimizer-matcher",
+    "s": "capability-optimizer",
+    "t": "capability-matcher",
+    "label": ""
+   },
+   {
+    "id": "e-performance-optimizer",
+    "s": "performance-monitor",
+    "t": "capability-optimizer",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de la solicitud de tarea",
+    "description": "El sistema recibe una tarea computacional que requiere una asignación óptima de recursos.",
+    "input": "Solicitud de tarea: \"Entrenar un modelo de deep learning sobre un dataset de 10TB con requisitos de inferencia en tiempo real\"",
+    "nodes": [
+     "input"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Análisis multidimensional",
+    "description": "Se analizan los requisitos de la tarea mientras se evalúan las capacidades y los recursos del sistema.",
+    "input": "Análisis en paralelo: requisitos de la tarea + descubrimiento de capacidades + monitoreo de recursos",
+    "nodes": [
+     "input",
+     "task-analyzer",
+     "capability-scanner",
+     "resource-monitor"
+    ],
+    "edges": [
+     "e-input-task",
+     "e-input-scanner",
+     "e-input-monitor"
+    ]
+   },
+   {
+    "title": "Análisis de los requisitos de la tarea",
+    "description": "Analiza los requisitos computacionales, las restricciones y los objetivos de rendimiento.",
+    "input": "Análisis de la tarea: necesidades de recursos, restricciones de rendimiento, requisitos de escalabilidad",
+    "nodes": [
+     "task-analyzer",
+     "task-requirements"
+    ],
+    "edges": [
+     "e-requirements-task"
+    ]
+   },
+   {
+    "title": "Descubrimiento de capacidades",
+    "description": "Escanea y cataloga las capacidades disponibles del sistema y los recursos especializados.",
+    "input": "Escaneo de capacidades: inventario de hardware, stack de software, aceleradores especializados",
+    "nodes": [
+     "capability-scanner",
+     "capability-registry"
+    ],
+    "edges": [
+     "e-registry-scanner"
+    ]
+   },
+   {
+    "title": "Monitoreo de recursos",
+    "description": "Evalúa el uso y la disponibilidad actuales de los recursos.",
+    "input": "Monitoreo de recursos: cargas actuales, capacidad disponible, métricas de rendimiento",
+    "nodes": [
+     "resource-monitor"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Emparejamiento de capacidades",
+    "description": "Empareja los requisitos de la tarea con las capacidades y restricciones disponibles.",
+    "input": "Emparejamiento de capacidades: requisitos vs. recursos disponibles",
+    "nodes": [
+     "capability-matcher"
+    ],
+    "edges": [
+     "e-task-matcher",
+     "e-monitor-matcher",
+     "e-scanner-matcher"
+    ]
+   },
+   {
+    "title": "Estrategia de balanceo de carga",
+    "description": "Determina la distribución óptima entre las capacidades disponibles.",
+    "input": "Balanceo de carga: distribuye la carga de trabajo de forma óptima entre los recursos",
+    "nodes": [
+     "load-balancer",
+     "performance-monitor",
+     "routing-decisions"
+    ],
+    "edges": [
+     "e-matcher-balancer",
+     "e-performance-balancer",
+     "e-decisions-balancer"
+    ]
+   },
+   {
+    "title": "Procesamiento acelerado por GPU",
+    "description": "Enruta las tareas de entrenamiento de ML hacia nodos acelerados por GPU.",
+    "input": "Carga de entrenamiento de ML → asignación al clúster de GPU",
+    "nodes": [
+     "load-balancer",
+     "gpu-accelerated"
+    ],
+    "edges": [
+     "e-balancer-gpu"
+    ]
+   },
+   {
+    "title": "Ejecución en el motor paralelo",
+    "description": "Ejecuta el entrenamiento usando motores de procesamiento paralelo optimizados para cargas de ML.",
+    "input": "Procesamiento en paralelo: ejecución distribuida del entrenamiento de ML",
+    "nodes": [
+     "gpu-accelerated",
+     "parallel-engine"
+    ],
+    "edges": [
+     "e-gpu-parallel"
+    ]
+   },
+   {
+    "title": "Coordinación entre múltiples nodos",
+    "description": "Muestra cómo distintos nodos de capacidad atienden distintos aspectos de la carga de trabajo.",
+    "input": "Procesamiento coordinado entre nodos de capacidades especializadas",
+    "nodes": [
+     "cpu-intensive",
+     "memory-optimized",
+     "specialized-node"
+    ],
+    "edges": [
+     "e-balancer-cpu",
+     "e-balancer-memory",
+     "e-balancer-specialized"
+    ]
+   },
+   {
+    "title": "Optimización del rendimiento",
+    "description": "Monitoreo y optimización continuos de las decisiones de enrutamiento por capacidades.",
+    "input": "Feedback de rendimiento → Optimización del enrutamiento",
+    "nodes": [
+     "performance-monitor",
+     "capability-optimizer"
+    ],
+    "edges": [
+     "e-performance-optimizer",
+     "e-optimizer-matcher"
+    ]
+   },
+   {
+    "title": "Agregación y entrega de resultados",
+    "description": "Combina las salidas de todos los nodos de capacidad en el resultado final.",
+    "input": "",
+    "nodes": [
+     "result-aggregator"
+    ],
+    "edges": [
+     "e-parallel-result",
+     "e-compute-result",
+     "e-memory-result",
+     "e-custom-result"
+    ]
+   }
+  ]
+ }
+}

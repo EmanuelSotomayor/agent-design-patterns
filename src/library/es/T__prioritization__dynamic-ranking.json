@@ -1,0 +1,367 @@
+{
+ "cat": "prioritization",
+ "slug": "dynamic-ranking",
+ "name": "Dynamic Content Ranking(DCR)",
+ "icon": "🏆",
+ "complexity": "high",
+ "description": "Ranking de contenido y recomendaciones en tiempo real que se adapta al comportamiento y al contexto del usuario",
+ "features": [
+  "Personalización en tiempo real",
+  "Ranking consciente del contexto",
+  "Optimización multiobjetivo",
+  "Integración de pruebas A/B",
+  "Aprendizaje mediante bucle de feedback",
+  "Equilibrio entre exploración y explotación"
+ ],
+ "tldr": {
+  "what": "Ordena el contenido en tiempo real combinando señales del comportamiento del usuario, atributos del contenido y objetivos de negocio en una función de puntuación ponderada que se actualiza continuamente.",
+  "when": "Sistemas que sirven feeds personalizados o recomendaciones a muchos usuarios donde la interacción, la diversidad y la novedad importan al mismo tiempo.",
+  "watchOut": "Los bucles de feedback pueden amplificar sesgos: los usuarios hacen clic en lo que ven, el ranking promueve lo que recibe clics, y la diversidad se reduce con el tiempo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Ranking dinámico de contenido",
+  "description": "Un agente de ranking de feeds reordena noticias candidatas en tiempo real a medida que cambia el contexto del usuario. Combina características de contenido, usuario, contexto e interacción, puntúa según objetivos de interacción, diversidad y novedad, inyecta un 15% de exploración y aprende de cada clic.",
+  "nodes": [
+   {
+    "id": "user-context",
+    "label": "📥 Contexto del usuario\nNoche, móvil, lector con inclinación por los deportes",
+    "x": 350,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "ranking-agent",
+    "label": "🤖 Agente de ranking\nReordena el feed en cada cambio de contexto",
+    "x": 365,
+    "y": 150,
+    "w": 280
+   },
+   {
+    "id": "candidate-generator",
+    "label": "🗂️ Generador de candidatos\n50,000 artículos filtrados a 5,000",
+    "x": 360,
+    "y": 260,
+    "w": 260
+   },
+   {
+    "id": "content-features",
+    "label": "📰 Características del contenido\nRelevancia, calidad (30%)",
+    "x": 10,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "user-features",
+    "label": "👤 Características del usuario\nHistorial, preferencias (40%)",
+    "x": 200,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "context-features",
+    "label": "🕒 Características del contexto\nHora, dispositivo, ubicación (20%)",
+    "x": 390,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "interaction-features",
+    "label": "🔗 Características de interacción\nSocial, usuarios similares (10%)",
+    "x": 580,
+    "y": 380,
+    "w": 170
+   },
+   {
+    "id": "ab-test",
+    "label": "🧪 Bandit A/B\n5% del tráfico, ajusta los pesos",
+    "x": 720,
+    "y": 260,
+    "w": 190
+   },
+   {
+    "id": "objective-scorer",
+    "label": "⚖️ Puntuador multiobjetivo\nInteracción + Diversidad + Novedad",
+    "x": 150,
+    "y": 500,
+    "w": 260
+   },
+   {
+    "id": "exploration-injector",
+    "label": "🎲 Inyector de exploración\n15% de espacios exploratorios",
+    "x": 560,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "article-a",
+    "label": "📄 Artículo A: Resultado de último momento de un partido\nInteracción 0.94 / Novedad 0.98\nPuntuación: 0.92",
+    "x": 40,
+    "y": 620,
+    "w": 220
+   },
+   {
+    "id": "article-b",
+    "label": "📄 Artículo B: Análisis táctico en profundidad\nInteracción 0.81 / Novedad 0.62\nPuntuación: 0.78",
+    "x": 320,
+    "y": 620,
+    "w": 220
+   },
+   {
+    "id": "article-c",
+    "label": "📄 Artículo C: Nota de estilo de vida (exploración)\nInteracción 0.48 / Impulso de diversidad\nPuntuación: 0.55",
+    "x": 600,
+    "y": 620,
+    "w": 220
+   },
+   {
+    "id": "ranked-feed",
+    "label": "🏆 Feed ordenado\nA 0.92 > B 0.78 > C 0.55",
+    "x": 150,
+    "y": 750,
+    "w": 240
+   },
+   {
+    "id": "feedback-loop",
+    "label": "🔁 Bucle de feedback\nClic +0.1, permanencia>2min +0.2, omitir −0.1",
+    "x": 560,
+    "y": 750,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "context-agent",
+    "s": "user-context",
+    "t": "ranking-agent",
+    "label": ""
+   },
+   {
+    "id": "agent-generator",
+    "s": "ranking-agent",
+    "t": "candidate-generator",
+    "label": ""
+   },
+   {
+    "id": "generator-content",
+    "s": "candidate-generator",
+    "t": "content-features",
+    "label": ""
+   },
+   {
+    "id": "generator-user",
+    "s": "candidate-generator",
+    "t": "user-features",
+    "label": ""
+   },
+   {
+    "id": "generator-context",
+    "s": "candidate-generator",
+    "t": "context-features",
+    "label": ""
+   },
+   {
+    "id": "generator-interaction",
+    "s": "candidate-generator",
+    "t": "interaction-features",
+    "label": ""
+   },
+   {
+    "id": "content-scorer",
+    "s": "content-features",
+    "t": "objective-scorer",
+    "label": ""
+   },
+   {
+    "id": "user-scorer",
+    "s": "user-features",
+    "t": "objective-scorer",
+    "label": ""
+   },
+   {
+    "id": "context-scorer",
+    "s": "context-features",
+    "t": "objective-scorer",
+    "label": ""
+   },
+   {
+    "id": "interaction-scorer",
+    "s": "interaction-features",
+    "t": "objective-scorer",
+    "label": ""
+   },
+   {
+    "id": "ab-agent",
+    "s": "ab-test",
+    "t": "ranking-agent",
+    "label": "ajuste de pesos"
+   },
+   {
+    "id": "scorer-exploration",
+    "s": "objective-scorer",
+    "t": "exploration-injector",
+    "label": ""
+   },
+   {
+    "id": "scorer-article-a",
+    "s": "objective-scorer",
+    "t": "article-a",
+    "label": "puntuar"
+   },
+   {
+    "id": "scorer-article-b",
+    "s": "objective-scorer",
+    "t": "article-b",
+    "label": "puntuar"
+   },
+   {
+    "id": "exploration-article-c",
+    "s": "exploration-injector",
+    "t": "article-c",
+    "label": "inyectar"
+   },
+   {
+    "id": "article-a-feed",
+    "s": "article-a",
+    "t": "ranked-feed",
+    "label": ""
+   },
+   {
+    "id": "article-b-feed",
+    "s": "article-b",
+    "t": "ranked-feed",
+    "label": ""
+   },
+   {
+    "id": "article-c-feed",
+    "s": "article-c",
+    "t": "ranked-feed",
+    "label": ""
+   },
+   {
+    "id": "feed-feedback",
+    "s": "ranked-feed",
+    "t": "feedback-loop",
+    "label": ""
+   },
+   {
+    "id": "feedback-agent",
+    "s": "feedback-loop",
+    "t": "ranking-agent",
+    "label": "reordenar <100ms"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Capturar el contexto",
+    "description": "El agente lee la señal actual: una sesión nocturna en móvil de un lector que se inclina por el contenido deportivo.",
+    "input": "",
+    "nodes": [
+     "user-context",
+     "ranking-agent"
+    ],
+    "edges": [
+     "context-agent"
+    ]
+   },
+   {
+    "title": "Generar candidatos",
+    "description": "A partir de un conjunto de 50,000 artículos, el generador reduce la selección a 5,000 candidatos acordes con los intereses del usuario, reservando espacio para elementos nuevos y exploratorios.",
+    "input": "",
+    "nodes": [
+     "ranking-agent",
+     "candidate-generator"
+    ],
+    "edges": [
+     "agent-generator"
+    ]
+   },
+   {
+    "title": "Extraer características",
+    "description": "Se calculan y ponderan cuatro grupos de características: contenido 30%, usuario 40%, contexto 20% e interacción 10%.",
+    "input": "",
+    "nodes": [
+     "candidate-generator",
+     "content-features",
+     "user-features",
+     "context-features",
+     "interaction-features"
+    ],
+    "edges": [
+     "generator-content",
+     "generator-user",
+     "generator-context",
+     "generator-interaction"
+    ]
+   },
+   {
+    "title": "Puntuar con múltiples objetivos",
+    "description": "El puntuador combina la predicción de interacción, la diversidad y la novedad en una única puntuación de ranking para cada candidato.",
+    "input": "",
+    "nodes": [
+     "content-features",
+     "user-features",
+     "context-features",
+     "interaction-features",
+     "objective-scorer"
+    ],
+    "edges": [
+     "content-scorer",
+     "user-scorer",
+     "context-scorer",
+     "interaction-scorer"
+    ]
+   },
+   {
+    "title": "Inyectar exploración",
+    "description": "El Artículo A (0.92) y el Artículo B (0.78) ganan por puntuación, mientras que el inyector de exploración reserva el 15% de los espacios para mostrar el Artículo C (0.55), una nota de estilo de vida que aporta diversidad.",
+    "input": "",
+    "nodes": [
+     "objective-scorer",
+     "exploration-injector",
+     "article-a",
+     "article-b",
+     "article-c"
+    ],
+    "edges": [
+     "scorer-exploration",
+     "scorer-article-a",
+     "scorer-article-b",
+     "exploration-article-c"
+    ]
+   },
+   {
+    "title": "Armar el feed ordenado",
+    "description": "El feed final ordena los candidatos: Artículo A 0.92, Artículo B 0.78 y luego el Artículo C exploratorio 0.55.",
+    "input": "",
+    "nodes": [
+     "article-a",
+     "article-b",
+     "article-c",
+     "ranked-feed"
+    ],
+    "edges": [
+     "article-a-feed",
+     "article-b-feed",
+     "article-c-feed"
+    ]
+   },
+   {
+    "title": "Aprender y reordenar",
+    "description": "Las interacciones se retroalimentan en tiempo real (clic +0.1, permanencia de más de 2 minutos +0.2, omitir −0.1) y un bandit A/B sobre el 5% del tráfico ajusta los pesos, lo que permite reordenar en menos de 100ms.",
+    "input": "",
+    "nodes": [
+     "ranked-feed",
+     "feedback-loop",
+     "ranking-agent",
+     "ab-test"
+    ],
+    "edges": [
+     "feed-feedback",
+     "feedback-agent",
+     "ab-agent"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,355 @@
+{
+ "cat": "exploration-discovery",
+ "slug": "reinforcement-learning",
+ "name": "Reinforcement Learning Exploration(RLE)",
+ "icon": "🎮",
+ "complexity": "high",
+ "description": "Aprendizaje del comportamiento óptimo mediante la exploración basada en recompensas y el equilibrio con la explotación",
+ "features": [
+  "Optimización de la función de recompensa",
+  "Equilibrio entre exploración y explotación",
+  "Métodos de gradiente de política",
+  "Variantes de Q-learning",
+  "Soluciones de multi-armed bandit",
+  "Adaptación mediante aprendizaje continuo"
+ ],
+ "tldr": {
+  "what": "El agente aprende el comportamiento óptimo equilibrando la exploración de acciones nuevas con la explotación de las que ya sabe que dan recompensa, usando señales de recompensa para refinar su política con el tiempo.",
+  "when": "Sistemas que necesitan descubrir buenas estrategias por ensayo y error en entornos donde las recompensas son tardías o escasas, como la recomendación o la asignación de recursos.",
+  "watchOut": "Una función de recompensa mal alineada hace que el agente optimice el objetivo equivocado, lo que produce comportamientos dañinos o inútiles a escala."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Exploración con aprendizaje por refuerzo",
+  "description": "Un agente aprende una política de recomendación óptima recorriendo el entorno en bucle: observa el estado, selecciona una acción equilibrando exploración y explotación, recoge una señal de recompensa y actualiza su política en cada ciclo.",
+  "nodes": [
+   {
+    "id": "environment",
+    "label": "🌍 Entorno\nBiblioteca de contenido (más de 10,000 elementos)\nPerfil del usuario + historial de interacción",
+    "x": 380,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "rl-agent",
+    "label": "🎮 Agente de RL\nAprende una política para maximizar la recompensa a largo plazo",
+    "x": 400,
+    "y": 170,
+    "w": 280
+   },
+   {
+    "id": "state-observation",
+    "label": "👁️ Observación del estado\nContexto del usuario, hora, dispositivo",
+    "x": 120,
+    "y": 290,
+    "w": 190
+   },
+   {
+    "id": "policy-network",
+    "label": "🧠 Política π(a|s)\nAsigna puntuaciones de acción a cada estado",
+    "x": 380,
+    "y": 290,
+    "w": 190
+   },
+   {
+    "id": "action-selector",
+    "label": "🎯 Selector de acciones\nExploración vs explotación",
+    "x": 640,
+    "y": 290,
+    "w": 190
+   },
+   {
+    "id": "epsilon-greedy",
+    "label": "🎲 Epsilon-Greedy\n20% explorar, 80% explotar\nε adaptativo: de 0.4 a 0.1",
+    "x": 40,
+    "y": 410,
+    "w": 180
+   },
+   {
+    "id": "ucb",
+    "label": "📈 UCB\nμ + c·√(ln t / n)\nrecompensa + bono de incertidumbre",
+    "x": 250,
+    "y": 410,
+    "w": 180
+   },
+   {
+    "id": "thompson",
+    "label": "🎰 Thompson Sampling\nMuestrear de la distribución posterior\nsin hiperparámetros",
+    "x": 460,
+    "y": 410,
+    "w": 180
+   },
+   {
+    "id": "exploit-action",
+    "label": "⭐ Acción greedy\nMejor contenido conocido",
+    "x": 680,
+    "y": 410,
+    "w": 170
+   },
+   {
+    "id": "recommended-content",
+    "label": "📺 Contenido recomendado\nAcción ejecutada en el entorno",
+    "x": 380,
+    "y": 540,
+    "w": 220
+   },
+   {
+    "id": "reward-signal",
+    "label": "💰 Señal de recompensa\nClic +1, visualización +3, omitir -1\ninteracción en la semana 12: 45%",
+    "x": 380,
+    "y": 660,
+    "w": 240
+   },
+   {
+    "id": "low-reward",
+    "label": "⚠️ Recompensa baja\nOmitir / abandonar\npenalizar la acción",
+    "x": 700,
+    "y": 660,
+    "w": 170
+   },
+   {
+    "id": "policy-update",
+    "label": "🔧 Actualización de la política\nError TD, paso de gradiente\nα = 0.01, γ = 0.95",
+    "x": 90,
+    "y": 660,
+    "w": 200
+   },
+   {
+    "id": "optimized-policy",
+    "label": "✨ Política optimizada\nsupera claramente al azar, en esta simulación",
+    "x": 380,
+    "y": 780,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "env-agent",
+    "s": "environment",
+    "t": "rl-agent",
+    "label": "Estado"
+   },
+   {
+    "id": "agent-state",
+    "s": "rl-agent",
+    "t": "state-observation",
+    "label": "Observar"
+   },
+   {
+    "id": "agent-policy",
+    "s": "rl-agent",
+    "t": "policy-network",
+    "label": ""
+   },
+   {
+    "id": "agent-selector",
+    "s": "rl-agent",
+    "t": "action-selector",
+    "label": ""
+   },
+   {
+    "id": "policy-epsilon",
+    "s": "policy-network",
+    "t": "epsilon-greedy",
+    "label": ""
+   },
+   {
+    "id": "policy-ucb",
+    "s": "policy-network",
+    "t": "ucb",
+    "label": ""
+   },
+   {
+    "id": "selector-thompson",
+    "s": "action-selector",
+    "t": "thompson",
+    "label": ""
+   },
+   {
+    "id": "selector-exploit",
+    "s": "action-selector",
+    "t": "exploit-action",
+    "label": ""
+   },
+   {
+    "id": "epsilon-recommend",
+    "s": "epsilon-greedy",
+    "t": "recommended-content",
+    "label": ""
+   },
+   {
+    "id": "ucb-recommend",
+    "s": "ucb",
+    "t": "recommended-content",
+    "label": ""
+   },
+   {
+    "id": "thompson-recommend",
+    "s": "thompson",
+    "t": "recommended-content",
+    "label": ""
+   },
+   {
+    "id": "exploit-recommend",
+    "s": "exploit-action",
+    "t": "recommended-content",
+    "label": ""
+   },
+   {
+    "id": "recommend-reward",
+    "s": "recommended-content",
+    "t": "reward-signal",
+    "label": "Feedback"
+   },
+   {
+    "id": "recommend-lowreward",
+    "s": "recommended-content",
+    "t": "low-reward",
+    "label": "Sin interacción"
+   },
+   {
+    "id": "reward-update",
+    "s": "reward-signal",
+    "t": "policy-update",
+    "label": "Recompensa +"
+   },
+   {
+    "id": "lowreward-update",
+    "s": "low-reward",
+    "t": "policy-update",
+    "label": "Penalización -"
+   },
+   {
+    "id": "update-agent",
+    "s": "policy-update",
+    "t": "rl-agent",
+    "label": "Mejorar la política (bucle)"
+   },
+   {
+    "id": "reward-output",
+    "s": "reward-signal",
+    "t": "optimized-policy",
+    "label": "Convergió"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Observar el estado del entorno",
+    "description": "El agente lee el estado actual del entorno: perfil del usuario, historial de interacción, hora y contexto del dispositivo.",
+    "input": "",
+    "nodes": [
+     "environment",
+     "rl-agent",
+     "state-observation"
+    ],
+    "edges": [
+     "env-agent",
+     "agent-state"
+    ]
+   },
+   {
+    "title": "Puntuar las acciones con la política",
+    "description": "La red de política asigna al estado observado puntuaciones de acción sobre el catálogo de más de 10,000 elementos.",
+    "input": "",
+    "nodes": [
+     "rl-agent",
+     "policy-network",
+     "action-selector"
+    ],
+    "edges": [
+     "agent-policy",
+     "agent-selector"
+    ]
+   },
+   {
+    "title": "Equilibrar exploración y explotación",
+    "description": "El selector elige una estrategia: epsilon-greedy (ε=0.2), bono de incertidumbre UCB, Thompson sampling o una explotación greedy de la mejor acción conocida.",
+    "input": "",
+    "nodes": [
+     "epsilon-greedy",
+     "ucb",
+     "thompson",
+     "exploit-action",
+     "action-selector",
+     "policy-network"
+    ],
+    "edges": [
+     "policy-epsilon",
+     "policy-ucb",
+     "selector-thompson",
+     "selector-exploit"
+    ]
+   },
+   {
+    "title": "Ejecutar la acción",
+    "description": "La estrategia elegida produce una recomendación que el agente entrega al entorno.",
+    "input": "",
+    "nodes": [
+     "epsilon-greedy",
+     "ucb",
+     "thompson",
+     "exploit-action",
+     "recommended-content"
+    ],
+    "edges": [
+     "epsilon-recommend",
+     "ucb-recommend",
+     "thompson-recommend",
+     "exploit-recommend"
+    ]
+   },
+   {
+    "title": "Recoger la recompensa",
+    "description": "El entorno devuelve una recompensa: clic +1, visualización +3, omitir -1. Una interacción débil se marca como señal de penalización.",
+    "input": "",
+    "nodes": [
+     "recommended-content",
+     "reward-signal",
+     "low-reward"
+    ],
+    "edges": [
+     "recommend-reward",
+     "recommend-lowreward"
+    ]
+   },
+   {
+    "title": "Actualizar la política",
+    "description": "El error TD impulsa un paso de gradiente (α=0.01, γ=0.95), que refuerza las acciones recompensadas y desalienta las penalizadas.",
+    "input": "",
+    "nodes": [
+     "reward-signal",
+     "low-reward",
+     "policy-update"
+    ],
+    "edges": [
+     "reward-update",
+     "lowreward-update"
+    ]
+   },
+   {
+    "title": "Iterar y mejorar",
+    "description": "La política actualizada vuelve al agente para el siguiente ciclo, reduciendo ε de 0.4 a 0.1 a medida que crece la confianza.",
+    "input": "",
+    "nodes": [
+     "policy-update",
+     "rl-agent"
+    ],
+    "edges": [
+     "update-agent"
+    ]
+   },
+   {
+    "title": "Converger a la política óptima",
+    "description": "Después de miles de ciclos, la política simulada se estabiliza muy por encima de una línea base aleatoria. La brecha es una propiedad de este entorno de juguete, no un resultado que debas esperar reproducir.",
+    "input": "",
+    "nodes": [
+     "reward-signal",
+     "optimized-policy"
+    ],
+    "edges": [
+     "reward-output"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,297 @@
+{
+ "cat": "memory-management",
+ "slug": "memory-forgetting-policies",
+ "name": "Memory Decay & Forgetting Policies(MDF)",
+ "icon": "🍂",
+ "complexity": "high",
+ "description": "Gobernanza explícita de lo que un agente descarta en lugar de lo que conserva: expiración por tiempo (TTL), decaimiento por uso y relevancia (decaimiento exponencial al estilo de Ebbinghaus que se refuerza cada vez que se accede a un elemento), detección de obsolescencia para hechos que siguen siendo relevantes pero ya no son ciertos, y eliminación definitiva para cumplir con el derecho al olvido y el Artículo 17 del GDPR. La memoria ilimitada degrada de forma medible el rendimiento del agente, por lo que el olvido es un eje de diseño de primera clase. Se diferencia de `memory-consolidation` (que comprime y abstrae las memorias en esquemas, la operación opuesta) y de `generative-agents-memory` (que usa el decaimiento por recencia solo como puntuación de recuperación, no como política de desalojo o eliminación).",
+ "features": [
+  "Expiración TTL para hechos con vigencia limitada",
+  "Puntuaciones de decaimiento al estilo de Ebbinghaus reforzadas por la frecuencia de acceso",
+  "Detección de obsolescencia para hechos muy relevantes pero desactualizados",
+  "Desalojo y archivado según presupuesto cuando la memoria supera un límite",
+  "Eliminación definitiva con registro de auditoría para solicitudes de derecho al olvido",
+  "Separación entre el decaimiento (suave, reversible) y la eliminación (definitiva, permanente)"
+ ],
+ "tldr": {
+  "what": "Elimina o resta prioridad a las memorias mediante expiración por tiempo, decaimiento por frecuencia de acceso, detección de obsolescencia y desalojo según presupuesto, en lugar de conservarlo todo.",
+  "when": "Agentes de larga duración que acumulan miles de hechos, donde la memoria ilimitada ralentiza la recuperación, o donde el cumplimiento normativo exige la eliminación definitiva de los datos del usuario.",
+  "watchOut": "Un decaimiento agresivo puede descartar hechos que aún se necesitan como contexto; la recuperación tras una eliminación accidental es imposible si los registros de auditoría están incompletos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Políticas de decaimiento y olvido de memoria",
+  "description": "Gobernanza de lo que un agente descarta: las puntuaciones de decaimiento ordenan los elementos para su desalojo y archivado según presupuesto, la detección de obsolescencia reemplaza los hechos muy relevantes que silenciosamente se volvieron falsos y una solicitud de derecho al olvido activa una eliminación definitiva con un registro de auditoría como prueba.",
+  "nodes": [
+   {
+    "id": "budget-trigger",
+    "label": "🟢 Presupuesto excedido\n42,000 elementos almacenados, el límite es 40,000",
+    "x": 330,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "decay-scorer",
+    "label": "🤖 Evaluador de decaimiento\nscore = importance * 0.5^(age / half_life)",
+    "x": 330,
+    "y": 165,
+    "w": 280
+   },
+   {
+    "id": "keep-item",
+    "label": "📌 Conservar (activo)\n\"Alérgico a la penicilina\" imp 9 -> 8.6",
+    "x": 40,
+    "y": 285,
+    "w": 230
+   },
+   {
+    "id": "evict-item",
+    "label": "📄 Desalojar (inactivo)\n\"Clima 2024-11-03\" imp 1 -> 0.02",
+    "x": 330,
+    "y": 285,
+    "w": 230
+   },
+   {
+    "id": "ranker",
+    "label": "📊 Ordenar por puntuación de decaimiento\nLos 42,000 elementos de menor a mayor",
+    "x": 630,
+    "y": 285,
+    "w": 230
+   },
+   {
+    "id": "archive",
+    "label": "📦 Archivar los 2,000 últimos\nMover a almacenamiento en frío (recuperable)",
+    "x": 330,
+    "y": 400,
+    "w": 240
+   },
+   {
+    "id": "cold-storage",
+    "label": "📤 Memoria activa de vuelta a 40,000\nBajan la latencia y la distracción",
+    "x": 330,
+    "y": 515,
+    "w": 250
+   },
+   {
+    "id": "staleness-detector",
+    "label": "⚠️ Detector de obsolescencia\n¿Muy relevante pero ya no es cierto?",
+    "x": 660,
+    "y": 405,
+    "w": 240
+   },
+   {
+    "id": "stale-item",
+    "label": "🔴 \"Trabaja en Acme Corp\"\nRelevancia ALTA, el decaimiento lo conservaría",
+    "x": 660,
+    "y": 520,
+    "w": 240
+   },
+   {
+    "id": "supersede",
+    "label": "🟣 Reemplazar\nLa señal \"Empecé en Globex\" lo reemplaza",
+    "x": 660,
+    "y": 635,
+    "w": 240
+   },
+   {
+    "id": "gdpr-request",
+    "label": "🟢 Derecho al olvido\nEliminar todo sobre el usuario U-8842",
+    "x": 40,
+    "y": 430,
+    "w": 240
+   },
+   {
+    "id": "hard-delete",
+    "label": "🛑 Eliminación definitiva\nPurgar U-8842 del almacenamiento activo + en frío",
+    "x": 40,
+    "y": 560,
+    "w": 240
+   },
+   {
+    "id": "audit-proof",
+    "label": "🧾 Registro de auditoría\nquién / cuándo / alcance = prueba de eliminación",
+    "x": 40,
+    "y": 685,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "trigger-scorer",
+    "s": "budget-trigger",
+    "t": "decay-scorer",
+    "label": "Puntuar todo"
+   },
+   {
+    "id": "scorer-keep",
+    "s": "decay-scorer",
+    "t": "keep-item",
+    "label": "Conservar"
+   },
+   {
+    "id": "scorer-evict",
+    "s": "decay-scorer",
+    "t": "evict-item",
+    "label": "Desalojar"
+   },
+   {
+    "id": "scorer-ranker",
+    "s": "decay-scorer",
+    "t": "ranker",
+    "label": "Ordenar"
+   },
+   {
+    "id": "ranker-archive",
+    "s": "ranker",
+    "t": "archive",
+    "label": "Últimos 2,000"
+   },
+   {
+    "id": "evict-archive",
+    "s": "evict-item",
+    "t": "archive",
+    "label": ""
+   },
+   {
+    "id": "archive-cold",
+    "s": "archive",
+    "t": "cold-storage",
+    "label": "40,000 activos"
+   },
+   {
+    "id": "scorer-staleness",
+    "s": "decay-scorer",
+    "t": "staleness-detector",
+    "label": "Verificación de relevancia"
+   },
+   {
+    "id": "staleness-stale",
+    "s": "staleness-detector",
+    "t": "stale-item",
+    "label": "Marcado"
+   },
+   {
+    "id": "stale-supersede",
+    "s": "stale-item",
+    "t": "supersede",
+    "label": "Contradicho"
+   },
+   {
+    "id": "gdpr-harddelete",
+    "s": "gdpr-request",
+    "t": "hard-delete",
+    "label": "Artículo 17"
+   },
+   {
+    "id": "cold-harddelete",
+    "s": "cold-storage",
+    "t": "hard-delete",
+    "label": "Purgar también en frío"
+   },
+   {
+    "id": "harddelete-audit",
+    "s": "hard-delete",
+    "t": "audit-proof",
+    "label": "Prueba"
+   }
+  ],
+  "steps": [
+   {
+    "title": "La memoria excede su presupuesto",
+    "description": "La memoria acumulada supera el límite. En lugar de crecer sin control (lo que degrada el rendimiento), el agente puntúa cada elemento para su desalojo.",
+    "input": "",
+    "nodes": [
+     "budget-trigger",
+     "decay-scorer"
+    ],
+    "edges": [
+     "trigger-scorer"
+    ]
+   },
+   {
+    "title": "La puntuación de decaimiento separa lo activo de lo inactivo",
+    "description": "El decaimiento al estilo de Ebbinghaus se refuerza con el acceso. Un dato de alergia usado con frecuencia se mantiene activo; una nota puntual del clima sin usar decae hacia cero.",
+    "input": "",
+    "nodes": [
+     "decay-scorer",
+     "keep-item",
+     "evict-item"
+    ],
+    "edges": [
+     "scorer-keep",
+     "scorer-evict"
+    ]
+   },
+   {
+    "title": "Ordenar y archivar los elementos más inactivos",
+    "description": "Todos los elementos se ordenan por puntuación de decaimiento y los 2,000 últimos se archivan en almacenamiento en frío (recuperables, no eliminados), lo que devuelve la memoria activa al presupuesto.",
+    "input": "",
+    "nodes": [
+     "decay-scorer",
+     "ranker",
+     "evict-item",
+     "archive",
+     "cold-storage"
+    ],
+    "edges": [
+     "scorer-ranker",
+     "ranker-archive",
+     "evict-archive",
+     "archive-cold"
+    ]
+   },
+   {
+    "title": "La obsolescencia es una falla distinta de la baja relevancia",
+    "description": "Un hecho muy relevante (\"Trabaja en Acme Corp\") nunca sería descartado por el decaimiento, pero puede volverse falso silenciosamente. Una verificación de obsolescencia lo marca.",
+    "input": "",
+    "nodes": [
+     "decay-scorer",
+     "staleness-detector",
+     "stale-item"
+    ],
+    "edges": [
+     "scorer-staleness",
+     "staleness-stale"
+    ]
+   },
+   {
+    "title": "Reemplazar el hecho muy relevante pero obsoleto",
+    "description": "Una señal contradictoria (\"Empecé en Globex\") reemplaza el dato desactualizado del empleador, un problema que el decaimiento por sí solo no puede resolver.",
+    "input": "",
+    "nodes": [
+     "stale-item",
+     "supersede"
+    ],
+    "edges": [
+     "stale-supersede"
+    ]
+   },
+   {
+    "title": "El derecho al olvido activa la eliminación definitiva",
+    "description": "Una solicitud según el Artículo 17 del GDPR no puede satisfacerse con un decaimiento suave. Cada elemento asociado al usuario se purga tanto del almacenamiento activo como del almacenamiento en frío.",
+    "input": "",
+    "nodes": [
+     "gdpr-request",
+     "hard-delete",
+     "cold-storage"
+    ],
+    "edges": [
+     "gdpr-harddelete",
+     "cold-harddelete"
+    ]
+   },
+   {
+    "title": "Emitir prueba de eliminación",
+    "description": "La purga escribe un registro de auditoría (quién, cuándo, qué alcance) para que el borrado sea demostrable, algo que la consolidación y la puntuación de recuperación nunca pueden ofrecer.",
+    "input": "",
+    "nodes": [
+     "hard-delete",
+     "audit-proof"
+    ],
+    "edges": [
+     "harddelete-audit"
+    ]
+   }
+  ]
+ }
+}

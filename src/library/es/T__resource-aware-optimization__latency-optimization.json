@@ -1,0 +1,359 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "latency-optimization",
+ "name": "Latency Optimization(LO)",
+ "icon": "⚡",
+ "complexity": "medium",
+ "description": "Minimiza el tiempo de respuesta mediante carga predictiva, cache y optimización de solicitudes",
+ "features": [
+  "Precarga predictiva",
+  "Cache de respuestas",
+  "Agrupación de solicitudes en batch",
+  "Procesamiento asíncrono",
+  "Despliegue en el edge",
+  "Pool de conexiones"
+ ],
+ "tldr": {
+  "what": "Reduce el tiempo de respuesta precargando los modelos probables, guardando en cache las respuestas frecuentes, agrupando solicitudes en batch y procesando de forma asíncrona.",
+  "when": "Sistemas de cara al usuario donde importa una latencia inferior a un segundo, especialmente asistentes de voz, chat en tiempo real o APIs de alto tráfico.",
+  "watchOut": "La precarga y el cache agresivos consumen memoria y pueden servir datos desactualizados si falla la lógica de invalidación."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Latency Optimization",
+  "description": "Un asistente de voz en tiempo real logra respuestas de menos de 200ms sirviendo desde un cache semántico, precargando modelos en caliente, con decodificación especulativa, batching continuo, llamadas a herramientas en paralelo y despliegue en el edge, además de un guardián de SLO que escala cuando se incumple.",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "📥 Solicitud de voz\n\"Resérvame un vuelo\"\nObjetivo < 200ms",
+    "x": 360,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "latency-monitor",
+    "label": "📊 Monitor de latencia\np95 180ms | cache 78%\nObjetivo de SLA > 95%",
+    "x": 680,
+    "y": 50,
+    "w": 210
+   },
+   {
+    "id": "latency-router",
+    "label": "🧭 Enrutador de latencia\nEnruta a rutas rápidas,\nmonitorea el p95",
+    "x": 360,
+    "y": 150,
+    "w": 230
+   },
+   {
+    "id": "semantic-cache",
+    "label": "🗃️ Cache semántico\nCoincidencia de embedding > 0.95\n78% de aciertos, 5ms",
+    "x": 60,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "prefetch",
+    "label": "🔮 Precarga predictiva\nCalienta los modelos probables\nsegún el patrón de la sesión",
+    "x": 360,
+    "y": 270,
+    "w": 210
+   },
+   {
+    "id": "warm-pool",
+    "label": "🔥 Pool de modelos en caliente\nEndpoints precargados\nsin arranque en frío",
+    "x": 680,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "request-example",
+    "label": "📝 Consulta: \"Reserva un vuelo\"\nFallo de cache, ejecuta herramientas,\nluego hace streaming",
+    "x": 60,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "speculative-decoding",
+    "label": "⚡ Decodificación especulativa\nEl borrador propone 4 tokens\nEl objetivo verifica, 2.1x más rápido",
+    "x": 360,
+    "y": 390,
+    "w": 220
+   },
+   {
+    "id": "edge-node",
+    "label": "🌍 Despliegue en el edge\nPoP 50ms más cerca\nPool de GPU en caliente",
+    "x": 680,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "request-batcher",
+    "label": "📦 Agrupador de solicitudes\nBatching continuo\n+4ms de espera, 3x de throughput",
+    "x": 60,
+    "y": 510,
+    "w": 210
+   },
+   {
+    "id": "parallel-tools",
+    "label": "🔀 Llamadas a herramientas en paralelo\nvuelo + hotel + clima\nen abanico, 90ms en total",
+    "x": 360,
+    "y": 510,
+    "w": 210
+   },
+   {
+    "id": "streaming",
+    "label": "🌊 Streaming de tokens\nPrimer token en 120ms\nResultados parciales en streaming",
+    "x": 680,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "cache-miss",
+    "label": "🚨 Incumplimiento de SLO\np95 210ms > 200ms\nescalar a GPU en el edge",
+    "x": 360,
+    "y": 630,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✅ Respuesta en streaming\nVoz 180ms | texto 35ms\n60% menos costo de cómputo",
+    "x": 360,
+    "y": 740,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-router",
+    "s": "user-request",
+    "t": "latency-router",
+    "label": ""
+   },
+   {
+    "id": "monitor-router",
+    "s": "latency-monitor",
+    "t": "latency-router",
+    "label": "feedback del p95"
+   },
+   {
+    "id": "router-cache",
+    "s": "latency-router",
+    "t": "semantic-cache",
+    "label": "Buscar primero"
+   },
+   {
+    "id": "router-prefetch",
+    "s": "latency-router",
+    "t": "prefetch",
+    "label": ""
+   },
+   {
+    "id": "router-speculative",
+    "s": "latency-router",
+    "t": "speculative-decoding",
+    "label": ""
+   },
+   {
+    "id": "prefetch-warm",
+    "s": "prefetch",
+    "t": "warm-pool",
+    "label": ""
+   },
+   {
+    "id": "warm-edge",
+    "s": "warm-pool",
+    "t": "edge-node",
+    "label": ""
+   },
+   {
+    "id": "cache-output",
+    "s": "semantic-cache",
+    "t": "output",
+    "label": "Acierto 78%"
+   },
+   {
+    "id": "cache-example",
+    "s": "semantic-cache",
+    "t": "request-example",
+    "label": "Fallo 22%"
+   },
+   {
+    "id": "example-batcher",
+    "s": "request-example",
+    "t": "request-batcher",
+    "label": ""
+   },
+   {
+    "id": "example-tools",
+    "s": "request-example",
+    "t": "parallel-tools",
+    "label": ""
+   },
+   {
+    "id": "batcher-speculative",
+    "s": "request-batcher",
+    "t": "speculative-decoding",
+    "label": ""
+   },
+   {
+    "id": "speculative-streaming",
+    "s": "speculative-decoding",
+    "t": "streaming",
+    "label": ""
+   },
+   {
+    "id": "tools-streaming",
+    "s": "parallel-tools",
+    "t": "streaming",
+    "label": ""
+   },
+   {
+    "id": "edge-streaming",
+    "s": "edge-node",
+    "t": "streaming",
+    "label": ""
+   },
+   {
+    "id": "streaming-output",
+    "s": "streaming",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "monitor-cachemiss",
+    "s": "latency-monitor",
+    "t": "cache-miss",
+    "label": "p95 210ms"
+   },
+   {
+    "id": "cachemiss-edge",
+    "s": "cache-miss",
+    "t": "edge-node",
+    "label": "Escalar a GPU en el edge"
+   },
+   {
+    "id": "cachemiss-prefetch",
+    "s": "cache-miss",
+    "t": "prefetch",
+    "label": "Ampliar la precarga"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Recepción de la solicitud",
+    "description": "Llega una solicitud de voz con un objetivo de menos de 200ms, mientras el monitor envía al enrutador el p95 y la tasa de aciertos del cache en vivo.",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "latency-router",
+     "latency-monitor"
+    ],
+    "edges": [
+     "request-router",
+     "monitor-router"
+    ]
+   },
+   {
+    "title": "Búsqueda en el cache semántico",
+    "description": "El enrutador consulta primero un cache semántico; una coincidencia de embedding >0.95 responde en 5ms y el 78% del tráfico nunca llega a un modelo.",
+    "input": "",
+    "nodes": [
+     "latency-router",
+     "semantic-cache",
+     "output",
+     "request-example"
+    ],
+    "edges": [
+     "router-cache",
+     "cache-output",
+     "cache-example"
+    ]
+   },
+   {
+    "title": "Precarga predictiva y pool en caliente",
+    "description": "Los patrones de la sesión precargan los próximos modelos probables en un pool en caliente y en un PoP del edge, para que no haya arranque en frío ante un fallo.",
+    "input": "",
+    "nodes": [
+     "prefetch",
+     "warm-pool",
+     "edge-node"
+    ],
+    "edges": [
+     "router-prefetch",
+     "prefetch-warm",
+     "warm-edge"
+    ]
+   },
+   {
+    "title": "Batching continuo",
+    "description": "Ante el 22% de fallos de cache, la consulta de ejemplo se suma a un batch continuo con una espera de 4ms que multiplica el throughput por ~3.",
+    "input": "",
+    "nodes": [
+     "request-example",
+     "request-batcher",
+     "speculative-decoding"
+    ],
+    "edges": [
+     "example-batcher",
+     "batcher-speculative"
+    ]
+   },
+   {
+    "title": "Decodificación especulativa",
+    "description": "Un modelo borrador pequeño propone 4 tokens a la vez que el modelo objetivo verifica en una sola pasada, generando ~2.1x más rápido.",
+    "input": "",
+    "nodes": [
+     "speculative-decoding",
+     "streaming"
+    ],
+    "edges": [
+     "router-speculative",
+     "speculative-streaming"
+    ]
+   },
+   {
+    "title": "Llamadas a herramientas en paralelo",
+    "description": "Las herramientas de vuelos, hoteles y clima se ejecutan en abanico de forma concurrente y terminan en 90ms en total, en lugar de ejecutarse una tras otra.",
+    "input": "",
+    "nodes": [
+     "request-example",
+     "parallel-tools",
+     "streaming"
+    ],
+    "edges": [
+     "example-tools",
+     "tools-streaming"
+    ]
+   },
+   {
+    "title": "Guardián de SLO y escalamiento al edge",
+    "description": "Cuando el p95 supera los 200ms, el guardián escala la solicitud a una GPU del edge más cercana y amplía la precarga para volver a bajar la latencia dentro del presupuesto.",
+    "input": "",
+    "nodes": [
+     "latency-monitor",
+     "cache-miss",
+     "edge-node",
+     "prefetch"
+    ],
+    "edges": [
+     "monitor-cachemiss",
+     "cachemiss-edge",
+     "cachemiss-prefetch",
+     "edge-streaming"
+    ]
+   },
+   {
+    "title": "Respuesta en streaming",
+    "description": "Los resultados parciales se transmiten desde el primer token a los 120ms, con la voz llegando a los 180ms y el texto a los 35ms, con un 60% menos de costo de cómputo.",
+    "input": "",
+    "nodes": [
+     "streaming",
+     "output"
+    ],
+    "edges": [
+     "streaming-output"
+    ]
+   }
+  ]
+ }
+}

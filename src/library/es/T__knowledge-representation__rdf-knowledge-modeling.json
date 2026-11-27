@@ -1,0 +1,369 @@
+{
+ "cat": "knowledge-representation",
+ "slug": "rdf-knowledge-modeling",
+ "name": "RDF Knowledge Modeling(RDF)",
+ "icon": "🕸️",
+ "complexity": "medium",
+ "description": "Representación estructurada del conocimiento mediante Resource Description Framework para el modelado y la vinculación de datos semánticos",
+ "features": [
+  "Modelado de datos basado en tripletas",
+  "Identificación de recursos basada en URI",
+  "Definición de relaciones semánticas",
+  "Compatibilidad con linked data",
+  "Grafos de conocimiento legibles por máquinas",
+  "Interoperabilidad basada en estándares"
+ ],
+ "tldr": {
+  "what": "Representa el conocimiento como tripletas sujeto-predicado-objeto con URIs, lo que permite a las máquinas vincular y consultar relaciones semánticas estructuradas.",
+  "when": "Necesitas grafos de conocimiento interoperables y consultables en los que las entidades y relaciones no sean ambiguas entre sistemas.",
+  "watchOut": "El diseño de URIs y la elección de ontologías fijan tu esquema; cambiarlos después rompe los vínculos y las consultas existentes en todo el grafo."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Modelado de conocimiento con RDF",
+  "description": "Representación estructurada del conocimiento mediante Resource Description Framework. Un registro de origen se modela como tripletas sujeto-predicado-objeto sobre espacios de nombres y URIs compartidos, y luego se ensambla en un grafo de conocimiento de linked data que las máquinas pueden consultar y sobre el cual pueden razonar.",
+  "nodes": [
+   {
+    "id": "raw-input",
+    "label": "📄 Registro de origen\n\"Machine Learning in Healthcare\"\nde John Smith, Stanford, 2024",
+    "x": 360,
+    "y": 40,
+    "w": 300
+   },
+   {
+    "id": "modeler-agent",
+    "label": "🕸️ Agente de modelado RDF\nMapea los hechos a tripletas",
+    "x": 375,
+    "y": 155,
+    "w": 250
+   },
+   {
+    "id": "namespace-def",
+    "label": "🏷️ Espacios de nombres y prefijos\n@prefix ex: <http://example.org/>\n@prefix foaf: <.../foaf/0.1/>\n@prefix dc: <.../dc/terms/>",
+    "x": 40,
+    "y": 275,
+    "w": 210
+   },
+   {
+    "id": "uri-minting",
+    "label": "🔑 Acuñación de URIs\nAsigna una identidad estable al recurso\nex:paper123, ex:johnsmith",
+    "x": 375,
+    "y": 275,
+    "w": 210
+   },
+   {
+    "id": "subject-node",
+    "label": "🟢 Recurso sujeto\nex:paper123 a ex:ResearchPaper",
+    "x": 690,
+    "y": 275,
+    "w": 210
+   },
+   {
+    "id": "triple-title",
+    "label": "🔺 Tripleta: título\nex:paper123 dc:title\n\"Machine Learning in Healthcare\"",
+    "x": 10,
+    "y": 415,
+    "w": 200
+   },
+   {
+    "id": "triple-creator",
+    "label": "🔺 Tripleta: autor\nex:paper123 dc:creator\nex:johnsmith",
+    "x": 240,
+    "y": 415,
+    "w": 200
+   },
+   {
+    "id": "triple-subject",
+    "label": "🔺 Tripleta: tema\nex:paper123 dc:subject\nex:MachineLearning, ex:Healthcare",
+    "x": 470,
+    "y": 415,
+    "w": 200
+   },
+   {
+    "id": "triple-citedby",
+    "label": "🔺 Tripleta: cita\nex:paper123 ex:citedBy\nex:paper456",
+    "x": 700,
+    "y": 415,
+    "w": 200
+   },
+   {
+    "id": "person-node",
+    "label": "👤 Entidad vinculada\nex:johnsmith a foaf:Person ;\nfoaf:name \"John Smith\"",
+    "x": 240,
+    "y": 545,
+    "w": 210
+   },
+   {
+    "id": "triple-affiliation",
+    "label": "🔺 Tripleta: afiliación\nex:johnsmith foaf:affiliation\nex:StanfordUniv",
+    "x": 490,
+    "y": 545,
+    "w": 210
+   },
+   {
+    "id": "graph-store",
+    "label": "🗄️ Triple store\nEnsambla el grafo RDF",
+    "x": 375,
+    "y": 655,
+    "w": 220
+   },
+   {
+    "id": "serialization",
+    "label": "📝 Serialización en Turtle\nIntercambio basado en estándares",
+    "x": 90,
+    "y": 655,
+    "w": 200
+   },
+   {
+    "id": "sparql-query",
+    "label": "🔎 Consulta SPARQL\nSELECT ?paper WHERE {\n?paper dc:creator ex:johnsmith }",
+    "x": 680,
+    "y": 655,
+    "w": 220
+   },
+   {
+    "id": "output-kg",
+    "label": "🌐 Grafo de conocimiento de linked data\nRed de investigación consultable por máquinas",
+    "x": 375,
+    "y": 775,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-modeler",
+    "s": "raw-input",
+    "t": "modeler-agent",
+    "label": ""
+   },
+   {
+    "id": "modeler-namespace",
+    "s": "modeler-agent",
+    "t": "namespace-def",
+    "label": "Declarar"
+   },
+   {
+    "id": "modeler-uri",
+    "s": "modeler-agent",
+    "t": "uri-minting",
+    "label": "Identificar"
+   },
+   {
+    "id": "uri-subject",
+    "s": "uri-minting",
+    "t": "subject-node",
+    "label": "Tipar"
+   },
+   {
+    "id": "subject-title",
+    "s": "subject-node",
+    "t": "triple-title",
+    "label": ""
+   },
+   {
+    "id": "subject-creator",
+    "s": "subject-node",
+    "t": "triple-creator",
+    "label": ""
+   },
+   {
+    "id": "subject-subjecttopic",
+    "s": "subject-node",
+    "t": "triple-subject",
+    "label": ""
+   },
+   {
+    "id": "subject-citedby",
+    "s": "subject-node",
+    "t": "triple-citedby",
+    "label": ""
+   },
+   {
+    "id": "creator-person",
+    "s": "triple-creator",
+    "t": "person-node",
+    "label": "Vincular"
+   },
+   {
+    "id": "person-affiliation",
+    "s": "person-node",
+    "t": "triple-affiliation",
+    "label": ""
+   },
+   {
+    "id": "title-store",
+    "s": "triple-title",
+    "t": "graph-store",
+    "label": ""
+   },
+   {
+    "id": "subjecttopic-store",
+    "s": "triple-subject",
+    "t": "graph-store",
+    "label": ""
+   },
+   {
+    "id": "citedby-store",
+    "s": "triple-citedby",
+    "t": "graph-store",
+    "label": ""
+   },
+   {
+    "id": "affiliation-store",
+    "s": "triple-affiliation",
+    "t": "graph-store",
+    "label": ""
+   },
+   {
+    "id": "namespace-serialization",
+    "s": "namespace-def",
+    "t": "serialization",
+    "label": ""
+   },
+   {
+    "id": "store-serialization",
+    "s": "graph-store",
+    "t": "serialization",
+    "label": ""
+   },
+   {
+    "id": "store-sparql",
+    "s": "graph-store",
+    "t": "sparql-query",
+    "label": "Consultar"
+   },
+   {
+    "id": "serialization-output",
+    "s": "serialization",
+    "t": "output-kg",
+    "label": ""
+   },
+   {
+    "id": "sparql-output",
+    "s": "sparql-query",
+    "t": "output-kg",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Ingerir el registro de origen",
+    "description": "Un hecho de origen (un artículo de investigación y su autor) entra al agente de modelado como datos de forma libre que se convertirán en tripletas estructuradas.",
+    "input": "",
+    "nodes": [
+     "raw-input",
+     "modeler-agent"
+    ],
+    "edges": [
+     "input-modeler"
+    ]
+   },
+   {
+    "title": "Declarar los espacios de nombres",
+    "description": "Los vocabularios compartidos se asocian a prefijos (ex:, foaf:, dc:) para que los términos se resuelvan en URIs globales y reutilizables en lugar de cadenas locales.",
+    "input": "",
+    "nodes": [
+     "modeler-agent",
+     "namespace-def"
+    ],
+    "edges": [
+     "modeler-namespace"
+    ]
+   },
+   {
+    "title": "Acuñar URIs y tipar el sujeto",
+    "description": "A cada entidad del mundo real se le asigna una URI estable. El artículo se convierte en ex:paper123, tipado con la tripleta ex:paper123 a ex:ResearchPaper.",
+    "input": "",
+    "nodes": [
+     "modeler-agent",
+     "uri-minting",
+     "subject-node"
+    ],
+    "edges": [
+     "modeler-uri",
+     "uri-subject"
+    ]
+   },
+   {
+    "title": "Afirmar tripletas sobre el artículo",
+    "description": "Los hechos se expresan como enunciados sujeto-predicado-objeto: título, autor, temas y citas, todos colgando de ex:paper123.",
+    "input": "",
+    "nodes": [
+     "subject-node",
+     "triple-title",
+     "triple-creator",
+     "triple-subject",
+     "triple-citedby"
+    ],
+    "edges": [
+     "subject-title",
+     "subject-creator",
+     "subject-subjecttopic",
+     "subject-citedby"
+    ]
+   },
+   {
+    "title": "Modelar las entidades vinculadas",
+    "description": "La URI del autor se expande en su propio recurso: ex:johnsmith a foaf:Person con un nombre y una afiliación, lo que vincula el artículo a un grafo más amplio.",
+    "input": "",
+    "nodes": [
+     "triple-creator",
+     "person-node",
+     "triple-affiliation"
+    ],
+    "edges": [
+     "creator-person",
+     "person-affiliation"
+    ]
+   },
+   {
+    "title": "Ensamblar el triple store",
+    "description": "Todas las tripletas afirmadas se fusionan en un único grafo RDF donde las URIs compartidas unen automáticamente los hechos sobre artículos, personas e instituciones.",
+    "input": "",
+    "nodes": [
+     "triple-title",
+     "triple-subject",
+     "triple-citedby",
+     "triple-affiliation",
+     "graph-store"
+    ],
+    "edges": [
+     "title-store",
+     "subjecttopic-store",
+     "citedby-store",
+     "affiliation-store"
+    ]
+   },
+   {
+    "title": "Serializar en Turtle",
+    "description": "El grafo se escribe en Turtle usando los prefijos declarados, lo que produce una representación portable y conforme a los estándares para el intercambio.",
+    "input": "",
+    "nodes": [
+     "namespace-def",
+     "graph-store",
+     "serialization"
+    ],
+    "edges": [
+     "namespace-serialization",
+     "store-serialization"
+    ]
+   },
+   {
+    "title": "Consultar el linked data",
+    "description": "Una consulta SPARQL recorre las tripletas para responder preguntas como qué artículos escribió John Smith, lo que da como resultado un grafo de conocimiento consultable por máquinas.",
+    "input": "",
+    "nodes": [
+     "graph-store",
+     "sparql-query",
+     "serialization",
+     "output-kg"
+    ],
+    "edges": [
+     "store-sparql",
+     "serialization-output",
+     "sparql-output"
+    ]
+   }
+  ]
+ }
+}

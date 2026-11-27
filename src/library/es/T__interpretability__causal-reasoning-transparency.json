@@ -1,0 +1,313 @@
+{
+ "cat": "interpretability",
+ "slug": "causal-reasoning-transparency",
+ "name": "Causal Reasoning Transparency(CRT)",
+ "icon": "🔗",
+ "complexity": "high",
+ "description": "Haz que las cadenas de razonamiento causal sean explícitas y comprensibles",
+ "features": [
+  "Visualización de la cadena causal",
+  "Mapeo de relaciones causa-efecto",
+  "Identificación de factores de confusión",
+  "Predicción del efecto de las intervenciones",
+  "Cuantificación de la fuerza causal",
+  "Transparencia de los supuestos"
+ ],
+ "tldr": {
+  "what": "Mapea explícitamente las relaciones causa-efecto con puntajes de fuerza, identifica los factores de confusión y predice los efectos de las intervenciones para que el razonamiento sea auditable.",
+  "when": "Decisiones de alto riesgo en las que las partes interesadas necesitan verificar la cadena lógica del agente y entender qué factores impulsaron cada conclusión.",
+  "watchOut": "Los puntajes de fuerza causal y las listas de factores de confusión pueden parecer rigurosos, pero siguen siendo subjetivos; los usuarios pueden confiar en exceso en los números sin validar los supuestos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Transparencia del razonamiento causal",
+  "description": "Expone la cadena causal explícita detrás de una decisión del agente. Cada vínculo causa-efecto tiene una fuerza y una fuente de evidencia, los mediadores y los factores de confusión se hacen visibles y los supuestos se declaran abiertamente.",
+  "nodes": [
+   {
+    "id": "symptom-input",
+    "label": "🩺 Presentación del paciente\nDolor de pecho + falta de aire\nLos síntomas aparecen en reposo",
+    "x": 360,
+    "y": 40,
+    "w": 260
+   },
+   {
+    "id": "diagnostic-agent",
+    "label": "🤖 Agente de diagnóstico\nConstruye una cadena causal explícita",
+    "x": 360,
+    "y": 150,
+    "w": 240
+   },
+   {
+    "id": "causal-node-1",
+    "label": "1️⃣ Síntomas observados\nDolor de pecho + disnea",
+    "x": 360,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "causal-link-1",
+    "label": "🔗 Vínculo causal\nFuerza 0.85",
+    "x": 660,
+    "y": 255,
+    "w": 180
+   },
+   {
+    "id": "causal-node-2",
+    "label": "2️⃣ Posible evento cardíaco\nSíndrome coronario agudo",
+    "x": 360,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "mediators",
+    "label": "🧬 Factores mediadores\n60 años, hombre, fumador\nAumentan el riesgo cardíaco",
+    "x": 60,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "risk-assessment",
+    "label": "3️⃣ Evaluación de riesgo\nALTO",
+    "x": 360,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "intervention",
+    "label": "💉 Efecto de la intervención\n-70% de riesgo si se trata en < 1 hora",
+    "x": 660,
+    "y": 455,
+    "w": 200
+   },
+   {
+    "id": "confounders",
+    "label": "🌀 Factores de confusión revisados\nEjercicio (descartado, en reposo)\nAnsiedad, efectos de medicamentos",
+    "x": 60,
+    "y": 470,
+    "w": 220
+   },
+   {
+    "id": "recommendation",
+    "label": "🚑 Recomendación\nAtención de emergencia inmediata",
+    "x": 360,
+    "y": 560,
+    "w": 240
+   },
+   {
+    "id": "assumptions",
+    "label": "📚 Supuestos causales\nLa edad y el género aumentan el riesgo\nEl tiempo hasta el tratamiento importa",
+    "x": 60,
+    "y": 600,
+    "w": 220
+   },
+   {
+    "id": "evidence-sources",
+    "label": "🔬 Fuentes de evidencia\nLiteratura clínica citada\npor cada vínculo causal",
+    "x": 60,
+    "y": 710,
+    "w": 220
+   },
+   {
+    "id": "transparency-report",
+    "label": "📄 Informe de transparencia\nCadena + fuerzas + evidencia\n+ supuestos declarados",
+    "x": 360,
+    "y": 680,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-symptom-agent",
+    "s": "symptom-input",
+    "t": "diagnostic-agent",
+    "label": ""
+   },
+   {
+    "id": "e-agent-node1",
+    "s": "diagnostic-agent",
+    "t": "causal-node-1",
+    "label": "Observar"
+   },
+   {
+    "id": "e-node1-link",
+    "s": "causal-node-1",
+    "t": "causal-link-1",
+    "label": ""
+   },
+   {
+    "id": "e-node1-node2",
+    "s": "causal-node-1",
+    "t": "causal-node-2",
+    "label": "causa (0.85)"
+   },
+   {
+    "id": "e-link-node2",
+    "s": "causal-link-1",
+    "t": "causal-node-2",
+    "label": ""
+   },
+   {
+    "id": "e-mediators-node2",
+    "s": "mediators",
+    "t": "causal-node-2",
+    "label": "mediar"
+   },
+   {
+    "id": "e-node2-risk",
+    "s": "causal-node-2",
+    "t": "risk-assessment",
+    "label": "evaluar"
+   },
+   {
+    "id": "e-confounders-node2",
+    "s": "confounders",
+    "t": "causal-node-2",
+    "label": "descartar"
+   },
+   {
+    "id": "e-risk-intervention",
+    "s": "risk-assessment",
+    "t": "intervention",
+    "label": ""
+   },
+   {
+    "id": "e-risk-recommendation",
+    "s": "risk-assessment",
+    "t": "recommendation",
+    "label": "ALTO"
+   },
+   {
+    "id": "e-intervention-recommendation",
+    "s": "intervention",
+    "t": "recommendation",
+    "label": ""
+   },
+   {
+    "id": "e-recommendation-report",
+    "s": "recommendation",
+    "t": "transparency-report",
+    "label": ""
+   },
+   {
+    "id": "e-assumptions-report",
+    "s": "assumptions",
+    "t": "transparency-report",
+    "label": ""
+   },
+   {
+    "id": "e-evidence-report",
+    "s": "evidence-sources",
+    "t": "transparency-report",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Observar los síntomas",
+    "description": "El agente toma la presentación de dolor de pecho y falta de aire en reposo como el primer nodo de la cadena causal.",
+    "input": "",
+    "nodes": [
+     "symptom-input",
+     "diagnostic-agent",
+     "causal-node-1"
+    ],
+    "edges": [
+     "e-symptom-agent",
+     "e-agent-node1"
+    ]
+   },
+   {
+    "title": "Trazar el vínculo causal",
+    "description": "Un vínculo cuantificado con fuerza 0.85 conecta los síntomas con un posible evento cardíaco, lo que hace la inferencia explícita en lugar de oculta.",
+    "input": "",
+    "nodes": [
+     "causal-node-1",
+     "causal-link-1",
+     "causal-node-2"
+    ],
+    "edges": [
+     "e-node1-node2",
+     "e-node1-link",
+     "e-link-node2"
+    ]
+   },
+   {
+    "title": "Considerar los mediadores",
+    "description": "La edad de 60 años, el sexo masculino y el tabaquismo se muestran como factores mediadores que refuerzan el camino hacia una hipótesis cardíaca.",
+    "input": "",
+    "nodes": [
+     "mediators",
+     "causal-node-2"
+    ],
+    "edges": [
+     "e-mediators-node2"
+    ]
+   },
+   {
+    "title": "Descartar los factores de confusión",
+    "description": "Se descartan los síntomas inducidos por el ejercicio porque aparecen en reposo; la ansiedad y los efectos de medicamentos se consideran y se dejan de lado.",
+    "input": "",
+    "nodes": [
+     "confounders",
+     "causal-node-2"
+    ],
+    "edges": [
+     "e-confounders-node2"
+    ]
+   },
+   {
+    "title": "Evaluar el riesgo",
+    "description": "Con el camino cardíaco respaldado y los factores de confusión atendidos, la cadena concluye en una evaluación de riesgo ALTO.",
+    "input": "",
+    "nodes": [
+     "causal-node-2",
+     "risk-assessment"
+    ],
+    "edges": [
+     "e-node2-risk"
+    ]
+   },
+   {
+    "title": "Predecir el efecto de la intervención",
+    "description": "El modelo proyecta que el tratamiento dentro de la primera hora reduce el riesgo aproximadamente un 70%, lo que impulsa la urgencia.",
+    "input": "",
+    "nodes": [
+     "risk-assessment",
+     "intervention",
+     "recommendation"
+    ],
+    "edges": [
+     "e-risk-intervention",
+     "e-risk-recommendation",
+     "e-intervention-recommendation"
+    ]
+   },
+   {
+    "title": "Declarar los supuestos y citar la evidencia",
+    "description": "Cada supuesto (edad, género, tiempo hasta el tratamiento) se escribe explícitamente y cada vínculo causal se asocia a una fuente de evidencia clínica.",
+    "input": "",
+    "nodes": [
+     "assumptions",
+     "evidence-sources",
+     "transparency-report"
+    ],
+    "edges": [
+     "e-assumptions-report",
+     "e-evidence-report"
+    ]
+   },
+   {
+    "title": "Entregar el informe de transparencia",
+    "description": "La cadena completa, la fuerza de sus vínculos, la evidencia citada y los supuestos abiertos se empaquetan para que un médico pueda auditar el razonamiento de principio a fin.",
+    "input": "",
+    "nodes": [
+     "recommendation",
+     "transparency-report"
+    ],
+    "edges": [
+     "e-recommendation-report"
+    ]
+   }
+  ]
+ }
+}

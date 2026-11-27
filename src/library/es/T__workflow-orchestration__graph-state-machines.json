@@ -1,0 +1,376 @@
+{
+ "cat": "workflow-orchestration",
+ "slug": "graph-state-machines",
+ "name": "Graph State Machines",
+ "icon": "🔄",
+ "complexity": "medium",
+ "description": "Máquinas de estados finitos implementadas como grafos para controlar flujos de trabajo",
+ "features": [
+  "Gestión de las transiciones de estado",
+  "Ejecución basada en eventos",
+  "Control de flujo determinista",
+  "Validación de estados y guardas",
+  "Capacidades de rollback",
+  "Representación visual del flujo de trabajo"
+ ],
+ "tldr": {
+  "what": "Modela el flujo de trabajo como estados conectados por transiciones con guardas, ejecutando rutas deterministas según los eventos y las reglas de validación.",
+  "when": "Procesos de varias etapas con límites de estado claros, necesidad de rollback y bifurcaciones condicionales según el resultado de cada paso.",
+  "watchOut": "La explosión de estados y la carga de mantenimiento crecen rápidamente a medida que los casos límite y las rutas de error se multiplican más allá del diseño inicial."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Graph State Machines",
+  "description": "Una máquina de estados finitos expresada como un grafo, donde los nodos son estados explícitos y las aristas son transiciones con guardas. El control de flujo determinista con guardas de validación, checkpoints y rollback mantiene un flujo de trabajo, como el procesamiento de pedidos, en un estado conocido en todo momento.",
+  "nodes": [
+   {
+    "id": "order-input",
+    "label": "🛒 Nuevo pedido\nEl cliente realiza el pedido #4821",
+    "x": 350,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "pending",
+    "label": "⏳ Estado: Pending\nEn espera de validación",
+    "x": 370,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "validate-guard",
+    "label": "🛡️ Guarda: validate\nVerifica el inventario + los datos del cliente",
+    "x": 370,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "validated",
+    "label": "✔️ Estado: Validated\nListo para el pago",
+    "x": 370,
+    "y": 350,
+    "w": 200
+   },
+   {
+    "id": "rejected",
+    "label": "🚫 Estado: Rejected\nDatos inválidos, terminal",
+    "x": 90,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "payment-guard",
+    "label": "🛡️ Guarda: process_payment\nVerifica el método de pago",
+    "x": 370,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "paid",
+    "label": "💳 Estado: Paid\nPago capturado",
+    "x": 370,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "payment-failed",
+    "label": "⚠️ Estado: Payment Failed\nTransacción rechazada",
+    "x": 90,
+    "y": 550,
+    "w": 180
+   },
+   {
+    "id": "fulfill-guard",
+    "label": "🛡️ Guarda: fulfill\nConfirma el stock del almacén",
+    "x": 370,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "shipped",
+    "label": "📦 Estado: Shipped\nEntregado al transportista",
+    "x": 370,
+    "y": 750,
+    "w": 200
+   },
+   {
+    "id": "backordered",
+    "label": "🕒 Estado: Backordered\nSin inventario, reintentar más tarde",
+    "x": 90,
+    "y": 750,
+    "w": 180
+   },
+   {
+    "id": "completed",
+    "label": "✨ Estado: Completed\nEntregado, terminal",
+    "x": 640,
+    "y": 750,
+    "w": 200
+   },
+   {
+    "id": "cancelled",
+    "label": "❌ Estado: Cancelled\nCualquier estado, evento de cancelación",
+    "x": 660,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "state-store",
+    "label": "💾 Almacén de estado\nEstado persistido + registro de transiciones",
+    "x": 660,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "rollback",
+    "label": "↩️ Rollback\nVolver al último estado estable",
+    "x": 660,
+    "y": 550,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "order-pending",
+    "s": "order-input",
+    "t": "pending",
+    "label": "enviar"
+   },
+   {
+    "id": "pending-validate",
+    "s": "pending",
+    "t": "validate-guard",
+    "label": "validate"
+   },
+   {
+    "id": "validate-validated",
+    "s": "validate-guard",
+    "t": "validated",
+    "label": "éxito"
+   },
+   {
+    "id": "validate-rejected",
+    "s": "validate-guard",
+    "t": "rejected",
+    "label": "falla"
+   },
+   {
+    "id": "validated-payment",
+    "s": "validated",
+    "t": "payment-guard",
+    "label": "process_payment"
+   },
+   {
+    "id": "payment-paid",
+    "s": "payment-guard",
+    "t": "paid",
+    "label": "éxito"
+   },
+   {
+    "id": "payment-failed-edge",
+    "s": "payment-guard",
+    "t": "payment-failed",
+    "label": "rechazado"
+   },
+   {
+    "id": "paid-fulfill",
+    "s": "paid",
+    "t": "fulfill-guard",
+    "label": "fulfill"
+   },
+   {
+    "id": "fulfill-shipped",
+    "s": "fulfill-guard",
+    "t": "shipped",
+    "label": "hay stock"
+   },
+   {
+    "id": "fulfill-backordered",
+    "s": "fulfill-guard",
+    "t": "backordered",
+    "label": "inventory_empty"
+   },
+   {
+    "id": "backordered-fulfill",
+    "s": "backordered",
+    "t": "fulfill-guard",
+    "label": "reintentar"
+   },
+   {
+    "id": "shipped-completed",
+    "s": "shipped",
+    "t": "completed",
+    "label": "entregado"
+   },
+   {
+    "id": "pending-cancelled",
+    "s": "pending",
+    "t": "cancelled",
+    "label": "cancelar"
+   },
+   {
+    "id": "validated-cancelled",
+    "s": "validated",
+    "t": "cancelled",
+    "label": "cancelar"
+   },
+   {
+    "id": "paid-cancelled",
+    "s": "paid",
+    "t": "cancelled",
+    "label": "cancelar + reembolsar"
+   },
+   {
+    "id": "validated-store",
+    "s": "validated",
+    "t": "state-store",
+    "label": "checkpoint"
+   },
+   {
+    "id": "paid-store",
+    "s": "paid",
+    "t": "state-store",
+    "label": "checkpoint"
+   },
+   {
+    "id": "payment-failed-rollback",
+    "s": "payment-failed",
+    "t": "rollback",
+    "label": "recuperar"
+   },
+   {
+    "id": "store-rollback",
+    "s": "state-store",
+    "t": "rollback",
+    "label": "último estable"
+   },
+   {
+    "id": "rollback-validated",
+    "s": "rollback",
+    "t": "validated",
+    "label": "restaurar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Pedido recibido",
+    "description": "Un nuevo pedido entra en la máquina en el estado Pending, el único punto de entrada definido.",
+    "input": "",
+    "nodes": [
+     "order-input",
+     "pending"
+    ],
+    "edges": [
+     "order-pending"
+    ]
+   },
+   {
+    "title": "Guarda de validación",
+    "description": "La guarda validate verifica el inventario y los datos del cliente, y deriva a Validated si tiene éxito o al estado terminal Rejected si falla.",
+    "input": "",
+    "nodes": [
+     "pending",
+     "validate-guard",
+     "validated",
+     "rejected"
+    ],
+    "edges": [
+     "pending-validate",
+     "validate-validated",
+     "validate-rejected"
+    ]
+   },
+   {
+    "title": "Transición de pago",
+    "description": "Desde Validated, la guarda process_payment verifica el método de pago y pasa a Paid o a Payment Failed.",
+    "input": "",
+    "nodes": [
+     "validated",
+     "payment-guard",
+     "paid",
+     "payment-failed"
+    ],
+    "edges": [
+     "validated-payment",
+     "payment-paid",
+     "payment-failed-edge"
+    ]
+   },
+   {
+    "title": "Recuperación de fallas mediante rollback",
+    "description": "Un pago rechazado dispara un rollback al último checkpoint estable en lugar de dejar el pedido en un estado roto.",
+    "input": "",
+    "nodes": [
+     "payment-failed",
+     "rollback",
+     "state-store",
+     "validated"
+    ],
+    "edges": [
+     "payment-failed-rollback",
+     "store-rollback",
+     "rollback-validated"
+    ]
+   },
+   {
+    "title": "Guarda de despacho",
+    "description": "Desde Paid, la guarda fulfill confirma el stock del almacén y envía el pedido o lo deja en Backordered con una transición de reintento.",
+    "input": "",
+    "nodes": [
+     "paid",
+     "fulfill-guard",
+     "shipped",
+     "backordered"
+    ],
+    "edges": [
+     "paid-fulfill",
+     "fulfill-shipped",
+     "fulfill-backordered",
+     "backordered-fulfill"
+    ]
+   },
+   {
+    "title": "Checkpoints de estado",
+    "description": "Cada estado estable se persiste en el almacén de estado con su registro completo de transiciones, lo que permite la recuperación y la auditoría.",
+    "input": "",
+    "nodes": [
+     "validated",
+     "paid",
+     "state-store"
+    ],
+    "edges": [
+     "validated-store",
+     "paid-store"
+    ]
+   },
+   {
+    "title": "Ruta de cancelación",
+    "description": "Un evento de cancelación es una transición válida desde muchos estados, que lleva al estado terminal Cancelled con el reembolso que corresponda.",
+    "input": "",
+    "nodes": [
+     "pending",
+     "validated",
+     "paid",
+     "cancelled"
+    ],
+    "edges": [
+     "pending-cancelled",
+     "validated-cancelled",
+     "paid-cancelled"
+    ]
+   },
+   {
+    "title": "Finalización",
+    "description": "La entrega mueve el pedido de Shipped al estado terminal Completed, lo que finaliza la máquina.",
+    "input": "",
+    "nodes": [
+     "shipped",
+     "completed"
+    ],
+    "edges": [
+     "shipped-completed"
+    ]
+   }
+  ]
+ }
+}

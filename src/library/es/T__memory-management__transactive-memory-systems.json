@@ -1,0 +1,746 @@
+{
+ "cat": "memory-management",
+ "slug": "transactive-memory-systems",
+ "name": "Transactive Memory Systems(TMS)",
+ "icon": "🤝",
+ "complexity": "high",
+ "description": "Sistema compartido para almacenar y recuperar conocimiento que amplía la capacidad de un grupo multiagente mediante procesamiento cognitivo distribuido",
+ "features": [
+  "Especialización distribuida del conocimiento",
+  "Mapeo de experiencia entre agentes",
+  "Codificación colaborativa de memoria",
+  "Procesos de recuperación coordinados",
+  "Asignación de tareas según experiencia",
+  "Metaconocimiento sobre las capacidades de los agentes",
+  "Balanceo de carga dinámico",
+  "Emergencia de inteligencia colectiva"
+ ],
+ "tldr": {
+  "what": "Los agentes mantienen un conocimiento compartido de la experiencia de los demás y delegan tareas según la especialización, ampliando la capacidad colectiva de resolución de problemas.",
+  "when": "Equipos multiagente que abordan proyectos complejos donde los agentes tienen habilidades distintas y necesitan enrutar el trabajo de forma eficiente sin procesamiento redundante.",
+  "watchOut": "Los mapas de experiencia se desactualizan rápido; los agentes pueden enrutar hacia especializaciones obsoletas o pasar por alto cambios de capacidad, lo que degrada el rendimiento con el tiempo."
+ },
+ "overview": {
+  "pattern": "Sistema compartido que almacena conocimiento y amplía la capacidad de un grupo multiagente mediante experiencia distribuida",
+  "why": "Inteligencia colectiva emergente, distribución eficiente del conocimiento, coordinación automática según experiencia",
+  "insight": "Directorio de experiencia + Enrutamiento inteligente + Síntesis colaborativa → Inteligencia colectiva > suma de las partes",
+  "impl": [
+   {
+    "t": "Mapear experiencia",
+    "d": "Perfila los dominios de conocimiento especializado de cada agente"
+   },
+   {
+    "t": "Construir directorio",
+    "d": "Crea un sistema de consulta de \"quién sabe qué\""
+   },
+   {
+    "t": "Enrutar consultas",
+    "d": "Dirige las preguntas a los agentes con más conocimiento"
+   },
+   {
+    "t": "Colaborar",
+    "d": "Habilita la síntesis de conocimiento entre múltiples agentes"
+   },
+   {
+    "t": "Aprender y actualizar",
+    "d": "Refina continuamente los mapeos de experiencia"
+   }
+  ],
+  "example": "expertise_profiling → knowledge_directory → intelligent_routing → collaborative_synthesis → continuous_learning",
+  "dos": [
+   "Mantén puntajes dinámicos de confianza en la experiencia de cada agente",
+   "Habilita el entrenamiento cruzado entre agentes para cubrir brechas de conocimiento",
+   "Implementa redundancia para los dominios de conocimiento críticos",
+   "Registra las tasas de éxito de la colaboración para optimizar la composición del equipo",
+   "Diseña una degradación elegante para cuando los agentes expertos no estén disponibles"
+  ],
+  "donts": [
+   "Crear puntos únicos de falla con agentes hiperespecializados",
+   "Ignorar el balanceo de carga: distribuye las solicitudes de experiencia de forma eficiente",
+   "Dejar que los mapeos de experiencia se desactualicen sin actualizaciones periódicas",
+   "Asumir que la experiencia es estática: permite que los agentes desarrollen nuevas capacidades",
+   "Pasar por alto la sobrecarga de comunicación entre experiencias muy distribuidas"
+  ],
+  "use": [
+   "Problemas complejos de múltiples dominios",
+   "Equipos grandes de agentes con especializaciones",
+   "Trabajo colaborativo de conocimiento",
+   "Se requiere experiencia que consume muchos recursos",
+   "Se necesita una composición dinámica del equipo"
+  ],
+  "avoid": [
+   "Tareas simples de un solo dominio",
+   "Equipos pequeños de agentes (< 3 agentes)",
+   "Operaciones muy sensibles al tiempo",
+   "Dominios de conocimiento sensibles en privacidad",
+   "Ancho de banda de comunicación limitado"
+  ],
+  "metrics": [
+   {
+    "n": "Cobertura de experiencia",
+    "d": "% de dominios con agentes calificados"
+   },
+   {
+    "n": "Distribución de carga",
+    "d": "Carga de trabajo equilibrada entre expertos"
+   },
+   {
+    "n": "Eficiencia de colaboración",
+    "d": "Tiempo para conformar equipos de expertos"
+   },
+   {
+    "n": "Tasa de transferencia de conocimiento",
+    "d": "Velocidad de aprendizaje entre agentes"
+   },
+   {
+    "n": "Resiliencia del sistema",
+    "d": "Rendimiento cuando faltan expertos"
+   },
+   {
+    "n": "Inteligencia colectiva",
+    "d": "Rendimiento del equipo vs. suma individual"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Equipos de desarrollo de software",
+    "d": "Agentes de frontend, backend, DevOps y seguridad con conocimiento especializado (aumento de productividad del 300%)"
+   },
+   {
+    "n": "Redes de diagnóstico médico",
+    "d": "Especialistas en cardiología, neurología y radiología que colaboran en casos complejos (95% de precisión diagnóstica)"
+   },
+   {
+    "n": "Sistemas de análisis financiero",
+    "d": "Analistas de mercado, evaluadores de riesgo y expertos en cumplimiento trabajando juntos (estrategias de inversión automatizadas)"
+   },
+   {
+    "n": "Colaboración en investigación",
+    "d": "Agentes de química, biología y física que combinan su experiencia para el descubrimiento de fármacos (ciclos de investigación acelerados)"
+   },
+   {
+    "n": "Diseño de ingeniería",
+    "d": "Agentes mecánicos, eléctricos y de software que se coordinan en el desarrollo de productos complejos (diseño de sistemas integrados)"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Transactive Memory Systems",
+  "description": "Sistema de memoria distribuida donde los agentes se especializan en distintos dominios de conocimiento y colaboran sabiendo quién sabe qué, aprovechando la experiencia colectiva de forma eficiente.",
+  "nodes": [
+   {
+    "id": "complex-task",
+    "label": "🎯 Tarea compleja\n\"Diseñar e implementar un sistema de IA multimodal\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "tms-coordinator",
+    "label": "🧠 Coordinador TMS\nGestión distribuida del conocimiento",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "vision-agent",
+    "label": "👁️ Agente de visión\nEspecialista: visión por computadora\nExperiencia: CNNs, detección de objetos",
+    "x": 100,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "nlp-agent",
+    "label": "💬 Agente de NLP\nEspecialista: procesamiento de lenguaje\nExperiencia: Transformers, LLMs",
+    "x": 320,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "audio-agent",
+    "label": "🎵 Agente de audio\nEspecialista: procesamiento de sonido\nExperiencia: voz, música",
+    "x": 540,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "integration-agent",
+    "label": "🔧 Agente de integración\nEspecialista: arquitectura de sistemas\nExperiencia: APIs, pipelines",
+    "x": 760,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "expertise-map",
+    "label": "🗺️ Mapa de experiencia\nQuién sabe qué",
+    "x": 200,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "skill-registry",
+    "label": "📚 Registro de habilidades\nCatálogo de capacidades",
+    "x": 370,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "knowledge-boundaries",
+    "label": "🔲 Límites del conocimiento\nDominios de experiencia",
+    "x": 540,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "meta-knowledge",
+    "label": "🎓 Metaconocimiento\nConocimiento sobre el conocimiento",
+    "x": 710,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "query-1",
+    "label": "❓ Consulta 1\n\"¿Cómo procesar flujos de video?\"",
+    "x": 50,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "query-2",
+    "label": "❓ Consulta 2\n\"¿Cuál es la mejor arquitectura transformer?\"",
+    "x": 250,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "query-3",
+    "label": "❓ Consulta 3\n\"¿Sincronización audiovisual?\"",
+    "x": 450,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "query-4",
+    "label": "❓ Consulta 4\n\"¿Patrones de integración de sistemas?\"",
+    "x": 650,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "route-vision",
+    "label": "➡️ Enrutar a visión\nCoincidencia con experiencia en video",
+    "x": 100,
+    "y": 620,
+    "w": 160
+   },
+   {
+    "id": "route-nlp",
+    "label": "➡️ Enrutar a NLP\nExperiencia en transformers",
+    "x": 280,
+    "y": 620,
+    "w": 160
+   },
+   {
+    "id": "route-collaborative",
+    "label": "🤝 Ruta colaborativa\nAgentes de visión + audio",
+    "x": 460,
+    "y": 620,
+    "w": 160
+   },
+   {
+    "id": "route-integration",
+    "label": "➡️ Enrutar a integración\nExperiencia en arquitectura",
+    "x": 640,
+    "y": 620,
+    "w": 160
+   },
+   {
+    "id": "direct-access",
+    "label": "🔗 Acceso directo\nConsulta de agente a agente",
+    "x": 100,
+    "y": 740,
+    "w": 160
+   },
+   {
+    "id": "knowledge-transfer",
+    "label": "📤 Transferencia de conocimiento\nIntercambio de experiencia",
+    "x": 280,
+    "y": 740,
+    "w": 160
+   },
+   {
+    "id": "collaborative-memory",
+    "label": "🧩 Memoria colaborativa\nEntendimiento compartido",
+    "x": 460,
+    "y": 740,
+    "w": 160
+   },
+   {
+    "id": "expertise-update",
+    "label": "🔄 Actualización de experiencia\nSeguimiento dinámico de habilidades",
+    "x": 640,
+    "y": 740,
+    "w": 160
+   },
+   {
+    "id": "specialization",
+    "label": "🎯 Especialización\nExperiencia profunda por agente",
+    "x": 150,
+    "y": 860,
+    "w": 160
+   },
+   {
+    "id": "scalability",
+    "label": "📈 Escalabilidad\nMás agentes = más experiencia",
+    "x": 320,
+    "y": 860,
+    "w": 160
+   },
+   {
+    "id": "efficiency",
+    "label": "⚡ Eficiencia\nSin conocimiento redundante",
+    "x": 490,
+    "y": 860,
+    "w": 160
+   },
+   {
+    "id": "resilience",
+    "label": "🛡️ Resiliencia\nRedundancia distribuida",
+    "x": 660,
+    "y": 860,
+    "w": 160
+   },
+   {
+    "id": "integrated-solution",
+    "label": "✨ Solución integrada\nSistema multimodal diseñado mediante experiencia distribuida",
+    "x": 400,
+    "y": 980,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "task-coordinator",
+    "s": "complex-task",
+    "t": "tms-coordinator",
+    "label": ""
+   },
+   {
+    "id": "coordinator-vision",
+    "s": "tms-coordinator",
+    "t": "vision-agent",
+    "label": "Registrar"
+   },
+   {
+    "id": "coordinator-nlp",
+    "s": "tms-coordinator",
+    "t": "nlp-agent",
+    "label": "Registrar"
+   },
+   {
+    "id": "coordinator-audio",
+    "s": "tms-coordinator",
+    "t": "audio-agent",
+    "label": "Registrar"
+   },
+   {
+    "id": "coordinator-integration",
+    "s": "tms-coordinator",
+    "t": "integration-agent",
+    "label": "Registrar"
+   },
+   {
+    "id": "vision-expertise",
+    "s": "vision-agent",
+    "t": "expertise-map",
+    "label": ""
+   },
+   {
+    "id": "nlp-skills",
+    "s": "nlp-agent",
+    "t": "skill-registry",
+    "label": ""
+   },
+   {
+    "id": "audio-boundaries",
+    "s": "audio-agent",
+    "t": "knowledge-boundaries",
+    "label": ""
+   },
+   {
+    "id": "integration-meta",
+    "s": "integration-agent",
+    "t": "meta-knowledge",
+    "label": ""
+   },
+   {
+    "id": "expertise-skills",
+    "s": "expertise-map",
+    "t": "skill-registry",
+    "label": ""
+   },
+   {
+    "id": "skills-boundaries",
+    "s": "skill-registry",
+    "t": "knowledge-boundaries",
+    "label": ""
+   },
+   {
+    "id": "boundaries-meta",
+    "s": "knowledge-boundaries",
+    "t": "meta-knowledge",
+    "label": ""
+   },
+   {
+    "id": "query1-coordinator",
+    "s": "query-1",
+    "t": "tms-coordinator",
+    "label": ""
+   },
+   {
+    "id": "query2-coordinator",
+    "s": "query-2",
+    "t": "tms-coordinator",
+    "label": ""
+   },
+   {
+    "id": "query3-coordinator",
+    "s": "query-3",
+    "t": "tms-coordinator",
+    "label": ""
+   },
+   {
+    "id": "query4-coordinator",
+    "s": "query-4",
+    "t": "tms-coordinator",
+    "label": ""
+   },
+   {
+    "id": "query1-route",
+    "s": "query-1",
+    "t": "route-vision",
+    "label": ""
+   },
+   {
+    "id": "route-vision-agent",
+    "s": "route-vision",
+    "t": "vision-agent",
+    "label": ""
+   },
+   {
+    "id": "query2-route",
+    "s": "query-2",
+    "t": "route-nlp",
+    "label": ""
+   },
+   {
+    "id": "route-nlp-agent",
+    "s": "route-nlp",
+    "t": "nlp-agent",
+    "label": ""
+   },
+   {
+    "id": "query3-route",
+    "s": "query-3",
+    "t": "route-collaborative",
+    "label": ""
+   },
+   {
+    "id": "route-collab-vision",
+    "s": "route-collaborative",
+    "t": "vision-agent",
+    "label": ""
+   },
+   {
+    "id": "route-collab-audio",
+    "s": "route-collaborative",
+    "t": "audio-agent",
+    "label": ""
+   },
+   {
+    "id": "query4-route",
+    "s": "query-4",
+    "t": "route-integration",
+    "label": ""
+   },
+   {
+    "id": "route-integration-agent",
+    "s": "route-integration",
+    "t": "integration-agent",
+    "label": ""
+   },
+   {
+    "id": "vision-direct",
+    "s": "vision-agent",
+    "t": "direct-access",
+    "label": ""
+   },
+   {
+    "id": "nlp-transfer",
+    "s": "nlp-agent",
+    "t": "knowledge-transfer",
+    "label": ""
+   },
+   {
+    "id": "audio-collaborative",
+    "s": "audio-agent",
+    "t": "collaborative-memory",
+    "label": ""
+   },
+   {
+    "id": "integration-update",
+    "s": "integration-agent",
+    "t": "expertise-update",
+    "label": ""
+   },
+   {
+    "id": "vision-audio-link",
+    "s": "vision-agent",
+    "t": "audio-agent",
+    "label": "Compartir"
+   },
+   {
+    "id": "nlp-integration-link",
+    "s": "nlp-agent",
+    "t": "integration-agent",
+    "label": "Consultar"
+   },
+   {
+    "id": "direct-specialization",
+    "s": "direct-access",
+    "t": "specialization",
+    "label": ""
+   },
+   {
+    "id": "transfer-scalability",
+    "s": "knowledge-transfer",
+    "t": "scalability",
+    "label": ""
+   },
+   {
+    "id": "collaborative-efficiency",
+    "s": "collaborative-memory",
+    "t": "efficiency",
+    "label": ""
+   },
+   {
+    "id": "update-resilience",
+    "s": "expertise-update",
+    "t": "resilience",
+    "label": ""
+   },
+   {
+    "id": "specialization-solution",
+    "s": "specialization",
+    "t": "integrated-solution",
+    "label": ""
+   },
+   {
+    "id": "scalability-solution",
+    "s": "scalability",
+    "t": "integrated-solution",
+    "label": ""
+   },
+   {
+    "id": "efficiency-solution",
+    "s": "efficiency",
+    "t": "integrated-solution",
+    "label": ""
+   },
+   {
+    "id": "resilience-solution",
+    "s": "resilience",
+    "t": "integrated-solution",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Asignación de tarea compleja",
+    "description": "Llega una tarea de diseño de un sistema de IA multimodal",
+    "input": "",
+    "nodes": [
+     "complex-task",
+     "tms-coordinator"
+    ],
+    "edges": [
+     "task-coordinator"
+    ]
+   },
+   {
+    "title": "Registro de agentes",
+    "description": "Los agentes especializados registran su experiencia",
+    "input": "",
+    "nodes": [
+     "tms-coordinator",
+     "vision-agent",
+     "nlp-agent",
+     "audio-agent",
+     "integration-agent"
+    ],
+    "edges": [
+     "coordinator-vision",
+     "coordinator-nlp",
+     "coordinator-audio",
+     "coordinator-integration"
+    ]
+   },
+   {
+    "title": "Configuración del directorio de conocimiento",
+    "description": "Construcción del mapa de experiencia y del registro de habilidades",
+    "input": "",
+    "nodes": [
+     "vision-agent",
+     "nlp-agent",
+     "audio-agent",
+     "integration-agent",
+     "expertise-map",
+     "skill-registry",
+     "knowledge-boundaries",
+     "meta-knowledge"
+    ],
+    "edges": [
+     "vision-expertise",
+     "nlp-skills",
+     "audio-boundaries",
+     "integration-meta"
+    ]
+   },
+   {
+    "title": "Integración del directorio",
+    "description": "Conexión de los componentes del directorio de conocimiento",
+    "input": "",
+    "nodes": [
+     "expertise-map",
+     "skill-registry",
+     "knowledge-boundaries",
+     "meta-knowledge"
+    ],
+    "edges": [
+     "expertise-skills",
+     "skills-boundaries",
+     "boundaries-meta"
+    ]
+   },
+   {
+    "title": "Consultas de conocimiento",
+    "description": "La tarea se descompone en consultas de conocimiento específicas",
+    "input": "",
+    "nodes": [
+     "query-1",
+     "query-2",
+     "query-3",
+     "query-4",
+     "tms-coordinator"
+    ],
+    "edges": [
+     "query1-coordinator",
+     "query2-coordinator",
+     "query3-coordinator",
+     "query4-coordinator"
+    ]
+   },
+   {
+    "title": "Enrutamiento de consultas",
+    "description": "Enrutando consultas a los especialistas adecuados",
+    "input": "",
+    "nodes": [
+     "query-1",
+     "query-2",
+     "query-3",
+     "query-4",
+     "route-vision",
+     "route-nlp",
+     "route-collaborative",
+     "route-integration"
+    ],
+    "edges": [
+     "query1-route",
+     "query2-route",
+     "query3-route",
+     "query4-route"
+    ]
+   },
+   {
+    "title": "Asignación de expertos",
+    "description": "Consultas dirigidas a los agentes pertinentes",
+    "input": "",
+    "nodes": [
+     "route-vision",
+     "route-nlp",
+     "route-collaborative",
+     "route-integration",
+     "vision-agent",
+     "nlp-agent",
+     "audio-agent",
+     "integration-agent"
+    ],
+    "edges": [
+     "route-vision-agent",
+     "route-nlp-agent",
+     "route-collab-vision",
+     "route-collab-audio",
+     "route-integration-agent"
+    ]
+   },
+   {
+    "title": "Intercambio de conocimiento",
+    "description": "Los agentes comparten su experiencia y colaboran",
+    "input": "",
+    "nodes": [
+     "vision-agent",
+     "nlp-agent",
+     "audio-agent",
+     "integration-agent",
+     "direct-access",
+     "knowledge-transfer",
+     "collaborative-memory",
+     "expertise-update"
+    ],
+    "edges": [
+     "vision-direct",
+     "nlp-transfer",
+     "audio-collaborative",
+     "integration-update",
+     "vision-audio-link",
+     "nlp-integration-link"
+    ]
+   },
+   {
+    "title": "Beneficios del sistema",
+    "description": "Aprovechando las ventajas de la memoria transactiva",
+    "input": "",
+    "nodes": [
+     "specialization",
+     "scalability",
+     "efficiency",
+     "resilience"
+    ],
+    "edges": [
+     "direct-specialization",
+     "transfer-scalability",
+     "collaborative-efficiency",
+     "update-resilience"
+    ]
+   },
+   {
+    "title": "Solución integrada",
+    "description": "Sistema multimodal completo mediante experiencia distribuida",
+    "input": "",
+    "nodes": [
+     "specialization",
+     "scalability",
+     "efficiency",
+     "resilience",
+     "integrated-solution"
+    ],
+    "edges": [
+     "specialization-solution",
+     "scalability-solution",
+     "efficiency-solution",
+     "resilience-solution"
+    ]
+   }
+  ]
+ }
+}

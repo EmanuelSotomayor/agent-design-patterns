@@ -1,0 +1,267 @@
+{
+ "cat": "agent-economy",
+ "slug": "http-native-micropayments",
+ "name": "HTTP-Native Micropayments (x402)(x402)",
+ "icon": "🪙",
+ "complexity": "high",
+ "description": "Un estándar de pago abierto creado por Coinbase en 2025 y actualmente gestionado por la x402 Foundation bajo la Linux Foundation, que revive el estado HTTP 402 Payment Required, hasta ahora inactivo, como un riel de pago por solicitud. Un servidor responde 402 con requisitos de pago legibles por máquina; el cliente (humano o agente) devuelve un pago firmado en stablecoin dentro de un encabezado HTTP; un facilitador verifica el contenido y liquida la transferencia on-chain (cadenas EVM, Solana y más), todo dentro de una sola solicitud, sin cuentas, sesiones ni API keys. Es un riel nativo para micropagos de agente a servicio sin claves y de fracciones de centavo, y para el acceso medido a herramientas o datos, y es el perfil cripto al que hace referencia la extensión A2A-x402 de AP2. Se distingue de `agentic-commerce-protocol`: ACP es un checkout minorista basado en tarjetas a través de un comerciante registrado (merchant of record), mientras que x402 es un pago entre máquinas por llamada que se liquida on-chain.",
+ "features": [
+  "Reutiliza el estado HTTP 402 Payment Required para el pago dentro de la misma comunicación",
+  "El servidor devuelve requisitos de pago legibles por máquina en la respuesta 402",
+  "El cliente devuelve un pago firmado en stablecoin en un encabezado de la solicitud y luego reintenta",
+  "El facilitador verifica el contenido y liquida la transferencia on-chain",
+  "Sin claves ni sesiones: sin cuentas, API keys ni registro previo",
+  "Permite el acceso medido de fracciones de centavo a APIs, herramientas y datos de pago"
+ ],
+ "tldr": {
+  "what": "El servidor responde 402 con las condiciones de pago; el cliente firma una transferencia en stablecoin en un encabezado y reintenta; el facilitador verifica y liquida on-chain en un solo viaje de ida y vuelta.",
+  "when": "Los agentes necesitan acceso por llamada y sin claves a APIs o datos de pago, sin cuentas, API keys ni registro previo.",
+  "watchOut": "La latencia de la verificación de firmas y de la liquidación on-chain puede provocar timeouts si el facilitador es lento o poco confiable."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Micropagos nativos de HTTP (x402)",
+  "description": "x402 de Coinbase revive el estado HTTP 402 Payment Required como un riel de pago por solicitud. Una API de pago responde 402 con los requisitos de pago, el agente devuelve un pago firmado en stablecoin en un encabezado, un facilitador verifica y liquida la transferencia on-chain, y el mismo endpoint devuelve los datos, todo dentro de la misma comunicación, sin cuentas ni API keys.",
+  "nodes": [
+   {
+    "id": "agent",
+    "label": "🤖 Agente\nNecesita una cotización en vivo de AAPL,\nsin cuenta en esta API",
+    "x": 360,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "call-1",
+    "label": "📡 GET /quotes/AAPL\nSolicitud 1: sin pago",
+    "x": 360,
+    "y": 150,
+    "w": 260
+   },
+   {
+    "id": "resource-server",
+    "label": "🗄️ API de datos de pago\nEndpoint protegido con x402",
+    "x": 680,
+    "y": 150,
+    "w": 200
+   },
+   {
+    "id": "server-402",
+    "label": "🚧 HTTP 402 Payment Required\nPaga 0.001 USDC en Base\na 0xA1b2... por este recurso",
+    "x": 350,
+    "y": 270,
+    "w": 300
+   },
+   {
+    "id": "usdc-balance",
+    "label": "💰 Billetera del agente\nSaldo en USDC",
+    "x": 40,
+    "y": 400,
+    "w": 200
+   },
+   {
+    "id": "sign",
+    "label": "✍️ El agente firma el pago\nTransferencia de 0.001 USDC,\nsin claves ni registro",
+    "x": 360,
+    "y": 400,
+    "w": 280
+   },
+   {
+    "id": "call-2",
+    "label": "📡 GET /quotes/AAPL (reintento)\nX-PAYMENT: contenido firmado",
+    "x": 360,
+    "y": 520,
+    "w": 280
+   },
+   {
+    "id": "facilitator",
+    "label": "🔎 Facilitador\nVerifica el contenido",
+    "x": 690,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "settle",
+    "label": "⛓️ Red Base\nLiquida la transferencia de 0.001 USDC",
+    "x": 690,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "server-200",
+    "label": "✅ HTTP 200 + cotización\nAAPL $214.30\nX-PAYMENT-RESPONSE: paid",
+    "x": 360,
+    "y": 650,
+    "w": 280
+   },
+   {
+    "id": "output",
+    "label": "✨ El agente tiene la cotización\n2 viajes de ida y vuelta, $0.001 gastados,\nsin registro ni factura",
+    "x": 340,
+    "y": 770,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-agent-call1",
+    "s": "agent",
+    "t": "call-1",
+    "label": "Solicita cotización"
+   },
+   {
+    "id": "e-call1-server",
+    "s": "call-1",
+    "t": "resource-server",
+    "label": "GET, sin pago"
+   },
+   {
+    "id": "e-server-402",
+    "s": "resource-server",
+    "t": "server-402",
+    "label": "402 + requisitos"
+   },
+   {
+    "id": "e-402-sign",
+    "s": "server-402",
+    "t": "sign",
+    "label": "Lee las condiciones de pago"
+   },
+   {
+    "id": "e-balance-sign",
+    "s": "usdc-balance",
+    "t": "sign",
+    "label": "Fondos"
+   },
+   {
+    "id": "e-sign-call2",
+    "s": "sign",
+    "t": "call-2",
+    "label": "Reintenta con el pago"
+   },
+   {
+    "id": "e-call2-facilitator",
+    "s": "call-2",
+    "t": "facilitator",
+    "label": "Encabezado X-PAYMENT"
+   },
+   {
+    "id": "e-facilitator-settle",
+    "s": "facilitator",
+    "t": "settle",
+    "label": "Verifica + envía"
+   },
+   {
+    "id": "e-settle-200",
+    "s": "settle",
+    "t": "server-200",
+    "label": "0.001 USDC liquidados"
+   },
+   {
+    "id": "e-server-200",
+    "s": "resource-server",
+    "t": "server-200",
+    "label": "Devuelve los datos una vez pagado"
+   },
+   {
+    "id": "e-200-output",
+    "s": "server-200",
+    "t": "output",
+    "label": "Cotización entregada"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El agente solicita una cotización de pago",
+    "description": "El agente necesita una consulta de datos de mercado y envía un GET simple al endpoint protegido con x402, sin pago y sin cuenta.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "call-1",
+     "resource-server"
+    ],
+    "edges": [
+     "e-agent-call1",
+     "e-call1-server"
+    ]
+   },
+   {
+    "title": "El servidor exige el pago (402)",
+    "description": "En lugar de un 200, el servidor devuelve HTTP 402 con requisitos legibles por máquina: pagar 0.001 USDC en Base a una dirección determinada por este recurso.",
+    "input": "",
+    "nodes": [
+     "resource-server",
+     "server-402"
+    ],
+    "edges": [
+     "e-server-402"
+    ]
+   },
+   {
+    "title": "El agente firma un pago en stablecoin",
+    "description": "El agente lee los requisitos, usa el saldo de su billetera y firma una transferencia de 0.001 USDC. No intervienen API keys, facturas ni registro previo.",
+    "input": "",
+    "nodes": [
+     "server-402",
+     "usdc-balance",
+     "sign"
+    ],
+    "edges": [
+     "e-402-sign",
+     "e-balance-sign"
+    ]
+   },
+   {
+    "title": "Reintento con el encabezado de pago firmado",
+    "description": "El agente vuelve a enviar la misma solicitud, ahora con el pago firmado en el encabezado X-PAYMENT, que llega al facilitador para su verificación.",
+    "input": "",
+    "nodes": [
+     "sign",
+     "call-2",
+     "facilitator"
+    ],
+    "edges": [
+     "e-sign-call2",
+     "e-call2-facilitator"
+    ]
+   },
+   {
+    "title": "El facilitador verifica y liquida on-chain",
+    "description": "El facilitador verifica el contenido firmado y liquida la transferencia de 0.001 USDC en la red Base.",
+    "input": "",
+    "nodes": [
+     "facilitator",
+     "settle"
+    ],
+    "edges": [
+     "e-facilitator-settle"
+    ]
+   },
+   {
+    "title": "El servidor devuelve los datos",
+    "description": "Con el pago liquidado, el mismo endpoint devuelve HTTP 200 con la cotización de AAPL y un encabezado de confirmación de pago.",
+    "input": "",
+    "nodes": [
+     "settle",
+     "resource-server",
+     "server-200"
+    ],
+    "edges": [
+     "e-settle-200",
+     "e-server-200"
+    ]
+   },
+   {
+    "title": "El agente obtiene la cotización por $0.001",
+    "description": "La llamada de pago se completó en dos viajes de ida y vuelta, sin registro, claves ni facturas. El agente gastó exactamente $0.001 y todo el intercambio se mantuvo dentro de la misma comunicación HTTP.",
+    "input": "",
+    "nodes": [
+     "server-200",
+     "output"
+    ],
+    "edges": [
+     "e-200-output"
+    ]
+   }
+  ]
+ }
+}

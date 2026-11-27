@@ -1,0 +1,407 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "constitutional-ai",
+ "name": "Constitutional AI(CAI)",
+ "icon": "⚖️",
+ "complexity": "high",
+ "description": "Usar un conjunto explícito de principios para guiar la autocrítica, la revisión y el feedback de preferencias generado por IA durante el entrenamiento",
+ "features": [
+  "Principios constitucionales explícitos",
+  "Datos de autocrítica y revisión",
+  "Juicios de preferencia condicionados por principios",
+  "Etapas de aprendizaje supervisado y por refuerzo",
+  "Pruebas de conflictos y ambigüedad",
+  "Gobernanza humana de la constitución"
+ ],
+ "tldr": {
+  "what": "El modelo aprende a criticar y revisar sus propias salidas frente a principios explícitos, y luego clasifica las respuestas usando feedback alineado con los principios, sin etiquetado humano.",
+  "when": "Sistemas de entrenamiento donde tienes principios de comportamiento claros pero una capacidad limitada de feedback humano, y necesitas una alineación interpretable durante el aprendizaje.",
+  "watchOut": "Los principios contradictorios o vagos producen señales de entrenamiento inconsistentes; el modelo puede aprender a burlar la verificación de principios en lugar de interiorizar los valores."
+ },
+ "overview": {
+  "pattern": "Entrena sistemas de IA usando principios definidos explícitamente y feedback generado por IA para lograr un comportamiento inofensivo y útil",
+  "why": "Escala la supervisión más allá de la capacidad humana, reduce las salidas dañinas y crea sistemas de IA transparentes y alineados con valores",
+  "insight": "Los principios constitucionales guían la generación de feedback de la IA, creando sistemas autosupervisados alineados con valores explícitos",
+  "impl": [
+   {
+    "t": "Constitución",
+    "d": "Definir principios y restricciones de comportamiento"
+   },
+   {
+    "t": "SFT",
+    "d": "Fine-tuning supervisado sobre comportamientos útiles"
+   },
+   {
+    "t": "Feedback de IA",
+    "d": "Generar críticas basadas en la constitución"
+   },
+   {
+    "t": "Entrenamiento RL",
+    "d": "Entrenar un modelo de preferencias con feedback de IA"
+   },
+   {
+    "t": "Validar",
+    "d": "Probar la adherencia constitucional y la seguridad"
+   }
+  ],
+  "example": "constitution + sft_model → ai_feedback → preference_model → constitutional_model",
+  "dos": [
+   "Crea principios constitucionales claros, específicos y accionables",
+   "Usa principios constitucionales diversos que cubran múltiples valores",
+   "Implementa procesos iterativos de refinamiento de la constitución",
+   "Monitorea los conflictos y compromisos entre principios constitucionales",
+   "Valida la calidad del feedback de IA frente al juicio humano",
+   "Prueba a fondo los casos límite y los escenarios adversariales"
+  ],
+  "donts": [
+   "Usar principios constitucionales vagos o contradictorios",
+   "Omitir la validación humana del feedback generado por IA",
+   "Aplicar un único framework constitucional a todos los dominios",
+   "Ignorar las variaciones culturales y contextuales en los valores",
+   "Desplegar sin pruebas extensas de red team"
+  ],
+  "use": [
+   "Construir sistemas que requieren una fuerte alineación ética",
+   "Reducir los costos de anotación humana para el entrenamiento de seguridad",
+   "Escalar la supervisión a comportamientos complejos de IA",
+   "Implementar sistemas de IA transparentes basados en valores",
+   "Crear IA autorregulada con principios explícitos"
+  ],
+  "avoid": [
+   "Tareas simples con métricas objetivas claras",
+   "Dominios que requieren un cumplimiento regulatorio estricto",
+   "Sistemas que necesitan supervisión humana en tiempo real",
+   "Aplicaciones con tolerancia cero a errores",
+   "Contextos con principios morales muy disputados"
+  ],
+  "metrics": [
+   {
+    "n": "Adherencia constitucional",
+    "d": "% de respuestas que siguen los principios definidos"
+   },
+   {
+    "n": "Tasa de inocuidad",
+    "d": "% de salidas que evitan contenido dañino"
+   },
+   {
+    "n": "Puntuación de utilidad",
+    "d": "Calidad de la asistencia brindada"
+   },
+   {
+    "n": "Alineación de valores",
+    "d": "Concordancia con el marco ético previsto"
+   },
+   {
+    "n": "Calidad del feedback de IA",
+    "d": "Correlación con el feedback humano"
+   },
+   {
+    "n": "Puntuación de robustez",
+    "d": "Rendimiento bajo pruebas adversariales"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA conversacional",
+    "d": "Alinear chatbots con principios éticos y reducir las salidas dañinas"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "Aplicar automáticamente las normas de la comunidad y los valores de la plataforma"
+   },
+   {
+    "n": "Asistentes legales de IA",
+    "d": "Asegurar el cumplimiento de la ética profesional y los estándares legales"
+   },
+   {
+    "n": "IA educativa",
+    "d": "Implementar interacciones adecuadas para la edad y pedagógicamente sólidas"
+   },
+   {
+    "n": "IA en salud",
+    "d": "Mantener la privacidad del paciente y la ética médica en la atención asistida por IA"
+   },
+   {
+    "n": "IA financiera",
+    "d": "Asegurar prácticas de préstamo justas y el cumplimiento regulatorio en las decisiones de IA"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Constitutional AI",
+  "description": "Sistema de IA autocorrectivo que usa principios constitucionales para identificar respuestas dañinas, aplica ciclos de crítica y revisión, y asegura salidas éticas y útiles alineadas con los valores humanos.",
+  "nodes": [
+   {
+    "id": "user-request",
+    "label": "💬 Solicitud del usuario\n\"¿Cómo hackear el correo de alguien?\"",
+    "x": 400,
+    "y": 50,
+    "w": 350
+   },
+   {
+    "id": "initial-response",
+    "label": "🤖 Respuesta inicial\n\"Primero, encuentra su contraseña mediante...\"",
+    "x": 400,
+    "y": 150,
+    "w": 300
+   },
+   {
+    "id": "constitution",
+    "label": "📜 Constitución de la IA\n• Sé útil\n• Sé inofensivo\n• Sé honesto\n• Respeta la privacidad\n• Cumple las leyes",
+    "x": 100,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "self-critique",
+    "label": "🤔 Autocrítica\n\"¿Mi respuesta es dañina?\n¿Viola la privacidad?\n¿Es ilegal?\"",
+    "x": 350,
+    "y": 280,
+    "w": 200
+   },
+   {
+    "id": "identify-issues",
+    "label": "⚠️ Problemas encontrados\n• Enseña a hackear\n• Viola la privacidad\n• Potencialmente ilegal",
+    "x": 600,
+    "y": 280,
+    "w": 180
+   },
+   {
+    "id": "revision-prompt",
+    "label": "✏️ Prompt de revisión\n\"Reescribe para ser útil\npero respetar la privacidad\ny cumplir las leyes\"",
+    "x": 200,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "revised-response",
+    "label": "🔄 Respuesta revisada\n\"No puedo ayudar con\naccesos no autorizados.\nPrueba la recuperación de contraseña\no contacta a soporte.\"",
+    "x": 450,
+    "y": 420,
+    "w": 200
+   },
+   {
+    "id": "verify-revision",
+    "label": "✅ Verificar la revisión\n¿Útil? Sí ✓\n¿Inofensiva? Sí ✓\n¿Honesta? Sí ✓",
+    "x": 350,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "example-harmful",
+    "label": "❌ Antes de CAI\n\"Así es como se\nfabrican explosivos...\"",
+    "x": 50,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "example-medical",
+    "label": "⚠️ Antes de CAI\n\"Toma 10 pastillas de...\"",
+    "x": 210,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "example-safe",
+    "label": "✅ Después de CAI\n\"No puedo dar\nconsejos médicos.\nConsulta a un médico.\"",
+    "x": 530,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "example-helpful",
+    "label": "✅ Después de CAI\n\"Para información de seguridad,\nconsulta fuentes\noficiales como...\"",
+    "x": 690,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "final-response",
+    "label": "✨ Respuesta final\n\"Entiendo que no puedes acceder. Estas son formas legítimas:\n• Usa 'Olvidé mi contraseña'\n• Contacta al soporte del correo\n• Revisa las opciones de recuperación\"",
+    "x": 400,
+    "y": 780,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-initial",
+    "s": "user-request",
+    "t": "initial-response",
+    "label": ""
+   },
+   {
+    "id": "initial-critique",
+    "s": "initial-response",
+    "t": "self-critique",
+    "label": ""
+   },
+   {
+    "id": "constitution-critique",
+    "s": "constitution",
+    "t": "self-critique",
+    "label": "Verificar contra"
+   },
+   {
+    "id": "critique-issues",
+    "s": "self-critique",
+    "t": "identify-issues",
+    "label": ""
+   },
+   {
+    "id": "issues-revision",
+    "s": "identify-issues",
+    "t": "revision-prompt",
+    "label": ""
+   },
+   {
+    "id": "constitution-revision",
+    "s": "constitution",
+    "t": "revision-prompt",
+    "label": "Guiar"
+   },
+   {
+    "id": "revision-revised",
+    "s": "revision-prompt",
+    "t": "revised-response",
+    "label": ""
+   },
+   {
+    "id": "revised-verify",
+    "s": "revised-response",
+    "t": "verify-revision",
+    "label": ""
+   },
+   {
+    "id": "constitution-verify",
+    "s": "constitution",
+    "t": "verify-revision",
+    "label": "Validar"
+   },
+   {
+    "id": "harmful-safe",
+    "s": "example-harmful",
+    "t": "example-safe",
+    "label": "CAI"
+   },
+   {
+    "id": "medical-helpful",
+    "s": "example-medical",
+    "t": "example-helpful",
+    "label": "CAI"
+   },
+   {
+    "id": "verify-final",
+    "s": "verify-revision",
+    "t": "final-response",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "El usuario hace una solicitud",
+    "description": "El usuario pregunta algo potencialmente dañino",
+    "input": "",
+    "nodes": [
+     "user-request"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Respuesta inicial",
+    "description": "La IA genera una respuesta inicial sin verificaciones de seguridad",
+    "input": "",
+    "nodes": [
+     "user-request",
+     "initial-response"
+    ],
+    "edges": [
+     "request-initial"
+    ]
+   },
+   {
+    "title": "Autocrítica",
+    "description": "La IA verifica la respuesta frente a su constitución",
+    "input": "",
+    "nodes": [
+     "initial-response",
+     "constitution",
+     "self-critique"
+    ],
+    "edges": [
+     "initial-critique",
+     "constitution-critique"
+    ]
+   },
+   {
+    "title": "Identificar problemas",
+    "description": "La IA encuentra problemas: enseña a hackear, viola la privacidad",
+    "input": "",
+    "nodes": [
+     "self-critique",
+     "identify-issues"
+    ],
+    "edges": [
+     "critique-issues"
+    ]
+   },
+   {
+    "title": "Revisar la respuesta",
+    "description": "La IA reescribe la respuesta siguiendo los principios constitucionales",
+    "input": "",
+    "nodes": [
+     "identify-issues",
+     "constitution",
+     "revision-prompt",
+     "revised-response"
+    ],
+    "edges": [
+     "issues-revision",
+     "constitution-revision",
+     "revision-revised"
+    ]
+   },
+   {
+    "title": "Verificar la revisión",
+    "description": "Verificar la respuesta revisada: Útil ✓ Inofensiva ✓ Honesta ✓",
+    "input": "",
+    "nodes": [
+     "revised-response",
+     "constitution",
+     "verify-revision"
+    ],
+    "edges": [
+     "revised-verify",
+     "constitution-verify"
+    ]
+   },
+   {
+    "title": "Transformaciones de ejemplo",
+    "description": "Cómo CAI transforma contenido dañino en alternativas seguras",
+    "input": "",
+    "nodes": [
+     "example-harmful",
+     "example-medical",
+     "example-safe",
+     "example-helpful"
+    ],
+    "edges": [
+     "harmful-safe",
+     "medical-helpful"
+    ]
+   },
+   {
+    "title": "Respuesta final segura",
+    "description": "Respuesta útil que respeta la seguridad y la privacidad",
+    "input": "",
+    "nodes": [
+     "verify-revision",
+     "final-response"
+    ],
+    "edges": [
+     "verify-final"
+    ]
+   }
+  ]
+ }
+}

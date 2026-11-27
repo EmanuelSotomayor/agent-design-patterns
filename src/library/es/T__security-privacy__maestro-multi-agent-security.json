@@ -1,0 +1,336 @@
+{
+ "cat": "security-privacy",
+ "slug": "maestro-multi-agent-security",
+ "name": "MAESTRO Multi-Agent Security Pattern(MAS)",
+ "icon": "🎼",
+ "complexity": "high",
+ "description": "Modelado integral de amenazas para entornos multiagente con orquestación de seguridad",
+ "features": [
+  "Evaluación del entorno multiagente",
+  "Identificación de amenazas de seguridad",
+  "Cuantificación y priorización de riesgos",
+  "Modelado de predicción de resultados",
+  "Coordinación de seguridad entre agentes",
+  "Evaluación de riesgos en todo el ciclo de vida"
+ ],
+ "tldr": {
+  "what": "Mapea las capacidades y los niveles de confianza de los agentes, identifica rutas de ataque entre agentes, cuantifica los riesgos y coordina los controles de seguridad en todo el sistema.",
+  "when": "Sistemas multiagente donde los agentes tienen distintos permisos, acceso externo o manejan datos sensibles que podrían verse comprometidos mediante la explotación de agente a agente.",
+  "watchOut": "La alta carga y los falsos positivos pueden paralizar la toma de decisiones; los modelos de amenazas quedan desactualizados a medida que cambian los agentes y las integraciones."
+ },
+ "overview": {
+  "pattern": "Orquesta múltiples agentes de seguridad especializados para una detección integral de amenazas",
+  "why": "Los agentes individuales tienen puntos ciegos; un conjunto coordinado proporciona defensa en profundidad",
+  "insight": "Roles especializados + consenso bizantino + ponderación por reputación = seguridad robusta",
+  "impl": [
+   {
+    "t": "Topología de confianza",
+    "d": "Define las relaciones entre agentes y los niveles de confianza"
+   },
+   {
+    "t": "Asignación de roles",
+    "d": "Establece roles de seguridad especializados por agente"
+   },
+   {
+    "t": "Coordinar verificaciones",
+    "d": "Orquesta validaciones desde múltiples ángulos"
+   },
+   {
+    "t": "Protocolo de consenso",
+    "d": "Agrega las decisiones de los agentes"
+   },
+   {
+    "t": "Resolución de conflictos",
+    "d": "Maneja desacuerdos y escalamientos"
+   }
+  ],
+  "example": "trust_matrix → role_delegation → parallel_validation → consensus_aggregation → decision_output",
+  "dos": [
+   "Implementa tolerancia a fallos bizantinos para el consenso entre agentes",
+   "Usa agentes de seguridad especializados para distintos tipos de amenazas",
+   "Aplica puntajes de reputación para ponderar las contribuciones de los agentes",
+   "Mantén registros de auditoría de todas las interacciones entre agentes",
+   "Diseña para una degradación gradual si fallan agentes"
+  ],
+  "donts": [
+   "Confiar en las decisiones de un solo agente para operaciones críticas",
+   "Permitir comunicación sin restricciones entre agentes",
+   "Omitir la verificación de consenso en emergencias",
+   "Ignorar la posibilidad de colusión entre agentes",
+   "Desplegar sin capacidad de kill switch"
+  ],
+  "use": [
+   "Despliegues multiagente complejos",
+   "Sistemas de decisión de alto riesgo",
+   "Entornos adversariales",
+   "Sistemas de IA entre organizaciones"
+  ],
+  "avoid": [
+   "Tareas simples de un solo agente",
+   "Aplicaciones de bajo riesgo",
+   "Operaciones críticas en latencia",
+   "Entornos con recursos limitados"
+  ],
+  "metrics": [
+   {
+    "n": "Tiempo de consenso",
+    "d": "ms para alcanzar un acuerdo multiagente"
+   },
+   {
+    "n": "Cobertura de detección",
+    "d": "% de amenazas detectadas por el conjunto"
+   },
+   {
+    "n": "Tasa de falsos positivos",
+    "d": "Decisiones de consenso incorrectas"
+   },
+   {
+    "n": "Disponibilidad de agentes",
+    "d": "Tiempo activo de los agentes de seguridad"
+   },
+   {
+    "n": "Detección de colusión",
+    "d": "Intentos de ataque coordinado encontrados"
+   },
+   {
+    "n": "Calidad de las decisiones",
+    "d": "Precisión frente a la línea base de un solo agente"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Trading financiero",
+    "d": "Múltiples agentes validan las operaciones antes de ejecutarlas"
+   },
+   {
+    "n": "Vehículos autónomos",
+    "d": "Agentes de seguridad coordinan la validación de percepción y decisiones"
+   },
+   {
+    "n": "Diagnóstico médico",
+    "d": "Agentes especialistas verifican de forma cruzada las recomendaciones de tratamiento"
+   },
+   {
+    "n": "Infraestructura crítica",
+    "d": "Agentes de seguridad monitorean distintos vectores de ataque"
+   },
+   {
+    "n": "Moderación de contenido",
+    "d": "Agentes diversos verifican distintas infracciones de políticas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón MAESTRO Multi-Agent Security",
+  "description": "Modelado integral de amenazas para entornos multiagente con orquestación de seguridad, verificación de confianza y mecanismos de defensa coordinados",
+  "nodes": [
+   {
+    "id": "multi-agent-system",
+    "label": "🏢 Sistema financiero multiagente\n\"Agente de trading + Agente de riesgo + Agente de auditoría\nProcesa más de $1M en transacciones al día\nDatos compartidos y decisiones coordinadas\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "coordinated-threat",
+    "label": "🎯 Ataque coordinado\n\"Un agente de trading comprometido\nintenta manipular a los\nagentes de riesgo y auditoría\"",
+    "x": 400,
+    "y": 200,
+    "w": 250
+   },
+   {
+    "id": "isolated-agents",
+    "label": "⚠️ Seguridad aislada por agente\n\"Cada agente tiene controles\nde seguridad independientes, pero sin\nrespuesta coordinada ante amenazas\"",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "security-blind-spots",
+    "label": "🕳️ Puntos ciegos de seguridad\n\"Los ataques entre agentes tienen éxito\nSin inteligencia de amenazas compartida\nPolíticas de seguridad inconsistentes\"",
+    "x": 150,
+    "y": 500,
+    "w": 220
+   },
+   {
+    "id": "system-compromise",
+    "label": "💀 Compromiso de todo el sistema\n\"El trading comprometido se propaga en cascada\nCálculos de riesgo manipulados\nRegistros de auditoría corrompidos\"",
+    "x": 150,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "maestro-orchestration",
+    "label": "🛡️ Orquestación de seguridad MAESTRO\n\"Modelado de amenazas centralizado\nVerificación de confianza en tiempo real\nRespuestas de defensa coordinadas\"",
+    "x": 650,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "trust-verification",
+    "label": "🔍 Verificación de confianza multiagente\n\"Anomalía en el comportamiento del agente de trading\nValidación cruzada con el agente de riesgo\nEl agente de auditoría confirma el compromiso\"",
+    "x": 650,
+    "y": 500,
+    "w": 250
+   },
+   {
+    "id": "coordinated-response",
+    "label": "⚡ Respuesta de seguridad coordinada\n\"Aislar al agente de trading comprometido\nElevar la vigilancia del agente de riesgo\nModo forense del agente de auditoría\"",
+    "x": 650,
+    "y": 650,
+    "w": 250
+   },
+   {
+    "id": "threat-containment",
+    "label": "🔒 Contención exitosa de la amenaza\n\"Ataque aislado en un solo agente\nIntegridad del sistema preservada\nMonitoreo continuo activo\"",
+    "x": 650,
+    "y": 800,
+    "w": 250
+   },
+   {
+    "id": "orchestration-principle",
+    "label": "🎯 Principio de orquestación de seguridad\n\"Las amenazas multiagente requieren defensa coordinada\nInteligencia compartida + Verificación de confianza\n+ Respuesta unificada = Resiliencia del sistema\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "multi-agent-system",
+    "t": "coordinated-threat",
+    "label": "objetivo del ataque"
+   },
+   {
+    "id": "e2",
+    "s": "coordinated-threat",
+    "t": "isolated-agents",
+    "label": "ataca al sistema no coordinado"
+   },
+   {
+    "id": "e3",
+    "s": "coordinated-threat",
+    "t": "maestro-orchestration",
+    "label": "ataca al sistema orquestado"
+   },
+   {
+    "id": "e4",
+    "s": "isolated-agents",
+    "t": "security-blind-spots",
+    "label": "crea vulnerabilidades"
+   },
+   {
+    "id": "e5",
+    "s": "security-blind-spots",
+    "t": "system-compromise",
+    "label": "permite fallos en cascada"
+   },
+   {
+    "id": "e6",
+    "s": "maestro-orchestration",
+    "t": "trust-verification",
+    "label": "activa la verificación"
+   },
+   {
+    "id": "e7",
+    "s": "trust-verification",
+    "t": "coordinated-response",
+    "label": "confirma la amenaza"
+   },
+   {
+    "id": "e8",
+    "s": "coordinated-response",
+    "t": "threat-containment",
+    "label": "ejecuta la defensa"
+   },
+   {
+    "id": "e9",
+    "s": "system-compromise",
+    "t": "orchestration-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e10",
+    "s": "threat-containment",
+    "t": "orchestration-principle",
+    "label": "prueba la efectividad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Despliegue del sistema financiero multiagente",
+    "description": "Sistema complejo con un agente de trading, un agente de riesgo y un agente de auditoría que procesan millones en transacciones diarias mediante datos compartidos y toma de decisiones coordinada.",
+    "input": "",
+    "nodes": [
+     "multi-agent-system"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Ataque multiagente coordinado",
+    "description": "Amenaza sofisticada: un agente de trading comprometido intenta manipular a los agentes de riesgo y de auditoría, lo que demuestra vectores de ataque propios de los entornos multiagente.",
+    "input": "",
+    "nodes": [
+     "coordinated-threat"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de seguridad: aislado vs orquestado",
+    "description": "El mismo ataque apunta a dos arquitecturas diferentes: seguridad aislada por agente (izquierda) con controles independientes vs seguridad orquestada con MAESTRO (derecha) con defensa coordinada.",
+    "input": "",
+    "nodes": [
+     "isolated-agents",
+     "maestro-orchestration"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "La seguridad aislada crea puntos ciegos",
+    "description": "La seguridad independiente por agente falla ante ataques entre agentes y crea vulnerabilidades por la falta de inteligencia de amenazas compartida y por políticas de seguridad inconsistentes.",
+    "input": "",
+    "nodes": [
+     "security-blind-spots",
+     "system-compromise"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Verificación de confianza multiagente con MAESTRO",
+    "description": "El sistema orquestado detecta la anomalía del agente de trading, la valida de forma cruzada con el agente de riesgo y confirma el compromiso mediante el agente de auditoría, lo que demuestra una detección de amenazas coordinada.",
+    "input": "",
+    "nodes": [
+     "trust-verification"
+    ],
+    "edges": [
+     "e6"
+    ]
+   },
+   {
+    "title": "Defensa coordinada y contención exitosa",
+    "description": "MAESTRO ejecuta una respuesta unificada: aísla al agente comprometido, eleva la vigilancia de los demás y activa el modo forense, conteniendo con éxito la amenaza mientras preserva la integridad del sistema.",
+    "input": "",
+    "nodes": [
+     "coordinated-response",
+     "threat-containment",
+     "orchestration-principle"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   }
+  ]
+ }
+}

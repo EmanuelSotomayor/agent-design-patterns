@@ -1,0 +1,304 @@
+{
+ "cat": "multi-agent",
+ "slug": "message-queuing",
+ "name": "Message Queuing(MQ)",
+ "icon": "📬",
+ "complexity": "high",
+ "description": "Sistema de paso de mensajes asíncrono que permite la comunicación desacoplada entre agentes de IA y servicios en sistemas agénticos distribuidos",
+ "features": [
+  "Comunicación asíncrona entre agentes",
+  "Persistencia y durabilidad de mensajes",
+  "Distribución de tareas basada en prioridades",
+  "Coordinación multiagente",
+  "Tolerancia a fallos y recuperación",
+  "Balanceo de carga escalable",
+  "Flujos de trabajo dirigidos por eventos",
+  "Manejo de dead letter queue"
+ ],
+ "tldr": {
+  "what": "Los agentes envían mensajes a colas en lugar de llamarse directamente entre sí, lo que permite el trabajo asíncrono y desacopla las dependencias entre servicios.",
+  "when": "Varios agentes necesitan coordinar trabajo sin bloquearse, manejar cargas variables o recuperarse de fallos sin perder tareas.",
+  "watchOut": "El orden de los mensajes y el manejo de duplicados se vuelven complejos; depurar fallos distribuidos entre la cola, el productor y el consumidor es mucho más difícil."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Colas de mensajes en sistemas de IA agéntica",
+  "description": "Paso de mensajes asíncrono entre agentes de IA mediante colas para lograr una comunicación y coordinación desacopladas y tolerantes a fallos",
+  "nodes": [
+   {
+    "id": "coordinator",
+    "label": "Coordinador de investigación\nOrquesta los flujos de trabajo de investigación",
+    "x": 100,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "research-queue",
+    "label": "Cola de tareas de investigación\nSolicitudes de investigación de alta prioridad",
+    "x": 350,
+    "y": 100,
+    "w": 170
+   },
+   {
+    "id": "arxiv-queue",
+    "label": "Cola de tareas de ArXiv\nBúsqueda y extracción de artículos",
+    "x": 350,
+    "y": 250,
+    "w": 170
+   },
+   {
+    "id": "analysis-queue",
+    "label": "Cola de tareas de análisis\nAnálisis y procesamiento de contenido",
+    "x": 350,
+    "y": 400,
+    "w": 170
+   },
+   {
+    "id": "synthesis-queue",
+    "label": "Cola de síntesis\nAgregación de resultados y generación de reportes",
+    "x": 350,
+    "y": 550,
+    "w": 170
+   },
+   {
+    "id": "results-queue",
+    "label": "Cola de resultados\nReportes de investigación completados",
+    "x": 100,
+    "y": 550,
+    "w": 170
+   },
+   {
+    "id": "arxiv-agent",
+    "label": "Agente ArXiv\nEspecializado en búsqueda de artículos académicos",
+    "x": 650,
+    "y": 200,
+    "w": 180
+   },
+   {
+    "id": "search-agent",
+    "label": "Agente de búsqueda\nInvestigación en la web y en bases de datos",
+    "x": 650,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "analysis-agent",
+    "label": "Agente de análisis\nResumen y análisis de contenido",
+    "x": 650,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "nlp-agent",
+    "label": "Agente NLP\nProcesamiento de lenguaje natural",
+    "x": 850,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "synthesis-agent",
+    "label": "Agente de síntesis\nGeneración de reportes e insights",
+    "x": 650,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "notification-service",
+    "label": "Servicio de notificaciones\nAlertas y actualizaciones de estado",
+    "x": 100,
+    "y": 100,
+    "w": 170
+   }
+  ],
+  "edges": [
+   {
+    "id": "coord-to-queue",
+    "s": "coordinator",
+    "t": "research-queue",
+    "label": ""
+   },
+   {
+    "id": "queue-routing-1",
+    "s": "research-queue",
+    "t": "arxiv-queue",
+    "label": ""
+   },
+   {
+    "id": "queue-routing-2",
+    "s": "research-queue",
+    "t": "analysis-queue",
+    "label": ""
+   },
+   {
+    "id": "arxiv-consume",
+    "s": "arxiv-queue",
+    "t": "arxiv-agent",
+    "label": ""
+   },
+   {
+    "id": "search-consume",
+    "s": "arxiv-queue",
+    "t": "search-agent",
+    "label": ""
+   },
+   {
+    "id": "analysis-consume-1",
+    "s": "analysis-queue",
+    "t": "analysis-agent",
+    "label": ""
+   },
+   {
+    "id": "analysis-consume-2",
+    "s": "analysis-queue",
+    "t": "nlp-agent",
+    "label": ""
+   },
+   {
+    "id": "synthesis-consume",
+    "s": "synthesis-queue",
+    "t": "synthesis-agent",
+    "label": ""
+   },
+   {
+    "id": "arxiv-to-analysis",
+    "s": "arxiv-agent",
+    "t": "analysis-queue",
+    "label": ""
+   },
+   {
+    "id": "search-to-analysis",
+    "s": "search-agent",
+    "t": "analysis-queue",
+    "label": ""
+   },
+   {
+    "id": "analysis-to-synthesis",
+    "s": "analysis-agent",
+    "t": "synthesis-queue",
+    "label": ""
+   },
+   {
+    "id": "nlp-to-synthesis",
+    "s": "nlp-agent",
+    "t": "synthesis-queue",
+    "label": ""
+   },
+   {
+    "id": "synthesis-to-results",
+    "s": "synthesis-agent",
+    "t": "results-queue",
+    "label": ""
+   },
+   {
+    "id": "deliver-results",
+    "s": "results-queue",
+    "t": "coordinator",
+    "label": ""
+   },
+   {
+    "id": "notify-completion",
+    "s": "coordinator",
+    "t": "notification-service",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Publicación de la tarea",
+    "description": "El coordinador de investigación publica una tarea de investigación de alta prioridad en la cola de mensajes",
+    "input": "Solicitud de investigación: \"Analizar aplicaciones de la computación cuántica en criptografía\"",
+    "nodes": [
+     "coordinator",
+     "research-queue"
+    ],
+    "edges": [
+     "coord-to-queue"
+    ]
+   },
+   {
+    "title": "Enrutamiento de mensajes",
+    "description": "El sistema de colas enruta la tarea de investigación a los agentes especialistas adecuados según sus capacidades",
+    "input": "",
+    "nodes": [
+     "research-queue",
+     "arxiv-queue",
+     "analysis-queue"
+    ],
+    "edges": [
+     "queue-routing-1",
+     "queue-routing-2"
+    ]
+   },
+   {
+    "title": "Procesamiento en paralelo",
+    "description": "Varios agentes especialistas consumen mensajes de sus respectivas colas y procesan las tareas en paralelo",
+    "input": "",
+    "nodes": [
+     "arxiv-queue",
+     "arxiv-agent",
+     "search-agent"
+    ],
+    "edges": [
+     "arxiv-consume",
+     "search-consume"
+    ]
+   },
+   {
+    "title": "Publicación de resultados",
+    "description": "Los agentes publican sus resultados en colas posteriores para seguir procesándolos",
+    "input": "",
+    "nodes": [
+     "arxiv-agent",
+     "analysis-queue",
+     "synthesis-queue"
+    ],
+    "edges": [
+     "arxiv-to-analysis",
+     "search-to-analysis"
+    ]
+   },
+   {
+    "title": "Procesamiento del análisis",
+    "description": "Los agentes de análisis procesan los artículos recopilados y extraen los hallazgos clave",
+    "input": "",
+    "nodes": [
+     "analysis-queue",
+     "analysis-agent",
+     "nlp-agent"
+    ],
+    "edges": [
+     "analysis-consume-1",
+     "analysis-consume-2"
+    ]
+   },
+   {
+    "title": "Síntesis y agregación",
+    "description": "El agente de síntesis final combina todos los resultados del análisis en un reporte de investigación integral",
+    "input": "",
+    "nodes": [
+     "synthesis-queue",
+     "synthesis-agent",
+     "results-queue"
+    ],
+    "edges": [
+     "synthesis-consume",
+     "synthesis-to-results"
+    ]
+   },
+   {
+    "title": "Entrega de resultados",
+    "description": "El reporte de investigación completado se entrega de vuelta al coordinador solicitante con trazabilidad completa",
+    "input": "",
+    "nodes": [
+     "results-queue",
+     "coordinator",
+     "notification-service"
+    ],
+    "edges": [
+     "deliver-results",
+     "notify-completion"
+    ]
+   }
+  ]
+ }
+}

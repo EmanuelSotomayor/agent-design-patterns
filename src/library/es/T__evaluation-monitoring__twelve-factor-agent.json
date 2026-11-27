@@ -1,0 +1,418 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "twelve-factor-agent",
+ "name": "12-Factor Agent Methodology(12FA)",
+ "icon": "🏗️",
+ "complexity": "high",
+ "description": "Metodología lista para producción que adapta los principios de 12-factor app a sistemas de agentes escalables y mantenibles, con monitoreo y evaluación integrales.",
+ "features": [
+  "Desarrollo guiado por evaluaciones",
+  "Integración de observabilidad en una línea",
+  "Feedback con humano en el bucle",
+  "Monitoreo de costos y recursos",
+  "Arquitectura de agentes modular",
+  "Patrones de despliegue en producción"
+ ],
+ "tldr": {
+  "what": "Aplica doce principios de ingeniería de software a los sistemas de agentes para lograr consistencia, observabilidad y escalabilidad entre entornos.",
+  "when": "Construcción de sistemas de agentes en producción que necesitan escalar horizontalmente, ejecutarse de forma confiable en distintos entornos y mantener visibilidad sobre costos, rendimiento y corrección a lo largo del tiempo.",
+  "watchOut": "Alta complejidad inicial y sobrecarga de infraestructura; los equipos suelen sobrediseñar desde el principio o tienen dificultades para implementar los doce factores de forma consistente sin soporte dedicado de DevOps."
+ },
+ "overview": {
+  "pattern": "Metodología lista para producción que adapta los principios de 12-factor app a sistemas de agentes escalables y mantenibles",
+  "why": "Lleva a los agentes más allá del 70-80% de confiabilidad de un prototipo hacia sistemas de nivel productivo con flujos de trabajo de humano en el bucle",
+  "insight": "Los agentes más exitosos no son los más 'agénticos'; son sistemas de software bien diseñados que aprovechan los LLMs para transformaciones controladas",
+  "impl": [
+   {
+    "t": "Diseñar",
+    "d": "Empieza con la extracción a JSON como base"
+   },
+   {
+    "t": "Estructurar",
+    "d": "Hazte cargo de los prompts, las ventanas de contexto y el flujo de control"
+   },
+   {
+    "t": "Arquitectura",
+    "d": "Construye agentes sin estado y enfocados, con manejo de errores explícito"
+   },
+   {
+    "t": "Integrar",
+    "d": "Agrega humano en el bucle y soporte multicanal"
+   },
+   {
+    "t": "Desplegar",
+    "d": "Monitorea la observabilidad e itera en la frontera de capacidad"
+   }
+  ],
+  "example": "agent = Agent(prompt=owned, context=managed, flow=explicit, state=stateless, humans=first_class) Los 12 factores en detalle 1 La extracción a JSON como base El superpoder central del LLM: convertir lenguaje natural en datos estructurados. La capacidad de tomar un string y convertirlo en JSON. 2 Hazte cargo de tus prompts La calidad de producción requiere prompts hechos a mano, no abstracciones. Controla tus prompts para ajustar el orden de los tokens y los roles system/user a medida que cambian los modelos. 3 Gestiona las ventanas de contexto explícitamente No agregues a ciegas; gestiona activamente lo que ve el LLM. Controla la ventana de contexto, condensando trazas y resúmenes de errores para la autorreparación. 4 Las herramientas son solo JSON y código Desmitifica el \"uso de herramientas\" como un simple enrutamiento. Trata las herramientas como salidas JSON estructuradas validadas mediante sentencias switch. 5 Hazte cargo de tu flujo de control Agentes = prompt + switch + contexto + bucle. Mantén el flujo de control en el código con bucles OODA explícitos y heurísticas de convergencia. 6 Diseño de agentes sin estado Permite pausar/reanudar y escalar horizontalmente. Persiste el estado de ejecución para reinicios idempotentes. 7 Separa el estado de negocio del estado de ejecución Ciclos de vida distintos, necesidades distintas. Expón endpoints de inicio/pausa/reanudación para repeticiones seguras. 8 Contacta a los humanos como operaciones de primera clase No es un caso límite, sino funcionalidad central. Deriva los pasos de alto riesgo a humanos como llamadas a herramientas de primera clase. 9 Ve a donde están los usuarios Email, Slack, Discord: multicanal por diseño. Activa agentes desde donde los usuarios ya trabajan. 10 Los agentes pequeños y enfocados superan a los monolitos 3-10 pasos como máximo para mayor confiabilidad. Construye agentes pequeños de propósito único en lugar de monolitos conversadores. 11 Manejo de errores explícito Procesa los errores de forma inteligente, no a ciegas. Compacta los errores en el siguiente prompt para cerrar el ciclo de feedback. 12 Encuentra la frontera Diseña la confiabilidad donde los modelos casi tienen éxito. Encuentra lo que está en el límite de la capacidad del modelo y hazlo confiable.",
+  "dos": [
+   "Escribe prompts a mano para lograr calidad de producción y evita las abstracciones de prompts",
+   "Gestiona activamente las ventanas de contexto con trazas y resúmenes de errores",
+   "Construye agentes sin estado que permitan pausar/reanudar",
+   "Deriva las operaciones de alto riesgo a humanos como llamadas a herramientas de primera clase",
+   "Mantén los agentes pequeños y enfocados (3-10 pasos como máximo)"
+  ],
+  "donts": [
+   "Agregar contenido a ciegas a las ventanas de contexto sin gestionarlas",
+   "Construir agentes monolíticos conversadores en lugar de agentes enfocados",
+   "Anidar prompts: usa en su lugar un flujo de control explícito en el código",
+   "Ignorar el manejo de errores: compacta los errores en el siguiente prompt",
+   "Tratar la interacción humana como un caso límite en lugar de una funcionalidad central"
+  ],
+  "use": [
+   "Construcción de agentes de IA listos para producción en empresas",
+   "Escalar más allá del 70-80% de funcionalidad de un prototipo",
+   "Necesidad de sistemas de agentes confiables y mantenibles",
+   "Requerimiento de flujos de trabajo con humano en el bucle",
+   "Construcción de experiencias de agentes multicanal"
+  ],
+  "avoid": [
+   "Demos simples o proyectos de prueba de concepto",
+   "Tareas de agente de un solo uso o descartables",
+   "Experimentos de investigación sin requisitos de producción",
+   "Casos en los que un 70-80% de confiabilidad es suficiente",
+   "Flujos de trabajo totalmente automatizados sin necesidad de supervisión humana"
+  ],
+  "metrics": [
+   {
+    "n": "Confiabilidad en producción",
+    "d": "Tasa de éxito >90% en entornos de producción"
+   },
+   {
+    "n": "Tiempo de respuesta del agente",
+    "d": "Latencia P95 para completar las tareas del agente"
+   },
+   {
+    "n": "Tasa de escalamiento a humanos",
+    "d": "% de tareas que requieren intervención humana"
+   },
+   {
+    "n": "Utilización de la ventana de contexto",
+    "d": "Eficiencia de la gestión del contexto"
+   },
+   {
+    "n": "Éxito en la recuperación de errores",
+    "d": "% de errores resueltos mediante autorreparación"
+   },
+   {
+    "n": "Adopción multicanal",
+    "d": "Uso en distintas interfaces de usuario"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Soporte al cliente empresarial",
+    "d": "Agente con escalamiento a humanos que gestiona tickets de soporte complejos en múltiples canales"
+   },
+   {
+    "n": "Operaciones financieras",
+    "d": "Agentes sin estado que procesan transacciones con manejo de errores explícito y registros de auditoría"
+   },
+   {
+    "n": "Gestión de contenido",
+    "d": "Agentes pequeños y enfocados para flujos de trabajo de creación, revisión y publicación de contenido"
+   },
+   {
+    "n": "Automatización de DevOps",
+    "d": "Agentes que gestionan pipelines de despliegue con puntos de aprobación humana para las versiones de producción"
+   },
+   {
+    "n": "Habilitación de ventas",
+    "d": "Agentes multicanal que apoyan a los equipos de ventas mediante integraciones con CRM, Slack y email"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de la metodología 12-Factor Agent",
+  "description": "Framework de ingeniería de agentes de IA listo para producción inspirado en 12-Factor Apps, que transforma prototipos experimentales en sistemas de software basados en LLM confiables, escalables y mantenibles",
+  "nodes": [
+   {
+    "id": "production-ai-challenge",
+    "label": "🚀 Desafío de los agentes de IA en producción\n\"¿Cómo construir software basado en LLM\nlo bastante confiable para clientes en producción\nmás allá de los prototipos experimentales?\"",
+    "x": 400,
+    "y": 50,
+    "w": 320
+   },
+   {
+    "id": "traditional-approach-failure",
+    "label": "❌ Falla de los frameworks tradicionales\n\"Enfoque Prompt + Herramientas + Bucle:\n• 70% de funcionalidad rápidamente\n• El último 20%, una pesadilla de depuración\n• Poco confiable en producción\"",
+    "x": 150,
+    "y": 200,
+    "w": 240
+   },
+   {
+    "id": "twelve-factor-methodology",
+    "label": "🏗️ Metodología 12-Factor Agent\n\"Disciplina de ingeniería para agentes de IA:\n• Principios listos para producción\n• Basada en 12-Factor Apps\n• Mayormente software + LLM estratégico\"",
+    "x": 650,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "foundation-factors",
+    "label": "🏛️ Factores fundamentales (1-4)\n\"Principios centrales de ingeniería:\n• Lenguaje natural → extracción a JSON\n• Hazte cargo de tus prompts y contexto\n• Herramientas como salidas estructuradas\"",
+    "x": 400,
+    "y": 350,
+    "w": 270
+   },
+   {
+    "id": "json-extraction",
+    "label": "1️⃣ Lenguaje natural → JSON\n\"El superpoder central del LLM:\nconvertir lenguaje no estructurado\nen datos estructurados y accionables\"",
+    "x": 200,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "own-prompts",
+    "label": "2️⃣ Hazte cargo de tus prompts\n\"La calidad de producción requiere\nprompts hechos a mano,\nno abstracciones genéricas\"",
+    "x": 400,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "context-management",
+    "label": "3️⃣ Hazte cargo de tu ventana de contexto\n\"Cura activamente lo que ve el LLM\nEvita agregar información a ciegas\nGestión explícita del contexto\"",
+    "x": 600,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "state-control-factors",
+    "label": "⚙️ Factores de estado y control (5-8)\n\"Gestión de la ejecución:\n• Diseño de agentes sin estado\n• Flujo de control explícito\n• Integración humana de primera clase\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "stateless-design",
+    "label": "6️⃣ Diseño de agentes sin estado\n\"Permite pausar/reanudar\nSoporta escalado horizontal\nFunciones puras que transforman el estado\"",
+    "x": 200,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "human-integration",
+    "label": "7️⃣ Contacta a los humanos como primera clase\n\"La interacción humana como funcionalidad central\nNo un caso límite, sino una consideración\nde diseño fundamental\"",
+    "x": 400,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "small-focused-agents",
+    "label": "🔟 Agentes pequeños y enfocados\n\"Límite de 3-10 pasos como máximo\nMejora la confiabilidad mediante la simplicidad\nMicroagentes para tareas específicas\"",
+    "x": 600,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "production-excellence",
+    "label": "🎯 Excelencia de agentes listos para producción\n\"Sistemas LLM confiables, escalables y mantenibles\nMayormente software tradicional + LLM estratégico\nLa disciplina de ingeniería transforma los prototipos\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   },
+   {
+    "id": "core-principle",
+    "label": "🎯 Principio de 12-Factor Agent\n\"Los agentes exitosos en producción son híbridos sofisticados:\nsoftware bien diseñado con capacidades de LLM\nintegradas cuidadosamente en puntos de control estratégicos\"",
+    "x": 400,
+    "y": 1100,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "production-ai-challenge",
+    "t": "traditional-approach-failure",
+    "label": "enfoque tradicional"
+   },
+   {
+    "id": "e2",
+    "s": "production-ai-challenge",
+    "t": "twelve-factor-methodology",
+    "label": "enfoque de ingeniería"
+   },
+   {
+    "id": "e3",
+    "s": "twelve-factor-methodology",
+    "t": "foundation-factors",
+    "label": "establece las bases"
+   },
+   {
+    "id": "e4",
+    "s": "foundation-factors",
+    "t": "json-extraction",
+    "label": "incluye el Factor 1"
+   },
+   {
+    "id": "e5",
+    "s": "foundation-factors",
+    "t": "own-prompts",
+    "label": "incluye el Factor 2"
+   },
+   {
+    "id": "e6",
+    "s": "foundation-factors",
+    "t": "context-management",
+    "label": "incluye el Factor 3"
+   },
+   {
+    "id": "e7",
+    "s": "foundation-factors",
+    "t": "state-control-factors",
+    "label": "habilita el control avanzado"
+   },
+   {
+    "id": "e8",
+    "s": "state-control-factors",
+    "t": "stateless-design",
+    "label": "incluye el Factor 6"
+   },
+   {
+    "id": "e9",
+    "s": "state-control-factors",
+    "t": "human-integration",
+    "label": "incluye el Factor 7"
+   },
+   {
+    "id": "e10",
+    "s": "state-control-factors",
+    "t": "small-focused-agents",
+    "label": "incluye el Factor 10"
+   },
+   {
+    "id": "e11",
+    "s": "json-extraction",
+    "t": "production-excellence",
+    "label": "habilita la confiabilidad"
+   },
+   {
+    "id": "e12",
+    "s": "own-prompts",
+    "t": "production-excellence",
+    "label": "asegura la calidad"
+   },
+   {
+    "id": "e13",
+    "s": "context-management",
+    "t": "production-excellence",
+    "label": "mejora el control"
+   },
+   {
+    "id": "e14",
+    "s": "stateless-design",
+    "t": "production-excellence",
+    "label": "habilita el escalado"
+   },
+   {
+    "id": "e15",
+    "s": "human-integration",
+    "t": "production-excellence",
+    "label": "asegura la usabilidad"
+   },
+   {
+    "id": "e16",
+    "s": "small-focused-agents",
+    "t": "production-excellence",
+    "label": "mejora la confiabilidad"
+   },
+   {
+    "id": "e17",
+    "s": "production-excellence",
+    "t": "core-principle",
+    "label": "demuestra el enfoque híbrido"
+   },
+   {
+    "id": "e18",
+    "s": "traditional-approach-failure",
+    "t": "core-principle",
+    "label": "demuestra la necesidad"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de ingeniería de agentes de IA en producción",
+    "description": "¿Cómo construimos software basado en LLM lo bastante confiable para clientes en producción? Ir más allá de los prototipos experimentales requiere una disciplina de ingeniería sistemática.",
+    "input": "",
+    "nodes": [
+     "production-ai-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Enfoques tradicionales vs. de ingeniería",
+    "description": "Los frameworks tradicionales de 'prompt + herramientas + bucle' alcanzan el 70% de funcionalidad rápidamente, pero fallan en producción. La metodología 12-Factor aplica la disciplina de la ingeniería de software a los agentes de IA.",
+    "input": "",
+    "nodes": [
+     "traditional-approach-failure",
+     "twelve-factor-methodology"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Factores fundamentales: principios centrales de ingeniería",
+    "description": "Establece prácticas de ingeniería fundamentales: la extracción de lenguaje natural a JSON como superpoder central, prompts hechos a mano en lugar de abstracciones y gestión explícita de la ventana de contexto.",
+    "input": "",
+    "nodes": [
+     "foundation-factors",
+     "json-extraction",
+     "own-prompts",
+     "context-management"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e5",
+     "e6"
+    ]
+   },
+   {
+    "title": "Factores de estado y control: gestión avanzada",
+    "description": "Implementa un control de ejecución sofisticado: diseño sin estado para la escalabilidad, integración humana como funcionalidad de primera clase y agentes pequeños y enfocados para mejorar la confiabilidad.",
+    "input": "",
+    "nodes": [
+     "state-control-factors",
+     "stateless-design",
+     "human-integration",
+     "small-focused-agents"
+    ],
+    "edges": [
+     "e7",
+     "e8",
+     "e9",
+     "e10"
+    ]
+   },
+   {
+    "title": "Excelencia en producción mediante la disciplina de ingeniería",
+    "description": "Los 12 factores convergen para crear sistemas listos para producción: la extracción a JSON habilita la confiabilidad, los prompts propios aseguran la calidad, el diseño sin estado habilita el escalado y la integración humana asegura la usabilidad.",
+    "input": "",
+    "nodes": [
+     "production-excellence"
+    ],
+    "edges": [
+     "e11",
+     "e12",
+     "e13",
+     "e14",
+     "e15",
+     "e16"
+    ]
+   },
+   {
+    "title": "Principio central de 12-Factor Agent",
+    "description": "Los agentes exitosos en producción son híbridos sofisticados: software tradicional bien diseñado con capacidades de LLM integradas estratégicamente, lo que demuestra que la disciplina de ingeniería transforma los prototipos en sistemas confiables.",
+    "input": "",
+    "nodes": [
+     "core-principle"
+    ],
+    "edges": [
+     "e17",
+     "e18"
+    ]
+   }
+  ]
+ }
+}

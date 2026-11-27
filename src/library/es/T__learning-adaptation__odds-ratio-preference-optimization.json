@@ -1,0 +1,510 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "odds-ratio-preference-optimization",
+ "name": "Odds Ratio Preference Optimization(ORPO)",
+ "icon": "🎲",
+ "complexity": "high",
+ "description": "Alineación de preferencias sin modelo de referencia que agrega una penalización por odds ratio a las respuestas rechazadas sobre el objetivo de modelado de lenguaje de la respuesta elegida",
+ "features": [
+  "Entrenamiento sin modelo de referencia",
+  "Objetivo SFT sobre la respuesta elegida",
+  "Penalización de preferencia por odds ratio",
+  "Una sola fase de entrenamiento",
+  "Datos de preferencia emparejados",
+  "Evaluación de preferencias y capacidades"
+ ],
+ "tldr": {
+  "what": "Entrena un modelo con las respuestas elegidas mientras penaliza las respuestas rechazadas mediante una pérdida de odds ratio, prescindiendo por completo del modelo de referencia.",
+  "when": "Tienes datos de preferencia emparejados y quieres una alineación más rápida y barata sin mantener un modelo de referencia aparte.",
+  "watchOut": "La penalización por odds ratio puede desestabilizar el entrenamiento si lambda está mal ajustado; requiere una búsqueda cuidadosa de hiperparámetros para evitar la pérdida de capacidades."
+ },
+ "overview": {
+  "pattern": "Entrenamiento en una sola fase que combina fine-tuning supervisado con optimización de preferencias basada en odds ratio",
+  "why": "Simplifica el pipeline de alineación, reduce la complejidad del entrenamiento y logra una alineación de preferencias competitiva sin modelado de recompensa por separado",
+  "insight": "La penalización por odds ratio optimiza directamente los cocientes de verosimilitud de las preferencias durante el entrenamiento supervisado para lograr una alineación eficiente",
+  "impl": [
+   {
+    "t": "SFT",
+    "d": "Fine-tuning supervisado con datos de demostración"
+   },
+   {
+    "t": "Datos de preferencia",
+    "d": "Recopila comparaciones de preferencia por pares"
+   },
+   {
+    "t": "Pérdida ORPO",
+    "d": "Combina la pérdida SFT con la penalización por odds ratio"
+   },
+   {
+    "t": "Fase única",
+    "d": "Entrena todo a la vez sin un modelo de recompensa aparte"
+   },
+   {
+    "t": "Validar",
+    "d": "Evalúa la alineación de preferencias y la utilidad"
+   }
+  ],
+  "example": "sft_data + preference_pairs → orpo_training → aligned_model (single_phase)",
+  "dos": [
+   "Usa datasets de preferencias balanceados con pares claros de ganador/perdedor",
+   "Ajusta el parámetro lambda para lograr el equilibrio óptimo entre SFT y preferencias",
+   "Vigila la inestabilidad del entrenamiento con gradient clipping",
+   "Valida contra evaluaciones humanas y tareas de benchmark",
+   "Usa tasas de aprendizaje adecuadas (normalmente más bajas que en el SFT estándar)",
+   "Implementa early stopping basado en la precisión de preferencias"
+  ],
+  "donts": [
+   "Usar datos de preferencia desbalanceados o de baja calidad",
+   "Fijar lambda demasiado alto (provoca inestabilidad en el entrenamiento)",
+   "Ignorar las log-probabilidades relativas en la función de pérdida",
+   "Omitir la comparación con DPO y otros métodos de preferencia",
+   "Aplicarlo sin entender la formulación del odds ratio"
+  ],
+  "use": [
+   "Quieres entrenamiento en una sola fase sin un modelo de recompensa aparte",
+   "Tienes disponibles datos de preferencia por pares de alta calidad",
+   "Necesitas una alternativa más simple al pipeline de RLHF de varias etapas",
+   "La eficiencia computacional es importante",
+   "Prefieres un entrenamiento monolítico frente a enfoques modulares"
+  ],
+  "avoid": [
+   "Necesitas un modelo de recompensa explícito por interpretabilidad",
+   "La calidad de los datos de preferencia es dudosa",
+   "Requieres un control fino sobre el moldeado de la recompensa",
+   "La estabilidad del entrenamiento es una preocupación importante",
+   "Se necesita optimización multiobjetivo"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de victoria en preferencias",
+    "d": "% de respuestas preferidas frente a la línea base"
+   },
+   {
+    "n": "Estabilidad del entrenamiento",
+    "d": "Convergencia de la pérdida y normas del gradiente"
+   },
+   {
+    "n": "Rendimiento SFT",
+    "d": "Conservación de la calidad del aprendizaje supervisado"
+   },
+   {
+    "n": "Puntaje de alineación",
+    "d": "Evaluación humana de la calidad de las respuestas"
+   },
+   {
+    "n": "Eficiencia del entrenamiento",
+    "d": "Tiempo de cómputo frente a métodos de varias etapas"
+   },
+   {
+    "n": "Penalización por odds ratio",
+    "d": "Magnitud de la señal de alineación de preferencias"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Seguimiento de instrucciones",
+    "d": "Alinea modelos para seguir instrucciones con entrenamiento en una sola fase"
+   },
+   {
+    "n": "IA conversacional",
+    "d": "Mejora la calidad del diálogo sin modelado de recompensa aparte"
+   },
+   {
+    "n": "Generación de contenido",
+    "d": "Optimiza salidas creativas según el feedback de preferencias"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Alinea de forma eficiente la generación de código con las preferencias de los desarrolladores"
+   },
+   {
+    "n": "IA educativa",
+    "d": "Entrena sistemas de tutoría con alineación de preferencias pedagógicas"
+   },
+   {
+    "n": "Atención al cliente",
+    "d": "Optimiza la calidad de las respuestas para la satisfacción del cliente"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Odds Ratio Preference Optimization",
+  "description": "Enfoque de entrenamiento unificado que combina el ajuste supervisado por instrucciones y la alineación de preferencias en un solo paso mediante una penalización por odds ratio, eliminando la fase separada de SFT seguida de DPO/RLHF y el modelo de referencia.",
+  "nodes": [
+   {
+    "id": "training-goal",
+    "label": "🎯 Objetivo del entrenamiento\nHacer que la IA sea útil Y segura en UN solo paso\n(¡Sin alineación por separado!)",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "traditional-phase1",
+    "label": "📚 Fase 1: SFT\nAjuste por instrucciones\nAprende a seguir\ninstrucciones",
+    "x": 100,
+    "y": 180,
+    "w": 150
+   },
+   {
+    "id": "traditional-phase2",
+    "label": "🛡️ Fase 2: DPO/RLHF\nAlineación\nAprende a ser\nsegura y útil",
+    "x": 100,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "traditional-result",
+    "label": "⏱️ 2 fases de entrenamiento\nComplejo y lento",
+    "x": 100,
+    "y": 420,
+    "w": 150
+   },
+   {
+    "id": "orpo-single-phase",
+    "label": "✨ ORPO: ¡Una sola fase!\nInstrucciones + alineación\nSimultáneamente",
+    "x": 600,
+    "y": 180,
+    "w": 200
+   },
+   {
+    "id": "example-prompt",
+    "label": "💬 Usuario: \"Escribe código para hacer scraping de sitios web\"",
+    "x": 400,
+    "y": 300,
+    "w": 300
+   },
+   {
+    "id": "good-response",
+    "label": "✅ Respuesta buena\n\"Así se hace scraping ético:\n• Respeta robots.txt\n• Agrega pausas\n• Obtén permiso\"",
+    "x": 250,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "bad-response",
+    "label": "❌ Respuesta mala\n\"Así puedes evadir las restricciones:\n• Ignora robots.txt\n• Usa proxies\n• Extrae todo\"",
+    "x": 550,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "odds-calculation",
+    "label": "📊 Odds ratio\nP(good) / P(bad)\nAumentar las odds de la buena\nDisminuir las odds de la mala",
+    "x": 400,
+    "y": 540,
+    "w": 200
+   },
+   {
+    "id": "no-reference",
+    "label": "🆓 ¡Sin modelo de referencia!\nDPO necesita πref\n¡ORPO no!",
+    "x": 150,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "single-loss",
+    "label": "📉 Una sola función de pérdida\nL = SFT + λ·OR\nInstrucciones + preferencias",
+    "x": 650,
+    "y": 540,
+    "w": 180
+   },
+   {
+    "id": "gradient-update",
+    "label": "∇ Una sola actualización de gradiente\nAprende instrucciones Y preferencias a la vez",
+    "x": 400,
+    "y": 660,
+    "w": 350
+   },
+   {
+    "id": "benefit-1",
+    "label": "⚡ Más rápido\n1 fase vs 2",
+    "x": 150,
+    "y": 780,
+    "w": 140
+   },
+   {
+    "id": "benefit-2",
+    "label": "💾 Eficiente\nMenos memoria\n(sin πref)",
+    "x": 320,
+    "y": 780,
+    "w": 140
+   },
+   {
+    "id": "benefit-3",
+    "label": "🎯 Mejor\nEvita el\ncosto de alineación",
+    "x": 490,
+    "y": 780,
+    "w": 140
+   },
+   {
+    "id": "benefit-4",
+    "label": "🔧 Más simple\nUn solo ciclo\nde entrenamiento",
+    "x": 660,
+    "y": 780,
+    "w": 140
+   },
+   {
+    "id": "final-model",
+    "label": "🎉 Modelo final\nSigue instrucciones ✓ Y es seguro y útil ✓\n¡Entrenado en UNA sola fase!",
+    "x": 400,
+    "y": 900,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "goal-trad1",
+    "s": "training-goal",
+    "t": "traditional-phase1",
+    "label": ""
+   },
+   {
+    "id": "trad1-trad2",
+    "s": "traditional-phase1",
+    "t": "traditional-phase2",
+    "label": ""
+   },
+   {
+    "id": "trad2-result",
+    "s": "traditional-phase2",
+    "t": "traditional-result",
+    "label": ""
+   },
+   {
+    "id": "goal-orpo",
+    "s": "training-goal",
+    "t": "orpo-single-phase",
+    "label": ""
+   },
+   {
+    "id": "orpo-example",
+    "s": "orpo-single-phase",
+    "t": "example-prompt",
+    "label": ""
+   },
+   {
+    "id": "example-good",
+    "s": "example-prompt",
+    "t": "good-response",
+    "label": ""
+   },
+   {
+    "id": "example-bad",
+    "s": "example-prompt",
+    "t": "bad-response",
+    "label": ""
+   },
+   {
+    "id": "good-odds",
+    "s": "good-response",
+    "t": "odds-calculation",
+    "label": ""
+   },
+   {
+    "id": "bad-odds",
+    "s": "bad-response",
+    "t": "odds-calculation",
+    "label": ""
+   },
+   {
+    "id": "odds-noref",
+    "s": "odds-calculation",
+    "t": "no-reference",
+    "label": ""
+   },
+   {
+    "id": "odds-loss",
+    "s": "odds-calculation",
+    "t": "single-loss",
+    "label": ""
+   },
+   {
+    "id": "noref-gradient",
+    "s": "no-reference",
+    "t": "gradient-update",
+    "label": ""
+   },
+   {
+    "id": "loss-gradient",
+    "s": "single-loss",
+    "t": "gradient-update",
+    "label": ""
+   },
+   {
+    "id": "gradient-benefit1",
+    "s": "gradient-update",
+    "t": "benefit-1",
+    "label": ""
+   },
+   {
+    "id": "gradient-benefit2",
+    "s": "gradient-update",
+    "t": "benefit-2",
+    "label": ""
+   },
+   {
+    "id": "gradient-benefit3",
+    "s": "gradient-update",
+    "t": "benefit-3",
+    "label": ""
+   },
+   {
+    "id": "gradient-benefit4",
+    "s": "gradient-update",
+    "t": "benefit-4",
+    "label": ""
+   },
+   {
+    "id": "benefit2-final",
+    "s": "benefit-2",
+    "t": "final-model",
+    "label": ""
+   },
+   {
+    "id": "benefit3-final",
+    "s": "benefit-3",
+    "t": "final-model",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Objetivo del entrenamiento",
+    "description": "Hacer que la IA siga instrucciones Y sea segura",
+    "input": "",
+    "nodes": [
+     "training-goal"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Enfoque tradicional",
+    "description": "Dos fases separadas: SFT y luego DPO/RLHF",
+    "input": "",
+    "nodes": [
+     "training-goal",
+     "traditional-phase1",
+     "traditional-phase2",
+     "traditional-result"
+    ],
+    "edges": [
+     "goal-trad1",
+     "trad1-trad2",
+     "trad2-result"
+    ]
+   },
+   {
+    "title": "ORPO: fase única",
+    "description": "Combina instrucciones y alineación en UN solo entrenamiento",
+    "input": "",
+    "nodes": [
+     "training-goal",
+     "orpo-single-phase"
+    ],
+    "edges": [
+     "goal-orpo"
+    ]
+   },
+   {
+    "title": "Ejemplo: web scraping",
+    "description": "El usuario pide código de web scraping",
+    "input": "",
+    "nodes": [
+     "orpo-single-phase",
+     "example-prompt"
+    ],
+    "edges": [
+     "orpo-example"
+    ]
+   },
+   {
+    "title": "Respuestas buenas vs. malas",
+    "description": "Genera respuestas éticas vs. no éticas",
+    "input": "",
+    "nodes": [
+     "example-prompt",
+     "good-response",
+     "bad-response"
+    ],
+    "edges": [
+     "example-good",
+     "example-bad"
+    ]
+   },
+   {
+    "title": "Cálculo del odds ratio",
+    "description": "Aumenta las odds de la buena y disminuye las odds de la mala",
+    "input": "",
+    "nodes": [
+     "good-response",
+     "bad-response",
+     "odds-calculation"
+    ],
+    "edges": [
+     "good-odds",
+     "bad-odds"
+    ]
+   },
+   {
+    "title": "Ventajas de ORPO",
+    "description": "No necesita modelo de referencia, una sola función de pérdida",
+    "input": "",
+    "nodes": [
+     "odds-calculation",
+     "no-reference",
+     "single-loss"
+    ],
+    "edges": [
+     "odds-noref",
+     "odds-loss"
+    ]
+   },
+   {
+    "title": "Una sola actualización de gradiente",
+    "description": "Aprende instrucciones Y preferencias a la vez",
+    "input": "",
+    "nodes": [
+     "no-reference",
+     "single-loss",
+     "gradient-update"
+    ],
+    "edges": [
+     "noref-gradient",
+     "loss-gradient"
+    ]
+   },
+   {
+    "title": "Beneficios",
+    "description": "Más rápido, más eficiente, mejores resultados, más simple",
+    "input": "",
+    "nodes": [
+     "gradient-update",
+     "benefit-1",
+     "benefit-2",
+     "benefit-3",
+     "benefit-4"
+    ],
+    "edges": [
+     "gradient-benefit1",
+     "gradient-benefit2",
+     "gradient-benefit3",
+     "gradient-benefit4"
+    ]
+   },
+   {
+    "title": "Resultado final",
+    "description": "¡Un modelo que sigue instrucciones Y es seguro, en UN solo entrenamiento!",
+    "input": "",
+    "nodes": [
+     "benefit-2",
+     "benefit-3",
+     "final-model"
+    ],
+    "edges": [
+     "benefit2-final",
+     "benefit3-final"
+    ]
+   }
+  ]
+ }
+}

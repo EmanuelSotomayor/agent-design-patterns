@@ -1,0 +1,295 @@
+{
+ "cat": "agent-economy",
+ "slug": "web-bot-auth",
+ "name": "Web Bot Auth (Signed Agents)(WBA)",
+ "icon": "🔏",
+ "complexity": "medium",
+ "description": "Un estándar emergente en borrador del IETF (Cloudflare y Google) que permite a un agente demostrar criptográficamente su identidad ante un sitio web usando RFC 9421 HTTP Message Signatures. El agente firma cada solicitud saliente con una clave Ed25519, publica sus claves públicas como un directorio de claves JWKS en /.well-known/http-message-signatures-directory y apunta a él con un header Signature-Agent; el origen obtiene el directorio, verifica la firma y decide si permite, deniega, limita la tasa o cobra por el tráfico. Reemplaza las frágiles listas de permitidos basadas en rangos de IP y User-Agent, y Signed Agents de Cloudflare lo convierte en producto en el edge. Se diferencia de authenticated-delegation: ese demuestra la autoridad de usuario a agente, mientras que Web Bot Auth es lo inverso, un agente que demuestra su origen ante un sitio web.",
+ "features": [
+  "El agente firma cada solicitud con RFC 9421 HTTP Message Signatures (Ed25519)",
+  "Claves públicas publicadas como un directorio JWKS en /.well-known/http-message-signatures-directory",
+  "El header Signature-Agent indica al origen dónde está el directorio de claves",
+  "Las ventanas de expiración cortas en las firmas limitan los ataques de repetición",
+  "Los orígenes permiten, deniegan, limitan la tasa o cobran por el tráfico de agentes verificados",
+  "Reemplaza las listas de permitidos por rango de IP y User-Agent, que son falsificables"
+ ],
+ "tldr": {
+  "what": "El agente firma criptográficamente cada solicitud HTTP con Ed25519, publica sus claves públicas en /.well-known/http-message-signatures-directory y el origen verifica la firma para permitir, denegar, limitar la tasa o cobrar por el tráfico.",
+  "when": "Los orígenes necesitan distinguir a los agentes legítimos de los scrapers y otorgar distintos niveles de acceso según la identidad verificada del agente, en lugar de rangos de IP o headers User-Agent falsificables.",
+  "watchOut": "La rotación de claves y la gestión de las ventanas de expiración se convierten en cargas operativas; una validación de firmas mal configurada abre la puerta a ataques de repetición o a la falsificación de firmas si no se implementa con precisión."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Web Bot Auth (Signed Agents)",
+  "description": "Un estándar emergente en borrador del IETF (Cloudflare y Google) en el que un agente firma sus solicitudes HTTP según RFC 9421 y publica sus claves mediante un directorio JWKS, de modo que los orígenes verifican la firma para permitir, denegar, limitar la tasa o cobrar por el tráfico de agentes en lugar de confiar en listas de permitidos de IP o User-Agent falsificables.",
+  "nodes": [
+   {
+    "id": "legit-agent",
+    "label": "🤖 Agente dirigido por el usuario\nFirma cada solicitud (Ed25519)",
+    "x": 120,
+    "y": 40,
+    "w": 220
+   },
+   {
+    "id": "rfc9421",
+    "label": "📐 RFC 9421\nEstándar HTTP Message Signatures",
+    "x": 400,
+    "y": 40,
+    "w": 220
+   },
+   {
+    "id": "sign-request",
+    "label": "🔏 Solicitud firmada\nSignature-Input + Signature\n+ header Signature-Agent",
+    "x": 110,
+    "y": 150,
+    "w": 240
+   },
+   {
+    "id": "spoofed-agent",
+    "label": "🕵️ Bot suplantado\nUser-Agent: \"LegitShoppingBot/1.0\"",
+    "x": 640,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "key-directory",
+    "label": "🗂️ Directorio de claves (JWKS)\n/.well-known/http-message-signatures-directory",
+    "x": 100,
+    "y": 260,
+    "w": 240
+   },
+   {
+    "id": "origin",
+    "label": "🛡️ Origen / Proxy de edge\nVerifica las firmas entrantes",
+    "x": 370,
+    "y": 260,
+    "w": 230
+   },
+   {
+    "id": "fetch-keys",
+    "label": "⬇️ Obtener JWKS\nBuscar la clave por thumbprint",
+    "x": 110,
+    "y": 370,
+    "w": 220
+   },
+   {
+    "id": "verify-sig",
+    "label": "🔎 Verificar firma\nEd25519 sobre @authority, comprobar vigencia",
+    "x": 370,
+    "y": 370,
+    "w": 240
+   },
+   {
+    "id": "no-signature",
+    "label": "🚫 Sin firma válida\nHeader Signature ausente o inválido",
+    "x": 650,
+    "y": 370,
+    "w": 220
+   },
+   {
+    "id": "policy",
+    "label": "⚖️ Motor de políticas\npermitir / denegar / limitar tasa / cobrar",
+    "x": 370,
+    "y": 480,
+    "w": 240
+   },
+   {
+    "id": "allow",
+    "label": "✅ Permitir (agente verificado)\nAtendido, nivel: verificado",
+    "x": 120,
+    "y": 590,
+    "w": 220
+   },
+   {
+    "id": "rate-limit",
+    "label": "🎚️ Limitar tasa / Cobrar\nBots no verificados limitados o con recargo",
+    "x": 380,
+    "y": 590,
+    "w": 240
+   },
+   {
+    "id": "deny",
+    "label": "⛔ Denegar\nTráfico sin firma bloqueado",
+    "x": 660,
+    "y": 590,
+    "w": 200
+   }
+  ],
+  "edges": [
+   {
+    "id": "rfc-sign",
+    "s": "rfc9421",
+    "t": "sign-request",
+    "label": "Según RFC 9421"
+   },
+   {
+    "id": "agent-sign",
+    "s": "legit-agent",
+    "t": "sign-request",
+    "label": "Firmar"
+   },
+   {
+    "id": "sign-origin",
+    "s": "sign-request",
+    "t": "origin",
+    "label": "Solicitud"
+   },
+   {
+    "id": "origin-fetch",
+    "s": "origin",
+    "t": "fetch-keys",
+    "label": "Resolver clave"
+   },
+   {
+    "id": "fetch-directory",
+    "s": "fetch-keys",
+    "t": "key-directory",
+    "label": "GET JWKS"
+   },
+   {
+    "id": "directory-verify",
+    "s": "key-directory",
+    "t": "verify-sig",
+    "label": "Clave pública"
+   },
+   {
+    "id": "origin-verify",
+    "s": "origin",
+    "t": "verify-sig",
+    "label": "Verificar firma"
+   },
+   {
+    "id": "verify-policy",
+    "s": "verify-sig",
+    "t": "policy",
+    "label": "Válida + vigente"
+   },
+   {
+    "id": "spoofed-origin",
+    "s": "spoofed-agent",
+    "t": "origin",
+    "label": "UA falso"
+   },
+   {
+    "id": "origin-nosig",
+    "s": "origin",
+    "t": "no-signature",
+    "label": "Sin firma"
+   },
+   {
+    "id": "nosig-policy",
+    "s": "no-signature",
+    "t": "policy",
+    "label": "Falla"
+   },
+   {
+    "id": "policy-allow",
+    "s": "policy",
+    "t": "allow",
+    "label": "Verificado"
+   },
+   {
+    "id": "policy-ratelimit",
+    "s": "policy",
+    "t": "rate-limit",
+    "label": "No verificado"
+   },
+   {
+    "id": "policy-deny",
+    "s": "policy",
+    "t": "deny",
+    "label": "Sin firma"
+   }
+  ],
+  "steps": [
+   {
+    "title": "El agente firma su solicitud",
+    "description": "Un agente dirigido por el usuario firma cada solicitud saliente con una clave Ed25519 siguiendo RFC 9421 HTTP Message Signatures.",
+    "input": "",
+    "nodes": [
+     "legit-agent",
+     "rfc9421",
+     "sign-request"
+    ],
+    "edges": [
+     "agent-sign",
+     "rfc-sign"
+    ]
+   },
+   {
+    "title": "La solicitud firmada llega al origen",
+    "description": "La solicitud llega con Signature-Input, Signature y un header Signature-Agent que apunta al directorio de claves del agente.",
+    "input": "",
+    "nodes": [
+     "sign-request",
+     "origin"
+    ],
+    "edges": [
+     "sign-origin"
+    ]
+   },
+   {
+    "title": "El origen resuelve el directorio de claves",
+    "description": "El origen obtiene el directorio JWKS del agente en /.well-known/http-message-signatures-directory y busca la clave por thumbprint.",
+    "input": "",
+    "nodes": [
+     "origin",
+     "fetch-keys",
+     "key-directory"
+    ],
+    "edges": [
+     "origin-fetch",
+     "fetch-directory"
+    ]
+   },
+   {
+    "title": "Firma verificada",
+    "description": "El origen comprueba la firma Ed25519 sobre la autoridad y su vigencia; una firma válida y no expirada confirma la identidad del agente.",
+    "input": "",
+    "nodes": [
+     "key-directory",
+     "verify-sig",
+     "origin",
+     "policy"
+    ],
+    "edges": [
+     "directory-verify",
+     "origin-verify",
+     "verify-policy"
+    ]
+   },
+   {
+    "title": "El agente suplantado no tiene una firma válida",
+    "description": "Un scraper que afirma tener la misma identidad mediante User-Agent no puede producir una firma válida, por lo que la verificación falla.",
+    "input": "",
+    "nodes": [
+     "spoofed-agent",
+     "origin",
+     "no-signature",
+     "policy"
+    ],
+    "edges": [
+     "spoofed-origin",
+     "origin-nosig",
+     "nosig-policy"
+    ]
+   },
+   {
+    "title": "Decisión de política",
+    "description": "El origen admite al agente verificado, deniega el tráfico sin firma a los endpoints protegidos y limita la tasa o aplica recargos a los bots no verificados.",
+    "input": "",
+    "nodes": [
+     "policy",
+     "allow",
+     "rate-limit",
+     "deny"
+    ],
+    "edges": [
+     "policy-allow",
+     "policy-ratelimit",
+     "policy-deny"
+    ]
+   }
+  ]
+ }
+}

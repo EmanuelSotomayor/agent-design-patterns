@@ -1,0 +1,359 @@
+{
+ "cat": "knowledge-retrieval",
+ "slug": "agentic-rag-systems",
+ "name": "Agentic RAG(AgRAG)",
+ "icon": "🤖",
+ "complexity": "high",
+ "description": "Sistemas autónomos de generación aumentada por recuperación con capacidades autodirigidas de planificación, recuperación y razonamiento",
+ "features": [
+  "Planificación autodirigida de la recuperación",
+  "Capacidades de razonamiento multi-salto",
+  "Refinamiento autónomo de consultas",
+  "Estrategias de recuperación dinámicas",
+  "Generación autorreflexiva",
+  "Optimización adaptativa de la búsqueda"
+ ],
+ "tldr": {
+  "what": "El agente planifica de forma autónoma los pasos de recuperación, refina las consultas según los resultados y razona sobre múltiples documentos sin intervención humana entre búsquedas.",
+  "when": "Preguntas de investigación complejas que requieren conocimiento de múltiples dominios, refinamiento iterativo o cadenas de razonamiento que abarcan muchos documentos.",
+  "watchOut": "Los agentes pueden entrar en bucles indefinidos persiguiendo mejoras marginales o recuperar documentos irrelevantes cuando el refinamiento de consultas se desvía."
+ },
+ "overview": {
+  "pattern": "Sistemas de agentes autónomos que planifican, ejecutan y adaptan dinámicamente estrategias de recuperación de múltiples pasos usando herramientas y razonamiento",
+  "why": "Permite flujos de trabajo complejos de recopilación de información que requieren pensamiento estratégico, adaptación y síntesis de múltiples fuentes",
+  "insight": "La planificación al estilo ReAct con orquestación de herramientas permite a los agentes razonar sobre las estrategias de recuperación y adaptarse según los resultados",
+  "impl": [
+   {
+    "t": "Planificación del agente",
+    "d": "Descompone consultas complejas en planes de recuperación de múltiples pasos con razonamiento"
+   },
+   {
+    "t": "Orquestación de herramientas",
+    "d": "Ejecuta acciones de recuperación usando herramientas especializadas (búsqueda, BD, APIs)"
+   },
+   {
+    "t": "Adaptación dinámica",
+    "d": "Adapta la estrategia según los resultados intermedios y el feedback"
+   },
+   {
+    "t": "Síntesis de evidencia",
+    "d": "Integra evidencia de múltiples fuentes con cadenas de razonamiento"
+   },
+   {
+    "t": "Generación de la respuesta",
+    "d": "Genera la respuesta final con citas completas y traza del razonamiento"
+   }
+  ],
+  "example": "complex_query → plan_decomposition → [retrieve_1, retrieve_2, ...] → adapt_strategy → synthesize → response",
+  "dos": [
+   "Implementa planificación explícita con ReAct o function calling para las estrategias de recuperación",
+   "Usa recuperación aumentada con herramientas mediante APIs especializadas, motores de búsqueda y bases de datos",
+   "Habilita el refinamiento adaptativo de consultas según los resultados intermedios de la recuperación",
+   "Mantén trazas detalladas del razonamiento y la procedencia de las citas durante toda la ejecución",
+   "Implementa recuperación ante errores y estrategias de recuperación alternativas para los intentos fallidos"
+  ],
+  "donts": [
+   "Permitir bucles de agente sin control, sin condiciones de terminación ni límites de costo",
+   "Omitir la validación de la calidad de la información recuperada y la credibilidad de las fuentes",
+   "Ignorar la deriva de la intención del usuario durante los procesos de recuperación de múltiples pasos",
+   "Depender únicamente de una sola modalidad de recuperación sin explorar alternativas",
+   "Descuidar las consideraciones de privacidad y seguridad al recuperar información sensible"
+  ],
+  "use": [
+   "Investigación compleja de múltiples pasos que requiere recopilación estratégica de información",
+   "Consultas entre dominios que necesitan fuentes de conocimiento y razonamiento diversos",
+   "Entornos de conocimiento dinámicos en los que las estrategias de recuperación deben adaptarse",
+   "Aplicaciones de alto riesgo que requieren razonamiento explicable y procedencia",
+   "Tareas de investigación y análisis que se benefician de una búsqueda de información similar a la humana"
+  ],
+  "avoid": [
+   "Consultas factuales simples que los enfoques RAG estándar atienden adecuadamente",
+   "Aplicaciones en tiempo real con restricciones estrictas de latencia y costo",
+   "Dominios con disponibilidad limitada de herramientas o restricciones de acceso a APIs",
+   "Aplicaciones en las que se requiere un comportamiento de recuperación determinista",
+   "Entornos con recursos limitados incapaces de soportar razonamiento complejo de agentes"
+  ],
+  "metrics": [
+   {
+    "n": "Éxito en la ejecución de planes",
+    "d": "Porcentaje de planes del agente completados con éxito y sin errores"
+   },
+   {
+    "n": "Efectividad de la estrategia de recuperación",
+    "d": "Mejora de calidad de las estrategias de recuperación adaptativas frente a las fijas"
+   },
+   {
+    "n": "Calidad de la síntesis de evidencia",
+    "d": "Coherencia y completitud de la integración de información de múltiples fuentes"
+   },
+   {
+    "n": "Fidelidad de la traza de razonamiento",
+    "d": "Precisión y explicabilidad de las cadenas de razonamiento paso a paso"
+   },
+   {
+    "n": "Eficiencia en el uso de herramientas",
+    "d": "Uso óptimo de las herramientas de recuperación y APIs disponibles"
+   },
+   {
+    "n": "Equilibrio entre costo y calidad",
+    "d": "Calidad de la respuesta por unidad de costo computacional y llamadas a APIs"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Inteligencia de investigación",
+    "d": "Revisión de literatura científica con estrategias de búsqueda adaptativas y validación cruzada de referencias"
+   },
+   {
+    "n": "Análisis de negocio",
+    "d": "Investigación de mercado que combina datos financieros, noticias e informes de la industria con razonamiento estratégico"
+   },
+   {
+    "n": "Descubrimiento legal",
+    "d": "Investigación de jurisprudencia con búsqueda en múltiples jurisdicciones y flujos de trabajo de análisis de precedentes"
+   },
+   {
+    "n": "Investigación técnica",
+    "d": "Depuración y resolución de problemas de software con selección dinámica de herramientas y razonamiento"
+   },
+   {
+    "n": "Apoyo al diagnóstico médico",
+    "d": "Apoyo a la decisión clínica con recopilación de evidencia de múltiples bases de datos médicas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Agentic RAG (generación aumentada por recuperación autónoma)",
+  "description": "Sistemas autónomos de generación aumentada por recuperación con capacidades autodirigidas de planificación, recuperación y razonamiento que pueden investigar temas complejos de forma independiente y tomar decisiones estratégicas.",
+  "nodes": [
+   {
+    "id": "complex-query",
+    "label": "❓ Consulta compleja\n\"¿Debería mi startup pivotar\nde B2B a B2C dadas\nlas condiciones actuales del mercado?\"",
+    "x": 400,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "autonomous-planner",
+    "label": "🧠 Planificador autónomo\n\"Necesito investigar:\n1. Tendencias del mercado\n2. Pivotes de startups\n3. Dinámicas B2B vs B2C\"",
+    "x": 400,
+    "y": 150,
+    "w": 220
+   },
+   {
+    "id": "research-plan",
+    "label": "📋 Plan de investigación\nPaso 1: Análisis de mercado\nPaso 2: Casos de estudio de pivotes\nPaso 3: Marco de decisión",
+    "x": 400,
+    "y": 250,
+    "w": 200
+   },
+   {
+    "id": "market-research",
+    "label": "📈 Investigación de mercado\nRecuperar: tendencias 2024\nDatos de mercado B2B/B2C\nIndicadores económicos",
+    "x": 150,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "case-study-research",
+    "label": "📚 Investigación de casos de estudio\nBuscar: pivotes exitosos\nPivotes fallidos\nFactores de timing",
+    "x": 400,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "framework-research",
+    "label": "🔍 Investigación de marcos\nModelos de decisión\nMetodologías de pivote\nHerramientas de evaluación de riesgos",
+    "x": 650,
+    "y": 350,
+    "w": 180
+   },
+   {
+    "id": "reasoning-engine",
+    "label": "🤔 Motor de razonamiento\n\"El mercado muestra crecimiento en B2C\npero los riesgos del pivote son altos.\nSe necesitan datos más específicos.\"",
+    "x": 400,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "adaptive-retrieval",
+    "label": "🔄 Recuperación adaptativa\n\"Voy a investigar tu\nindustria específica y\nlos pivotes de la competencia\"",
+    "x": 400,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "synthesis-agent",
+    "label": "🔗 Agente de síntesis\nIntegra los hallazgos:\nMercado + Casos + Marco\n+ Contexto de la industria",
+    "x": 400,
+    "y": 650,
+    "w": 220
+   },
+   {
+    "id": "decision-generator",
+    "label": "⚖️ Generador de decisiones\nSopesa pros y contras\nEvaluación de riesgos\nLógica de recomendación",
+    "x": 400,
+    "y": 750,
+    "w": 200
+   },
+   {
+    "id": "final-recommendation",
+    "label": "✅ Recomendación estratégica\n\"Dado un crecimiento de 65% en B2C vs\n23% en B2B, considera un pivote\ngradual con mitigación de riesgos\"",
+    "x": 400,
+    "y": 850,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "complex-query",
+    "t": "autonomous-planner",
+    "label": "analizar"
+   },
+   {
+    "id": "e2",
+    "s": "autonomous-planner",
+    "t": "research-plan",
+    "label": "crear plan"
+   },
+   {
+    "id": "e3a",
+    "s": "research-plan",
+    "t": "market-research",
+    "label": "ejecutar paso 1"
+   },
+   {
+    "id": "e3b",
+    "s": "research-plan",
+    "t": "case-study-research",
+    "label": "ejecutar paso 2"
+   },
+   {
+    "id": "e3c",
+    "s": "research-plan",
+    "t": "framework-research",
+    "label": "ejecutar paso 3"
+   },
+   {
+    "id": "e4a",
+    "s": "market-research",
+    "t": "reasoning-engine",
+    "label": "datos de mercado"
+   },
+   {
+    "id": "e4b",
+    "s": "case-study-research",
+    "t": "reasoning-engine",
+    "label": "casos de estudio"
+   },
+   {
+    "id": "e4c",
+    "s": "framework-research",
+    "t": "reasoning-engine",
+    "label": "marcos"
+   },
+   {
+    "id": "e5",
+    "s": "reasoning-engine",
+    "t": "adaptive-retrieval",
+    "label": "se necesitan más datos"
+   },
+   {
+    "id": "e6",
+    "s": "adaptive-retrieval",
+    "t": "synthesis-agent",
+    "label": "contexto adicional"
+   },
+   {
+    "id": "e7",
+    "s": "reasoning-engine",
+    "t": "synthesis-agent",
+    "label": "hallazgos iniciales"
+   },
+   {
+    "id": "e8",
+    "s": "synthesis-agent",
+    "t": "decision-generator",
+    "label": "conclusiones sintetizadas"
+   },
+   {
+    "id": "e9",
+    "s": "decision-generator",
+    "t": "final-recommendation",
+    "label": "generar"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Planificación autónoma",
+    "description": "El agente analiza una consulta de negocio compleja y crea de forma autónoma un plan de investigación de múltiples pasos: análisis de mercado, casos de estudio de pivotes y marcos de decisión.",
+    "input": "",
+    "nodes": [
+     "complex-query",
+     "autonomous-planner",
+     "research-plan"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Investigación paralela autodirigida",
+    "description": "El agente ejecuta el plan de investigación de forma independiente en múltiples dominios: tendencias del mercado, casos de pivotes exitosos/fallidos y metodologías de decisión.",
+    "input": "",
+    "nodes": [
+     "market-research",
+     "case-study-research",
+     "framework-research"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c"
+    ]
+   },
+   {
+    "title": "Razonamiento autónomo y detección de brechas",
+    "description": "El motor de razonamiento analiza la información recopilada, identifica brechas de conocimiento y decide de forma autónoma que se necesita investigación adicional.",
+    "input": "",
+    "nodes": [
+     "reasoning-engine"
+    ],
+    "edges": [
+     "e4a",
+     "e4b",
+     "e4c"
+    ]
+   },
+   {
+    "title": "Recopilación adaptativa de información",
+    "description": "El agente realiza de forma autónoma una investigación de seguimiento focalizada sobre factores específicos de la industria y estrategias de pivote de la competencia para cubrir las brechas identificadas.",
+    "input": "",
+    "nodes": [
+     "adaptive-retrieval"
+    ],
+    "edges": [
+     "e5"
+    ]
+   },
+   {
+    "title": "Síntesis estratégica y recomendación",
+    "description": "El agente sintetiza toda la investigación, aplica marcos de decisión y genera una recomendación estratégica con datos específicos y evaluación de riesgos.",
+    "input": "",
+    "nodes": [
+     "synthesis-agent",
+     "decision-generator",
+     "final-recommendation"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9"
+    ]
+   }
+  ]
+ }
+}

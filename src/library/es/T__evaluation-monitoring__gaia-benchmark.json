@@ -1,0 +1,396 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "gaia-benchmark",
+ "name": "GAIA: General AI Assistants Benchmark(GAIA)",
+ "icon": "🌍",
+ "complexity": "high",
+ "description": "El benchmark GAIA original evaluaba razonamiento, multimodalidad, navegación web y uso de herramientas. Su comparación de modelos con nombre propio es la línea base histórica del paper.",
+ "features": [
+  "Más de 450 preguntas no triviales con respuestas inequívocas",
+  "Tres niveles de dificultad (Nivel 1-3)",
+  "Requisitos de razonamiento multimodal",
+  "Evaluación del uso de herramientas y de la navegación web",
+  "Pruebas de aplicabilidad en el mundo real",
+  "Línea base humana: 92% vs GPT-4: 15%"
+ ],
+ "tldr": {
+  "what": "Suite de benchmark con más de 450 preguntas en tres niveles de dificultad que mide razonamiento, multimodalidad, uso de herramientas y navegación web frente a una línea base humana del 92%.",
+  "when": "Comparar las capacidades de agentes en tareas del mundo real que requieren múltiples habilidades; identificar brechas de rendimiento en razonamiento, visión e integración de herramientas.",
+  "watchOut": "Los resultados reflejan el rendimiento en un momento dado sobre una distribución específica de preguntas; los agentes pueden sobreajustarse a los patrones del benchmark sin generalizar a problemas nuevos del mundo real."
+ },
+ "overview": {
+  "pattern": "Benchmark de preguntas del mundo real que requiere habilidades fundamentales como razonamiento, multimodalidad, navegación web y dominio en el uso de herramientas",
+  "why": "Conceptualmente simple para los humanos pero desafiante para la IA: mide la brecha entre el rendimiento humano (92%) y el de la mejor IA actual (65%)",
+  "insight": "h2oGPTe de H2O.ai lidera con 65% de precisión, superando a Google (49%) y Microsoft (38%): el primero en lograr una calificación C en inteligencia general",
+  "impl": [
+   {
+    "t": "Configurar",
+    "d": "Instala el framework del benchmark GAIA y configura el entorno de evaluación"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige el nivel de dificultad (Nivel 1: <5 pasos, Nivel 2: 5-10 pasos, Nivel 3: hasta 50 pasos)"
+   },
+   {
+    "t": "Configurar herramientas",
+    "d": "Habilita el acceso a herramientas: navegación web, manejo de archivos, procesamiento multimodal"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Ejecuta el agente sobre 466 preguntas que requieren razonamiento, multimodalidad y uso de herramientas"
+   },
+   {
+    "t": "Analizar",
+    "d": "Compara el rendimiento con la línea base humana (92%) y el SOTA actual (65%)"
+   }
+  ],
+  "example": "gaia_eval = GAIA(agent=ai_assistant, levels=[1,2,3], tools=[web_browser, file_handler], timeout=3600)",
+  "dos": [
+   "Prueba en los tres niveles de dificultad para una evaluación integral de capacidades",
+   "Habilita el conjunto completo de herramientas: navegación web, manejo de archivos, comprensión multimodal",
+   "Enfócate en tareas del mundo real que requieren razonamiento y coordinación en varios pasos",
+   "Valida contra la línea base de rendimiento humano del 92% de precisión",
+   "Usa el conjunto de desarrollo (166 preguntas) para ajustar el modelo y el conjunto de validación para la evaluación final"
+  ],
+  "donts": [
+   "Esperar puntajes altos sin una integración adecuada de herramientas; el paper original de GAIA reportó solo un 15% para su línea base de GPT-4",
+   "Omitir los componentes multimodales: las preguntas incluyen imágenes y hojas de cálculo",
+   "Intentar enfoques de fuerza bruta: las respuestas requieren ejecutar la tarea completa",
+   "Ignorar las preguntas de Nivel 3: evalúan capacidades avanzadas de planificación a largo plazo",
+   "Entrenar con las preguntas de prueba: las respuestas se mantienen ocultas para preservar la integridad del benchmark"
+  ],
+  "use": [
+   "Evaluar las capacidades de asistentes de IA de propósito general",
+   "Probar el razonamiento en el mundo real y el dominio en el uso de herramientas",
+   "Evaluar la comprensión multimodal y las habilidades de navegación web",
+   "Hacer benchmarking frente a la inteligencia general de nivel humano",
+   "Investigación sobre las habilidades y limitaciones fundamentales de la IA"
+  ],
+  "avoid": [
+   "Evaluación de tareas de un dominio específico (usa benchmarks especializados)",
+   "Respuesta simple a preguntas sin requisitos de herramientas",
+   "Pruebas de rendimiento sin capacidades multimodales",
+   "Necesidades de evaluación rápida (las preguntas pueden requerir hasta 50 pasos humanos)",
+   "Sistemas sin acceso web ni capacidades de manejo de archivos"
+  ],
+  "metrics": [
+   {
+    "n": "Precisión general",
+    "d": "Métrica principal: porcentaje de preguntas respondidas correctamente en todos los niveles"
+   },
+   {
+    "n": "Rendimiento por nivel",
+    "d": "Desglose por dificultad: Nivel 1 (simple), Nivel 2 (moderado), Nivel 3 (complejo)"
+   },
+   {
+    "n": "Brecha humano-IA",
+    "d": "Brecha actual: 27% (humanos 92% vs h2oGPTe 65%)"
+   },
+   {
+    "n": "Eficacia en el uso de herramientas",
+    "d": "Tasa de éxito en navegación web, manejo de archivos y tareas multimodales"
+   },
+   {
+    "n": "Razonamiento en varios pasos",
+    "d": "Capacidad de coordinar el razonamiento a lo largo de 5-50 pasos según el nivel"
+   },
+   {
+    "n": "Tasa de finalización de tareas",
+    "d": "Porcentaje de tareas completadas frente a soluciones parciales o fallos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Evaluación de capacidades de AGI",
+    "d": "h2oGPTe de H2O.ai logra 65%: la primera calificación C en una prueba de inteligencia general"
+   },
+   {
+    "n": "Benchmarking en la industria",
+    "d": "Estándar para evaluar asistentes de IA generales frente a chatbots especializados"
+   },
+   {
+    "n": "Investigación académica",
+    "d": "Colaboración de Meta/HuggingFace/AutoGPT para medir habilidades fundamentales de la IA"
+   },
+   {
+    "n": "Pruebas de integración de herramientas",
+    "d": "Evaluación integral de la navegación web, el manejo de archivos y el razonamiento multimodal"
+   },
+   {
+    "n": "Simulación de tareas del mundo real",
+    "d": "466 preguntas cuidadosamente diseñadas que reflejan escenarios auténticos de un asistente"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón GAIA: benchmark de asistentes de IA generales",
+  "description": "El estudio original de GAIA usó 466 preguntas en 3 niveles de complejidad y reportó una línea base humana del 92% frente al 15% de GPT-4, el modelo de referencia de la época del benchmark",
+  "nodes": [
+   {
+    "id": "ai-assistant-evaluation-gap",
+    "label": "🤖 Brecha en la evaluación de asistentes de IA\n\"La IA actual destaca en tareas especializadas\npero falla en problemas simples del mundo real\nque una persona promedio resuelve con facilidad\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "gaia-benchmark-framework",
+    "label": "🌍 Benchmark GAIA del mundo real\n\"Evaluación de asistentes de IA generales:\n• 466 preguntas del mundo real\n• 3 niveles de complejidad\n• Pruebas de capacidades fundamentales\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "four-core-capabilities",
+    "label": "🧠 Cuatro capacidades centrales\n\"Habilidades fundamentales de la IA:\n• Razonamiento en varios pasos\n• Comprensión multimodal\n• Navegación web\n• Dominio en el uso de herramientas\"",
+    "x": 200,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "reasoning-capability",
+    "label": "🔍 Razonamiento en varios pasos\n\"Cadenas lógicas complejas:\n• Descomposición de problemas\n• Inferencia secuencial\n• Comprensión del contexto\"",
+    "x": 50,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "multimodal-capability",
+    "label": "🖼️ Manejo multimodal\n\"Integración entre modalidades:\n• Procesamiento de texto + imagen\n• Razonamiento visual\n• Síntesis de contenido\"",
+    "x": 230,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "web-browsing-capability",
+    "label": "🌐 Navegación web\n\"Acceso a información del mundo real:\n• Recuperación de contenido dinámico\n• Habilidades de navegación\n• Síntesis de información\"",
+    "x": 410,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "tool-use-capability",
+    "label": "🔧 Dominio en el uso de herramientas\n\"Coordinación integrada de herramientas:\n• Orquestación de plugins\n• Interacciones con APIs\n• Gestión de workflows\"",
+    "x": 590,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "three-complexity-levels",
+    "label": "📊 Tres niveles de complejidad\n\"Evaluación de dificultad graduada:\n• Nivel 1: <5 pasos, herramientas mínimas\n• Nivel 2: 5-10 pasos, coordinación\n• Nivel 3: planificación a largo plazo\"",
+    "x": 600,
+    "y": 350,
+    "w": 250
+   },
+   {
+    "id": "real-world-questions",
+    "label": "❓ 466 preguntas del mundo real\n\"Escenarios de problemas auténticos:\n• Conceptualmente simples para humanos\n• Desafiantes para la IA avanzada\n• Diseño a prueba de trampas\"",
+    "x": 400,
+    "y": 650,
+    "w": 240
+   },
+   {
+    "id": "exact-match-evaluation",
+    "label": "✅ Evaluación por coincidencia exacta\n\"Puntuación inequívoca:\n• Solo respuestas fácticas\n• Formato texto/número/lista\n• Sin juicio subjetivo\"",
+    "x": 200,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "performance-gap",
+    "label": "📉 Enorme brecha de rendimiento\n\"Según el reporte original (Mialon et al., 2023):\n• Humanos: 92%\n• GPT-4 + plugins: 15%\n• Los leaderboards han cambiado mucho desde entonces\"",
+    "x": 600,
+    "y": 800,
+    "w": 200
+   },
+   {
+    "id": "agi-evaluation-principle",
+    "label": "🎯 Principio de evaluación de AGI\n\"Robustez en el mundo real por sobre la complejidad académica\nLas capacidades fundamentales superan a las habilidades especializadas\nResolver problemas como un humano como hito de AGI\"",
+    "x": 400,
+    "y": 950,
+    "w": 320
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ai-assistant-evaluation-gap",
+    "t": "gaia-benchmark-framework",
+    "label": "abordada por"
+   },
+   {
+    "id": "e2",
+    "s": "gaia-benchmark-framework",
+    "t": "four-core-capabilities",
+    "label": "evalúa capacidades"
+   },
+   {
+    "id": "e3",
+    "s": "gaia-benchmark-framework",
+    "t": "three-complexity-levels",
+    "label": "organizado por niveles"
+   },
+   {
+    "id": "e4",
+    "s": "four-core-capabilities",
+    "t": "reasoning-capability",
+    "label": "incluye razonamiento"
+   },
+   {
+    "id": "e5",
+    "s": "four-core-capabilities",
+    "t": "multimodal-capability",
+    "label": "incluye multimodalidad"
+   },
+   {
+    "id": "e6",
+    "s": "four-core-capabilities",
+    "t": "web-browsing-capability",
+    "label": "incluye navegación"
+   },
+   {
+    "id": "e7",
+    "s": "four-core-capabilities",
+    "t": "tool-use-capability",
+    "label": "incluye herramientas"
+   },
+   {
+    "id": "e8",
+    "s": "reasoning-capability",
+    "t": "real-world-questions",
+    "label": "crea preguntas"
+   },
+   {
+    "id": "e9",
+    "s": "multimodal-capability",
+    "t": "real-world-questions",
+    "label": "genera escenarios"
+   },
+   {
+    "id": "e10",
+    "s": "web-browsing-capability",
+    "t": "real-world-questions",
+    "label": "diseña tareas"
+   },
+   {
+    "id": "e11",
+    "s": "tool-use-capability",
+    "t": "real-world-questions",
+    "label": "forma desafíos"
+   },
+   {
+    "id": "e12",
+    "s": "three-complexity-levels",
+    "t": "real-world-questions",
+    "label": "estructura la dificultad"
+   },
+   {
+    "id": "e13",
+    "s": "real-world-questions",
+    "t": "exact-match-evaluation",
+    "label": "puntuadas mediante"
+   },
+   {
+    "id": "e14",
+    "s": "real-world-questions",
+    "t": "performance-gap",
+    "label": "revela la brecha"
+   },
+   {
+    "id": "e15",
+    "s": "exact-match-evaluation",
+    "t": "agi-evaluation-principle",
+    "label": "permite la medición"
+   },
+   {
+    "id": "e16",
+    "s": "performance-gap",
+    "t": "agi-evaluation-principle",
+    "label": "demuestra el principio"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de la brecha en la evaluación de asistentes de IA",
+    "description": "Los sistemas de IA actuales destacan en tareas académicas especializadas pero fallan en problemas simples del mundo real que una persona promedio resuelve con facilidad, lo que revela una brecha fundamental en la evaluación de la IA.",
+    "input": "",
+    "nodes": [
+     "ai-assistant-evaluation-gap"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework del benchmark GAIA del mundo real",
+    "description": "El benchmark de asistentes de IA generales aborda esta brecha mediante 466 preguntas del mundo real organizadas en 3 niveles de complejidad, evaluando capacidades fundamentales en lugar de especializaciones acotadas.",
+    "input": "",
+    "nodes": [
+     "gaia-benchmark-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Cuatro capacidades centrales y estructura de complejidad",
+    "description": "El framework evalúa sistemáticamente cuatro habilidades fundamentales de la IA: razonamiento en varios pasos, comprensión multimodal, navegación web y dominio en el uso de herramientas, en niveles de dificultad graduados (<5 pasos, 5-10 pasos, planificación a largo plazo).",
+    "input": "",
+    "nodes": [
+     "four-core-capabilities",
+     "reasoning-capability",
+     "multimodal-capability",
+     "web-browsing-capability",
+     "tool-use-capability",
+     "three-complexity-levels"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5",
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Generación de 466 preguntas del mundo real",
+    "description": "Las capacidades centrales y los niveles de complejidad se combinan para crear 466 escenarios de problemas auténticos: conceptualmente simples para los humanos, desafiantes para la IA avanzada y con un diseño a prueba de trampas que impide las soluciones de fuerza bruta.",
+    "input": "",
+    "nodes": [
+     "real-world-questions"
+    ],
+    "edges": [
+     "e8",
+     "e9",
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Evaluación por coincidencia exacta y revelación de la brecha de rendimiento",
+    "description": "Las preguntas, evaluadas mediante una puntuación inequívoca por coincidencia exacta (solo respuestas fácticas), revelaron una gran brecha cuando se publicaron por primera vez (Mialon et al., 2023): humanos 92% frente a GPT-4 con plugins al 15% (el mejor en ese momento: H2O.ai con 75%).",
+    "input": "",
+    "nodes": [
+     "exact-match-evaluation",
+     "performance-gap"
+    ],
+    "edges": [
+     "e13",
+     "e14"
+    ]
+   },
+   {
+    "title": "Principio de evaluación de AGI y robustez en el mundo real",
+    "description": "GAIA demuestra que la robustez en el mundo real supera a la complejidad académica, que las capacidades fundamentales importan más que las habilidades especializadas y que resolver problemas como un humano representa un hito significativo hacia la AGI.",
+    "input": "",
+    "nodes": [
+     "agi-evaluation-principle"
+    ],
+    "edges": [
+     "e15",
+     "e16"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,304 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "agentic-context-engineering",
+ "name": "Agentic Context Engineering (Evolving Playbook)(ACE)",
+ "icon": "📓",
+ "complexity": "high",
+ "description": "Trata el contexto de un agente como un playbook evolutivo de estrategias concretas que mejora gracias a tres roles: un Generator que produce trazas de razonamiento sobre tareas reales, un Reflector que extrae lecciones de lo que funcionó o falló, y un Curator que integra esas lecciones en el playbook como actualizaciones delta compactas y estructuradas. Como las actualizaciones son agregados y ediciones incrementales en lugar de reescrituras completas, el playbook acumula detalle del dominio en vez de sufrir colapso de contexto y sesgo de brevedad, donde la reescritura iterativa erosiona los detalles específicos que tanto costó obtener. No requiere supervisión etiquetada y se aplica tanto offline, como un system prompt mejorado, como online, como memoria del agente; el artículo de ACE de ICLR 2026 reporta aproximadamente +10.6% en tareas de agentes y +8.6% en finanzas. Se distingue de `prompt-optimization`: DSPy y GEPA optimizan un artefacto de prompt contra una métrica, mientras que ACE hace crecer un playbook en lenguaje natural mediante curación delta, con un mecanismo explícito anticolapso que abarca prompt y memoria; y a diferencia de `skill-library` (habilidades ejecutables) o `self-improving-systems` (ediciones gobernadas de prompts y herramientas detrás de compuertas de aprobación), el artefacto que mejora es un playbook curado en lenguaje natural.",
+ "features": [
+  "División de roles Generator, Reflector y Curator",
+  "El contexto como un playbook evolutivo de estrategias",
+  "Actualizaciones delta compactas y estructuradas (agregar y editar, no reescribir por completo)",
+  "Mecanismo anticolapso contra el colapso de contexto y el sesgo de brevedad",
+  "Adaptación offline (system prompt) y online (memoria del agente)",
+  "Automejora a partir de trazas de ejecución sin supervisión etiquetada"
+ ],
+ "tldr": {
+  "what": "Divide un agente en los roles Generator, Reflector y Curator, que construyen un playbook de estrategias en lenguaje natural mediante actualizaciones delta incrementales en lugar de reescrituras completas, evitando el colapso de contexto.",
+  "when": "Tareas de dominio de múltiples pasos en las que el agente debe acumular y conservar lecciones específicas a partir de trazas de ejecución sin datos etiquetados, y donde la brevedad del prompt erosiona detalles que costó obtener.",
+  "watchOut": "El Curator debe distinguir la señal del ruido; una mala selección de deltas contamina el playbook más rápido de lo que una buena curación puede limpiarlo, lo que degrada el rendimiento."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Agentic Context Engineering (Playbook evolutivo)",
+  "description": "El contexto del agente es un playbook evolutivo que mejoran un Generator, un Reflector y un Curator. Un error se convierte en una viñeta delta compacta que se agrega al playbook, de modo que el detalle del dominio se acumula y se reutiliza, mientras que una línea base de reescritura completa comprime y elimina esa misma lección y sufre colapso de contexto.",
+  "nodes": [
+   {
+    "id": "task-in",
+    "label": "🎯 Tarea\n\"Reportar el flujo de caja operativo, FY2024\"",
+    "x": 340,
+    "y": 40,
+    "w": 280
+   },
+   {
+    "id": "playbook",
+    "label": "📓 Playbook (Contexto)\nViñetas de estrategia de arranque\n[statements] [period]",
+    "x": 340,
+    "y": 140,
+    "w": 260
+   },
+   {
+    "id": "generator",
+    "label": "✍️ Generator\nProduce traza de razonamiento + respuesta",
+    "x": 340,
+    "y": 250,
+    "w": 240
+   },
+   {
+    "id": "attempt",
+    "label": "📝 Intento\nReporta el número en bruto,\nignora \"(en millones)\"",
+    "x": 660,
+    "y": 250,
+    "w": 220
+   },
+   {
+    "id": "grader",
+    "label": "⚖️ Señal del evaluador\nError de 1000x (error de escala)",
+    "x": 660,
+    "y": 360,
+    "w": 220
+   },
+   {
+    "id": "reflector",
+    "label": "🔍 Reflector\nExtrae una lección del error",
+    "x": 340,
+    "y": 370,
+    "w": 240
+   },
+   {
+    "id": "lesson",
+    "label": "💡 Lección\n\"Aplica la escala de unidades indicada\na cada respuesta numérica\"",
+    "x": 40,
+    "y": 370,
+    "w": 210
+   },
+   {
+    "id": "curator",
+    "label": "🧵 Curator\nIntegra una actualización delta compacta",
+    "x": 340,
+    "y": 480,
+    "w": 240
+   },
+   {
+    "id": "delta",
+    "label": "➕ Viñeta delta [units]\nAgregar, no reescribir",
+    "x": 660,
+    "y": 480,
+    "w": 220
+   },
+   {
+    "id": "playbook-v2",
+    "label": "📓 Playbook v2\n[statements] [period] [units]\nDetalle preservado, crece de forma incremental",
+    "x": 340,
+    "y": 590,
+    "w": 280
+   },
+   {
+    "id": "next-task",
+    "label": "🎯 Siguiente tarea\nFlujo de caja libre, FY2024",
+    "x": 40,
+    "y": 590,
+    "w": 210
+   },
+   {
+    "id": "reuse",
+    "label": "♻️ Reutilizar el playbook\nEl Generator aplica la escala [units]",
+    "x": 340,
+    "y": 700,
+    "w": 260
+   },
+   {
+    "id": "success",
+    "label": "✅ Respuesta correcta\nEscalada a millones, el evaluador aprueba",
+    "x": 340,
+    "y": 810,
+    "w": 260
+   },
+   {
+    "id": "collapse",
+    "label": "⚠️ Línea base de reescritura completa\nEl sesgo de brevedad comprime el playbook\n[units] se pierde -> colapso de contexto\n-> repite el error de escala",
+    "x": 700,
+    "y": 700,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "e-task-playbook",
+    "s": "task-in",
+    "t": "playbook",
+    "label": ""
+   },
+   {
+    "id": "e-playbook-gen",
+    "s": "playbook",
+    "t": "generator",
+    "label": "contexto"
+   },
+   {
+    "id": "e-gen-attempt",
+    "s": "generator",
+    "t": "attempt",
+    "label": ""
+   },
+   {
+    "id": "e-attempt-grader",
+    "s": "attempt",
+    "t": "grader",
+    "label": "puntaje"
+   },
+   {
+    "id": "e-grader-reflector",
+    "s": "grader",
+    "t": "reflector",
+    "label": "incorrecto: escala"
+   },
+   {
+    "id": "e-reflector-lesson",
+    "s": "reflector",
+    "t": "lesson",
+    "label": ""
+   },
+   {
+    "id": "e-lesson-curator",
+    "s": "lesson",
+    "t": "curator",
+    "label": ""
+   },
+   {
+    "id": "e-curator-delta",
+    "s": "curator",
+    "t": "delta",
+    "label": ""
+   },
+   {
+    "id": "e-delta-playbook2",
+    "s": "delta",
+    "t": "playbook-v2",
+    "label": "agregar"
+   },
+   {
+    "id": "e-next-reuse",
+    "s": "next-task",
+    "t": "reuse",
+    "label": ""
+   },
+   {
+    "id": "e-playbook2-reuse",
+    "s": "playbook-v2",
+    "t": "reuse",
+    "label": "recuperar [units]"
+   },
+   {
+    "id": "e-reuse-success",
+    "s": "reuse",
+    "t": "success",
+    "label": ""
+   },
+   {
+    "id": "e-lesson-collapse",
+    "s": "lesson",
+    "t": "collapse",
+    "label": "reescritura completa"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Tarea y playbook",
+    "description": "Llega una tarea y el contexto del agente comienza como un pequeño playbook de arranque con viñetas de estrategia revisadas: localizar el estado financiero indicado y hacer coincidir el período fiscal. Lo que mejorará es el contexto, no los pesos.",
+    "input": "",
+    "nodes": [
+     "task-in",
+     "playbook"
+    ],
+    "edges": [
+     "e-task-playbook"
+    ]
+   },
+   {
+    "title": "El Generator lo intenta",
+    "description": "El Generator lee el playbook actual y produce una traza de razonamiento completa con una respuesta. Reporta la cifra en bruto, pero ignora el encabezado del estado financiero que dice \"(en millones)\".",
+    "input": "",
+    "nodes": [
+     "playbook",
+     "generator",
+     "attempt"
+    ],
+    "edges": [
+     "e-playbook-gen",
+     "e-gen-attempt"
+    ]
+   },
+   {
+    "title": "El evaluador detecta un error",
+    "description": "La señal del evaluador muestra que la respuesta está equivocada por un factor de 1000, un error de escala. No se necesita una justificación etiquetada, solo la señal de aprobado o fallido sobre el resultado.",
+    "input": "",
+    "nodes": [
+     "attempt",
+     "grader"
+    ],
+    "edges": [
+     "e-attempt-grader"
+    ]
+   },
+   {
+    "title": "El Reflector extrae una lección",
+    "description": "El Reflector lee la traza y la señal del evaluador y destila una lección específica y reutilizable: el estado financiero declaraba millones, así que escala cada respuesta numérica según la unidad indicada.",
+    "input": "",
+    "nodes": [
+     "grader",
+     "reflector",
+     "lesson"
+    ],
+    "edges": [
+     "e-grader-reflector",
+     "e-reflector-lesson"
+    ]
+   },
+   {
+    "title": "El Curator integra un delta",
+    "description": "El Curator convierte la lección en una viñeta delta compacta etiquetada como [units] y la agrega al playbook. El resto del playbook no se toca, así que el detalle de arranque se preserva y el contexto crece de forma incremental.",
+    "input": "",
+    "nodes": [
+     "lesson",
+     "curator",
+     "delta",
+     "playbook-v2"
+    ],
+    "edges": [
+     "e-lesson-curator",
+     "e-curator-delta",
+     "e-delta-playbook2"
+    ]
+   },
+   {
+    "title": "Reutilización en la siguiente tarea",
+    "description": "Más adelante llega una pregunta sobre flujo de caja libre. El Generator recupera la viñeta [units] del playbook evolucionado, aplica la escala y el evaluador aprueba. La capacidad se acumuló a través del contexto, sin ninguna actualización de pesos.",
+    "input": "",
+    "nodes": [
+     "next-task",
+     "playbook-v2",
+     "reuse",
+     "success"
+    ],
+    "edges": [
+     "e-next-reuse",
+     "e-playbook2-reuse",
+     "e-reuse-success"
+    ]
+   },
+   {
+    "title": "Contraste: colapso por reescritura completa",
+    "description": "Una línea base que reescribe todo el playbook en un resumen más corto en cada ronda muestra sesgo de brevedad. Tras unas pocas rondas, la regla [units] se elimina al comprimir (colapso de contexto), y la línea base repite el error de escala original que la curación delta ya había corregido.",
+    "input": "",
+    "nodes": [
+     "lesson",
+     "collapse"
+    ],
+    "edges": [
+     "e-lesson-collapse"
+    ]
+   }
+  ]
+ }
+}

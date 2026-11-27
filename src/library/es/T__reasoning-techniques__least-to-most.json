@@ -1,0 +1,374 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "least-to-most",
+ "name": "Least-to-Most Prompting(LtM)",
+ "icon": "🔢",
+ "complexity": "medium",
+ "description": "Descomposición progresiva del problema, de componentes simples a complejos",
+ "features": [
+  "Desglose jerárquico del problema",
+  "Construcción de la solución de abajo hacia arriba",
+  "Manejo progresivo de la complejidad",
+  "Se apoya en soluciones más simples",
+  "Reduce la carga cognitiva",
+  "Enfoque sistemático para problemas complejos"
+ ],
+ "tldr": {
+  "what": "Resuelve problemas complejos resolviendo primero versiones más simples y luego agregando progresivamente restricciones o complejidad hasta llegar a la solución completa.",
+  "when": "Problemas de varios pasos en los que cada paso se apoya en resultados previos y los casos simples revelan patrones aplicables a los más difíciles.",
+  "watchOut": "Los errores tempranos en los casos simples se acumulan en todos los pasos siguientes, lo que vuelve incorrecta la respuesta final aunque el razonamiento posterior sea correcto."
+ },
+ "overview": {
+  "pattern": "Estrategia de descomposición de problemas que resuelve tareas complejas dividiéndolas en subproblemas más simples resueltos de forma secuencial",
+  "why": "Permite abordar problemas complejos construyendo soluciones de manera incremental, de componentes simples a complejos",
+  "insight": "Descomponer el problema complejo → Resolver primero el más simple → Usar las soluciones previas → Construir hasta la respuesta final",
+  "impl": [
+   {
+    "t": "Descomposición del problema",
+    "d": "Divide el problema complejo en subproblemas más simples"
+   },
+   {
+    "t": "Resolución secuencial",
+    "d": "Resuelve los subproblemas del más simple al más complejo"
+   },
+   {
+    "t": "Construcción de la solución",
+    "d": "Usa las soluciones previas para guiar los pasos siguientes"
+   },
+   {
+    "t": "Acumulación de contexto",
+    "d": "Mantén un contexto creciente con las partes resueltas"
+   },
+   {
+    "t": "Integración final",
+    "d": "Combina todas las soluciones en una respuesta completa"
+   }
+  ],
+  "example": "Problema complejo → [Sub1, Sub2, Sub3] → Resolver Sub1 → Usar Sub1 en Sub2 → Usar Sub1+Sub2 en Sub3 → Respuesta final",
+  "dos": [
+   "Primero descompón en subproblemas realmente independientes",
+   "Resuelve los subproblemas en estricto orden de dependencia",
+   "Pasa explícitamente las soluciones previas a los pasos siguientes",
+   "Valida la solución de cada subproblema antes de continuar",
+   "Usa prompts y ejemplos claros de reducción del problema"
+  ],
+  "donts": [
+   "Omitir el paso de descomposición (saltar directo al razonamiento complejo)",
+   "Resolver los subproblemas fuera del orden lógico de dependencias",
+   "Perder el contexto entre los pasos de resolución de subproblemas",
+   "Usarlo cuando los problemas no se pueden descomponer de forma significativa",
+   "Descomponer en exceso en pasos triviales o atómicos"
+  ],
+  "use": [
+   "Problemas complejos con una estructura jerárquica clara",
+   "Razonamiento de varios pasos con dependencias",
+   "Demostraciones y derivaciones matemáticas",
+   "Problemas de programación con soluciones modulares",
+   "Tareas de razonamiento composicional"
+  ],
+  "avoid": [
+   "Problemas simples que se resuelven en un paso",
+   "Problemas muy interconectados sin una descomposición clara",
+   "Aplicaciones en tiempo real que requieren respuestas inmediatas",
+   "Problemas en los que la acumulación de contexto perjudica el rendimiento",
+   "Cuando Chain-of-Thought es suficiente"
+  ],
+  "metrics": [
+   {
+    "n": "Calidad de la descomposición",
+    "d": "Pertinencia y completitud del desglose del problema"
+   },
+   {
+    "n": "Precisión de los subproblemas",
+    "d": "Corrección de la solución de cada subproblema"
+   },
+   {
+    "n": "Preservación del contexto",
+    "d": "Uso efectivo de las soluciones previas en pasos posteriores"
+   },
+   {
+    "n": "Calidad de la solución final",
+    "d": "Precisión frente a enfoques de resolución directa"
+   },
+   {
+    "n": "Ganancia de eficiencia",
+    "d": "Mejora de rendimiento frente al prompting estándar"
+   },
+   {
+    "n": "Generalización",
+    "d": "Éxito en distintos tipos de problemas y dominios"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Resolución de problemas matemáticos",
+    "d": "Ecuación compleja → Dividir en pasos → Resolver algebraicamente → Combinar para la respuesta final"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Programa grande → Descomponer en funciones → Implementar cada función → Integrar en código funcional"
+   },
+   {
+    "n": "Redacción de ensayos",
+    "d": "Tema complejo → Esbozar los puntos principales → Desarrollar cada argumento → Sintetizar en un ensayo coherente"
+   },
+   {
+    "n": "Análisis de datos",
+    "d": "Dataset complejo → Dividir en componentes de análisis → Resolver cada análisis → Integrar los hallazgos"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Desafío de negocio → Identificar áreas clave → Desarrollar soluciones para cada una → Crear una estrategia integral"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Least-to-Most Prompting",
+  "description": "Descomposición progresiva que divide problemas complejos en subproblemas más simples, resolviéndolos del más fácil al más complejo mientras se construye la comprensión",
+  "nodes": [
+   {
+    "id": "complex-problem",
+    "label": "🧮 Problema complejo\n\"Calcula el interés compuesto\nde $10,000 invertidos al 8%\ndurante 15 años con capitalización\ntrimestral\"",
+    "x": 400,
+    "y": 50,
+    "w": 280
+   },
+   {
+    "id": "decomposition",
+    "label": "🔍 Descomposición del problema\n\"Esto requiere entender:\n1. Interés simple\n2. Períodos de capitalización\n3. Fórmula del interés compuesto\"",
+    "x": 400,
+    "y": 170,
+    "w": 250
+   },
+   {
+    "id": "simple-interest",
+    "label": "📐 Nivel 1: Interés simple\n\"¿Cuánto es el 8% de $10,000?\n$10,000 × 0.08 = $800\npor año\"",
+    "x": 150,
+    "y": 300,
+    "w": 200
+   },
+   {
+    "id": "understand-periods",
+    "label": "📅 Nivel 1: Períodos de tiempo\n\"Trimestral = 4 veces/año\n15 años = 15 × 4 = 60\nperíodos de capitalización\"",
+    "x": 400,
+    "y": 300,
+    "w": 200
+   },
+   {
+    "id": "basic-growth",
+    "label": "📈 Nivel 1: Concepto de crecimiento\n\"El dinero crece en cada período\nEl nuevo monto pasa a ser\nla base del período siguiente\"",
+    "x": 650,
+    "y": 300,
+    "w": 200
+   },
+   {
+    "id": "quarterly-rate",
+    "label": "🔢 Nivel 2: Tasa trimestral\n\"8% anual ÷ 4 trimestres\n= 2% por trimestre\n= 0.02 en decimal\"",
+    "x": 200,
+    "y": 450,
+    "w": 200
+   },
+   {
+    "id": "compound-concept",
+    "label": "💰 Nivel 2: Crecimiento compuesto\n\"Tras T1: $10,000 × 1.02\nTras T2: (resultado) × 1.02\nPatrón: multiplicar por 1.02\"",
+    "x": 400,
+    "y": 450,
+    "w": 220
+   },
+   {
+    "id": "simple-compound",
+    "label": "🧮 Nivel 2: Cálculo simple\n\"Tras 2 trimestres:\n$10,000 × (1.02)²\n= $10,404\"",
+    "x": 600,
+    "y": 450,
+    "w": 180
+   },
+   {
+    "id": "formula-derivation",
+    "label": "📚 Nivel 3: Fórmula general\n\"Para n períodos a una tasa r:\nFinal = Capital × (1 + r)ⁿ\nA = P(1 + r/n)^(nt)\"",
+    "x": 400,
+    "y": 600,
+    "w": 250
+   },
+   {
+    "id": "substitute-values",
+    "label": "🎯 Nivel 4: Sustituir valores\nA = $10,000(1 + 0.08/4)^(4×15)\nA = $10,000(1.02)^60",
+    "x": 400,
+    "y": 750,
+    "w": 220
+   },
+   {
+    "id": "final-calculation",
+    "label": "✅ Respuesta final\nA = $10,000 × 3.281\nA = $32,810\n\n\"¡Comprensión construida paso a paso!\"",
+    "x": 400,
+    "y": 850,
+    "w": 200
+   },
+   {
+    "id": "direct-failure",
+    "label": "❌ El enfoque directo falla\n\"Saltar a la fórmula compleja\nsin entenderla\n→ Confusión y errores\"",
+    "x": 100,
+    "y": 170,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "complex-problem",
+    "t": "decomposition",
+    "label": "desglosar"
+   },
+   {
+    "id": "e2a",
+    "s": "decomposition",
+    "t": "simple-interest",
+    "label": "empezar simple"
+   },
+   {
+    "id": "e2b",
+    "s": "decomposition",
+    "t": "understand-periods",
+    "label": "empezar simple"
+   },
+   {
+    "id": "e2c",
+    "s": "decomposition",
+    "t": "basic-growth",
+    "label": "empezar simple"
+   },
+   {
+    "id": "e3a",
+    "s": "simple-interest",
+    "t": "quarterly-rate",
+    "label": "combinar"
+   },
+   {
+    "id": "e3b",
+    "s": "understand-periods",
+    "t": "quarterly-rate",
+    "label": "combinar"
+   },
+   {
+    "id": "e3c",
+    "s": "basic-growth",
+    "t": "compound-concept",
+    "label": "apoyarse en"
+   },
+   {
+    "id": "e3d",
+    "s": "quarterly-rate",
+    "t": "compound-concept",
+    "label": "aplicar tasa"
+   },
+   {
+    "id": "e3e",
+    "s": "compound-concept",
+    "t": "simple-compound",
+    "label": "practicar"
+   },
+   {
+    "id": "e4a",
+    "s": "compound-concept",
+    "t": "formula-derivation",
+    "label": "generalizar"
+   },
+   {
+    "id": "e4b",
+    "s": "simple-compound",
+    "t": "formula-derivation",
+    "label": "generalizar"
+   },
+   {
+    "id": "e5",
+    "s": "formula-derivation",
+    "t": "substitute-values",
+    "label": "aplicar fórmula"
+   },
+   {
+    "id": "e6",
+    "s": "substitute-values",
+    "t": "final-calculation",
+    "label": "calcular"
+   },
+   {
+    "id": "ef",
+    "s": "complex-problem",
+    "t": "direct-failure",
+    "label": "intento directo"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Reconocimiento y descomposición del problema",
+    "description": "El problema complejo de interés compuesto se reconoce como demasiado difícil para una solución directa. El sistema lo descompone en conceptos fundamentales: interés simple, períodos de capitalización y patrones de crecimiento.",
+    "input": "",
+    "nodes": [
+     "complex-problem",
+     "decomposition",
+     "direct-failure"
+    ],
+    "edges": [
+     "e1",
+     "ef"
+    ]
+   },
+   {
+    "title": "Nivel 1: Dominar las bases simples",
+    "description": "Empieza por los conceptos más fáciles: calcula el interés simple (8% de $10,000 = $800), entiende los períodos trimestrales (4 por año) y capta el concepto básico de crecimiento (el dinero crece en cada período).",
+    "input": "",
+    "nodes": [
+     "simple-interest",
+     "understand-periods",
+     "basic-growth"
+    ],
+    "edges": [
+     "e2a",
+     "e2b",
+     "e2c"
+    ]
+   },
+   {
+    "title": "Nivel 2: Combinar conceptos simples",
+    "description": "Construye sobre las bases combinando conceptos: tasa trimestral (8%÷4 = 2%), patrón de crecimiento compuesto (multiplicar por 1.02 cada trimestre) y práctica con un cálculo simple de 2 trimestres.",
+    "input": "",
+    "nodes": [
+     "quarterly-rate",
+     "compound-concept",
+     "simple-compound"
+    ],
+    "edges": [
+     "e3a",
+     "e3b",
+     "e3c",
+     "e3d",
+     "e3e"
+    ]
+   },
+   {
+    "title": "Nivel 3: Generalizar a una fórmula",
+    "description": "Con la comprensión de la mecánica de capitalización, deriva la fórmula general A = P(1 + r/n)^(nt) a partir del patrón observado en los cálculos más simples.",
+    "input": "",
+    "nodes": [
+     "formula-derivation"
+    ],
+    "edges": [
+     "e4a",
+     "e4b"
+    ]
+   },
+   {
+    "title": "Nivel 4: Aplicar al problema complejo original",
+    "description": "Ya con una comprensión profunda, aplica con confianza la fórmula al problema original: A = $10,000(1.02)^60 = $32,810, construyendo la comprensión de lo simple a lo complejo.",
+    "input": "",
+    "nodes": [
+     "substitute-values",
+     "final-calculation"
+    ],
+    "edges": [
+     "e5",
+     "e6"
+    ]
+   }
+  ]
+ }
+}

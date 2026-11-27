@@ -1,0 +1,330 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "swe-bench-pro",
+ "name": "SWE-bench Pro(SWE-Pro)",
+ "icon": "🏗️",
+ "complexity": "high",
+ "description": "Tareas de ingeniería de software lo bastante largas como para que a un profesional le tomen horas o días, extraídas de repositorios elegidos para que memorizar la respuesta no sea una opción.",
+ "features": [
+  "1,865 problemas en 41 repositorios mantenidos activamente",
+  "Bases de código de negocios, B2B y herramientas para desarrolladores, no solo OSS popular",
+  "Los parches suelen abarcar varios archivos y reescrituras sustanciales",
+  "Subconjuntos reservados y con licencia comercial para resistir la contaminación",
+  "Enunciados de problemas e interfaces verificados por humanos",
+  "Construido como respuesta a la saturación y la filtración de SWE-bench"
+ ],
+ "tldr": {
+  "what": "Plantea tareas de ingeniería de software de largo horizonte en 41 repositorios elegidos para que recordar el parche aceptado no sea una vía para obtener un buen puntaje.",
+  "when": "Los números de SWE-bench se saturaron para los sistemas que estás comparando, o la contaminación es precisamente la pregunta que se plantea.",
+  "watchOut": "Desplaza el horizonte de contaminación en lugar de eliminarlo. Sigue siendo un conjunto fijo y publicado, y envejecerá igual que su predecesor."
+ },
+ "overview": {
+  "pattern": "Tareas de ingeniería de software de largo horizonte en repositorios elegidos para que recordar el parche no sea una vía para obtener un buen puntaje",
+  "why": "SWE-bench se saturó y sus repositorios están en todos los corpus de preentrenamiento, así que un puntaje alto dejó de distinguir el razonamiento del recuerdo",
+  "insight": "Desplaza el horizonte de contaminación en lugar de eliminarlo: sigue siendo un conjunto fijo y publicado, y envejecerá de la misma manera",
+  "impl": [
+   {
+    "t": "Seleccionar",
+    "d": "Elige el subconjunto público o el reservado, e indica de cuál proviene cada número reportado"
+   },
+   {
+    "t": "Aprovisionar",
+    "d": "Construye el entorno del repositorio en el commit fijado, con sus dependencias"
+   },
+   {
+    "t": "Instruir",
+    "d": "Entrega el enunciado del problema y la interfaz verificados por humanos, nada más"
+   },
+   {
+    "t": "Presupuestar",
+    "d": "Permite un horizonte acorde a la tarea: son horas de trabajo profesional, no minutos"
+   },
+   {
+    "t": "Verificar",
+    "d": "Ejecuta la suite de pruebas del repositorio y confirma que el parche no rompe nada que antes pasaba"
+   }
+  ],
+  "example": "swe_pro = SWEBenchPro(subset=\"held_out\", repos=41, agent=coding_agent, timeout_s=14400)",
+  "dos": [
+   "Indica el subconjunto: los números públicos y los reservados no son comparables",
+   "Presupuesta un horizonte acorde a la tarea, o estarás midiendo el límite",
+   "Comprueba que el parche no rompa pruebas que ya pasaban",
+   "Léelo junto a SWE-bench Verified: la brecha entre ambos es la estimación de contaminación",
+   "Registra el costo por tarea resuelta, ya que las ejecuciones de largo horizonte son lo bastante caras como para cambiar la decisión"
+  ],
+  "donts": [
+   "Citar un puntaje de Pro como si fuera un puntaje de SWE-bench",
+   "Suponer que el conjunto reservado permanece sin contaminar indefinidamente",
+   "Esperar que prediga el rendimiento en tu base de código, cuyas convenciones no están en ninguno de los conjuntos",
+   "Ejecutarlo tan seguido que el harness se sobreajuste a 41 repositorios",
+   "Interpretar un puntaje bajo como incapacidad sin separar los tiempos agotados de los parches incorrectos"
+  ],
+  "use": [
+   "SWE-bench Verified se saturó para los sistemas que estás comparando",
+   "La contaminación es precisamente la pregunta que se plantea",
+   "El trabajo que estás automatizando abarca varios archivos y toma horas en lugar de minutos",
+   "Necesitas una métrica de programación que siga separando sistemas el próximo año"
+  ],
+  "avoid": [
+   "Necesitas una señal rápida o barata, donde SWE-bench Verified sigue siendo la opción práctica",
+   "El objetivo es un cambio en una sola función, que esto evalúa en exceso",
+   "Tu lenguaje o stack está fuera de los repositorios cubiertos",
+   "No puedes costear el cómputo de ejecuciones de varias horas con tamaños de muestra razonables"
+  ],
+  "metrics": [
+   {
+    "n": "% Resueltos",
+    "d": "Problemas cuyo parche hace pasar la suite de pruebas del repositorio"
+   },
+   {
+    "n": "Brecha público vs reservado",
+    "d": "Diferencia entre subconjuntos, la estimación de contaminación más cercana disponible"
+   },
+   {
+    "n": "Archivos modificados",
+    "d": "Amplitud del parche frente a la referencia, que expone correcciones de alcance insuficiente"
+   },
+   {
+    "n": "Tasa de regresión",
+    "d": "Parches que pasan la prueba objetivo y rompen otra"
+   },
+   {
+    "n": "Costo por tarea resuelta",
+    "d": "Gasto de cómputo por éxito, que los horizontes largos vuelven decisivo"
+   },
+   {
+    "n": "Proporción de tiempos agotados",
+    "d": "Ejecuciones que agotaron el presupuesto en lugar de producir un parche incorrecto"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Comparación post-saturación",
+    "d": "separar sistemas que SWE-bench Verified ya no distingue"
+   },
+   {
+    "n": "Estimación de contaminación",
+    "d": "interpretar la brecha entre público y reservado como señal de filtración"
+   },
+   {
+    "n": "Capacidad de largo horizonte",
+    "d": "si un agente mantiene un diseño a través de varios archivos durante horas"
+   },
+   {
+    "n": "Aproximación a bases de código empresariales",
+    "d": "repositorios de negocios y B2B en lugar de solo OSS popular"
+   },
+   {
+    "n": "Control de lanzamientos",
+    "d": "una verificación lenta y costosa reservada para cambios de modelo o de harness"
+   }
+  ]
+ },
+ "flow": {
+  "title": "SWE-bench Pro: desplazar el horizonte de contaminación",
+  "description": "Lo que construyes cuando el benchmark anterior se satura y resulta que sus repositorios están en todos los corpus de preentrenamiento",
+  "nodes": [
+   {
+    "id": "saturation",
+    "label": "📈 Saturación\n\"Cuando los sistemas de frontera superan\nla mayor parte del conjunto, el número\ndeja de diferenciarlos.\"",
+    "x": 160,
+    "y": 40,
+    "w": 250
+   },
+   {
+    "id": "contamination",
+    "label": "🔍 Contaminación\n\"Esos repositorios y sus\ncorrecciones están en cada rastreo.\n¿El puntaje es recuerdo o razonamiento?\"",
+    "x": 620,
+    "y": 40,
+    "w": 250
+   },
+   {
+    "id": "response",
+    "label": "🏗️ SWE-bench Pro\n\"1,865 problemas,\n41 repositorios mantenidos activamente,\nreconstruido contra ambos problemas.\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "long-horizon",
+    "label": "⏳ Tareas de largo horizonte\n\"Horas o días de trabajo\nprofesional, así que un parche recordado\nno basta para terminar.\"",
+    "x": 100,
+    "y": 370,
+    "w": 240
+   },
+   {
+    "id": "private-repos",
+    "label": "🔒 Fuentes más difíciles de rastrear\n\"Bases de código de negocios y B2B,\nincluido trabajo con licencia\ncomercial que no está en un corpus.\"",
+    "x": 400,
+    "y": 370,
+    "w": 240
+   },
+   {
+    "id": "multi-file",
+    "label": "🗂️ Parches multiarchivo\n\"Un diseño sostenido a través\nde varios archivos, no una función\nreescrita en su lugar.\"",
+    "x": 700,
+    "y": 370,
+    "w": 240
+   },
+   {
+    "id": "verify",
+    "label": "🧪 Puntuación basada en ejecución\n\"Deciden las pruebas del propio repositorio.\nEnunciados de problemas e interfaces\nverificados por humanos.\"",
+    "x": 400,
+    "y": 530,
+    "w": 300
+   },
+   {
+    "id": "residual",
+    "label": "⚠️ Lo que no cambió\n\"Sigue siendo un conjunto fijo. El horizonte\nse movió; no desapareció.\nEste también envejecerá.\"",
+    "x": 400,
+    "y": 680,
+    "w": 300
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "saturation",
+    "t": "response",
+    "label": ""
+   },
+   {
+    "id": "e2",
+    "s": "contamination",
+    "t": "response",
+    "label": ""
+   },
+   {
+    "id": "e3",
+    "s": "response",
+    "t": "long-horizon",
+    "label": ""
+   },
+   {
+    "id": "e4",
+    "s": "response",
+    "t": "private-repos",
+    "label": ""
+   },
+   {
+    "id": "e5",
+    "s": "response",
+    "t": "multi-file",
+    "label": ""
+   },
+   {
+    "id": "e6",
+    "s": "long-horizon",
+    "t": "verify",
+    "label": ""
+   },
+   {
+    "id": "e7",
+    "s": "private-repos",
+    "t": "verify",
+    "label": ""
+   },
+   {
+    "id": "e8",
+    "s": "multi-file",
+    "t": "verify",
+    "label": ""
+   },
+   {
+    "id": "e9",
+    "s": "verify",
+    "t": "residual",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "El primer problema: el número dejó de moverse",
+    "description": "Un benchmark es útil mientras separa sistemas. Una vez que la frontera supera la mayor parte del conjunto, las diferencias restantes son ruido y todos reportan una cifra similar.",
+    "input": "",
+    "nodes": [
+     "saturation"
+    ],
+    "edges": []
+   },
+   {
+    "title": "El segundo problema: nadie podía descartar el recuerdo",
+    "description": "Los repositorios son públicos y populares, y también lo son sus correcciones. Un puntaje alto podría ser un modelo razonando sobre código o un modelo recordando el parche. Desde afuera, ambos se ven idénticos.",
+    "input": "",
+    "nodes": [
+     "contamination"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Un benchmark construido contra ambos",
+    "description": "SWE-bench Pro es la respuesta: 1,865 problemas extraídos de 41 repositorios mantenidos activamente, diseñados para que ni la saturación ni la memorización expliquen un buen resultado.",
+    "input": "",
+    "nodes": [
+     "response"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Tareas tan largas que el recuerdo se agota",
+    "description": "Problemas que a un profesional le toman horas o días. Un fragmento recordado podría iniciar uno de ellos, pero no puede terminarlo, porque el trabajo continúa más allá de cualquier cosa que haya quedado escrita en un solo lugar.",
+    "input": "",
+    "nodes": [
+     "long-horizon"
+    ],
+    "edges": [
+     "e3"
+    ]
+   },
+   {
+    "title": "Código que es más difícil haber leído antes",
+    "description": "Aplicaciones de negocios, servicios B2B y herramientas para desarrolladores, incluido código con licencia comercial. No porque el código privado sea mejor, sino porque es menos probable que esté en el corpus de entrenamiento.",
+    "input": "",
+    "nodes": [
+     "private-repos"
+    ],
+    "edges": [
+     "e4"
+    ]
+   },
+   {
+    "title": "Parches que abarcan varios archivos",
+    "description": "Modificaciones sustanciales en múltiples archivos, lo que exige al agente sostener un diseño en mente en lugar de reescribir una sola función en su lugar. Esa es la parte que los benchmarks de un solo issue nunca evaluaron.",
+    "input": "",
+    "nodes": [
+     "multi-file"
+    ],
+    "edges": [
+     "e5"
+    ]
+   },
+   {
+    "title": "Puntuado con el mismo método honesto",
+    "description": "Deciden las pruebas del propio repositorio, frente a enunciados de problemas e interfaces verificados por humanos. El método de puntuación nunca fue la debilidad; la distribución de tareas sí lo fue.",
+    "input": "",
+    "nodes": [
+     "verify"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Lo que un sucesor no puede arreglar",
+    "description": "Sigue siendo un conjunto fijo de problemas publicado en un momento determinado. El horizonte de contaminación avanzó un par de años en lugar de desaparecer, y este benchmark envejecerá de la misma manera que el anterior.",
+    "input": "",
+    "nodes": [
+     "residual"
+    ],
+    "edges": [
+     "e9"
+    ]
+   }
+  ]
+ }
+}

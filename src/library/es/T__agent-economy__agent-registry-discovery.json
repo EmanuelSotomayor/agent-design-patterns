@@ -1,0 +1,336 @@
+{
+ "cat": "agent-economy",
+ "slug": "agent-registry-discovery",
+ "name": "Agent Registry & Discovery(ARD)",
+ "icon": "🗂️",
+ "complexity": "medium",
+ "description": "La capa de descubrimiento que permite que agentes y servidores de herramientas se encuentren entre sí en tiempo de ejecución, en lugar de mediante configuración fija en el código. Tres mecanismos convergentes hacen esto posible: las A2A Agent Cards, un manifiesto JSON autodescriptivo servido en /.well-known/agent-card.json (RFC 8615) que anuncia las habilidades, endpoints, esquemas de autenticación y capacidades de streaming de un agente; el MCP Registry oficial (versión preliminar de septiembre de 2025), un catálogo público federado y una API para publicar y encontrar servidores MCP, extensible con sub-registros empresariales privados; y propuestas de nombres descentralizados como MIT Project NANDA, cuyo NANDA Index resuelve registros AgentFacts verificables criptográficamente a endpoints, posicionado como el DNS de los agentes. El patrón común es publicar un registro de capacidades firmado, luego resolverlo mediante una URI conocida o una consulta al registro, validar los esquemas de autenticación anunciados y vincular el agente dinámicamente. Se diferencia de `a2a-protocol`: ese cubre el transporte de mensajes una vez que se conoce al par, mientras que este cubre cómo encontrar y verificar al par en primer lugar.",
+ "features": [
+  "Agent Cards en /.well-known/agent-card.json (RFC 8615)",
+  "Los manifiestos anuncian habilidades, endpoints, esquemas de autenticación y streaming",
+  "MCP Registry federado: catálogo público más sub-registros privados",
+  "Registros de capacidades firmados, resueltos por URI conocida o consulta al registro",
+  "Nombres descentralizados (NANDA Index, AgentFacts verificables) como DNS para agentes",
+  "Validación del esquema de autenticación antes de conectar un agente dinámicamente"
+ ],
+ "tldr": {
+  "what": "Los agentes publican registros de capacidades firmados en URIs conocidas o registros federados, y luego descubren y validan pares dinámicamente en lugar de usar endpoints fijos en el código.",
+  "when": "Orquestadores que necesitan acceso en tiempo de ejecución a capacidades no integradas, o ecosistemas donde agentes y herramientas entran y salen sin necesidad de redesplegar.",
+  "watchOut": "Un registro desactualizado, claves de firma comprometidas o incompatibilidades en el esquema de autenticación pueden conectar agentes incorrectos o maliciosos antes de que la validación lo detecte."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Registro y descubrimiento de agentes",
+  "description": "Un orquestador que necesita una capacidad con la que no fue construido encuentra un proveedor en tiempo de ejecución: consulta un registro, resuelve la Agent Card candidata en /.well-known/agent-card.json, valida la firma y los esquemas de autenticación, y luego vincula el agente dinámicamente en lugar de fijar la integración en el código.",
+  "nodes": [
+   {
+    "id": "ticket",
+    "label": "📩 Ticket de soporte\nEl cliente escribió en japonés",
+    "x": 360,
+    "y": 40,
+    "w": 240
+   },
+   {
+    "id": "orchestrator",
+    "label": "🧭 Agente orquestador\nGestiona el ticket, sin habilidad de traducción",
+    "x": 350,
+    "y": 130,
+    "w": 260
+   },
+   {
+    "id": "capability-gap",
+    "label": "🧩 Brecha de capacidad\nNecesita skill=translation (ja a en)",
+    "x": 360,
+    "y": 220,
+    "w": 240
+   },
+   {
+    "id": "registry",
+    "label": "🗂️ MCP Registry\nCatálogo federado + API de consulta",
+    "x": 120,
+    "y": 320,
+    "w": 210
+   },
+   {
+    "id": "nanda-index",
+    "label": "🌐 NANDA Index\nNombres descentralizados, AgentFacts verificables",
+    "x": 600,
+    "y": 320,
+    "w": 230
+   },
+   {
+    "id": "candidate-list",
+    "label": "📇 Lista de candidatos\n3 agentes anuncian traducción",
+    "x": 360,
+    "y": 420,
+    "w": 220
+   },
+   {
+    "id": "candidate-a",
+    "label": "🅰️ translate.example.com\nauth: oauth2, transporte: HTTPS + SSE",
+    "x": 120,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "candidate-b",
+    "label": "🅱️ cheap-mt.example.net\nauth: api-key sobre HTTP plano",
+    "x": 610,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "agent-card",
+    "label": "📄 Agent Card\nGET /.well-known/agent-card.json (RFC 8615)",
+    "x": 100,
+    "y": 620,
+    "w": 240
+   },
+   {
+    "id": "reject",
+    "label": "⛔ Rechazado\nSin TLS, esquema de autenticación no soportado",
+    "x": 610,
+    "y": 620,
+    "w": 200
+   },
+   {
+    "id": "signature-check",
+    "label": "🔏 Verificación de firma\nRegistro de capacidades firmado y válido",
+    "x": 40,
+    "y": 720,
+    "w": 200
+   },
+   {
+    "id": "auth-validate",
+    "label": "🔑 Validación de autenticación\noauth2 coincide con una credencial disponible",
+    "x": 280,
+    "y": 720,
+    "w": 200
+   },
+   {
+    "id": "bind",
+    "label": "🔗 Vincular dinámicamente\nEmitir token, conectar al grafo de tareas",
+    "x": 120,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "translation-agent",
+    "label": "🈳 Agente de traducción\nAhora activo en la trayectoria en curso",
+    "x": 380,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "answer",
+    "label": "✅ Ticket respondido\nRespuesta enviada; card en cache por ETag",
+    "x": 640,
+    "y": 800,
+    "w": 210
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "ticket",
+    "t": "orchestrator",
+    "label": ""
+   },
+   {
+    "id": "e2",
+    "s": "orchestrator",
+    "t": "capability-gap",
+    "label": "necesita traducción"
+   },
+   {
+    "id": "e3",
+    "s": "capability-gap",
+    "t": "registry",
+    "label": "consulta"
+   },
+   {
+    "id": "e4",
+    "s": "capability-gap",
+    "t": "nanda-index",
+    "label": "resolver nombre"
+   },
+   {
+    "id": "e5",
+    "s": "registry",
+    "t": "candidate-list",
+    "label": "3 coincidencias"
+   },
+   {
+    "id": "e6",
+    "s": "nanda-index",
+    "t": "candidate-list",
+    "label": "AgentFacts"
+   },
+   {
+    "id": "e7",
+    "s": "candidate-list",
+    "t": "candidate-a",
+    "label": ""
+   },
+   {
+    "id": "e8",
+    "s": "candidate-list",
+    "t": "candidate-b",
+    "label": ""
+   },
+   {
+    "id": "e9",
+    "s": "candidate-a",
+    "t": "agent-card",
+    "label": "resolver card"
+   },
+   {
+    "id": "e10",
+    "s": "candidate-b",
+    "t": "reject",
+    "label": "inseguro"
+   },
+   {
+    "id": "e11",
+    "s": "agent-card",
+    "t": "signature-check",
+    "label": ""
+   },
+   {
+    "id": "e12",
+    "s": "agent-card",
+    "t": "auth-validate",
+    "label": ""
+   },
+   {
+    "id": "e13",
+    "s": "signature-check",
+    "t": "bind",
+    "label": "firma ok"
+   },
+   {
+    "id": "e14",
+    "s": "auth-validate",
+    "t": "bind",
+    "label": "oauth2 ok"
+   },
+   {
+    "id": "e15",
+    "s": "bind",
+    "t": "translation-agent",
+    "label": "conectar"
+   },
+   {
+    "id": "e16",
+    "s": "translation-agent",
+    "t": "answer",
+    "label": "traducir + responder"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Brecha de capacidad",
+    "description": "Llega un ticket en japonés; el orquestador reconoce que le falta una habilidad de traducción y necesita encontrar una en tiempo de ejecución.",
+    "input": "",
+    "nodes": [
+     "ticket",
+     "orchestrator",
+     "capability-gap"
+    ],
+    "edges": [
+     "e1",
+     "e2"
+    ]
+   },
+   {
+    "title": "Consultar la capa de descubrimiento",
+    "description": "El orquestador consulta el MCP Registry federado buscando skill=translation y, en paralelo, resuelve un identificador legible para humanos a través del NANDA Index.",
+    "input": "",
+    "nodes": [
+     "capability-gap",
+     "registry",
+     "nanda-index"
+    ],
+    "edges": [
+     "e3",
+     "e4"
+    ]
+   },
+   {
+    "title": "Resolución de candidatos",
+    "description": "Ambos mecanismos devuelven registros de capacidades; el orquestador arma una lista corta de tres agentes que anuncian la habilidad de traducción de ja a en.",
+    "input": "",
+    "nodes": [
+     "registry",
+     "nanda-index",
+     "candidate-list",
+     "candidate-a",
+     "candidate-b"
+    ],
+    "edges": [
+     "e5",
+     "e6",
+     "e7",
+     "e8"
+    ]
+   },
+   {
+    "title": "Resolver la Agent Card",
+    "description": "Para el mejor candidato hace GET a /.well-known/agent-card.json (RFC 8615) y lee las habilidades, el endpoint, el transporte y los esquemas de autenticación anunciados.",
+    "input": "",
+    "nodes": [
+     "candidate-a",
+     "agent-card"
+    ],
+    "edges": [
+     "e9"
+    ]
+   },
+   {
+    "title": "Validar confianza y autenticación",
+    "description": "Verifica la firma del registro y confirma que un esquema de autenticación anunciado coincide con una credencial que posee. El segundo candidato solo ofrece api-key sobre HTTP plano y es rechazado.",
+    "input": "",
+    "nodes": [
+     "agent-card",
+     "signature-check",
+     "auth-validate",
+     "candidate-b",
+     "reject"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12"
+    ]
+   },
+   {
+    "title": "Vincular dinámicamente",
+    "description": "Con la firma y la autenticación validadas, el orquestador emite un token OAuth y conecta el agente de traducción al grafo de tareas en ejecución sin redesplegar.",
+    "input": "",
+    "nodes": [
+     "signature-check",
+     "auth-validate",
+     "bind",
+     "translation-agent"
+    ],
+    "edges": [
+     "e13",
+     "e14",
+     "e15"
+    ]
+   },
+   {
+    "title": "Responder y guardar en cache",
+    "description": "El agente de traducción gestiona el ticket; la card resuelta se guarda en cache con su ETag, de modo que la siguiente búsqueda evita volver a descargarla hasta que la card cambie.",
+    "input": "",
+    "nodes": [
+     "translation-agent",
+     "answer"
+    ],
+    "edges": [
+     "e16"
+    ]
+   }
+  ]
+ }
+}

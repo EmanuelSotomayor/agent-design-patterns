@@ -1,0 +1,406 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "mlcommons-ai-safety",
+ "name": "MLCommons AI Safety Benchmark v1.0(AILuminate)",
+ "icon": "🛡️",
+ "complexity": "medium",
+ "description": "Framework de evaluación de seguridad listo para producción que mide las respuestas de sistemas de IA en 12 categorías de peligro, con protocolos de prueba estandarizados para decisiones de despliegue.",
+ "features": [
+  "12 categorías de peligro exhaustivas",
+  "Protocolos de evaluación listos para producción",
+  "Puntuación de seguridad estandarizada (escala 0-1)",
+  "Evaluación de seguridad multilingüe",
+  "Verificación de cumplimiento normativo",
+  "Generación automatizada de informes de seguridad",
+  "Integración con monitoreo continuo"
+ ],
+ "tldr": {
+  "what": "Pasa las respuestas de IA por 12 categorías de peligro estandarizadas, puntuando la seguridad en una escala de 0-1 con informes automatizados y verificación de cumplimiento.",
+  "when": "Antes de desplegar sistemas en producción en los que necesitas evidencia documentada de seguridad frente a violencia, sesgo, privacidad, contenido ilegal y riesgos similares.",
+  "watchOut": "Las puntuaciones reflejan vacíos en la cobertura de pruebas, no la seguridad en el mundo real; los usuarios adversarios encuentran modos de fallo que los benchmarks no miden."
+ },
+ "overview": {
+  "pattern": "Evaluación de seguridad estandarizada en 13 categorías de peligro con un sistema de calificación de 5 puntos",
+  "why": "Proporciona una evaluación de seguridad objetiva y reproducible para el cumplimiento normativo y las decisiones de despliegue",
+  "insight": "Benchmark estándar de la industria con conjuntos de prueba ocultos y soporte multilingüe para una validación de seguridad exhaustiva",
+  "impl": [
+   {
+    "t": "Instalar",
+    "d": "pip install modelbench"
+   },
+   {
+    "t": "Configurar",
+    "d": "Configura los endpoints y las credenciales del modelo"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige las categorías de peligro a probar"
+   },
+   {
+    "t": "Ejecutar",
+    "d": "Ejecuta el benchmark contra el SUT"
+   },
+   {
+    "t": "Analizar",
+    "d": "Revisa las puntuaciones de seguridad y las violaciones"
+   }
+  ],
+  "example": "modelbench run --model <current-model-id> --hazards all --output safety_report.json",
+  "dos": [
+   "Prueba en las 13 categorías de peligro para una evaluación exhaustiva",
+   "Usa conjuntos de prueba ocultos para evitar el sobreajuste a prompts conocidos",
+   "Establece una línea base con modelos de referencia antes del despliegue",
+   "Implementa monitoreo continuo con nuevas pruebas periódicas",
+   "Documenta las políticas de seguridad y los procedimientos de respuesta a incidentes"
+  ],
+  "donts": [
+   "Basarte únicamente en los resultados de la POC v0.5 para decisiones de producción",
+   "Omitir pruebas en varios idiomas para un despliegue global",
+   "Ignorar factores contextuales que afectan la evaluación de seguridad",
+   "Suponer que los resultados del benchmark garantizan una seguridad completa",
+   "Usar solo evaluación automatizada sin revisión humana"
+  ],
+  "use": [
+   "Validación de seguridad previa al despliegue",
+   "Requisitos de cumplimiento normativo",
+   "Comparación del desempeño de seguridad de modelos",
+   "Establecimiento de líneas base de seguridad",
+   "Planificación de despliegues multilingües"
+  ],
+  "avoid": [
+   "Evaluación de modelos multimodales (no soportada)",
+   "Evaluación de sistemas basados en agentes",
+   "Solo monitoreo de seguridad en tiempo real",
+   "Despliegues exclusivamente en idiomas distintos del inglés (limitado en v1.0)",
+   "Necesidades de seguridad especializadas de un dominio específico"
+  ],
+  "metrics": [
+   {
+    "n": "Puntuación general de seguridad",
+    "d": "Escala de 5 puntos (de Deficiente a Excelente)"
+   },
+   {
+    "n": "Desempeño por peligro",
+    "d": "% de violaciones por categoría"
+   },
+   {
+    "n": "Tasa de violaciones",
+    "d": "Respuestas dañinas / total de prompts"
+   },
+   {
+    "n": "Comparación con modelos de referencia",
+    "d": "Seguridad relativa frente a la línea base"
+   },
+   {
+    "n": "Desempeño en pruebas ocultas",
+    "d": "Seguridad en prompts no divulgados"
+   },
+   {
+    "n": "Paridad entre idiomas",
+    "d": "Consistencia entre los idiomas soportados"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Certificación de seguridad del modelo",
+    "d": "Validación previa al despliegue para LLMs conversacionales con puntuación estandarizada"
+   },
+   {
+    "n": "Cumplimiento normativo",
+    "d": "EU AI Act y frameworks del NIST que exigen una evaluación de seguridad documentada"
+   },
+   {
+    "n": "Comparación de modelos",
+    "d": "Benchmarking objetivo de seguridad entre distintos proveedores y versiones de LLM"
+   },
+   {
+    "n": "Monitoreo continuo",
+    "d": "Reevaluación periódica para detectar regresiones de seguridad a lo largo del tiempo"
+   },
+   {
+    "n": "Seguridad multilingüe",
+    "d": "Validación en despliegues en inglés, francés, chino e hindi"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón del benchmark MLCommons AILuminate v1.0",
+  "description": "Framework exhaustivo de evaluación de seguridad de IA con una taxonomía de peligros estandarizada, evaluadores de seguridad y un sistema de calificación para medir la resistencia de los LLM a prompts dañinos en 12 categorías de riesgo",
+  "nodes": [
+   {
+    "id": "enterprise-llm-deployment",
+    "label": "🏢 Despliegue empresarial de LLM\n\"Empresa que despliega un LLM de\natención al cliente con más de 100K interacciones diarias\nNecesita validación de seguridad antes del lanzamiento\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "safety-assessment-challenge",
+    "label": "🤔 Desafío de evaluación de seguridad\n\"¿Cómo evaluar sistemáticamente\nla seguridad del LLM en todas las posibles\ncategorías de riesgo y vectores de ataque?\"",
+    "x": 400,
+    "y": 200,
+    "w": 300
+   },
+   {
+    "id": "adhoc-safety-testing",
+    "label": "⚠️ Pruebas de seguridad ad hoc\n\"Pruebas manuales de riesgos obvios\nSin metodología sistemática\nCriterios de evaluación inconsistentes\"",
+    "x": 150,
+    "y": 350,
+    "w": 220
+   },
+   {
+    "id": "coverage-gaps",
+    "label": "🕳️ Vacíos críticos de cobertura\n\"Se omitieron riesgos de asesoría especializada\nSin pruebas de explotación infantil\nVerificaciones de difamación inconsistentes\"",
+    "x": 150,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "post-deployment-incidents",
+    "label": "🚨 Incidentes posteriores al despliegue\n\"El LLM da consejos dañinos\nInvestigación regulatoria\nDaño a la confianza pública\"",
+    "x": 150,
+    "y": 650,
+    "w": 200
+   },
+   {
+    "id": "ailuminate-framework",
+    "label": "🛡️ Framework AILuminate v1.0\n\"Benchmark de seguridad exhaustivo:\n• 12 categorías de peligro estandarizadas\n• Más de 24,000 prompts de prueba\n• Evaluadores de seguridad automatizados\"",
+    "x": 650,
+    "y": 350,
+    "w": 260
+   },
+   {
+    "id": "physical-hazards",
+    "label": "⚔️ Peligros físicos\n\"• Delitos violentos\n• Armas indiscriminadas\n• Suicidio y autolesiones\"",
+    "x": 500,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "criminal-hazards",
+    "label": "🚫 Peligros criminales\n\"• Delitos no violentos\n• Delitos sexuales\n• Explotación sexual infantil\"",
+    "x": 650,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "social-hazards",
+    "label": "💬 Peligros sociales\n\"• Discurso de odio\n• Difamación\n• Contenido sexual\"",
+    "x": 800,
+    "y": 500,
+    "w": 180
+   },
+   {
+    "id": "information-hazards",
+    "label": "📋 Peligros informativos\n\"• Propiedad intelectual\n• Violaciones de privacidad\n• Asesoría especializada\"",
+    "x": 575,
+    "y": 600,
+    "w": 180
+   },
+   {
+    "id": "safety-evaluation-system",
+    "label": "🔍 Evaluación de seguridad automatizada\n\"Conjunto de modelos evaluadores de seguridad\nCalificación estandarizada (de Deficiente a Excelente)\nCriterios de evaluación consistentes\"",
+    "x": 650,
+    "y": 700,
+    "w": 240
+   },
+   {
+    "id": "comprehensive-validation",
+    "label": "✅ Validación de seguridad exhaustiva\n\"Cobertura sistemática de todas las áreas de riesgo\nBenchmark estandarizado de la industria\nEvaluación de seguridad reproducible\"",
+    "x": 650,
+    "y": 850,
+    "w": 250
+   },
+   {
+    "id": "standardized-evaluation-principle",
+    "label": "🎯 Principio de evaluación de seguridad estandarizada\n\"La evaluación sistemática supera a las pruebas ad hoc\nUna taxonomía exhaustiva asegura la cobertura\nLa evaluación automatizada permite escalar\"",
+    "x": 400,
+    "y": 950,
+    "w": 350
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "enterprise-llm-deployment",
+    "t": "safety-assessment-challenge",
+    "label": "necesita validación de seguridad"
+   },
+   {
+    "id": "e2",
+    "s": "safety-assessment-challenge",
+    "t": "adhoc-safety-testing",
+    "label": "enfoque ad hoc"
+   },
+   {
+    "id": "e3",
+    "s": "safety-assessment-challenge",
+    "t": "ailuminate-framework",
+    "label": "enfoque sistemático"
+   },
+   {
+    "id": "e4",
+    "s": "adhoc-safety-testing",
+    "t": "coverage-gaps",
+    "label": "omite riesgos críticos"
+   },
+   {
+    "id": "e5",
+    "s": "coverage-gaps",
+    "t": "post-deployment-incidents",
+    "label": "provoca incidentes"
+   },
+   {
+    "id": "e6",
+    "s": "ailuminate-framework",
+    "t": "physical-hazards",
+    "label": "evalúa riesgos físicos"
+   },
+   {
+    "id": "e7",
+    "s": "ailuminate-framework",
+    "t": "criminal-hazards",
+    "label": "evalúa riesgos criminales"
+   },
+   {
+    "id": "e8",
+    "s": "ailuminate-framework",
+    "t": "social-hazards",
+    "label": "evalúa riesgos sociales"
+   },
+   {
+    "id": "e9",
+    "s": "ailuminate-framework",
+    "t": "information-hazards",
+    "label": "evalúa riesgos informativos"
+   },
+   {
+    "id": "e10",
+    "s": "physical-hazards",
+    "t": "safety-evaluation-system",
+    "label": "valorado por"
+   },
+   {
+    "id": "e11",
+    "s": "criminal-hazards",
+    "t": "safety-evaluation-system",
+    "label": "evaluado por"
+   },
+   {
+    "id": "e12",
+    "s": "social-hazards",
+    "t": "safety-evaluation-system",
+    "label": "calificado por"
+   },
+   {
+    "id": "e13",
+    "s": "information-hazards",
+    "t": "safety-evaluation-system",
+    "label": "puntuado por"
+   },
+   {
+    "id": "e14",
+    "s": "safety-evaluation-system",
+    "t": "comprehensive-validation",
+    "label": "produce validación"
+   },
+   {
+    "id": "e15",
+    "s": "post-deployment-incidents",
+    "t": "standardized-evaluation-principle",
+    "label": "demuestra la necesidad"
+   },
+   {
+    "id": "e16",
+    "s": "comprehensive-validation",
+    "t": "standardized-evaluation-principle",
+    "label": "demuestra la eficacia"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío de validación de seguridad de un LLM empresarial",
+    "description": "Una empresa que despliega un LLM de atención al cliente para más de 100K interacciones diarias necesita una validación de seguridad sistemática antes del lanzamiento para evitar salidas dañinas y problemas regulatorios.",
+    "input": "",
+    "nodes": [
+     "enterprise-llm-deployment",
+     "safety-assessment-challenge"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Dos enfoques de pruebas de seguridad",
+    "description": "El desafío de evaluación de seguridad se aborda con pruebas manuales ad hoc frente al framework sistemático de AILuminate v1.0, con una taxonomía de peligros exhaustiva y evaluación automatizada.",
+    "input": "",
+    "nodes": [
+     "adhoc-safety-testing",
+     "ailuminate-framework"
+    ],
+    "edges": [
+     "e2",
+     "e3"
+    ]
+   },
+   {
+    "title": "Pruebas ad hoc: vacíos críticos de cobertura",
+    "description": "Las pruebas manuales omiten los riesgos de asesoría especializada y los escenarios de explotación infantil, y tienen criterios de evaluación inconsistentes, lo que provoca incidentes posteriores al despliegue e investigaciones regulatorias.",
+    "input": "",
+    "nodes": [
+     "coverage-gaps",
+     "post-deployment-incidents"
+    ],
+    "edges": [
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Taxonomía de 12 categorías de peligro de AILuminate",
+    "description": "Un framework exhaustivo evalúa todas las áreas de riesgo: peligros físicos (violencia, armas, autolesiones), peligros criminales (delitos, explotación), peligros sociales (odio, difamación) y peligros informativos (privacidad, PI, asesoría).",
+    "input": "",
+    "nodes": [
+     "physical-hazards",
+     "criminal-hazards",
+     "social-hazards",
+     "information-hazards"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Sistema de evaluación de seguridad automatizado",
+    "description": "Más de 24,000 prompts de prueba en 12 categorías, procesados por un conjunto de modelos evaluadores de seguridad con un sistema de calificación estandarizado (de Deficiente a Excelente) y criterios de evaluación consistentes.",
+    "input": "",
+    "nodes": [
+     "safety-evaluation-system"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13"
+    ]
+   },
+   {
+    "title": "Validación exhaustiva y principio central",
+    "description": "AILuminate proporciona una cobertura sistemática de todas las áreas de riesgo como benchmark estandarizado de la industria, demostrando que la evaluación sistemática con una taxonomía exhaustiva supera a las pruebas ad hoc.",
+    "input": "",
+    "nodes": [
+     "comprehensive-validation",
+     "standardized-evaluation-principle"
+    ],
+    "edges": [
+     "e14",
+     "e15",
+     "e16"
+    ]
+   }
+  ]
+ }
+}

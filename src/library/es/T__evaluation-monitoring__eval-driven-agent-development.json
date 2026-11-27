@@ -1,0 +1,373 @@
+{
+ "cat": "evaluation-monitoring",
+ "slug": "eval-driven-agent-development",
+ "name": "Eval-Driven Development (Agent CI)(EDD)",
+ "icon": "🧪",
+ "complexity": "high",
+ "description": "La disciplina del ciclo de desarrollo que consiste en construir agentes y prompts primero contra evaluaciones (evals). Los datasets dorados curados (aproximadamente de 50 a 500 casos, ponderados hacia los modos de falla conocidos) se versionan junto con los prompts, se ejecutan como suite de regresión en cada pull request, y el merge o la promoción quedan condicionados a umbrales de métricas. El pipeline fija las versiones del modelo y del juez, de modo que una actualización silenciosa del modelo por parte del proveedor se detecte como una regresión en lugar de absorberse sin que nadie lo note, y organiza sus verificaciones en etapas: lint, luego evaluación offline y luego una compuerta de costo antes de que un cambio pueda hacer merge. Se distingue de agent-observability-tracing, que es telemetría en tiempo de ejecución y no un control previo al merge, y de los benchmarks públicos fijos, que no son suites de regresión propias del equipo en CI.",
+ "features": [
+  "Datasets dorados versionados (~50-500 casos) ponderados hacia los modos de falla conocidos",
+  "La suite de regresión se ejecuta en cada pull request; el merge queda condicionado a umbrales de métricas",
+  "Versiones fijas del modelo y del juez para que las actualizaciones silenciosas del proveedor aparezcan como regresiones",
+  "Pipeline de CI por etapas: lint, luego evaluación offline y luego compuerta de costo antes del merge",
+  "LLM-as-judge y evaluadores basados en código combinados por cada dimensión de falla",
+  "Los cambios de prompts y de datasets se revisan juntos como un único diff"
+ ],
+ "tldr": {
+  "what": "Datasets dorados versionados que se ejecutan como suites de regresión en cada PR, condicionando el merge a umbrales de métricas con versiones fijas del modelo y del juez.",
+  "when": "Equipos que publican agentes donde deben detectarse las actualizaciones silenciosas del modelo, los modos de falla conocidos necesitan cobertura continua y los cambios de prompts requieren validación medible.",
+  "watchOut": "Los datasets dorados quedan desactualizados o desalineados con las fallas reales de producción si no se mantienen activamente y se ponderan hacia los modos de falla actuales."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Eval-Driven Development (CI de agentes)",
+  "description": "Un cambio de prompt abre un pull request que dispara el pipeline de CI del agente: lint, luego una evaluación offline sobre una suite dorada versionada de 240 casos con modelo y juez fijos, y luego una compuerta de costo. Un modo de falla retrocede por debajo de su umbral, el merge se bloquea, el desarrollador lo corrige, la suite pasa a verde y el cambio se integra.",
+  "nodes": [
+   {
+    "id": "pr-open",
+    "label": "📥 PR #418\nReformular el prompt de sistema de la política de reembolsos",
+    "x": 300,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "golden-dataset",
+    "label": "📚 Dataset dorado (versionado)\n240 casos, ponderados hacia modos de falla",
+    "x": 640,
+    "y": 50,
+    "w": 260
+   },
+   {
+    "id": "ci-trigger",
+    "label": "⚙️ Pipeline de CI disparado\nen cada pull request",
+    "x": 330,
+    "y": 155,
+    "w": 220
+   },
+   {
+    "id": "lint-gate",
+    "label": "🧹 Etapa 1: Lint + esquema\nlint del prompt, verificación del esquema de herramientas",
+    "x": 90,
+    "y": 255,
+    "w": 190
+   },
+   {
+    "id": "offline-eval",
+    "label": "🧪 Etapa 2: Evaluación offline\nejecutar la suite dorada de 240 casos",
+    "x": 360,
+    "y": 255,
+    "w": 200
+   },
+   {
+    "id": "pinned-versions",
+    "label": "📌 Modelo + juez fijos\ndetectar actualizaciones silenciosas del proveedor",
+    "x": 650,
+    "y": 255,
+    "w": 190
+   },
+   {
+    "id": "scorer-success",
+    "label": "✅ Éxito de la tarea\n91.2% -> 91.0% (ok)",
+    "x": 40,
+    "y": 375,
+    "w": 160
+   },
+   {
+    "id": "scorer-tone",
+    "label": "🙂 Tono / cortesía\n96% -> 97% (ok)",
+    "x": 240,
+    "y": 375,
+    "w": 160
+   },
+   {
+    "id": "scorer-policy",
+    "label": "📋 Cumplimiento de la política de reembolsos\n98.5% -> 88.1% (FALLA)",
+    "x": 440,
+    "y": 375,
+    "w": 180
+   },
+   {
+    "id": "scorer-cost",
+    "label": "💰 Compuerta de costo\n$2.10 -> $2.08 por 1k (ok)",
+    "x": 670,
+    "y": 375,
+    "w": 170
+   },
+   {
+    "id": "threshold-gate",
+    "label": "🚦 Compuerta de umbrales\ncomparar cada métrica con la línea base de main",
+    "x": 350,
+    "y": 490,
+    "w": 240
+   },
+   {
+    "id": "merge-blocked",
+    "label": "⛔ Merge BLOQUEADO\npolítica de reembolsos 88.1% < umbral de 97%",
+    "x": 340,
+    "y": 600,
+    "w": 240
+   },
+   {
+    "id": "drill-down",
+    "label": "🔎 Análisis detallado\n12 casos fallidos: reembolsos fuera de la ventana de 30 días",
+    "x": 650,
+    "y": 600,
+    "w": 230
+   },
+   {
+    "id": "fix",
+    "label": "🛠️ Corrección\nrestaurar la cláusula explícita de la ventana de 30 días",
+    "x": 40,
+    "y": 600,
+    "w": 210
+   },
+   {
+    "id": "rerun",
+    "label": "🔁 Volver a ejecutar la suite de 240 casos\npolítica de reembolsos 88.1% -> 98.9%",
+    "x": 40,
+    "y": 705,
+    "w": 210
+   },
+   {
+    "id": "merge-green",
+    "label": "✅ Los 240 casos en verde\nmerge desbloqueado",
+    "x": 350,
+    "y": 705,
+    "w": 200
+   },
+   {
+    "id": "merged",
+    "label": "🚀 Integrado en main\nprompt + casos dorados versionados juntos",
+    "x": 360,
+    "y": 795,
+    "w": 240
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "pr-open",
+    "t": "ci-trigger",
+    "label": ""
+   },
+   {
+    "id": "e2",
+    "s": "golden-dataset",
+    "t": "offline-eval",
+    "label": "cargar 240 casos dorados"
+   },
+   {
+    "id": "e3",
+    "s": "ci-trigger",
+    "t": "lint-gate",
+    "label": "etapa 1"
+   },
+   {
+    "id": "e4",
+    "s": "lint-gate",
+    "t": "offline-eval",
+    "label": "aprobado"
+   },
+   {
+    "id": "e5",
+    "s": "pinned-versions",
+    "t": "offline-eval",
+    "label": "fijar modelo + juez"
+   },
+   {
+    "id": "e6",
+    "s": "offline-eval",
+    "t": "scorer-success",
+    "label": ""
+   },
+   {
+    "id": "e7",
+    "s": "offline-eval",
+    "t": "scorer-tone",
+    "label": ""
+   },
+   {
+    "id": "e8",
+    "s": "offline-eval",
+    "t": "scorer-policy",
+    "label": ""
+   },
+   {
+    "id": "e9",
+    "s": "offline-eval",
+    "t": "scorer-cost",
+    "label": ""
+   },
+   {
+    "id": "e10",
+    "s": "scorer-success",
+    "t": "threshold-gate",
+    "label": ""
+   },
+   {
+    "id": "e11",
+    "s": "scorer-tone",
+    "t": "threshold-gate",
+    "label": ""
+   },
+   {
+    "id": "e12",
+    "s": "scorer-policy",
+    "t": "threshold-gate",
+    "label": "con regresión"
+   },
+   {
+    "id": "e13",
+    "s": "scorer-cost",
+    "t": "threshold-gate",
+    "label": ""
+   },
+   {
+    "id": "e14",
+    "s": "threshold-gate",
+    "t": "merge-blocked",
+    "label": "FALLA"
+   },
+   {
+    "id": "e15",
+    "s": "merge-blocked",
+    "t": "drill-down",
+    "label": "inspeccionar"
+   },
+   {
+    "id": "e16",
+    "s": "drill-down",
+    "t": "fix",
+    "label": "12 casos fallidos"
+   },
+   {
+    "id": "e17",
+    "s": "fix",
+    "t": "rerun",
+    "label": ""
+   },
+   {
+    "id": "e18",
+    "s": "rerun",
+    "t": "merge-green",
+    "label": "todo en verde"
+   },
+   {
+    "id": "e19",
+    "s": "merge-green",
+    "t": "merged",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Se abre el pull request",
+    "description": "Un desarrollador modifica el prompt de sistema de la política de reembolsos y abre el PR #418, que dispara automáticamente el pipeline de CI del agente.",
+    "input": "",
+    "nodes": [
+     "pr-open",
+     "ci-trigger"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Lint y luego carga de la suite dorada",
+    "description": "La etapa 1 ejecuta el lint del prompt y las verificaciones del esquema de herramientas. Si pasa, la etapa 2 carga el dataset dorado versionado de 240 casos con las versiones del modelo y del juez fijas, para que una actualización silenciosa del proveedor aparezca como una regresión.",
+    "input": "",
+    "nodes": [
+     "ci-trigger",
+     "lint-gate",
+     "offline-eval",
+     "golden-dataset",
+     "pinned-versions"
+    ],
+    "edges": [
+     "e3",
+     "e4",
+     "e2",
+     "e5"
+    ]
+   },
+   {
+    "title": "La evaluación offline puntúa cada dimensión",
+    "description": "La suite se puntúa por dimensión de falla contra la línea base de main: el éxito de la tarea y el tono se mantienen, el costo no cambia, pero el cumplimiento de la política de reembolsos cae de 98.5% a 88.1%.",
+    "input": "",
+    "nodes": [
+     "offline-eval",
+     "scorer-success",
+     "scorer-tone",
+     "scorer-policy",
+     "scorer-cost"
+    ],
+    "edges": [
+     "e6",
+     "e7",
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "La compuerta de umbrales falla",
+    "description": "La compuerta compara cada métrica con su umbral. El cumplimiento de la política de reembolsos está por debajo del 97% requerido, así que la compuerta general falla aunque las demás métricas pasen.",
+    "input": "",
+    "nodes": [
+     "scorer-success",
+     "scorer-tone",
+     "scorer-policy",
+     "scorer-cost",
+     "threshold-gate",
+     "merge-blocked"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14"
+    ]
+   },
+   {
+    "title": "Merge bloqueado, análisis detallado",
+    "description": "El merge se bloquea. Al analizar los 12 casos fallidos se ve que todos solicitan reembolsos fuera de la ventana de 30 días; la nueva redacción eliminó la cláusula explícita de la ventana.",
+    "input": "",
+    "nodes": [
+     "merge-blocked",
+     "drill-down",
+     "fix"
+    ],
+    "edges": [
+     "e15",
+     "e16"
+    ]
+   },
+   {
+    "title": "Corregir y volver a ejecutar",
+    "description": "El desarrollador restaura la cláusula explícita de la ventana y vuelve a ejecutar la suite. El cumplimiento de la política de reembolsos se recupera a 98.9% y los 240 casos pasan.",
+    "input": "",
+    "nodes": [
+     "fix",
+     "rerun",
+     "merge-green"
+    ],
+    "edges": [
+     "e17",
+     "e18"
+    ]
+   },
+   {
+    "title": "En verde, merge",
+    "description": "Con todos los umbrales cumplidos, el merge se desbloquea y el cambio llega a main, manteniendo el prompt y sus casos dorados versionados juntos.",
+    "input": "",
+    "nodes": [
+     "merge-green",
+     "merged"
+    ],
+    "edges": [
+     "e19"
+    ]
+   }
+  ]
+ }
+}

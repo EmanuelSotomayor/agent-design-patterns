@@ -1,0 +1,351 @@
+{
+ "cat": "memory-management",
+ "slug": "latent-memory-networks",
+ "name": "Latent Memory Networks(LMN)",
+ "icon": "🧬",
+ "complexity": "high",
+ "description": "Almacena patrones de razonamiento y conocimiento en representaciones de espacio latente continuo para sistemas de IA agéntica multiagente",
+ "features": [
+  "Codificación en espacio latente continuo",
+  "Almacenamiento de memoria basado en patrones",
+  "Intercambio de conocimiento entre agentes",
+  "Recuperación por similitud semántica",
+  "Consolidación dinámica de la memoria",
+  "Transferencia de patrones entre dominios",
+  "Redes de memoria distribuidas",
+  "Compresión adaptativa de la memoria"
+ ],
+ "tldr": {
+  "what": "Codifica patrones de razonamiento y conocimiento del dominio en representaciones vectoriales continuas que varios agentes recuperan y comparten mediante similitud semántica.",
+  "when": "Sistemas multiagente donde los agentes resuelven problemas relacionados y se benefician de descubrir patrones compartidos entre distintos dominios o especializaciones.",
+  "watchOut": "Las representaciones latentes son opacas; los errores se acumulan silenciosamente entre agentes cuando la consolidación de la memoria corrompe o confunde patrones distintos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Latent Memory Networks en sistemas multiagente",
+  "description": "Intercambio de conocimiento entre agentes mediante representaciones de espacio latente continuo y recuperación por similitud semántica",
+  "nodes": [
+   {
+    "id": "research-agent",
+    "label": "Agente investigador\\nEspecialista en algoritmos de aprendizaje",
+    "x": 100,
+    "y": 200,
+    "w": 160
+   },
+   {
+    "id": "analysis-agent",
+    "label": "Agente de análisis\\nExperto en arquitecturas neuronales",
+    "x": 100,
+    "y": 350,
+    "w": 160
+   },
+   {
+    "id": "synthesis-agent",
+    "label": "Agente de síntesis\\nIntegración entre dominios",
+    "x": 100,
+    "y": 500,
+    "w": 160
+   },
+   {
+    "id": "query-agent",
+    "label": "Agente de consultas\\nEspecialista en recuperación de conocimiento",
+    "x": 100,
+    "y": 650,
+    "w": 160
+   },
+   {
+    "id": "neural-encoder",
+    "label": "Codificador neuronal\\nVectores de 512 dimensiones",
+    "x": 350,
+    "y": 350,
+    "w": 150
+   },
+   {
+    "id": "latent-memory-space",
+    "label": "Espacio de memoria latente\\nRepositorio de conocimiento compartido",
+    "x": 600,
+    "y": 300,
+    "w": 180
+   },
+   {
+    "id": "memory-index",
+    "label": "Índice de memoria\\nMantenimiento del grafo de similitud",
+    "x": 600,
+    "y": 150,
+    "w": 150
+   },
+   {
+    "id": "cluster-learning",
+    "label": "Clúster de métodos de aprendizaje\\nAlgoritmos de optimización",
+    "x": 450,
+    "y": 100,
+    "w": 140
+   },
+   {
+    "id": "cluster-attention",
+    "label": "Clúster de patrones de atención\\nTécnicas de modelado de secuencias",
+    "x": 750,
+    "y": 100,
+    "w": 140
+   },
+   {
+    "id": "cluster-optimization",
+    "label": "Clúster de optimización\\nMétodos basados en gradientes",
+    "x": 600,
+    "y": 50,
+    "w": 140
+   },
+   {
+    "id": "similarity-search",
+    "label": "Búsqueda por similitud\\nVecinos más cercanos vectoriales",
+    "x": 350,
+    "y": 600,
+    "w": 150
+   },
+   {
+    "id": "retrieval-results",
+    "label": "Resultados de recuperación\\nOrdenados por similitud semántica",
+    "x": 600,
+    "y": 600,
+    "w": 170
+   },
+   {
+    "id": "cross-domain-detector",
+    "label": "Detector entre dominios\\nIdentifica conexiones ocultas",
+    "x": 900,
+    "y": 250,
+    "w": 160
+   },
+   {
+    "id": "insight-generator",
+    "label": "Generador de insights\\nDescubrimiento de patrones novedosos",
+    "x": 900,
+    "y": 400,
+    "w": 150
+   },
+   {
+    "id": "knowledge-synthesizer",
+    "label": "Sintetizador de conocimiento\\nMotor de fusión de múltiples patrones",
+    "x": 350,
+    "y": 750,
+    "w": 170
+   },
+   {
+    "id": "innovation-output",
+    "label": "Resultado de innovación\\nFrameworks novedosos entre dominios",
+    "x": 600,
+    "y": 750,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "agent-to-encoder",
+    "s": "research-agent",
+    "t": "neural-encoder",
+    "label": ""
+   },
+   {
+    "id": "analysis-to-encoder",
+    "s": "analysis-agent",
+    "t": "neural-encoder",
+    "label": ""
+   },
+   {
+    "id": "synthesis-to-encoder",
+    "s": "synthesis-agent",
+    "t": "neural-encoder",
+    "label": ""
+   },
+   {
+    "id": "encoder-to-memory",
+    "s": "neural-encoder",
+    "t": "latent-memory-space",
+    "label": ""
+   },
+   {
+    "id": "memory-to-index",
+    "s": "latent-memory-space",
+    "t": "memory-index",
+    "label": ""
+   },
+   {
+    "id": "memory-to-clusters",
+    "s": "latent-memory-space",
+    "t": "cluster-learning",
+    "label": ""
+   },
+   {
+    "id": "memory-to-attention-cluster",
+    "s": "latent-memory-space",
+    "t": "cluster-attention",
+    "label": ""
+   },
+   {
+    "id": "memory-to-opt-cluster",
+    "s": "latent-memory-space",
+    "t": "cluster-optimization",
+    "label": ""
+   },
+   {
+    "id": "query-to-search",
+    "s": "query-agent",
+    "t": "similarity-search",
+    "label": ""
+   },
+   {
+    "id": "search-to-memory",
+    "s": "similarity-search",
+    "t": "latent-memory-space",
+    "label": ""
+   },
+   {
+    "id": "memory-to-results",
+    "s": "latent-memory-space",
+    "t": "retrieval-results",
+    "label": ""
+   },
+   {
+    "id": "detector-to-clusters",
+    "s": "cross-domain-detector",
+    "t": "cluster-attention",
+    "label": ""
+   },
+   {
+    "id": "clusters-to-insights",
+    "s": "cluster-learning",
+    "t": "insight-generator",
+    "label": ""
+   },
+   {
+    "id": "opt-cluster-to-insights",
+    "s": "cluster-optimization",
+    "t": "insight-generator",
+    "label": ""
+   },
+   {
+    "id": "synthesis-coordination",
+    "s": "synthesis-agent",
+    "t": "knowledge-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "insights-to-synthesizer",
+    "s": "insight-generator",
+    "t": "knowledge-synthesizer",
+    "label": ""
+   },
+   {
+    "id": "synthesizer-to-output",
+    "s": "knowledge-synthesizer",
+    "t": "innovation-output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Codificación del conocimiento",
+    "description": "El agente investigador codifica el conocimiento sobre un nuevo algoritmo de aprendizaje en representaciones vectoriales densas",
+    "input": "Concepto nuevo: \"Aprendizaje por refuerzo con gradientes de política\"",
+    "nodes": [
+     "research-agent",
+     "neural-encoder",
+     "latent-memory-space"
+    ],
+    "edges": [
+     "agent-to-encoder"
+    ]
+   },
+   {
+    "title": "Formación de la memoria",
+    "description": "Los patrones codificados se almacenan en el espacio de memoria latente compartido con indexación automática",
+    "input": "",
+    "nodes": [
+     "neural-encoder",
+     "latent-memory-space",
+     "memory-index"
+    ],
+    "edges": [
+     "encoder-to-memory"
+    ]
+   },
+   {
+    "title": "Agrupamiento de patrones",
+    "description": "Los patrones similares se agrupan automáticamente según sus relaciones semánticas en el espacio latente",
+    "input": "",
+    "nodes": [
+     "latent-memory-space",
+     "cluster-learning",
+     "cluster-attention",
+     "cluster-optimization"
+    ],
+    "edges": [
+     "memory-to-clusters"
+    ]
+   },
+   {
+    "title": "Intercambio de conocimiento entre agentes",
+    "description": "Los agentes de análisis y de síntesis aportan su experiencia en el dominio a la red de memoria compartida",
+    "input": "",
+    "nodes": [
+     "analysis-agent",
+     "synthesis-agent",
+     "neural-encoder",
+     "latent-memory-space"
+    ],
+    "edges": [
+     "analysis-to-encoder",
+     "synthesis-to-encoder"
+    ]
+   },
+   {
+    "title": "Procesamiento semántico de consultas",
+    "description": "El agente de consultas realiza una búsqueda por similitud semántica para recuperar patrones de conocimiento relevantes",
+    "input": "",
+    "nodes": [
+     "query-agent",
+     "similarity-search",
+     "latent-memory-space",
+     "retrieval-results"
+    ],
+    "edges": [
+     "query-to-search",
+     "search-to-memory",
+     "memory-to-results"
+    ]
+   },
+   {
+    "title": "Descubrimiento de patrones entre dominios",
+    "description": "El sistema descubre conexiones novedosas entre distintos dominios mediante la proximidad en el espacio latente",
+    "input": "",
+    "nodes": [
+     "cross-domain-detector",
+     "cluster-attention",
+     "cluster-optimization",
+     "cluster-learning",
+     "insight-generator"
+    ],
+    "edges": [
+     "detector-to-clusters",
+     "clusters-to-insights"
+    ]
+   },
+   {
+    "title": "Síntesis de conocimiento e innovación",
+    "description": "Se sintetizan múltiples insights para generar conocimiento e innovaciones novedosas entre dominios",
+    "input": "",
+    "nodes": [
+     "synthesis-agent",
+     "insight-generator",
+     "knowledge-synthesizer",
+     "innovation-output"
+    ],
+    "edges": [
+     "synthesis-coordination",
+     "insights-to-synthesizer",
+     "synthesizer-to-output"
+    ]
+   }
+  ]
+ }
+}

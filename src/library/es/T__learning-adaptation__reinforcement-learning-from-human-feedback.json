@@ -1,0 +1,684 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "reinforcement-learning-from-human-feedback",
+ "name": "Reinforcement Learning from Human Feedback(RLHF)",
+ "icon": "🎯",
+ "complexity": "high",
+ "description": "Fine-tuning de una política con aprendizaje por refuerzo frente a un modelo de recompensa aprendido a partir de juicios de preferencia humanos",
+ "features": [
+  "Recolección de preferencias humanas",
+  "Entrenamiento del modelo de recompensa",
+  "Optimización de la política con control KL",
+  "Evaluación con humano en el bucle",
+  "Moldeado del comportamiento a partir de juicios comparativos",
+  "Monitoreo del reward hacking"
+ ],
+ "tldr": {
+  "what": "Entrena un modelo de recompensa a partir de comparaciones de preferencias humanas y luego optimiza el comportamiento del agente frente a ese modelo, limitando la desviación respecto de la línea base.",
+  "when": "Alinear las salidas del agente con valores humanos matizados cuando las métricas simples fallan y puedes costear una anotación humana y un cómputo considerables.",
+  "watchOut": "El modelo de recompensa aprende los sesgos de los revisores y maneja mal los casos límite; el agente explota los vacíos del modelo en lugar de mejorar de verdad, lo que exige un monitoreo costoso."
+ },
+ "overview": {
+  "pattern": "Entrenamiento en tres fases: SFT → modelo de recompensa → optimización PPO con alineación a las preferencias humanas",
+  "why": "Alinea el comportamiento de la IA con los valores humanos, mejora la seguridad y la utilidad, y reduce las salidas dañinas",
+  "insight": "Preferencias humanas > modelo de recompensa > optimización de la política crea un mecanismo de alineación escalable",
+  "impl": [
+   {
+    "t": "SFT",
+    "d": "Fine-tuning supervisado sobre demostraciones"
+   },
+   {
+    "t": "Recolectar",
+    "d": "Comparaciones de preferencias humanas"
+   },
+   {
+    "t": "Entrenar RM",
+    "d": "Modelo de recompensa sobre las preferencias"
+   },
+   {
+    "t": "PPO",
+    "d": "Optimización de la política con recompensas del RM"
+   },
+   {
+    "t": "Evaluar",
+    "d": "Tasas de victoria según preferencia humana"
+   }
+  ],
+  "example": "base_model → sft_model → preference_data → reward_model → aligned_model",
+  "dos": [
+   "Usa datos de preferencias humanas diversos y de alta calidad",
+   "Aplica regularización KL para evitar la desviación de la política",
+   "Monitorea el reward hacking y los efectos de la ley de Goodhart",
+   "Usa múltiples métricas de evaluación más allá de los puntajes de recompensa",
+   "Ajusta con cuidado los hiperparámetros de PPO",
+   "Valida la correlación del modelo de recompensa con los juicios humanos"
+  ],
+  "donts": [
+   "Omitir la validación del modelo de recompensa en datos reservados",
+   "Usar anotaciones de preferencia sesgadas o de baja calidad",
+   "Ignorar el cambio de distribución en el despliegue",
+   "Optimizar únicamente para los puntajes del modelo de recompensa",
+   "Usar entrenamiento de RL inestable sin medidas de seguridad"
+  ],
+  "use": [
+   "La alineación con las preferencias humanas es crucial",
+   "Requisitos de seguridad y utilidad",
+   "Juicios de calidad complejos y subjetivos",
+   "Despliegue a gran escala con interacción de usuarios",
+   "Necesidad de un comportamiento de IA controlable"
+  ],
+  "avoid": [
+   "Tareas objetivas simples con métricas claras",
+   "Presupuesto limitado para anotación humana",
+   "Requisitos de inferencia en tiempo real",
+   "Tareas con una verdad de referencia bien definida",
+   "Aplicaciones a pequeña escala o solo de investigación"
+  ],
+  "metrics": [
+   {
+    "n": "Tasa de victoria por preferencia humana",
+    "d": "% preferido frente a la línea base"
+   },
+   {
+    "n": "Precisión del modelo de recompensa",
+    "d": "Concordancia con las etiquetas humanas"
+   },
+   {
+    "n": "Divergencia KL",
+    "d": "Desviación de la política respecto del modelo de referencia"
+   },
+   {
+    "n": "Puntaje de utilidad",
+    "d": "Calidad de finalización de tareas"
+   },
+   {
+    "n": "Tasa de inocuidad",
+    "d": "% de respuestas seguras"
+   },
+   {
+    "n": "Estabilidad del entrenamiento PPO",
+    "d": "Convergencia de la curva de recompensa"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "IA conversacional",
+    "d": "Alinea chatbots para dar respuestas útiles, inocuas y honestas"
+   },
+   {
+    "n": "Generación de contenido",
+    "d": "Optimiza la escritura creativa según las preferencias humanas"
+   },
+   {
+    "n": "Asistentes de código",
+    "d": "Mejora la calidad del código y las recomendaciones de seguridad"
+   },
+   {
+    "n": "Resumen",
+    "d": "Genera resúmenes que coinciden con los juicios de calidad humanos"
+   },
+   {
+    "n": "Respuesta a preguntas",
+    "d": "Proporciona respuestas precisas y bien formateadas"
+   },
+   {
+    "n": "Herramientas creativas",
+    "d": "Alinea la generación de arte/música con IA a las preferencias estéticas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Reinforcement Learning from Human Feedback",
+  "description": "Metodología de entrenamiento con humano en el bucle que usa preferencias y feedback humanos para alinear los modelos de IA con los valores humanos y los comportamientos deseados.",
+  "nodes": [
+   {
+    "id": "user-prompt",
+    "label": "💬 Prompt del usuario\n\"Genera una respuesta útil e inocua\"",
+    "x": 400,
+    "y": 50,
+    "w": 380
+   },
+   {
+    "id": "base-model",
+    "label": "🤖 Modelo base\nLLM preentrenado",
+    "x": 375,
+    "y": 150,
+    "w": 250
+   },
+   {
+    "id": "response-generator",
+    "label": "📝 Generador de respuestas\nMúltiples completaciones\nSalidas diversas",
+    "x": 100,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "response-sampler",
+    "label": "🎲 Muestreador de respuestas\nMuestreo por temperatura\nTop-k/Top-p",
+    "x": 300,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "candidate-pool",
+    "label": "📚 Conjunto de candidatas\nVariantes de respuesta\nEspectro de calidad",
+    "x": 500,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "safety-filter",
+    "label": "🛡️ Filtro de seguridad\nRevisión de contenido dañino\nValidación de cumplimiento",
+    "x": 700,
+    "y": 250,
+    "w": 180
+   },
+   {
+    "id": "human-annotator",
+    "label": "👤 Anotador humano\nCalificación y ranking\nEtiquetado de preferencias",
+    "x": 50,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "feedback-interface",
+    "label": "🖱️ Interfaz de feedback\nUI de comparación\nHerramientas de calificación",
+    "x": 220,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "preference-data",
+    "label": "📊 Datos de preferencias\nComparaciones por pares\nPuntajes de calidad",
+    "x": 390,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "feedback-aggregator",
+    "label": "🔄 Agregador de feedback\nConstrucción de consenso\nReducción de ruido",
+    "x": 560,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "dataset-builder",
+    "label": "💾 Constructor del dataset\nCorpus de entrenamiento\nDivisión de validación",
+    "x": 730,
+    "y": 380,
+    "w": 160
+   },
+   {
+    "id": "reward-model",
+    "label": "🎯 Modelo de recompensa\nPredictor de preferencias\nFunción de puntuación",
+    "x": 100,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "loss-function",
+    "label": "📉 Función de pérdida\nBradley-Terry\nEntropía cruzada",
+    "x": 280,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "model-trainer",
+    "label": "🏋️ Entrenador del modelo\nDescenso de gradiente\nOptimización por batch",
+    "x": 460,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "validation-metrics",
+    "label": "📈 Métricas de validación\nSeguimiento de precisión\nVerificación de calibración",
+    "x": 640,
+    "y": 520,
+    "w": 160
+   },
+   {
+    "id": "policy-network",
+    "label": "🧠 Red de política\nModelo con fine-tuning\nSelección de acciones",
+    "x": 50,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "ppo-optimizer",
+    "label": "⚡ Optimizador PPO\nPolítica proximal\nObjetivo recortado",
+    "x": 250,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "kl-divergence",
+    "label": "📏 Divergencia KL\nRegularización\nEvita la desviación",
+    "x": 450,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "advantage-estimator",
+    "label": "💡 Estimador de ventaja\nFunción de valor\nPredicción de recompensa",
+    "x": 650,
+    "y": 640,
+    "w": 180
+   },
+   {
+    "id": "online-learning",
+    "label": "🔄 Aprendizaje en línea\nActualizaciones continuas\nEntrenamiento adaptativo",
+    "x": 100,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "exploration-strategy",
+    "label": "🔍 Exploración\nBonificación por diversidad\nImpulsada por curiosidad",
+    "x": 280,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "rollout-buffer",
+    "label": "📦 Buffer de rollouts\nRepetición de experiencias\nRecolección por batch",
+    "x": 460,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "performance-monitor",
+    "label": "📊 Monitor de rendimiento\nMétricas de calidad\nSeguimiento de alineación",
+    "x": 640,
+    "y": 760,
+    "w": 160
+   },
+   {
+    "id": "helpfulness-scorer",
+    "label": "✅ Utilidad\nEvaluación de utilidad\nFinalización de tareas",
+    "x": 150,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "harmlessness-checker",
+    "label": "🛡️ Inocuidad\nValidación de seguridad\nDetección de sesgos",
+    "x": 350,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "honesty-evaluator",
+    "label": "🎯 Honestidad\nPrecisión factual\nExpresión de incertidumbre",
+    "x": 550,
+    "y": 880,
+    "w": 180
+   },
+   {
+    "id": "aligned-response",
+    "label": "✨ Respuesta alineada\nSalida útil, inocua y honesta",
+    "x": 400,
+    "y": 1000,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "prompt-model",
+    "s": "user-prompt",
+    "t": "base-model",
+    "label": ""
+   },
+   {
+    "id": "model-generator",
+    "s": "base-model",
+    "t": "response-generator",
+    "label": "Generar"
+   },
+   {
+    "id": "generator-sampler",
+    "s": "response-generator",
+    "t": "response-sampler",
+    "label": ""
+   },
+   {
+    "id": "sampler-pool",
+    "s": "response-sampler",
+    "t": "candidate-pool",
+    "label": ""
+   },
+   {
+    "id": "pool-safety",
+    "s": "candidate-pool",
+    "t": "safety-filter",
+    "label": ""
+   },
+   {
+    "id": "safety-annotator",
+    "s": "safety-filter",
+    "t": "human-annotator",
+    "label": ""
+   },
+   {
+    "id": "annotator-interface",
+    "s": "human-annotator",
+    "t": "feedback-interface",
+    "label": ""
+   },
+   {
+    "id": "interface-preference",
+    "s": "feedback-interface",
+    "t": "preference-data",
+    "label": ""
+   },
+   {
+    "id": "preference-aggregator",
+    "s": "preference-data",
+    "t": "feedback-aggregator",
+    "label": ""
+   },
+   {
+    "id": "aggregator-dataset",
+    "s": "feedback-aggregator",
+    "t": "dataset-builder",
+    "label": ""
+   },
+   {
+    "id": "dataset-reward",
+    "s": "dataset-builder",
+    "t": "reward-model",
+    "label": ""
+   },
+   {
+    "id": "reward-loss",
+    "s": "reward-model",
+    "t": "loss-function",
+    "label": ""
+   },
+   {
+    "id": "loss-trainer",
+    "s": "loss-function",
+    "t": "model-trainer",
+    "label": ""
+   },
+   {
+    "id": "trainer-validation",
+    "s": "model-trainer",
+    "t": "validation-metrics",
+    "label": ""
+   },
+   {
+    "id": "validation-reward",
+    "s": "validation-metrics",
+    "t": "reward-model",
+    "label": "Actualizar"
+   },
+   {
+    "id": "reward-policy",
+    "s": "reward-model",
+    "t": "policy-network",
+    "label": ""
+   },
+   {
+    "id": "policy-ppo",
+    "s": "policy-network",
+    "t": "ppo-optimizer",
+    "label": ""
+   },
+   {
+    "id": "ppo-kl",
+    "s": "ppo-optimizer",
+    "t": "kl-divergence",
+    "label": ""
+   },
+   {
+    "id": "kl-advantage",
+    "s": "kl-divergence",
+    "t": "advantage-estimator",
+    "label": ""
+   },
+   {
+    "id": "policy-model",
+    "s": "policy-network",
+    "t": "base-model",
+    "label": "Fine-tuning"
+   },
+   {
+    "id": "advantage-online",
+    "s": "advantage-estimator",
+    "t": "online-learning",
+    "label": ""
+   },
+   {
+    "id": "online-exploration",
+    "s": "online-learning",
+    "t": "exploration-strategy",
+    "label": ""
+   },
+   {
+    "id": "exploration-rollout",
+    "s": "exploration-strategy",
+    "t": "rollout-buffer",
+    "label": ""
+   },
+   {
+    "id": "rollout-performance",
+    "s": "rollout-buffer",
+    "t": "performance-monitor",
+    "label": ""
+   },
+   {
+    "id": "performance-policy",
+    "s": "performance-monitor",
+    "t": "policy-network",
+    "label": "Feedback"
+   },
+   {
+    "id": "online-helpfulness",
+    "s": "online-learning",
+    "t": "helpfulness-scorer",
+    "label": ""
+   },
+   {
+    "id": "exploration-harmlessness",
+    "s": "exploration-strategy",
+    "t": "harmlessness-checker",
+    "label": ""
+   },
+   {
+    "id": "rollout-honesty",
+    "s": "rollout-buffer",
+    "t": "honesty-evaluator",
+    "label": ""
+   },
+   {
+    "id": "helpfulness-output",
+    "s": "helpfulness-scorer",
+    "t": "aligned-response",
+    "label": ""
+   },
+   {
+    "id": "harmlessness-output",
+    "s": "harmlessness-checker",
+    "t": "aligned-response",
+    "label": ""
+   },
+   {
+    "id": "honesty-output",
+    "s": "honesty-evaluator",
+    "t": "aligned-response",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Prompt del usuario",
+    "description": "El usuario proporciona una entrada que requiere una respuesta útil",
+    "input": "",
+    "nodes": [
+     "user-prompt",
+     "base-model"
+    ],
+    "edges": [
+     "prompt-model"
+    ]
+   },
+   {
+    "title": "Generación de respuestas",
+    "description": "Generando múltiples respuestas candidatas",
+    "input": "",
+    "nodes": [
+     "base-model",
+     "response-generator",
+     "response-sampler",
+     "candidate-pool",
+     "safety-filter"
+    ],
+    "edges": [
+     "model-generator",
+     "generator-sampler",
+     "sampler-pool",
+     "pool-safety"
+    ]
+   },
+   {
+    "title": "Recolección de feedback humano",
+    "description": "Recolectando preferencias y calificaciones de anotadores humanos",
+    "input": "",
+    "nodes": [
+     "human-annotator",
+     "feedback-interface",
+     "preference-data",
+     "feedback-aggregator",
+     "dataset-builder"
+    ],
+    "edges": [
+     "safety-annotator",
+     "annotator-interface",
+     "interface-preference",
+     "preference-aggregator",
+     "aggregator-dataset"
+    ]
+   },
+   {
+    "title": "Entrenamiento del modelo de recompensa",
+    "description": "Entrenando el modelo de recompensa con las preferencias humanas",
+    "input": "",
+    "nodes": [
+     "dataset-builder",
+     "reward-model",
+     "loss-function",
+     "model-trainer",
+     "validation-metrics"
+    ],
+    "edges": [
+     "dataset-reward",
+     "reward-loss",
+     "loss-trainer",
+     "trainer-validation"
+    ]
+   },
+   {
+    "title": "Actualización del modelo de recompensa",
+    "description": "Actualizando el modelo de recompensa según la validación",
+    "input": "",
+    "nodes": [
+     "validation-metrics",
+     "reward-model"
+    ],
+    "edges": [
+     "validation-reward"
+    ]
+   },
+   {
+    "title": "Optimización de la política",
+    "description": "Optimizando la política con PPO y la señal de recompensa",
+    "input": "",
+    "nodes": [
+     "reward-model",
+     "policy-network",
+     "ppo-optimizer",
+     "kl-divergence",
+     "advantage-estimator"
+    ],
+    "edges": [
+     "reward-policy",
+     "policy-ppo",
+     "ppo-kl",
+     "kl-advantage"
+    ]
+   },
+   {
+    "title": "Fine-tuning del modelo",
+    "description": "Aplicando fine-tuning al modelo base con la política optimizada",
+    "input": "",
+    "nodes": [
+     "policy-network",
+     "base-model"
+    ],
+    "edges": [
+     "policy-model"
+    ]
+   },
+   {
+    "title": "Aprendizaje en línea",
+    "description": "Mejora continua mediante aprendizaje en línea",
+    "input": "",
+    "nodes": [
+     "online-learning",
+     "exploration-strategy",
+     "rollout-buffer",
+     "performance-monitor"
+    ],
+    "edges": [
+     "advantage-online",
+     "online-exploration",
+     "exploration-rollout",
+     "rollout-performance"
+    ]
+   },
+   {
+    "title": "Feedback de rendimiento",
+    "description": "Retroalimentando la política con las métricas de rendimiento",
+    "input": "",
+    "nodes": [
+     "performance-monitor",
+     "policy-network"
+    ],
+    "edges": [
+     "performance-policy"
+    ]
+   },
+   {
+    "title": "Aseguramiento de calidad",
+    "description": "Evaluando utilidad, inocuidad y honestidad",
+    "input": "",
+    "nodes": [
+     "helpfulness-scorer",
+     "harmlessness-checker",
+     "honesty-evaluator"
+    ],
+    "edges": [
+     "online-helpfulness",
+     "exploration-harmlessness",
+     "rollout-honesty"
+    ]
+   },
+   {
+    "title": "Respuesta alineada",
+    "description": "Produciendo una salida alineada, útil, inocua y honesta",
+    "input": "",
+    "nodes": [
+     "helpfulness-scorer",
+     "harmlessness-checker",
+     "honesty-evaluator",
+     "aligned-response"
+    ],
+    "edges": [
+     "helpfulness-output",
+     "harmlessness-output",
+     "honesty-output"
+    ]
+   }
+  ]
+ }
+}

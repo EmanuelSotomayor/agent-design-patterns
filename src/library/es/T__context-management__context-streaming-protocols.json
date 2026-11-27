@@ -1,0 +1,378 @@
+{
+ "cat": "context-management",
+ "slug": "context-streaming-protocols",
+ "name": "Context Streaming Protocols(CTSP)",
+ "icon": "📡",
+ "complexity": "high",
+ "description": "Procesamiento de contexto en tiempo real con flujos continuos, buffering, control de flujo y actualizaciones de baja latencia",
+ "features": [
+  "Procesamiento continuo de flujos de contexto",
+  "Mecanismos de buffering y control de flujo del contexto",
+  "Actualizaciones de contexto de baja latencia",
+  "Sincronización de contexto en tiempo real"
+ ],
+ "tldr": {
+  "what": "Procesa el contexto como flujos continuos con buffering, control de flujo y compresión delta para mantener una sincronización de baja latencia entre agentes distribuidos.",
+  "when": "Sistemas multiagente en los que el contexto cambia rápidamente y los agentes deben mantenerse sincronizados sin saturar la red ni la capacidad de procesamiento.",
+  "watchOut": "La complejidad de depurar problemas de sincronización temporal distribuida y la pérdida de datos bajo carga extrema suelen superar las ganancias en latencia para la mayoría de las aplicaciones."
+ },
+ "overview": {
+  "pattern": "Procesamiento de contexto en tiempo real con flujos continuos, buffering, control de flujo y actualizaciones de baja latencia",
+  "why": "Permite la colaboración en tiempo real y el intercambio de contexto en vivo con un uso eficiente del ancho de banda y tolerancia a fallas",
+  "insight": "El procesamiento de flujos con control de flujo y compresión delta permite una sincronización de contexto en tiempo real escalable",
+  "impl": [
+   {
+    "t": "Diseño del flujo",
+    "d": "Define la arquitectura de streaming con gestión de buffers"
+   },
+   {
+    "t": "Control de flujo",
+    "d": "Implementa mecanismos de backpressure y limitación de tasa"
+   },
+   {
+    "t": "Sincronización",
+    "d": "Construye protocolos de sincronización de contexto en tiempo real"
+   },
+   {
+    "t": "Monitor de calidad",
+    "d": "Agrega monitoreo de latencia y rendimiento"
+   },
+   {
+    "t": "Tolerancia a fallas",
+    "d": "Habilita la degradación controlada y la recuperación"
+   }
+  ],
+  "example": "context_stream → buffer_manage → flow_control → sync_protocol → monitor_quality → fault_recovery",
+  "dos": [
+   "Implementa buffers circulares para un uso eficiente de la memoria",
+   "Usa compresión delta para minimizar el ancho de banda",
+   "Monitorea el estado de los suscriptores y aplica backpressure dirigido",
+   "Implementa un ordenamiento de actualizaciones basado en prioridades",
+   "Usa relojes vectoriales para la sincronización distribuida"
+  ],
+  "donts": [
+   "Hacer streaming sin mecanismos de control de flujo adecuados",
+   "Ignorar la capacidad de los suscriptores y sobrecargarlos",
+   "Enviar actualizaciones de contexto completas por cambios menores",
+   "Omitir el manejo de errores en los pipelines de streaming",
+   "Usar operaciones bloqueantes en los hilos de streaming"
+  ],
+  "use": [
+   "Aplicaciones colaborativas en tiempo real",
+   "Intercambio de contexto en vivo entre agentes",
+   "Analítica y monitoreo en streaming",
+   "Actualizaciones de contexto de alta frecuencia"
+  ],
+  "avoid": [
+   "Requisitos de procesamiento por batch",
+   "Cambios de contexto de baja frecuencia",
+   "Patrones simples de solicitud-respuesta",
+   "Entornos con ancho de banda limitado"
+  ],
+  "metrics": [
+   {
+    "n": "Latencia del flujo",
+    "d": "Tiempo de entrega del contexto de extremo a extremo"
+   },
+   {
+    "n": "Rendimiento",
+    "d": "Actualizaciones de contexto por segundo"
+   },
+   {
+    "n": "Precisión de sincronización",
+    "d": "% de contextos sincronizados correctamente"
+   },
+   {
+    "n": "Utilización del buffer",
+    "d": "% de uso del buffer de memoria"
+   },
+   {
+    "n": "Eventos de backpressure",
+    "d": "Activaciones del control de flujo por hora"
+   },
+   {
+    "n": "Estabilidad de la conexión",
+    "d": "% de disponibilidad de las conexiones de streaming"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Colaboración en tiempo real",
+    "d": "context_changes → delta_compress → stream_broadcast → sync_subscribers"
+   },
+   {
+    "n": "Coordinación de agentes en vivo",
+    "d": "agent_state → priority_queue → flow_control → distribute_updates"
+   },
+   {
+    "n": "Analítica en streaming",
+    "d": "context_metrics → buffer_batch → compress_transmit → real_time_dashboard"
+   },
+   {
+    "n": "Aplicaciones multiusuario",
+    "d": "user_actions → context_diff → conflict_resolve → broadcast_changes"
+   },
+   {
+    "n": "Streaming de contexto en IoT",
+    "d": "sensor_data → edge_process → stream_aggregate → cloud_sync"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Patrón de protocolos de streaming de contexto",
+  "description": "Protocolos de comunicación en tiempo real que permiten el streaming token por token de la salida del LLM, la propagación de eventos del agente y actualizaciones de contexto bidireccionales mediante SSE, WebSockets y manejadores de callbacks",
+  "nodes": [
+   {
+    "id": "streaming-challenge",
+    "label": "⚡ Desafío del streaming en tiempo real\n\"¿Cómo entregar las respuestas del LLM\ntoken por token con latencia mínima\nmientras se rastrean los eventos del agente?\"",
+    "x": 400,
+    "y": 50,
+    "w": 300
+   },
+   {
+    "id": "streaming-protocols-framework",
+    "label": "📡 Framework de protocolos de streaming\n\"Arquitectura multiprotocolo:\n• Server-Sent Events (SSE)\n• Conexiones WebSocket\n• Alternativas de respaldo con HTTP streaming\"",
+    "x": 400,
+    "y": 200,
+    "w": 280
+   },
+   {
+    "id": "server-sent-events",
+    "label": "📨 Server-Sent Events (SSE)\n\"Streaming unidireccional:\n• Protocolo basado en HTTP\n• Reconexión automática\n• Flujos de texto UTF-8\n• Seguimiento de ID de eventos\"",
+    "x": 200,
+    "y": 350,
+    "w": 240
+   },
+   {
+    "id": "sse-implementation",
+    "label": "🔧 Implementación de SSE\n\"Entrega de tokens:\n• text/event-stream\n• Codificación chunked\n• Espacios de nombres de eventos\n• Señales de heartbeat\"",
+    "x": 50,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "websocket-protocol",
+    "label": "🔌 Protocolo WebSocket\n\"Streaming bidireccional:\n• Canal full-duplex\n• Frames binarios/de texto\n• Baja latencia\n• Conexiones con estado\"",
+    "x": 600,
+    "y": 350,
+    "w": 230
+   },
+   {
+    "id": "websocket-features",
+    "label": "⚡ Funcionalidades de WebSocket\n\"Capacidades avanzadas:\n• Sincronización del estado del agente\n• Invocaciones de herramientas\n• Actualizaciones de contexto\n• Propagación de eventos\"",
+    "x": 750,
+    "y": 500,
+    "w": 200
+   },
+   {
+    "id": "token-streaming-layer",
+    "label": "🔤 Capa de streaming de tokens\n\"Entrega incremental:\n• Agrupación de tokens\n• Buffering del flujo\n• Manejo de backpressure\n• Streaming de JSON parcial\"",
+    "x": 400,
+    "y": 650,
+    "w": 270
+   },
+   {
+    "id": "callback-handlers",
+    "label": "📞 Manejadores de callbacks\n\"Procesamiento de eventos:\n• on_llm_new_token\n• on_agent_action\n• on_tool_start/end\n• on_chain_stream\"",
+    "x": 200,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "event-streaming-api",
+    "label": "🎯 API de streaming de eventos\n\"astream_events:\n• Salidas intermedias\n• Eventos personalizados\n• Pasos del agente\n• Propagación de errores\"",
+    "x": 600,
+    "y": 800,
+    "w": 210
+   },
+   {
+    "id": "protocol-selection",
+    "label": "🎛️ Selección de protocolo\n\"Enrutamiento adaptativo:\n• SSE para streaming del LLM\n• WebSocket para agentes\n• HTTP como respaldo\n• gRPC para microservicios\"",
+    "x": 200,
+    "y": 950,
+    "w": 240
+   },
+   {
+    "id": "performance-optimization",
+    "label": "🚀 Métricas de rendimiento\n\"Beneficios del streaming:\n• Primer token 10x más rápido\n• 50% menos latencia\n• Feedback en tiempo real\n• Renderizado progresivo\"",
+    "x": 600,
+    "y": 950,
+    "w": 230
+   },
+   {
+    "id": "streaming-principle",
+    "label": "🎯 Principio del streaming de contexto\n\"Los protocolos en tiempo real transforman las interacciones con el LLM de batch a flujo\nLa entrega token por token permite experiencias de usuario receptivas\nLa arquitectura orientada a eventos soporta la orquestación compleja de agentes\"",
+    "x": 400,
+    "y": 1100,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "s": "streaming-challenge",
+    "t": "streaming-protocols-framework",
+    "label": "se resuelve con"
+   },
+   {
+    "id": "e2",
+    "s": "streaming-protocols-framework",
+    "t": "server-sent-events",
+    "label": "implementa SSE"
+   },
+   {
+    "id": "e3",
+    "s": "streaming-protocols-framework",
+    "t": "websocket-protocol",
+    "label": "implementa WS"
+   },
+   {
+    "id": "e4",
+    "s": "server-sent-events",
+    "t": "sse-implementation",
+    "label": "configura"
+   },
+   {
+    "id": "e5",
+    "s": "websocket-protocol",
+    "t": "websocket-features",
+    "label": "habilita"
+   },
+   {
+    "id": "e6",
+    "s": "sse-implementation",
+    "t": "token-streaming-layer",
+    "label": "transmite a"
+   },
+   {
+    "id": "e7",
+    "s": "websocket-features",
+    "t": "token-streaming-layer",
+    "label": "alimenta"
+   },
+   {
+    "id": "e8",
+    "s": "token-streaming-layer",
+    "t": "callback-handlers",
+    "label": "dispara"
+   },
+   {
+    "id": "e9",
+    "s": "token-streaming-layer",
+    "t": "event-streaming-api",
+    "label": "publica en"
+   },
+   {
+    "id": "e10",
+    "s": "callback-handlers",
+    "t": "protocol-selection",
+    "label": "informa"
+   },
+   {
+    "id": "e11",
+    "s": "event-streaming-api",
+    "t": "performance-optimization",
+    "label": "optimiza"
+   },
+   {
+    "id": "e12",
+    "s": "protocol-selection",
+    "t": "streaming-protocols-framework",
+    "label": "adapta"
+   },
+   {
+    "id": "e13",
+    "s": "performance-optimization",
+    "t": "streaming-principle",
+    "label": "valida"
+   },
+   {
+    "id": "e14",
+    "s": "protocol-selection",
+    "t": "streaming-principle",
+    "label": "demuestra"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Desafío del streaming en tiempo real",
+    "description": "¿Cómo podemos entregar las respuestas del LLM token por token con latencia mínima mientras rastreamos los eventos del agente, las invocaciones de herramientas y los pasos intermedios en flujos de trabajo complejos?",
+    "input": "",
+    "nodes": [
+     "streaming-challenge"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Framework de protocolos de streaming",
+    "description": "Una arquitectura multiprotocolo aborda el desafío mediante Server-Sent Events para el streaming unidireccional, WebSockets para la comunicación bidireccional y alternativas de respaldo con HTTP streaming.",
+    "input": "",
+    "nodes": [
+     "streaming-protocols-framework"
+    ],
+    "edges": [
+     "e1"
+    ]
+   },
+   {
+    "title": "Implementación de SSE y WebSocket",
+    "description": "SSE ofrece un streaming ligero basado en HTTP con reconexión automática y seguimiento de eventos, mientras que WebSockets habilita canales full-duplex para la sincronización del estado del agente y las actualizaciones de contexto en tiempo real.",
+    "input": "",
+    "nodes": [
+     "server-sent-events",
+     "sse-implementation",
+     "websocket-protocol",
+     "websocket-features"
+    ],
+    "edges": [
+     "e2",
+     "e3",
+     "e4",
+     "e5"
+    ]
+   },
+   {
+    "title": "Streaming de tokens y procesamiento de eventos",
+    "description": "La capa de streaming de tokens maneja la entrega incremental con agrupación, buffering y gestión de backpressure, y admite el streaming de JSON parcial para salidas estructuradas complejas.",
+    "input": "",
+    "nodes": [
+     "token-streaming-layer"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Manejadores de callbacks y APIs de eventos",
+    "description": "El sistema de callbacks procesa on_llm_new_token, las acciones del agente y los eventos de herramientas, mientras que la API astream_events da acceso a las salidas intermedias, los eventos personalizados y la propagación de errores.",
+    "input": "",
+    "nodes": [
+     "callback-handlers",
+     "event-streaming-api"
+    ],
+    "edges": [
+     "e8",
+     "e9"
+    ]
+   },
+   {
+    "title": "Selección adaptativa de protocolo y rendimiento",
+    "description": "El sistema enruta de forma adaptativa SSE para el streaming del LLM y WebSockets para las interacciones de agentes, reduciendo drásticamente el tiempo hasta el primer token, que es lo que permite a los protocolos en tiempo real transformar el procesamiento por batch en procesamiento de flujos.",
+    "input": "",
+    "nodes": [
+     "protocol-selection",
+     "performance-optimization",
+     "streaming-principle"
+    ],
+    "edges": [
+     "e10",
+     "e11",
+     "e12",
+     "e13",
+     "e14"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,438 @@
+{
+ "cat": "learning-adaptation",
+ "slug": "test-time-scaling",
+ "name": "Test-Time Scaling(TTS)",
+ "icon": "⚡",
+ "complexity": "high",
+ "description": "Asignar cómputo adicional en tiempo de inferencia a la generación de candidatos, la búsqueda, la verificación o el refinamiento",
+ "features": [
+  "Presupuestos de cómputo en tiempo de inferencia",
+  "Muestreo de candidatos Best-of-N",
+  "Búsqueda sobre caminos de razonamiento",
+  "Selección guiada por verificadores",
+  "Crítica y refinamiento iterativos",
+  "Reglas de detención adaptativas"
+ ],
+ "tldr": {
+  "what": "Genera múltiples soluciones candidatas en tiempo de inferencia y luego las ordena o filtra con verificadores antes de devolver el mejor resultado.",
+  "when": "Salidas de alto impacto donde la calidad importa más que la latencia y puedes permitirte múltiples pasadas hacia adelante para encontrar mejores respuestas.",
+  "watchOut": "Los costos de cómputo se multiplican por la cantidad de candidatos; la sobrecarga de verificación puede superar el costo de generación si los verificadores son costosos o están mal enfocados."
+ },
+ "overview": {
+  "pattern": "Asigna cómputo adicional en tiempo de inferencia para mejorar el rendimiento mediante múltiples intentos y verificación",
+  "why": "Permite mayor precisión en tareas complejas, asignación flexible de cómputo y escalado del rendimiento sin reentrenar",
+  "insight": "Más cómputo en tiempo de inferencia puede sustituir a modelos más grandes o a más datos de entrenamiento en tareas de razonamiento",
+  "impl": [
+   {
+    "t": "Generar",
+    "d": "Crea múltiples caminos de razonamiento o soluciones"
+   },
+   {
+    "t": "Verificar",
+    "d": "Usa un modelo de verificación o comprobaciones de self-consistency"
+   },
+   {
+    "t": "Ordenar",
+    "d": "Puntúa y ordena las soluciones por calidad/confianza"
+   },
+   {
+    "t": "Seleccionar",
+    "d": "Elige la mejor solución o agrega los mejores candidatos"
+   },
+   {
+    "t": "Escalar",
+    "d": "Aumenta el presupuesto de cómputo para un mejor rendimiento"
+   }
+  ],
+  "example": "query → multiple_attempts → verification/ranking → best_solution + increased_compute",
+  "dos": [
+   "Usa verificación basada en el proceso en lugar de evaluar solo el resultado",
+   "Implementa votación por mayoría y comprobaciones de self-consistency",
+   "Escala la asignación de cómputo según la dificultad del problema",
+   "Usa algoritmos de búsqueda y razonamiento basado en árboles",
+   "Monitorea con cuidado el equilibrio entre latencia y precisión",
+   "Implementa detención temprana para soluciones con alta confianza"
+  ],
+  "donts": [
+   "Aplicar el mismo cómputo a todos los problemas sin importar su dificultad",
+   "Ignorar la calidad de la verificación y solo generar más muestras",
+   "Usar test-time scaling sin frameworks de evaluación adecuados",
+   "Escalar el cómputo sin considerar los presupuestos de costo de inferencia",
+   "Depender solo de la cantidad sin mejorar la calidad del razonamiento"
+  ],
+  "use": [
+   "Tareas de razonamiento complejo que requieren múltiples caminos de solución",
+   "Decisiones de alto impacto donde la precisión se prioriza sobre la velocidad",
+   "Problemas donde verificar es más fácil que generar",
+   "Tareas con criterios de evaluación objetivos y claros",
+   "Aplicaciones con presupuestos de tiempo de inferencia flexibles"
+  ],
+  "avoid": [
+   "Tareas simples con soluciones directas",
+   "Aplicaciones en tiempo real con requisitos estrictos de latencia",
+   "Problemas sin métodos de verificación confiables",
+   "Aplicaciones sensibles al costo con presupuestos ajustados",
+   "Tareas donde el primer intento suele ser suficiente"
+  ],
+  "metrics": [
+   {
+    "n": "Accuracy@K",
+    "d": "Mejor rendimiento entre K intentos"
+   },
+   {
+    "n": "Eficiencia de cómputo",
+    "d": "Ganancia de rendimiento por unidad de cómputo"
+   },
+   {
+    "n": "Precisión de la verificación",
+    "d": "Calidad del ordenamiento/selección de soluciones"
+   },
+   {
+    "n": "Escalado de la latencia",
+    "d": "Tiempo de inferencia frente a asignación de cómputo"
+   },
+   {
+    "n": "Tasa Pass@K",
+    "d": "Tasa de éxito dentro de K intentos"
+   },
+   {
+    "n": "Relación costo-rendimiento",
+    "d": "Mejora de precisión por dólar gastado"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Razonamiento matemático",
+    "d": "Múltiples caminos de solución para demostraciones complejas y resolución de problemas"
+   },
+   {
+    "n": "Generación de código",
+    "d": "Genera y verifica múltiples implementaciones para encontrar soluciones óptimas"
+   },
+   {
+    "n": "Descubrimiento científico",
+    "d": "Explora múltiples hipótesis y diseños experimentales"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Evalúa múltiples escenarios y caminos de decisión"
+   },
+   {
+    "n": "Resolución creativa de problemas",
+    "d": "Genera soluciones diversas y selecciona los enfoques más prometedores"
+   },
+   {
+    "n": "Programación competitiva",
+    "d": "Exploración sistemática de soluciones con verificación"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Test-Time Scaling",
+  "description": "Técnica de mejora del rendimiento que asigna más recursos computacionales durante la inferencia para problemas complejos, escalando el esfuerzo según la dificultad del problema.",
+  "nodes": [
+   {
+    "id": "math-problem",
+    "label": "🧮 Problema matemático difícil\n\"Si un tren recorre 120km en 1.5 horas\ny reduce su velocidad un 25% durante la hora siguiente,\n¿cuál es la distancia total?\"",
+    "x": 400,
+    "y": 50,
+    "w": 400
+   },
+   {
+    "id": "standard-model",
+    "label": "🤖 Modelo estándar\n(Mismo tamaño: 7B parámetros)",
+    "x": 100,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "single-attempt",
+    "label": "⚡ Respuesta rápida\n1 intento\n0.5 segundos",
+    "x": 100,
+    "y": 300,
+    "w": 150
+   },
+   {
+    "id": "wrong-answer",
+    "label": "❌ Respuesta: 200km\n(¡Incorrecta!)",
+    "x": 100,
+    "y": 420,
+    "w": 150
+   },
+   {
+    "id": "scaled-model",
+    "label": "🧠 Test-Time Scaling\n(¡El mismo modelo de 7B!)",
+    "x": 500,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "attempt-1",
+    "label": "📝 Intento 1\n\"120 + 60 = 180\"",
+    "x": 350,
+    "y": 300,
+    "w": 140
+   },
+   {
+    "id": "attempt-2",
+    "label": "📝 Intento 2\n\"Velocidad: 80km/h\n80 × 2.5 = 200\"",
+    "x": 500,
+    "y": 300,
+    "w": 140
+   },
+   {
+    "id": "attempt-3",
+    "label": "📝 Intento 3\n\"120 + (80×0.75×1)\n= 120 + 60 = 180\"",
+    "x": 650,
+    "y": 300,
+    "w": 140
+   },
+   {
+    "id": "self-check",
+    "label": "🔍 Autoverificación\nRevisa cada paso\nRecalcula la velocidad",
+    "x": 400,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "consensus",
+    "label": "🗳️ Votación por mayoría\n2 de 3 dicen 180km",
+    "x": 600,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "step-by-step",
+    "label": "📋 Paso a paso\n1. Velocidad = 120/1.5 = 80km/h\n2. Reducción del 25% = 60km/h\n3. Distancia = 60 × 1 = 60km\n4. Total = 120 + 60 = 180km",
+    "x": 500,
+    "y": 540,
+    "w": 250
+   },
+   {
+    "id": "compute-standard",
+    "label": "⚡ Estándar\nCómputo: 1x\nTiempo: 0.5s\nPrecisión: 40%",
+    "x": 150,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "compute-scaled",
+    "label": "🚀 Con test-time scaling\nCómputo: 10x\nTiempo: 5s\nPrecisión: 85%",
+    "x": 550,
+    "y": 660,
+    "w": 140
+   },
+   {
+    "id": "correct-answer",
+    "label": "✅ Respuesta correcta: 180km\n¡Con el mismo modelo de 7B, solo más tiempo para pensar!",
+    "x": 400,
+    "y": 780,
+    "w": 400
+   }
+  ],
+  "edges": [
+   {
+    "id": "problem-standard",
+    "s": "math-problem",
+    "t": "standard-model",
+    "label": ""
+   },
+   {
+    "id": "standard-single",
+    "s": "standard-model",
+    "t": "single-attempt",
+    "label": ""
+   },
+   {
+    "id": "single-wrong",
+    "s": "single-attempt",
+    "t": "wrong-answer",
+    "label": ""
+   },
+   {
+    "id": "problem-scaled",
+    "s": "math-problem",
+    "t": "scaled-model",
+    "label": ""
+   },
+   {
+    "id": "scaled-attempt1",
+    "s": "scaled-model",
+    "t": "attempt-1",
+    "label": ""
+   },
+   {
+    "id": "scaled-attempt2",
+    "s": "scaled-model",
+    "t": "attempt-2",
+    "label": ""
+   },
+   {
+    "id": "scaled-attempt3",
+    "s": "scaled-model",
+    "t": "attempt-3",
+    "label": ""
+   },
+   {
+    "id": "attempts-check",
+    "s": "attempt-2",
+    "t": "self-check",
+    "label": ""
+   },
+   {
+    "id": "attempt1-check",
+    "s": "attempt-1",
+    "t": "self-check",
+    "label": ""
+   },
+   {
+    "id": "attempt3-check",
+    "s": "attempt-3",
+    "t": "self-check",
+    "label": ""
+   },
+   {
+    "id": "check-consensus",
+    "s": "self-check",
+    "t": "consensus",
+    "label": ""
+   },
+   {
+    "id": "consensus-steps",
+    "s": "consensus",
+    "t": "step-by-step",
+    "label": ""
+   },
+   {
+    "id": "wrong-compute",
+    "s": "wrong-answer",
+    "t": "compute-standard",
+    "label": ""
+   },
+   {
+    "id": "steps-compute",
+    "s": "step-by-step",
+    "t": "compute-scaled",
+    "label": ""
+   },
+   {
+    "id": "compute-correct",
+    "s": "compute-scaled",
+    "t": "correct-answer",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Problema matemático",
+    "description": "Un problema de velocidad de un tren que requiere razonamiento en varios pasos",
+    "input": "",
+    "nodes": [
+     "math-problem"
+    ],
+    "edges": []
+   },
+   {
+    "title": "Enfoque estándar",
+    "description": "El modelo da una respuesta rápida con un solo intento",
+    "input": "",
+    "nodes": [
+     "math-problem",
+     "standard-model",
+     "single-attempt"
+    ],
+    "edges": [
+     "problem-standard",
+     "standard-single"
+    ]
+   },
+   {
+    "title": "Respuesta incorrecta",
+    "description": "La respuesta rápida es incorrecta: no tuvo en cuenta la reducción de velocidad",
+    "input": "",
+    "nodes": [
+     "single-attempt",
+     "wrong-answer"
+    ],
+    "edges": [
+     "single-wrong"
+    ]
+   },
+   {
+    "title": "Test-Time Scaling",
+    "description": "El mismo modelo de 7B, pero genera múltiples intentos",
+    "input": "",
+    "nodes": [
+     "math-problem",
+     "scaled-model",
+     "attempt-1",
+     "attempt-2",
+     "attempt-3"
+    ],
+    "edges": [
+     "problem-scaled",
+     "scaled-attempt1",
+     "scaled-attempt2",
+     "scaled-attempt3"
+    ]
+   },
+   {
+    "title": "Autoverificación",
+    "description": "El modelo revisa su propio trabajo y encuentra un consenso",
+    "input": "",
+    "nodes": [
+     "attempt-1",
+     "attempt-2",
+     "attempt-3",
+     "self-check",
+     "consensus"
+    ],
+    "edges": [
+     "attempt1-check",
+     "attempts-check",
+     "attempt3-check",
+     "check-consensus"
+    ]
+   },
+   {
+    "title": "Razonamiento paso a paso",
+    "description": "Descompone el problema con pasos detallados",
+    "input": "",
+    "nodes": [
+     "consensus",
+     "step-by-step"
+    ],
+    "edges": [
+     "consensus-steps"
+    ]
+   },
+   {
+    "title": "Comparación de cómputo",
+    "description": "10x más cómputo en inferencia = 2x mejor precisión",
+    "input": "",
+    "nodes": [
+     "wrong-answer",
+     "compute-standard",
+     "step-by-step",
+     "compute-scaled"
+    ],
+    "edges": [
+     "wrong-compute",
+     "steps-compute"
+    ]
+   },
+   {
+    "title": "Respuesta correcta",
+    "description": "¡El mismo tamaño de modelo, solo más tiempo para pensar!",
+    "input": "",
+    "nodes": [
+     "compute-scaled",
+     "correct-answer"
+    ],
+    "edges": [
+     "compute-correct"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,418 @@
+{
+ "cat": "reasoning-techniques",
+ "slug": "buffer-of-thoughts",
+ "name": "Buffer of Thoughts(BoT)",
+ "icon": "📊",
+ "complexity": "high",
+ "description": "Mantiene un buffer dinámico de patrones de pensamiento reutilizables para el razonamiento analógico",
+ "features": [
+  "Meta-buffer de estrategias de resolución de problemas",
+  "Coincidencia de patrones por analogía",
+  "Plantillas de pensamiento reutilizables",
+  "Transferencia de conocimiento entre problemas",
+  "Actualización continua del buffer",
+  "Grandes mejoras según la tarea (p. ej., ~11% en Game of 24, ~51% en Checkmate-in-One)"
+ ],
+ "tldr": {
+  "what": "Almacena patrones de razonamiento reutilizables de problemas anteriores y luego recupera y adapta patrones análogos al resolver problemas nuevos.",
+  "when": "Tareas de razonamiento complejas en las que estructuras de problemas similares se repiten entre dominios y la transferencia por analogía puede acelerar el hallazgo de soluciones.",
+  "watchOut": "La calidad del buffer se degrada si los patrones son demasiado genéricos o demasiado específicos del dominio; las analogías irrelevantes desperdician cómputo y desvían el razonamiento."
+ },
+ "overview": {
+  "pattern": "Razonamiento aumentado con pensamientos que reúne enfoques diversos en un buffer, destila patrones y crea plantillas reutilizables",
+  "why": "Desarrolla experiencia en razonamiento con el tiempo al aprender de procesos de pensamiento diversos y crear estructuras de conocimiento reutilizables",
+  "insight": "Generar pensamientos diversos → Almacenar en el buffer → Destilar patrones → Crear plantillas → Aplicar a problemas nuevos",
+  "impl": [
+   {
+    "t": "Recolección de pensamientos",
+    "d": "Genera pensamientos y enfoques de razonamiento diversos"
+   },
+   {
+    "t": "Almacenamiento en el buffer",
+    "d": "Guarda los pensamientos en una memoria de buffer estructurada"
+   },
+   {
+    "t": "Destilación",
+    "d": "Extrae los insights y patrones clave del buffer"
+   },
+   {
+    "t": "Creación de plantillas",
+    "d": "Crea plantillas de razonamiento reutilizables"
+   },
+   {
+    "t": "Aplicación",
+    "d": "Aplica el conocimiento destilado a problemas nuevos"
+   }
+  ],
+  "example": "Problema → Generar muchos pensamientos → Almacenar en el buffer → Destilar patrones → Crear plantillas → Aplicar",
+  "dos": [
+   "Fomenta la generación de pensamientos diversos y creativos",
+   "Implementa un almacenamiento y una recuperación eficientes en el buffer",
+   "Enfoca la destilación en insights accionables",
+   "Crea plantillas que se generalicen entre problemas",
+   "Actualiza el buffer con los nuevos patrones de razonamiento exitosos"
+  ],
+  "donts": [
+   "Llenar el buffer con pensamientos redundantes o de baja calidad",
+   "Omitir el paso de destilación (pensamientos en bruto ≠ conocimiento)",
+   "Crear plantillas demasiado específicas sin generalización",
+   "Ignorar los límites de capacidad del buffer (desbordamiento de memoria)",
+   "Usar plantillas obsoletas sin actualizarlas con la experiencia"
+  ],
+  "use": [
+   "Problemas que requieren enfoques de razonamiento creativos",
+   "Dominios donde acumular experiencia ayuda",
+   "Razonamiento de varios pasos con patrones reutilizables",
+   "Cuando se quiere desarrollar experiencia en razonamiento con el tiempo",
+   "Resolución de problemas complejos que requiere perspectivas diversas"
+  ],
+  "avoid": [
+   "Tareas de razonamiento simples y únicas",
+   "Dominios con procedimientos bien establecidos",
+   "Entornos con memoria limitada",
+   "Aplicaciones en tiempo real que requieren respuesta inmediata",
+   "Problemas sin patrones de razonamiento reutilizables"
+  ],
+  "metrics": [
+   {
+    "n": "Diversidad de pensamientos",
+    "d": "Variedad y creatividad de los enfoques de razonamiento generados"
+   },
+   {
+    "n": "Calidad de la destilación",
+    "d": "Efectividad de la extracción de patrones del buffer"
+   },
+   {
+    "n": "Reutilización de plantillas",
+    "d": "Tasa de éxito al aplicar plantillas a problemas nuevos"
+   },
+   {
+    "n": "Eficiencia del buffer",
+    "d": "Uso del almacenamiento vs. desempeño del razonamiento"
+   },
+   {
+    "n": "Transferencia de conocimiento",
+    "d": "Mejora en la resolución de problemas similares a lo largo del tiempo"
+   },
+   {
+    "n": "Innovación en el razonamiento",
+    "d": "Descubrimiento de enfoques de solución novedosos"
+   }
+  ],
+  "usecases": [
+   {
+    "n": "Metodología de investigación",
+    "d": "Reunir enfoques de investigación → Guardar estrategias en el buffer → Destilar mejores prácticas → Crear plantillas de metodología"
+   },
+   {
+    "n": "Resolución creativa de problemas",
+    "d": "Generar ideas de solución → Almacenar en el buffer → Extraer patrones → Construir marcos de innovación"
+   },
+   {
+    "n": "Arquitectura de código",
+    "d": "Reunir patrones de diseño → Guardar enfoques en el buffer → Destilar principios → Crear plantillas de arquitectura"
+   },
+   {
+    "n": "Planificación estratégica",
+    "d": "Reunir pensamientos estratégicos → Guardar insights en el buffer → Extraer marcos → Construir plantillas de planificación"
+   },
+   {
+    "n": "Sistema de aprendizaje",
+    "d": "Acumular ejemplos de razonamiento → Guardar enfoques exitosos en el buffer → Destilar patrones de aprendizaje → Crear plantillas educativas"
+   }
+  ]
+ },
+ "flow": {
+  "title": "Buffer of Thoughts",
+  "description": "Mantiene un buffer dinámico de patrones de pensamiento y estrategias de razonamiento reutilizables que pueden recuperarse y aplicarse a problemas nuevos mediante razonamiento analógico",
+  "nodes": [
+   {
+    "id": "thought-buffer",
+    "label": "🧠 Buffer dinámico de pensamientos\n\"Patrones de razonamiento reutilizables\nguardados de problemas anteriores\nlistos para reutilizarse por analogía\"",
+    "x": 400,
+    "y": 50,
+    "w": 240
+   },
+   {
+    "id": "optimization-pattern",
+    "label": "⚡ Patrón de optimización\n\"Identificar el cuello de botella\n→ Eliminar la restricción\n→ Medir la mejora\"",
+    "x": 150,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "debugging-pattern",
+    "label": "🐛 Patrón de depuración\n\"Aislar variables\n→ Probar sistemáticamente\n→ Verificar la causa raíz\"",
+    "x": 400,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "scaling-pattern",
+    "label": "📈 Patrón de escalado\n\"Empezar en pequeño\n→ Validar el enfoque\n→ Expandir gradualmente\"",
+    "x": 650,
+    "y": 180,
+    "w": 180
+   },
+   {
+    "id": "new-problem",
+    "label": "❓ Problema nuevo\n\"Queja de cliente:\nEl proceso de pago es demasiado lento\n(tarda 45 segundos)\"",
+    "x": 400,
+    "y": 320,
+    "w": 200
+   },
+   {
+    "id": "pattern-matching",
+    "label": "🔍 Coincidencia de patrones\n\"Esto parece un\nproblema de optimización\nRecuperando patrones similares...\"",
+    "x": 400,
+    "y": 420,
+    "w": 220
+   },
+   {
+    "id": "retrieved-optimization",
+    "label": "⚡ Aplicado: optimización\n\"Pago = cuello de botella\nAnalizar: llamadas a la API de pagos\nMúltiples solicitudes redundantes\"",
+    "x": 150,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "retrieved-debugging",
+    "label": "🐛 Aplicado: depuración\n\"Aislar: paso de pago\nProbar: eliminar la redundancia\nVerificar: 45s → 12s\"",
+    "x": 400,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "retrieved-scaling",
+    "label": "📈 Aplicado: escalado\n\"Corrección validada localmente\nDespliegue gradual: 10%→50%→100%\nMonitorear el desempeño\"",
+    "x": 650,
+    "y": 550,
+    "w": 200
+   },
+   {
+    "id": "solution-synthesis",
+    "label": "🔗 Síntesis de la solución\n\"Se combinaron todos los patrones:\nOptimizar → Depurar → Escalar\nSolución integral\"",
+    "x": 400,
+    "y": 680,
+    "w": 220
+   },
+   {
+    "id": "buffer-update",
+    "label": "📝 Actualización del buffer\n\"Nuevo patrón aprendido:\nPatrón de optimización de API\nAgregado al buffer para reutilizarlo\"",
+    "x": 400,
+    "y": 800,
+    "w": 220
+   },
+   {
+    "id": "next-problem",
+    "label": "❓ Siguiente problema\n\"Consultas a la base de datos\nque se ejecutan lento\n(5 segundos de demora)\"",
+    "x": 100,
+    "y": 320,
+    "w": 180
+   },
+   {
+    "id": "instant-match",
+    "label": "⚡ Coincidencia instantánea de patrón\n\"¡El patrón de optimización de API\ntambién aplica aquí!\nBuscar consultas redundantes\"",
+    "x": 100,
+    "y": 420,
+    "w": 180
+   },
+   {
+    "id": "buffer-management",
+    "label": "⚙️ Gestión del buffer\n\"Ordenar por tasa de éxito\nPodar patrones obsoletos\nFusionar patrones similares\"",
+    "x": 700,
+    "y": 50,
+    "w": 180
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1a",
+    "s": "thought-buffer",
+    "t": "optimization-pattern",
+    "label": "contiene"
+   },
+   {
+    "id": "e1b",
+    "s": "thought-buffer",
+    "t": "debugging-pattern",
+    "label": "contiene"
+   },
+   {
+    "id": "e1c",
+    "s": "thought-buffer",
+    "t": "scaling-pattern",
+    "label": "contiene"
+   },
+   {
+    "id": "e2",
+    "s": "new-problem",
+    "t": "pattern-matching",
+    "label": "activa"
+   },
+   {
+    "id": "e3a",
+    "s": "optimization-pattern",
+    "t": "pattern-matching",
+    "label": "coincidencia detectada"
+   },
+   {
+    "id": "e3b",
+    "s": "debugging-pattern",
+    "t": "pattern-matching",
+    "label": "coincidencia detectada"
+   },
+   {
+    "id": "e3c",
+    "s": "scaling-pattern",
+    "t": "pattern-matching",
+    "label": "coincidencia detectada"
+   },
+   {
+    "id": "e4a",
+    "s": "pattern-matching",
+    "t": "retrieved-optimization",
+    "label": "aplicar"
+   },
+   {
+    "id": "e4b",
+    "s": "pattern-matching",
+    "t": "retrieved-debugging",
+    "label": "aplicar"
+   },
+   {
+    "id": "e4c",
+    "s": "pattern-matching",
+    "t": "retrieved-scaling",
+    "label": "aplicar"
+   },
+   {
+    "id": "e5a",
+    "s": "retrieved-optimization",
+    "t": "solution-synthesis",
+    "label": "contribuye"
+   },
+   {
+    "id": "e5b",
+    "s": "retrieved-debugging",
+    "t": "solution-synthesis",
+    "label": "contribuye"
+   },
+   {
+    "id": "e5c",
+    "s": "retrieved-scaling",
+    "t": "solution-synthesis",
+    "label": "contribuye"
+   },
+   {
+    "id": "e6",
+    "s": "solution-synthesis",
+    "t": "buffer-update",
+    "label": "aprende un patrón nuevo"
+   },
+   {
+    "id": "e7",
+    "s": "buffer-update",
+    "t": "thought-buffer",
+    "label": "actualiza"
+   },
+   {
+    "id": "e8",
+    "s": "next-problem",
+    "t": "instant-match",
+    "label": "reconocimiento instantáneo"
+   },
+   {
+    "id": "e9",
+    "s": "buffer-update",
+    "t": "instant-match",
+    "label": "permite reutilizar"
+   },
+   {
+    "id": "e10",
+    "s": "buffer-management",
+    "t": "thought-buffer",
+    "label": "gestiona"
+   }
+  ],
+  "steps": [
+   {
+    "title": "Mantenimiento del buffer dinámico de pensamientos",
+    "description": "El sistema mantiene un buffer vivo de patrones de pensamiento probados: optimización (análisis de cuellos de botella), depuración (aislamiento sistemático) y escalado (despliegue gradual), con gestión para ordenarlos y podarlos.",
+    "input": "",
+    "nodes": [
+     "thought-buffer",
+     "optimization-pattern",
+     "debugging-pattern",
+     "scaling-pattern",
+     "buffer-management"
+    ],
+    "edges": [
+     "e1a",
+     "e1b",
+     "e1c",
+     "e10"
+    ]
+   },
+   {
+    "title": "Coincidencia analógica entre problema y patrón",
+    "description": "El nuevo problema de rendimiento del proceso de pago activa el motor de coincidencia de patrones, que reconoce la similitud con los patrones de optimización, depuración y escalado guardados en el buffer.",
+    "input": "",
+    "nodes": [
+     "new-problem",
+     "pattern-matching"
+    ],
+    "edges": [
+     "e2",
+     "e3a",
+     "e3b",
+     "e3c"
+    ]
+   },
+   {
+    "title": "Aplicación y síntesis de múltiples patrones",
+    "description": "Los patrones recuperados se aplican en simultáneo: la optimización identifica el cuello de botella en la API, la depuración aísla las llamadas redundantes y el escalado planifica un despliegue gradual, lo que crea una solución integral.",
+    "input": "",
+    "nodes": [
+     "retrieved-optimization",
+     "retrieved-debugging",
+     "retrieved-scaling",
+     "solution-synthesis"
+    ],
+    "edges": [
+     "e4a",
+     "e4b",
+     "e4c",
+     "e5a",
+     "e5b",
+     "e5c"
+    ]
+   },
+   {
+    "title": "Aprendizaje del buffer y extracción de patrones",
+    "description": "La solución exitosa genera un nuevo 'Patrón de optimización de API' que se abstrae y se agrega al buffer de pensamientos para reutilizarlo en problemas similares en el futuro.",
+    "input": "",
+    "nodes": [
+     "buffer-update"
+    ],
+    "edges": [
+     "e6",
+     "e7"
+    ]
+   },
+   {
+    "title": "Resolución de problemas acelerada mediante la reutilización",
+    "description": "Cuando surge el siguiente problema de rendimiento de la base de datos, el patrón de optimización de API recién aprendido permite reconocerlo y aplicar la solución al instante, lo que demuestra el valor del buffer para el razonamiento analógico.",
+    "input": "",
+    "nodes": [
+     "next-problem",
+     "instant-match"
+    ],
+    "edges": [
+     "e8",
+     "e9"
+    ]
+   }
+  ]
+ }
+}

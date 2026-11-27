@@ -1,0 +1,275 @@
+{
+ "cat": "security-privacy",
+ "slug": "authenticated-delegation",
+ "name": "Authenticated Delegation & Agent Identity(AD)",
+ "icon": "🪪",
+ "complexity": "high",
+ "description": "Otorga a los agentes una identidad verificable y una autoridad acotada y auditable para actuar en nombre de un usuario. Los tokens OAuth y OIDC de corta duración se asignan a capacidades explícitas, los tokens de delegación ligados a la intención codifican lo que el agente puede hacer y las credenciales verificables permiten a los agentes establecer confianza entre saltos de MCP y A2A. Cada acción lleva una afirmación verificable, de modo que la autoridad puede restringirse de antemano y auditarse después, y las solicitudes fuera del alcance se rechazan en el servidor de recursos.",
+ "features": [
+  "Identidad verificable y distinta para cada agente",
+  "Tokens OAuth/OIDC de corta duración asignados a capacidades específicas",
+  "Los tokens de delegación ligados a la intención codifican el alcance y las restricciones permitidas",
+  "Credenciales verificables para la confianza entre agentes sobre MCP y A2A",
+  "Cada acción genera un registro auditable y atribuible",
+  "Las solicitudes fuera del alcance se rechazan en el servidor de recursos"
+ ],
+ "tldr": {
+  "what": "Emite tokens de corta duración ligados a la intención que codifican lo que un agente puede hacer, con cada acción firmada y auditable hasta el usuario que delegó.",
+  "when": "Los agentes necesitan actuar en nombre de los usuarios con una autoridad verificable y acotada, y con un registro de auditoría completo de quién hizo qué y cuándo.",
+  "watchOut": "La expiración de los tokens y la aplicación de las restricciones deben verificarse en cada frontera de recursos; de lo contrario, la ampliación gradual del alcance y los permisos obsoletos eludirán los controles de forma silenciosa."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Authenticated Delegation e identidad del agente",
+  "description": "Un usuario delega a un agente una reserva de viaje acotada mediante un token de corta duración ligado a la intención. El agente presenta su token acotado a un servidor MCP de una aerolínea y reserva dentro del presupuesto, mientras que una venta adicional de hotel fuera del alcance y una mejora que excede el presupuesto se rechazan en el servidor de recursos, dejando un registro de auditoría completo.",
+  "nodes": [
+   {
+    "id": "user",
+    "label": "🎯 Delegación del usuario\n\"Reserva un viaje de ida y vuelta a Berlín,\npor menos de $800 en total\"",
+    "x": 340,
+    "y": 40,
+    "w": 290
+   },
+   {
+    "id": "idp",
+    "label": "🔑 Proveedor de identidad\nEmite un token ligado a la intención\nFirmado, verificable",
+    "x": 360,
+    "y": 160,
+    "w": 240
+   },
+   {
+    "id": "delegation-token",
+    "label": "🪪 Token de delegación\nscope: [flights:book]\nmax_total_usd: 800, dest: BER\nexp: now + 30m",
+    "x": 350,
+    "y": 275,
+    "w": 260
+   },
+   {
+    "id": "agent",
+    "label": "🤖 Agente de viajes\nagent:travel-planner-7c1\nactúa en nombre de user:dlo",
+    "x": 360,
+    "y": 400,
+    "w": 240
+   },
+   {
+    "id": "airline-mcp",
+    "label": "✈️ Servidor MCP de la aerolínea\nRecibe el token acotado",
+    "x": 90,
+    "y": 520,
+    "w": 220
+   },
+   {
+    "id": "hotel-mcp",
+    "label": "🏨 Servidor MCP del hotel\nIntenta una venta adicional",
+    "x": 430,
+    "y": 520,
+    "w": 200
+   },
+   {
+    "id": "verify",
+    "label": "🛂 Verificar firma + alcance\nRevisa flights:book y restricciones",
+    "x": 90,
+    "y": 630,
+    "w": 240
+   },
+   {
+    "id": "scope-reject",
+    "label": "⛔ Alcance rechazado\nhotels:book no está en el alcance del token",
+    "x": 420,
+    "y": 630,
+    "w": 230
+   },
+   {
+    "id": "upgrade-reject",
+    "label": "⛔ Restricción rechazada\nMejora de $190 -> $802 > tope de $800",
+    "x": 690,
+    "y": 520,
+    "w": 240
+   },
+   {
+    "id": "flight-booked",
+    "label": "✅ Vuelo reservado\nTarifa de $612, dentro del alcance + presupuesto",
+    "x": 90,
+    "y": 730,
+    "w": 230
+   },
+   {
+    "id": "audit-log",
+    "label": "📒 Registro de auditoría\nCada llamada es atribuible a\nuser:dlo -> agent:travel-planner-7c1",
+    "x": 430,
+    "y": 740,
+    "w": 280
+   }
+  ],
+  "edges": [
+   {
+    "id": "user-idp",
+    "s": "user",
+    "t": "idp",
+    "label": ""
+   },
+   {
+    "id": "idp-token",
+    "s": "idp",
+    "t": "delegation-token",
+    "label": "Emitir"
+   },
+   {
+    "id": "token-agent",
+    "s": "delegation-token",
+    "t": "agent",
+    "label": "Otorgar"
+   },
+   {
+    "id": "agent-airline",
+    "s": "agent",
+    "t": "airline-mcp",
+    "label": "Presentar token"
+   },
+   {
+    "id": "agent-hotel",
+    "s": "agent",
+    "t": "hotel-mcp",
+    "label": "Presentar token"
+   },
+   {
+    "id": "airline-verify",
+    "s": "airline-mcp",
+    "t": "verify",
+    "label": ""
+   },
+   {
+    "id": "verify-flight",
+    "s": "verify",
+    "t": "flight-booked",
+    "label": "APROBADO"
+   },
+   {
+    "id": "verify-upgrade",
+    "s": "verify",
+    "t": "upgrade-reject",
+    "label": "Excede el presupuesto"
+   },
+   {
+    "id": "hotel-scope",
+    "s": "hotel-mcp",
+    "t": "scope-reject",
+    "label": "Fuera del alcance"
+   },
+   {
+    "id": "flight-audit",
+    "s": "flight-booked",
+    "t": "audit-log",
+    "label": ""
+   },
+   {
+    "id": "scope-audit",
+    "s": "scope-reject",
+    "t": "audit-log",
+    "label": ""
+   },
+   {
+    "id": "upgrade-audit",
+    "s": "upgrade-reject",
+    "t": "audit-log",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "El usuario delega una intención acotada",
+    "description": "El usuario otorga al agente autoridad para reservar un viaje a Berlín por menos de $800. La delegación es específica y restringida, no abierta.",
+    "input": "",
+    "nodes": [
+     "user",
+     "idp"
+    ],
+    "edges": [
+     "user-idp"
+    ]
+   },
+   {
+    "title": "Emitir un token acotado ligado a la intención",
+    "description": "El proveedor de identidad emite un token de delegación firmado y de corta duración que codifica el alcance flights:book, un tope de presupuesto, el destino y una expiración de 30 minutos. Es verificable en cada servidor de recursos.",
+    "input": "",
+    "nodes": [
+     "idp",
+     "delegation-token",
+     "agent"
+    ],
+    "edges": [
+     "idp-token",
+     "token-agent"
+    ]
+   },
+   {
+    "title": "El agente presenta el token",
+    "description": "El agente tiene una identidad verificable y presenta su token acotado a los servidores de recursos que llama, actuando explícitamente en nombre del usuario.",
+    "input": "",
+    "nodes": [
+     "agent",
+     "airline-mcp",
+     "hotel-mcp"
+    ],
+    "edges": [
+     "agent-airline",
+     "agent-hotel"
+    ]
+   },
+   {
+    "title": "La aerolínea verifica y reserva",
+    "description": "El servidor de la aerolínea verifica la firma y confirma el alcance flights:book. Reserva una tarifa de $612 que cabe dentro del alcance y del presupuesto.",
+    "input": "",
+    "nodes": [
+     "airline-mcp",
+     "verify",
+     "flight-booked"
+    ],
+    "edges": [
+     "airline-verify",
+     "verify-flight"
+    ]
+   },
+   {
+    "title": "Se rechaza la mejora que excede el presupuesto",
+    "description": "Una mejora de asiento de $190 llevaría el total a $802, por encima del tope de $800 codificado en el token. La verificación de restricciones la rechaza aunque el agente esté autenticado.",
+    "input": "",
+    "nodes": [
+     "verify",
+     "upgrade-reject"
+    ],
+    "edges": [
+     "verify-upgrade"
+    ]
+   },
+   {
+    "title": "Se rechaza la venta adicional fuera del alcance",
+    "description": "Un servidor MCP de hotel intenta hotels:book, pero ese alcance no está en el token. El servidor de recursos lo rechaza, ya que estar autenticado no implica una autoridad ilimitada.",
+    "input": "",
+    "nodes": [
+     "hotel-mcp",
+     "scope-reject"
+    ],
+    "edges": [
+     "hotel-scope"
+    ]
+   },
+   {
+    "title": "Registro de auditoría completo y verificable",
+    "description": "Cada decisión, otorgada o denegada, queda registrada y es atribuible a user:dlo delegando en agent:travel-planner-7c1, lo que brinda trazabilidad completa desde la intención del usuario hasta la acción del agente.",
+    "input": "",
+    "nodes": [
+     "flight-booked",
+     "scope-reject",
+     "upgrade-reject",
+     "audit-log"
+    ],
+    "edges": [
+     "flight-audit",
+     "scope-audit",
+     "upgrade-audit"
+    ]
+   }
+  ]
+ }
+}

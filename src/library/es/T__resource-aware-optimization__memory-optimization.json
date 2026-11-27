@@ -1,0 +1,374 @@
+{
+ "cat": "resource-aware-optimization",
+ "slug": "memory-optimization",
+ "name": "Memory Optimization(MO)",
+ "icon": "🧠",
+ "complexity": "high",
+ "description": "Gestiona de forma eficiente el uso de memoria mediante estrategias de cache, compresión y recolección de basura",
+ "features": [
+  "Gestión de pools de memoria",
+  "Cache inteligente",
+  "Algoritmos de compresión",
+  "Ajuste de la recolección de basura",
+  "Archivos mapeados en memoria",
+  "Procesamiento en streaming"
+ ],
+ "tldr": {
+  "what": "Reduce la huella de memoria guardando en cache los datos frecuentes, comprimiendo los valores almacenados y liberando asignaciones no usadas durante la ejecución.",
+  "when": "Sistemas que manejan grandes datasets o modelos en los que la RAM disponible es mucho menor que el tamaño del conjunto de trabajo.",
+  "watchOut": "Una compresión o un desalojo agresivos pueden degradar la latencia de forma impredecible si la tasa de fallos de cache se dispara bajo carga."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Optimización de memoria",
+  "description": "Para servir un modelo de 175B cuyos 350GB de pesos no caben en 80GB de memoria de GPU, este flujo combina cuantización, sharding, carga dinámica de capas y gestión paginada de la KV-cache, protegido por un watchdog contra falta de memoria y un recolector de basura.",
+  "nodes": [
+   {
+    "id": "model-load-request",
+    "label": "📥 Servir modelo de 175B\n350GB de pesos\n80GB de RAM | 1000+ usuarios",
+    "x": 360,
+    "y": 50,
+    "w": 250
+   },
+   {
+    "id": "memory-monitor",
+    "label": "📊 Monitor de memoria\nGPU 78/80GB (98%)\nFragmentación 12%",
+    "x": 690,
+    "y": 50,
+    "w": 210
+   },
+   {
+    "id": "memory-manager",
+    "label": "🧠 Gestor de memoria\nPlanifica ubicación,\ncache y desalojo",
+    "x": 360,
+    "y": 150,
+    "w": 230
+   },
+   {
+    "id": "quantizer",
+    "label": "🔢 Cuantizador de pesos\nFP16 a INT4\n350GB a 88GB",
+    "x": 60,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "sharding",
+    "label": "🧩 Sharding del modelo\n8 GPUs, paralelismo de pipeline\nMinimiza el tráfico entre GPUs",
+    "x": 360,
+    "y": 270,
+    "w": 220
+   },
+   {
+    "id": "dynamic-loading",
+    "label": "📤 Carga dinámica\nCapas calientes en VRAM\nCapas frías a SSD",
+    "x": 690,
+    "y": 270,
+    "w": 200
+   },
+   {
+    "id": "kv-cache",
+    "label": "🗃️ Gestor de KV-cache\nPaged attention, bloques de 16 tokens\n90% menos desperdicio",
+    "x": 60,
+    "y": 390,
+    "w": 210
+   },
+   {
+    "id": "memory-pool",
+    "label": "♻️ Pool de memoria\nPreasigna tamaños de tensor comunes\nReutiliza buffers",
+    "x": 360,
+    "y": 390,
+    "w": 220
+   },
+   {
+    "id": "ssd-swap",
+    "label": "💾 Descarga a SSD\nCapas frías en NVMe\nSwap a 6GB/s",
+    "x": 690,
+    "y": 390,
+    "w": 200
+   },
+   {
+    "id": "kv-compression",
+    "label": "🗜️ Compresión de KV\nBlock-sparse + ventana deslizante\nVentana de 8k tokens",
+    "x": 60,
+    "y": 510,
+    "w": 210
+   },
+   {
+    "id": "paged-attention",
+    "label": "📄 Bloques KV paginados\n1000 secuencias comparten el pool\nSin fragmentación",
+    "x": 360,
+    "y": 510,
+    "w": 220
+   },
+   {
+    "id": "gc-tuner",
+    "label": "🧹 Ajustador de GC\nDesfragmenta el pool\nRecupera 9GB",
+    "x": 690,
+    "y": 510,
+    "w": 200
+   },
+   {
+    "id": "oom-guard",
+    "label": "🚨 Guardia OOM\n98% usado, desalojar\ncapas frías y KV antiguo",
+    "x": 360,
+    "y": 630,
+    "w": 220
+   },
+   {
+    "id": "output",
+    "label": "✅ 175B servido\n80% menos memoria\n5x throughput | 50ms p50",
+    "x": 360,
+    "y": 740,
+    "w": 250
+   }
+  ],
+  "edges": [
+   {
+    "id": "request-manager",
+    "s": "model-load-request",
+    "t": "memory-manager",
+    "label": ""
+   },
+   {
+    "id": "monitor-manager",
+    "s": "memory-monitor",
+    "t": "memory-manager",
+    "label": "Uso 98%"
+   },
+   {
+    "id": "manager-quantizer",
+    "s": "memory-manager",
+    "t": "quantizer",
+    "label": ""
+   },
+   {
+    "id": "manager-sharding",
+    "s": "memory-manager",
+    "t": "sharding",
+    "label": ""
+   },
+   {
+    "id": "manager-dynamic",
+    "s": "memory-manager",
+    "t": "dynamic-loading",
+    "label": ""
+   },
+   {
+    "id": "manager-kvcache",
+    "s": "memory-manager",
+    "t": "kv-cache",
+    "label": ""
+   },
+   {
+    "id": "kvcache-compression",
+    "s": "kv-cache",
+    "t": "kv-compression",
+    "label": ""
+   },
+   {
+    "id": "kvcache-paged",
+    "s": "kv-cache",
+    "t": "paged-attention",
+    "label": ""
+   },
+   {
+    "id": "sharding-pool",
+    "s": "sharding",
+    "t": "memory-pool",
+    "label": ""
+   },
+   {
+    "id": "pool-paged",
+    "s": "memory-pool",
+    "t": "paged-attention",
+    "label": ""
+   },
+   {
+    "id": "pool-gc",
+    "s": "memory-pool",
+    "t": "gc-tuner",
+    "label": ""
+   },
+   {
+    "id": "dynamic-ssd",
+    "s": "dynamic-loading",
+    "t": "ssd-swap",
+    "label": "Sacar capas frías"
+   },
+   {
+    "id": "ssd-dynamic",
+    "s": "ssd-swap",
+    "t": "dynamic-loading",
+    "label": "Cargar bajo demanda"
+   },
+   {
+    "id": "monitor-oom",
+    "s": "memory-monitor",
+    "t": "oom-guard",
+    "label": "98% usado"
+   },
+   {
+    "id": "oom-dynamic",
+    "s": "oom-guard",
+    "t": "dynamic-loading",
+    "label": "Desalojar capas frías"
+   },
+   {
+    "id": "oom-kvcache",
+    "s": "oom-guard",
+    "t": "kv-cache",
+    "label": "Desalojar KV antiguo"
+   },
+   {
+    "id": "oom-gc",
+    "s": "oom-guard",
+    "t": "gc-tuner",
+    "label": "Desfragmentar"
+   },
+   {
+    "id": "gc-pool",
+    "s": "gc-tuner",
+    "t": "memory-pool",
+    "label": "Recuperar 9GB"
+   },
+   {
+    "id": "quant-output",
+    "s": "quantizer",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "sharding-output",
+    "s": "sharding",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "paged-output",
+    "s": "paged-attention",
+    "t": "output",
+    "label": ""
+   },
+   {
+    "id": "compression-output",
+    "s": "kv-compression",
+    "t": "output",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Solicitud de carga y presupuesto de memoria",
+    "description": "Una solicitud para servir un modelo de 175B con 350GB de pesos se enfrenta a 80GB de memoria de GPU; el gestor lee el uso actual desde el monitor.",
+    "input": "",
+    "nodes": [
+     "model-load-request",
+     "memory-manager",
+     "memory-monitor"
+    ],
+    "edges": [
+     "request-manager",
+     "monitor-manager"
+    ]
+   },
+   {
+    "title": "Cuantización de pesos",
+    "description": "Los pesos se cuantizan de FP16 a INT4, lo que reduce el modelo de 350GB a unos 88GB, de modo que cabe mucho más en la VRAM.",
+    "input": "",
+    "nodes": [
+     "memory-manager",
+     "quantizer"
+    ],
+    "edges": [
+     "manager-quantizer",
+     "quant-output"
+    ]
+   },
+   {
+    "title": "Sharding y pool de memoria",
+    "description": "El modelo se divide entre 8 GPUs con paralelismo de pipeline, y un pool de memoria preasigna tamaños de tensor comunes para reducir la fragmentación.",
+    "input": "",
+    "nodes": [
+     "memory-manager",
+     "sharding",
+     "memory-pool",
+     "paged-attention"
+    ],
+    "edges": [
+     "manager-sharding",
+     "sharding-pool",
+     "pool-paged",
+     "sharding-output"
+    ]
+   },
+   {
+    "title": "Carga dinámica de capas",
+    "description": "Las capas calientes permanecen en la VRAM, mientras que las frías se pasan a un SSD NVMe a 6GB/s y se vuelven a cargar bajo demanda.",
+    "input": "",
+    "nodes": [
+     "memory-manager",
+     "dynamic-loading",
+     "ssd-swap"
+    ],
+    "edges": [
+     "manager-dynamic",
+     "dynamic-ssd",
+     "ssd-dynamic"
+    ]
+   },
+   {
+    "title": "Optimización de la KV-cache",
+    "description": "Paged attention almacena el KV en bloques de 16 tokens compartidos entre 1000 secuencias, y la compresión block-sparse con ventana deslizante limita la cache a una ventana de 8k.",
+    "input": "",
+    "nodes": [
+     "memory-manager",
+     "kv-cache",
+     "kv-compression",
+     "paged-attention"
+    ],
+    "edges": [
+     "manager-kvcache",
+     "kvcache-compression",
+     "kvcache-paged"
+    ]
+   },
+   {
+    "title": "Guardia OOM y recolección de basura",
+    "description": "Al 98% de uso, el watchdog desaloja las capas frías y las entradas KV antiguas mientras el ajustador de GC desfragmenta el pool para recuperar 9GB.",
+    "input": "",
+    "nodes": [
+     "memory-monitor",
+     "oom-guard",
+     "gc-tuner",
+     "memory-pool"
+    ],
+    "edges": [
+     "monitor-oom",
+     "oom-dynamic",
+     "oom-kvcache",
+     "oom-gc",
+     "pool-gc",
+     "gc-pool"
+    ]
+   },
+   {
+    "title": "Servicio optimizado",
+    "description": "Las técnicas combinadas reducen el uso de memoria en un 80%, multiplican el throughput por 5 y mantienen la latencia p50 cerca de 50ms para 10x más usuarios concurrentes.",
+    "input": "",
+    "nodes": [
+     "sharding",
+     "paged-attention",
+     "kv-compression",
+     "quantizer",
+     "output"
+    ],
+    "edges": [
+     "sharding-output",
+     "paged-output",
+     "compression-output",
+     "quant-output"
+    ]
+   }
+  ]
+ }
+}

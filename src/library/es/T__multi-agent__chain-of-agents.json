@@ -1,0 +1,368 @@
+{
+ "cat": "multi-agent",
+ "slug": "chain-of-agents",
+ "name": "Chain of Agents(CoA)",
+ "icon": "⛓️",
+ "complexity": "medium",
+ "description": "Un framework sin entrenamiento para tareas de contexto largo que divide una entrada demasiado grande en chunks, asigna cada chunk a un agente worker que lee su chunk más una unidad de comunicación acumulada que le pasa el worker anterior, y luego entrega la comunicación final acumulada a un agente gestor que produce la respuesta. La cadena secuencial de lectura y resumen mitiga la pérdida de foco en contextos largos y supera a las líneas base de RAG y de contexto completo.",
+ "features": [
+  "Entrada dividida en chunks manejables",
+  "Los agentes worker leen su chunk más la unidad de comunicación previa",
+  "Un resumen de evidencia se acumula de izquierda a derecha",
+  "El agente gestor sintetiza la respuesta final",
+  "Sin entrenamiento, interpretable e independiente del modelo",
+  "Maneja entradas que superan la ventana de contexto de un solo modelo"
+ ],
+ "tldr": {
+  "what": "Divide la entrada en chunks, envía cada uno a agentes worker que leen su chunk más los hallazgos previos acumulados, y luego un gestor sintetiza la respuesta final.",
+  "when": "Documentos o contextos que superan la ventana de un solo modelo y requieren una extracción sistemática a lo largo de muchas páginas sin perder los hallazgos anteriores.",
+  "watchOut": "Los agentes worker pueden pasar por alto o malinterpretar contexto que cruza los límites entre chunks, lo que degrada la calidad de la respuesta si los cortes caen en puntos críticos."
+ },
+ "overview": null,
+ "flow": {
+  "title": "Chain of Agents (CoA)",
+  "description": "Una entrada de contexto largo se divide en chunks; cada agente worker lee su chunk más una unidad de comunicación acumulada que le pasa el worker anterior, acumulando evidencia de izquierda a derecha. Un agente gestor lee la unidad de comunicación final y responde. No requiere entrenamiento y supera a las líneas base de RAG y de contexto completo (NeurIPS 2024).",
+  "nodes": [
+   {
+    "id": "input",
+    "label": "📚 Entrada\nContrato marco de servicios de 500 páginas (~380k tokens)\nConsulta: ¿renovación automática? ¿plazo de preaviso? ¿tope de responsabilidad?",
+    "x": 290,
+    "y": 30,
+    "w": 360
+   },
+   {
+    "id": "splitter",
+    "label": "✂️ Divisor\nSupera la ventana de contexto -> 6 chunks de ~83 páginas",
+    "x": 320,
+    "y": 150,
+    "w": 300
+   },
+   {
+    "id": "chunk1",
+    "label": "📄 Chunk 1\np.1-83",
+    "x": 10,
+    "y": 260,
+    "w": 130
+   },
+   {
+    "id": "chunk2",
+    "label": "📄 Chunk 2\np.84-166",
+    "x": 158,
+    "y": 260,
+    "w": 130
+   },
+   {
+    "id": "chunk3",
+    "label": "📄 Chunk 3\np.167-250",
+    "x": 306,
+    "y": 260,
+    "w": 130
+   },
+   {
+    "id": "chunk4",
+    "label": "📄 Chunk 4\np.251-333",
+    "x": 454,
+    "y": 260,
+    "w": 130
+   },
+   {
+    "id": "chunk5",
+    "label": "📄 Chunk 5\np.334-416",
+    "x": 602,
+    "y": 260,
+    "w": 130
+   },
+   {
+    "id": "chunk6",
+    "label": "📄 Chunk 6\np.417-500",
+    "x": 750,
+    "y": 260,
+    "w": 130
+   },
+   {
+    "id": "worker1",
+    "label": "🧑‍💼 Worker 1\nCláusula de vigencia encontrada",
+    "x": 10,
+    "y": 390,
+    "w": 130
+   },
+   {
+    "id": "worker2",
+    "label": "🧑‍💼 Worker 2\nRescisión por causa justificada",
+    "x": 158,
+    "y": 390,
+    "w": 130
+   },
+   {
+    "id": "worker3",
+    "label": "🧑‍💼 Worker 3\nTarifas / pagos",
+    "x": 306,
+    "y": 390,
+    "w": 130
+   },
+   {
+    "id": "worker4",
+    "label": "🧑‍💼 Worker 4\nTope de responsabilidad encontrado",
+    "x": 454,
+    "y": 390,
+    "w": 130
+   },
+   {
+    "id": "worker5",
+    "label": "🧑‍💼 Worker 5\nIndemnización",
+    "x": 602,
+    "y": 390,
+    "w": 130
+   },
+   {
+    "id": "worker6",
+    "label": "🧑‍💼 Worker 6\nLey aplicable",
+    "x": 750,
+    "y": 390,
+    "w": 130
+   },
+   {
+    "id": "manager",
+    "label": "🧠 Agente gestor\nLee la unidad de comunicación final y sintetiza la respuesta",
+    "x": 320,
+    "y": 530,
+    "w": 300
+   },
+   {
+    "id": "answer",
+    "label": "✅ Respuesta\nRenovación automática: sí; preaviso escrito de 60 días;\nresponsabilidad limitada a 12 meses de tarifas (~$480k)",
+    "x": 300,
+    "y": 650,
+    "w": 340
+   }
+  ],
+  "edges": [
+   {
+    "id": "input-splitter",
+    "s": "input",
+    "t": "splitter",
+    "label": ""
+   },
+   {
+    "id": "splitter-chunk1",
+    "s": "splitter",
+    "t": "chunk1",
+    "label": ""
+   },
+   {
+    "id": "splitter-chunk2",
+    "s": "splitter",
+    "t": "chunk2",
+    "label": ""
+   },
+   {
+    "id": "splitter-chunk3",
+    "s": "splitter",
+    "t": "chunk3",
+    "label": ""
+   },
+   {
+    "id": "splitter-chunk4",
+    "s": "splitter",
+    "t": "chunk4",
+    "label": ""
+   },
+   {
+    "id": "splitter-chunk5",
+    "s": "splitter",
+    "t": "chunk5",
+    "label": ""
+   },
+   {
+    "id": "splitter-chunk6",
+    "s": "splitter",
+    "t": "chunk6",
+    "label": ""
+   },
+   {
+    "id": "chunk1-worker1",
+    "s": "chunk1",
+    "t": "worker1",
+    "label": ""
+   },
+   {
+    "id": "chunk2-worker2",
+    "s": "chunk2",
+    "t": "worker2",
+    "label": ""
+   },
+   {
+    "id": "chunk3-worker3",
+    "s": "chunk3",
+    "t": "worker3",
+    "label": ""
+   },
+   {
+    "id": "chunk4-worker4",
+    "s": "chunk4",
+    "t": "worker4",
+    "label": ""
+   },
+   {
+    "id": "chunk5-worker5",
+    "s": "chunk5",
+    "t": "worker5",
+    "label": ""
+   },
+   {
+    "id": "chunk6-worker6",
+    "s": "chunk6",
+    "t": "worker6",
+    "label": ""
+   },
+   {
+    "id": "w1-w2",
+    "s": "worker1",
+    "t": "worker2",
+    "label": "CU_1"
+   },
+   {
+    "id": "w2-w3",
+    "s": "worker2",
+    "t": "worker3",
+    "label": "CU_2"
+   },
+   {
+    "id": "w3-w4",
+    "s": "worker3",
+    "t": "worker4",
+    "label": "CU_3"
+   },
+   {
+    "id": "w4-w5",
+    "s": "worker4",
+    "t": "worker5",
+    "label": "CU_4"
+   },
+   {
+    "id": "w5-w6",
+    "s": "worker5",
+    "t": "worker6",
+    "label": "CU_5"
+   },
+   {
+    "id": "w6-manager",
+    "s": "worker6",
+    "t": "manager",
+    "label": "CU_6 (final)"
+   },
+   {
+    "id": "manager-answer",
+    "s": "manager",
+    "t": "answer",
+    "label": ""
+   }
+  ],
+  "steps": [
+   {
+    "title": "Entrada demasiado grande",
+    "description": "Llega un contrato de 500 páginas (unos 380k tokens) junto con una consulta de varias partes. Supera la ventana de contexto de un solo modelo, por lo que ningún worker puede leerlo completo de una vez.",
+    "input": "",
+    "nodes": [
+     "input"
+    ],
+    "edges": [
+     "input-splitter"
+    ]
+   },
+   {
+    "title": "División en chunks",
+    "description": "El divisor separa el documento en 6 chunks ordenados de unas 83 páginas cada uno, uno por worker.",
+    "input": "",
+    "nodes": [
+     "splitter",
+     "chunk1",
+     "chunk2",
+     "chunk3",
+     "chunk4",
+     "chunk5",
+     "chunk6"
+    ],
+    "edges": [
+     "splitter-chunk1",
+     "splitter-chunk2",
+     "splitter-chunk3",
+     "splitter-chunk4",
+     "splitter-chunk5",
+     "splitter-chunk6"
+    ]
+   },
+   {
+    "title": "El worker 1 inicia la cadena",
+    "description": "El worker 1 lee el chunk 1 y produce la primera unidad de comunicación: \"se renueva automáticamente por 12 meses salvo preaviso de 60 días.\"",
+    "input": "",
+    "nodes": [
+     "chunk1",
+     "worker1"
+    ],
+    "edges": [
+     "chunk1-worker1",
+     "w1-w2"
+    ]
+   },
+   {
+    "title": "La evidencia se acumula",
+    "description": "Los workers 2 a 4 leen cada uno su chunk más la unidad de comunicación anterior, confirman la rescisión por causa justificada y encuentran el tope de responsabilidad = 12 meses de tarifas.",
+    "input": "",
+    "nodes": [
+     "worker2",
+     "worker3",
+     "worker4",
+     "chunk2",
+     "chunk3",
+     "chunk4"
+    ],
+    "edges": [
+     "chunk2-worker2",
+     "chunk3-worker3",
+     "chunk4-worker4",
+     "w2-w3",
+     "w3-w4",
+     "w4-w5"
+    ]
+   },
+   {
+    "title": "La cadena se completa",
+    "description": "Los workers 5 y 6 agregan la indemnización y la ley aplicable, no encuentran cláusulas contradictorias, y el worker 6 emite la unidad de comunicación final CU_6.",
+    "input": "",
+    "nodes": [
+     "worker5",
+     "worker6",
+     "chunk5",
+     "chunk6"
+    ],
+    "edges": [
+     "chunk5-worker5",
+     "chunk6-worker6",
+     "w5-w6",
+     "w6-manager"
+    ]
+   },
+   {
+    "title": "El gestor sintetiza",
+    "description": "El agente gestor lee solo la unidad de comunicación final acumulada y redacta una respuesta directa a las tres preguntas.",
+    "input": "",
+    "nodes": [
+     "manager"
+    ],
+    "edges": [
+     "manager-answer"
+    ]
+   },
+   {
+    "title": "Respuesta entregada",
+    "description": "Resultado: renovación automática sí, preaviso escrito de 60 días, responsabilidad limitada a 12 meses de tarifas (unos $480k). CoA superó a las líneas base de RAG y de contexto completo en tareas de contexto largo (NeurIPS 2024).",
+    "input": "",
+    "nodes": [
+     "answer"
+    ],
+    "edges": []
+   }
+  ]
+ }
+}
